@@ -33,11 +33,5 @@ namespace Sofco.WebApi.Models
         public string Position { get; set; }
 
         public IList<UserGroupModel> UserGroups {get;set;}
-
-        public void ApplyTo(Role item)
-        {
-            item.Description = this.Description;
-            item.Position = this.Position;
-        }
     }
 }

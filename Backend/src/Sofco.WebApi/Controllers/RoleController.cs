@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers
         {
             var items = _roleService.GetAllReadOnly();
 
-            var roles = _mapper.Map<IEnumerable<Role>, IEnumerable<RoleModel>>(items);
+            var roles = _mapper.Map<IList<Role>, IList<RoleModel>>(items);
 
             return Ok(items);
         }
@@ -36,11 +36,11 @@ namespace Sofco.WebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _roleService.GetById(id);
+            var response = _roleService.GetById(id);
 
-            if (item == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            return Ok(item);
+            return Ok(response);
         }
 
         // POST api/role
@@ -48,36 +48,36 @@ namespace Sofco.WebApi.Controllers
         public IActionResult Post([FromBody]RoleModel model)
         {
             var role = _mapper.Map<RoleModel, Role>(model);
-            _roleService.Insert(role);
-            return Ok();
+
+            var response = _roleService.Insert(role);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         // PUT api/role
         [HttpPut]
         public IActionResult Put([FromBody]RoleModel model)
         {
-            var item = _roleService.GetById(model.Id);
+            var role = _mapper.Map<RoleModel, Role>(model);
 
-            if (item == null) return NotFound();
+            var response = _roleService.Update(role);
 
-            model.ApplyTo(item);
+            if (response.HasErrors()) return BadRequest(response);
 
-            _roleService.Update(item);
-
-            return Ok();
+            return Ok(response);
         }
 
         // DELETE api/role/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var item = _roleService.GetById(id);
+            var response = _roleService.DeleteById(id);
 
-            if (item == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            _roleService.Delete(item);
-
-            return Ok();
+            return Ok(response);
         }
 
         [HttpPost("{roleId}/UserGroup/{userGroupId}")]

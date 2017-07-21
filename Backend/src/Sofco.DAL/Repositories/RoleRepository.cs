@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.Interfaces.DAL;
 using Sofco.Model.Models;
+using System.Linq;
 
 namespace Sofco.DAL.Repositories
 {
@@ -7,6 +8,11 @@ namespace Sofco.DAL.Repositories
     {
         public RoleRepository(SofcoContext context) : base(context)
         {
+        }
+
+        public bool Exist(int id)
+        {
+            return _context.Roles.Any(x => x.Id == id);
         }
     }
 }
