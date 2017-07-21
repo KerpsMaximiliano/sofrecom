@@ -1,0 +1,36 @@
+{
+    "MENU": {
+        "HOME": "Home",
+        "SERVICES": "Services",
+        "REQUIREMENTS": "Requirements",
+        "ASSIGNMENTS": "Assignments",
+        "ADMIN": "Admin",
+        "USERS": "User",
+        "PROFILES": "Profiles",
+        "USERS_PROFILES": "Users & Profiles"
+    },
+    "DASHBOARD": {
+        "TITLE": "Dashboard"
+    },
+    "SERVICES": {
+        "TITLE": "Services"
+    },
+    "REQUIREMENTS": {
+        "TITLE": "Requirements"
+    },
+    "ASSIGNMENTS": {
+        "TITLE": "Assignments"
+    },
+    "ADMIN": {
+        "TITLE": "Admin",
+        "USERS": {
+            "TITLE": "Users"
+        },
+        "PROFILES": {
+            "TITLE": "Profiles"
+        },
+        "USERS_PROFILES": {
+            "TITLE": "Users / Profiles"
+        }
+    }
+}
