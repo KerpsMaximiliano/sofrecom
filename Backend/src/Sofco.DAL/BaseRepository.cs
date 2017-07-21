@@ -31,7 +31,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Retorna todas las entidades.
         /// </summary>
-        public IEnumerable<T> GetAll()
+        public IList<T> GetAll()
         {
             return _context.Set<T>().ToList();
         }
@@ -39,7 +39,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Retorna todas las entidades en modo solo lectura
         /// </summary>
-        public IEnumerable<T> GetAllReadOnly()
+        public IList<T> GetAllReadOnly()
         {
             return _context.Set<T>().ToList().AsReadOnly();
         }
@@ -65,7 +65,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Inserta multiples entidades.
         /// </summary>
-        public void Insert(IEnumerable<T> entities)
+        public void Insert(IList<T> entities)
         {
             _context.Set<T>().AddRange(entities);
         }
@@ -81,7 +81,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         ///  Actualiza multiple entidades
         /// </summary>
-        public void Update(IEnumerable<T> entities)
+        public void Update(IList<T> entities)
         {
             _context.Set<T>().UpdateRange(entities);
         }
@@ -105,7 +105,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Borra multiples entidades
         /// </summary>
-        public void Delete(IEnumerable<T> entities)
+        public void Delete(IList<T> entities)
         {
             foreach (var entity in entities)
                 Delete(entity);
@@ -114,7 +114,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Retorna una o varias entidades según condición.
         /// </summary>
-        public IEnumerable<T> Where(Expression<Func<T, bool>> predicate)
+        public IList<T> Where(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate).ToList();
         }

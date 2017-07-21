@@ -8,8 +8,8 @@
 -debug:full
 -nostdlib
 -nologo
-"C:\Proyectos\NetCore\Sofco\src\Sofco.Resources\obj\Debug\netstandard1.6\dotnet-compile.assemblyinfo.cs"
--out:"C:\Proyectos\NetCore\Sofco\src\Sofco.Resources\bin\Debug\netstandard1.6\Sofco.Resources.dll"
+"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\obj\Debug\netstandard1.6\dotnet-compile.assemblyinfo.cs"
+-out:"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\bin\Debug\netstandard1.6\Sofco.Resources.dll"
 -r:"C:\Users\LEDrughieri\.nuget\packages\Microsoft.Win32.Primitives\4.3.0\ref\netstandard1.3\Microsoft.Win32.Primitives.dll"
 -r:"C:\Users\LEDrughieri\.nuget\packages\System.AppContext\4.3.0\ref\netstandard1.6\System.AppContext.dll"
 -r:"C:\Users\LEDrughieri\.nuget\packages\System.Collections\4.3.0\ref\netstandard1.3\System.Collections.dll"
@@ -53,4 +53,4 @@
 -r:"C:\Users\LEDrughieri\.nuget\packages\System.Threading.Timer\4.3.0\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\LEDrughieri\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\LEDrughieri\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll"
-"C:\Proyectos\NetCore\Sofco\src\Sofco.Resources\Properties\AssemblyInfo.cs"
+"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\Properties\AssemblyInfo.cs"

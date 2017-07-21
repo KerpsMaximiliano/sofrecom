@@ -27,17 +27,17 @@ namespace Sofco.Service
             _repositoryBase = repository;
         }
 
-        public IEnumerable<T> GetAll()
+        public IList<T> GetAll()
         {
             return _repositoryBase.GetAll();
         }
 
-        IEnumerable<T> IBaseService<T>.GetAllReadOnly()
+        IList<T> IBaseService<T>.GetAllReadOnly()
         {
             return _repositoryBase.GetAllReadOnly();
         }
 
-        public void Insert(IEnumerable<T> entities)
+        public void Insert(IList<T> entities)
         {
             _repositoryBase.Insert(entities);
             _repositoryBase.Save(currentUser);
@@ -55,7 +55,7 @@ namespace Sofco.Service
             _repositoryBase.Save(currentUser);
         }
 
-        public void Update(IEnumerable<T> entities)
+        public void Update(IList<T> entities)
         {
             _repositoryBase.Update(entities);
             _repositoryBase.Save(currentUser);
@@ -67,7 +67,7 @@ namespace Sofco.Service
             _repositoryBase.Save(currentUser);
         }
 
-        public void Delete(IEnumerable<T> entities)
+        public void Delete(IList<T> entities)
         {
             _repositoryBase.Delete(entities);
             _repositoryBase.Save(currentUser);

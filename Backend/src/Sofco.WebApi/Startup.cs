@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,11 +10,16 @@ using Sofco.DAL;
 using Sofco.DAL.Repositories;
 using Sofco.Model.Models;
 using Sofco.Service.Implementations;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi
 {
     public class Startup
     {
+        private MapperConfiguration _mapperConfiguration { get; set; }
+
+        public IConfigurationRoot Configuration { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -21,11 +27,14 @@ namespace Sofco.WebApi
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
+            _mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperConfiguration());
+            });
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,6 +44,8 @@ namespace Sofco.WebApi
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sofco.WebApi")));
 
             services.AddMvc();
+
+            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
 
             // Services
             services.AddTransient<ICustomerService, CustomerService>();

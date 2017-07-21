@@ -6,17 +6,17 @@ namespace Sofco.Core.Interfaces.DAL
 {
     public interface IBaseRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetAllReadOnly();
+        IList<T> GetAll();
+        IList<T> GetAllReadOnly();
         T GetSingle(Expression<Func<T, bool>> predicate);
         void Insert(T entity);
-        void Insert(IEnumerable<T> entities);
+        void Insert(IList<T> entities);
         void Update(T entityo);
-        void Update(IEnumerable<T> entities);
+        void Update(IList<T> entities);
         void Delete(T entity);
-        void Delete(IEnumerable<T> entities);
+        void Delete(IList<T> entities);
 
-        IEnumerable<T> Where(Expression<Func<T, bool>> predicate);
+        IList<T> Where(Expression<Func<T, bool>> predicate);
 
         void BeginTransaction();
         void Rollback();

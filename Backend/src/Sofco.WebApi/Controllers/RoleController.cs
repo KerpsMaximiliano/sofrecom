@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
+using Sofco.WebApi.Models;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers
 {
@@ -8,10 +11,14 @@ namespace Sofco.WebApi.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
+        private readonly IUserGroupService _userGroupService;
+        private readonly IMapper _mapper;
 
-        public RoleController(IRoleService roleService)
+        public RoleController(IRoleService roleService, IUserGroupService userGroupsService, IMapper mapper)
         {
             _roleService = roleService;
+            _userGroupService = userGroupsService;
+            _mapper = mapper;
         }
 
         // GET: api/role
@@ -19,6 +26,8 @@ namespace Sofco.WebApi.Controllers
         public IActionResult Get()
         {
             var items = _roleService.GetAllReadOnly();
+
+            var roles = _mapper.Map<IEnumerable<Role>, IEnumerable<RoleModel>>(items);
 
             return Ok(items);
         }
@@ -36,23 +45,22 @@ namespace Sofco.WebApi.Controllers
 
         // POST api/role
         [HttpPost]
-        public IActionResult Post([FromBody]Role model)
+        public IActionResult Post([FromBody]RoleModel model)
         {
-            _roleService.Insert(model);
+            var role = _mapper.Map<RoleModel, Role>(model);
+            _roleService.Insert(role);
             return Ok();
         }
 
         // PUT api/role
         [HttpPut]
-        public IActionResult Put([FromBody]Role model)
+        public IActionResult Put([FromBody]RoleModel model)
         {
             var item = _roleService.GetById(model.Id);
 
             if (item == null) return NotFound();
 
-            item.Description = model.Description;
-            item.Active = model.Active;
-            item.Position = model.Position;
+            model.ApplyTo(item);
 
             _roleService.Update(item);
 
@@ -70,6 +78,16 @@ namespace Sofco.WebApi.Controllers
             _roleService.Delete(item);
 
             return Ok();
+        }
+
+        [HttpPost("{roleId}/UserGroup/{userGroupId}")]
+        public IActionResult AddUserGroup(int roleId, int userGroupId)
+        {
+            var response = _userGroupService.AddRole(roleId, userGroupId);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
     }
 }

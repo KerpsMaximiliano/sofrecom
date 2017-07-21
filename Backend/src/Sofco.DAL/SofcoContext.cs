@@ -17,6 +17,8 @@ namespace Sofco.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.MapCustomers();
             builder.MapRoles();
             builder.MapUserGroups();
