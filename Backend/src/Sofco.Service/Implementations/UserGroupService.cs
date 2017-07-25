@@ -58,6 +58,8 @@ namespace Sofco.Service.Implementations
                     userGroup.Role = role;
                 }
 
+                userGroup.StartDate = DateTime.Now;
+
                 _repository.Insert(userGroup);
                 _repository.Save(string.Empty);
 
@@ -96,12 +98,13 @@ namespace Sofco.Service.Implementations
                                 response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
                                 return response;
                             }
-
+                             
                             userGroup.Role = role;
                         }
                     }
-
+                     
                     userGroup.ApplyTo(entity);
+
                     _repository.Update(entity);
                     _repository.Save(string.Empty);
                     response.Messages.Add(new Message(Resources.es.Group.Updated, MessageType.Success));
@@ -126,6 +129,8 @@ namespace Sofco.Service.Implementations
 
             if (entity != null)
             {
+                entity.EndDate = DateTime.Now;
+
                 _repository.Delete(entity);
                 _repository.Save(string.Empty);
 

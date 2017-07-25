@@ -9,6 +9,6 @@ C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\bin\Debug\Sofco.UnitTests.dll
 C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\bin\Debug\Sofco.UnitTests.pdb
 C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\bin\Debug\es\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
-C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\obj\Debug\Sofco.UnitTests.csprojResolveAssemblyReference.cache
 C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\obj\Debug\Sofco.UnitTests.dll
 C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\obj\Debug\Sofco.UnitTests.pdb
+C:\Proyectos\Sofcoar\Backend\src\Sofco.UnitTests\obj\Debug\Sofco.UnitTests.csprojResolveAssemblyReference.cache

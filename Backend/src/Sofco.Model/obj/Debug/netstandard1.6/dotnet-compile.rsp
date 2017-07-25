@@ -57,9 +57,11 @@
 --reference:C:\Users\LEDrughieri\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\BaseEntity.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Enums\MessageType.cs
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Interfaces\IAuditDates.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Interfaces\ILogicalDelete.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Models\Customer.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Models\Role.cs
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Models\User.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Models\UserGroup.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Properties\AssemblyInfo.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Utils\Messages.cs

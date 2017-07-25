@@ -15,7 +15,6 @@ namespace Sofco.WebApi.Models
         {
             Id = rol.Id;
             Description = rol.Description;
-            Position = rol.Position;
             Active = rol.Active;
 
             UserGroups = new List<UserGroupModel>();
@@ -33,7 +32,6 @@ namespace Sofco.WebApi.Models
         {
             rol.Id = Id;
             rol.Description = Description;
-            rol.Position = Position;
             rol.Active = Active;
         }
     }
