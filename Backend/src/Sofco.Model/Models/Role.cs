@@ -15,5 +15,12 @@ namespace Sofco.Model.Models
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public void ApplyTo(Role role)
+        {
+            role.Id = Id;
+            role.Description = Description;
+            role.Active = Active;
+        }
     }
 }
