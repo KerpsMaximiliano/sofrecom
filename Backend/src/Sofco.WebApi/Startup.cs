@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +15,6 @@ namespace Sofco.WebApi
 {
     public class Startup
     {
-        private MapperConfiguration _mapperConfiguration { get; set; }
-
         public IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
@@ -26,11 +23,6 @@ namespace Sofco.WebApi
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            _mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AutoMapperConfiguration());
-            });
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -43,9 +35,14 @@ namespace Sofco.WebApi
             services.AddDbContext<SofcoContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sofco.WebApi")));
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
-            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+            services.AddOptions();
+
+            services.Configure<ActiveDirectoryConfig>(Configuration.GetSection("ActiveDirectory"));
 
             // Services
             services.AddTransient<ICustomerService, CustomerService>();

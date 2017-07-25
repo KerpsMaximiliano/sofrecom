@@ -1,14 +1,8 @@
-#:C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj
-C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
-#:C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj
-C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj
-C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Helper\Sofco.Helper.xproj
-C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
-C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
 #:C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\Sofco.Resources.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Helper\Sofco.Helper.xproj
@@ -25,3 +19,4 @@ C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj|C:\Proyectos\Sofcoar\
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Core\Sofco.Core.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\Sofco.DAL.xproj
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\Sofco.Model.xproj
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Sofco.Service.xproj|C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\Sofco.Resources.xproj

@@ -84,6 +84,7 @@
 --reference:C:\Proyectos\Sofcoar\Backend\src\Sofco.DAL\bin\Debug\netstandard1.6\Sofco.DAL.dll
 --reference:C:\Proyectos\Sofcoar\Backend\src\Sofco.Helper\bin\Debug\netstandard1.6\Sofco.Helper.dll
 --reference:C:\Proyectos\Sofcoar\Backend\src\Sofco.Model\bin\Debug\netstandard1.6\Sofco.Model.dll
+--reference:C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\bin\Debug\netstandard1.6\Sofco.Resources.dll
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\BaseService.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Implementations\CustomerService.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Service\Implementations\RoleService.cs

@@ -4,16 +4,13 @@ using System.Collections.Generic;
 
 namespace Sofco.Core.Interfaces.Services
 {
-    public interface IUserGroupService : IBaseService<UserGroup>
+    public interface IUserGroupService
     {
-        void DeleteById(int id);
-
-        UserGroup GetById(int id);
-
+        IList<UserGroup> GetAllReadOnly();
+        Response<UserGroup> GetById(int id);
+        Response<UserGroup> Insert(UserGroup role);
+        Response<UserGroup> DeleteById(int id);
+        Response<UserGroup> Update(UserGroup role);
         Response<UserGroup> AddRole(int roleId, int userGroupId);
-
-        UserGroup GetByIdWithRole(int id);
-
-        IList<UserGroup> GetAllReadOnlyWithEntitiesRelated();
     }
 }

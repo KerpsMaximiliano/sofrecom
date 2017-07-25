@@ -12,7 +12,8 @@
           "NETStandard.Library": "1.6.1",
           "Sofco.Core": "1.0.0",
           "Sofco.DAL": "1.0.0",
-          "Sofco.Model": "1.0.0"
+          "Sofco.Model": "1.0.0",
+          "Sofco.Resources": "1.0.0"
         },
         "runtime": {
           "Sofco.Service.dll": {}
@@ -1279,6 +1280,14 @@
         "runtime": {
           "Sofco.Model.dll": {}
         }
+      },
+      "Sofco.Resources/1.0.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "Sofco.Resources.dll": {}
+        }
       }
     }
   },
@@ -1854,6 +1863,11 @@
       "sha512": ""
     },
     "Sofco.Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Sofco.Resources/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

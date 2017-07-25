@@ -1,7 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
+using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using System.Collections.Generic;
 
@@ -12,24 +13,35 @@ namespace Sofco.WebApi.Controllers
     {
         private readonly IRoleService _roleService;
         private readonly IUserGroupService _userGroupService;
-        private readonly IMapper _mapper;
+        private readonly IOptions<ActiveDirectoryConfig> _config;
 
-        public RoleController(IRoleService roleService, IUserGroupService userGroupsService, IMapper mapper)
+        public RoleController(IRoleService roleService, IUserGroupService userGroupsService, IOptions<ActiveDirectoryConfig> config)
         {
             _roleService = roleService;
             _userGroupService = userGroupsService;
-            _mapper = mapper;
+            _config = config;
         }
 
         // GET: api/role
         [HttpGet]
         public IActionResult Get()
         {
-            var items = _roleService.GetAllReadOnly();
+            var roles = _roleService.GetAllReadOnly();
+            var model = new List<RoleModel>();
 
-            var roles = _mapper.Map<IList<Role>, IList<RoleModel>>(items);
+            foreach (var rol in roles)
+            {
+                var roleModel = new RoleModel(rol);
 
-            return Ok(items);
+                foreach (var userGroup in rol.UserGroups)
+                {
+                    roleModel.UserGroups.Add(new UserGroupModel(userGroup));
+                }
+
+                model.Add(roleModel);
+            }
+
+            return Ok(model);
         }
 
         // GET api/role/5
@@ -47,7 +59,9 @@ namespace Sofco.WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]RoleModel model)
         {
-            var role = _mapper.Map<RoleModel, Role>(model);
+            var role = new Role();
+
+            model.ApplyTo(role);
 
             var response = _roleService.Insert(role);
 
@@ -60,9 +74,13 @@ namespace Sofco.WebApi.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]RoleModel model)
         {
-            var role = _mapper.Map<RoleModel, Role>(model);
+            var roleReponse = _roleService.GetById(model.Id);
 
-            var response = _roleService.Update(role);
+            if (roleReponse.HasErrors()) return BadRequest(roleReponse);
+
+            model.ApplyTo(roleReponse.Data);
+
+            var response = _roleService.Update(roleReponse.Data);
 
             if (response.HasErrors()) return BadRequest(response);
 

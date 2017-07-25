@@ -41,3 +41,156 @@
 # System Files
 /Frontend.DS_Store
 /FrontendThumbs.db
+
+# User-specific files
+/Backend/*.sln.docstates
+/Backend/*.suo
+/Backend/*.user
+
+# Build results
+/Backend/[Dd]ebug/
+/Backend/[Rr]elease/
+/Backend/[Bb]in/
+/Backend/[Oo]bj/
+/Backend/build/
+/Backend/x64/
+
+# MSTest test Results
+/Backend/[Tt]est[Rr]esult*/
+/Backend/[Bb]uild[Ll]og.*
+
+/Backend/*_i.c
+/Backend/*_p.c
+/Backend/*.builds
+/Backend/*.dg
+/Backend/*.ilk
+/Backend/*.log
+/Backend/*.meta
+/Backend/*.obj
+/Backend/*.pch
+/Backend/*.pdb
+/Backend/*.pgc
+/Backend/*.pgd
+/Backend/*.pidb
+/Backend/*.rsp
+/Backend/*.sbr
+/Backend/*.scc
+/Backend/*.tlb
+/Backend/*.tli
+/Backend/*.tlh
+/Backend/*.tmp
+/Backend/*.tmp_proj
+/Backend/*.vssscc
+
+# Visual C++ cache files
+/Backend/ipch/
+/Backend/*.aps
+/Backend/*.cachefile
+/Backend/*.ncb
+/Backend/*.opensdf
+/Backend/*.sdf
+
+# Visual Studio profiler
+/Backend/*.psess
+/Backend/*.vsp
+/Backend/*.vspscc
+/Backend/*.vspx
+
+# Guidance Automation Toolkit
+/Backend/*.gpState
+
+# ReSharper is a .NET coding add-in
+/Backend/_ReSharper*/
+/Backend/*.[Rr]e[Ss]harper
+
+# DotCover is a Code Coverage Tool
+/Backend/*.dotCover
+
+# NCrunch
+/Backend/*.ncrunch*
+/Backend/.*crunch*.local.xml
+
+# Installshield output folder
+/Backend/[Ee]xpress/
+
+# DocProject is a documentation generator add-in
+/Backend/DocProject/buildhelp/
+/Backend/DocProject/Help/*.HxT
+/Backend/DocProject/Help/*.HxC
+/Backend/DocProject/Help/*.hhc
+/Backend/DocProject/Help/*.hhk
+/Backend/DocProject/Help/*.hhp
+/Backend/DocProject/Help/Html2
+/Backend/DocProject/Help/html
+
+# Click-Once directory
+/Backend/publish/
+
+# Publish Web Output
+/Backend/*.Publish.xml
+/Backend/*.pubxml
+
+# Windows Azure Build Output
+/Backend/csx
+/Backend/*.build.csdef
+
+# Windows Store app package directory
+/Backend/AppPackages/
+
+# Others
+/Backend/sql/
+/Backend/*.Cache
+/Backend/ClientBin/
+/Backend/[Ss]tyle[Cc]op.*
+/Backend/~$*
+/Backend/*~
+/Backend/*.dbmdl
+/Backend/*.[Pp]ublish.xml
+/Backend/*.pfx
+/Backend/*.publishsettings
+
+# RIA/Silverlight projects
+/Backend/Generated_Code/
+
+# Backup & report files from converting an old project file to a newer
+# Visual Studio version. Backup files are not needed, because we have git ;-)
+/Backend/_UpgradeReport_Files/
+/Backend/UpgradeLog*.XML
+/Backend/UpgradeLog*.htm
+
+# SQL Server files
+/Backend/App_Data/*.mdf
+/Backend/App_Data/*.ldf
+
+#merge results
+/Backend/*.orig*
+/Backend/*.backup*
+/Backend/*.local*
+/Backend/*.remote*
+/Backend/*.ORIG*
+/Backend/*.BACKUP*
+/Backend/*.LOCAL*
+/Backend/*.REMOTE*
+/Backend/*.BASE*
+
+#LightSwitch generated files
+/Backend/GeneratedArtifacts/
+/Backend/_Pvt_Extensions/
+/Backend/ModelManifest.xml
+
+# =========================
+# Windows detritus
+# =========================
+
+# Windows image file caches
+/Backend/Thumbs.db
+/Backend/ehthumbs.db
+
+# Folder config file
+/Backend/Desktop.ini
+
+# Recycle Bin used on file shares
+/Backend/$RECYCLE.BIN/
+
+# Mac desktop service store files
+/Backend/.DS_Store

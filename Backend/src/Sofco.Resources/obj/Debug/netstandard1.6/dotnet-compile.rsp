@@ -55,4 +55,10 @@
 --reference:C:\Users\LEDrughieri\.nuget\packages\System.Threading.Timer\4.3.0\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\LEDrughieri\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\LEDrughieri\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll
+--resource:"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\obj\Debug\netstandard1.6\Sofco.Resources.es.Common.resources",Sofco.Resources.es.Common.resources
+--resource:"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\obj\Debug\netstandard1.6\Sofco.Resources.es.Group.resources",Sofco.Resources.es.Group.resources
+--resource:"C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\obj\Debug\netstandard1.6\Sofco.Resources.es.Role.resources",Sofco.Resources.es.Role.resources
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\es\Common.Designer.cs
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\es\Group.Designer.cs
+C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\es\Role.Designer.cs
 C:\Proyectos\Sofcoar\Backend\src\Sofco.Resources\Properties\AssemblyInfo.cs

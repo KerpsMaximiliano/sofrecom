@@ -14,18 +14,16 @@ namespace Sofco.DAL.Repositories
         {
         }
 
-        public IList<UserGroup> GetAllReadOnlyWithEntitiesRelated()
-        {
-            return _context.Set<UserGroup>()
-                .Include(x => x.Role)
-                .ToList();
-        }
-
         public UserGroup GetSingleWithRole(Expression<Func<UserGroup, bool>> predicate)
         {
             return _context.Set<UserGroup>()
                 .Include("Role")
                 .SingleOrDefault(predicate);
+        }
+
+        public override IList<UserGroup> GetAllReadOnly()
+        {
+            return _context.Set<UserGroup>().Include(x => x.Role).ToList();
         }
     }
 }

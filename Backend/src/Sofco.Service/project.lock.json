@@ -1969,6 +1969,19 @@
         "runtime": {
           "netstandard1.6/Sofco.Model.dll": {}
         }
+      },
+      "Sofco.Resources/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "netstandard1.6/Sofco.Resources.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/Sofco.Resources.dll": {}
+        }
       }
     }
   },
@@ -6152,6 +6165,11 @@
       "type": "project",
       "path": "../Sofco.Model/project.json",
       "msbuildProject": "../Sofco.Model/Sofco.Model.xproj"
+    },
+    "Sofco.Resources/1.0.0": {
+      "type": "project",
+      "path": "../Sofco.Resources/project.json",
+      "msbuildProject": "../Sofco.Resources/Sofco.Resources.xproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6159,7 +6177,8 @@
       "NETStandard.Library >= 1.6.1",
       "Sofco.Core >= 1.0.0-*",
       "Sofco.DAL >= 1.0.0-*",
-      "Sofco.Model >= 1.0.0-*"
+      "Sofco.Model >= 1.0.0-*",
+      "Sofco.Resources >= 1.0.0-*"
     ],
     ".NETStandard,Version=v1.6": []
   },

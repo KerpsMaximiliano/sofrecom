@@ -17,24 +17,6 @@ namespace Sofco.Service.Implementations
             _repository = repository;
         }
 
-        public Response<Role> DeleteById(int id)
-        {
-            var response = new Response<Role>();
-            var entity = _repository.GetSingle(x => x.Id == id);
-
-            if(entity != null)
-            {
-                _repository.Delete(entity);
-                _repository.Save(string.Empty);
-
-                response.Messages.Add(new Message("Rol eliminado correctamente", MessageType.Success));
-                return response;
-            }
-
-            response.Messages.Add(new Message("Rol no encontrado", MessageType.Error));
-            return response;
-        }
-
         public IList<Role> GetAllReadOnly()
         {
             return _repository.GetAllReadOnly();
@@ -51,7 +33,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            response.Messages.Add(new Message("Rol no encontrado", MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
             return response;
         }
 
@@ -65,11 +47,11 @@ namespace Sofco.Service.Implementations
                 _repository.Save(string.Empty);
 
                 response.Data = role;
-                response.Messages.Add(new Message("Rol creado exitosamente", MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Role.Created, MessageType.Success));
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message("Ocurrio un error al guardar", MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -78,7 +60,7 @@ namespace Sofco.Service.Implementations
         public Response<Role> Update(Role role)
         {
             var response = new Response<Role>();
-            var entity = _repository.Exist(role.Id);
+            var entity = _repository.GetSingle(x => x.Id == role.Id);
 
             if (entity != null)
             {
@@ -86,18 +68,36 @@ namespace Sofco.Service.Implementations
                 {
                     _repository.Update(role);
                     _repository.Save(string.Empty);
-                    response.Messages.Add(new Message("Rol modificado correctamente", MessageType.Success));
+                    response.Messages.Add(new Message(Resources.es.Role.Updated, MessageType.Success));
                 }
                 catch (Exception)
                 {
-                    response.Messages.Add(new Message("Ocurrio un error al guardar", MessageType.Error));
+                    response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
                 }
             }
             else
             {
-                response.Messages.Add(new Message("Rol no encontrado", MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
             }
            
+            return response;
+        }
+
+        public Response<Role> DeleteById(int id)
+        {
+            var response = new Response<Role>();
+            var entity = _repository.GetSingle(x => x.Id == id);
+
+            if (entity != null)
+            {
+                _repository.Delete(entity);
+                _repository.Save(string.Empty);
+
+                response.Messages.Add(new Message(Resources.es.Role.Deleted, MessageType.Success));
+                return response;
+            }
+
+            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
             return response;
         }
     }

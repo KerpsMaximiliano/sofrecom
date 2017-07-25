@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Models;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers
 {
@@ -11,73 +10,81 @@ namespace Sofco.WebApi.Controllers
     public class UserGroupController : Controller
     {
         private readonly IUserGroupService _userGroupService;
-        private readonly IMapper _mapper;
 
-        public UserGroupController(IUserGroupService userGroupsService, IMapper mapper)
+        public UserGroupController(IUserGroupService userGroupsService)
         {
             _userGroupService = userGroupsService;
-            _mapper = mapper;
         }
 
         // GET: api/userGroup
         [HttpGet]
         public IActionResult Get()
         {
-            var items = _userGroupService.GetAllReadOnlyWithEntitiesRelated();
+            var userGroups = _userGroupService.GetAllReadOnly();
+            var model = new List<UserGroupModel>();
 
-            var userGroups = items.Select(userGroup => new UserGroupModel(userGroup));
+            foreach (var userGroup in userGroups)
+            {
+                var userGroupModel = new UserGroupModel(userGroup);
+                userGroupModel.Role = new RoleModel(userGroup.Role);
+                model.Add(userGroupModel);
+            }
 
-            return Ok(userGroups);
+            return Ok(model);
         }
 
         // GET api/userGroup/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var userGroup = _userGroupService.GetById(id);
+            var response = _userGroupService.GetById(id);
 
-            if (userGroup == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            var model = new UserGroupModel(userGroup);
-
-            return Ok(model);
+            return Ok(response);
         }
 
         // POST api/userGroup
         [HttpPost]
         public IActionResult Post([FromBody]UserGroupModel model)
         {
-            var userGroup = _mapper.Map<UserGroupModel, UserGroup>(model);
-            _userGroupService.Insert(userGroup);
-            return Ok();
+            var userGroup = new UserGroup();
+
+            model.ApplyTo(userGroup);
+
+            var response = _userGroupService.Insert(userGroup);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         // PUT api/userGroup
         [HttpPut]
         public IActionResult Put([FromBody]UserGroupModel model)
         {
-            var item = _userGroupService.GetById(model.Id);
+            var userGroupReponse = _userGroupService.GetById(model.Id);
 
-            if (item == null) return NotFound();
+            if (userGroupReponse.HasErrors()) return BadRequest(userGroupReponse);
 
-            model.ApplyTo(item);
+            model.ApplyTo(userGroupReponse.Data);
 
-            _userGroupService.Update(item);
+            var response = _userGroupService.Update(userGroupReponse.Data);
 
-            return Ok();
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         // DELETE api/userGroup/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var item = _userGroupService.GetById(id);
+            var response = _userGroupService.DeleteById(id);
 
-            if (item == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            _userGroupService.Delete(item);
-
-            return Ok();
+            return Ok(response);
         }
     }
 }
