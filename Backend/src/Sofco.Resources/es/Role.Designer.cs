@@ -96,6 +96,15 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Cambio de menus actualizados correctamente.
+        /// </summary>
+        public static string RoleMenusUpdated {
+            get {
+                return ResourceManager.GetString("RoleMenusUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Rol modificado correctamente.
         /// </summary>
         public static string Updated {

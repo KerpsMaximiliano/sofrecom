@@ -152,22 +152,24 @@ namespace Sofco.Service.Implementations
             {
                 foreach (var groupId in groupsToAdd)
                 {
+                    var entity = new UserGroup { UserId = userId, GroupId = groupId };
                     var groupExist = _groupRepository.ExistById(groupId);
+                    var userGroupExist = _userGroupRepository.ExistById(userId, groupId);
 
-                    if (groupExist)
+                    if (groupExist && !userGroupExist)
                     {
-                        var entity = new UserGroup { UserId = userId, GroupId = groupId };
                         _userGroupRepository.Insert(entity);
                     }
                 }
 
                 foreach (var groupId in groupsToRemove)
                 {
+                    var entity = new UserGroup { UserId = userId, GroupId = groupId };
                     var groupExist = _groupRepository.ExistById(groupId);
+                    var userGroupExist = _userGroupRepository.ExistById(userId, groupId);
 
-                    if (groupExist)
+                    if (groupExist && userGroupExist)
                     {
-                        var entity = new UserGroup { UserId = userId, GroupId = groupId };
                         _userGroupRepository.Delete(entity);
                     }
                 }

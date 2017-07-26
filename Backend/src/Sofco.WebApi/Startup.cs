@@ -49,10 +49,11 @@ namespace Sofco.WebApi
 
             // Services
             services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFunctionalityService, FunctionalityService>();
+            services.AddTransient<IMenuService, MenuService>();
 
             // Repositories
             services.AddTransient<ICustomerRepository, CustomerRepository>();
@@ -65,13 +66,14 @@ namespace Sofco.WebApi
             services.AddTransient<IUserGroupRepository, UserGroupRepository>();
             services.AddTransient<IFunctionalityRepository, FunctionalityRepository>();
             services.AddTransient<IRoleFunctionalityRepository, RoleFunctionalityRepository>();
+            services.AddTransient<IRoleMenuRepository, RoleMenuRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc();
             app.UseCors(builder => builder.WithOrigins("*"));
+            app.UseMvc();
         }
     }
 }

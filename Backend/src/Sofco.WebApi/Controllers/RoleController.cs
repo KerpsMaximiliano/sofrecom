@@ -14,10 +14,10 @@ namespace Sofco.WebApi.Controllers
         private readonly IRoleService _roleService;
         private readonly IGroupService _groupService;
 
-        public RoleController(IRoleService roleService, IGroupService userGroupsService)
+        public RoleController(IRoleService roleService, IGroupService groupService)
         {
             _roleService = roleService;
-            _groupService = userGroupsService;
+            _groupService = groupService;
         }
 
         // GET: api/role
@@ -126,6 +126,17 @@ namespace Sofco.WebApi.Controllers
         public IActionResult ChangeFunctionalities(int roleId, [FromBody]RoleFunctionalityModel model)
         {
             var response = _roleService.ChangeFunctionalities(roleId, model.FunctionlitiesToAdd, model.FunctionlitiesToRemove);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{roleId}/menus")]
+        public IActionResult ChangeMenus(int roleId, [FromBody]RoleMenuModel model)
+        {
+            var response = _roleService.ChangeMenus(roleId, model.MenusToAdd, model.MenusToRemove);
 
             if (response.HasErrors()) return BadRequest(response);
 

@@ -15,12 +15,14 @@ namespace Sofco.Service.Implementations
         private readonly IRoleRepository _repository;
         private readonly IRoleFunctionalityRepository _roleFunctionalityRepository;
         private readonly IFunctionalityRepository _functionalityRepository;
+        private readonly IRoleMenuRepository _roleMenuRepository;
 
-        public RoleService(IRoleRepository repository, IRoleFunctionalityRepository roleFunctionality, IFunctionalityRepository functionalityRepository)
+        public RoleService(IRoleRepository repository, IRoleFunctionalityRepository roleFunctionality, IFunctionalityRepository functionalityRepository, IRoleMenuRepository roleMenuRepository)
         {
             _repository = repository;
             _roleFunctionalityRepository = roleFunctionality;
             _functionalityRepository = functionalityRepository;
+            _roleMenuRepository = roleMenuRepository;
         }
 
         public IList<Role> GetAllReadOnly()
@@ -151,6 +153,55 @@ namespace Sofco.Service.Implementations
 
                 _roleFunctionalityRepository.Save(string.Empty);
                 response.Messages.Add(new Message(Resources.es.Role.RoleFunctionalitiesUpdated, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response<Role> ChangeMenus(int roleId, List<int> menusToAdd, List<int> menusToRemove)
+        {
+            var response = new Response<Role>();
+
+            var roleExist = _repository.ExistById(roleId);
+
+            if (!roleExist)
+            {
+                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                return response;
+            }
+
+            try
+            {
+                foreach (var menuId in menusToAdd)
+                {
+                    var entity = new RoleMenu { RoleId = roleId, MenuId = menuId };
+                    var menuExist = _roleMenuRepository.MenuExistById(menuId);
+                    var roleMenuExist = _roleMenuRepository.ExistById(roleId, menuId);
+
+                    if (menuExist && !roleMenuExist)
+                    {
+                        _roleMenuRepository.Insert(entity);
+                    }
+                }
+
+                foreach (var menuId in menusToRemove)
+                {
+                    var entity = new RoleMenu { RoleId = roleId, MenuId = menuId };
+                    var menuExist = _roleMenuRepository.MenuExistById(menuId);
+                    var roleMenuExist = _roleMenuRepository.ExistById(roleId, menuId);
+
+                    if (menuExist && roleMenuExist)
+                    {
+                        _roleMenuRepository.Delete(entity);
+                    }
+                }
+
+                _roleMenuRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Role.RoleMenusUpdated, MessageType.Success));
             }
             catch (Exception)
             {

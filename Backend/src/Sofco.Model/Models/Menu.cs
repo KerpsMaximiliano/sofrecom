@@ -1,4 +1,5 @@
 ﻿using Sofco.Model.Interfaces;
+using Sofco.Model.Relationships;
 using System;
 using System.Collections.Generic;
 
@@ -15,5 +16,7 @@ namespace Sofco.Model.Models
         public bool Active { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime StartDate { get; set; }
+
+        public IList<RoleMenu> RoleMenu { get; set; }
     }
 }

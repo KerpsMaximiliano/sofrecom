@@ -25,5 +25,15 @@ namespace Sofco.DAL.Repositories
                     .ThenInclude(x => x.Functionality)
                 .ToList();
         }
+
+        public IList<Menu> GetMenusByRoleId(int[] roleIds)
+        {
+            return _context.RoleMenu
+                .Include(x => x.Menu)
+                .Where(x => roleIds.Contains(x.RoleId))
+                .Select(x => x.Menu)
+                .Distinct()
+                .ToList();
+        }
     }
 }

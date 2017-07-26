@@ -129,6 +129,9 @@
   <data name="RoleFunctionalitiesUpdated" xml:space="preserve">
     <value>Funcionalidades del rol actualizadas correctamente</value>
   </data>
+  <data name="RoleMenusUpdated" xml:space="preserve">
+    <value>Cambio de menus actualizados correctamente</value>
+  </data>
   <data name="Updated" xml:space="preserve">
     <value>Rol modificado correctamente</value>
   </data>
