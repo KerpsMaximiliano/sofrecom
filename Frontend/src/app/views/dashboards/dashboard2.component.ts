@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, } from '@angular/core';
 
-import { FlotChartDirective } from 'app/directives/charts/flotChart';
+import { FlotChartDirective } from '../../components/charts/flotChart';
 
 declare var jQuery:any;
 

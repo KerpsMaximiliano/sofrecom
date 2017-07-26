@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
 import {NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 
 import {StarterViewComponent} from "./starterview.component";
 import {LoginComponent} from "./login.component";
 
-import {PeityModule } from 'app/directives/charts/peity';
-import {SparklineModule } from 'app/directives/charts/sparkline';
+import {PeityModule } from '../../components/charts/peity';
+import {SparklineModule } from '../../components/charts/sparkline';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import {SparklineModule } from 'app/directives/charts/sparkline';
     LoginComponent
   ],
   imports: [
-    CommonModule,
+    BrowserModule,
     RouterModule,
     PeityModule,
     SparklineModule

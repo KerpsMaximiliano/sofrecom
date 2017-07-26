@@ -1,0 +1,63 @@
+
+
+<table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th *ngFor="let column of columns" [width] = "columns.width">{{column.title}}</th>
+            <th *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow" width="{{actionsColumnWidth}}px">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <!--RECORRO LAS FILAS-->
+        <tr *ngFor="let d of data" [ngClass]="editionType == editionTypeEnum.HandInAllTheRow ? 'cursor-pointer' : 'cursor-default'">
+
+            <!--RECORRO LAS COLUMNAS-->
+            <td *ngFor="let column of columns" [ngClass]="(column.alignment == alignmentEnum.center)?
+                                                                'text-center':
+                                                            (column.alignment == alignmentEnum.left)?
+                                                                'text-left':
+                                                                'text-right'"
+                                                [routerLink]="(editionType == editionTypeEnum.HandInAllTheRow)?['edit', d[idColumnName]]:[]">
+                <!--CHECK PARA BOOLEAN-->
+                <span class="fa" *ngIf="column.dataType==dataTypeEnum.boolean" [ngClass]="(d[column.name]==true)?'fa-check':'fa-close'"></span>
+                
+                <!--DATO SI NO ES BOOLEAN-->
+                <span *ngIf="column.dataType!=dataTypeEnum.boolean">
+                    <span *ngIf="column.dataType!=dataTypeEnum.date">
+                        {{d[column.name]}}
+                    </span>
+                    <span *ngIf="column.dataType==dataTypeEnum.date">
+                        {{d[column.name] | date:'dd/mm/yyyy'}}
+                    </span>
+                </span>
+            </td>
+
+            
+            <!--<td *ngIf="!editionTypeEnum.HandInAllTheRow" *ngFor="let column of columns" >{{d[column.name]}}</td>-->
+
+            <!--EDIT AND DELETE-->
+            <td *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow">
+                
+
+                <button *ngIf="options.b_delete" class="btn btn-danger btn-xs pull-right datatables-action-button" (click)="deleteClick(d[idColumnName])" ><span class="fa fa-trash" title="{{locationTexts.deleteText}}"></span></button>
+
+                <button *ngIf="options.b_edit" class="btn btn-warning btn-xs pull-right datatables-action-button" 
+                    (click)="editClick(d[idColumnName])" >
+                    <span class="fa fa-edit"  title="{{locationTexts.editText}}"></span>
+                </button><!--[routerLink]="['edit', d[idColumnName]]"-->
+
+                <button *ngIf="options.b_view" class="btn btn-primary btn-xs pull-right datatables-action-button" (click)="viewClick(d[idColumnName])" ><span class="fa fa-eye" title="{{locationTexts.searchText}}"></span></button>
+
+                <button *ngIf="options.b_other1" class="btn btn-success btn-xs pull-right datatables-action-button" (click)="other1Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other1Icon]"></span></button>
+                <button *ngIf="options.b_other2" class="btn btn-warning btn-xs pull-right datatables-action-button" (click)="other2Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other2Icon]"></span></button>
+                <button *ngIf="options.b_other3" class="btn btn-default btn-xs pull-right datatables-action-button" (click)="other3Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other3Icon]"></span></button>
+
+
+            </td>
+
+        </tr>
+    </tbody>
+</table>

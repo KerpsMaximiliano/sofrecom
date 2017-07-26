@@ -3,10 +3,10 @@
     <ul class="nav metismenu" id="side-menu">
       <li class="nav-header">
         <div class="profile-element" dropdown>
-          <img alt="image" class="img-circle" src="assets/images/profile_small.jpg">
+          <img alt="image" class="img-circle" src="assets/images/logo_small.jpg">
           <a dropdownToggle>
-            <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong> </span>
-            <span class="text-muted text-xs block">Art Director <b class="caret"></b> </span>
+            <span class="block m-t-xs"> <strong class="font-bold">Sofco Ar</strong> </span>
+            <!--<span class="text-muted text-xs block">Art Director <b class="caret"></b> </span>-->
           </a>
           <ul class="animated fadeInRight dropdown-menu" *dropdownMenu>
             <li><a href="#">Profile</a></li>
@@ -23,6 +23,15 @@
       <li [ngClass]="{active: activeRoute('starter')}">
         <a [routerLink]="['/starterview']"><i class="fa fa-th-large"></i> <span class="nav-label">Starter view</span></a>
       </li>
+
+      <li [ngClass]="{active: activeRoute('admin')}">
+        <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
+          <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">Roles</a></li>
+
+        </ul>
+      </li>
+
       <li [ngClass]="{active: activeRoute('dashboards')}">
         <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard examples</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('dashboards')}">

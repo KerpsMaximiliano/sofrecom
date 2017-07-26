@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Roles</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Forms</a>
+            </li>
+            <li class="active">
+                <strong>Basic Form</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Gestion de Roles</h5>
+
+
+                    <div class="ibox-tools" >
+                        <!--<a ng-click="showhide()"> <i class="fa fa-chevron-up"></i></a>
+                        <a>
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a ng-click="closebox()"><i class="fa fa-times"></i></a>-->
+                        <a ng-click="closebox()"><i class="fa fa-plus"></i></a>
+                    </div>
+
+
+                </div>
+                <div class="ibox-content">
+                    <datatables *ngIf="data != null" 
+                      [data] = "data" 
+                      [columns]="columns" 
+                      [editionType]=editionType
+                      [options]=options
+                      (edit) = "editClick($event)"
+                      (delete) = "deleteClick($event)"
+                      ></datatables>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
