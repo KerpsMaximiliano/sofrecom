@@ -1,10 +1,11 @@
 ﻿using Sofco.Model.Interfaces;
 using System.Collections.Generic;
 using System;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models
 {
-    public class UserGroup : BaseEntity, ILogicalDelete, IAuditDates
+    public class Group : BaseEntity, ILogicalDelete, IAuditDates
     {
         public string Description { get; set; }
 
@@ -12,13 +13,13 @@ namespace Sofco.Model.Models
 
         public Role Role { get; set; }
 
-        public IList<User> Users { get; set; }
+        public IList<UserGroup> UserGroups { get; set; }
 
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
-        public void ApplyTo(UserGroup item)
+        public void ApplyTo(Group item)
         {
             item.Id = this.Id;
             item.Description = this.Description;

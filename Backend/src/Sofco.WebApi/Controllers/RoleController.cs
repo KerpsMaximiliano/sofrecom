@@ -12,10 +12,10 @@ namespace Sofco.WebApi.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
-        private readonly IUserGroupService _userGroupService;
+        private readonly IGroupService _userGroupService;
         private readonly IOptions<ActiveDirectoryConfig> _config;
 
-        public RoleController(IRoleService roleService, IUserGroupService userGroupsService, IOptions<ActiveDirectoryConfig> config)
+        public RoleController(IRoleService roleService, IGroupService userGroupsService, IOptions<ActiveDirectoryConfig> config)
         {
             _roleService = roleService;
             _userGroupService = userGroupsService;
@@ -33,9 +33,9 @@ namespace Sofco.WebApi.Controllers
             {
                 var roleModel = new RoleModel(rol);
 
-                foreach (var userGroup in rol.UserGroups)
+                foreach (var group in rol.Groups)
                 {
-                    roleModel.UserGroups.Add(new UserGroupModel(userGroup));
+                    roleModel.Groups.Add(new GroupModel(group));
                 }
 
                 model.Add(roleModel);

@@ -1,12 +1,9 @@
-﻿using System;
-using Sofco.Model.Models;
-using System.Linq.Expressions;
-using System.Collections.Generic;
+﻿using Sofco.Core.Interfaces.DAL;
+using Sofco.Model.Relationships;
 
-namespace Sofco.Core.Interfaces.DAL
+namespace Sofco.Core.DAL
 {
     public interface IUserGroupRepository : IBaseRepository<UserGroup>
     {
-        UserGroup GetSingleWithRole(Expression<Func<UserGroup, bool>> p);
     }
 }

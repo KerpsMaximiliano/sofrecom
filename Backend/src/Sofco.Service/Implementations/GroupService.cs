@@ -8,30 +8,30 @@ using System;
 
 namespace Sofco.Service.Implementations
 {
-    public class UserGroupService : IUserGroupService
+    public class GroupService : IGroupService
     {
-        IUserGroupRepository _repository;
+        IGroupRepository _repository;
         IRoleRepository _roleRepository;
 
-        public UserGroupService(IUserGroupRepository repository, IRoleRepository roleRepository)
+        public GroupService(IGroupRepository repository, IRoleRepository roleRepository)
         {
             _repository = repository;
             _roleRepository = roleRepository;
         }
 
-        public IList<UserGroup> GetAllReadOnly()
+        public IList<Group> GetAllReadOnly()
         {
             return _repository.GetAllReadOnly();
         }
 
-        public Response<UserGroup> GetById(int id)
+        public Response<Group> GetById(int id)
         {
-            var response = new Response<UserGroup>();
-            var userGroup = _repository.GetSingle(x => x.Id == id);
+            var response = new Response<Group>();
+            var group = _repository.GetSingleFull(x => x.Id == id);
 
-            if (userGroup != null)
+            if (group != null)
             {
-                response.Data = userGroup;
+                response.Data = group;
                 return response;
             }
 
@@ -39,15 +39,15 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<UserGroup> Insert(UserGroup userGroup)
+        public Response<Group> Insert(Group group)
         {
-            var response = new Response<UserGroup>();
+            var response = new Response<Group>();
 
             try
             {
-                if(userGroup.Role != null)
+                if(group.Role != null)
                 {
-                    var role = _roleRepository.GetSingle(x => x.Id == userGroup.Role.Id);
+                    var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
 
                     if(role == null)
                     {
@@ -55,15 +55,15 @@ namespace Sofco.Service.Implementations
                         return response;
                     }
 
-                    userGroup.Role = role;
+                    group.Role = role;
                 }
 
-                userGroup.StartDate = DateTime.Now;
+                group.StartDate = DateTime.Now;
 
-                _repository.Insert(userGroup);
+                _repository.Insert(group);
                 _repository.Save(string.Empty);
 
-                response.Data = userGroup;
+                response.Data = group;
                 response.Messages.Add(new Message(Resources.es.Group.Created, MessageType.Success));
             }
             catch (Exception ex)
@@ -74,24 +74,24 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<UserGroup> Update(UserGroup userGroup)
+        public Response<Group> Update(Group group)
         {
-            var response = new Response<UserGroup>();
-            var entity = _repository.GetSingle(x => x.Id == userGroup.Id);
+            var response = new Response<Group>();
+            var entity = _repository.GetSingle(x => x.Id == group.Id);
 
             if (entity != null)
             {
                 try
                 {
-                    if(userGroup.Role == null)
+                    if(group.Role == null)
                     {
                         entity.Role = null;
                     }
                     else
                     {
-                        if(userGroup.Role.Id != entity.Role.Id)
+                        if(group.Role.Id != entity.Role.Id)
                         {
-                            var role = _roleRepository.GetSingle(x => x.Id == userGroup.Role.Id);
+                            var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
 
                             if (role == null)
                             {
@@ -99,11 +99,11 @@ namespace Sofco.Service.Implementations
                                 return response;
                             }
                              
-                            userGroup.Role = role;
+                            group.Role = role;
                         }
                     }
                      
-                    userGroup.ApplyTo(entity);
+                    group.ApplyTo(entity);
 
                     _repository.Update(entity);
                     _repository.Save(string.Empty);
@@ -122,9 +122,9 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<UserGroup> DeleteById(int id)
+        public Response<Group> DeleteById(int id)
         {
-            var response = new Response<UserGroup>();
+            var response = new Response<Group>();
             var entity = _repository.GetSingle(x => x.Id == id);
 
             if (entity != null)
@@ -142,9 +142,9 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<UserGroup> AddRole(int roleId, int userGroupId)
+        public Response<Group> AddRole(int roleId, int userGroupId)
         {
-            var response = new Response<UserGroup>();
+            var response = new Response<Group>();
 
             var role = _roleRepository.GetSingle(x => x.Id == roleId);
 
@@ -153,16 +153,16 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            var userGroup = _repository.GetSingleWithRole(x => x.Id == userGroupId);
+            var group = _repository.GetSingleWithRole(x => x.Id == userGroupId);
 
-            if (userGroup == null)
+            if (group == null)
             {
                 response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
                 return response;
             }
 
-            userGroup.Role = role;
-            _repository.Update(userGroup);
+            group.Role = role;
+            _repository.Update(group);
             _repository.Save(string.Empty);
 
             response.Messages.Add(new Message(Resources.es.Group.RoleAssigned, MessageType.Success));

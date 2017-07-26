@@ -89,7 +89,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Borra una entidad.
         /// </summary>
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             ILogicalDelete logicalDelete = entity as ILogicalDelete;
             if (logicalDelete == null)

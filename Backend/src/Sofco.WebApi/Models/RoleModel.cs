@@ -17,16 +17,14 @@ namespace Sofco.WebApi.Models
             Description = rol.Description;
             Active = rol.Active;
 
-            UserGroups = new List<UserGroupModel>();
+            Groups = new List<GroupModel>();
         }
 
         public string Description { get; set; }
 
-        public string Position { get; set; }
-
         public bool Active { get; set; }
 
-        public IList<UserGroupModel> UserGroups { get; set; }
+        public IList<GroupModel> Groups { get; set; }
 
         public void ApplyTo(Role rol)
         {

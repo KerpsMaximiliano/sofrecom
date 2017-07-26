@@ -19,7 +19,7 @@ namespace Sofco.DAL.Repositories
 
         public override IList<Role> GetAllReadOnly()
         {
-            return _context.Set<Role>().Include(x => x.UserGroups).ToList();
+            return _context.Set<Role>().Include(x => x.Groups).ToList();
         }
     }
 }

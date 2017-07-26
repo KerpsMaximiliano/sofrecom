@@ -8,7 +8,8 @@ namespace Sofco.Core.Services
     {
         IList<User> GetAllReadOnly();
         Response<User> GetById(int id);
-        Response<User> Insert(User role);
-        Response<User> DeleteById(int id);
+        Response<User> Active(int id, bool active);
+        Response<User> AddUserGroup(int userId, int userGroupId);
+        Response<User> RemoveUserGroup(int userId, int userGroupId);
     }
 }
