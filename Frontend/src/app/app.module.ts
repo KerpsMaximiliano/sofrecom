@@ -1,47 +1,46 @@
-
-import { SharedModule } from './shared/shared.module';
-import { CustomersService } from './services/customers.service';
-import { MenuComponent } from './layout/menu/menu.component';
-
-import { ConfigModule } from 'app/singleton/config.module';
-
-import { AppRoutingModule } from './app.routing';
+import { Http } from '@angular/http';
+import { Service } from 'app/services/service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http } from '@angular/http';
-import {BsDropdownModule} from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import {RouterModule} from "@angular/router";
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
+import {ROUTES} from "./app.routes";
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './layout/dashboard/dashboard.component';
 
+// App views
+import {DashboardsModule} from "./views/dashboards/dashboards.module";
+import {AppviewsModule} from "./views/appviews/appviews.module";
+
+// App modules/components
+import { LayoutsModule } from "./components/common/layouts/layouts.module";
+import { AdminModule } from "app/views/admin/admin.module";
+import { Configuration } from "app/services/configuration";
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
-import { CustomersComponent } from './components/customers/customers.component';
-import { Service } from "app/services/service";
-import { Configuration } from "app/services/configuration";
-import { BasicLayoutComponent } from "app/components/common/layouts/basicLayout.component";
-import { LayoutsModule } from "app/components/common/layouts/layouts.module";
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
-
-// AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
 }
 
-
 @NgModule({
+  declarations: [
+    AppComponent,
+    BreadcrumbsComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule,
-    SharedModule,
+    DashboardsModule,
     LayoutsModule,
-    //LayoutModule,
-    ConfigModule,
+    AppviewsModule,
+    RouterModule.forRoot(ROUTES),
+    AdminModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -50,16 +49,10 @@ export function HttpLoaderFactory(http: Http) {
       }
     })
   ],
-  declarations: [
-    AppComponent,
-    MenuComponent,
-    DashboardComponent,
-    CustomersComponent
-  ],
   providers: [
-    Service,
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     Configuration,
-    CustomersService
+    Service
   ],
   bootstrap: [AppComponent]
 })

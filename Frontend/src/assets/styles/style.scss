@@ -56,3 +56,25 @@
     margin: 0;
   }
 }
+
+/*
+.btn-group{
+    margin-top: -60px;
+}*/
+
+.btn-group .buttons-print {
+  border-radius: 0 5px 5px 0;
+}
+
+.btn-group .buttons-html5 {
+  border-radius: 5px 0 0 5px;
+}
+
+
+
+li.paginate-button a{
+  height:32px;
+  padding-top:15px;
+}
+
+

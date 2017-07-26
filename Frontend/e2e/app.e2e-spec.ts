@@ -1,10 +1,10 @@
-import { SofcoNoMaterialPage } from './app.po';
+import { InspiniaPage } from './app.po';
 
-describe('sofco-no-material App', () => {
-  let page: SofcoNoMaterialPage;
+describe('inspinia App', () => {
+  let page: InspiniaPage;
 
   beforeEach(() => {
-    page = new SofcoNoMaterialPage();
+    page = new InspiniaPage();
   });
 
   it('should display message saying app works', () => {
