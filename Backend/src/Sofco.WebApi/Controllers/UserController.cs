@@ -85,5 +85,16 @@ namespace Sofco.WebApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("{userId}/groups")]
+        public IActionResult ChangeUserGroups(int userId, [FromBody]UserGroupModel model)
+        {
+            var response = _userService.ChangeUserGroups(userId, model.GroupsToAdd, model.GroupsToRemove);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }

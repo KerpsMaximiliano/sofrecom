@@ -63,9 +63,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            var entity = new UserGroup();
-            entity.GroupId = groupId;
-            entity.UserId = userId;
+            var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
             _userGroupRepository.Insert(entity);
             _userGroupRepository.Save(string.Empty);
@@ -115,14 +113,66 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            var entity = new UserGroup();
-            entity.GroupId = groupId;
-            entity.UserId = userId;
+            try
+            {
+                var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
-            _userGroupRepository.Delete(entity);
-            _userGroupRepository.Save(string.Empty);
+                _userGroupRepository.Delete(entity);
+                _userGroupRepository.Save(string.Empty);
 
-            response.Messages.Add(new Message(Resources.es.User.GroupRemoved, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.User.GroupRemoved, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response<User> ChangeUserGroups(int userId, List<int> groupsToAdd, List<int> groupsToRemove)
+        {
+            var response = new Response<User>();
+
+            var userExist = _userRepository.ExistById(userId);
+
+            if (!userExist)
+            {
+                response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+                return response;
+            }
+
+            try
+            {
+                foreach (var groupId in groupsToAdd)
+                {
+                    var groupExist = _groupRepository.ExistById(groupId);
+
+                    if (groupExist)
+                    {
+                        var entity = new UserGroup { UserId = userId, GroupId = groupId };
+                        _userGroupRepository.Insert(entity);
+                    }
+                }
+
+                foreach (var groupId in groupsToRemove)
+                {
+                    var groupExist = _groupRepository.ExistById(groupId);
+
+                    if (groupExist)
+                    {
+                        var entity = new UserGroup { UserId = userId, GroupId = groupId };
+                        _userGroupRepository.Delete(entity);
+                    }
+                }
+
+                _userGroupRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.User.UserGroupsUpdated, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
 
             return response;
         }

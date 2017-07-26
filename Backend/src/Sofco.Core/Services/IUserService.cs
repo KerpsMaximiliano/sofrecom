@@ -11,5 +11,6 @@ namespace Sofco.Core.Services
         Response<User> Active(int id, bool active);
         Response<User> AddUserGroup(int userId, int userGroupId);
         Response<User> RemoveUserGroup(int userId, int userGroupId);
+        Response<User> ChangeUserGroups(int userId, List<int> groupsToAdd, List<int> groupsToRemove);
     }
 }

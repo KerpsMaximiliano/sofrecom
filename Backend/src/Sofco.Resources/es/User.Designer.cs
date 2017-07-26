@@ -112,5 +112,14 @@ namespace Sofco.Resources.es {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Grupos del usuario actualizados correctamente.
+        /// </summary>
+        public static string UserGroupsUpdated {
+            get {
+                return ResourceManager.GetString("UserGroupsUpdated", resourceCulture);
+            }
+        }
     }
 }
