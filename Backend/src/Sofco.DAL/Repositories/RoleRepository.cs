@@ -12,14 +12,18 @@ namespace Sofco.DAL.Repositories
         {
         }
 
-        public bool Exist(int id)
+        public bool ExistById(int id)
         {
             return _context.Roles.Any(x => x.Id == id);
         }
 
         public override IList<Role> GetAllReadOnly()
         {
-            return _context.Set<Role>().Include(x => x.Groups).ToList();
+            return _context.Set<Role>()
+                .Include(x => x.Groups)
+                .Include(x => x.RoleFunctionality)
+                    .ThenInclude(x => x.Functionality)
+                .ToList();
         }
     }
 }

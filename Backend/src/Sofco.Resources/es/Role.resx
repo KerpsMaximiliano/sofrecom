@@ -126,6 +126,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>Rol no encontrado</value>
   </data>
+  <data name="RoleFunctionalitiesUpdated" xml:space="preserve">
+    <value>Funcionalidades del rol actualizadas correctamente</value>
+  </data>
   <data name="Updated" xml:space="preserve">
     <value>Rol modificado correctamente</value>
   </data>

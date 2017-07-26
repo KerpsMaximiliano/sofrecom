@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace Sofco.Core.DAL
 {
-    public interface IUserRepository : IBaseRepository<User>
+    public interface IFunctionalityRepository : IBaseRepository<Functionality>
     {
         bool ExistById(int id);
-        User GetSingleWithUserGroup(Expression<Func<User, bool>> predicate);
+        Functionality GetSingleWithRoles(Expression<Func<Functionality, bool>> predicate);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Sofco.Model;
+using Sofco.Model.Interfaces;
 using Sofco.Model.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Sofco.WebApi.Models
 {
-    public class GroupModel : BaseEntity
+    public class GroupModel : BaseEntity, IAuditDates
     {
         public GroupModel()
         {
@@ -16,6 +18,8 @@ namespace Sofco.WebApi.Models
             Id = group.Id;
             Description = group.Description;
             Active = group.Active;
+            StartDate = group.StartDate;
+            EndDate = group.EndDate;
 
             Users = new List<UserModel>();
         }
@@ -23,6 +27,8 @@ namespace Sofco.WebApi.Models
         public string Description { get; set; }
 
         public bool Active { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public RoleModel Role { get; set; }
 

@@ -22,13 +22,13 @@ namespace Sofco.Resources.es {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Role {
+    public class Functionality {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Role() {
+        internal Functionality() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Role", typeof(Role).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Functionality", typeof(Functionality).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol creado exitosamente.
+        ///    Busca una cadena localizada similar a Funcionalidad creado correctamente.
         /// </summary>
         public static string Created {
             get {
@@ -69,38 +69,29 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol eliminado correctamente.
+        ///    Busca una cadena localizada similar a Funcionalidad inhabilitada correctamente.
         /// </summary>
-        public static string Deleted {
+        public static string Disabled {
             get {
-                return ResourceManager.GetString("Deleted", resourceCulture);
+                return ResourceManager.GetString("Disabled", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol no encontrado.
+        ///    Busca una cadena localizada similar a Funcionalidad habilitada correctamente.
+        /// </summary>
+        public static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Funcionalidad no encontrada.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidades del rol actualizadas correctamente.
-        /// </summary>
-        public static string RoleFunctionalitiesUpdated {
-            get {
-                return ResourceManager.GetString("RoleFunctionalitiesUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a Rol modificado correctamente.
-        /// </summary>
-        public static string Updated {
-            get {
-                return ResourceManager.GetString("Updated", resourceCulture);
             }
         }
     }

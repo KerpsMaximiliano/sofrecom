@@ -1,6 +1,7 @@
 ﻿using Sofco.Model.Interfaces;
 using System.Collections.Generic;
 using System;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models
 {
@@ -9,6 +10,7 @@ namespace Sofco.Model.Models
         public string Description { get; set; }
 
         public IList<Group> Groups { get; set; }
+        public IList<RoleFunctionality> RoleFunctionality { get; set; }
 
         public bool Active { get; set; }
         public DateTime StartDate { get; set; }

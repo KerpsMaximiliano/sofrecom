@@ -52,6 +52,7 @@ namespace Sofco.WebApi
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IFunctionalityService, FunctionalityService>();
 
             // Repositories
             services.AddTransient<ICustomerRepository, CustomerRepository>();
@@ -62,6 +63,8 @@ namespace Sofco.WebApi
             services.AddTransient<IBaseRepository<Role>, BaseRepository<Role>>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserGroupRepository, UserGroupRepository>();
+            services.AddTransient<IFunctionalityRepository, FunctionalityRepository>();
+            services.AddTransient<IRoleFunctionalityRepository, RoleFunctionalityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

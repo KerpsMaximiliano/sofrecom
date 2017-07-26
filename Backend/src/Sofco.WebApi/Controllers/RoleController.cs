@@ -12,14 +12,12 @@ namespace Sofco.WebApi.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
-        private readonly IGroupService _userGroupService;
-        private readonly IOptions<ActiveDirectoryConfig> _config;
+        private readonly IGroupService _groupService;
 
-        public RoleController(IRoleService roleService, IGroupService userGroupsService, IOptions<ActiveDirectoryConfig> config)
+        public RoleController(IRoleService roleService, IGroupService userGroupsService)
         {
             _roleService = roleService;
-            _userGroupService = userGroupsService;
-            _config = config;
+            _groupService = userGroupsService;
         }
 
         // GET: api/role
@@ -36,6 +34,11 @@ namespace Sofco.WebApi.Controllers
                 foreach (var group in rol.Groups)
                 {
                     roleModel.Groups.Add(new GroupModel(group));
+                }
+
+                foreach (var roleFunctionality in rol.RoleFunctionality)
+                {
+                    roleModel.Functionalities.Add(new FunctionalityModel(roleFunctionality.Functionality));
                 }
 
                 model.Add(roleModel);
@@ -98,10 +101,31 @@ namespace Sofco.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{roleId}/UserGroup/{userGroupId}")]
-        public IActionResult AddUserGroup(int roleId, int userGroupId)
+        [HttpPost("{roleId}/group/{groupId}")]
+        public IActionResult AddGroup(int roleId, int groupId)
         {
-            var response = _userGroupService.AddRole(roleId, userGroupId);
+            var response = _groupService.AddRole(roleId, groupId);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{roleId}/group/{groupId}")]
+        public IActionResult RemoveGroup(int roleId, int groupId)
+        {
+            var response = _groupService.RemoveRole(roleId, groupId);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{roleId}/functionalities")]
+        public IActionResult ChangeFunctionalities(int roleId, [FromBody]RoleFunctionalityModel model)
+        {
+            var response = _roleService.ChangeFunctionalities(roleId, model.FunctionlitiesToAdd, model.FunctionlitiesToRemove);
 
             if (response.HasErrors()) return BadRequest(response);
 

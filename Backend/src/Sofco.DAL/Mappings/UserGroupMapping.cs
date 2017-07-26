@@ -3,9 +3,9 @@ using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Mapping
 {
-    public static class UserGroupUserMapping
+    public static class UserGroupMapping
     {
-        public static void MapUserGroupsUser(this ModelBuilder builder)
+        public static void MapUserGroups(this ModelBuilder builder)
         {
             builder.Entity<UserGroup>().HasKey(t => new { t.UserId, t.GroupId });
 

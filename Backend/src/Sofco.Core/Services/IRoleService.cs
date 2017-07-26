@@ -11,5 +11,6 @@ namespace Sofco.Core.Interfaces.Services
         Response<Role> Insert(Role role);
         Response<Role> DeleteById(int id);
         Response<Role> Update(Role role);
+        Response<Role> ChangeFunctionalities(int roleId, List<int> functionlitiesToAdd, List<int> functionlitiesToRemove);
     }
 }

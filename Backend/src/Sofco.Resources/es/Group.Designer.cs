@@ -96,6 +96,15 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Rol removido al grupo correctamente.
+        /// </summary>
+        public static string RoleRemoved {
+            get {
+                return ResourceManager.GetString("RoleRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Grupo modificado correctamente.
         /// </summary>
         public static string Updated {

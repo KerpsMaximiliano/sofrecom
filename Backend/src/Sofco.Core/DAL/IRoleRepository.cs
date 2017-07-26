@@ -4,6 +4,6 @@ namespace Sofco.Core.Interfaces.DAL
 {
     public interface IRoleRepository : IBaseRepository<Role>
     {
-        bool Exist(int id);
+        bool ExistById(int id);
     }
 }

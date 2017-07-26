@@ -142,18 +142,49 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<Group> AddRole(int roleId, int userGroupId)
+        public Response<Group> AddRole(int roleId, int groupId)
+        {
+            var role = _roleRepository.GetSingle(x => x.Id == roleId);
+
+            var response = ValidateCommonRole(role, groupId);
+
+            if (response.HasErrors()) return response;
+
+            response.Data.Role = role;
+            _repository.Update(response.Data);
+            _repository.Save(string.Empty);
+
+            response.Messages.Add(new Message(Resources.es.Group.RoleAssigned, MessageType.Success));
+            return response;
+        }
+
+        public Response<Group> RemoveRole(int roleId, int groupId)
+        {
+            var role = _roleRepository.GetSingle(x => x.Id == roleId);
+
+            var response = ValidateCommonRole(role, groupId);
+
+            if (response.HasErrors()) return response;
+
+            response.Data.Role = null;
+            _repository.Update(response.Data);
+            _repository.Save(string.Empty);
+
+            response.Messages.Add(new Message(Resources.es.Group.RoleRemoved, MessageType.Success));
+            return response;
+        }
+
+        private Response<Group> ValidateCommonRole(Role role, int groupId)
         {
             var response = new Response<Group>();
 
-            var role = _roleRepository.GetSingle(x => x.Id == roleId);
-
-            if (role == null) {
+            if (role == null)
+            {
                 response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
                 return response;
             }
 
-            var group = _repository.GetSingleWithRole(x => x.Id == userGroupId);
+            var group = _repository.GetSingleWithRole(x => x.Id == groupId);
 
             if (group == null)
             {
@@ -161,11 +192,8 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            group.Role = role;
-            _repository.Update(group);
-            _repository.Save(string.Empty);
+            response.Data = group;
 
-            response.Messages.Add(new Message(Resources.es.Group.RoleAssigned, MessageType.Success));
             return response;
         }
     }
