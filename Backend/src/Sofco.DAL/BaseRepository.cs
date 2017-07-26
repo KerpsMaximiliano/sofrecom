@@ -39,7 +39,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Retorna todas las entidades en modo solo lectura
         /// </summary>
-        public IList<T> GetAllReadOnly()
+        public virtual IList<T> GetAllReadOnly()
         {
             return _context.Set<T>().ToList().AsReadOnly();
         }
@@ -89,7 +89,7 @@ namespace Sofco.DAL.Repositories
         /// <summary>
         /// Borra una entidad.
         /// </summary>
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             ILogicalDelete logicalDelete = entity as ILogicalDelete;
             if (logicalDelete == null)

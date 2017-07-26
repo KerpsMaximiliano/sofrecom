@@ -1,6 +1,6 @@
 ﻿using Sofco.Model;
-using System.Collections.Generic;
 using Sofco.Model.Models;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Models
 {
@@ -8,36 +8,29 @@ namespace Sofco.WebApi.Models
     {
         public RoleModel()
         {
+
         }
-
-        public RoleModel(Role role)
+           
+        public RoleModel(Role rol)
         {
-            this.Id = role.Id;
-            this.Description = role.Description;
-            this.Position = role.Position;
+            Id = rol.Id;
+            Description = rol.Description;
+            Active = rol.Active;
 
-            if(role.UserGroups != null)
-            {
-                this.UserGroups = new List<UserGroupModel>();
-
-                foreach (var item in role.UserGroups)
-                {
-                    item.Role = null;
-                    this.UserGroups.Add(new UserGroupModel(item));
-                }
-            }
+            Groups = new List<GroupModel>();
         }
 
         public string Description { get; set; }
 
-        public string Position { get; set; }
+        public bool Active { get; set; }
 
-        public IList<UserGroupModel> UserGroups {get;set;}
+        public IList<GroupModel> Groups { get; set; }
 
-        public void ApplyTo(Role item)
+        public void ApplyTo(Role rol)
         {
-            item.Description = this.Description;
-            item.Position = this.Position;
+            rol.Id = Id;
+            rol.Description = Description;
+            rol.Active = Active;
         }
     }
 }

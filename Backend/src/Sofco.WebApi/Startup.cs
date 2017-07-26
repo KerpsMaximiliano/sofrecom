@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sofco.Core.DAL;
 using Sofco.Core.Interfaces.DAL;
 using Sofco.Core.Interfaces.Services;
+using Sofco.Core.Services;
 using Sofco.DAL;
 using Sofco.DAL.Repositories;
 using Sofco.Model.Models;
@@ -16,8 +17,6 @@ namespace Sofco.WebApi
 {
     public class Startup
     {
-        private MapperConfiguration _mapperConfiguration { get; set; }
-
         public IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
@@ -26,11 +25,6 @@ namespace Sofco.WebApi
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            _mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AutoMapperConfiguration());
-            });
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -43,28 +37,38 @@ namespace Sofco.WebApi
             services.AddDbContext<SofcoContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sofco.WebApi")));
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
-            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+            services.AddOptions();
+            services.AddCors();
+
+            services.Configure<ActiveDirectoryConfig>(Configuration.GetSection("ActiveDirectory"));
 
             // Services
             services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<IUserGroupService, UserGroupService>();
+            services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IUserService, UserService>();
 
             // Repositories
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IBaseRepository<Customer>, BaseRepository<Customer>>();
-            services.AddTransient<IUserGroupRepository, UserGroupRepository>();
-            services.AddTransient<IBaseRepository<UserGroup>, BaseRepository<UserGroup>>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IBaseRepository<Group>, BaseRepository<Group>>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IBaseRepository<Role>, BaseRepository<Role>>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserGroupRepository, UserGroupRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseMvc();
+            app.UseCors(builder => builder.WithOrigins("*"));
         }
     }
 }

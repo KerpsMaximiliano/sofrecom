@@ -1,35 +1,17 @@
-﻿using Sofco.Model;
-using Sofco.Model.Models;
+﻿using System.Collections.Generic;
 
 namespace Sofco.WebApi.Models
 {
-    public class UserGroupModel : BaseEntity
+    public class UserGroupModel
     {
         public UserGroupModel()
         {
+            GroupsToAdd = new List<int>();
+            GroupsToRemove = new List<int>();
         }
 
-        public UserGroupModel(UserGroup userGroup)
-        {
-            this.Id = userGroup.Id;
-            this.Description = userGroup.Description;
+        public List<int> GroupsToAdd { get; set; }
 
-            if(userGroup.Role != null)
-            {
-                this.Role = new RoleModel();
-                this.Role.Id = userGroup.Role.Id;
-                this.Role.Description = userGroup.Role.Description;
-                this.Role.Position = userGroup.Role.Position;
-            }
-        }
-
-        public string Description { get; set; }
-
-        public RoleModel Role { get; set; }
-
-        public void ApplyTo(UserGroup item)
-        {
-            item.Description = this.Description;
-        }
+        public List<int> GroupsToRemove { get; set; }
     }
 }

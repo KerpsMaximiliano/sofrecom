@@ -30,8 +30,7 @@
     "Sofco.Service": "1.0.0-*",
     "Sofco.Core": "1.0.0-*",
     "Sofco.Model": "1.0.0-*",
-    "Sofco.DAL": "1.0.0-*",
-    "AutoMapper": "4.2.1"
+    "Sofco.DAL": "1.0.0-*"
   },
 
   "tools": {

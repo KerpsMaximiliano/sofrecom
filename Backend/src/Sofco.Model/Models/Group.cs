@@ -1,24 +1,28 @@
 ﻿using Sofco.Model.Interfaces;
 using System.Collections.Generic;
 using System;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models
 {
-    public class Role : BaseEntity, ILogicalDelete, IAuditDates
+    public class Group : BaseEntity, ILogicalDelete, IAuditDates
     {
         public string Description { get; set; }
 
-        public IList<Group> Groups { get; set; }
-
         public bool Active { get; set; }
+
+        public Role Role { get; set; }
+
+        public IList<UserGroup> UserGroups { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
-        public void ApplyTo(Role role)
+        public void ApplyTo(Group item)
         {
-            role.Id = Id;
-            role.Description = Description;
-            role.Active = Active;
+            item.Id = this.Id;
+            item.Description = this.Description;
         }
     }
 }

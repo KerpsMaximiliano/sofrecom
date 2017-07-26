@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Models;
 using Sofco.DAL.Mapping;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL
 {
@@ -12,8 +13,11 @@ namespace Sofco.DAL
         }
 
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<UserGroup> UserGroup { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,7 +25,10 @@ namespace Sofco.DAL
 
             builder.MapCustomers();
             builder.MapRoles();
-            builder.MapUserGroups();
+            builder.MapGroups();
+            builder.MapMenus();
+            builder.MapUsers();
+            builder.MapUserGroupsUser();
         }
     }
 }

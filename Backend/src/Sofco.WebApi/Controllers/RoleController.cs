@@ -1,7 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
+using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using System.Collections.Generic;
 
@@ -11,73 +12,90 @@ namespace Sofco.WebApi.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
-        private readonly IUserGroupService _userGroupService;
-        private readonly IMapper _mapper;
+        private readonly IGroupService _userGroupService;
+        private readonly IOptions<ActiveDirectoryConfig> _config;
 
-        public RoleController(IRoleService roleService, IUserGroupService userGroupsService, IMapper mapper)
+        public RoleController(IRoleService roleService, IGroupService userGroupsService, IOptions<ActiveDirectoryConfig> config)
         {
             _roleService = roleService;
             _userGroupService = userGroupsService;
-            _mapper = mapper;
+            _config = config;
         }
 
         // GET: api/role
         [HttpGet]
         public IActionResult Get()
         {
-            var items = _roleService.GetAllReadOnly();
+            var roles = _roleService.GetAllReadOnly();
+            var model = new List<RoleModel>();
 
-            var roles = _mapper.Map<IEnumerable<Role>, IEnumerable<RoleModel>>(items);
+            foreach (var rol in roles)
+            {
+                var roleModel = new RoleModel(rol);
 
-            return Ok(items);
+                foreach (var group in rol.Groups)
+                {
+                    roleModel.Groups.Add(new GroupModel(group));
+                }
+
+                model.Add(roleModel);
+            }
+
+            return Ok(model);
         }
 
         // GET api/role/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _roleService.GetById(id);
+            var response = _roleService.GetById(id);
 
-            if (item == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            return Ok(item);
+            return Ok(response);
         }
 
         // POST api/role
         [HttpPost]
         public IActionResult Post([FromBody]RoleModel model)
         {
-            var role = _mapper.Map<RoleModel, Role>(model);
-            _roleService.Insert(role);
-            return Ok();
+            var role = new Role();
+
+            model.ApplyTo(role);
+
+            var response = _roleService.Insert(role);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         // PUT api/role
         [HttpPut]
         public IActionResult Put([FromBody]RoleModel model)
         {
-            var item = _roleService.GetById(model.Id);
+            var roleReponse = _roleService.GetById(model.Id);
 
-            if (item == null) return NotFound();
+            if (roleReponse.HasErrors()) return BadRequest(roleReponse);
 
-            model.ApplyTo(item);
+            model.ApplyTo(roleReponse.Data);
 
-            _roleService.Update(item);
+            var response = _roleService.Update(roleReponse.Data);
 
-            return Ok();
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         // DELETE api/role/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var item = _roleService.GetById(id);
+            var response = _roleService.DeleteById(id);
 
-            if (item == null) return NotFound();
+            if (response.HasErrors()) return BadRequest(response);
 
-            _roleService.Delete(item);
-
-            return Ok();
+            return Ok(response);
         }
 
         [HttpPost("{roleId}/UserGroup/{userGroupId}")]
