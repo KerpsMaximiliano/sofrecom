@@ -1,5 +1,6 @@
-import { Role } from './../../../../../models/role';
-import { RoleService } from './../../../../services/role.service';
+import { Router } from '@angular/router';
+import { Role } from 'models/role';
+import { RoleService } from 'app/services/role.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -11,7 +12,7 @@ export class RolAddComponent implements OnInit {
 
   public rol: Role = <Role>{};
 
-  constructor(private service: RoleService) { }
+  constructor(private service: RoleService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -22,6 +23,7 @@ export class RolAddComponent implements OnInit {
       this.service.add(this.rol).subscribe(
         data => {
           console.log(data);
+          this.router.navigate(["/admin/roles"])
         },
         err => {
           console.log(err);

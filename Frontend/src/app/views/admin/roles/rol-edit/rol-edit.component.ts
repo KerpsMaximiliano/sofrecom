@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoleService } from 'app/services/role.service';
 import { Role } from 'models/role';
 import { Component, OnInit } from '@angular/core';
@@ -10,13 +11,24 @@ declare var $: any;
 })
 export class RolEditComponent implements OnInit {
 
+  id: string;
   public rol: Role = <Role>{};
 
-  constructor(private service: RoleService) { 
-
+  constructor(private service: RoleService, private activatedRoute: ActivatedRoute, private router: Router) { 
+    
   }
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+        this.id = params['id'];
+        this.getRol(this.id);
+    });
+  }
+
+  getRol(id: string){
+    this.service.get(id).subscribe((data) => {
+      this.rol = data.data;
+    });
   }
 
   onSubmit(form){
@@ -24,6 +36,7 @@ export class RolEditComponent implements OnInit {
       this.service.edit(this.rol).subscribe(
         data => {
           console.log(data);
+          this.router.navigate(["/admin/roles"])
         },
         err => {
           console.log(err);
@@ -34,7 +47,9 @@ export class RolEditComponent implements OnInit {
   }
 
   onActiveClick(active){
-    this.rol.active = active;
+    if(typeof active == 'boolean'){
+      this.rol.active = active;
+    }
   }
 
 }
