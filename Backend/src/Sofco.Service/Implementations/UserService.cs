@@ -34,9 +34,14 @@ namespace Sofco.Service.Implementations
                 entity.Active = active;
 
                 if (active)
+                {
                     entity.StartDate = DateTime.Now;
+                    entity.EndDate = null;
+                }
                 else
+                {
                     entity.EndDate = DateTime.Now;
+                }
 
                 _userRepository.Update(entity);
                 _userRepository.Save(string.Empty);
@@ -77,6 +82,11 @@ namespace Sofco.Service.Implementations
             response.Messages.Add(new Message(Resources.es.User.GroupAssigned, MessageType.Success));
 
             return response;
+        }
+
+        public IList<User> GetAllFullReadOnly()
+        {
+            return _userRepository.GetAllFullReadOnly();
         }
 
         public IList<User> GetAllReadOnly()

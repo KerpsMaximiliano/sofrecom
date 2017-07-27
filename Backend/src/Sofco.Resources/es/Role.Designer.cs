@@ -78,6 +78,24 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a El campo descripción debe tener un maximo de {0} caracteres.
+        /// </summary>
+        public static string DescriptionMaxLengthError {
+            get {
+                return ResourceManager.GetString("DescriptionMaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a El campo descripción es requerido.
+        /// </summary>
+        public static string DescriptionRequired {
+            get {
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Rol no encontrado.
         /// </summary>
         public static string NotFound {

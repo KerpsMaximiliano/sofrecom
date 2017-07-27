@@ -4,14 +4,17 @@ using System.Linq;
 
 namespace Sofco.Model.Utils
 {
-    public class Response<T> where T : class
+    public class Response<T> : Response where T : class
+    {
+        public T Data { get; set; }
+    }
+
+    public class Response
     {
         public Response()
         {
             Messages = new List<Message>();
         }
-
-        public T Data { get; set; }
 
         public IList<Message> Messages { get; set; }
 

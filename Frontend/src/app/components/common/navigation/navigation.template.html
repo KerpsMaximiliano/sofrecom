@@ -28,7 +28,9 @@
         <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">Roles</a></li>
-
+          <li [ngClass]="{active: activeRoute('users')}"><a [routerLink]="['/admin/users']">Usuarios</a></li>
+          <li [ngClass]="{active: activeRoute('groups')}"><a [routerLink]="['/admin/groups']">Grupos</a></li>
+          <li [ngClass]="{active: activeRoute('functionalities')}"><a [routerLink]="['/admin/functionalities']">Funcionalidades</a></li>
         </ul>
       </li>
 

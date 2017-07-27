@@ -24,7 +24,8 @@
         "../node_modules/animate.css/animate.min.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../node_modules/datatables.net-buttons-bs/css/buttons.bootstrap.css",
-        "styles.scss"
+        "styles.scss",
+        "../node_modules/toastr-ng2/toastr.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",

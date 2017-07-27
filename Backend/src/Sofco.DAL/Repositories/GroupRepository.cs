@@ -19,7 +19,7 @@ namespace Sofco.DAL.Repositories
             return _context.Set<Group>().Any(x => x.Id == id);
         }
 
-        public override IList<Group> GetAllReadOnly()
+        public IList<Group> GetAllFullReadOnly()
         {
             return _context.Set<Group>()
                 .Include(x => x.Role)

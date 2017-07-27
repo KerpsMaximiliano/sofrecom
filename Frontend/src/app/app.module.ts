@@ -1,11 +1,13 @@
 import { Http } from '@angular/http';
 import { Service } from 'app/services/service';
+import { MessageService } from 'app/services/message.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {RouterModule} from "@angular/router";
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {ROUTES} from "./app.routes";
 import { AppComponent } from './app.component';
@@ -18,6 +20,7 @@ import {AppviewsModule} from "./views/appviews/appviews.module";
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
 import { AdminModule } from "app/views/admin/admin.module";
 import { Configuration } from "app/services/configuration";
+import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
@@ -34,11 +37,13 @@ export function HttpLoaderFactory(http: Http) {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     DashboardsModule,
     LayoutsModule,
     AppviewsModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot(ROUTES),
     AdminModule,
     TranslateModule.forRoot({
@@ -52,7 +57,8 @@ export function HttpLoaderFactory(http: Http) {
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     Configuration,
-    Service
+    Service,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
