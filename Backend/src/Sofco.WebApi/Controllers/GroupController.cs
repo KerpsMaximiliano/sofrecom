@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
+using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using System.Collections.Generic;
 
@@ -70,6 +71,10 @@ namespace Sofco.WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]GroupModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
             var userGroup = new Group();
 
             model.ApplyTo(userGroup);
@@ -85,6 +90,10 @@ namespace Sofco.WebApi.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]GroupModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
             var groupReponse = _groupService.GetById(model.Id);
 
             if (groupReponse.HasErrors()) return BadRequest(groupReponse);

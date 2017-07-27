@@ -123,6 +123,12 @@
   <data name="Deleted" xml:space="preserve">
     <value>Rol eliminado correctamente</value>
   </data>
+  <data name="DescriptionMaxLengthError" xml:space="preserve">
+    <value>El campo descripción debe tener un maximo de {0} caracteres</value>
+  </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>El campo descripción es requerido</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Rol no encontrado</value>
   </data>

@@ -62,6 +62,10 @@ namespace Sofco.WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]RoleModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
             var role = new Role();
 
             model.ApplyTo(role);
@@ -77,6 +81,10 @@ namespace Sofco.WebApi.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]RoleModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
             var roleReponse = _roleService.GetById(model.Id);
 
             if (roleReponse.HasErrors()) return BadRequest(roleReponse);

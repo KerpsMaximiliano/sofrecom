@@ -3,6 +3,7 @@ using Sofco.Model.Interfaces;
 using Sofco.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sofco.WebApi.Models
 {
@@ -24,6 +25,8 @@ namespace Sofco.WebApi.Models
             Users = new List<UserModel>();
         }
 
+        [Required(ErrorMessage = "El campo descripción es requerido")]
+        [MaxLength(50, ErrorMessage = "El campo descripción debe tener un maximo de 50 caracteres")]
         public string Description { get; set; }
 
         public bool Active { get; set; }
