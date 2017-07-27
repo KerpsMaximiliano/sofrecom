@@ -17,7 +17,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 })
 export class RolesComponent implements OnInit, OnDestroy {
 
-  data = [];
+  data;
   getAllSubscrip: Subscription;
   editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
   locationTexts = new DatatablesLocationTexts("Assign");

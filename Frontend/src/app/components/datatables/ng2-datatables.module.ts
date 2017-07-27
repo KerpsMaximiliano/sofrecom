@@ -1,14 +1,14 @@
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { DatatablesComponent } from './datatables.component';
+import { Ng2DatatablesComponent } from './ng2-datatables.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 
 @NgModule({
-  declarations: [DatatablesComponent],
+  declarations: [Ng2DatatablesComponent],
   imports     : [CommonModule, RouterModule, TranslateModule],
-  exports     : [DatatablesComponent],
+  exports     : [Ng2DatatablesComponent],
 })
 
-export class DatatablesModule {}
+export class Ng2DatatablesModule {}
