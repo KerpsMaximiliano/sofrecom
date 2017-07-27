@@ -1,3 +1,4 @@
+import { DatatablesLocationTexts } from './../../../components/datatables/datatables.location-texts';
 import { RoleService } from './../../../services/role.service';
 import { Role } from 'models/role';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -19,14 +20,16 @@ export class RolesComponent implements OnInit, OnDestroy {
   data = [];
   getAllSubscrip: Subscription;
   editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
+  locationTexts = new DatatablesLocationTexts("Assign");
+
   options = new DatatablesOptions(
     true,  //edit
     true,  //delete
-    true,  //view
-    false,  //other
+    false,  //view
+    true,  //other
     false, //other2
     false, //other3
-    "fa-coffee",     //other1Icon
+    "fa-compress",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs"        //other3Icon
     ); 
@@ -93,8 +96,8 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   getAll(){
     this.getAllSubscrip = this.service.getAll().subscribe(d => {
-      d[1].active = true;
-      d[1].startDate = new Date();
+      //d[1].active = true;
+      //d[1].startDate = new Date();
       this.data = d;
     });
   }
@@ -106,9 +109,12 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   deleteClick(id: number){
     console.log("Delete ID: " + id);
-    this.router.navigate(['/admin/roles/delete/'+id]);
+    //this.router.navigate(['/admin/roles/delete/'+id]);
   }
 
-
+  assginFeatures(id: number){
+    console.log("Assign ID: " + id);
+    //this.router.navigate(['/admin/roles/assign/'+id]);
+  }
 
 }
