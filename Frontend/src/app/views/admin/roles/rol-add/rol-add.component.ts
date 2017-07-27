@@ -1,5 +1,6 @@
-import { Role } from './../../../../../models/role';
-import { RoleService } from './../../../../services/role.service';
+import { Router } from '@angular/router';
+import { Role } from 'models/role';
+import { RoleService } from 'app/services/role.service';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from './../../../../services/message.service';
 
@@ -12,7 +13,7 @@ export class RolAddComponent implements OnInit {
 
   public rol: Role = <Role>{};
 
-  constructor(private service: RoleService, private messageService: MessageService) { }
+  constructor(private service: RoleService, private messageService: MessageService,private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,7 @@ export class RolAddComponent implements OnInit {
       this.service.add(this.rol).subscribe(
         data => {
           console.log(data);
+          this.router.navigate(["/admin/roles"])
         },
         err => {
           var json = JSON.parse(err._body)
@@ -30,7 +32,5 @@ export class RolAddComponent implements OnInit {
         }
       );
     }
-    
   }
-
 }
