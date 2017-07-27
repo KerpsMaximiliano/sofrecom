@@ -51,9 +51,9 @@
 
                 <button *ngIf="options.b_view" class="btn btn-primary btn-xs pull-right datatables-action-button" (click)="viewClick(d[idColumnName])" ><span class="fa fa-eye" title="{{locationTexts.searchText}}"></span></button>
 
-                <button *ngIf="options.b_other1" class="btn btn-success btn-xs pull-right datatables-action-button" (click)="other1Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other1Icon]"></span></button>
-                <button *ngIf="options.b_other2" class="btn btn-warning btn-xs pull-right datatables-action-button" (click)="other2Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other2Icon]"></span></button>
-                <button *ngIf="options.b_other3" class="btn btn-default btn-xs pull-right datatables-action-button" (click)="other3Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other3Icon]"></span></button>
+                <button *ngIf="options.b_other1" class="btn btn-success btn-xs pull-right datatables-action-button" (click)="other1Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other1Icon]" title="{{locationTexts.other1Text}}"></span></button>
+                <button *ngIf="options.b_other2" class="btn btn-warning btn-xs pull-right datatables-action-button" (click)="other2Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other2Icon]" title="{{locationTexts.other2Text}}"></span></button>
+                <button *ngIf="options.b_other3" class="btn btn-default btn-xs pull-right datatables-action-button" (click)="other3Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other3Icon]" title="{{locationTexts.other3Text}}"></span></button>
 
 
             </td>

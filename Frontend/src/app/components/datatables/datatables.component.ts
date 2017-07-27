@@ -67,36 +67,36 @@ export class DatatablesComponent implements OnInit {
 
   editClick(id:number){
     this.edit.emit(id);
-    if(this.callDefaultUrls){
+    /*if(this.callDefaultUrls){
       this.router.navigate(['edit', id]);
-    }
+    }*/
     
   }
 
   deleteClick(id:number){
     this.delete.emit(id);
-    if(this.callDefaultUrls){
+    /*if(this.callDefaultUrls){
       this.router.navigate(['delete', id]);
-    }
+    }*/
   }
 
   viewClick(id:number){
-    this.delete.emit(id);
-    if(this.callDefaultUrls){
+    this.view.emit(id);
+    /*if(this.callDefaultUrls){
       this.router.navigate(['view', id]);
-    }
+    }*/
   }
 
   other1Click(id:number){
-    this.delete.emit(id);
+    this.other1.emit(id);
   }
 
   other2Click(id:number){
-    this.delete.emit(id);
+    this.other2.emit(id);
   }
 
   other3Click(id:number){
-    this.delete.emit(id);
+    this.other3.emit(id);
   }
 
 }

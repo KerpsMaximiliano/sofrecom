@@ -13,7 +13,9 @@ import {LoginComponent} from "./views/appviews/login.component";
 
 import {BlankLayoutComponent} from "./components/common/layouts/blankLayout.component";
 import {BasicLayoutComponent} from "./components/common/layouts/basicLayout.component";
-import {TopNavigationLayoutComponent} from "./components/common/layouts/topNavigationlayout.component";
+import { TopNavigationLayoutComponent } from "./components/common/layouts/topNavigationlayout.component";
+import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
+import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -39,7 +41,11 @@ export const ROUTES:Routes = [
   {
     path: 'admin', component: BasicLayoutComponent,
     children: [
-      {path: 'roles', component: RolesComponent}
+      {path: 'roles', children:[
+        {path: '', component: RolesComponent},
+        {path: 'add', component: RolAddComponent},
+        {path: 'edit/:id', component: RolEditComponent}
+      ]}
     ]
   },
   {
