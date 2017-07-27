@@ -1,0 +1,41 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Grupos</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Admin</a>
+            </li>
+            <li class="active">
+                <strong>Grupos</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Gestion de Grupos</h5>
+                    <div class="ibox-tools" >
+                        <a [routerLink]="['add']"><i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <datatables *ngIf="data != null" 
+                      [data] = "data" 
+                      [columns]="columns" 
+                      [editionType]=editionType
+                      [options]=options
+                      [locationTexts]=locationTexts
+                      ></datatables>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

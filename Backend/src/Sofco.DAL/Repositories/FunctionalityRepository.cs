@@ -19,7 +19,7 @@ namespace Sofco.DAL.Repositories
             return _context.Set<Functionality>().Any(x => x.Id == id);
         }
 
-        public override IList<Functionality> GetAllReadOnly()
+        public IList<Functionality> GetAllFullReadOnly()
         {
             return _context.Set<Functionality>()
                 .Include(x => x.RoleFunctionality)

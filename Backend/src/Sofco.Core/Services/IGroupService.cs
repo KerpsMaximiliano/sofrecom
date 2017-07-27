@@ -6,6 +6,7 @@ namespace Sofco.Core.Interfaces.Services
 {
     public interface IGroupService
     {
+        IList<Group> GetAllFullReadOnly();
         IList<Group> GetAllReadOnly();
         Response<Group> GetById(int id);
         Response<Group> Insert(Group role);

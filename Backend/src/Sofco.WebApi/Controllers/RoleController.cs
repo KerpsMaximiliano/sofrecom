@@ -28,6 +28,20 @@ namespace Sofco.WebApi.Controllers
             var model = new List<RoleModel>();
 
             foreach (var rol in roles)
+                model.Add(new RoleModel(rol));
+
+            return Ok(model);
+        }
+
+        // GET: api/role
+        [HttpGet]
+        [Route("full")]
+        public IActionResult GetFull()
+        {
+            var roles = _roleService.GetAllFullReadOnly();
+            var model = new List<RoleModel>();
+
+            foreach (var rol in roles)
             {
                 var roleModel = new RoleModel(rol);
 

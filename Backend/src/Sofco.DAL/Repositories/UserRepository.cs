@@ -19,12 +19,13 @@ namespace Sofco.DAL.Repositories
             return _context.Set<User>().Any(x => x.Id == id);
         }
 
-        public override IList<User> GetAllReadOnly()
+        public IList<User> GetAllFullReadOnly()
         {
             return _context.Set<User>()
                 .Include(x => x.UserGroups)
                     .ThenInclude(s => s.Group)
-                .ToList();
+                .ToList()
+                .AsReadOnly();
         }
 
         public User GetSingleWithUserGroup(Expression<Func<User, bool>> predicate)

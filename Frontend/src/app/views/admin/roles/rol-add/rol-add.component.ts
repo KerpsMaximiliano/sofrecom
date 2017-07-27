@@ -1,6 +1,7 @@
 import { Role } from './../../../../../models/role';
 import { RoleService } from './../../../../services/role.service';
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from './../../../../services/message.service';
 
 @Component({
   selector: 'app-rol-add',
@@ -11,7 +12,7 @@ export class RolAddComponent implements OnInit {
 
   public rol: Role = <Role>{};
 
-  constructor(private service: RoleService) { }
+  constructor(private service: RoleService, private messageService: MessageService) { }
 
   ngOnInit() {
   }
@@ -24,7 +25,8 @@ export class RolAddComponent implements OnInit {
           console.log(data);
         },
         err => {
-          console.log(err);
+          var json = JSON.parse(err._body)
+          if(json.messages) this.messageService.showMessages(json.messages);
         }
       );
     }

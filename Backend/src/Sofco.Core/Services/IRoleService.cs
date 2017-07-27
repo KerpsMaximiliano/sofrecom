@@ -6,6 +6,7 @@ namespace Sofco.Core.Interfaces.Services
 {
     public interface IRoleService
     {
+        IList<Role> GetAllFullReadOnly();
         IList<Role> GetAllReadOnly();
         Response<Role> GetById(int id);
         Response<Role> Insert(Role role);

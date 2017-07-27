@@ -19,6 +19,11 @@ namespace Sofco.Service.Implementations
             _roleRepository = roleRepository;
         }
 
+        public IList<Group> GetAllFullReadOnly()
+        {
+            return _repository.GetAllFullReadOnly();
+        }
+
         public IList<Group> GetAllReadOnly()
         {
             return _repository.GetAllReadOnly();

@@ -24,6 +24,22 @@ namespace Sofco.WebApi.Controllers
 
             foreach (var functionality in functionalities)
             {
+                model.Add(new FunctionalityModel(functionality));
+            }
+
+            return Ok(model);
+        }
+
+        // GET: api/functionality
+        [HttpGet]
+        [Route("full")]
+        public IActionResult GetFull()
+        {
+            var functionalities = _functionalityService.GetAllFullReadOnly();
+            var model = new List<FunctionalityModel>();
+
+            foreach (var functionality in functionalities)
+            {
                 var functionalityModel = new FunctionalityModel(functionality);
 
                 foreach (var roleFunctionality in functionality.RoleFunctionality)

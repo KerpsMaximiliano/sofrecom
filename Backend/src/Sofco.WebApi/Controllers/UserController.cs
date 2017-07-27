@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
+using Sofco.Model.Models;
 using Sofco.WebApi.Models;
 using System.Collections.Generic;
 
@@ -15,11 +16,25 @@ namespace Sofco.WebApi.Controllers
             _userService = userService;
         }
 
-        // GET: api/user
         [HttpGet]
         public IActionResult Get()
         {
             var users = _userService.GetAllReadOnly();
+
+            var model = new List<UserModel>();
+
+            foreach (var user in users)
+                model.Add(new UserModel(user));
+
+            return Ok(model);
+        }
+
+        // GET: api/user
+        [HttpGet]
+        [Route("full")]
+        public IActionResult GetFull()
+        {
+            var users = _userService.GetAllFullReadOnly();
             var model = new List<UserModel>();
 
             foreach (var user in users)

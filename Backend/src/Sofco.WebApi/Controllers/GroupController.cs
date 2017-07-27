@@ -25,6 +25,20 @@ namespace Sofco.WebApi.Controllers
             var model = new List<GroupModel>();
 
             foreach (var group in groups)
+                model.Add(new GroupModel(group));
+
+            return Ok(model);
+        }
+
+        // GET: api/group
+        [HttpGet]
+        [Route("full")]
+        public IActionResult GetFull()
+        {
+            var groups = _groupService.GetAllFullReadOnly();
+            var model = new List<GroupModel>();
+
+            foreach (var group in groups)
             {
                 var groupModel = new GroupModel(group);
 

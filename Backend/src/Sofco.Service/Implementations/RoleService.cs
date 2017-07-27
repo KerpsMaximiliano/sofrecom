@@ -30,6 +30,11 @@ namespace Sofco.Service.Implementations
             return _repository.GetAllReadOnly();
         }
 
+        public IList<Role> GetAllFullReadOnly()
+        {
+            return _repository.GetAllFullReadOnly();
+        }
+
         public Response<Role> GetById(int id)
         {
             var response = new Response<Role>();

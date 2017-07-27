@@ -1,10 +1,7 @@
-import { Role } from 'models/role';
-
-export interface UserGroup{
+export interface Functionality {
     id: number,
     description: string,
     active: boolean
-    rol: Role,
     startDate: Date,
     endDate: Date
 }

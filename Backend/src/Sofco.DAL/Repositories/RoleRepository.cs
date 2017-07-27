@@ -17,13 +17,14 @@ namespace Sofco.DAL.Repositories
             return _context.Roles.Any(x => x.Id == id);
         }
 
-        public override IList<Role> GetAllReadOnly()
+        public IList<Role> GetAllFullReadOnly()
         {
             return _context.Set<Role>()
                 .Include(x => x.Groups)
                 .Include(x => x.RoleFunctionality)
                     .ThenInclude(x => x.Functionality)
-                .ToList();
+                .ToList()
+                .AsReadOnly();
         }
 
         public IList<Menu> GetMenusByRoleId(int[] roleIds)

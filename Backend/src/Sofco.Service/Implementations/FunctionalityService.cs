@@ -27,9 +27,14 @@ namespace Sofco.Service.Implementations
                 entity.Active = active;
 
                 if (active)
+                {
                     entity.StartDate = DateTime.Now;
+                    entity.EndDate = null;
+                }
                 else
+                {
                     entity.EndDate = DateTime.Now;
+                }
 
                 _functionalityRepository.Update(entity);
                 _functionalityRepository.Save(string.Empty);
@@ -45,6 +50,11 @@ namespace Sofco.Service.Implementations
         public IList<Functionality> GetAllReadOnly()
         {
             return _functionalityRepository.GetAllReadOnly();
+        }
+
+        public IList<Functionality> GetAllFullReadOnly()
+        {
+            return _functionalityRepository.GetAllFullReadOnly();
         }
 
         public Response<Functionality> GetById(int id)
