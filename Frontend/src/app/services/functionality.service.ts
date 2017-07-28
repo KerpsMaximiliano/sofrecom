@@ -16,7 +16,11 @@ export class FunctionalityService {
         return this.http.get(`${this.baseUrl}/functionality`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
-    get(id: string) {
+    get(id: number) {
        return this.http.get(`${this.baseUrl}/functionality/${id}`, { headers: this.headers}).map((res:Response) => res.json());
-  }
+    }
+
+    delete(id: number) {
+        return this.http.delete(`${this.baseUrl}/functionality/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
 }

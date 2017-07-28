@@ -1,3 +1,5 @@
+import { Role } from './../../../../../models/role';
+import { RoleService } from 'app/services/role.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,16 +15,20 @@ declare var $: any;
 })
 export class GroupEditComponent implements OnInit, OnDestroy {
 
-  public entity: Group = <Group>{};
+  public entity: Group;
 
   private id: number;
   
   private paramsSubscrip: Subscription;
   private getSubscrip: Subscription;
   private editSubscrip: Subscription;
+  private getRolesSubscrip: Subscription;
+
+  public roles;
 
   constructor(
     private service: GroupService, 
+    private roleService: RoleService,
     private activatedRoute: ActivatedRoute, 
     private router: Router,
     private messageService: MessageService) { 
@@ -33,6 +39,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.id = params['id'];
         this.getEntity(this.id);
+        this.getAllRoles();
     });
   }
 
@@ -40,16 +47,27 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
     if(this.editSubscrip) this.editSubscrip.unsubscribe();
+    if(this.getRolesSubscrip) this.getRolesSubscrip.unsubscribe();
   }
 
   getEntity(id: number){
     this.getSubscrip = this.service.get(id).subscribe((data) => {
       this.entity = data;
+      if(!data.role){
+        this.entity.role = <Role>{};
+      }
+    });
+  }
+
+  getAllRoles(){
+    this.getRolesSubscrip = this.roleService.getAll().subscribe(d => {
+      this.roles = d;
     });
   }
 
   onSubmit(form){
     if(!form.invalid){
+      this.entity.role.description = "ss";
       this.editSubscrip = this.service.edit(this.entity).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);

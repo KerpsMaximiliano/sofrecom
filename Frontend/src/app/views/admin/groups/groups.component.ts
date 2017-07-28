@@ -29,7 +29,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     true,  //edit
     true,  //delete
     false,  //view
-    true,  //other1
+    false,  //other1
     false, //other2
     false, //other3
     "fa-eye",     //other1Icon

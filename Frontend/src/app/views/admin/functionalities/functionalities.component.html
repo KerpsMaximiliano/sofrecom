@@ -9,11 +9,15 @@
                 <a>Admin</a>
             </li>
             <li class="active">
-                <strong>Funcionalidades</strong>
+                <strong>Functionalities</strong>
             </li>
         </ol>
     </div>
+    <div class="col-lg-2">
+
+    </div>
 </div>
+
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -21,14 +25,29 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Gestion de Funcionalidades</h5>
+
+
+                    <div class="ibox-tools" >
+                        <!--<a ng-click="showhide()"> <i class="fa fa-chevron-up"></i></a>
+                        <a>
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a ng-click="closebox()"><i class="fa fa-times"></i></a>-->
+                        <a [routerLink]="['add']"><i class="fa fa-plus"></i></a>
+                    </div>
+
+
                 </div>
-                <div class="ibox-content">
-                    <datatables *ngIf="data != null" 
+                <div class="ibox-content" *ngIf="data != null && options != null">
+                    <datatables #dt
                       [data] = "data" 
                       [columns]="columns" 
                       [editionType]=editionType
                       [options]=options
                       [locationTexts]=locationTexts
+                      (edit) = "editClick($event)"
+                      (delete) = "deleteClick($event)"
+                      (other1) = "assginFeatures($event)"
                       ></datatables>
                 </div>
             </div>

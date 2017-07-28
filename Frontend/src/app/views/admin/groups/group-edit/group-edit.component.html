@@ -1,5 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
         <h2>Grupos</h2>
         <ol class="breadcrumb">
             <li>
@@ -16,7 +16,7 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
+    <div class="col-xs-2">
 
     </div>
 </div>
@@ -24,7 +24,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Editar Grupo</h5>
@@ -42,11 +42,11 @@
 
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
+                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="entity != null">
 
                         <!--Description-->
-                        <div class="form-group"><label class="col-lg-2 control-label">Description</label>
-                            <div class="col-lg-10">
+                        <div class="form-group"><label class="col-xs-2 control-label">Description</label>
+                            <div class="col-xs-10">
                               <input type="text"  
                                   name="description"
                                   class="form-control" 
@@ -58,35 +58,29 @@
                             </div>
                         </div>
 
-                        <!--ACTIVE-->
-                        <!--<div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Active
+                        <!--COMBO DE ROLES-->
+                        <div class="form-group"><label class="col-xs-2 control-label">Description</label>
+                            <div class="col-xs-10">
+                              <select class="form-control m-b" name="role" [(ngModel)]="entity.role.id">
+                                  <option *ngFor="let role of roles" [value]="role?.id">{{role?.description}}</option>
+                              </select>
                             </div>
-                        </div>-->
+                        </div>
 
+                        <!--CHECK ACTIVE-->
                         <div class="form-group">
-                            <div class="col-lg-12">
-                                 <icheck  [checked]="entity.active" (click)="onActiveClick($event)">
-                                     <label class="col-lg-2 control-label icheck-label">Active</label> 
+                            <div class="col-xs-12">
+                                 <icheck  [checked]="entity?.active" (click)="onActiveClick($event)">
+                                     <label class="col-xs-2 control-label icheck-label">Active</label> 
                                  </icheck>
                             </div>
                         </div>
 
-                        <div class="col-sm-10">
-                          <!--<div>
-                            <label> <input icheck type="checkbox" ng-model="main.checkThree">
-                                 Active
-                            </label>
-                          </div>-->
+                        <div>&nbsp;</div>
 
-
-
-                            
-                        </div>
-                        
+                        <!--ACEPTAR-->
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-2">
+                            <div class="col-xs-offset-2 col-xs-2">
                                 <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Aceptar</strong></button>
                             </div>
                         </div>
