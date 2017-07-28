@@ -15,16 +15,17 @@ import { RolAddComponent } from './roles/rol-add/rol-add.component';
 import { RolEditComponent } from './roles/rol-edit/rol-edit.component';
 
 import { UsersComponent } from './users/users.component';
+import { UserDetailComponent } from './users/user-detail/user-detail.component';
 
 import { GroupsComponent } from './groups/groups.component';
 
 import { FunctionalitiesComponent } from './functionalities/functionalities.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent],
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent],
   imports     : [CommonModule, DatatablesModule, RouterModule, FormsModule, ICheckModule],
   providers   : [RoleService, UserService, GroupService, FunctionalityService],
-  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent],
+  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent],
 })
 
 export class AdminModule {}

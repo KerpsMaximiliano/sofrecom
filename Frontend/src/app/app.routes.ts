@@ -1,5 +1,6 @@
 import { RolesComponent } from './views/admin/roles/roles.component';
 import { UsersComponent } from './views/admin/users/users.component';
+import { UserDetailComponent } from './views/admin/users/user-detail/user-detail.component';
 import { GroupsComponent } from './views/admin/groups/groups.component';
 import { FunctionalitiesComponent } from './views/admin/functionalities/functionalities.component';
 import {Routes} from "@angular/router";
@@ -45,11 +46,16 @@ export const ROUTES:Routes = [
     path: 'admin', component: BasicLayoutComponent,
     children: [
       { path: 'roles', children:[
-        {path: '', component: RolesComponent},
-        {path: 'add', component: RolAddComponent},
-        {path: 'edit/:id', component: RolEditComponent}
+        { path: '', component: RolesComponent },
+        { path: 'add', component: RolAddComponent },
+        { path: 'edit/:id', component: RolEditComponent }
       ]},
-      { path: "users", component: UsersComponent },
+
+      { path: "users", children: [
+         { path: '', component: UsersComponent },
+         { path: ':id', component: UserDetailComponent },
+      ]},
+
       { path: "groups", component: GroupsComponent },
       { path: "functionalities", component: FunctionalitiesComponent }
     ]

@@ -28,4 +28,16 @@ namespace Sofco.WebApi.Models
 
         public IList<GroupModel> Groups { get; set; }
     }
+
+    public class UserDetailModel : UserModel
+    {
+        public UserDetailModel(User user) : base(user)
+        {
+            Roles = new List<RoleModel>();
+            Functionalities = new List<FunctionalityModel>();
+        }
+
+        public IList<RoleModel> Roles { get; set; }
+        public IList<FunctionalityModel> Functionalities { get; set; }
+    }
 }

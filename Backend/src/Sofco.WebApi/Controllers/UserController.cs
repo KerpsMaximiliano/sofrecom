@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Interfaces.Services;
 using Sofco.Core.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.WebApi.Controllers
 {
@@ -10,10 +12,14 @@ namespace Sofco.WebApi.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
+        private readonly IFunctionalityService _functionalityService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService)
         {
             _userService = userService;
+            _roleService = roleService;
+            _functionalityService = functionalityService;
         }
 
         [HttpGet]
@@ -53,6 +59,43 @@ namespace Sofco.WebApi.Controllers
         }
 
         // GET api/role/5
+        [HttpGet("{id}/detail")]
+        public IActionResult Detail(int id)
+        {
+            var response = _userService.GetById(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var model = new UserDetailModel(response.Data);
+
+            if (response.Data.UserGroups.Any())
+            {
+                foreach (var userGroup in response.Data.UserGroups)
+                {
+                    model.Groups.Add(new GroupModel(userGroup.Group));
+                }
+
+                var roles = _roleService.GetRolesByGroup(response.Data.UserGroups.Select(x => x.GroupId));
+
+                foreach (var rol in roles)
+                {
+                    if(rol != null)
+                        model.Roles.Add(new RoleModel(rol));
+                }
+
+                var functionalities = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));
+
+                foreach (var functionality in functionalities)
+                {
+                    if(functionality != null)
+                        model.Functionalities.Add(new FunctionalityModel(functionality));
+                }
+            }
+
+            return Ok(model);
+        }
+
+        // GET api/role/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -67,7 +110,7 @@ namespace Sofco.WebApi.Controllers
                 model.Groups.Add(new GroupModel(userGroup.Group));
             }
 
-             return Ok(model);
+            return Ok(model);
         }
 
         [HttpPut]

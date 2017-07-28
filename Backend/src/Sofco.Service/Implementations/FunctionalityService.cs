@@ -71,5 +71,10 @@ namespace Sofco.Service.Implementations
             response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
             return response;
         }
+
+        public IList<Functionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds)
+        {
+            return _functionalityRepository.GetFuntionalitiesByRoles(roleIds);
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace Sofco.Core.Services
         IList<Functionality> GetAllReadOnly();
         Response<Functionality> GetById(int id);
         Response<Functionality> Active(int id, bool active);
+        IList<Functionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds);
     }
 }
