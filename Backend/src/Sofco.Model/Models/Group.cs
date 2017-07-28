@@ -23,6 +23,7 @@ namespace Sofco.Model.Models
         {
             item.Id = this.Id;
             item.Description = this.Description;
+            item.Active = this.Active;
         }
     }
 }
