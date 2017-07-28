@@ -39,6 +39,7 @@ namespace Sofco.Service.Implementations
                 _functionalityRepository.Update(entity);
                 _functionalityRepository.Save(string.Empty);
 
+                response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Functionality.Enabled : Resources.es.Functionality.Disabled, MessageType.Success));
                 return response;
             }

@@ -141,6 +141,7 @@ namespace Sofco.Service.Implementations
                 _repository.Delete(entity);
                 _repository.Save(string.Empty);
 
+                response.Data = entity;
                 response.Messages.Add(new Message(Resources.es.Group.Deleted, MessageType.Success));
                 return response;
             }

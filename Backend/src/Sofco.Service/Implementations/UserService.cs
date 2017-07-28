@@ -46,6 +46,7 @@ namespace Sofco.Service.Implementations
                 _userRepository.Update(entity);
                 _userRepository.Save(string.Empty);
 
+                response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.User.Enabled : Resources.es.User.Disabled, MessageType.Success));
                 return response;
             }
