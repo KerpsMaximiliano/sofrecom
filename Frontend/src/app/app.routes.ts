@@ -19,6 +19,8 @@ import {BasicLayoutComponent} from "./components/common/layouts/basicLayout.comp
 import { TopNavigationLayoutComponent } from "./components/common/layouts/topNavigationlayout.component";
 import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
+import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
+import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -49,8 +51,12 @@ export const ROUTES:Routes = [
         {path: 'add', component: RolAddComponent},
         {path: 'edit/:id', component: RolEditComponent}
       ]},
+      { path: 'groups', children:[
+        {path: '', component: GroupsComponent},
+        {path: 'add', component: GroupAddComponent},
+        {path: 'edit/:id', component: GroupEditComponent}
+      ]},
       { path: "users", component: UsersComponent },
-      { path: "groups", component: GroupsComponent },
       { path: "functionalities", component: FunctionalitiesComponent }
     ]
   },

@@ -1,19 +1,19 @@
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RoleService } from 'app/services/role.service';
-import { Role } from 'models/role';
+import { GroupService } from 'app/services/group.service';
+import { Group } from 'models/Group';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 declare var $: any;
 
 @Component({
-  selector: 'app-rol-edit',
-  templateUrl: './rol-edit.component.html',
-  styleUrls: ['./rol-edit.component.css']
+  selector: 'app-group-edit',
+  templateUrl: './group-edit.component.html',
+  styleUrls: ['./group-edit.component.css']
 })
-export class RolEditComponent implements OnInit, OnDestroy {
+export class GroupEditComponent implements OnInit, OnDestroy {
 
-  public entity: Role = <Role>{};
+  public entity: Group = <Group>{};
 
   private id: number;
   
@@ -22,7 +22,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
   private editSubscrip: Subscription;
 
   constructor(
-    private service: RoleService, 
+    private service: GroupService, 
     private activatedRoute: ActivatedRoute, 
     private router: Router,
     private messageService: MessageService) { 
@@ -44,7 +44,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
   getEntity(id: number){
     this.getSubscrip = this.service.get(id).subscribe((data) => {
-      this.entity = data.data;
+      this.entity = data;
     });
   }
 
@@ -53,7 +53,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
       this.editSubscrip = this.service.edit(this.entity).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
-          this.router.navigate(["/admin/roles"])
+          this.router.navigate(["/admin/groups"])
         },
         err => {
           var json = JSON.parse(err._body)

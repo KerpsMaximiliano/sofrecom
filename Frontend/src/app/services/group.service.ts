@@ -1,3 +1,4 @@
+import { Group } from 'models/group';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from "app/services/service";
@@ -16,7 +17,19 @@ export class GroupService {
         return this.http.get(`${this.baseUrl}/group`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
-    get(id: string) {
+    get(id: number) {
        return this.http.get(`${this.baseUrl}/group/${id}`, { headers: this.headers}).map((res:Response) => res.json());
-  }
+    }
+
+    add(model : Group) {
+        return this.http.post(`${this.baseUrl}/group`, model, { headers: this.headers}).map((res:Response) => res.json());
+    }
+
+    edit(model : Group) {
+        return this.http.put(`${this.baseUrl}/group`, model, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    delete(id: number) {
+        return this.http.delete(`${this.baseUrl}/group/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
 }

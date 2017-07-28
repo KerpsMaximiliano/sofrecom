@@ -18,9 +18,11 @@ import { UsersComponent } from './users/users.component';
 import { GroupsComponent } from './groups/groups.component';
 
 import { FunctionalitiesComponent } from './functionalities/functionalities.component';
+import { GroupEditComponent } from './groups/group-edit/group-edit.component';
+import { GroupAddComponent } from './groups/group-add/group-add.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent],
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, GroupEditComponent, GroupAddComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule],
   providers   : [RoleService, UserService, GroupService, FunctionalityService],
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent]

@@ -16,7 +16,7 @@ import { UserService } from './../../../services/user.service';
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
-    data = [];
+    data;
     getAllSubscrip: Subscription;
     editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
     locationTexts = new DatatablesLocationTexts("Assign");
