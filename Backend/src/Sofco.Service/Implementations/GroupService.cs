@@ -82,7 +82,7 @@ namespace Sofco.Service.Implementations
         public Response<Group> Update(Group group)
         {
             var response = new Response<Group>();
-            var entity = _repository.GetSingle(x => x.Id == group.Id);
+            var entity = _repository.GetSingleWithRole(x => x.Id == group.Id);
 
             if (entity != null)
             {
