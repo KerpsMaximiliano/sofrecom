@@ -22,10 +22,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     locationTexts = new DatatablesLocationTexts("Assign");
 
     options = new DatatablesOptions(
-        true,  //edit
+        false,  //edit
         true,  //delete
-        false,  //view
-        true,  //other
+        true,  //view
+        false,  //other
         false, //other2
         false, //other3
         "fa-compress",     //other1Icon
@@ -62,5 +62,9 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.service.getAll().subscribe(d => {
             this.data = d;
         });
+    }
+
+    goToDetail(id: number) {
+        this.router.navigate(['/admin/users/detail/' + id]);
     }
 }

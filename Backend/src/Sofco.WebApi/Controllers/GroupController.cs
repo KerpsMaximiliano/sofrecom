@@ -30,6 +30,22 @@ namespace Sofco.WebApi.Controllers
             return Ok(model);
         }
 
+        // GET: api/group/options
+        [HttpGet]
+        [Route("options")]
+        public IActionResult GetOptions()
+        {
+            var groups = _groupService.GetAllReadOnly();
+            var model = new List<Option>();
+
+            foreach (var group in groups)
+            {
+                model.Add(new Option(group.Id, group.Description));
+            }
+
+            return Ok(model);
+        }
+
         // GET: api/group
         [HttpGet]
         [Route("full")]

@@ -59,7 +59,7 @@ export const ROUTES:Routes = [
       ]},
       { path: "users", children: [
          { path: '', component: UsersComponent },
-         { path: ':id', component: UserDetailComponent },
+         { path: 'detail/:id', component: UserDetailComponent },
       ]},
 
       { path: "functionalities", component: FunctionalitiesComponent }

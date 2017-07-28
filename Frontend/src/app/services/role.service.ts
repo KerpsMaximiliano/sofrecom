@@ -22,11 +22,15 @@ export class RoleService {
     return this.http.get(`${this.baseUrl}/role/${id}`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
+  getDetail(id: number) {
+    return this.http.get(`${this.baseUrl}/role/${id}/detail`, { headers: this.headers}).map((res:Response) => res.json());
+  }
+
   add(model : Role) {
     return this.http.post(`${this.baseUrl}/role`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
 
-  edit(model : Role) {
+  edit(model) {
     return this.http.put(`${this.baseUrl}/role`, model, { headers: this.headers}).map((res:Response) => res.json() );
   }
 

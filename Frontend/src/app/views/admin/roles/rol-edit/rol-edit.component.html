@@ -95,5 +95,38 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Funcionalidades
+                    <a class="pull-right"><i class="fa fa-plus icon-white"></i></a>
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list m-t small-list">
+                        <li *ngFor="let functionality of entity.functionalities">
+                            <span class="m-l-xs">{{functionality.description}}</span>
+                            <a class="pull-right"><i class="check-link fa fa-times icon-danger"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Grupos
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list m-t small-list">
+                        <li *ngFor="let group of entity.groups">
+                            <span class="m-l-xs">{{group.description}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 

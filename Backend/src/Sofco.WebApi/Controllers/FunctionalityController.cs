@@ -30,6 +30,22 @@ namespace Sofco.WebApi.Controllers
             return Ok(model);
         }
 
+        // GET: api/functionality/options
+        [HttpGet]
+        [Route("options")]
+        public IActionResult GetOptions()
+        {
+            var functionalities = _functionalityService.GetAllReadOnly();
+            var model = new List<Option>();
+
+            foreach (var functionality in functionalities)
+            {
+                model.Add(new Option(functionality.Id, functionality.Description));
+            }
+
+            return Ok(model);
+        }
+
         // GET: api/functionality
         [HttpGet]
         [Route("full")]

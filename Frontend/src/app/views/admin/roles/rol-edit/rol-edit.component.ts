@@ -43,14 +43,20 @@ export class RolEditComponent implements OnInit, OnDestroy {
   }
 
   getEntity(id: number){
-    this.getSubscrip = this.service.get(id).subscribe((data) => {
+    this.getSubscrip = this.service.getDetail(id).subscribe((data) => {
       this.entity = data;
     });
   }
 
   onSubmit(form){
     if(!form.invalid){
-      this.editSubscrip = this.service.edit(this.entity).subscribe(
+      var model = {
+        id: this.entity.id,
+        description: this.entity.description,
+        active: this.entity.active
+      }
+
+      this.editSubscrip = this.service.edit(model).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
           this.router.navigate(["/admin/roles"])
