@@ -81,6 +81,12 @@ namespace Sofco.Service.Implementations
 
         public Response<Group> Update(Group group)
         {
+            var roleId = 0;
+            if(group.Role != null)
+            {
+                roleId = group.Role.Id;
+            }
+
             var response = new Response<Group>();
             var entity = _repository.GetSingleWithRole(x => x.Id == group.Id);
 
@@ -88,15 +94,15 @@ namespace Sofco.Service.Implementations
             {
                 try
                 {
-                    if(group.Role == null)
+                    if(roleId == 0)
                     {
                         entity.Role = null;
                     }
                     else
                     {
-                        if(group.Role.Id != entity.Role.Id)
+                        if(roleId != entity.Role.Id)
                         {
-                            var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
+                            var role = _roleRepository.GetSingle(x => x.Id == roleId);
 
                             if (role == null)
                             {
