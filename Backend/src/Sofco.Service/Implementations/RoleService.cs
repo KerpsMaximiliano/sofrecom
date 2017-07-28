@@ -90,26 +90,18 @@ namespace Sofco.Service.Implementations
         public Response<Role> Update(Role role)
         {
             var response = new Response<Role>();
-            var entity = _roleRepository.GetSingle(x => x.Id == role.Id);
 
-            if (entity != null)
+            try
             {
-                try
-                {
-                    if (role.Active) role.EndDate = null;
+                if (role.Active) role.EndDate = null;
 
-                    _roleRepository.Update(role);
-                    _roleRepository.Save(string.Empty);
-                    response.Messages.Add(new Message(Resources.es.Role.Updated, MessageType.Success));
-                }
-                catch (Exception)
-                {
-                    response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
-                }
+                _roleRepository.Update(role);
+                _roleRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Role.Updated, MessageType.Success));
             }
-            else
+            catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
            
             return response;
