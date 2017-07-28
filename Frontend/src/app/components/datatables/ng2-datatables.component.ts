@@ -34,6 +34,8 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   private actionsColumnWidth:number = 0;
   private dataTypeEnum = DatatablesDataType;
   private alignmentEnum = DatatablesAlignment;
+
+  private tableRef: any;
   //dtInstance: Promise<DataTables.Api>;
 
   constructor(private router: Router) {
@@ -43,19 +45,68 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
     this.setActionsColumnWidth();
 
+    this.createTable();
+    
+  }
+
+  createTable(){
+
+    let arrOrder = [[this.options.orderByColumn, this.options.orderByAscDesc]];
+
     setTimeout(()=>{
-        $( document ).ready(function() {
-          $('#dt-component').DataTable({
-            dom: 'Bfrtp',
-            //"ajax": 'http://localhost:49963/api/role',
-            oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
-            buttons: [
-              'copy', 'excel', 'pdf'
-            ]
+          $( document ).ready(function() {
+            this.tableRef = $('#dt-component').DataTable({
+              dom: 'Bfrtp',
+              order: arrOrder,//[this.options.orderByColumn, this.options.orderByAscDesc]
+              oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
+              buttons: [
+                'excel', 'pdf'
+              ]
+            });
           });
-        });
+    });
+  }
+
+  refresh(data){
+    //$('#dt-component').clear();
+    this.data = data;
+    setTimeout(()=>{
+      $('#dt-component').dataTable().fnDestroy();
+      this.createTable();
     });
     
+    //var table = $('#dt-component').dataTable().api();
+    //table.order([1, "asc"]);
+    //table.draw();
+
+  }
+
+  updateRow(row: number, d: any){
+
+    for(var i = 0; i< this.columns.length; i++){
+
+      let columnName = this.columns[i].name;
+
+      if(d.hasOwnProperty(columnName)){
+        this.data[row][columnName] = d[columnName];
+      }
+      
+    }
+  }
+
+  updateById(id: number, d: any){
+
+    var row = this.data.findIndex((e, i, a) => {if (e.id == id) return i});
+
+    for(var i = 0; i< this.columns.length; i++){
+
+      let columnName = this.columns[i].name;
+
+      if(d.hasOwnProperty(columnName)){
+        this.data[row][columnName] = d[columnName];
+      }
+      
+    }
   }
 
   ngOnChanges(){

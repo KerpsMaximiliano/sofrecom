@@ -38,8 +38,8 @@
 
 
                 </div>
-                <div class="ibox-content" *ngIf="data != null">
-                    <datatables  
+                <div class="ibox-content" *ngIf="data != null && options != null">
+                    <datatables #dt
                       [data] = "data" 
                       [columns]="columns" 
                       [editionType]=editionType

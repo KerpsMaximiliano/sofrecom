@@ -1,8 +1,9 @@
+import { MessageService } from 'app/services/message.service';
 import { DatatablesLocationTexts } from './../../../components/datatables/datatables.location-texts';
 import { RoleService } from './../../../services/role.service';
 import { Role } from 'models/role';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
 import { DatatablesColumn } from "app/components/datatables/datatables.columns";
 import { Subscription } from "rxjs/Subscription";
@@ -18,20 +19,25 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 export class RolesComponent implements OnInit, OnDestroy {
 
   data;
+  @ViewChild('dt') dt;
   getAllSubscrip: Subscription;
+  getSubscrip: Subscription;
+  deleteSubscrip: Subscription;
   editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
-  locationTexts = new DatatablesLocationTexts("Assign");
+  locationTexts = new DatatablesLocationTexts("Details");
 
   options = new DatatablesOptions(
     true,  //edit
     true,  //delete
     false,  //view
-    true,  //other
+    true,  //other1
     false, //other2
     false, //other3
-    "fa-compress",     //other1Icon
+    "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
-    "fa-cogs"        //other3Icon
+    "fa-cogs",        //other3Icon
+    1,     //orderByColumn
+    "asc"
     ); 
 
   private dataTypeEnum = DatatablesDataType;
@@ -84,21 +90,36 @@ export class RolesComponent implements OnInit, OnDestroy {
   constructor(
       private router: Router,
       private route: ActivatedRoute,
-      private service: RoleService) { }
+      private service: RoleService,
+      private messageService: MessageService) { }
 
   ngOnInit() {
     this.getAll();
   }
 
   ngOnDestroy(){
-    this.getAllSubscrip.unsubscribe();
+    if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+    if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
+    if(this.getSubscrip) this.getSubscrip.unsubscribe();
   }
 
-  getAll(){
+  getAll(callback = null){
     this.getAllSubscrip = this.service.getAll().subscribe(d => {
       //d[1].active = true;
       //d[1].startDate = new Date();
       this.data = d;
+      if(callback != null){
+        callback();
+      }
+    });
+  }
+
+  getEntity(id: number, callback = null){
+    this.getSubscrip = this.service.get(id).subscribe((data) => {
+      
+      if(callback != null){
+        callback(data);
+      }
     });
   }
 
@@ -109,6 +130,17 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   deleteClick(id: number){
     console.log("Delete ID: " + id);
+    this.deleteSubscrip = this.service.delete(id).subscribe(
+      data => {
+        if(data.messages) this.messageService.showMessages(data.messages);
+
+        this.getEntity(id, (e)=>this.dt.updateById(id, e));
+      },
+      err => {
+        var json = JSON.parse(err._body)
+        if(json.messages) this.messageService.showMessages(json.messages);
+      }
+    );
     //this.router.navigate(['/admin/roles/delete/'+id]);
   }
 

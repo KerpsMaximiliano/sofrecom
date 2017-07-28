@@ -16,7 +16,7 @@ import { FunctionalityService } from './../../../services/functionality.service'
 })
 export class FunctionalitiesComponent implements OnInit, OnDestroy {
 
-    data = [];
+    data;
     getAllSubscrip: Subscription;
     editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
     locationTexts = new DatatablesLocationTexts("Assign");
