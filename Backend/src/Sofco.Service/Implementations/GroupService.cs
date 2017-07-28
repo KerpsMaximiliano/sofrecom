@@ -79,57 +79,43 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<Group> Update(Group group)
+        public Response<Group> Update(Group group, int roleId)
         {
-            var roleId = 0;
-            if(group.Role != null)
-            {
-                roleId = group.Role.Id;
-            }
-
             var response = new Response<Group>();
-            var entity = _repository.GetSingleWithRole(x => x.Id == group.Id);
 
-            if (entity != null)
+            try
             {
-                try
+                if(roleId == 0)
                 {
-                    if(roleId == 0)
+                    group.Role = null;
+                }
+                else
+                {
+                    if(roleId != group.Role.Id)
                     {
-                        entity.Role = null;
-                    }
-                    else
-                    {
-                        if(roleId != entity.Role.Id)
+                        var role = _roleRepository.GetSingle(x => x.Id == roleId);
+
+                        if (role == null)
                         {
-                            var role = _roleRepository.GetSingle(x => x.Id == roleId);
-
-                            if (role == null)
-                            {
-                                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
-                                return response;
-                            }
-                             
-                            group.Role = role;
+                            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                            return response;
                         }
+                             
+                        group.Role = role;
                     }
+                }
                      
-                    group.ApplyTo(entity);
+                group.ApplyTo(group);
 
-                    if (entity.Active) entity.EndDate = null;
+                if (group.Active) group.EndDate = null;
 
-                    _repository.Update(entity);
-                    _repository.Save(string.Empty);
-                    response.Messages.Add(new Message(Resources.es.Group.Updated, MessageType.Success));
-                }
-                catch (Exception)
-                {
-                    response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
-                }
+                _repository.Update(group);
+                _repository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Group.Updated, MessageType.Success));
             }
-            else
+            catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
