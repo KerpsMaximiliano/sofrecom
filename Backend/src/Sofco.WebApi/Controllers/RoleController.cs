@@ -69,7 +69,9 @@ namespace Sofco.WebApi.Controllers
 
             if (response.HasErrors()) return BadRequest(response);
 
-            return Ok(response);
+            var roleModel = new RoleModel(response.Data);
+
+            return Ok(roleModel);
         }
 
         // POST api/role

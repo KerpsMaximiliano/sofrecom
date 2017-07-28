@@ -81,6 +81,8 @@ namespace Sofco.Service.Implementations
             {
                 try
                 {
+                    if (role.Active) role.EndDate = null;
+
                     _repository.Update(role);
                     _repository.Save(string.Empty);
                     response.Messages.Add(new Message(Resources.es.Role.Updated, MessageType.Success));
@@ -214,6 +216,11 @@ namespace Sofco.Service.Implementations
             }
 
             return response;
+        }
+
+        public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
+        {
+            return _repository.GetRolesByGroup(groupIds);
         }
     }
 }

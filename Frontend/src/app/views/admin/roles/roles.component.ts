@@ -118,7 +118,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.getSubscrip = this.service.get(id).subscribe((data) => {
       
       if(callback != null){
-        callback(data.data);
+        callback(data);
       }
     });
   }

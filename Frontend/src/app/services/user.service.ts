@@ -18,5 +18,9 @@ export class UserService {
 
     get(id: string) {
        return this.http.get(`${this.baseUrl}/user/${id}`, { headers: this.headers}).map((res:Response) => res.json());
-  }
+    }
+
+    getDetail(id: string) {
+       return this.http.get(`${this.baseUrl}/user/${id}/detail`, { headers: this.headers}).map((res:Response) => res.json());
+    }
 }

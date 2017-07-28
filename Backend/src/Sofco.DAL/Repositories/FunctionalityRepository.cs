@@ -27,6 +27,16 @@ namespace Sofco.DAL.Repositories
                 .ToList();
         }
 
+        public IList<Functionality> GetFuntionalitiesByRoles(IEnumerable<int> roleIds)
+        {
+            return _context.RoleFunctionality
+                    .Include(x => x.Functionality)
+                    .Where(x => roleIds.Contains(x.RoleId) && x.Functionality != null)
+                    .Distinct()
+                    .Select(x => x.Functionality)
+                    .ToList();
+        }
+
         public Functionality GetSingleWithRoles(Expression<Func<Functionality, bool>> predicate)
         {
             return _context.Set<Functionality>()

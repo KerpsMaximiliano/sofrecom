@@ -11,6 +11,5 @@ namespace Sofco.Core.DAL
         bool ExistById(int id);
         User GetSingleWithUserGroup(Expression<Func<User, bool>> predicate);
         IList<User> GetAllFullReadOnly();
-        IList<User> GetAllReadOnly();
     }
 }

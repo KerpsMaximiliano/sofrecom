@@ -110,6 +110,8 @@ namespace Sofco.Service.Implementations
                      
                     group.ApplyTo(entity);
 
+                    if (entity.Active) entity.EndDate = null;
+
                     _repository.Update(entity);
                     _repository.Save(string.Empty);
                     response.Messages.Add(new Message(Resources.es.Group.Updated, MessageType.Success));

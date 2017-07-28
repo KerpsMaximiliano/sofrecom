@@ -14,5 +14,6 @@ namespace Sofco.Core.Interfaces.Services
         Response<Role> Update(Role role);
         Response<Role> ChangeFunctionalities(int roleId, List<int> functionlitiesToAdd, List<int> functionlitiesToRemove);
         Response<Role> ChangeMenus(int roleId, List<int> menusToAdd, List<int> menusToRemove);
+        IList<Role> GetRolesByGroup(IEnumerable<int> groupIds);
     }
 }

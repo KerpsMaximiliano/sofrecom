@@ -11,5 +11,6 @@ namespace Sofco.Core.DAL
         bool ExistById(int id);
         Functionality GetSingleWithRoles(Expression<Func<Functionality, bool>> predicate);
         IList<Functionality> GetAllFullReadOnly();
+        IList<Functionality> GetFuntionalitiesByRoles(IEnumerable<int> roleIds);
     }
 }

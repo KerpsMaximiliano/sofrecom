@@ -44,7 +44,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
   getEntity(id: number){
     this.getSubscrip = this.service.get(id).subscribe((data) => {
-      this.entity = data.data;
+      this.entity = data;
     });
   }
 

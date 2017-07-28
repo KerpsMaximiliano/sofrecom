@@ -3,6 +3,7 @@ using Sofco.Model.Models;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Sofco.DAL.Repositories
 {
@@ -35,6 +36,15 @@ namespace Sofco.DAL.Repositories
                 .Select(x => x.Menu)
                 .Distinct()
                 .ToList();
+        }
+
+        public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
+        {
+            return _context.Groups
+                    .Include(x => x.Role)
+                    .Where(x => groupIds.Contains(x.Id) && x.Role != null)
+                    .Select(x => x.Role)
+                    .ToList();
         }
     }
 }
