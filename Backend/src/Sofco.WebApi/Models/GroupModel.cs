@@ -42,12 +42,6 @@ namespace Sofco.WebApi.Models
             group.Id = Id;
             group.Description = Description;
             group.Active = Active;
-
-            if(Role != null)
-            {
-                group.Role = new Role();
-                group.Role.Id = Role.Id;
-            }
         }
     }
 }

@@ -129,8 +129,9 @@ namespace Sofco.WebApi.Controllers
             if (groupReponse.HasErrors()) return BadRequest(groupReponse);
 
             model.ApplyTo(groupReponse.Data);
+            var roleId = model.Role != null ? model.Role.Id : 0;
 
-            var response = _groupService.Update(groupReponse.Data);
+            var response = _groupService.Update(groupReponse.Data, roleId);
 
             if (response.HasErrors()) return BadRequest(response);
 
