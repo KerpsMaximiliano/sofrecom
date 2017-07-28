@@ -82,7 +82,7 @@ namespace Sofco.Service.Implementations
         public Response<Group> Update(Group group)
         {
             var response = new Response<Group>();
-            var entity = _repository.GetSingle(x => x.Id == group.Id);
+            var entity = _repository.GetSingleWithRole(x => x.Id == group.Id);
 
             if (entity != null)
             {
@@ -141,7 +141,6 @@ namespace Sofco.Service.Implementations
                 _repository.Delete(entity);
                 _repository.Save(string.Empty);
 
-                response.Data = entity;
                 response.Messages.Add(new Message(Resources.es.Group.Deleted, MessageType.Success));
                 return response;
             }

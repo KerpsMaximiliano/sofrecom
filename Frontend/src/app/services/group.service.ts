@@ -25,7 +25,7 @@ export class GroupService {
         return this.http.post(`${this.baseUrl}/group`, model, { headers: this.headers}).map((res:Response) => res.json());
     }
 
-    edit(model : Group) {
+    edit(model) {
         return this.http.put(`${this.baseUrl}/group`, model, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
