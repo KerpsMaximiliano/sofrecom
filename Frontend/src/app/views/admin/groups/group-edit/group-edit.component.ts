@@ -1,4 +1,4 @@
-import { Role } from './../../../../../models/role';
+import { Role } from 'models/role';
 import { RoleService } from 'app/services/role.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/message.service';
@@ -67,8 +67,18 @@ export class GroupEditComponent implements OnInit, OnDestroy {
 
   onSubmit(form){
     if(!form.invalid){
-      this.entity.role.description = "ss";
-      this.editSubscrip = this.service.edit(this.entity).subscribe(
+
+      var json = {
+        id: this.entity.id,
+        description: this.entity.description,
+        active: this.entity.active,
+        role: {
+          id: this.entity.role.id,
+          description: "TODO: borrar"
+        }
+      }
+
+      this.editSubscrip = this.service.edit(json).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
           this.router.navigate(["/admin/groups"])
