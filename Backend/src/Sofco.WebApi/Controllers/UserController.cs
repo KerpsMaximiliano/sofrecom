@@ -35,6 +35,22 @@ namespace Sofco.WebApi.Controllers
             return Ok(model);
         }
 
+        // GET: api/user/options
+        [HttpGet]
+        [Route("options")]
+        public IActionResult GetOptions()
+        {
+            var users = _userService.GetAllReadOnly();
+            var model = new List<Option>();
+
+            foreach (var user in users)
+            {
+                model.Add(new Option(user.Id, user.Name));
+            }
+
+            return Ok(model);
+        }
+
         // GET: api/user
         [HttpGet]
         [Route("full")]

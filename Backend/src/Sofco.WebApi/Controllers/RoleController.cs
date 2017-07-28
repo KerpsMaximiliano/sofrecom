@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Config;
@@ -20,6 +19,20 @@ namespace Sofco.WebApi.Controllers
             _groupService = groupService;
         }
 
+        // GET: api/role/options
+        [HttpGet]
+        [Route("options")]
+        public IActionResult Getoptions()
+        {
+            var roles = _roleService.GetAllReadOnly();
+            var model = new List<Option>();
+
+            foreach (var rol in roles)
+                model.Add(new Option(rol.Id, rol.Description));
+
+            return Ok(model);
+        }
+
         // GET: api/role
         [HttpGet]
         public IActionResult Get()
@@ -31,6 +44,30 @@ namespace Sofco.WebApi.Controllers
                 model.Add(new RoleModel(rol));
 
             return Ok(model);
+        }
+
+        // GET: api/role
+        [HttpGet]
+        [Route("{id}/detail")]
+        public IActionResult Detail(int id)
+        {
+            var response = _roleService.GetDetail(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var roleModel = new RoleModel(response.Data);
+
+            foreach (var group in response.Data.Groups)
+            {
+                roleModel.Groups.Add(new GroupModel(group));
+            }
+
+            foreach (var roleFunctionality in response.Data.RoleFunctionality)
+            {
+                roleModel.Functionalities.Add(new FunctionalityModel(roleFunctionality.Functionality));
+            }
+
+            return Ok(roleModel);
         }
 
         // GET: api/role
@@ -161,6 +198,28 @@ namespace Sofco.WebApi.Controllers
         public IActionResult ChangeMenus(int roleId, [FromBody]RoleMenuModel model)
         {
             var response = _roleService.ChangeMenus(roleId, model.MenusToAdd, model.MenusToRemove);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{roleId}/functionality/{functionalityId}")]
+        public IActionResult AddFunctionality(int roleId, int functionalityId)
+        {
+            var response = _roleService.AddFunctionality(roleId, functionalityId);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{roleId}/functionality/{functionalityId}")]
+        public IActionResult DeleteFunctionality(int roleId, int functionalityId)
+        {
+            var response = _roleService.DeleteFunctionality(roleId, functionalityId);
 
             if (response.HasErrors()) return BadRequest(response);
 

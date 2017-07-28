@@ -28,6 +28,15 @@ namespace Sofco.DAL.Repositories
                 .AsReadOnly();
         }
 
+        public Role GetDetail(int id)
+        {
+            return _context.Set<Role>()
+                    .Include(x => x.Groups)
+                    .Include(x => x.RoleFunctionality)
+                        .ThenInclude(x => x.Functionality)
+                   .SingleOrDefault(x => x.Id == id);
+        }
+
         public IList<Menu> GetMenusByRoleId(int[] roleIds)
         {
             return _context.RoleMenu
