@@ -15,7 +15,7 @@ export class  Configuration {
         tr.setDefaultLang(this.currLang);
         tr.use(this.currLang);
 
-        this.UrlApi = "http://localhost:63762/api"; //dev
+        this.UrlApi = "http://localhost:49963/api"; //dev
         //this.UrlApi = "http://sofrelab-iis1.cloudapp.net:9696/api"; // uat iis
         //this.UrlApi = "http://sofrelab-iis1.cloudapp.net:9000/api"; // uat
 

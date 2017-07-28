@@ -3,9 +3,11 @@ import { DatatablesOptions } from './datatables.options';
 import { Router } from '@angular/router';
 import { DatatablesLocationTexts } from './datatables.location-texts';
 import { DatatablesColumn } from './datatables.columns';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Directive, ElementRef, OnChanges } from '@angular/core';
 import { DatatablesEditionType } from "./datatables.edition-type";
 import { DatatablesAlignment } from "./datatables.alignment";
+import { Subject } from 'rxjs/Rx';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 declare var $:any;
 
 @Component({
@@ -13,7 +15,7 @@ declare var $:any;
   templateUrl: './datatables.component.html',
   styleUrls: ['./datatables.component.scss']
 })
-export class DatatablesComponent implements OnInit {
+export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
   @Input() data;
   @Input() options = new DatatablesOptions();
@@ -32,6 +34,7 @@ export class DatatablesComponent implements OnInit {
   private actionsColumnWidth:number = 0;
   private dataTypeEnum = DatatablesDataType;
   private alignmentEnum = DatatablesAlignment;
+  //dtInstance: Promise<DataTables.Api>;
 
   constructor(private router: Router) {
   }
@@ -44,15 +47,32 @@ export class DatatablesComponent implements OnInit {
         $( document ).ready(function() {
           $('#dt-component').DataTable({
             dom: 'Bfrtp',
+            //"ajax": 'http://localhost:49963/api/role',
             oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+              'copy', 'excel', 'pdf'
             ]
           });
         });
     });
     
   }
+
+  ngOnChanges(){
+    //$('#dt-component').DataTable().ajax.reload();
+  }
+
+  /*private displayTable(): void {
+    this.dtInstance = new Promise((resolve, reject) => {
+      Promise.resolve(this.dtOptions).then(dtOptions => {
+        // Using setTimeout as a "hack" to be "part" of NgZone
+        setTimeout(() => {
+          const dt = $(this.el.nativeElement).DataTable(dtOptions);
+          resolve(dt);
+        });
+      });
+    });
+  }*/
 
   private setActionsColumnWidth(){
     this.actionsColumnWidth = 0;
@@ -97,6 +117,10 @@ export class DatatablesComponent implements OnInit {
 
   other3Click(id:number){
     this.other3.emit(id);
+  }
+
+  onSearch(event){
+
   }
 
 }

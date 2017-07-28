@@ -3,8 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { DatatablesModule } from "app/components/datatables/datatables.module";
-
+import { Ng2DatatablesModule } from "app/components/datatables/ng2-datatables.module";
 import { RoleService } from "app/services/role.service";
 import { UserService } from "app/services/user.service";
 import { GroupService } from "app/services/group.service";
@@ -23,9 +22,9 @@ import { FunctionalitiesComponent } from './functionalities/functionalities.comp
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent],
-  imports     : [CommonModule, DatatablesModule, RouterModule, FormsModule, ICheckModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule],
   providers   : [RoleService, UserService, GroupService, FunctionalityService],
-  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent],
+  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent]
 })
 
 export class AdminModule {}
