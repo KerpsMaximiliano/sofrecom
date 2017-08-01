@@ -68,9 +68,9 @@
                         </div>
 
                         <!--CHECK ACTIVE-->
-                        <div class="form-group">
+                        <div class="form-group" *ngIf="entity">
                             <div class="col-xs-12">
-                                 <icheck  [checked]="entity?.active" (click)="onActiveClick($event)">
+                                 <icheck  [(checked)]="entity.active">
                                      <label class="col-xs-2 control-label icheck-label">Active</label> 
                                  </icheck>
                             </div>

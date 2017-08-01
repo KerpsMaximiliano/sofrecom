@@ -26,6 +26,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
   @Output() view = new EventEmitter<number>();
+  @Output() habInhab = new EventEmitter<any>();  
   @Output() other1 = new EventEmitter<number>();
   @Output() other2 = new EventEmitter<number>();
   @Output() other3 = new EventEmitter<number>();
@@ -42,7 +43,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
     
   ngOnInit() {
-
     this.setActionsColumnWidth();
 
     this.createTable();
@@ -96,7 +96,8 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
   updateById(id: number, d: any){
 
-    var row = this.data.findIndex((e, i, a) => {if (e.id == id) return i});
+    //var row = this.data.findIndex((e, i, a) => {if (e.id == id) return i});
+    var row = this.getIndexById(id);
 
     for(var i = 0; i< this.columns.length; i++){
 
@@ -107,6 +108,15 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
       }
       
     }
+  }
+
+  private getIndexById(id: number){
+    /*var index = this.data.findIndex((e, i, a) => {
+      if (e.id == id) return i
+    });*/
+    var index = this.data.findIndex(x => x.id == id);
+    
+    return index;
   }
 
   ngOnChanges(){
@@ -129,10 +139,11 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     this.actionsColumnWidth = 0;
     if(this.options.b_delete){ this.actionsColumnWidth += 28 }
     if(this.options.b_edit){ this.actionsColumnWidth += 28 }
+    if(this.options.b_view){ this.actionsColumnWidth += 28 }
+    if(this.options.b_habInhab){ this.actionsColumnWidth += 28 }
     if(this.options.b_other1){ this.actionsColumnWidth += 28 }
     if(this.options.b_other2){ this.actionsColumnWidth += 28 }
     if(this.options.b_other3){ this.actionsColumnWidth += 28 }
-    if(this.options.b_view){ this.actionsColumnWidth += 28 }
     this.actionsColumnWidth += 10;
   }
 
@@ -156,6 +167,16 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     /*if(this.callDefaultUrls){
       this.router.navigate(['view', id]);
     }*/
+  }
+
+  habInhabClick(id:number){
+    var index = this.getIndexById(id);
+    this.data[index][this.options.activeFieldName] = !this.data[index][this.options.activeFieldName];
+    var objRpta = {
+      id: id,
+      hab: this.data[index][this.options.activeFieldName]
+    };
+    this.habInhab.emit(objRpta);
   }
 
   other1Click(id:number){

@@ -17,135 +17,165 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 })
 export class FunctionalitiesComponent implements OnInit, OnDestroy {
 
-  data;
-  @ViewChild('dt') dt;
-  getAllSubscrip: Subscription;
-  getSubscrip: Subscription;
-  deleteSubscrip: Subscription;
-  editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
-  locationTexts = new DatatablesLocationTexts("Details");
+    data;
+    @ViewChild('dt') dt;
+    getAllSubscrip: Subscription;
+    getSubscrip: Subscription;
+    activateSubscrip: Subscription;
+    deactivateSubscrip: Subscription;
+    editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
+    locationTexts = new DatatablesLocationTexts("Details");
 
-  options = new DatatablesOptions(
-    true,  //edit
-    true,  //delete
-    false,  //view
-    true,  //other1
-    false, //other2
-    false, //other3
-    "fa-eye",     //other1Icon
-    "fa-check",      //other2Icon
-    "fa-cogs",        //other3Icon
-    1,     //orderByColumn
-    "asc"
-    ); 
+    options = new DatatablesOptions(
+      false,  //edit
+      false,  //delete
+      false,  //view
+      true,  //habInhab
+      false,  //other1
+      false, //other2
+      false, //other3
+      "fa-eye",     //other1Icon
+      "fa-check",      //other2Icon
+      "fa-cogs",        //other3Icon
+      1,     //orderByColumn
+      "asc"
+      ); 
 
-  private dataTypeEnum = DatatablesDataType;
-  private alignmentEnum = DatatablesAlignment;
+    private dataTypeEnum = DatatablesDataType;
+    private alignmentEnum = DatatablesAlignment;
 
-  columns: DatatablesColumn[] = 
-  [
-    new DatatablesColumn(
-      "id",  //name
-      "Id",  //title
-      "",    //width
-      1,     //visibility
-      this.dataTypeEnum.number,  //dataType
-      this.alignmentEnum.left
-    ),
-    new DatatablesColumn(
-      "description",  //name
-      "Description",  //title
-      "",    //width
-      1,     //visibility
-      this.dataTypeEnum.string,  //dataType
-      this.alignmentEnum.left
-    ),
-    new DatatablesColumn(
-      "active",  //name
-      "Active",  //title
-      "",    //width
-      1,     //visibility
-      this.dataTypeEnum.boolean,  //dataType
-      this.alignmentEnum.center
-    ),
-    new DatatablesColumn(
-      "startDate",  //name
-      "Start Date",  //title
-      "30px",    //width
-      1,     //visibility
-      this.dataTypeEnum.date,  //dataType
-      this.alignmentEnum.right
-    ),
-    new DatatablesColumn(
-      "endDate",  //name
-      "End Date",  //title
-      "30px",    //width
-      1,     //visibility
-      this.dataTypeEnum.date,  //dataType
-      this.alignmentEnum.right
-    ),
-  ];
+    columns: DatatablesColumn[] = 
+    [
+      new DatatablesColumn(
+        "id",  //name
+        "Id",  //title
+        "",    //width
+        1,     //visibility
+        this.dataTypeEnum.number,  //dataType
+        this.alignmentEnum.left
+      ),
+      new DatatablesColumn(
+        "description",  //name
+        "Description",  //title
+        "",    //width
+        1,     //visibility
+        this.dataTypeEnum.string,  //dataType
+        this.alignmentEnum.left
+      ),
+      new DatatablesColumn(
+        "active",  //name
+        "Active",  //title
+        "",    //width
+        1,     //visibility
+        this.dataTypeEnum.boolean,  //dataType
+        this.alignmentEnum.center
+      ),
+      new DatatablesColumn(
+        "startDate",  //name
+        "Start Date",  //title
+        "30px",    //width
+        1,     //visibility
+        this.dataTypeEnum.date,  //dataType
+        this.alignmentEnum.right
+      ),
+      new DatatablesColumn(
+        "endDate",  //name
+        "End Date",  //title
+        "30px",    //width
+        1,     //visibility
+        this.dataTypeEnum.date,  //dataType
+        this.alignmentEnum.right
+      ),
+    ];
 
-  constructor(
-      private router: Router,
-      private route: ActivatedRoute,
-      private service: FunctionalityService,
-      private messageService: MessageService) { }
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute,
+        private service: FunctionalityService,
+        private messageService: MessageService) { }
 
-  ngOnInit() {
-    this.getAll();
-  }
+    ngOnInit() {
+      this.getAll();
+    }
 
-  ngOnDestroy(){
-    if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
-    if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
-    if(this.getSubscrip) this.getSubscrip.unsubscribe();
-  }
+    ngOnDestroy(){
+      if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if(this.activateSubscrip) this.activateSubscrip.unsubscribe();
+      if(this.deactivateSubscrip) this.deactivateSubscrip.unsubscribe();
+      if(this.getSubscrip) this.getSubscrip.unsubscribe();
+    }
 
-  getAll(callback = null){
-    this.getAllSubscrip = this.service.getAll().subscribe(d => {
-      //d[1].active = true;
-      //d[1].startDate = new Date();
-      this.data = d;
-      if(callback != null){
-        callback();
-      }
-    });
-  }
+    getAll(callback = null){
+      this.getAllSubscrip = this.service.getAll().subscribe(d => {
+        //d[1].active = true;
+        //d[1].startDate = new Date();
+        this.data = d;
+        if(callback != null){
+          callback();
+        }
+      });
+    }
 
-  getEntity(id: number, callback = null){
-    this.getSubscrip = this.service.get(id).subscribe((data) => {
-      
-      if(callback != null){
-        callback(data);
-      }
-    });
-  }
+    getEntity(id: number, callback = null){
+      this.getSubscrip = this.service.get(id).subscribe((data) => {
+        
+        if(callback != null){
+          callback(data);
+        }
+      });
+    }
 
-  editClick(id: number){
-    console.log("Edit ID: " + id);
-    this.router.navigate(['/admin/functionalities/edit/'+id]);
-  }
+/*
+    deleteClick(id: number){
+      console.log("Delete ID: " + id);
+      this.deleteSubscrip = this.service.deactivate(id).subscribe(
+        data => {
+          if(data.messages) this.messageService.showMessages(data.messages);
 
-  deleteClick(id: number){
-    console.log("Delete ID: " + id);
-    this.deleteSubscrip = this.service.delete(id).subscribe(
-      data => {
-        if(data.messages) this.messageService.showMessages(data.messages);
+          this.getEntity(id, (e)=>this.dt.updateById(id, e));
+        },
+        err => {
+          var json = JSON.parse(err._body)
+          if(json.messages) this.messageService.showMessages(json.messages);
+        }
+      );
+      //this.router.navigate(['/admin/roles/delete/'+id]);
+    }*/
 
-        this.getEntity(id, (e)=>this.dt.updateById(id, e));
-      },
-      err => {
-        var json = JSON.parse(err._body)
-        if(json.messages) this.messageService.showMessages(json.messages);
-      }
-    );
-    //this.router.navigate(['/admin/roles/delete/'+id]);
-  }
+    habInhab(obj: any){
+        if (!obj.hab){
+            this.deactivate(obj.id);
+        } else {
+            this.activate(obj.id);
+        }
+    }
 
-  assginFeatures(id: number){
-    console.log("Assign ID: " + id);
-    //this.router.navigate(['/admin/roles/assign/'+id]);
-  }
+    deactivate(id: number){
+        this.deactivateSubscrip = this.service.deactivate(id).subscribe(
+            data => {
+                if(data.messages) this.messageService.showMessages(data.messages);
+
+                this.getEntity(id, (e)=>this.dt.updateById(id, e));
+            },
+            err => {
+                var json = JSON.parse(err._body)
+                if(json.messages) this.messageService.showMessages(json.messages);
+            }
+        );
+    }
+
+    activate(id: number){
+        this.activateSubscrip = this.service.activate(id).subscribe(
+            data => {
+                if(data.messages) this.messageService.showMessages(data.messages);
+
+                this.getEntity(id, (e)=>this.dt.updateById(id, e));
+            },
+            err => {
+                var json = JSON.parse(err._body)
+                if(json.messages) this.messageService.showMessages(json.messages);
+            }
+        );
+    }
 
 }

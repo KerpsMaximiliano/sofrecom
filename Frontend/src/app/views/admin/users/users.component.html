@@ -23,13 +23,14 @@
                     <h5>Gestion de Usuarios</h5>
                 </div>
                 <div class="ibox-content">
-                    <datatables *ngIf="data != null" 
+                    <datatables #dt *ngIf="data != null" 
                       [data] = "data" 
                       [columns]="columns" 
                       [editionType]=editionType
                       [options]=options
                       [locationTexts]=locationTexts
                       (view) = "goToDetail($event)"
+                      (habInhab) = "habInhab($event)"
                       ></datatables>
                 </div>
             </div>

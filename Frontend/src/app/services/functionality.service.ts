@@ -20,7 +20,15 @@ export class FunctionalityService {
        return this.http.get(`${this.baseUrl}/functionality/${id}`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
-    delete(id: number) {
-        return this.http.delete(`${this.baseUrl}/functionality/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
+    deactivate(id: number) {
+        return this.http.put(`${this.baseUrl}/functionality/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    activate(id: number) {
+        return this.http.put(`${this.baseUrl}/functionality/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    getOptions() {
+        return this.http.get(`${this.baseUrl}/functionality/options`, { headers: this.headers}).map((res:Response) => res.json() );
     }
 }

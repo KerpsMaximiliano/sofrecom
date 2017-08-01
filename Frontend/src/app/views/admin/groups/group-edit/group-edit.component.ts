@@ -92,10 +92,5 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     
   }
 
-  onActiveClick(active){
-    if(typeof active == 'boolean'){
-      this.entity.active = active;
-    }
-  }
 
 }

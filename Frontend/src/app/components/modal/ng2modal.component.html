@@ -7,13 +7,12 @@
 
       <!-- header-->
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="closeEvent()">&times;</button>
-        <h4 class="modal-title">{{config.title}}}</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeEvent($event)">&times;</button>
+          <h3 class="modal-title">{{config.title}}</h3>
       </div>
 
       <!-- body-->
       <div class="modal-body">
-        Modal
         <!-- Modal content-->
         <ng-content></ng-content>
 
@@ -21,8 +20,8 @@
 
       <!-- footer-->
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeEvent()" *ngIf="cencelButton">{{config.cancelButtonText}}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="acceptEvent()" *ngIf="acceptButton">{{config.acceptButtonText}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.cancelButton">{{config.cancelButtonText}}</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="acceptEvent($event)" *ngIf="config.acceptButton">{{config.acceptButtonText}}</button>
       </div>
     </div>
 

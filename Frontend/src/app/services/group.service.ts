@@ -32,4 +32,8 @@ export class GroupService {
     delete(id: number) {
         return this.http.delete(`${this.baseUrl}/group/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
     }
+
+    getOptions() {
+        return this.http.get(`${this.baseUrl}/group/options`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
 }

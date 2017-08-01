@@ -186,7 +186,7 @@ namespace Sofco.WebApi.Controllers
         [Route("{roleId}/functionalities")]
         public IActionResult ChangeFunctionalities(int roleId, [FromBody]RoleFunctionalityModel model)
         {
-            var response = _roleService.ChangeFunctionalities(roleId, model.FunctionlitiesToAdd, model.FunctionlitiesToRemove);
+            var response = _roleService.ChangeFunctionalities(roleId, model.FunctionalitiesToAdd, model.FunctionalitiesToRemove);
 
             if (response.HasErrors()) return BadRequest(response);
 

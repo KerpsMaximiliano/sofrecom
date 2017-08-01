@@ -36,15 +36,26 @@ export class Ng2ModalComponent implements OnInit {
 
   show(){
     setTimeout(() => {
-      $('#ModalId').modal('toggle');
+      $('#' + this.config.id).modal('toggle');
     });
   }
 
-  closeEvent(){
+  hide(){
+    setTimeout(() => {
+      $('#' + this.config.id).modal('toggle');
+    });
+  }
+
+  closeEvent($event){
+    $event.stopPropagation();
+    setTimeout(() => {
+      $('#' + this.config.id).modal('toggle');
+    });
     this.close.emit();
   }
 
-  acceptEvent(){
+  acceptEvent($event){
+    $event.stopPropagation();
     this.accept.emit();
   }
 

@@ -29,16 +29,9 @@
                 <div class="ibox-title">
                     <h5>Editar Rol</h5>
 
-
                     <div class="ibox-tools" >
-                        <!--<a ng-click="showhide()"> <i class="fa fa-chevron-up"></i></a>
-                        <a>
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <a ng-click="closebox()"><i class="fa fa-times"></i></a>-->
                         <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
                     </div>
-
 
                 </div>
                 <div class="ibox-content">
@@ -65,9 +58,9 @@
                             </div>
                         </div>-->
 
-                        <div class="form-group">
+                        <div class="form-group" *ngIf="entity">
                             <div class="col-lg-12">
-                                 <icheck  [checked]="entity.active" (click)="onActiveClick($event)">
+                                 <icheck  [(checked)]="entity.active" (click)="onActiveClick(chk)"> <!--(click)="onActiveClick($event)"-->
                                      <label class="col-lg-2 control-label icheck-label">Active</label> 
                                  </icheck>
                             </div>
@@ -101,13 +94,14 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> Funcionalidades
-                    <a class="pull-right"><i class="fa fa-plus icon-white"></i></a>
+                    <a class="pull-right" (click)="modalFuncs.show()"><i class="fa fa-plus icon-white"></i></a>
                 </div>
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let functionality of entity.functionalities">
                             <span class="m-l-xs">{{functionality.description}}</span>
-                            <a class="pull-right"><i class="check-link fa fa-times icon-danger"></i></a>
+                            <a class="pull-right" (click)="unassignFunc(functionality.id)"><i class="check-link fa fa-times icon-danger"></i></a>
+                            
                         </li>
                     </ul>
                 </div>
@@ -130,3 +124,16 @@
     </div>
 </div>
 
+<ng2-modal [config]="modalConfig"  #modalFuncs (accept)="assignFuncs()"> <!--(accept)="" (cancel)=""-->
+
+    <h4>Seleccione las funcionalidades a ser asignadas al usuario:</h4>
+
+    <div class="scroll">
+        <div *ngFor="let g of funcsToAdd; let i = index"  style="margin-top:10px;">
+            <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="funcsToAdd[i].included" >
+                <label style="padding-left:20px;">{{g.text}}</label> 
+            </icheck>
+        </div>
+    </div>
+
+</ng2-modal>

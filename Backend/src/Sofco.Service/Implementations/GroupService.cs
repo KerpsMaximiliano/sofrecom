@@ -91,7 +91,7 @@ namespace Sofco.Service.Implementations
                 }
                 else
                 {
-                    if(roleId != group.Role.Id)
+                    if(group.Role == null || roleId != group.Role.Id)
                     {
                         var role = _roleRepository.GetSingle(x => x.Id == roleId);
 

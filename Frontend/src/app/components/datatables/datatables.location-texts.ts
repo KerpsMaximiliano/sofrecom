@@ -4,8 +4,10 @@ export class DatatablesLocationTexts{
         public other1Text: string = "",
         public other2Text: string = "",
         public other3Text: string = "",
-        public editText: string = "Edit",
-        public deleteText: string = "Delete",
-        public searchText: string = "Search"
+        public editText: string = "Editar",
+        public deleteText: string = "Eliminar",
+        public searchText: string = "Buscar",
+        public habilitateText: string = "Habilitar",
+        public inHabilitateText: string = "Inhabilitar"
     ){}
 }

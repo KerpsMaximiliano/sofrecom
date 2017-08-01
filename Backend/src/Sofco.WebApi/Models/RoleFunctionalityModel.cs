@@ -6,12 +6,12 @@ namespace Sofco.WebApi.Models
     {
         public RoleFunctionalityModel()
         {
-            FunctionlitiesToAdd = new List<int>();
-            FunctionlitiesToRemove = new List<int>();
+            FunctionalitiesToAdd = new List<int>();
+            FunctionalitiesToRemove = new List<int>();
         }
 
-        public List<int> FunctionlitiesToAdd { get; set; }
+        public List<int> FunctionalitiesToAdd { get; set; }
 
-        public List<int> FunctionlitiesToRemove { get; set; }
+        public List<int> FunctionalitiesToRemove { get; set; }
     }
 }

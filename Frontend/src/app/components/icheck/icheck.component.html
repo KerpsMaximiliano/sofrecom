@@ -1,5 +1,6 @@
 <div (click)="onClick()" class="icheck">
-    <ng-content class="icheck-label"></ng-content>
-    <div [class.checked]="checked"></div>
+    <div [class.checked]="checked" *ngIf="checkAtLeft" [(ngModel)]="checked" name="checked" ngDefaultControl ></div> <!--(click)="onClick()-->
+    <ng-content class="icheck-label" ></ng-content>
+    <div [class.checked]="checked" *ngIf="!checkAtLeft" [(ngModel)]="checked" name="checked" ngDefaultControl ></div>
 
 </div>

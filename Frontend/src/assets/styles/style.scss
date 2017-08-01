@@ -93,3 +93,19 @@ input[type="checkbox"]{
 .icon-white {
   color: white;
 }
+
+//popup
+.modal-header{
+  background-color:#1ab394;
+  color:#fff;
+  font-weight: bold;
+}
+
+.modal-header h3{
+  font-weight: bold;
+}
+
+div.scroll{
+  overflow-y: auto; 
+  height:300px;
+}

@@ -16,11 +16,27 @@ export class UserService {
         return this.http.get(`${this.baseUrl}/user`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
-    get(id: string) {
+    get(id: number) {
        return this.http.get(`${this.baseUrl}/user/${id}`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
     getDetail(id: string) {
        return this.http.get(`${this.baseUrl}/user/${id}/detail`, { headers: this.headers}).map((res:Response) => res.json());
+    }
+
+    deactivate(id: number) {
+        return this.http.put(`${this.baseUrl}/user/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    activate(id: number) {
+        return this.http.put(`${this.baseUrl}/user/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    assignGroups(userId: number, objToSend: any){
+        return this.http.post(`${this.baseUrl}/user/${userId}/groups`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    unassignGroup(userId: number, groupId: number) {
+        return this.http.delete(`${this.baseUrl}/user/${userId}/group/${groupId}`, { headers: this.headers}).map((res:Response) => res.json() );
     }
 }

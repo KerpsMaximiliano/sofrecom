@@ -8,8 +8,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ICheckComponent implements OnInit {
 
   @Input() checked: boolean = false;
+  @Input() checkAtLeft: boolean = true;
 
-  @Output() click = new EventEmitter<boolean>();
+  @Output() checkedChange = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -18,7 +19,7 @@ export class ICheckComponent implements OnInit {
 
   onClick(){
     this.checked = !this.checked;
-    this.click.emit(this.checked);
+    this.checkedChange.emit(this.checked);
   }
 
 }
