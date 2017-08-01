@@ -225,5 +225,16 @@ namespace Sofco.WebApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut]
+        [Route("{id}/active/{active}")]
+        public IActionResult Active(int id, bool active)
+        {
+            var response = _roleService.Active(id, active);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }

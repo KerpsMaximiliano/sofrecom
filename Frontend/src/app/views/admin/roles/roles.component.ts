@@ -22,15 +22,16 @@ export class RolesComponent implements OnInit, OnDestroy {
   @ViewChild('dt') dt;
   getAllSubscrip: Subscription;
   getSubscrip: Subscription;
-  deleteSubscrip: Subscription;
+  activateSubscrip: Subscription;
+  deactivateSubscrip: Subscription;
   editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
   locationTexts = new DatatablesLocationTexts("Details");
 
   options = new DatatablesOptions(
     true,  //edit
-    true,  //delete
+    false,  //delete
     false,  //view
-    false,  //habInhab
+    true,  //habInhab
     false,  //other1
     false, //other2
     false, //other3
@@ -100,7 +101,8 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
-    if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
+    if(this.activateSubscrip) this.activateSubscrip.unsubscribe();
+    if(this.deactivateSubscrip) this.deactivateSubscrip.unsubscribe();
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
   }
 
@@ -129,7 +131,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/roles/edit/'+id]);
   }
 
-  deleteClick(id: number){
+  /*deleteClick(id: number){
     console.log("Delete ID: " + id);
     this.deleteSubscrip = this.service.delete(id).subscribe(
       data => {
@@ -143,11 +145,49 @@ export class RolesComponent implements OnInit, OnDestroy {
       }
     );
     //this.router.navigate(['/admin/roles/delete/'+id]);
-  }
+  }*/
 
   assginFeatures(id: number){
     console.log("Assign ID: " + id);
     //this.router.navigate(['/admin/roles/assign/'+id]);
   }
+
+  
+  habInhab(obj: any){
+      if (!obj.hab){
+          this.deactivate(obj.id);
+      } else {
+          this.activate(obj.id);
+      }
+  }
+
+  deactivate(id: number){
+      this.deactivateSubscrip = this.service.deactivate(id).subscribe(
+          data => {
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              this.getEntity(id, (e)=>this.dt.updateById(id, e));
+          },
+          err => {
+              var json = JSON.parse(err._body)
+              if(json.messages) this.messageService.showMessages(json.messages);
+          }
+      );
+  }
+
+  activate(id: number){
+      this.activateSubscrip = this.service.activate(id).subscribe(
+          data => {
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              this.getEntity(id, (e)=>this.dt.updateById(id, e));
+          },
+          err => {
+              var json = JSON.parse(err._body)
+              if(json.messages) this.messageService.showMessages(json.messages);
+          }
+      );
+  }
+
 
 }

@@ -129,6 +129,12 @@
   <data name="DescriptionRequired" xml:space="preserve">
     <value>El campo descripción es requerido</value>
   </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Rol deshabilitado correctamente</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Rol habilitado correctamente</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Rol no encontrado</value>
   </data>

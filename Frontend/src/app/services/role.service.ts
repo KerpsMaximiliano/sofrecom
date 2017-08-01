@@ -39,6 +39,14 @@ export class RoleService {
     return this.http.delete(`${this.baseUrl}/role/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
+  deactivate(id: number) {
+    return this.http.put(`${this.baseUrl}/role/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+  }
+
+  activate(id: number) {
+    return this.http.put(`${this.baseUrl}/role/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+  }
+
   assignFunctionalities(userId: number, objToSend: any){
       return this.http.post(`${this.baseUrl}/role/${userId}/functionalities`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
   }

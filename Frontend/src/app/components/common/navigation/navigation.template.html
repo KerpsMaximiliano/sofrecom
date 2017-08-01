@@ -3,7 +3,13 @@
     <ul class="nav metismenu" id="side-menu">
       <li class="nav-header">
         <div class="profile-element" dropdown>
-          <img alt="image" class="img-circle" src="assets/images/logo_small.jpg">
+          <img alt="image" class="img-circle" src="assets/images/logo_small2.png">
+
+          <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()">
+            <strong><i class="fa fa-angle-left"></i> </strong>
+          </a>
+
+          
           <a dropdownToggle>
             <span class="block m-t-xs"> <strong class="font-bold">Sofco Ar</strong> </span>
             <!--<span class="text-muted text-xs block">Art Director <b class="caret"></b> </span>-->
@@ -17,7 +23,10 @@
           </ul>
         </div>
         <div class="logo-element">
-          IN+
+          <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()" >
+            <strong><i class="fa fa-angle-right"></i> </strong>
+          </a>
+          <p> &nbsp; </p>
         </div>
       </li>
       <li [ngClass]="{active: activeRoute('starter')}">
@@ -25,7 +34,7 @@
       </li>
 
       <li [ngClass]="{active: activeRoute('admin')}">
-        <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span> </a>
+        <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">Roles</a></li>
           <li [ngClass]="{active: activeRoute('users')}"><a [routerLink]="['/admin/users']">Usuarios</a></li>

@@ -25,6 +25,38 @@ namespace Sofco.Service.Implementations
             _roleMenuRepository = roleMenuRepository;
         }
 
+
+        public Response<Role> Active(int id, bool active)
+        {
+            var response = new Response<Role>();
+            var entity = _roleRepository.GetSingle(x => x.Id == id);
+
+            if (entity != null)
+            {
+                entity.Active = active;
+
+                if (active)
+                {
+                    entity.StartDate = DateTime.Now;
+                    entity.EndDate = null;
+                }
+                else
+                {
+                    entity.EndDate = DateTime.Now;
+                }
+
+                _roleRepository.Update(entity);
+                _roleRepository.Save(string.Empty);
+
+                response.Data = entity;
+                response.Messages.Add(new Message(active ? Resources.es.Role.Enabled : Resources.es.Role.Disabled, MessageType.Success));
+                return response;
+            }
+
+            response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
+            return response;
+        }
+
         public IList<Role> GetAllReadOnly()
         {
             return _roleRepository.GetAllReadOnly();

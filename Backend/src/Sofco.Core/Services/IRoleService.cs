@@ -18,5 +18,6 @@ namespace Sofco.Core.Interfaces.Services
         Response<Functionality> AddFunctionality(int roleId, int functionalityId);
         Response<Functionality> DeleteFunctionality(int roleId, int functionalityId);
         Response<Role> GetDetail(int id);
+        Response<Role> Active(int id, bool active);
     }
 }

@@ -123,6 +123,12 @@
   <data name="Deleted" xml:space="preserve">
     <value>Grupo eliminado correctamente</value>
   </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Grupo deshabilitado correctamente</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Grupo habilitado correctamente</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Grupo no encontrado</value>
   </data>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
+import { smoothlyMenu } from '../../../app.helpers';
 import 'jquery-slimscroll';
 
 declare var jQuery:any;
@@ -22,6 +23,12 @@ export class NavigationComponent {
       })
     }
   }
+
+  toggleNavigation(): void {
+    jQuery("body").toggleClass("mini-navbar");
+    smoothlyMenu();
+  }
+
 
   activeRoute(routename: string): boolean{
     return this.router.url.indexOf(routename) > -1;

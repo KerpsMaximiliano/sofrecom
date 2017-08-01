@@ -22,14 +22,16 @@ export class GroupsComponent implements OnInit, OnDestroy {
   getAllSubscrip: Subscription;
   getSubscrip: Subscription;
   deleteSubscrip: Subscription;
+  deactivateSubscrip: Subscription;
+  activateSubscrip: Subscription;
   editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
   locationTexts = new DatatablesLocationTexts("Details");
 
   options = new DatatablesOptions(
     true,  //edit
-    true,  //delete
+    false,  //delete
     false,  //view
-    false,  //habInhab
+    true,  //habInhab
     false,  //other1
     false, //other2
     false, //other3
@@ -148,5 +150,43 @@ export class GroupsComponent implements OnInit, OnDestroy {
     console.log("Assign ID: " + id);
     //this.router.navigate(['/admin/roles/assign/'+id]);
   }
+
+
+  habInhab(obj: any){
+      if (!obj.hab){
+          this.deactivate(obj.id);
+      } else {
+          this.activate(obj.id);
+      }
+  }
+
+  deactivate(id: number){
+      this.deactivateSubscrip = this.service.deactivate(id).subscribe(
+          data => {
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              this.getEntity(id, (e)=>this.dt.updateById(id, e));
+          },
+          err => {
+              var json = JSON.parse(err._body)
+              if(json.messages) this.messageService.showMessages(json.messages);
+          }
+      );
+  }
+
+  activate(id: number){
+      this.activateSubscrip = this.service.activate(id).subscribe(
+          data => {
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              this.getEntity(id, (e)=>this.dt.updateById(id, e));
+          },
+          err => {
+              var json = JSON.parse(err._body)
+              if(json.messages) this.messageService.showMessages(json.messages);
+          }
+      );
+  }
+
 
 }

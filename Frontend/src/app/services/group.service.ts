@@ -33,6 +33,14 @@ export class GroupService {
         return this.http.delete(`${this.baseUrl}/group/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
+    deactivate(id: number) {
+        return this.http.put(`${this.baseUrl}/group/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    activate(id: number) {
+        return this.http.put(`${this.baseUrl}/group/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
     getOptions() {
         return this.http.get(`${this.baseUrl}/group/options`, { headers: this.headers}).map((res:Response) => res.json() );
     }

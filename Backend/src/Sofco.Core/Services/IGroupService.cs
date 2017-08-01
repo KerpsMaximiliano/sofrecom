@@ -14,5 +14,6 @@ namespace Sofco.Core.Interfaces.Services
         Response<Group> Update(Group group, int roleId);
         Response<Group> AddRole(int roleId, int groupId);
         Response<Group> RemoveRole(int roleId, int groupId);
+        Response<Group> Active(int id, bool active);
     }
 }

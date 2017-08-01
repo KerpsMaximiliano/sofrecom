@@ -109,3 +109,37 @@ div.scroll{
   overflow-y: auto; 
   height:300px;
 }
+
+.icon-round{
+  border-radius: 35px;
+  font-weight: bold; 
+  font-size: 18px;
+  box-shadow: 2px 2px 1px 0px #5e6f6c;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(26, 179, 148, 0.2);
+}
+
+.icon-round:hover{
+  background-color: rgba(26, 179, 148, 0.9);
+}
+
+.text-xl{
+  font-size: 24px;
+}
+
+.text-l{
+  font-size: 20px;
+}
+
+.text-m{
+  font-size: 16px;
+}
+
+.margin-left-m{
+  margin-left: 20px;
+}
+
+.margin-right-m{
+  margin-right: 20px;
+}
