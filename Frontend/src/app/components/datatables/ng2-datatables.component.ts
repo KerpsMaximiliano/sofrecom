@@ -31,7 +31,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   @Output() other2 = new EventEmitter<number>();
   @Output() other3 = new EventEmitter<number>();
   @Input() callDefaultUrls: boolean = true;
-  private editionTypeEnum = DatatablesEditionType;
+  public editionTypeEnum = DatatablesEditionType;
   private actionsColumnWidth:number = 0;
   private dataTypeEnum = DatatablesDataType;
   private alignmentEnum = DatatablesAlignment;
@@ -40,6 +40,22 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   //dtInstance: Promise<DataTables.Api>;
 
   constructor(private router: Router) {
+    this.data = [];
+
+    //establecer un objeto inicial para IE no de error
+    /*let obj = {};
+
+    for(var i = 0; i< this.columns.length; i++){
+      if(i == 2){
+        obj[this.columns[i].name] = this.columns[i].name;
+      } else{
+        obj[this.columns[i].name] = "No hay datos";
+      }
+      
+    }
+
+    this.data.push(obj);*/
+
   }
     
   ngOnInit() {
@@ -52,6 +68,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   createTable(){
 
     let arrOrder = [[this.options.orderByColumn, this.options.orderByAscDesc]];
+
 
     setTimeout(()=>{
           $( document ).ready(function() {

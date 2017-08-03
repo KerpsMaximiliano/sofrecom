@@ -1,5 +1,5 @@
 
-<table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%">
+<table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%" *ngIf="data">
     <thead>
         <tr>
             <th *ngFor="let column of columns" [width] = "columns.width">{{column.title}}</th>

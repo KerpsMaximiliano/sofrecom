@@ -11,7 +11,7 @@ declare var jQuery:any;
 })
 export class TopNavbarComponent {
 
-  constructor(private configService: Configuration, private translateService: TranslateService){
+  constructor(public configService: Configuration, private translateService: TranslateService){
       let browserLang = translateService.getBrowserLang();
       configService.setCurrLang(browserLang);
   }

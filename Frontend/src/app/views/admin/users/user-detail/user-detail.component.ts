@@ -48,6 +48,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.id = params['id'];
             this.getDetails();
         });
+        
     }
 
     getDetails(){
