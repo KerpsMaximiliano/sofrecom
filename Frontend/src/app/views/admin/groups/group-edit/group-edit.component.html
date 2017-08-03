@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-xs-12">
-        <h2>Grupos</h2>
+        <h2>{{'ADMIN.GROUPS.TITLE' | translate }}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
             <li>
-                <a>Admin</a>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
             </li>
             <li>
-                <a [routerLink]="['../../']">Groups</a>
+                <a [routerLink]="['../../']">{{'ADMIN.GROUPS.TITLE' | translate }}</a>
             </li>
             <li class="active">
-                <strong>Edit</strong>
+                <strong>{{'ACTIONS.EDIT' | translate }}</strong>
             </li>
         </ol>
     </div>
@@ -27,7 +27,7 @@
         <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Editar Grupo</h5>
+                    <h5>{{'ADMIN.GROUPS.EDIT' | translate }}</h5>
 
 
                     <div class="ibox-tools" >

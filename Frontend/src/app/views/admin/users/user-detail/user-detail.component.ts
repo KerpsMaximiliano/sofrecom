@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { User } from 'models/user';
 import { UserService } from 'app/services/user.service';
+import { UserDetail } from "models/userDetail";
 
 @Component({
   selector: 'app-user-detail',
@@ -17,7 +18,7 @@ import { UserService } from 'app/services/user.service';
 export class UserDetailComponent implements OnInit, OnDestroy {
 
     private id;
-    public user = <User>{};
+    public user = <UserDetail>{};
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Asignar Grupos", //title
         "modalGroups", //id

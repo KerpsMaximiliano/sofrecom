@@ -96,7 +96,15 @@ namespace Sofco.WebApi.Controllers
                 foreach (var rol in roles)
                 {
                     if(rol != null)
-                        model.Roles.Add(new RoleModel(rol));
+                    {
+                        var roleModel = new RoleModel(rol);
+                        if (!model.Roles.Contains(roleModel))
+                        {
+                            model.Roles.Add(roleModel);
+                        }
+                        
+                    }
+                        
                 }
 
                 var functionalities = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));

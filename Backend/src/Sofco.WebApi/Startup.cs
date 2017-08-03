@@ -45,6 +45,10 @@ namespace Sofco.WebApi
             services.AddOptions();
             services.AddCors();
 
+            services.Configure<IISOptions>(options => {
+                options.AutomaticAuthentication = true;
+            });
+
             services.Configure<ActiveDirectoryConfig>(Configuration.GetSection("ActiveDirectory"));
 
             // Services

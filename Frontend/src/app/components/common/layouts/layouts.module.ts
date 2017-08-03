@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
@@ -27,7 +28,8 @@ import {TopNavigationNavbarComponent} from "./../topnavbar/topnavigationnavbar.c
   imports: [
     BrowserModule,
     RouterModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TranslateModule
   ],
   exports: [
     FooterComponent,

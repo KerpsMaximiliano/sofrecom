@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sofco.WebApi.Models
 {
-    public class RoleModel : BaseEntity, IAuditDates
+    public class RoleModel : BaseEntity, IAuditDates, IEquatable<RoleModel>
     {
         public RoleModel()
         {
@@ -43,6 +43,11 @@ namespace Sofco.WebApi.Models
             rol.Id = Id;
             rol.Description = Description;
             rol.Active = Active;
+        }
+
+        public bool Equals(RoleModel other)
+        {
+            return this.Id == other.Id;
         }
     }
 }

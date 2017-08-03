@@ -1,36 +1,40 @@
 {
-    "MENU": {
-        "HOME": "Inicio",
-        "SERVICES": "Servicios",
-        "REQUIREMENTS": "Requerimientos",
-        "ASSIGNMENTS": "Asignaciones",
-        "ADMIN": "Administración",
-        "USERS": "Usuarios",
-        "PROFILES": "Perfiles",
-        "USERS_PROFILES": "Users & Profiles"
-    },
-    "DASHBOARD": {
-        "TITLE": "Tablero de Control"
-    },
-    "SERVICES": {
-        "TITLE": "Servicios"
-    },
-    "REQUIREMENTS": {
-        "TITLE": "Requerimientos"
-    },
-    "ASSIGNMENTS": {
-        "TITLE": "Asignaciones"
-    },
     "ADMIN": {
         "TITLE": "Administración",
+        "SHORT_TITLE": "Admin",
+        "ROLES": {
+            "TITLE": "Roles",
+            "MANAGEMENT": "Administración de Roles",
+            "EDIT": "Editar Rol",
+            "ADD": "Agregar Rol"
+        },
         "USERS": {
-            "TITLE": "Usuarios"
+            "TITLE": "Usuarios",
+            "MANAGEMENT": "Administración de Usuarios",
+            "EDIT": "Editar Usuario",
+            "ADD": "Agregar Usuario"
         },
-        "PROFILES": {
-            "TITLE": "Perfiles"
+        "GROUPS": {
+            "TITLE": "Grupos",
+            "MANAGEMENT": "Administración de Grupos",
+            "EDIT": "Editar Grupo",
+            "ADD": "Agregar Grupo"
         },
-        "USERS_PROFILES": {
-            "TITLE": "Usuarios / Perfiles"
+        "FUNCTIONALITIES": {
+            "TITLE": "Funcionalidades",
+            "MANAGEMENT": "Administración de Funcionalidades",
+            "EDIT": "Editar Funcionalidad",
+            "ADD": "Agregar Funcionalidad"
         }
+    },
+    "HOME": {
+        "TITLE": "Inicio"
+    },
+    "ACTIONS":{
+        "ADD": "Agregar",
+        "EDIT": "Editar",
+        "DELETE": "Eliminar",
+        "ACTIVATE": "Activar",
+        "DEACTIVATE": "Desactivar"
     }
 }

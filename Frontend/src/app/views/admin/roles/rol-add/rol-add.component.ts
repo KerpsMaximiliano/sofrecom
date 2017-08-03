@@ -1,8 +1,9 @@
+import { Option } from 'models/option';
 import { Router } from '@angular/router';
 import { Role } from 'models/role';
 import { RoleService } from 'app/services/role.service';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from './../../../../services/message.service';
+import { MessageService } from 'app/services/message.service';
 
 @Component({
   selector: 'app-rol-add',
@@ -11,27 +12,34 @@ import { MessageService } from './../../../../services/message.service';
 })
 export class RolAddComponent implements OnInit {
 
-  public rol: Role = <Role>{};
+    public rol: Role = <Role>{};
 
-  constructor(private service: RoleService, private messageService: MessageService,private router: Router) { }
+    public funcsToAdd: Option[];
+    public funcsAdded: Option[];
 
-  ngOnInit() {
-  }
+    constructor(private service: RoleService, private messageService: MessageService,private router: Router) { }
 
-  onSubmit(form){
-    if(!form.invalid){
-      this.rol.active = true;
-      this.service.add(this.rol).subscribe(
-        data => {
-          console.log(data);
-          if(data.messages) this.messageService.showMessages(data.messages);
-          this.router.navigate(["/admin/roles"]);
-        },
-        err => {
-          var json = JSON.parse(err._body)
-          if(json.messages) this.messageService.showMessages(json.messages);
-        }
-      );
+    ngOnInit() {
     }
-  }
+
+    onSubmit(form){
+      if(!form.invalid){
+        this.rol.active = true;
+        this.service.add(this.rol).subscribe(
+          data => {
+            console.log(data);
+            if(data.messages) this.messageService.showMessages(data.messages);
+            this.router.navigate(["/admin/roles"]);
+          },
+          err => {
+            var json = JSON.parse(err._body)
+            if(json.messages) this.messageService.showMessages(json.messages);
+          }
+        );
+      }
+    }
+
+
+
+
 }

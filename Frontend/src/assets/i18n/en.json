@@ -1,36 +1,40 @@
 {
-    "MENU": {
-        "HOME": "Home",
-        "SERVICES": "Services",
-        "REQUIREMENTS": "Requirements",
-        "ASSIGNMENTS": "Assignments",
-        "ADMIN": "Admin",
-        "USERS": "User",
-        "PROFILES": "Profiles",
-        "USERS_PROFILES": "Users & Profiles"
-    },
-    "DASHBOARD": {
-        "TITLE": "Dashboard"
-    },
-    "SERVICES": {
-        "TITLE": "Services"
-    },
-    "REQUIREMENTS": {
-        "TITLE": "Requirements"
-    },
-    "ASSIGNMENTS": {
-        "TITLE": "Assignments"
-    },
     "ADMIN": {
-        "TITLE": "Admin",
+        "TITLE": "Administration",
+        "SHORT_TITLE": "Admin",
+        "ROLES": {
+            "TITLE": "Roles",
+            "MANAGEMENT": "Roles Management",
+            "EDIT": "Edit Role",
+            "ADD": "Add Role"
+        },
         "USERS": {
-            "TITLE": "Users"
+            "TITLE": "Users",
+            "MANAGEMENT": "Users Management",
+            "EDIT": "Edit User",
+            "ADD": "Add User"
         },
-        "PROFILES": {
-            "TITLE": "Profiles"
+        "GROUPS": {
+            "TITLE": "Groups",
+            "MANAGEMENT": "Groups Management",
+            "EDIT": "Edit Group",
+            "ADD": "Add Group"
         },
-        "USERS_PROFILES": {
-            "TITLE": "Users / Profiles"
+        "FUNCTIONALITIES": {
+            "TITLE": "Functionalities",
+            "MANAGEMENT": "Functionality Management",
+            "EDIT": "Edit Functionality",
+            "ADD": "Add Functionality"
         }
+    },
+    "HOME": {
+        "TITLE": "Home"
+    },
+    "ACTIONS":{
+        "ADD": "Add",
+        "EDIT": "Edit",
+        "DELETE": "Delete",
+        "ACTIVATE": "Activate",
+        "DEACTIVATE": "Deactivate"
     }
 }
