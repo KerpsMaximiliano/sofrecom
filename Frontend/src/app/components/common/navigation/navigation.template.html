@@ -38,9 +38,9 @@
       <li [ngClass]="{active: activeRoute('admin')}">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
-          <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('users')}"><a [routerLink]="['/admin/users']">{{'ADMIN.USERS.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('groups')}"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('functionalities')}"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
         </ul>
       </li>

@@ -61,6 +61,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
 
   getAllRoles(){
     this.getRolesSubscrip = this.roleService.getAll().subscribe(d => {
+      //d.unshift(new Role(null, "Ninguno"));
       this.roles = d;
     });
   }

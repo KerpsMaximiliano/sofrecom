@@ -7,12 +7,13 @@ export class  Configuration {
 
     UrlApi : string;
     Authorization: string;
-    public currLang: string = 'en';
+    public currLang: string = 'es';
 
 
     constructor(public tr: TranslateService){
         tr.addLangs(["en", "es"]);
-        tr.setDefaultLang(this.currLang);
+        let browserLang = tr.getBrowserLang();
+        tr.setDefaultLang(browserLang);
         tr.use(this.currLang);
 
         this.UrlApi = "http://localhost:9696/api"; //dev
