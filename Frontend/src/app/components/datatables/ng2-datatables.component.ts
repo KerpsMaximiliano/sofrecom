@@ -20,6 +20,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   @Input() data;
   @Input() options = new DatatablesOptions();
   @Input() columns: DatatablesColumn[];
+  public visibleColumns: DatatablesColumn[];
   @Input() idColumnName: string = "id";
   @Input() editionType: number = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
   @Input() locationTexts = new DatatablesLocationTexts();
@@ -42,6 +43,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   constructor(private router: Router) {
     this.data = [];
 
+    
     //establecer un objeto inicial para IE no de error
     /*let obj = {};
 
@@ -59,6 +61,9 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
     
   ngOnInit() {
+
+    this.visibleColumns = this.columns.filter(col => col.visibility);
+
     this.setActionsColumnWidth();
 
     this.createTable();
@@ -77,7 +82,8 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
               order: arrOrder,//[this.options.orderByColumn, this.options.orderByAscDesc]
               oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
               buttons: [
-                'excel', 'pdf'
+                'excelHtml5',
+                'pdfHtml5'
               ]
             });
           });

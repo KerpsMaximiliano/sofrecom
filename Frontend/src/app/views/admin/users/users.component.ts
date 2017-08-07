@@ -46,7 +46,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     private alignmentEnum = DatatablesAlignment;
 
     columns: DatatablesColumn[] = [
-        new DatatablesColumn("id", "Id", "", 1, this.dataTypeEnum.number, this.alignmentEnum.left),
+        new DatatablesColumn("id", "Id", "", 0, this.dataTypeEnum.number, this.alignmentEnum.left),
         new DatatablesColumn("name", "Nombre", "60px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
         new DatatablesColumn("email", "Mail", "60px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
         new DatatablesColumn("active", "Activo", "10px", 1, this.dataTypeEnum.boolean, this.alignmentEnum.center),

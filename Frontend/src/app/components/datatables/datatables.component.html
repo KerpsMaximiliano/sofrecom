@@ -2,7 +2,7 @@
 <table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%" *ngIf="data">
     <thead>
         <tr>
-            <th *ngFor="let column of columns" [width] = "columns.width">{{column.title}}</th>
+            <th *ngFor="let column of visibleColumns" [width] = "column.width">{{column.title}}</th>
             <th *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow" width="{{actionsColumnWidth}}px">
                 Actions
             </th>
@@ -14,7 +14,7 @@
         <tr *ngFor="let d of data" [ngClass]="editionType == editionTypeEnum.HandInAllTheRow ? 'cursor-pointer' : 'cursor-default'">
 
             <!--RECORRO LAS COLUMNAS-->
-            <td *ngFor="let column of columns" [ngClass]="(column.alignment == alignmentEnum.center)?
+            <td *ngFor="let column of visibleColumns" [ngClass]="(column.alignment == alignmentEnum.center)?
                                                                 'text-center':
                                                             (column.alignment == alignmentEnum.left)?
                                                                 'text-left':

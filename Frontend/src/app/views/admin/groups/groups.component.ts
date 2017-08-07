@@ -48,10 +48,10 @@ export class GroupsComponent implements OnInit, OnDestroy {
   columns: DatatablesColumn[] = 
   [
     new DatatablesColumn(
-      "id",  //name
-      "Id",  //title
-      "",    //width
-      1,     //visibility
+      "id",      //name
+      "Id",      //title
+      "90px",    //width
+      0,         //visibility
       this.dataTypeEnum.number,  //dataType
       this.alignmentEnum.left
     ),
@@ -66,7 +66,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     new DatatablesColumn(
       "active",  //name
       "Active",  //title
-      "",    //width
+      "100px",    //width
       1,     //visibility
       this.dataTypeEnum.boolean,  //dataType
       this.alignmentEnum.center
@@ -74,7 +74,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     new DatatablesColumn(
       "startDate",  //name
       "Start Date",  //title
-      "30px",    //width
+      "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
       this.alignmentEnum.right
@@ -82,7 +82,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     new DatatablesColumn(
       "endDate",  //name
       "End Date",  //title
-      "30px",    //width
+      "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
       this.alignmentEnum.right
