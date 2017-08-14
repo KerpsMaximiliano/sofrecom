@@ -58,7 +58,7 @@ namespace Sofco.WebApi.Controllers
             {
                 var functionalityModel = new FunctionalityModel(functionality);
 
-                foreach (var roleFunctionality in functionality.RoleFunctionality)
+                foreach (var roleFunctionality in functionality.RoleModuleFunctionality)
                 {
                     functionalityModel.Roles.Add(new RoleModel(roleFunctionality.Role));
                 }
@@ -79,7 +79,7 @@ namespace Sofco.WebApi.Controllers
 
             var model = new FunctionalityModel(response.Data);
 
-            foreach (var roleFunctionality in response.Data.RoleFunctionality)
+            foreach (var roleFunctionality in response.Data.RoleModuleFunctionality)
             {
                 model.Roles.Add(new RoleModel(roleFunctionality.Role));
             }

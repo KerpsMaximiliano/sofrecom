@@ -19,7 +19,8 @@ namespace Sofco.DAL
         public DbSet<Menu> Menus { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
-        public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<RoleModuleFunctionality> RoleModuleFunctionality { get; set; }
         public DbSet<RoleMenu> RoleMenu { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,11 +30,12 @@ namespace Sofco.DAL
             builder.MapCustomers();
             builder.MapRoles();
             builder.MapGroups();
+            builder.MapModules();
             builder.MapMenus();
             builder.MapUsers();
             builder.MapUserGroups();
             builder.MapFunctionalities();
-            builder.MapRoleFunctionality();
+            builder.MapRoleModuleFunctionality();
             builder.MapRoleMenu();
         }
     }

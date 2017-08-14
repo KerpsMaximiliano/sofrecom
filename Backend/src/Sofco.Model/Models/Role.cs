@@ -10,7 +10,7 @@ namespace Sofco.Model.Models
         public string Description { get; set; }
 
         public IList<Group> Groups { get; set; }
-        public IList<RoleFunctionality> RoleFunctionality { get; set; }
+        public IList<RoleModuleFunctionality> RoleModuleFunctionality { get; set; }
         public IList<RoleMenu> RoleMenu { get; set; }
 
         public bool Active { get; set; }

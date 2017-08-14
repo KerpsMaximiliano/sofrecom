@@ -22,14 +22,14 @@ namespace Sofco.DAL.Repositories
         public IList<Functionality> GetAllFullReadOnly()
         {
             return _context.Set<Functionality>()
-                .Include(x => x.RoleFunctionality)
+                .Include(x => x.RoleModuleFunctionality)
                     .ThenInclude(s => s.Role)
                 .ToList();
         }
 
         public IList<Functionality> GetFuntionalitiesByRoles(IEnumerable<int> roleIds)
         {
-            return _context.RoleFunctionality
+            return _context.RoleModuleFunctionality
                     .Include(x => x.Functionality)
                     .Where(x => roleIds.Contains(x.RoleId) && x.Functionality != null)
                     .Distinct()
@@ -40,7 +40,7 @@ namespace Sofco.DAL.Repositories
         public Functionality GetSingleWithRoles(Expression<Func<Functionality, bool>> predicate)
         {
             return _context.Set<Functionality>()
-                .Include(x => x.RoleFunctionality)
+                .Include(x => x.RoleModuleFunctionality)
                     .ThenInclude(s => s.Role)
                 .SingleOrDefault(predicate);
         }
