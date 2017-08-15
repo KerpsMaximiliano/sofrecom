@@ -219,17 +219,6 @@ namespace Sofco.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("{roleId}/menus")]
-        public IActionResult ChangeMenus(int roleId, [FromBody]RoleMenuModel model)
-        {
-            var response = _roleService.ChangeMenus(roleId, model.MenusToAdd, model.MenusToRemove);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPost]
         [Route("{roleId}/module/{moduleId}/functionality/{functionalityId}")]
         public IActionResult AddFunctionality(int roleId, int moduleId, int functionalityId)
         {

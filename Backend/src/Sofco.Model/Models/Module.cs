@@ -12,6 +12,8 @@ namespace Sofco.Model.Models
         public DateTime? EndDate { get; set; }
         public DateTime StartDate { get; set; }
 
+        public Menu Menu { get; set; }
+
         public IList<RoleModuleFunctionality> RoleModuleFunctionality { get; set; }
     }
 }

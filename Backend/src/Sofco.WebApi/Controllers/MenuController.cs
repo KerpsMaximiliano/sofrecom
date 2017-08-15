@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
 using Sofco.WebApi.Models;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers
 {
@@ -15,14 +15,26 @@ namespace Sofco.WebApi.Controllers
             _menuService = menuService;
         }
 
-        [HttpPost]
-        public IActionResult Get([FromBody] RolesModel roles)
+        [HttpGet]
+        public IActionResult Get()
         {
-            var menus = _menuService.GetMenuByRoleId(roles.roles.ToArray());
+            var menus = _menuService.GetMenu(1);
 
-            var model = menus.Select(x => new MenuModel(x));
+            var response = new List<MenuModel>();
 
-            return Ok(model);
+            foreach (var item in menus)
+            {
+                var menuModel = new MenuModel(item);
+
+                foreach (var module in item.Modules)
+                {
+                    menuModel.Modules.Add(new Option(module.Id, module.Description));
+                }
+
+                response.Add(menuModel);
+            }
+
+            return Ok(response);
         }
     }
 }
