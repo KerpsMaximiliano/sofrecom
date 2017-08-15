@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Linq.Expressions;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories
 {
@@ -27,13 +28,23 @@ namespace Sofco.DAL.Repositories
                 .ToList();
         }
 
-        public IList<Functionality> GetFuntionalitiesByRoles(IEnumerable<int> roleIds)
+        public IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId)
         {
             return _context.RoleModuleFunctionality
+                .Include(x => x.Functionality)
+                .Where(x => x.ModuleId == moduleId && x.RoleId == roleId && x.Functionality != null)
+                .Select(x => x.Functionality)
+                .Distinct()
+                .ToList();
+        }
+
+        public IList<RoleModuleFunctionality> GetModuleAndFuntionalitiesByRoles(IEnumerable<int> roleIds)
+        {
+            return _context.RoleModuleFunctionality
+                    .Include(x => x.Module)
                     .Include(x => x.Functionality)
-                    .Where(x => roleIds.Contains(x.RoleId) && x.Functionality != null)
+                    .Where(x => roleIds.Contains(x.RoleId) && x.Functionality != null && x.Module != null)
                     .Distinct()
-                    .Select(x => x.Functionality)
                     .ToList();
         }
 

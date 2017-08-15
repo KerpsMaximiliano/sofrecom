@@ -71,7 +71,6 @@ namespace Sofco.WebApi
             services.AddTransient<IUserGroupRepository, UserGroupRepository>();
             services.AddTransient<IFunctionalityRepository, FunctionalityRepository>();
             services.AddTransient<IRoleModuleFunctionalityRepository, RoleModuleFunctionalityRepository>();
-            services.AddTransient<IRoleMenuRepository, RoleMenuRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
         }
 

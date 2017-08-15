@@ -8,9 +8,10 @@ using Sofco.DAL;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20170815143052_RefactorMenu")]
+    partial class RefactorMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -110,13 +111,9 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<int?>("MenuId");
-
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
 
                     b.ToTable("Modules");
                 });
@@ -197,13 +194,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Role", "Role")
                         .WithMany("Groups")
                         .HasForeignKey("RoleId");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Module", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Menu", "Menu")
-                        .WithMany("Modules")
-                        .HasForeignKey("MenuId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.RoleModuleFunctionality", b =>

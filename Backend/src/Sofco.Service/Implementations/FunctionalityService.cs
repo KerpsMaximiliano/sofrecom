@@ -5,6 +5,7 @@ using Sofco.Model.Models;
 using Sofco.Model.Utils;
 using Sofco.Core.DAL;
 using Sofco.Model.Enums;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations
 {
@@ -73,9 +74,14 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public IList<Functionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds)
+        public IList<RoleModuleFunctionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds)
         {
-            return _functionalityRepository.GetFuntionalitiesByRoles(roleIds);
+            return _functionalityRepository.GetModuleAndFuntionalitiesByRoles(roleIds);
+        }
+
+        public IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId)
+        {
+            return _functionalityRepository.GetFunctionalitiesByModuleAndRole(moduleId, roleId);
         }
     }
 }

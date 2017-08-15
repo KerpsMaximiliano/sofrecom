@@ -41,16 +41,6 @@ namespace Sofco.DAL.Repositories
                    .SingleOrDefault(x => x.Id == id);
         }
 
-        public IList<Menu> GetMenusByRoleId(int[] roleIds)
-        {
-            return _context.RoleMenu
-                .Include(x => x.Menu)
-                .Where(x => roleIds.Contains(x.RoleId))
-                .Select(x => x.Menu)
-                .Distinct()
-                .ToList();
-        }
-
         public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
         {
             return _context.Groups

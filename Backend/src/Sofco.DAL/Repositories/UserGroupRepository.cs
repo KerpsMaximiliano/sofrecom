@@ -14,5 +14,10 @@ namespace Sofco.DAL.Repositories
         {
             return _context.UserGroup.Any(x => x.UserId == userId && x.GroupId == groupId);
         }
+
+        public int[] GetGroupsId(int userId)
+        {
+            return _context.UserGroup.Where(x => x.UserId == userId).Select(x => x.GroupId).ToArray();
+        }
     }
 }
