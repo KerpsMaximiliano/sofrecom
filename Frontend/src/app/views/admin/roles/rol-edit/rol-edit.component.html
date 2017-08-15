@@ -123,13 +123,13 @@
                         <ul class="todo-list m-t small-list">
                             <li *ngFor="let m of role.modules">
                                 <span class="m-l-xs">{{m.description}}</span>
-                                <a class="pull-right" (click)="unassignFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                <a class="pull-right" (click)="unAssignFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                                 <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
                                 
                                 <ul class="todo-list m-t small-list indented">
                                     <li *ngFor="let f of m.functionalities" class="indented">
                                         <span class="m-l-xs">{{f.description}}</span>
-                                        <a class="pull-right" (click)="unassignFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                        <a class="pull-right" (click)="unAssignFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                                         <!--<a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>-->
                                 
                                     </li>

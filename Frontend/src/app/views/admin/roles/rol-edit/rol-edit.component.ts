@@ -224,19 +224,19 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
         var moduleIndex = this.role.modules.findIndex(m => m.id == moduleId);
 
-        var arrFuncsToRem = this.role.modules[moduleIndex].functionalities;
+        var arrFuncsToRem = this.role.modules[moduleIndex].functionalities
+                                .map(x => x.id);
 
         var objToSend = {
             functionalitiesToAdd: [],
             functionalitiesToRemove: arrFuncsToRem,
-            moduleId: this.cboModuleId
+            moduleId: moduleId
         };
 
         this.service.unAssignFunctionalities(this.id, objToSend).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
-                this.funcModal.hide();
             },
             err => {
                 var json = JSON.parse(err._body)
@@ -245,7 +245,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
         );
     }
 
-    unassignFunctionality(moduleId: number, functionalityId: number){
+    unAssignFunctionality(moduleId: number, functionalityId: number){
         this.service.unAssignFunctionality(this.role.id, moduleId, functionalityId).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
