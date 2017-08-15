@@ -12,7 +12,7 @@ namespace Sofco.DAL.Repositories
 
         public bool ExistById(int roleId, int functionalityId)
         {
-            return _context.RoleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId);
+            return _context.RoleModuleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId);
         }
 
         public bool MenuExistById(int menuId)

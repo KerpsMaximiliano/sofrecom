@@ -23,9 +23,8 @@ namespace Sofco.WebApi.Models
             EndDate = rol.EndDate;
 
             Groups = new List<GroupModel>();
-            Functionalities = new List<FunctionalityModel>();
+            Modules = new List<ModuleModel>();
         }
-
 
         [Required(ErrorMessage = "El campo descripción es requerido")]
         [MaxLength(50, ErrorMessage = "El campo descripción debe tener un maximo de 50 caracteres")]
@@ -36,7 +35,7 @@ namespace Sofco.WebApi.Models
         public DateTime? EndDate { get; set; }
 
         public IList<GroupModel> Groups { get; set; }
-        public IList<FunctionalityModel> Functionalities { get; set; }
+        public IList<ModuleModel> Modules { get; set; }
 
         public void ApplyTo(Role rol)
         {

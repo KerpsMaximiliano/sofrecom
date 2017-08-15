@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Sofco.DAL.Repositories
 {
-    public class RoleFunctionalityRepository : BaseRepository<RoleFunctionality>, IRoleFunctionalityRepository
+    public class RoleModuleFunctionalityRepository : BaseRepository<RoleModuleFunctionality>, IRoleModuleFunctionalityRepository
     {
-        public RoleFunctionalityRepository(SofcoContext context) : base(context)
+        public RoleModuleFunctionalityRepository(SofcoContext context) : base(context)
         {
         }
 
-        public bool ExistById(int roleId, int functionalityId)
+        public bool ExistById(int roleId, int moduleId, int functionalityId)
         {
-            return _context.RoleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId);
+            return _context.RoleModuleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId && x.ModuleId == moduleId);
         }
     }
 }

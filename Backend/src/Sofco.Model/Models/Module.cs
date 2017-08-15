@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Sofco.Model.Models
 {
-    public class Functionality : BaseEntity, IAuditDates, ILogicalDelete
+    public class Module : BaseEntity, IAuditDates, ILogicalDelete
     {
         public string Description { get; set; }
         public bool Active { get; set; }

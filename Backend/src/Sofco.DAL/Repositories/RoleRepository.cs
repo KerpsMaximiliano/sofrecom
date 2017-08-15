@@ -22,7 +22,9 @@ namespace Sofco.DAL.Repositories
         {
             return _context.Set<Role>()
                 .Include(x => x.Groups)
-                .Include(x => x.RoleFunctionality)
+                .Include(x => x.RoleModuleFunctionality)
+                    .ThenInclude(x => x.Module)
+                .Include(x => x.RoleModuleFunctionality)
                     .ThenInclude(x => x.Functionality)
                 .ToList()
                 .AsReadOnly();
@@ -32,7 +34,9 @@ namespace Sofco.DAL.Repositories
         {
             return _context.Set<Role>()
                     .Include(x => x.Groups)
-                    .Include(x => x.RoleFunctionality)
+                    .Include(x => x.RoleModuleFunctionality)
+                        .ThenInclude(x => x.Module)
+                    .Include(x => x.RoleModuleFunctionality)
                         .ThenInclude(x => x.Functionality)
                    .SingleOrDefault(x => x.Id == id);
         }
