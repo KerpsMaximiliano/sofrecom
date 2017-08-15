@@ -6,7 +6,7 @@ export class Module{
         public description: string,
         public active: boolean,
         public startDate: Date,
-        public endDate: Date,
-        public functionalities: Functionality[]
+        public endDate: Date = null,
+        public functionalities: Functionality[] = null
     ){}
 }

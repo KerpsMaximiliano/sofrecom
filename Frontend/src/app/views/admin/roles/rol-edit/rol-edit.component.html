@@ -1,178 +1,204 @@
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-12">
-        <h2>Roles</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a [routerLink]="['/']">Home</a>
-            </li>
-            <li>
-                <a>Admin</a>
-            </li>
-            <li>
-                <a [routerLink]="['../../']">Roles</a>
-            </li>
-            <li class="active">
-                <strong>Edit</strong>
-            </li>
-        </ol>
-    </div>
-    <div class="col-lg-2">
+<section id="admin_roleEdit">
 
-    </div>
-</div>
-
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
+    <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Editar Rol</h5>
+            <h2>Roles</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a [routerLink]="['/']">Home</a>
+                </li>
+                <li>
+                    <a>Admin</a>
+                </li>
+                <li>
+                    <a [routerLink]="['../../']">Roles</a>
+                </li>
+                <li class="active">
+                    <strong>Edit</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
 
-                    <div class="ibox-tools" >
-                        <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Editar Rol</h5>
+
+                        <div class="ibox-tools" >
+                            <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
+                        </div>
+
                     </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
 
-                </div>
-                <div class="ibox-content">
-                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
+                            <!--Description-->
+                            <div class="form-group"><label class="col-lg-2 control-label">Description</label>
+                                <div class="col-lg-10">
+                                <input type="text"  
+                                    name="description"
+                                    class="form-control" 
+                                    [(ngModel)]="role.description"
+                                    #descripRef="ngModel"
+                                    required> 
+                                <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
 
-                        <!--Description-->
-                        <div class="form-group"><label class="col-lg-2 control-label">Description</label>
-                            <div class="col-lg-10">
-                              <input type="text"  
-                                  name="description"
-                                  class="form-control" 
-                                  [(ngModel)]="role.description"
-                                  #descripRef="ngModel"
-                                  required> 
-                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
-
+                                </div>
                             </div>
-                        </div>
 
-                        <!--ACTIVE-->
-                        <!--<div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Active
+                            <!--ACTIVE-->
+                            <!--<div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Active
+                                </div>
+                            </div>-->
+
+                            <div class="form-group" *ngIf="role" style="margin-top:-20px; margin-bottom:20px;">
+                                <div class="col-lg-12">
+                                    <icheck  [(checked)]="role.active"> <!--(click)="onActiveClick($event)"-->
+                                        <label class="col-lg-2 control-label icheck-label">Active</label> 
+                                    </icheck>
+                                </div>
                             </div>
-                        </div>-->
 
-                        <div class="form-group" *ngIf="role" style="margin-top:-20px; margin-bottom:20px;">
-                            <div class="col-lg-12">
-                                 <icheck  [(checked)]="role.active"> <!--(click)="onActiveClick($event)"-->
-                                     <label class="col-lg-2 control-label icheck-label">Active</label> 
-                                 </icheck>
+                            <div class="col-sm-10">
+                            <!--<div>
+                                <label> <input icheck type="checkbox" ng-model="main.checkThree">
+                                    Active
+                                </label>
+                            </div>-->
+
+
+
+                                
                             </div>
-                        </div>
-
-                        <div class="col-sm-10">
-                          <!--<div>
-                            <label> <input icheck type="checkbox" ng-model="main.checkThree">
-                                 Active
-                            </label>
-                          </div>-->
-
-
-
                             
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-2">
-                                <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Aceptar</strong></button>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-2">
+                                    <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Aceptar</strong></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-
-        <!--FUNCIONALIDADES-->
-        <!--<div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Funcionalidades
-                    <a class="pull-right" (click)="modalFuncs.show()"><i class="fa fa-plus icon-white"></i></a>
-                </div>
-                <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let functionality of role.functionalities">
-                            <span class="m-l-xs">{{functionality.description}}</span>
-                            <a class="pull-right" (click)="unassignFunc(functionality.id)"><i class="check-link fa fa-times icon-danger"></i></a>
-                            
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>-->
-
-        <!--SYSTEM ENTITIES-->
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Entidades
-                    <a class="pull-right" (click)="modalEntities.show()"><i class="fa fa-plus icon-white"></i></a>
-                </div>
-                <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let e of role.modules">
-                            <span class="m-l-xs">{{e.description}}</span>
-                            <a class="pull-right" (click)="unassignEntity(e.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                            <a class="pull-right" (click)="addFunctionalities(e.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
-                            
-                        </li>
-                    </ul>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!--GRUPOS-->
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Grupos
+        <div class="row">
+
+            <!--FUNCIONALIDADES-->
+            <!--<div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-info-circle"></i> Funcionalidades
+                        <a class="pull-right" (click)="modalFuncs.show()"><i class="fa fa-plus icon-white"></i></a>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let functionality of role.functionalities">
+                                <span class="m-l-xs">{{functionality.description}}</span>
+                                <a class="pull-right" (click)="unassignFunc(functionality.id)"><i class="check-link fa fa-times icon-danger"></i></a>
+                                
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let group of role.groups">
-                            <span class="m-l-xs">{{group.description}}</span>
-                        </li>
-                    </ul>
+            </div>-->
+
+            <!--MODULES-->
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-info-circle"></i> Módulos
+                        <a class="pull-right" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let m of role.modules">
+                                <span class="m-l-xs">{{m.description}}</span>
+                                <a class="pull-right" (click)="unassignFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
+                                
+                                <ul class="todo-list m-t small-list indented">
+                                    <li *ngFor="let f of m.functionalities" class="indented">
+                                        <span class="m-l-xs">{{f.description}}</span>
+                                        <a class="pull-right" (click)="unassignFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                        <!--<a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>-->
+                                
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!--GRUPOS-->
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-info-circle"></i> Grupos
+                    </div>
+                    <div class="panel-body">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let group of role.groups">
+                                <span class="m-l-xs">{{group.description}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <ng2-modal [config]="funcModalConfig"  #funcModal (accept)="assignFunctionalities()"> <!--(accept)="" (cancel)=""-->
+
+        <h4 class="margin-bottom-m" *ngIf="!editMode">Seleccione el módulo a agregar y sus funcionalidades:</h4>
+        <h4 class="margin-bottom-m" *ngIf="editMode">Seleccione las funcionalidades a agregar:</h4>
+
+        
+        <div class="row">
+
+            <!--COMBO DE MUDULOS-->
+            <div class="col-xs-12 margin-bottom-m" *ngIf="!editMode">
+                <div class="form-group"><label class="col-xs-2 control-label">Módulo</label>
+                    <div class="col-xs-10">
+                        <select class="form-control m-b" name="role" [(ngModel)]="cboModuleId" >
+                            <option *ngFor="let m of modules" [value]="m?.value">{{m?.text}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 margin-bottom-m" *ngIf="editMode">
+                <div class="form-group text-m"><label class="col-xs-10"><strong>Módulo:</strong> {{cboModuleText}}</label>
+                </div>
+            </div>
+        </div>
+        
+        <!--FUNCIONALIDADES PARA AGREGAR-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="scroll form-group">
+                    <div *ngFor="let f of funcsToAdd; let i = index"  style="margin-top:10px;">
+                        <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="f.included" >
+                            <label style="padding-left:20px;">{{f.text}}</label> 
+                        </icheck>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
-</div>
+    </ng2-modal>
 
-<ng2-modal [config]="entitiesModalConfig"  #modalEntities (accept)="assignEntities()"> <!--(accept)="" (cancel)=""-->
-
-    <h4>Seleccione las entidades a ser asignadas al usuario:</h4>
-
-    <div class="scroll">
-        <div *ngFor="let g of entitiesToAdd; let i = index"  style="margin-top:10px;">
-            <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="entitiesToAdd[i].included" >
-                <label style="padding-left:20px;">{{g.text}}</label> 
-            </icheck>
-        </div>
-    </div>
-
-</ng2-modal>
-
-<ng2-modal [config]="funcModalConfig"  #modalFunc (accept)="assignFuncs()"> <!--(accept)="" (cancel)=""-->
-
-    <h4>Seleccione las funcionalidades a ser asignadas al usuario:</h4>
-
-    <div class="scroll" *ngIf="funcsToAdd">
-        <div *ngFor="let f of funcsToAdd; let i = index"  style="margin-top:10px;">
-            <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="funcsToAdd[i].included" >
-                <label style="padding-left:20px;">{{f.text}}</label> 
-            </icheck>
-        </div>
-    </div>
-
-</ng2-modal>
+</section>

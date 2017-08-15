@@ -26,25 +26,20 @@ export class RolEditComponent implements OnInit, OnDestroy {
   private paramsSubscrip: Subscription;
   private getSubscrip: Subscription;
   private editSubscrip: Subscription;
-  public  entsToAddSubscrip: Subscription;
+  private modulesSubscrip: Subscription;
+  private funcSubscrip: Subscription;
 
   //EntitiesService
+  public editMode: boolean = false;
   public checkAtLeft:boolean = true;
-  public entitiesToAdd: Option[];
+  public cboModuleId: number;
+  public cboModuleText: string;
+  public modules: Option[];
   public funcsToAdd: Option[];
-  @ViewChild('modalEntities') modalEntities;
-  @ViewChild('modalFunc') modalFunc;
-  public entitiesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Asignar Entidades", //title
-    "modalGroups", //id
-    true,          //Accept Button
-    false,          //Cancel Button
-    "Aceptar",     //Accept Button Text
-    "Cancelar");   //Cancel Button Text
-
+  @ViewChild('funcModal') funcModal;
   public funcModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Asignar Funcionalidades", //title
-    "modalFunc",   //id
+    "Asignar Módulo / Funcionalidades", //title
+    "funcModal", //id
     true,          //Accept Button
     false,          //Cancel Button
     "Aceptar",     //Accept Button Text
@@ -52,7 +47,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: RoleService, 
-    private entityService: ModuleService,
+    private moduleService: ModuleService,
     private funcService: FunctionalityService,
     private activatedRoute: ActivatedRoute, 
     private router: Router,
@@ -71,14 +66,16 @@ export class RolEditComponent implements OnInit, OnDestroy {
     if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
     if(this.editSubscrip) this.editSubscrip.unsubscribe();
-    if(this.entsToAddSubscrip) this.entsToAddSubscrip.unsubscribe();
+    if(this.modulesSubscrip) this.modulesSubscrip.unsubscribe();
+    if(this.funcSubscrip) this.funcSubscrip.unsubscribe();
+    
   }
 
   getDetails(){
     this.getSubscrip = this.service.getDetail(this.id).subscribe((data) => {
       this.role = data;
-
-      this.getAllEntities();
+      this.getAllModules();
+      this.getAllFunctionalities();
     });
   }
 
@@ -110,47 +107,75 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
   }*/
 
-  
-    getAllEntities(){
-        this.entsToAddSubscrip = this.entityService.getOptions().subscribe(data => {
-            this.entitiesToAdd = null;
-            var entities = new Array<Option>();
+    //si me viene moduleId cargo solo ese modulo
+    //si no me viene cargo todos los que no esten asociados al rol
+    getAllModules(moduleId: number = null){
+        this.modulesSubscrip = this.moduleService.getOptions().subscribe(data => {
+            this.modules = null;
+            var localModules = new Array<Option>();
             var index = 0;
-            for(var i: number = 0; i<data.length; i++){
 
-                if(!this.isOptionInArray(this.role.modules, data[i]) ){
-                    data[i].included = false;
-                    data[i].index = index;
-                    entities.push(data[i]);
-                    index++;
+            if(moduleId){
+                var modIndex = data.findIndex(x => x.value == moduleId);
+                localModules.push(data[modIndex]);
+            }else {
+                for(var i: number = 0; i<data.length; i++){
+
+                    if(!this.isOptionInArray(this.role.modules, data[i]) ){
+                        data[i].included = false;
+                        data[i].index = index;
+                        localModules.push(data[i]);
+                        index++;
+                    }
+                    
                 }
-                
+            }
+            
+
+            if (localModules.length > 0){
+                this.cboModuleId = parseInt(localModules[0].value);
+                this.cboModuleText = localModules[0].text;
             }
 
-            this.entitiesToAdd = entities;
+            this.modules = localModules;
+
         });
     }
 
-    addFunctionalities(entityId: number){
-        this.getAllFunctionalities(entityId);
-        this.modalFunc.show();
+
+    addModule(){
+        this.getAllModules();
+        this.getAllFunctionalities();
+        this.editMode = false;
+        this.funcModal.show();
     }
 
-    getAllFunctionalities(entityId: number){
-        this.entsToAddSubscrip = this.funcService.getOptions().subscribe(data => {
+    addFunctionalities(moduleId: number){
+        this.getAllModules(moduleId);
+        this.getAllFunctionalities(moduleId);
+        this.editMode = true;
+        this.funcModal.show();
+    }
+
+    getAllFunctionalities(moduleId: number = null){
+        this.funcSubscrip = this.funcService.getOptions().subscribe(data => {
             this.funcsToAdd = null;
             var funcs = new Array<Option>();
-            var entityIndex = this.role.modules.findIndex(x => x.id == entityId);
-            var index = 0;
-            for(var i: number = 0; i<data.length; i++){
+            if (moduleId){
+                var moduleIndex = this.role.modules.findIndex(x => x.id == moduleId);
+                var index = 0;
+                for(var i: number = 0; i<data.length; i++){
 
-                if(!this.isOptionInArray(this.role.modules[entityIndex].functionalities, data[i]) ){
-                    data[i].included = false;
-                    data[i].index = index;
-                    funcs.push(data[i]);
-                    index++;
+                    if(!this.isOptionInArray(this.role.modules[moduleIndex].functionalities, data[i]) ){
+                        data[i].included = false;
+                        data[i].index = index;
+                        funcs.push(data[i]);
+                        index++;
+                    }
+                    
                 }
-                
+            } else {
+                funcs = data;
             }
 
             this.funcsToAdd = funcs;
@@ -170,22 +195,23 @@ export class RolEditComponent implements OnInit, OnDestroy {
         return esta;
     }
 
-    assignEntities(){
+    assignFunctionalities(){
 
-        var arrEntitiesToAdd = this.entitiesToAdd.filter((el)=> el.included).map((item) => {
+        var arrFuncsToAdd = this.funcsToAdd.filter((el)=> el.included).map((item) => {
             return item.value
         });
 
         var objToSend = {
-            entitiesToAdd: arrEntitiesToAdd,
-            entitiesToRemove: []
+            functionalitiesToAdd: arrFuncsToAdd,
+            functionalitiesToRemove: [],
+            moduleId: this.cboModuleId
         };
 
-        this.service.assignEntities(this.id, objToSend).subscribe(
+        this.service.assignFunctionalities(this.id, objToSend).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
-                this.modalEntities.hide();
+                this.funcModal.hide();
             },
             err => {
                 var json = JSON.parse(err._body)
@@ -194,8 +220,33 @@ export class RolEditComponent implements OnInit, OnDestroy {
         );
     }
 
-    unassignEntity(entityId: number){
-        this.service.unassignEntity(this.role.id, entityId).subscribe(
+    unAssignFunctionalities(moduleId: number){
+
+        var moduleIndex = this.role.modules.findIndex(m => m.id == moduleId);
+
+        var arrFuncsToRem = this.role.modules[moduleIndex].functionalities;
+
+        var objToSend = {
+            functionalitiesToAdd: [],
+            functionalitiesToRemove: arrFuncsToRem,
+            moduleId: this.cboModuleId
+        };
+
+        this.service.unAssignFunctionalities(this.id, objToSend).subscribe(
+            data => {
+                if(data.messages) this.messageService.showMessages(data.messages);
+                this.getDetails();
+                this.funcModal.hide();
+            },
+            err => {
+                var json = JSON.parse(err._body)
+                if(json.messages) this.messageService.showMessages(json.messages);
+            }
+        );
+    }
+
+    unassignFunctionality(moduleId: number, functionalityId: number){
+        this.service.unAssignFunctionality(this.role.id, moduleId, functionalityId).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
@@ -208,7 +259,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
 
 
-
+/*
     assignFuncs(entityId: number){
 
         var arrFuncsToAdd = this.funcsToAdd.filter((el)=> el.included).map((item) => {
@@ -220,11 +271,11 @@ export class RolEditComponent implements OnInit, OnDestroy {
             functionalitiesToRemove: []
         };
 
-        this.service.assignFunctionalities(this.id, entityId, objToSend).subscribe(
+        this.service.assignFunctionalities(this.id, objToSend).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
-                this.modalFunc.hide();
+                this.funcModal.hide();
             },
             err => {
                 var json = JSON.parse(err._body)
@@ -234,7 +285,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
 
     unassignFunc(entityId: number, funcId: number){
-        this.service.unassignFunctionality(this.role.id, entityId, funcId).subscribe(
+        this.service.unAssignFunctionality(this.role.id, entityId, funcId).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
@@ -244,5 +295,5 @@ export class RolEditComponent implements OnInit, OnDestroy {
                 if(json.messages) this.messageService.showMessages(json.messages);
             }
         );
-    }
+    }*/
 }
