@@ -3,6 +3,7 @@ using Sofco.Core.Interfaces.DAL;
 using Sofco.Model.Models;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Core.DAL
 {
@@ -11,6 +12,7 @@ namespace Sofco.Core.DAL
         bool ExistById(int id);
         Functionality GetSingleWithRoles(Expression<Func<Functionality, bool>> predicate);
         IList<Functionality> GetAllFullReadOnly();
-        IList<Functionality> GetFuntionalitiesByRoles(IEnumerable<int> roleIds);
+        IList<RoleModuleFunctionality> GetModuleAndFuntionalitiesByRoles(IEnumerable<int> roleIds);
+        IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId);
     }
 }

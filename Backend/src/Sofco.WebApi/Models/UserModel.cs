@@ -34,10 +34,10 @@ namespace Sofco.WebApi.Models
         public UserDetailModel(User user) : base(user)
         {
             Roles = new List<RoleModel>();
-            Functionalities = new List<FunctionalityModel>();
+            Modules = new List<ModuleModel>();
         }
 
         public IList<RoleModel> Roles { get; set; }
-        public IList<FunctionalityModel> Functionalities { get; set; }
+        public IList<ModuleModel> Modules { get; set; }
     }
 }

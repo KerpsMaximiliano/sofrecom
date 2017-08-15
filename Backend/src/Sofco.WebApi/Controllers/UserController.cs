@@ -102,17 +102,29 @@ namespace Sofco.WebApi.Controllers
                         {
                             model.Roles.Add(roleModel);
                         }
-                        
                     }
-                        
                 }
 
-                var functionalities = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));
+                var roleModuleFunctionality = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));
 
-                foreach (var functionality in functionalities)
+                foreach (var roleModuleFunct in roleModuleFunctionality)
                 {
-                    if(functionality != null)
-                        model.Functionalities.Add(new FunctionalityModel(functionality));
+                    if(roleModuleFunct.Module != null)
+                    {
+                        if (!model.Modules.Any(x => x.Id == roleModuleFunct.ModuleId))
+                        {
+                            var module = new ModuleModel(roleModuleFunct.Module);
+
+                            model.Modules.Add(module);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < model.Modules.Count(); i++)
+                {
+                    var roleModuleFunctionalities = roleModuleFunctionality.Where(x => x.ModuleId == model.Modules[i].Id).ToList();
+
+                    model.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new FunctionalityModel(x.Functionality)).ToList();
                 }
             }
 

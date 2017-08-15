@@ -97,5 +97,21 @@ namespace Sofco.WebApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("{moduleId}/{roleId}")]
+        public IActionResult GetFunctionalitiesByModuleAndRole(int moduleId, int roleId)
+        {
+            var functionalities = _functionalityService.GetFunctionalitiesByModuleAndRole(moduleId, roleId);
+
+            var model = new List<Option>();
+
+            foreach (var functionality in functionalities)
+            {
+                model.Add(new Option(functionality.Id, functionality.Description));
+            }
+
+            return Ok(model);
+        }
     }
 }
