@@ -1,3 +1,4 @@
+import { ModuleService } from './../../services/module.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Ng2ModalModule } from './../../components/modal/ng2modal.module';
 import { ICheckModule } from './../../components/icheck/icheck.module';
@@ -23,11 +24,12 @@ import { GroupsComponent } from './groups/groups.component';
 import { FunctionalitiesComponent } from './functionalities/functionalities.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupAddComponent } from './groups/group-add/group-add.component';
+import { ModulesComponent } from './modules/modules.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent],
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule],
-  providers   : [RoleService, UserService, GroupService, FunctionalityService],
+  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService],
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent]
 })
 

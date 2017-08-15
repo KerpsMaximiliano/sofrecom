@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
@@ -17,7 +18,8 @@ import {SparklineModule } from '../../components/charts/sparkline';
     BrowserModule,
     RouterModule,
     PeityModule,
-    SparklineModule
+    SparklineModule,
+    FormsModule
   ],
   exports: [
     StarterViewComponent,

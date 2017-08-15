@@ -8,10 +8,10 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="data && data.length > 0">
 
         <!--RECORRO LAS FILAS-->
-        <tr *ngFor="let d of data" [ngClass]="editionType == editionTypeEnum.HandInAllTheRow ? 'cursor-pointer' : 'cursor-default'">
+        <tr  *ngFor="let d of data" [ngClass]="editionType == editionTypeEnum.HandInAllTheRow ? 'cursor-pointer' : 'cursor-default'">
 
             <!--RECORRO LAS COLUMNAS-->
             <td *ngFor="let column of visibleColumns" [ngClass]="(column.alignment == alignmentEnum.center)?
@@ -67,3 +67,11 @@
         </tr>
     </tbody>
 </table>
+
+
+<ng2-modal *ngIf="data && data.length > 0" [config]="modalConfig"  #modalNg2Datatables (accept)="doHabInhab(deleteRowIndex, true)"> <!--(accept)="" (cancel)=""-->
+
+    <h4>{{locationTexts.deleteQuestion.replace("¶", data[deleteRowIndex][options.descripFieldName])}}</h4>
+
+
+</ng2-modal>

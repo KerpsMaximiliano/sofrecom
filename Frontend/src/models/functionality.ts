@@ -1,7 +1,13 @@
-export interface Functionality {
-    id: number,
-    description: string,
-    active: boolean
-    startDate: Date,
-    endDate: Date
+import { Module } from './module';
+export class Functionality {
+    constructor(
+        public id: number,
+        public code: string,
+        public description: string,
+        public active: boolean,
+        public startDate: Date,
+        public endDate: Date,
+        public modules: Module[]
+    ){}
+
 }

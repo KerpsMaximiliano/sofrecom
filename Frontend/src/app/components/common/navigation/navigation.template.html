@@ -35,6 +35,7 @@
       </li>
       -->
 
+      <!--ADMIN-->
       <li [ngClass]="{active: activeRoute('admin')}">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
@@ -42,6 +43,15 @@
           <li [ngClass]="{active: activeRoute('groups')}"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('functionalities')}"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('entities')}"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
+        </ul>
+      </li>
+
+      <!--SOLFAC-->
+      <li [ngClass]="{active: activeRoute('solfac')}">
+        <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'solfac.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
+          <li [ngClass]="{active: activeRoute('customers')}"><a [routerLink]="['/solfac/customers']">{{'solfac.customer.title' | translate }}</a></li>
         </ul>
       </li>
 

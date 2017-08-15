@@ -1,3 +1,6 @@
+import { ServicesComponent } from './views/solfac/services/services.component';
+import { CustomersComponent } from './views/solfac/customers/customers.component';
+import { AuthGuard } from './guards/auth.guard';
 import { RolesComponent } from './views/admin/roles/roles.component';
 import { UsersComponent } from './views/admin/users/users.component';
 import { UserDetailComponent } from './views/admin/users/user-detail/user-detail.component';
@@ -22,6 +25,8 @@ import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.compon
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
 import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit.component";
+import { ModulesComponent } from "app/views/admin/modules/modules.component";
+import { ProjectsComponent } from "app/views/solfac/projects/projects.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -29,7 +34,7 @@ export const ROUTES:Routes = [
 
   // App views
   {
-    path: 'dashboards', component: BasicLayoutComponent,
+    path: 'dashboards', component: BasicLayoutComponent, canActivate: [AuthGuard],
     children: [
       {path: 'dashboard1', component: Dashboard1Component},
       {path: 'dashboard2', component: Dashboard2Component},
@@ -39,13 +44,13 @@ export const ROUTES:Routes = [
     ]
   },
   {
-    path: 'dashboards', component: TopNavigationLayoutComponent,
+    path: 'dashboards', component: TopNavigationLayoutComponent, canActivate: [AuthGuard],
     children: [
       {path: 'dashboard41', component: Dashboard41Component}
     ]
   },
   {
-    path: 'admin', component: BasicLayoutComponent,
+    path: 'admin', component: BasicLayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: 'roles', children:[
         { path: '', component: RolesComponent },
@@ -61,8 +66,20 @@ export const ROUTES:Routes = [
          { path: '', component: UsersComponent },
          { path: 'detail/:id', component: UserDetailComponent }
       ]},
-
-      { path: "functionalities", component: FunctionalitiesComponent }
+      { path: "functionalities", component: FunctionalitiesComponent },
+      { path: "entities", component: ModulesComponent }
+    ]
+  },
+  {
+    path: 'solfac', component: BasicLayoutComponent, canActivate: [AuthGuard],
+    children: [
+      { path: 'customers', children:[
+        {path:"", component: CustomersComponent},
+        {path:":customerId/services", children: [
+          {path: "", component: ServicesComponent},
+          {path: ":serviceId/projects", component: ProjectsComponent}
+        ]}
+      ]}
     ]
   },
   {

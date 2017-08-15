@@ -6,7 +6,15 @@
             "TITLE": "Roles",
             "MANAGEMENT": "Roles Management",
             "EDIT": "Edit Role",
-            "ADD": "Add Role"
+            "ADD": "Add Role",
+            "GRID": {
+                "id": "Id",
+                "description": "Description",
+                "active": "Active",
+                "startDate": "Start Date",
+                "endDate": "End Date",
+                "actions": "Actions"
+            }
         },
         "USERS": {
             "TITLE": "Users",
@@ -25,6 +33,45 @@
             "MANAGEMENT": "Functionality Management",
             "EDIT": "Edit Functionality",
             "ADD": "Add Functionality"
+        },
+        "module": {
+            "title": "Modules",
+            "management": "Modules Management",
+            "edit": "Edit Module",
+            "add": "Add Module"
+        }
+    },
+    "solfac":{
+        "title": "SolFac",
+        "customer":{
+            "title": "Customers",
+            "management": "Customers Management",
+            "edit": "Editar Cliente",
+            "add": "Agregar Cliente"
+        },
+        "service":{
+            "title": "Services",
+            "management": "Services Management",
+            "edit": "Edit Service",
+            "add": "Add Service"
+        },
+        "project":{
+            "title": "Proyects",
+            "management": "Projects Management",
+            "edit": "Edit Project",
+            "add": "Add Project"
+        },
+        "hito":{
+            "title": "Milestones",
+            "management": "Milestones Management",
+            "edit": "Edit Milestone",
+            "add": "Add Milestone"
+        },
+        "solfac":{
+            "title": "SolFac",
+            "management": "SolFac Management",
+            "edit": "Edit SolFac",
+            "add": "Add SolFac"
         }
     },
     "HOME": {

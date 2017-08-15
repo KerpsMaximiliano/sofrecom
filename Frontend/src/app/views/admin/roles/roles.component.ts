@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'app/services/message.service';
 import { DatatablesLocationTexts } from './../../../components/datatables/datatables.location-texts';
 import { RoleService } from './../../../services/role.service';
@@ -45,6 +46,8 @@ export class RolesComponent implements OnInit, OnDestroy {
   private dataTypeEnum = DatatablesDataType;
   private alignmentEnum = DatatablesAlignment;
 
+  //private activeTitle$;
+
   columns: DatatablesColumn[] = 
   [
     new DatatablesColumn(
@@ -89,11 +92,25 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
   ];
 
+  private gridColIdSubscrip: Subscription;
+  private gridColDescripSubscrip: Subscription;
+  private gridColActiveSubscrip: Subscription;
+  private gridColStartDateSubscrip: Subscription;
+  private gridColEndDateSubscrip: Subscription;
+
   constructor(
       private router: Router,
       private route: ActivatedRoute,
       private service: RoleService,
-      private messageService: MessageService) { }
+      private messageService: MessageService,
+      private tr: TranslateService) {
+
+        this.gridColIdSubscrip = tr.get('ADMIN.ROLES.GRID.id').subscribe(title => this.columns[0].title = title);
+        this.gridColDescripSubscrip = tr.get('ADMIN.ROLES.GRID.description').subscribe(title => this.columns[1].title = title);
+        this.gridColActiveSubscrip = tr.get('ADMIN.ROLES.GRID.active').subscribe(title => this.columns[2].title = title);
+        this.gridColStartDateSubscrip = tr.get('ADMIN.ROLES.GRID.startDate').subscribe(title => this.columns[3].title = title);
+        this.gridColEndDateSubscrip = tr.get('ADMIN.ROLES.GRID.endDate').subscribe(title => this.columns[4].title = title);
+  }
 
   ngOnInit() {
     this.getAll();
@@ -104,6 +121,12 @@ export class RolesComponent implements OnInit, OnDestroy {
     if(this.activateSubscrip) this.activateSubscrip.unsubscribe();
     if(this.deactivateSubscrip) this.deactivateSubscrip.unsubscribe();
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
+
+    if(this.gridColIdSubscrip) this.gridColIdSubscrip.unsubscribe();
+    if(this.gridColDescripSubscrip) this.gridColDescripSubscrip.unsubscribe();
+    if(this.gridColActiveSubscrip) this.gridColActiveSubscrip.unsubscribe();
+    if(this.gridColStartDateSubscrip) this.gridColStartDateSubscrip.unsubscribe();
+    if(this.gridColEndDateSubscrip) this.gridColEndDateSubscrip.unsubscribe();
   }
 
   getAll(callback = null){

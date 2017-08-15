@@ -6,6 +6,7 @@ import { Headers } from '@angular/http';
 export class  Service {
 
     UrlApi : string;
+    UrlApiNode: string;
     Authorization: string;
 
     constructor(
@@ -18,6 +19,7 @@ export class  Service {
         //this.Authorization="29c05029-ddf4-4e5e-8a91-62c5af6ae294";
 
         this.UrlApi = config.UrlApi;
+        this.UrlApiNode = config.UrlApiNode;
         this.Authorization = config.Authorization;
     }
 

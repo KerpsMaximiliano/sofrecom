@@ -6,7 +6,15 @@
             "TITLE": "Roles",
             "MANAGEMENT": "Administración de Roles",
             "EDIT": "Editar Rol",
-            "ADD": "Agregar Rol"
+            "ADD": "Agregar Rol",
+            "GRID": {
+                "id": "Id",
+                "description": "Descripción",
+                "active": "Activo",
+                "startDate": "Fecha Alta",
+                "endDate": "Fecha Elim",
+                "actions": "Acciones"
+            }
         },
         "USERS": {
             "TITLE": "Usuarios",
@@ -25,6 +33,45 @@
             "MANAGEMENT": "Administración de Funcionalidades",
             "EDIT": "Editar Funcionalidad",
             "ADD": "Agregar Funcionalidad"
+        },
+        "module": {
+            "title": "Modulos",
+            "management": "Administración de Modulos",
+            "edit": "Editar Modulo",
+            "add": "Agregar Modulo"
+        }
+    },
+    "solfac":{
+        "title": "SolFac",
+        "customer":{
+            "title": "Clientes",
+            "management": "Administración de Clientes",
+            "edit": "Editar Cliente",
+            "add": "Agregar Cliente"
+        },
+        "service":{
+            "title": "Servicios",
+            "management": "Administración de Servicios",
+            "edit": "Editar Servicio",
+            "add": "Agregar Servicio"
+        },
+        "project":{
+            "title": "Proyectos",
+            "management": "Administración de Proyectos",
+            "edit": "Editar Proyecto",
+            "add": "Agregar Proyecto"
+        },
+        "hito":{
+            "title": "Hitos",
+            "management": "Administración de Hitos",
+            "edit": "Editar Hito",
+            "add": "Agregar Hito"
+        },
+        "solfac":{
+            "title": "Solicitud de Facturación",
+            "management": "Administración de SolFac",
+            "edit": "Editar SolFac",
+            "add": "Agregar SolFac"
         }
     },
     "HOME": {
@@ -37,4 +84,5 @@
         "ACTIVATE": "Activar",
         "DEACTIVATE": "Desactivar"
     }
+    
 }

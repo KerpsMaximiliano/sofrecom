@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthenticationService } from './../../../services/authentication.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Configuration } from 'app/services/configuration';
 import { Component } from '@angular/core';
@@ -11,7 +13,12 @@ declare var jQuery:any;
 })
 export class TopNavbarComponent {
 
-  constructor(public configService: Configuration, private translateService: TranslateService){
+  constructor(
+        public configService: Configuration, 
+        private translateService: TranslateService,
+        private authService: AuthenticationService,
+        private router: Router
+        ){
       let browserLang = translateService.getBrowserLang();
       configService.setCurrLang(browserLang);
   }
@@ -27,6 +34,11 @@ export class TopNavbarComponent {
 
   selectLanguage(lang){
     this.configService.setCurrLang(lang);
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

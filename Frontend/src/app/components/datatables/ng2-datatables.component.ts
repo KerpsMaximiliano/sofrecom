@@ -1,9 +1,11 @@
+
+import { Ng2ModalConfig } from './../modal/ng2modal-config';
 import { DatatablesDataType } from './datatables.datatype';
 import { DatatablesOptions } from './datatables.options';
 import { Router } from '@angular/router';
 import { DatatablesLocationTexts } from './datatables.location-texts';
 import { DatatablesColumn } from './datatables.columns';
-import { Component, OnInit, Input, Output, EventEmitter, Directive, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Directive, ElementRef, OnChanges, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "./datatables.edition-type";
 import { DatatablesAlignment } from "./datatables.alignment";
 import { Subject } from 'rxjs/Rx';
@@ -36,28 +38,24 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   private actionsColumnWidth:number = 0;
   private dataTypeEnum = DatatablesDataType;
   private alignmentEnum = DatatablesAlignment;
+  public  deleteRowIndex: number = 0;
+
+  public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+    "Confirmar Eliminación", //title
+    "ng2-datatables-delete", //id
+    true,          //Accept Button
+    true,          //Cancel Button
+    "Eliminar",     //Accept Button Text
+    "Cancelar");   //Cancel Button Text
+
+  @ViewChild("modalNg2Datatables") deleteModal;
 
   private tableRef: any;
-  //dtInstance: Promise<DataTables.Api>;
 
   constructor(private router: Router) {
     this.data = [];
 
-    
-    //establecer un objeto inicial para IE no de error
-    /*let obj = {};
-
-    for(var i = 0; i< this.columns.length; i++){
-      if(i == 2){
-        obj[this.columns[i].name] = this.columns[i].name;
-      } else{
-        obj[this.columns[i].name] = "No hay datos";
-      }
-      
-    }
-
-    this.data.push(obj);*/
-
+    this.modalConfig.title = this.locationTexts.deleteQuestionTitle;
   }
     
   ngOnInit() {
@@ -91,17 +89,12 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
 
   refresh(data){
-    //$('#dt-component').clear();
     this.data = data;
     setTimeout(()=>{
       $('#dt-component').dataTable().fnDestroy();
       this.createTable();
     });
     
-    //var table = $('#dt-component').dataTable().api();
-    //table.order([1, "asc"]);
-    //table.draw();
-
   }
 
   updateRow(row: number, d: any){
@@ -119,7 +112,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
   updateById(id: number, d: any){
 
-    //var row = this.data.findIndex((e, i, a) => {if (e.id == id) return i});
     var row = this.getIndexById(id);
 
     for(var i = 0; i< this.columns.length; i++){
@@ -134,29 +126,13 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
 
   private getIndexById(id: number){
-    /*var index = this.data.findIndex((e, i, a) => {
-      if (e.id == id) return i
-    });*/
     var index = this.data.findIndex(x => x.id == id);
-    
     return index;
   }
 
   ngOnChanges(){
-    //$('#dt-component').DataTable().ajax.reload();
+    
   }
-
-  /*private displayTable(): void {
-    this.dtInstance = new Promise((resolve, reject) => {
-      Promise.resolve(this.dtOptions).then(dtOptions => {
-        // Using setTimeout as a "hack" to be "part" of NgZone
-        setTimeout(() => {
-          const dt = $(this.el.nativeElement).DataTable(dtOptions);
-          resolve(dt);
-        });
-      });
-    });
-  }*/
 
   private setActionsColumnWidth(){
     this.actionsColumnWidth = 0;
@@ -172,34 +148,44 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
   editClick(id:number){
     this.edit.emit(id);
-    /*if(this.callDefaultUrls){
-      this.router.navigate(['edit', id]);
-    }*/
-    
   }
 
   deleteClick(id:number){
     this.delete.emit(id);
-    /*if(this.callDefaultUrls){
-      this.router.navigate(['delete', id]);
-    }*/
   }
 
   viewClick(id:number){
     this.view.emit(id);
-    /*if(this.callDefaultUrls){
-      this.router.navigate(['view', id]);
-    }*/
   }
 
   habInhabClick(id:number){
     var index = this.getIndexById(id);
-    this.data[index][this.options.activeFieldName] = !this.data[index][this.options.activeFieldName];
+    this.deleteRowIndex = index;
+
+    let active = this.data[index][this.options.activeFieldName];
+
+    if (active){
+      this.deleteModal.show();
+    } else {
+      this.doHabInhab(index, active);
+    }
+  }
+
+  doHabInhab(index: number, active: boolean){
+
+    let id = this.data[index][this.options.idFieldName];
+
+    this.data[index][this.options.activeFieldName] = !active;
     var objRpta = {
       id: id,
       hab: this.data[index][this.options.activeFieldName]
     };
     this.habInhab.emit(objRpta);
+
+    //si es eliminacion cerrar el popup
+    if(!objRpta.hab){
+      this.deleteModal.hide();
+    }
   }
 
   other1Click(id:number){

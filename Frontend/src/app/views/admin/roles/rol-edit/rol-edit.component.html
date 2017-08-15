@@ -43,7 +43,7 @@
                               <input type="text"  
                                   name="description"
                                   class="form-control" 
-                                  [(ngModel)]="entity.description"
+                                  [(ngModel)]="role.description"
                                   #descripRef="ngModel"
                                   required> 
                               <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
@@ -58,9 +58,9 @@
                             </div>
                         </div>-->
 
-                        <div class="form-group" *ngIf="entity" style="margin-top:-20px; margin-bottom:20px;">
+                        <div class="form-group" *ngIf="role" style="margin-top:-20px; margin-bottom:20px;">
                             <div class="col-lg-12">
-                                 <icheck  [(checked)]="entity.active"> <!--(click)="onActiveClick($event)"-->
+                                 <icheck  [(checked)]="role.active"> <!--(click)="onActiveClick($event)"-->
                                      <label class="col-lg-2 control-label icheck-label">Active</label> 
                                  </icheck>
                             </div>
@@ -90,7 +90,9 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
+
+        <!--FUNCIONALIDADES-->
+        <!--<div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> Funcionalidades
@@ -98,7 +100,7 @@
                 </div>
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
-                        <li *ngFor="let functionality of entity.functionalities">
+                        <li *ngFor="let functionality of role.functionalities">
                             <span class="m-l-xs">{{functionality.description}}</span>
                             <a class="pull-right" (click)="unassignFunc(functionality.id)"><i class="check-link fa fa-times icon-danger"></i></a>
                             
@@ -106,7 +108,29 @@
                     </ul>
                 </div>
             </div>
+        </div>-->
+
+        <!--SYSTEM ENTITIES-->
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Entidades
+                    <a class="pull-right" (click)="modalEntities.show()"><i class="fa fa-plus icon-white"></i></a>
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list m-t small-list">
+                        <li *ngFor="let e of role.modules">
+                            <span class="m-l-xs">{{e.description}}</span>
+                            <a class="pull-right" (click)="unassignEntity(e.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                            <a class="pull-right" (click)="addFunctionalities(e.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
+                            
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
+        <!--GRUPOS-->
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -114,24 +138,39 @@
                 </div>
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
-                        <li *ngFor="let group of entity.groups">
+                        <li *ngFor="let group of role.groups">
                             <span class="m-l-xs">{{group.description}}</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
-<ng2-modal [config]="modalConfig"  #modalFuncs (accept)="assignFuncs()"> <!--(accept)="" (cancel)=""-->
+<ng2-modal [config]="entitiesModalConfig"  #modalEntities (accept)="assignEntities()"> <!--(accept)="" (cancel)=""-->
+
+    <h4>Seleccione las entidades a ser asignadas al usuario:</h4>
+
+    <div class="scroll">
+        <div *ngFor="let g of entitiesToAdd; let i = index"  style="margin-top:10px;">
+            <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="entitiesToAdd[i].included" >
+                <label style="padding-left:20px;">{{g.text}}</label> 
+            </icheck>
+        </div>
+    </div>
+
+</ng2-modal>
+
+<ng2-modal [config]="funcModalConfig"  #modalFunc (accept)="assignFuncs()"> <!--(accept)="" (cancel)=""-->
 
     <h4>Seleccione las funcionalidades a ser asignadas al usuario:</h4>
 
-    <div class="scroll">
-        <div *ngFor="let g of funcsToAdd; let i = index"  style="margin-top:10px;">
+    <div class="scroll" *ngIf="funcsToAdd">
+        <div *ngFor="let f of funcsToAdd; let i = index"  style="margin-top:10px;">
             <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="funcsToAdd[i].included" >
-                <label style="padding-left:20px;">{{g.text}}</label> 
+                <label style="padding-left:20px;">{{f.text}}</label> 
             </icheck>
         </div>
     </div>

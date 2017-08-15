@@ -1,0 +1,51 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'solfac.customer.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'solfac.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'solfac.customer.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{"solfac.customer.management" | translate}}</h5>
+
+                    <!--
+                    <div class="ibox-tools" >
+                        <a [routerLink]="['add']"><i class="fa fa-plus"></i></a>
+                    </div>
+                    -->
+
+                </div>
+                <div class="ibox-content" *ngIf="data != null && options != null">
+                    <datatables #dt
+                      [data] = "data" 
+                      [columns]="columns" 
+                      [editionType]=editionType
+                      [options]=options
+                      [locationTexts]=locationTexts
+                      (habInhab) = "habInhab($event)"
+                      (view) = "view($event)"
+                      ></datatables>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

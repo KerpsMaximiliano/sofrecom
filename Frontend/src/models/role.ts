@@ -1,3 +1,4 @@
+import { Module } from './module';
 import { Group } from './group';
 import { Functionality } from './functionality';
 
@@ -18,9 +19,9 @@ export class Role{
         public description: string = "",
         public active: boolean = true,
         public groups: Group[] = null,
-        public functionalities: Functionality[] = null,
         public startDate: Date = new Date(),
-        public endDate: Date = null
+        public endDate: Date = null,
+        public modules: Module[] = null,
     ){}
     
 }

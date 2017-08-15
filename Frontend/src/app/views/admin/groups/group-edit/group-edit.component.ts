@@ -15,7 +15,7 @@ declare var $: any;
 })
 export class GroupEditComponent implements OnInit, OnDestroy {
 
-  public entity: Group;
+  public module: Group;
 
   private id: number;
   
@@ -52,9 +52,9 @@ export class GroupEditComponent implements OnInit, OnDestroy {
 
   getEntity(id: number){
     this.getSubscrip = this.service.get(id).subscribe((data) => {
-      this.entity = data;
+      this.module = data;
       if(!data.role){
-        this.entity.role = <Role>{};
+        this.module.role = <Role>{};
       }
     });
   }
@@ -70,11 +70,11 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     if(!form.invalid){
 
       var json = {
-        id: this.entity.id,
-        description: this.entity.description,
-        active: this.entity.active,
+        id: this.module.id,
+        description: this.module.description,
+        active: this.module.active,
         role: {
-          id: this.entity.role.id,
+          id: this.module.role.id,
           description: "TODO: borrar"
         }
       }

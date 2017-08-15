@@ -1,3 +1,6 @@
+import { SolfacModule } from './views/solfac/solfac.module';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthGuard } from './guards/auth.guard';
 import { Http } from '@angular/http';
 import { Service } from 'app/services/service';
 import { MessageService } from 'app/services/message.service';
@@ -46,6 +49,7 @@ export function HttpLoaderFactory(http: Http) {
     ToastrModule.forRoot(),
     RouterModule.forRoot(ROUTES),
     AdminModule,
+    SolfacModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -58,7 +62,9 @@ export function HttpLoaderFactory(http: Http) {
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     Configuration,
     Service,
-    MessageService
+    MessageService,
+    AuthGuard,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

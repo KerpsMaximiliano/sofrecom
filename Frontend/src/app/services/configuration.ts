@@ -6,6 +6,7 @@ import { Headers } from '@angular/http';
 export class  Configuration {
 
     UrlApi : string;
+    UrlApiNode: string;
     Authorization: string;
     public currLang: string = 'es';
 
@@ -16,9 +17,11 @@ export class  Configuration {
         tr.setDefaultLang(browserLang);
         tr.use(this.currLang);
 
-        //this.UrlApi = "http://localhost:9696/api"; //dev
-        this.UrlApi = "http://sofrelab-iis1.cloudapp.net:9696/api"; // uat iis
+        this.UrlApi = "http://localhost:9696/api"; //dev
+        //this.UrlApi = "http://sofrelab-iis1.cloudapp.net:9696/api"; // uat iis
         //this.UrlApi = "http://sofrelab-iis1.cloudapp.net:9000/api"; // uat
+
+        this.UrlApiNode = "http://localhost:3000";
 
         this.Authorization="29c05029-ddf4-4e5e-8a91-62c5af6ae294";
     }

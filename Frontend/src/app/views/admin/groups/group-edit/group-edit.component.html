@@ -42,7 +42,7 @@
 
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="entity != null">
+                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
 
                         <!--Description-->
                         <div class="form-group"><label class="col-xs-2 control-label">Description</label>
@@ -50,7 +50,7 @@
                               <input type="text"  
                                   name="description"
                                   class="form-control" 
-                                  [(ngModel)]="entity.description"
+                                  [(ngModel)]="module.description"
                                   #descripRef="ngModel"
                                   required> 
                               <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
@@ -61,16 +61,16 @@
                         <!--COMBO DE ROLES-->
                         <div class="form-group"><label class="col-xs-2 control-label">Rol asignado</label>
                             <div class="col-xs-10">
-                              <select class="form-control m-b" name="role" [(ngModel)]="entity.role.id">
+                              <select class="form-control m-b" name="role" [(ngModel)]="module.role.id">
                                   <option *ngFor="let role of roles" [value]="role?.id">{{role?.description}}</option>
                               </select>
                             </div>
                         </div>
 
                         <!--CHECK ACTIVE-->
-                        <div class="form-group" *ngIf="entity">
+                        <div class="form-group" *ngIf="module">
                             <div class="col-xs-12">
-                                 <icheck  [(checked)]="entity.active">
+                                 <icheck  [(checked)]="module.active">
                                      <label class="col-xs-2 control-label icheck-label">Active</label> 
                                  </icheck>
                             </div>

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'app/services/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -93,7 +94,9 @@ export class GroupsComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: GroupService,
-      private messageService: MessageService) { }
+      private messageService: MessageService) {
+
+  }
 
   ngOnInit() {
     this.getAll();
