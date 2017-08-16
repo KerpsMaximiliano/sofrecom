@@ -29,7 +29,14 @@ namespace Sofco.WebApi.Controllers.Admin
 
                 foreach (var module in item.Modules)
                 {
-                    menuModel.Modules.Add(new Option<string>(module.Code, module.Description));
+                    var moduleDetail = new ModuleModelDetail(module);
+
+                    foreach (var roleModuleFunct in module.RoleModuleFunctionality)
+                    {
+                        moduleDetail.Functionalities.Add(new Option<string>(roleModuleFunct.Functionality.Code, roleModuleFunct.Functionality.Description));
+                    }
+
+                    menuModel.Modules.Add(moduleDetail);
                 }
 
                 response.Add(menuModel);

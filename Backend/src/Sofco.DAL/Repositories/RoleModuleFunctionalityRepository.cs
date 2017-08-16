@@ -20,6 +20,7 @@ namespace Sofco.DAL.Repositories
         public IList<RoleModuleFunctionality> GetModulesByRoles(IEnumerable<int> roleIds)
         {
             return _context.RoleModuleFunctionality
+                    .Include(x => x.Functionality)
                     .Include(x => x.Module)
                         .ThenInclude(x => x.Menu)
                     .Where(x => roleIds.Contains(x.RoleId) && x.Module != null)

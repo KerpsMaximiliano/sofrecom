@@ -84,11 +84,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private isOptionInArray(arrGroup: Group[], option: Option): boolean{
+    private isOptionInArray(arrGroup, option: Option): boolean{
         var esta: boolean = false;
 
         for(var i: number = 0; i<arrGroup.length; i++){
-            if(arrGroup[i].id.toString() == option.value ){
+            if(arrGroup[i].value.toString() == option.value ){
                 esta = true;
                 break;
             }
