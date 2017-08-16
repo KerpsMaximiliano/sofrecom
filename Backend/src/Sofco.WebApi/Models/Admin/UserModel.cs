@@ -4,7 +4,7 @@ using Sofco.Model.Models;
 using Sofco.Model.Interfaces;
 using System;
 
-namespace Sofco.WebApi.Models
+namespace Sofco.WebApi.Models.Admin
 {
     public class UserModel : BaseEntity, IAuditDates
     {
@@ -12,6 +12,7 @@ namespace Sofco.WebApi.Models
         {
             Id = user.Id;
             Name = user.Name;
+            UserName = user.UserName;
             Email = user.Email;
             Active = user.Active;
             StartDate = user.StartDate;
@@ -21,6 +22,7 @@ namespace Sofco.WebApi.Models
         }
 
         public string Name { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public bool Active { get; set; }
         public DateTime StartDate { get; set; }
@@ -33,11 +35,13 @@ namespace Sofco.WebApi.Models
     {
         public UserDetailModel(User user) : base(user)
         {
-            Roles = new List<RoleModel>();
-            Modules = new List<ModuleModel>();
+            Roles = new List<Option<int>>();
+            Modules = new List<ModuleModelDetail>();
+            Groups = new List<Option<int>>();
         }
 
-        public IList<RoleModel> Roles { get; set; }
-        public IList<ModuleModel> Modules { get; set; }
+        public new IList<Option<int>> Groups { get; set; }
+        public IList<Option<int>> Roles { get; set; }
+        public IList<ModuleModelDetail> Modules { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sofco.WebApi.Models
+namespace Sofco.WebApi.Models.Admin
 {
     public class GroupModel : BaseEntity, IAuditDates
     {
@@ -43,5 +43,16 @@ namespace Sofco.WebApi.Models
             group.Description = Description;
             group.Active = Active;
         }
+    }
+
+    public class GroupModelDetail : BaseEntity
+    {
+        public GroupModelDetail(Group group)
+        {
+            Id = group.Id;
+            Description = group.Description;
+        }
+
+        public string Description { get; set; }
     }
 }

@@ -37,6 +37,10 @@
                                 <dd>{{user.name}}</dd>
                             </dl>
                             <dl class="dl-horizontal">
+                                <dt>Usuario:</dt>
+                                <dd>{{user.userName}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
                                 <dt>Mail:</dt>
                                 <dd>{{user.email}}</dd>
                             </dl>
@@ -78,8 +82,8 @@
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let group of user.groups">
-                            <span class="m-l-xs">{{group.description}}</span>
-                            <a class="pull-right" (click)="unassignGroup(group.id)"><i class="check-link fa fa-times icon-danger"></i></a>
+                            <span class="m-l-xs">{{group.text}}</span>
+                            <a class="pull-right" (click)="unassignGroup(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -93,21 +97,28 @@
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let role of user.roles">
-                            <span class="m-l-xs">{{role.description}}</span>
+                            <span class="m-l-xs">{{role.text}}</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+        <!--MODULES-->
         <div class="col-lg-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Funcionalidades
+                    <i class="fa fa-info-circle"></i> Módulos
                 </div>
                 <div class="panel-body">
-                    <ul class="todo-list m-t small-list" *ngIf="user">
-                        <li *ngFor="let functionality of user.functionalities">
-                            <span class="m-l-xs">{{functionality.description}}</span>
+                    <ul class="todo-list m-t small-list">
+                        <li *ngFor="let m of user.modules">
+                            <span class="m-l-xs">{{m.description}}</span>
+
+                            <ul class="todo-list m-t small-list indented">
+                                <li *ngFor="let f of m.functionalities" class="indented">
+                                    <span class="m-l-xs">{{f.text}}</span>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

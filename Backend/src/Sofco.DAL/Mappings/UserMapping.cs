@@ -9,8 +9,9 @@ namespace Sofco.DAL.Mapping
         {
             // Primary Key
             builder.Entity<User>().HasKey(_ => _.Id);
-            builder.Entity<User>().Property(_ => _.Name).HasMaxLength(50);
-            builder.Entity<User>().Property(_ => _.Email).HasMaxLength(50);
+            builder.Entity<User>().Property(_ => _.Name).HasMaxLength(50).IsRequired();
+            builder.Entity<User>().Property(_ => _.Email).HasMaxLength(50).IsRequired();
+            builder.Entity<User>().Property(_ => _.UserName).HasMaxLength(50).IsRequired();
         }
     }
 }

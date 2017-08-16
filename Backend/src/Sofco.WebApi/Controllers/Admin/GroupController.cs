@@ -3,9 +3,10 @@ using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/group")]
     public class GroupController : Controller
@@ -36,11 +37,11 @@ namespace Sofco.WebApi.Controllers
         public IActionResult GetOptions()
         {
             var groups = _groupService.GetAllReadOnly();
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var group in groups)
             {
-                model.Add(new Option(group.Id, group.Description));
+                model.Add(new Option<int>(group.Id, group.Description));
             }
 
             return Ok(model);

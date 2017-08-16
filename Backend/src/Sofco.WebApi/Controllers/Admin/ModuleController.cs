@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/module")]
     public class ModuleController : Controller
@@ -36,11 +37,11 @@ namespace Sofco.WebApi.Controllers
         public IActionResult GetOptions()
         {
             var modules = _moduleService.GetAllReadOnly();
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var module in modules)
             {
-                model.Add(new Option(module.Id, module.Description));
+                model.Add(new Option<int>(module.Id, module.Description));
             }
 
             return Ok(model);

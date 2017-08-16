@@ -20,9 +20,9 @@ namespace Sofco.Service.Implementations
             _roleRepository = roleRepository;
         }
 
-        public IList<Menu> GetMenu(int userId)
+        public IList<Menu> GetMenu(string userName)
         {
-            var groupsId = _userGroupRepository.GetGroupsId(userId);
+            var groupsId = _userGroupRepository.GetGroupsId(userName);
 
             var roles = _roleRepository.GetRolesByGroup(groupsId);
 

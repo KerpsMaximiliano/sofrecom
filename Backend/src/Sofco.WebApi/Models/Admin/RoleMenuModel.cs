@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sofco.WebApi.Models
+namespace Sofco.WebApi.Models.Admin
 {
     public class RoleMenuModel
     {

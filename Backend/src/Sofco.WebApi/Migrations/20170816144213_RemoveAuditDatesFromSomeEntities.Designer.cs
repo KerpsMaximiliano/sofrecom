@@ -8,9 +8,10 @@ using Sofco.DAL;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20170816144213_RemoveAuditDatesFromSomeEntities")]
+    partial class RemoveAuditDatesFromSomeEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -38,12 +39,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(5);
-
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -59,7 +55,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime?>("EndDate");
@@ -83,15 +78,12 @@ namespace Sofco.WebApi.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(5);
+                        .HasMaxLength(4);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -106,12 +98,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(5);
-
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<int?>("MenuId");
@@ -131,7 +118,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime?>("EndDate");
@@ -151,20 +137,14 @@ namespace Sofco.WebApi.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime?>("EndDate");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime>("StartDate");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 

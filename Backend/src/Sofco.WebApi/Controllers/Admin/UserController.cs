@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Interfaces.Services;
 using Sofco.Core.Services;
-using Sofco.Model.Models;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/user")]
     public class UserController : Controller
@@ -41,11 +41,11 @@ namespace Sofco.WebApi.Controllers
         public IActionResult GetOptions()
         {
             var users = _userService.GetAllReadOnly();
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var user in users)
             {
-                model.Add(new Option(user.Id, user.Name));
+                model.Add(new Option<int>(user.Id, user.Name));
             }
 
             return Ok(model);
@@ -88,7 +88,7 @@ namespace Sofco.WebApi.Controllers
             {
                 foreach (var userGroup in response.Data.UserGroups)
                 {
-                    model.Groups.Add(new GroupModel(userGroup.Group));
+                    model.Groups.Add(new Option<int>(userGroup.Group.Id, userGroup.Group.Description));
                 }
 
                 var roles = _roleService.GetRolesByGroup(response.Data.UserGroups.Select(x => x.GroupId));
@@ -97,7 +97,7 @@ namespace Sofco.WebApi.Controllers
                 {
                     if(rol != null)
                     {
-                        var roleModel = new RoleModel(rol);
+                        var roleModel = new Option<int>(rol.Id, rol.Description);
                         if (!model.Roles.Contains(roleModel))
                         {
                             model.Roles.Add(roleModel);
@@ -111,9 +111,9 @@ namespace Sofco.WebApi.Controllers
                 {
                     if(roleModuleFunct.Module != null)
                     {
-                        if (!model.Modules.Any(x => x.Id == roleModuleFunct.ModuleId))
+                        if (!model.Modules.Any(x => x.Code == roleModuleFunct.Module.Code))
                         {
-                            var module = new ModuleModel(roleModuleFunct.Module);
+                            var module = new ModuleModelDetail(roleModuleFunct.Module);
 
                             model.Modules.Add(module);
                         }
@@ -122,9 +122,9 @@ namespace Sofco.WebApi.Controllers
 
                 for (int i = 0; i < model.Modules.Count(); i++)
                 {
-                    var roleModuleFunctionalities = roleModuleFunctionality.Where(x => x.ModuleId == model.Modules[i].Id).ToList();
+                    var roleModuleFunctionalities = roleModuleFunctionality.Where(x => x.Module.Code == model.Modules[i].Code).ToList();
 
-                    model.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new FunctionalityModel(x.Functionality)).ToList();
+                    model.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new Option<string>(x.Functionality.Code, x.Functionality.Description)).ToList();
                 }
             }
 

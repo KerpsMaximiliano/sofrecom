@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/menu")]
     public class MenuController : Controller
@@ -15,10 +16,10 @@ namespace Sofco.WebApi.Controllers
             _menuService = menuService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("{userName}")]
+        public IActionResult Get(string userName)
         {
-            var menus = _menuService.GetMenu(1);
+            var menus = _menuService.GetMenu(userName);
 
             var response = new List<MenuModel>();
 
@@ -28,7 +29,7 @@ namespace Sofco.WebApi.Controllers
 
                 foreach (var module in item.Modules)
                 {
-                    menuModel.Modules.Add(new Option(module.Id, module.Description));
+                    menuModel.Modules.Add(new Option<string>(module.Code, module.Description));
                 }
 
                 response.Add(menuModel);

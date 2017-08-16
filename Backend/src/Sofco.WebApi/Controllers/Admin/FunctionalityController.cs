@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/functionality")]
     public class FunctionalityController : Controller
@@ -36,11 +37,11 @@ namespace Sofco.WebApi.Controllers
         public IActionResult GetOptions()
         {
             var functionalities = _functionalityService.GetAllReadOnly();
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var functionality in functionalities)
             {
-                model.Add(new Option(functionality.Id, functionality.Description));
+                model.Add(new Option<int>(functionality.Id, functionality.Description));
             }
 
             return Ok(model);
@@ -104,11 +105,11 @@ namespace Sofco.WebApi.Controllers
         {
             var functionalities = _functionalityService.GetFunctionalitiesByModuleAndRole(moduleId, roleId);
 
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var functionality in functionalities)
             {
-                model.Add(new Option(functionality.Id, functionality.Description));
+                model.Add(new Option<int>(functionality.Id, functionality.Description));
             }
 
             return Ok(model);

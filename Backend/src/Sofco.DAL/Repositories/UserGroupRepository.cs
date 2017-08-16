@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using Sofco.Core.DAL;
 using Sofco.Model.Relationships;
 using System.Linq;
 
@@ -15,9 +16,13 @@ namespace Sofco.DAL.Repositories
             return _context.UserGroup.Any(x => x.UserId == userId && x.GroupId == groupId);
         }
 
-        public int[] GetGroupsId(int userId)
+        public int[] GetGroupsId(string userName)
         {
-            return _context.UserGroup.Where(x => x.UserId == userId).Select(x => x.GroupId).ToArray();
+            return _context.UserGroup
+                .Include(x => x.User)
+                .Where(x => x.User.UserName.Equals(userName))
+                .Select(x => x.GroupId)
+                .ToArray();
         }
     }
 }
