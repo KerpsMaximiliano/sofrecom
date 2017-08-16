@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-xs-12">
-        <h2>{{'ADMIN.GROUPS.TITLE' | translate }}</h2>
+        <h2>{{'ADMIN.module.title' | translate }}</h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -9,7 +9,7 @@
                 <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
             </li>
             <li>
-                <a [routerLink]="['../../']">{{'ADMIN.GROUPS.TITLE' | translate }}</a>
+                <a [routerLink]="['../../']">{{'ADMIN.module.title' | translate }}</a>
             </li>
             <li class="active">
                 <strong>{{'ACTIONS.EDIT' | translate }}</strong>
@@ -18,31 +18,36 @@
     </div>
 </div>
 
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>{{'ADMIN.GROUPS.EDIT' | translate }}</h5>
-
-
+                    <h5>{{'ADMIN.module.edit' | translate }}</h5>
                     <div class="ibox-tools" >
-                        <!--<a ng-click="showhide()"> <i class="fa fa-chevron-up"></i></a>
-                        <a>
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <a ng-click="closebox()"><i class="fa fa-times"></i></a>-->
                         <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
                     </div>
-
-
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
 
+                        <!-- Code -->
+                        <div class="form-group"><label class="col-xs-2 control-label">Código</label>
+                            <div class="col-xs-4">
+                              <input type="text"  
+                                  name="code"
+                                  class="form-control" 
+                                  [(ngModel)]="module.code"
+                                  #descripRef="ngModel"
+                                  required
+                                  maxlength="5"> 
+                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
+
+                            </div>
+                        </div>
+
                         <!--Description-->
-                        <div class="form-group"><label class="col-xs-2 control-label">Description</label>
+                        <div class="form-group"><label class="col-xs-2 control-label">Descripción</label>
                             <div class="col-xs-10">
                               <input type="text"  
                                   name="description"
@@ -55,20 +60,11 @@
                             </div>
                         </div>
 
-                        <!--COMBO DE ROLES-->
-                        <div class="form-group"><label class="col-xs-2 control-label">Rol asignado</label>
-                            <div class="col-xs-10">
-                              <select class="form-control m-b" name="role" [(ngModel)]="module.role.id">
-                                  <option *ngFor="let role of roles" [value]="role?.id">{{role?.description}}</option>
-                              </select>
-                            </div>
-                        </div>
-
                         <!--CHECK ACTIVE-->
                         <div class="form-group" *ngIf="module">
                             <div class="col-xs-12">
                                  <icheck  [(checked)]="module.active">
-                                     <label class="col-xs-2 control-label icheck-label">Active</label> 
+                                     <label class="col-xs-2 control-label icheck-label">Activo</label> 
                                  </icheck>
                             </div>
                         </div>

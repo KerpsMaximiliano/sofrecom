@@ -62,5 +62,23 @@ namespace Sofco.Service.Implementations
             response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
             return response;
         }
+
+        public Response<Module> Update(Module data)
+        {
+            var response = new Response<Module>();
+
+            try
+            {
+                _moduleRepository.Update(data);
+                _moduleRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Module.Updated, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
     }
 }

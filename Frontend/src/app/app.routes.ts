@@ -26,6 +26,7 @@ import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component
 import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
 import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit.component";
 import { ModulesComponent } from "app/views/admin/modules/modules.component";
+import { ModuleEditComponent } from "app/views/admin/modules/module-edit/module-edit.component";
 import { ProjectsComponent } from "app/views/solfac/projects/projects.component";
 
 export const ROUTES:Routes = [
@@ -67,7 +68,10 @@ export const ROUTES:Routes = [
          { path: 'detail/:id', component: UserDetailComponent }
       ]},
       { path: "functionalities", component: FunctionalitiesComponent },
-      { path: "entities", component: ModulesComponent }
+      { path: "entities", children: [
+        { path: '', component: ModulesComponent },
+        { path: 'edit/:id', component: ModuleEditComponent }
+      ]},
     ]
   },
   {

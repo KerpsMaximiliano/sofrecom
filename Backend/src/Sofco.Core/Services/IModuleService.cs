@@ -10,5 +10,6 @@ namespace Sofco.Core.Services
         IList<Module> GetAllReadOnly();
         Response<Module> GetById(int id);
         Response<Module> Active(int id, bool active);
+        Response<Module> Update(Module data);
     }
 }

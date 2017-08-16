@@ -94,5 +94,14 @@ namespace Sofco.Resources.es {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Modulo actualizado correctamente.
+        /// </summary>
+        public static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
+            }
+        }
     }
 }
