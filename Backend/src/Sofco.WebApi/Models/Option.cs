@@ -1,14 +1,14 @@
 ﻿namespace Sofco.WebApi.Models
 {
-    public class Option
+    public class Option<T>
     {
-        public Option(int value, string text)
+        public Option(T value, string text)
         {
             Value = value;
             Text = text;
         }
 
-        public int Value { get; set; }
+        public T Value { get; set; }
         public string Text { get; set; }
     }
 }

@@ -9,7 +9,8 @@ namespace Sofco.DAL.Mapping
         {
             // Primary Key
             builder.Entity<Functionality>().HasKey(_ => _.Id);
-            builder.Entity<Functionality>().Property(_ => _.Description).HasMaxLength(50);
+            builder.Entity<Functionality>().Property(_ => _.Description).HasMaxLength(50).IsRequired();
+            builder.Entity<Functionality>().Property(_ => _.Code).HasMaxLength(5).IsRequired();
         }
     }
 }

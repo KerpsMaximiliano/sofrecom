@@ -3,10 +3,11 @@ using Sofco.Core.Interfaces.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
+using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/role")]
     public class RoleController : Controller
@@ -26,10 +27,10 @@ namespace Sofco.WebApi.Controllers
         public IActionResult Getoptions()
         {
             var roles = _roleService.GetAllReadOnly();
-            var model = new List<Option>();
+            var model = new List<Option<int>>();
 
             foreach (var rol in roles)
-                model.Add(new Option(rol.Id, rol.Description));
+                model.Add(new Option<int>(rol.Id, rol.Description));
 
             return Ok(model);
         }

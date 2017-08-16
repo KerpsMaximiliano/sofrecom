@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sofco.WebApi.Models
+namespace Sofco.WebApi.Models.Admin
 {
     public class RoleModel : BaseEntity, IAuditDates, IEquatable<RoleModel>
     {

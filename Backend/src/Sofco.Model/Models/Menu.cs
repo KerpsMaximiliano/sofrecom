@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sofco.Model.Models
 {
-    public class Menu : BaseEntity, ILogicalDelete, IAuditDates
+    public class Menu : BaseEntity, ILogicalDelete
     {
         public string Description { get; set; }
 
@@ -13,8 +13,6 @@ namespace Sofco.Model.Models
         public string Code { get; set; }
 
         public bool Active { get; set; }
-        public DateTime? EndDate { get; set; }
-        public DateTime StartDate { get; set; }
 
         public IList<Module> Modules { get; set; }
     }

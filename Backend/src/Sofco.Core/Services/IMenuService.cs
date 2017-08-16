@@ -5,6 +5,6 @@ namespace Sofco.Core.Services
 {
     public interface IMenuService
     {
-        IList<Menu> GetMenu(int userId);
+        IList<Menu> GetMenu(string userId);
     }
 }

@@ -1,7 +1,8 @@
-import { Functionality } from './functionality';
+import { Module } from './module';
 import { Role } from './role';
 import { User } from 'models/user';
+
 export interface UserDetail extends User{
     roles: Role[],
-    Functionalities: Functionality[]
+    modules: Module[]
 }

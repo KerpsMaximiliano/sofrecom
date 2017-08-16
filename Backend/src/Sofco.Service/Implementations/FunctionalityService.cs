@@ -27,16 +27,6 @@ namespace Sofco.Service.Implementations
             {
                 entity.Active = active;
 
-                if (active)
-                {
-                    entity.StartDate = DateTime.Now;
-                    entity.EndDate = null;
-                }
-                else
-                {
-                    entity.EndDate = DateTime.Now;
-                }
-
                 _functionalityRepository.Update(entity);
                 _functionalityRepository.Save(string.Empty);
 
