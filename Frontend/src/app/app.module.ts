@@ -28,7 +28,6 @@ import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
-import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -36,8 +35,7 @@ export function HttpLoaderFactory(http: Http) {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    BreadcrumbsComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

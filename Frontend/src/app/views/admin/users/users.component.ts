@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     getSubscrip: Subscription;
     habilitarSubscrip: Subscription;
 
-    options = new DatatablesOptions(
+    options = new DatatablesOptions( 
         false,  //edit
         false,  //delete
         true,  //view
@@ -58,7 +58,10 @@ export class UsersComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: UserService,
-      private messageService: MessageService) { }
+      private messageService: MessageService) {
+          
+        this.options.descripFieldName = "name";
+       }
 
     ngOnInit() {
         this.getAll();

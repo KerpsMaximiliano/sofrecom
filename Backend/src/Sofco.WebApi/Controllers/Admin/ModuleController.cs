@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
+using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var modules = _moduleService.GetAllReadOnly();
+            var modules = _moduleService.GetAllReadOnly(false);
             var model = new List<ModuleModel>();
 
             foreach (var module in modules)
@@ -36,7 +37,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var modules = _moduleService.GetAllReadOnly();
+            var modules = _moduleService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var module in modules)
@@ -93,6 +94,26 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult Active(int id, bool active)
         {
             var response = _moduleService.Active(id, active);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody]ModuleModel model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
+            var moduleResponse = _moduleService.GetById(model.Id);
+
+            if (moduleResponse.HasErrors()) return BadRequest(moduleResponse);
+
+            model.ApplyTo(moduleResponse.Data);
+
+            var response = _moduleService.Update(moduleResponse.Data);
 
             if (response.HasErrors()) return BadRequest(response);
 

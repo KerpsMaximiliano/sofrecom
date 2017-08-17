@@ -19,6 +19,14 @@ namespace Sofco.DAL.Repositories
             return _context.Set<Group>().Any(x => x.Id == id);
         }
 
+        /// <summary>
+        /// Retorna todas las entidades en modo solo lectura
+        /// </summary>
+        public IList<Group> GetAllActivesReadOnly()
+        {
+            return _context.Set<Group>().Where(x => x.Active).ToList().AsReadOnly();
+        }
+
         public IList<Group> GetAllFullReadOnly()
         {
             return _context.Set<Group>()

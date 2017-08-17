@@ -14,7 +14,7 @@
                     <a [routerLink]="['../../']">Roles</a>
                 </li>
                 <li class="active">
-                    <strong>Edit</strong>
+                    <strong>Editar</strong>
                 </li>
             </ol>
         </div>
@@ -53,31 +53,12 @@
                                 </div>
                             </div>
 
-                            <!--ACTIVE-->
-                            <!--<div class="form-group">
-                                <div class="col-lg-offset-2 col-lg-10">
-                                    <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Active
-                                </div>
-                            </div>-->
-
                             <div class="form-group" *ngIf="role" style="margin-top:-20px; margin-bottom:20px;">
                                 <div class="col-lg-12">
                                     <icheck  [(checked)]="role.active"> <!--(click)="onActiveClick($event)"-->
                                         <label class="col-lg-2 control-label icheck-label">Active</label> 
                                     </icheck>
                                 </div>
-                            </div>
-
-                            <div class="col-sm-10">
-                            <!--<div>
-                                <label> <input icheck type="checkbox" ng-model="main.checkThree">
-                                    Active
-                                </label>
-                            </div>-->
-
-
-
-                                
                             </div>
                             
                             <div class="form-group">
@@ -93,25 +74,6 @@
 
         <div class="row">
 
-            <!--FUNCIONALIDADES-->
-            <!--<div class="col-lg-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <i class="fa fa-info-circle"></i> Funcionalidades
-                        <a class="pull-right" (click)="modalFuncs.show()"><i class="fa fa-plus icon-white"></i></a>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="todo-list m-t small-list">
-                            <li *ngFor="let functionality of role.functionalities">
-                                <span class="m-l-xs">{{functionality.description}}</span>
-                                <a class="pull-right" (click)="unassignFunc(functionality.id)"><i class="check-link fa fa-times icon-danger"></i></a>
-                                
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>-->
-
             <!--MODULES-->
             <div class="col-lg-6">
                 <div class="panel panel-primary">
@@ -120,24 +82,28 @@
                         <a class="pull-right" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
                     </div>
                     <div class="panel-body">
-                        <ul class="todo-list m-t small-list">
-                            <li *ngFor="let m of role.modules">
-                                <span class="m-l-xs">{{m.description}}</span>
-                                <a class="pull-right" (click)="unAssignFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
-                                
-                                <ul class="todo-list m-t small-list indented">
-                                    <li *ngFor="let f of m.functionalities" class="indented">
-                                        <span class="m-l-xs">{{f.description}}</span>
-                                        <a class="pull-right" (click)="unAssignFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                        <!--<a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>-->
-                                
+                        <div class="scroll">
+                            <div class="dd">
+                                <ol class="dd-list">
+                                    <li *ngFor="let m of role.modules" class="dd-item">
+                                        <div class="dd-handle">
+                                            {{m.description}}
+                                            <a class="pull-right" (click)="removeFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                            <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
+                                        </div>
+                                        
+                                        <ol class="dd-list">
+                                            <li *ngFor="let f of m.functionalities" class="dd-item">
+                                                <div class="dd-handle">
+                                                    {{f.description}}
+                                                    <a class="pull-right" (click)="removeFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                                </div>
+                                            </li>
+                                        </ol>
                                     </li>
-
-                                </ul>
-
-                            </li>
-                        </ul>
+                                </ol>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,20 +134,18 @@
 
         
         <div class="row">
-
             <!--COMBO DE MUDULOS-->
             <div class="col-xs-12 margin-bottom-m" *ngIf="!editMode">
-                <div class="form-group"><label class="col-xs-2 control-label">Módulo</label>
-                    <div class="col-xs-10">
-                        <select class="form-control m-b" name="role" [(ngModel)]="cboModuleId" >
-                            <option *ngFor="let m of modules" [value]="m?.value">{{m?.text}}</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label class="control-label">Módulo</label>
+                    <select class="form-control m-b" name="role" [(ngModel)]="cboModuleId" >
+                        <option *ngFor="let m of modules" [value]="m?.value">{{m?.text}}</option>
+                    </select>
                 </div>
             </div>
 
             <div class="col-xs-12 margin-bottom-m" *ngIf="editMode">
-                <div class="form-group text-m"><label class="col-xs-10"><strong>Módulo:</strong> {{cboModuleText}}</label>
+                <div class="form-group text-m"><label><strong>Módulo:</strong> {{cboModuleText}}</label>
                 </div>
             </div>
         </div>
@@ -198,7 +162,9 @@
                 </div>
             </div>
         </div>
-
     </ng2-modal>
-
 </section>
+
+<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="confirm(moduleId, functionalityId)">
+    {{modalMessage}}
+</ng2-modal>

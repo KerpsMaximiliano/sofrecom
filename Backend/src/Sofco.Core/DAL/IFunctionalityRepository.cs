@@ -14,5 +14,6 @@ namespace Sofco.Core.DAL
         IList<Functionality> GetAllFullReadOnly();
         IList<RoleModuleFunctionality> GetModuleAndFuntionalitiesByRoles(IEnumerable<int> roleIds);
         IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId);
+        IList<Functionality> GetAllActivesReadOnly();
     }
 }

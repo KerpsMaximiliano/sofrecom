@@ -25,9 +25,10 @@ import { FunctionalitiesComponent } from './functionalities/functionalities.comp
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupAddComponent } from './groups/group-add/group-add.component';
 import { ModulesComponent } from './modules/modules.component';
+import { ModuleEditComponent } from './modules/module-edit/module-edit.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent],
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule],
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService],
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent]

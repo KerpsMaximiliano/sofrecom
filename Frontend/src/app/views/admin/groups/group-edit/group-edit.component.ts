@@ -60,8 +60,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   }
 
   getAllRoles(){
-    this.getRolesSubscrip = this.roleService.getAll().subscribe(d => {
-      //d.unshift(new Role(null, "Ninguno"));
+    this.getRolesSubscrip = this.roleService.getOptions().subscribe(d => {
       this.roles = d;
     });
   }
@@ -90,8 +89,5 @@ export class GroupEditComponent implements OnInit, OnDestroy {
         }
       );
     }
-    
   }
-
-
 }

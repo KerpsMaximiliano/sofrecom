@@ -27,7 +27,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
     locationTexts = new DatatablesLocationTexts("Details");
 
     options = new DatatablesOptions(
-      false,  //edit
+      true,  //edit
       false,  //delete
       false,  //view
       true,  //habInhab
@@ -123,6 +123,10 @@ export class ModulesComponent implements OnInit, OnDestroy {
           callback(data);
         }
       });
+    }
+
+    editClick(id: number){
+      this.router.navigate(['/admin/entities/edit/'+id]);
     }
 
 /*

@@ -41,21 +41,20 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   public  deleteRowIndex: number = 0;
 
   public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Confirmar Eliminación", //title
-    "ng2-datatables-delete", //id
+    "Confirmación de baja", //title
+    "modalConfirm", //id
     true,          //Accept Button
     true,          //Cancel Button
-    "Eliminar",     //Accept Button Text
+    "Deshabilitar",     //Accept Button Text
     "Cancelar");   //Cancel Button Text
 
-  @ViewChild("modalNg2Datatables") deleteModal;
+  @ViewChild("modalNg2Datatables") confirmModal;
 
   private tableRef: any;
+  public modalMessage: string;
 
   constructor(private router: Router) {
     this.data = [];
-
-    this.modalConfig.title = this.locationTexts.deleteQuestionTitle;
   }
     
   ngOnInit() {
@@ -65,7 +64,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     this.setActionsColumnWidth();
 
     this.createTable();
-    
   }
 
   createTable(){
@@ -131,7 +129,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    
   }
 
   private setActionsColumnWidth(){
@@ -165,14 +162,31 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     let active = this.data[index][this.options.activeFieldName];
 
     if (active){
-      this.deleteModal.show();
+      this.confirm = this.disableEntity;
+      this.modalConfig.acceptButtonText = "Deshabilitar";
+      this.modalConfig.title = "Confirmación de baja";
+      this.modalMessage = this.locationTexts.disableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
+      this.confirmModal.show();
     } else {
-      this.doHabInhab(index, active);
+      this.confirm = this.enableEntity;
+      this.modalConfig.acceptButtonText = "Habilitar"
+      this.modalConfig.title = "Confirmación de alta";
+      this.modalMessage = this.locationTexts.enableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
+      this.confirmModal.show();
     }
   }
 
-  doHabInhab(index: number, active: boolean){
+  confirm(index: number) {}
 
+  enableEntity(index: number){
+    this.doHabInhab(index, false);
+  }
+
+  disableEntity(index: number){
+    this.doHabInhab(index, true);
+  }
+
+  doHabInhab(index: number, active: boolean){
     let id = this.data[index][this.options.idFieldName];
 
     this.data[index][this.options.activeFieldName] = !active;
@@ -183,9 +197,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     this.habInhab.emit(objRpta);
 
     //si es eliminacion cerrar el popup
-    if(!objRpta.hab){
-      this.deleteModal.hide();
-    }
+    this.confirmModal.hide();
   }
 
   other1Click(id:number){
@@ -203,5 +215,4 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   onSearch(event){
 
   }
-
 }

@@ -26,7 +26,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult Getoptions()
         {
-            var roles = _roleService.GetAllReadOnly();
+            var roles = _roleService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var rol in roles)
@@ -39,7 +39,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var roles = _roleService.GetAllReadOnly();
+            var roles = _roleService.GetAllReadOnly(false);
             var model = new List<RoleModel>();
 
             foreach (var rol in roles)

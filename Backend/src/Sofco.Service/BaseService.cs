@@ -32,11 +32,6 @@ namespace Sofco.Service
             return _repositoryBase.GetAll();
         }
 
-        IList<T> IBaseService<T>.GetAllReadOnly()
-        {
-            return _repositoryBase.GetAllReadOnly();
-        }
-
         public void Insert(IList<T> entities)
         {
             _repositoryBase.Insert(entities);

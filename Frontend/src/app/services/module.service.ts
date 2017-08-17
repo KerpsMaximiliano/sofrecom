@@ -31,4 +31,8 @@ export class ModuleService {
     getOptions() {
         return this.http.get(`${this.baseUrl}/module/options`, { headers: this.headers}).map((res:Response) => res.json() );
     }
+
+    edit(model) {
+        return this.http.put(`${this.baseUrl}/module`, model, { headers: this.headers}).map((res:Response) => res.json() );
+    }
 }

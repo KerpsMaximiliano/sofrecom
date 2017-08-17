@@ -68,10 +68,6 @@
     </tbody>
 </table>
 
-
-<ng2-modal *ngIf="data && data.length > 0" [config]="modalConfig"  #modalNg2Datatables (accept)="doHabInhab(deleteRowIndex, true)"> <!--(accept)="" (cancel)=""-->
-
-    <h4>{{locationTexts.deleteQuestion.replace("¶", data[deleteRowIndex][options.descripFieldName])}}</h4>
-
-
+<ng2-modal *ngIf="data && data.length > 0" [config]="modalConfig" #modalNg2Datatables (accept)="confirm(deleteRowIndex)"> <!--(accept)="" (cancel)=""-->
+    <h4>{{modalMessage}}</h4>
 </ng2-modal>

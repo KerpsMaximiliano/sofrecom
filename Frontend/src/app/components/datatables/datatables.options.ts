@@ -18,6 +18,4 @@ export class DatatablesOptions{
         public confirmDelete: boolean = true,
         public confirmDeleteId: string = "modalNg2Datatables"
         ){}
-
-    
 }

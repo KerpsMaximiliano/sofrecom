@@ -9,5 +9,6 @@ namespace Sofco.Core.Interfaces.DAL
         IList<Role> GetAllFullReadOnly();
         IList<Role> GetRolesByGroup(IEnumerable<int> groupIds);
         Role GetDetail(int id);
+        IList<Role> GetAllActivesReadOnly();
     }
 }
