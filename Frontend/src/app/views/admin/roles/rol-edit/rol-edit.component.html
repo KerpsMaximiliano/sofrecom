@@ -117,7 +117,7 @@
                     <div class="panel-body">
                         <ul class="todo-list m-t small-list">
                             <li *ngFor="let group of role.groups">
-                                <span class="m-l-xs">{{group.description}}</span>
+                                <span [routerLink]="['/admin/groups/edit', group.id]" class="m-l-xs pointer">{{group.description}}</span>
                             </li>
                         </ul>
                     </div>

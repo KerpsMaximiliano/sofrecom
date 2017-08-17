@@ -88,24 +88,25 @@ namespace Sofco.WebApi.Controllers.Admin
             {
                 foreach (var userGroup in response.Data.UserGroups)
                 {
-                    model.Groups.Add(new Option<int>(userGroup.Group.Id, userGroup.Group.Description));
+                    if(userGroup.Group.Active)
+                        model.Groups.Add(new Option<int>(userGroup.Group.Id, userGroup.Group.Description));
                 }
 
-                var roles = _roleService.GetRolesByGroup(response.Data.UserGroups.Select(x => x.GroupId));
+                var roles = _roleService.GetRolesByGroup(model.Groups.Select(x => x.Value));
 
                 foreach (var rol in roles)
                 {
                     if(rol != null)
                     {
                         var roleModel = new Option<int>(rol.Id, rol.Description);
-                        if (!model.Roles.Any(x => x.Value == roleModel.Value))
+                        if (!model.Roles.Any(x => x.Value == roleModel.Value) && rol.Active)
                         {
                             model.Roles.Add(roleModel);
                         }
                     }
                 }
 
-                var roleModuleFunctionality = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));
+                var roleModuleFunctionality = _functionalityService.GetFunctionalitiesByRole(model.Roles.Select(x => x.Value));
 
                 foreach (var roleModuleFunct in roleModuleFunctionality)
                 {

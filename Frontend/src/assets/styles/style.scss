@@ -107,7 +107,7 @@ input[type="checkbox"]{
 
 div.scroll{
   overflow-y: auto; 
-  height:300px;
+  max-height:300px;
 }
 
 .icon-round{
@@ -179,4 +179,8 @@ ul.indented{
 /*SECTION admin_roleEdit*/
 #admin_roleEdit{
   
+}
+
+.pointer {
+  cursor: pointer;
 }

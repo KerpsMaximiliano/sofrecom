@@ -61,7 +61,8 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var group in response.Data.Groups)
             {
-                roleModel.Groups.Add(new GroupModel(group));
+                if(group.Active)
+                    roleModel.Groups.Add(new GroupModel(group));
             }
 
             foreach (var roleModuleFunct in response.Data.RoleModuleFunctionality)

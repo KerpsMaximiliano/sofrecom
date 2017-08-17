@@ -73,6 +73,7 @@
     </div>
 
     <div class="row">
+        <!-- GRUPOS -->
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -82,13 +83,15 @@
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let group of user.groups">
-                            <span class="m-l-xs">{{group.text}}</span>
+                            <span [routerLink]="['/admin/groups/edit', group.value]" class="m-l-xs pointer">{{group.text}}</span>
                             <a class="pull-right" (click)="unassignGroup(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        <!-- ROLES -->
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -97,7 +100,7 @@
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let role of user.roles">
-                            <span class="m-l-xs">{{role.text}}</span>
+                            <span [routerLink]="['/admin/roles/edit', role.value]" class="m-l-xs pointer">{{role.text}}</span>
                         </li>
                     </ul>
                 </div>
@@ -114,7 +117,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="scroll">
-                    <div class="dd">
+                        <div class="dd">
                             <ol class="dd-list">
                                 <li *ngFor="let m of user.modules" class="dd-item">
                                     <div class="dd-handle">
