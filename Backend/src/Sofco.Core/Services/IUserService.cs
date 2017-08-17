@@ -7,7 +7,7 @@ namespace Sofco.Core.Services
     public interface IUserService
     {
         IList<User> GetAllFullReadOnly();
-        IList<User> GetAllReadOnly();
+        IList<User> GetAllReadOnly(bool active);
         Response<User> GetById(int id);
         Response<User> Active(int id, bool active);
         Response<User> AddUserGroup(int userId, int userGroupId);

@@ -19,6 +19,10 @@ export class RoleService {
     return this.http.get(`${this.baseUrl}/role`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
+  getOptions() {
+    return this.http.get(`${this.baseUrl}/role/options`, { headers: this.headers}).map((res:Response) => res.json());
+  }
+
   get(id: number) {
     return this.http.get(`${this.baseUrl}/role/${id}`, { headers: this.headers}).map((res:Response) => res.json());
   }

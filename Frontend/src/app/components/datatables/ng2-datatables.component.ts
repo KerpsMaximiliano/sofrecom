@@ -41,21 +41,36 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   public  deleteRowIndex: number = 0;
 
   public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Confirmar Eliminación", //title
+    "fake", //title
+    "fake", //id
+    true,          //Accept Button
+    true,          //Cancel Button
+    "fake",     //Accept Button Text
+    "fake");   //Cancel Button Text
+
+  private modalDisableConfig: Ng2ModalConfig = new Ng2ModalConfig(
+    "Confirmación de baja", //title
     "ng2-datatables-delete", //id
     true,          //Accept Button
     true,          //Cancel Button
-    "Eliminar",     //Accept Button Text
+    "Deshabilitar",     //Accept Button Text
     "Cancelar");   //Cancel Button Text
 
-  @ViewChild("modalNg2Datatables") deleteModal;
+  private modalEnableConfig: Ng2ModalConfig = new Ng2ModalConfig(
+    "Confirmación de alta", //title
+    "ng2-datatables-enable", //id
+    true,          //Accept Button
+    true,          //Cancel Button
+    "Habilitar",     //Accept Button Text
+    "Cancelar");   //Cancel Button Text
+
+  @ViewChild("modalNg2Datatables") confirmModal;
 
   private tableRef: any;
+  public modalMessage: string;
 
   constructor(private router: Router) {
     this.data = [];
-
-    this.modalConfig.title = this.locationTexts.deleteQuestionTitle;
   }
     
   ngOnInit() {
@@ -131,7 +146,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    
   }
 
   private setActionsColumnWidth(){
@@ -165,10 +179,26 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     let active = this.data[index][this.options.activeFieldName];
 
     if (active){
-      this.deleteModal.show();
+      this.confirm = this.disableEntity;
+      this.modalConfig = this.modalDisableConfig;
+      this.modalMessage = this.locationTexts.disableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
+      this.confirmModal.show();
     } else {
-      this.doHabInhab(index, active);
+      this.confirm = this.enableEntity;
+      this.modalConfig = this.modalEnableConfig;
+      this.modalMessage = this.locationTexts.enableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
+      this.confirmModal.show();
     }
+  }
+
+  confirm(index: number) {}
+
+  enableEntity(index: number){
+    this.doHabInhab(index, false);
+  }
+
+  disableEntity(index: number){
+    this.doHabInhab(index, true);
   }
 
   doHabInhab(index: number, active: boolean){
@@ -183,9 +213,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     this.habInhab.emit(objRpta);
 
     //si es eliminacion cerrar el popup
-    if(!objRpta.hab){
-      this.deleteModal.hide();
-    }
+    this.confirmModal.hide();
   }
 
   other1Click(id:number){
@@ -203,5 +231,4 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   onSearch(event){
 
   }
-
 }

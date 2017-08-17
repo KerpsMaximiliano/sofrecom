@@ -90,9 +90,12 @@ namespace Sofco.Service.Implementations
             return _userRepository.GetAllFullReadOnly();
         }
 
-        public IList<User> GetAllReadOnly()
+        public IList<User> GetAllReadOnly(bool active)
         {
-            return _userRepository.GetAllReadOnly();
+            if (active)
+                return _userRepository.GetAllActivesReadOnly();
+            else
+                return _userRepository.GetAllReadOnly();
         }
 
         public Response<User> GetById(int id)

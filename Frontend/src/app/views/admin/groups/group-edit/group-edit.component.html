@@ -59,7 +59,7 @@
                         <div class="form-group"><label class="col-xs-2 control-label">Rol asignado</label>
                             <div class="col-xs-10">
                               <select class="form-control m-b" name="role" [(ngModel)]="module.role.id">
-                                  <option *ngFor="let role of roles" [value]="role?.id">{{role?.description}}</option>
+                                  <option *ngFor="let role of roles" [value]="role?.value">{{role?.text}}</option>
                               </select>
                             </div>
                         </div>

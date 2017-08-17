@@ -21,7 +21,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var modules = _moduleService.GetAllReadOnly();
+            var modules = _moduleService.GetAllReadOnly(false);
             var model = new List<ModuleModel>();
 
             foreach (var module in modules)
@@ -37,7 +37,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var modules = _moduleService.GetAllReadOnly();
+            var modules = _moduleService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var module in modules)

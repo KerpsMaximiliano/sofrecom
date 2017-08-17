@@ -25,7 +25,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var users = _userService.GetAllReadOnly();
+            var users = _userService.GetAllReadOnly(false);
 
             var model = new List<UserModel>();
 
@@ -40,7 +40,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var users = _userService.GetAllReadOnly();
+            var users = _userService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var user in users)

@@ -12,5 +12,6 @@ namespace Sofco.Core.Interfaces.DAL
         Group GetSingleFull(Expression<Func<Group, bool>> predicate);
         bool ExistById(int id);
         IList<Group> GetAllFullReadOnly();
+        IList<Group> GetAllActivesReadOnly();
     }
 }

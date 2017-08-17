@@ -10,6 +10,8 @@ export class DatatablesLocationTexts{
         public habilitateText: string = "Habilitar",
         public inHabilitateText: string = "Inhabilitar",
         public deleteQuestion: string = 'Está seguro de eliminar "¶" ?', //¶ : placeholder para ubicar la entidad a eliminar
-        public deleteQuestionTitle: string = 'Confirmar Eliminación'
+        public deleteQuestionTitle: string = 'Confirmar Eliminación',
+        public disableQuestion: string = 'Está seguro de dar de baja "¶" ?', //¶ : placeholder para ubicar la entidad a deshabilitar
+        public enableQuestion: string = 'Está seguro de dar de alta "¶" ?', //¶ : placeholder para ubicar la entidad a habilitar
     ){}
 }

@@ -20,7 +20,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var functionalities = _functionalityService.GetAllReadOnly();
+            var functionalities = _functionalityService.GetAllReadOnly(false);
             var model = new List<FunctionalityModel>();
 
             foreach (var functionality in functionalities)
@@ -36,7 +36,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var functionalities = _functionalityService.GetAllReadOnly();
+            var functionalities = _functionalityService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var functionality in functionalities)

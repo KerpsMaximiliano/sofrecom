@@ -43,9 +43,12 @@ namespace Sofco.Service.Implementations
             return _moduleRepository.GetAllFullReadOnly();
         }
 
-        public IList<Module> GetAllReadOnly()
+        public IList<Module> GetAllReadOnly(bool active)
         {
-            return _moduleRepository.GetAllReadOnly();
+            if (active)
+                return _moduleRepository.GetAllActivesReadOnly();
+            else
+                return _moduleRepository.GetAllReadOnly();
         }
 
         public Response<Module> GetById(int id)

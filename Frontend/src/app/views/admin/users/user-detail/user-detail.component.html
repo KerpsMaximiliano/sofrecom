@@ -61,9 +61,9 @@
                                 <dt>Roles :</dt>
                                 <dd>{{user.roles.length}}</dd>
                             </dl>
-                            <dl class="dl-horizontal" *ngIf="user.functionalities">
-                                <dt>Funcionalidades :</dt>
-                                <dd>{{user.functionalities.length}}</dd>
+                            <dl class="dl-horizontal" *ngIf="user.modules">
+                                <dt>Modulos :</dt>
+                                <dd>{{user.modules.length}}</dd>
                             </dl>
                         </div>
                     </div>
@@ -107,23 +107,29 @@
 
     <div class="row">   
          <!--MODULES-->
-        <div class="col-lg-6 col-lg-offset-3">
+        <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> Módulos
                 </div>
                 <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let m of user.modules">
-                            <span class="m-l-xs">{{m.description}}</span>
-
-                            <ul class="todo-list m-t small-list indented">
-                                <li *ngFor="let f of m.functionalities" class="indented">
-                                    <span class="m-l-xs">{{f.text}}</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                   <div class="dd">
+                        <ol class="dd-list">
+                            <li *ngFor="let m of user.modules" class="dd-item">
+                                <div class="dd-handle">
+                                    {{m.description}}
+                                </div>
+                                
+                                <ol class="dd-list">
+                                    <li *ngFor="let f of m.functionalities" class="dd-item">
+                                        <div class="dd-handle">
+                                            {{f.text}}
+                                        </div>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>

@@ -57,9 +57,12 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public IList<Role> GetAllReadOnly()
+        public IList<Role> GetAllReadOnly(bool active)
         {
-            return _roleRepository.GetAllReadOnly();
+            if (active)
+                return _roleRepository.GetAllActivesReadOnly();
+            else
+                return _roleRepository.GetAllReadOnly();
         }
 
         public IList<Role> GetAllFullReadOnly()

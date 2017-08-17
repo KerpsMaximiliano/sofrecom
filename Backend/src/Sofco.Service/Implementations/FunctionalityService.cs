@@ -39,9 +39,12 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public IList<Functionality> GetAllReadOnly()
+        public IList<Functionality> GetAllReadOnly(bool active)
         {
-            return _functionalityRepository.GetAllReadOnly();
+            if (active)
+                return _functionalityRepository.GetAllActivesReadOnly();
+            else
+                return _functionalityRepository.GetAllReadOnly();
         }
 
         public IList<Functionality> GetAllFullReadOnly()

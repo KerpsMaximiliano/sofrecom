@@ -22,7 +22,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var groups = _groupService.GetAllReadOnly();
+            var groups = _groupService.GetAllReadOnly(false);
             var model = new List<GroupModel>();
 
             foreach (var group in groups)
@@ -36,7 +36,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var groups = _groupService.GetAllReadOnly();
+            var groups = _groupService.GetAllReadOnly(true);
             var model = new List<Option<int>>();
 
             foreach (var group in groups)
