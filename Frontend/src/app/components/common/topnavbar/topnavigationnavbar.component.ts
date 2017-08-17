@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { MenuService } from 'app/services/menu.service';
+import { ModuleService } from 'app/services/module.service';
+import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { smoothlyMenu } from '../../../app.helpers';
 declare var jQuery:any;
@@ -7,7 +9,18 @@ declare var jQuery:any;
   selector: 'topnavigationnavbar',
   templateUrl: 'topnavigationnavbar.template.html'
 })
-export class TopNavigationNavbarComponent {
+export class TopNavigationNavbarComponent implements OnInit{
+
+  private currentUser: string;
+
+  constructor(private menuService: MenuService){}
+
+  ngOnInit(){
+    /*if(this.menuService){
+      this.menuService.menu = JSON.parse(localStorage.getItem('menu'));
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }*/
+  }
 
   toggleNavigation(): void {
     jQuery("body").toggleClass("mini-navbar");

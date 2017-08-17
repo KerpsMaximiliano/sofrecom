@@ -9,6 +9,7 @@ export class CustomerService {
 
   private baseUrl: string;
   private headers: Headers;
+  private urlGetCustomers: string = "account?idManager=domiguel@sofrecom.com.ar";
 
   constructor(private http: Http, private service: Service) {
     this.baseUrl = this.service.UrlApiNode;

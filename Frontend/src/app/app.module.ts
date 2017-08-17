@@ -1,3 +1,4 @@
+import { MenuService } from './services/menu.service';
 import { SolfacModule } from './views/solfac/solfac.module';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './guards/auth.guard';
@@ -60,6 +61,7 @@ export function HttpLoaderFactory(http: Http) {
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     Configuration,
     Service,
+    MenuService,
     MessageService,
     AuthGuard,
     AuthenticationService

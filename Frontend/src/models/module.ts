@@ -1,3 +1,4 @@
+import { Menu } from './menu';
 import { Functionality } from 'models/functionality';
 export class Module{
     constructor(
@@ -5,8 +6,9 @@ export class Module{
         public code: string,
         public description: string,
         public active: boolean,
-        public startDate: Date,
-        public endDate: Date = null,
-        public functionalities: Functionality[] = null
+        public menuId: number,
+        public menu: Menu,
+        public functionalities: Functionality[] = null,
+        public available: boolean = false
     ){}
 }
