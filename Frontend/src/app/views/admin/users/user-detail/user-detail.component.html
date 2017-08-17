@@ -6,13 +6,13 @@
                 <a [routerLink]="['/']">Home</a>
             </li>
             <li>
-                <a>Admin</a>
+                <a>Administración</a>
             </li>
             <li>
-                <a [routerLink]="['../../']">Users</a>
+                <a [routerLink]="['../../']">Usuarios</a>
             </li>
             <li class="active">
-                <strong>Detail</strong>
+                <strong>Detalle</strong>
             </li>
         </ol>
     </div>
@@ -113,22 +113,24 @@
                     <i class="fa fa-info-circle"></i> Módulos
                 </div>
                 <div class="panel-body">
-                   <div class="dd">
-                        <ol class="dd-list">
-                            <li *ngFor="let m of user.modules" class="dd-item">
-                                <div class="dd-handle">
-                                    {{m.description}}
-                                </div>
-                                
-                                <ol class="dd-list">
-                                    <li *ngFor="let f of m.functionalities" class="dd-item">
-                                        <div class="dd-handle">
-                                            {{f.text}}
-                                        </div>
-                                    </li>
-                                </ol>
-                            </li>
-                        </ol>
+                    <div class="scroll">
+                    <div class="dd">
+                            <ol class="dd-list">
+                                <li *ngFor="let m of user.modules" class="dd-item">
+                                    <div class="dd-handle">
+                                        {{m.description}}
+                                    </div>
+                                    
+                                    <ol class="dd-list">
+                                        <li *ngFor="let f of m.functionalities" class="dd-item">
+                                            <div class="dd-handle">
+                                                {{f.text}}
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>

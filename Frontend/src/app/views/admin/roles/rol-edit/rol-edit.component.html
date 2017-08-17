@@ -82,25 +82,27 @@
                         <a class="pull-right" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
                     </div>
                     <div class="panel-body">
-                        <div class="dd">
-                            <ol class="dd-list">
-                                <li *ngFor="let m of role.modules" class="dd-item">
-                                    <div class="dd-handle">
-                                        {{m.description}}
-                                        <a class="pull-right" (click)="removeFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                        <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
-                                    </div>
-                                    
-                                    <ol class="dd-list">
-                                        <li *ngFor="let f of m.functionalities" class="dd-item">
-                                            <div class="dd-handle">
-                                                {{f.description}}
-                                                <a class="pull-right" (click)="removeFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                            </div>
-                                        </li>
-                                    </ol>
-                                </li>
-                            </ol>
+                        <div class="scroll">
+                            <div class="dd">
+                                <ol class="dd-list">
+                                    <li *ngFor="let m of role.modules" class="dd-item">
+                                        <div class="dd-handle">
+                                            {{m.description}}
+                                            <a class="pull-right" (click)="removeFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                            <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
+                                        </div>
+                                        
+                                        <ol class="dd-list">
+                                            <li *ngFor="let f of m.functionalities" class="dd-item">
+                                                <div class="dd-handle">
+                                                    {{f.description}}
+                                                    <a class="pull-right" (click)="removeFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
