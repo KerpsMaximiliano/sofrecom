@@ -8,6 +8,7 @@ export class Module{
         public active: boolean,
         public menuId: number,
         public menu: Menu,
-        public functionalities: Functionality[] = null
+        public functionalities: Functionality[] = null,
+        public available: boolean = false
     ){}
 }

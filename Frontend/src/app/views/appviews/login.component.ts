@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
             data => {
                 this.menuSubscrip = this.menuService.get(this.model.username).subscribe(
                     data => {
+                        localStorage.setItem('menu', JSON.stringify(data));
                         this.menuService.menu = data;
                         this.router.navigate([this.returnUrl]);
                     },

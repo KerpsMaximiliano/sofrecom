@@ -31,7 +31,7 @@ import { ProjectsComponent } from "app/views/solfac/projects/projects.component"
 
 export const ROUTES:Routes = [
   // Main redirect
-  {path: '', redirectTo: 'starterview', pathMatch: 'full'},
+  {path: '', redirectTo: 'starterview', pathMatch: 'full', canActivate: [AuthGuard]},
 
   // App views
   {
@@ -89,7 +89,7 @@ export const ROUTES:Routes = [
   {
     path: '', component: BasicLayoutComponent,
     children: [
-      {path: 'starterview', component: StarterViewComponent}
+      {path: 'starterview', component: StarterViewComponent, canActivate: [AuthGuard]}
     ]
   },
   {

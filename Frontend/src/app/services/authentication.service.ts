@@ -1,3 +1,4 @@
+import { MenuService } from 'app/services/menu.service';
 import { Service } from 'app/services/service';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
@@ -9,7 +10,9 @@ export class AuthenticationService {
     private baseUrl: string;
     private headers: Headers;
 
-    constructor(private http: Http, private service: Service) {
+    constructor(private http: Http, 
+                private service: Service,
+                private menuService: MenuService) {
         this.baseUrl = this.service.UrlApi;
         this.headers = this.service.getHeaders();
     }
@@ -20,6 +23,7 @@ export class AuthenticationService {
         return this.http.get(`${this.baseUrl}/user/`, { headers: this.headers}).map((res:Response) => {
             //return res.json();
             localStorage.setItem('currentUser', JSON.stringify(username));
+            this.menuService.currentUser = username;
         });
 
         /*
@@ -50,5 +54,6 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('menu');
     }
 }

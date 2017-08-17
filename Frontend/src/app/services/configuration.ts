@@ -10,6 +10,8 @@ export class  Configuration {
     Authorization: string;
     public currLang: string = 'es';
 
+    urlCRM: string = "http://sofrelab-iis1.cloudapp.net:4090/api/";
+
 
     constructor(public tr: TranslateService){
         tr.addLangs(["en", "es"]);

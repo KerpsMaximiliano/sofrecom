@@ -6,7 +6,8 @@ export class Menu{
         public description: string = "",
         public active: boolean = true,
         public url: string = '',
-        public modules: Module[]
+        public modules: Module[],
+        public available: boolean = false
     ){}
     
 }
