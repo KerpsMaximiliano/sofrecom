@@ -66,7 +66,7 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var roleModuleFunct in response.Data.RoleModuleFunctionality)
             {
-                if (!roleModel.Modules.Any(x => x.Id == roleModuleFunct.ModuleId))
+                if (!roleModel.Modules.Any(x => x.Id == roleModuleFunct.ModuleId) && roleModuleFunct.Module.Active)
                 {
                     var module = new ModuleModel(roleModuleFunct.Module);
 
@@ -78,7 +78,7 @@ namespace Sofco.WebApi.Controllers.Admin
             {
                 var roleModuleFunctionalities = response.Data.RoleModuleFunctionality.Where(x => x.ModuleId == roleModel.Modules[i].Id).ToList();
 
-                roleModel.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new FunctionalityModel(x.Functionality)).ToList();
+                roleModel.Modules[i].Functionalities = roleModuleFunctionalities.Where(x => x.Functionality.Active).Select(x => new FunctionalityModel(x.Functionality)).ToList();
             }
 
             return Ok(roleModel);
