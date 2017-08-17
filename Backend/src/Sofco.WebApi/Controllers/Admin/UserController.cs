@@ -98,7 +98,7 @@ namespace Sofco.WebApi.Controllers.Admin
                     if(rol != null)
                     {
                         var roleModel = new Option<int>(rol.Id, rol.Description);
-                        if (!model.Roles.Contains(roleModel))
+                        if (!model.Roles.Any(x => x.Value == roleModel.Value))
                         {
                             model.Roles.Add(roleModel);
                         }
@@ -111,7 +111,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     if(roleModuleFunct.Module != null)
                     {
-                        if (!model.Modules.Any(x => x.Code == roleModuleFunct.Module.Code))
+                        if (!model.Modules.Any(x => x.Code == roleModuleFunct.Module.Code) && roleModuleFunct.Module.Active)
                         {
                             var module = new ModuleModelDetail(roleModuleFunct.Module);
 
@@ -124,7 +124,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     var roleModuleFunctionalities = roleModuleFunctionality.Where(x => x.Module.Code == model.Modules[i].Code).ToList();
 
-                    model.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new Option<string>(x.Functionality.Code, x.Functionality.Description)).ToList();
+                    model.Modules[i].Functionalities = roleModuleFunctionalities.Where(x => x.Functionality.Active).Select(x => new Option<string>(x.Functionality.Code, x.Functionality.Description)).ToList();
                 }
             }
 
