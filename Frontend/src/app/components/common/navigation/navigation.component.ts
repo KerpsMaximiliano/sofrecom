@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Menu } from 'models/menu';
+import { MenuService } from './../../../services/menu.service';
+import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { smoothlyMenu } from '../../../app.helpers';
 import 'jquery-slimscroll';
@@ -12,7 +14,12 @@ declare var jQuery:any;
 
 export class NavigationComponent {
 
-  constructor(private router: Router) {}
+  public menu: Menu[];
+
+  constructor(
+      private router: Router,
+      private menuService: MenuService) {}
+
 
   ngAfterViewInit() {
     jQuery('#side-menu').metisMenu();
@@ -22,6 +29,8 @@ export class NavigationComponent {
         height: '100%'
       })
     }
+
+
   }
 
   toggleNavigation(): void {

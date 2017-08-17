@@ -36,24 +36,24 @@
       -->
 
       <!--ADMIN-->
-      <li [ngClass]="{active: activeRoute('admin')}">
+      <li [ngClass]="{active: activeRoute('admin')}" *ngIf="menuService.hasMenu('ADMIN')">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
-          <li [ngClass]="{active: activeRoute('users')}"><a [routerLink]="['/admin/users']">{{'ADMIN.USERS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('groups')}"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('roles')}"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('functionalities')}"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('entities')}"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasModule('USR')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasModule('GRP')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('roles')}" *ngIf="menuService.hasModule('ROL')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('functionalities')}" *ngIf="menuService.hasModule('ROL')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('entities')}" *ngIf="menuService.hasModule('MOD')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
         </ul>
       </li>
 
       <!--SOLFAC-->
-      <!--<li [ngClass]="{active: activeRoute('solfac')}">
+      <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasMenu('FACT')">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'solfac.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
-          <li [ngClass]="{active: activeRoute('customers')}"><a [routerLink]="['/solfac/customers']">{{'solfac.customer.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('CUST')"><a [routerLink]="['/solfac/customers']">{{'solfac.customer.title' | translate }}</a></li>
         </ul>
-      </li>-->
+      </li>
 
       <!--
       <li [ngClass]="{active: activeRoute('dashboards')}">
