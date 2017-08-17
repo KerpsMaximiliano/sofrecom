@@ -41,27 +41,11 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   public  deleteRowIndex: number = 0;
 
   public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "fake", //title
-    "fake", //id
-    true,          //Accept Button
-    true,          //Cancel Button
-    "fake",     //Accept Button Text
-    "fake");   //Cancel Button Text
-
-  private modalDisableConfig: Ng2ModalConfig = new Ng2ModalConfig(
     "Confirmación de baja", //title
-    "ng2-datatables-delete", //id
+    "modalConfirm", //id
     true,          //Accept Button
     true,          //Cancel Button
     "Deshabilitar",     //Accept Button Text
-    "Cancelar");   //Cancel Button Text
-
-  private modalEnableConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Confirmación de alta", //title
-    "ng2-datatables-enable", //id
-    true,          //Accept Button
-    true,          //Cancel Button
-    "Habilitar",     //Accept Button Text
     "Cancelar");   //Cancel Button Text
 
   @ViewChild("modalNg2Datatables") confirmModal;
@@ -80,7 +64,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     this.setActionsColumnWidth();
 
     this.createTable();
-    
   }
 
   createTable(){
@@ -180,12 +163,14 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
     if (active){
       this.confirm = this.disableEntity;
-      this.modalConfig = this.modalDisableConfig;
+      this.modalConfig.acceptButtonText = "Deshabilitar";
+      this.modalConfig.title = "Confirmación de baja";
       this.modalMessage = this.locationTexts.disableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
       this.confirmModal.show();
     } else {
       this.confirm = this.enableEntity;
-      this.modalConfig = this.modalEnableConfig;
+      this.modalConfig.acceptButtonText = "Habilitar"
+      this.modalConfig.title = "Confirmación de alta";
       this.modalMessage = this.locationTexts.enableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
       this.confirmModal.show();
     }
@@ -202,7 +187,6 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   }
 
   doHabInhab(index: number, active: boolean){
-
     let id = this.data[index][this.options.idFieldName];
 
     this.data[index][this.options.activeFieldName] = !active;
