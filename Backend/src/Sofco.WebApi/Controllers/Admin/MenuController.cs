@@ -3,6 +3,7 @@ using Sofco.Core.Services;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -25,21 +26,25 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var item in menus)
             {
-                var menuModel = new MenuModel(item);
-
-                foreach (var module in item.Modules)
+                if(item.Modules.Any(x => x.RoleModuleFunctionality.Any(y => y.Functionality.Active)))
                 {
-                    var moduleDetail = new ModuleModelDetail(module);
+                    var menuModel = new MenuModel(item);
 
-                    foreach (var roleModuleFunct in module.RoleModuleFunctionality)
+                    foreach (var module in item.Modules)
                     {
-                        moduleDetail.Functionalities.Add(new Option<string>(roleModuleFunct.Functionality.Code, roleModuleFunct.Functionality.Description));
+                        var moduleDetail = new ModuleModelDetail(module);
+
+                        foreach (var roleModuleFunct in module.RoleModuleFunctionality)
+                        {
+                            if (roleModuleFunct.Functionality.Active)
+                                moduleDetail.Functionalities.Add(new Option<string>(roleModuleFunct.Functionality.Code, roleModuleFunct.Functionality.Description));
+                        }
+
+                        menuModel.Modules.Add(moduleDetail);
                     }
 
-                    menuModel.Modules.Add(moduleDetail);
+                    response.Add(menuModel);
                 }
-
-                response.Add(menuModel);
             }
 
             return Ok(response);

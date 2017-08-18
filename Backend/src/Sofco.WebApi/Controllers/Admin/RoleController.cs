@@ -85,46 +85,6 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(roleModel);
         }
 
-        // GET: api/role
-        [HttpGet]
-        [Route("full")]
-        public IActionResult GetFull()
-        {
-            var roles = _roleService.GetAllFullReadOnly();
-            var model = new List<RoleModel>();
-
-            foreach (var rol in roles)
-            {
-                var roleModel = new RoleModel(rol);
-
-                foreach (var group in rol.Groups)
-                {
-                    roleModel.Groups.Add(new GroupModel(group));
-                }
-
-                foreach (var roleModuleFunct in rol.RoleModuleFunctionality)
-                {
-                    if(!roleModel.Modules.Any(x => x.Id == roleModuleFunct.ModuleId))
-                    {
-                        var module = new ModuleModel(roleModuleFunct.Module);
-
-                        roleModel.Modules.Add(module);
-                    }
-                }
-
-                for (int i = 0; i < roleModel.Modules.Count(); i++)
-                {
-                    var roleModuleFunctionalities = rol.RoleModuleFunctionality.Where(x => x.ModuleId == roleModel.Modules[i].Id).ToList();
-
-                    roleModel.Modules[i].Functionalities = roleModuleFunctionalities.Select(x => new FunctionalityModel(x.Functionality)).ToList();
-                }
-
-                model.Add(roleModel);
-            }
-
-            return Ok(model);
-        }
-
         // GET api/role/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -172,17 +132,6 @@ namespace Sofco.WebApi.Controllers.Admin
             model.ApplyTo(roleReponse.Data);
 
             var response = _roleService.Update(roleReponse.Data);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        // DELETE api/role/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var response = _roleService.DeleteById(id);
 
             if (response.HasErrors()) return BadRequest(response);
 

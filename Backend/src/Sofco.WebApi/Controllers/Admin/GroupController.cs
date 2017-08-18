@@ -40,37 +40,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<Option<int>>();
 
             foreach (var group in groups)
-            {
                 model.Add(new Option<int>(group.Id, group.Description));
-            }
-
-            return Ok(model);
-        }
-
-        // GET: api/group
-        [HttpGet]
-        [Route("full")]
-        public IActionResult GetFull()
-        {
-            var groups = _groupService.GetAllFullReadOnly();
-            var model = new List<GroupModel>();
-
-            foreach (var group in groups)
-            {
-                var groupModel = new GroupModel(group);
-
-                if(group.Role != null)
-                {
-                    groupModel.Role = new RoleModel(group.Role);
-                }
-
-                foreach (var userGroup in group.UserGroups)
-                {
-                    groupModel.Users.Add(new UserModel(userGroup.User));
-                }
-
-                model.Add(groupModel);
-            }
 
             return Ok(model);
         }
@@ -86,14 +56,10 @@ namespace Sofco.WebApi.Controllers.Admin
             var groupModel = new GroupModel(response.Data);
 
             if (response.Data.Role != null)
-            {
                 groupModel.Role = new RoleModel(response.Data.Role);
-            }
 
             foreach (var userGroup in response.Data.UserGroups)
-            {
                 groupModel.Users.Add(new UserModel(userGroup.User));
-            }
 
             return Ok(groupModel);
         }
@@ -133,17 +99,6 @@ namespace Sofco.WebApi.Controllers.Admin
             var roleId = model.Role != null ? model.Role.Id : 0;
 
             var response = _groupService.Update(groupReponse.Data, roleId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        // DELETE api/group/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var response = _groupService.DeleteById(id);
 
             if (response.HasErrors()) return BadRequest(response);
 

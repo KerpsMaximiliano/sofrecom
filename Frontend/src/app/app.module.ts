@@ -17,7 +17,6 @@ import {ROUTES} from "./app.routes";
 import { AppComponent } from './app.component';
 
 // App views
-import {DashboardsModule} from "./views/dashboards/dashboards.module";
 import {AppviewsModule} from "./views/appviews/appviews.module";
 
 // App modules/components
@@ -42,7 +41,6 @@ export function HttpLoaderFactory(http: Http) {
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    DashboardsModule,
     LayoutsModule,
     AppviewsModule,
     ToastrModule.forRoot(),

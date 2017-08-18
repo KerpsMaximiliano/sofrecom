@@ -18,13 +18,10 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
+        var json = { mail: username, password: password };
 
         //temporal hasta que esté el servicio
-        return this.http.get(`${this.baseUrl}/user/`, { headers: this.headers}).map((res:Response) => {
-            //return res.json();
-            localStorage.setItem('currentUser', JSON.stringify(username));
-            this.menuService.currentUser = username;
-        });
+        return this.http.post(`${this.baseUrl}/login/`, json, { headers: this.headers}).map((res: Response) => res.json());
 
         /*
         return this.http.get(`${this.baseUrl}/user/1/detail`, { headers: this.headers}).map((res:Response) => {

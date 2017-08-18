@@ -36,7 +36,10 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
             data => {
-                this.menuSubscrip = this.menuService.get(this.model.username).subscribe(
+                localStorage.setItem('currentUser', data.data);
+                this.menuService.currentUser = data.data.userName;
+
+                this.menuSubscrip = this.menuService.get(this.menuService.currentUser).subscribe(
                     data => {
                         localStorage.setItem('menu', JSON.stringify(data));
                         this.menuService.menu = data;
@@ -50,7 +53,8 @@ export class LoginComponent implements OnInit {
             },
             error => {
                 this.loading = false;
-                if(error.messages) this.messageService.showMessages(error.messages);
+                var json = JSON.parse(error._body)
+                if(json.messages) this.messageService.showMessages(json.messages);
         });
     }
 

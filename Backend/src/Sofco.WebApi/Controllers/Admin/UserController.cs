@@ -51,29 +51,6 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model);
         }
 
-        // GET: api/user
-        [HttpGet]
-        [Route("full")]
-        public IActionResult GetFull()
-        {
-            var users = _userService.GetAllFullReadOnly();
-            var model = new List<UserModel>();
-
-            foreach (var user in users)
-            {
-                var userModel = new UserModel(user);
-
-                foreach (var userGroup in user.UserGroups)
-                {
-                    userModel.Groups.Add(new GroupModel(userGroup.Group));
-                }
-
-                model.Add(userModel);
-            }
-
-            return Ok(model);
-        }
-
         // GET api/role/5
         [HttpGet("{id}/detail")]
         public IActionResult Detail(int id)

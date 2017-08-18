@@ -85,11 +85,6 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public IList<User> GetAllFullReadOnly()
-        {
-            return _userRepository.GetAllFullReadOnly();
-        }
-
         public IList<User> GetAllReadOnly(bool active)
         {
             if (active)
@@ -196,6 +191,22 @@ namespace Sofco.Service.Implementations
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
 
+            return response;
+        }
+
+        public Response<User> GetByMail(string mail)
+        {
+            var response = new Response<User>();
+
+            var user = _userRepository.GetSingle(x => x.Email.Equals(mail));
+
+            if(user == null)
+            {
+                response.Messages.Add(new Message(Resources.es.User.LoginFailed, MessageType.Error));
+                return response;
+            }
+
+            response.Data = user;
             return response;
         }
     }

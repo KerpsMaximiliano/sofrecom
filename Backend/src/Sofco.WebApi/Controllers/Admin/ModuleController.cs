@@ -25,9 +25,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<ModuleModel>();
 
             foreach (var module in modules)
-            {
                 model.Add(new ModuleModel(module));
-            }
 
             return Ok(model);
         }
@@ -41,32 +39,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<Option<int>>();
 
             foreach (var module in modules)
-            {
                 model.Add(new Option<int>(module.Id, module.Description));
-            }
-
-            return Ok(model);
-        }
-
-        // GET: api/module
-        [HttpGet]
-        [Route("full")]
-        public IActionResult GetFull()
-        {
-            var modules = _moduleService.GetAllFullReadOnly();
-            var model = new List<ModuleModel>();
-
-            foreach (var module in modules)
-            {
-                var moduleModel = new ModuleModel(module);
-
-                foreach (var roleModuleFunctionality in module.RoleModuleFunctionality)
-                {
-                    moduleModel.Functionalities.Add(new FunctionalityModel(roleModuleFunctionality.Functionality));
-                }
-
-                model.Add(moduleModel);
-            }
 
             return Ok(model);
         }

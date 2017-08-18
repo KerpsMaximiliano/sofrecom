@@ -132,6 +132,9 @@
   <data name="GroupRemoved" xml:space="preserve">
     <value>Grupo removido correctamente</value>
   </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>Usuario o Contraseña incorrectas</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Usuario no encontrado</value>
   </data>
