@@ -40,8 +40,8 @@
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasModule('ADMIN', 'USR')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasModule('ADMIN', 'GRP')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasModule('ADMIN', 'ROL')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasModule('ADMIN', 'GRP')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasModule('ADMIN', 'MOD')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasModule('ADMIN', 'FUNC')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
         </ul>

@@ -22,7 +22,8 @@ export class BasicLayoutComponent {
       this.menuService.menu = JSON.parse(localStorage.getItem('menu'));
     }
     if(!this.menuService.currentUser){
-      this.menuService.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.menuService.currentUser = currentUser.userName;
     }
     detectBody();
   }

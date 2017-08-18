@@ -13,8 +13,6 @@ export class AuthGuard implements CanActivate {
         //var rpta: boolean = false;
         
         if (localStorage.getItem('currentUser')) {
-            
-            // logged in so return true
             return true;            
         }
 
