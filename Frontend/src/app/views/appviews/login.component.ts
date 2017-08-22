@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
             data => {
-                localStorage.setItem('currentUser', data.data);
+                localStorage.setItem('currentUser', data.data.userName);
+                localStorage.setItem('currentUserMail', data.data.email);
                 this.menuService.currentUser = data.data.userName;
 
                 this.menuSubscrip = this.menuService.get(this.menuService.currentUser).subscribe(

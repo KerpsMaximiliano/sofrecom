@@ -9,10 +9,10 @@
                 <a>{{'solfac.title' | translate }}</a>
             </li>
             <li>
-                <a>{{'solfac.service.title' | translate }}</a>
+                <a [routerLink]="['/solfac/customers/', customerId, 'services']">{{'solfac.service.title' | translate }}</a>
             </li>
             <li>
-                <a>{{serviceId}}</a>
+                <a>{{serviceName}}</a>
             </li>
             <li class="active">
                 <strong>{{'solfac.project.title' | translate }}</strong>
@@ -31,23 +31,27 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>{{"solfac.project.management" | translate}}</h5>
-
-                    <!--
-                    <div class="ibox-tools" >
-                        <a [routerLink]="['add']"><i class="fa fa-plus"></i></a>
-                    </div>
-                    -->
-
                 </div>
-                <div class="ibox-content" *ngIf="data != null && options != null">
-                    <datatables #dt
-                      [data] = "data" 
-                      [columns]="columns" 
-                      [editionType]=editionType
-                      [options]=options
-                      [locationTexts]=locationTexts
-                      (habInhab) = "habInhab($event)"
-                      ></datatables>
+                <div class="ibox-content">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let project of projects">
+                                <td class="col-lg-4">{{project.Id}}</td>
+                                <td class="col-lg-6">{{project.Nombre}}</td>
+                                <td class="col-lg-2"> <i class="fa fa-calendar"></i> 18/08/2017 </td>
+                            </tr>
+                            <tr *ngIf="projects == null || projects.length == 0">
+                                <td colspan="3" class="text-center">No hay resultados</td>
+                            </tr>
+                        </tbody>
+                    </table>        
                 </div>
             </div>
         </div>

@@ -44,7 +44,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
   @ViewChild('funcModal') funcModal;
   @ViewChild('confirmModal') confirmModal;
 
-  private modalMessage: string;
+  public modalMessage: string;
 
   public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
     "Confirmación de baja",

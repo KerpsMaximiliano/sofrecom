@@ -14,15 +14,18 @@ declare var jQuery:any;
 })
 export class TopNavbarComponent {
 
+  public userName: string;
+
   constructor(
         public configService: Configuration, 
         private translateService: TranslateService,
         private authService: AuthenticationService,
         private router: Router,
-        private menuService: MenuService
-        ){
+        public menuService: MenuService){
       let browserLang = translateService.getBrowserLang();
       configService.setCurrLang(browserLang);
+
+      this.userName = this.menuService.currentUser;
   }
 
   toggleNavigation(): void {

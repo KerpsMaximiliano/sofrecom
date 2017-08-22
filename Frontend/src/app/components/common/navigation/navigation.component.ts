@@ -21,9 +21,9 @@ export class NavigationComponent implements OnInit, OnDestroy{
 
   constructor(
       private router: Router,
-      private menuService: MenuService,
+      public menuService: MenuService,
       private route: ActivatedRoute,
-      private messageService: MessageService) {}
+      public messageService: MessageService) {}
 
 
   ngOnInit(){

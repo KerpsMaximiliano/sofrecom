@@ -3,6 +3,7 @@ import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angul
 import { Service } from "app/services/service";
 import { Menu } from "models/menu";
 import { Module } from "models/module";
+import { User } from "models/user";
 
 @Injectable()
 export class MenuService {
@@ -10,12 +11,13 @@ export class MenuService {
     private headers: Headers;
 
     public menu: Menu[];
-    public currentUser: string;
+    public currentUser: any;
 
     constructor(private http: Http, private service: Service) {
         this.baseUrl = this.service.UrlApi;
         this.headers = this.service.getHeaders();
 
+        this.currentUser = localStorage.getItem("currentUser");
     }
 
     get(userName: string) {
@@ -25,6 +27,7 @@ export class MenuService {
                            return rpta;
                         });
     }
+
 /*
     private getMenu(menuCode: string){
         var menuItems = null;
