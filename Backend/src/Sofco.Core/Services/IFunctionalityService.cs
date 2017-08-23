@@ -8,11 +8,10 @@ namespace Sofco.Core.Services
 {
     public interface IFunctionalityService
     {
-        IList<Functionality> GetAllFullReadOnly();
         IList<Functionality> GetAllReadOnly(bool active);
         Response<Functionality> GetById(int id);
         Response<Functionality> Active(int id, bool active);
-        IList<RoleModuleFunctionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds);
-        IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId);
+        IList<Functionality> GetFunctionalitiesByModule(int moduleId);
+        IList<Functionality> GetFunctionalitiesByModule(IEnumerable<int> modules);
     }
 }

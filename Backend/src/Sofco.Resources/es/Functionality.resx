@@ -126,13 +126,13 @@
   <data name="Enabled" xml:space="preserve">
     <value>Funcionalidad habilitada correctamente</value>
   </data>
+  <data name="ModuleFunctionalityAlreadyCreated" xml:space="preserve">
+    <value>Funcionalidad ya asociada al modulo</value>
+  </data>
+  <data name="ModuleFunctionalityAlreadyRemoved" xml:space="preserve">
+    <value>Funcionalidad no asociada al modulo</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Funcionalidad no encontrada</value>
-  </data>
-  <data name="RoleFunctionalityAlreadyCreated" xml:space="preserve">
-    <value>Funcionalidad ya asociada al rol</value>
-  </data>
-  <data name="RoleFunctionalityAlreadyRemoved" xml:space="preserve">
-    <value>Funcionalidad no asociada al rol</value>
   </data>
 </root>

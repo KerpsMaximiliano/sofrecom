@@ -41,8 +41,8 @@
             "add": "Agregar Modulo"
         }
     },
-    "solfac":{
-        "title": "SolFac",
+    "billing":{
+        "title": "Facturación",
         "customer":{
             "title": "Clientes",
             "management": "Administración de Clientes",
@@ -71,7 +71,13 @@
             "title": "Solicitud de Facturación",
             "management": "Administración de SolFac",
             "edit": "Editar SolFac",
-            "add": "Agregar SolFac"
+            "add": "Crear SolFac"
+        },
+        "remito":{
+            "title": "Remitos",
+            "management": "Gestion de Remitos",
+            "edit": "Editar Remito",
+            "add": "Crear Remito"
         }
     },
     "HOME": {

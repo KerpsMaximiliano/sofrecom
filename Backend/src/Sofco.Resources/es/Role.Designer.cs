@@ -114,6 +114,15 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Modulos del rol actualizados.
+        /// </summary>
+        public static string ModulesUpdated {
+            get {
+                return ResourceManager.GetString("ModulesUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Rol no encontrado.
         /// </summary>
         public static string NotFound {
@@ -137,6 +146,24 @@ namespace Sofco.Resources.es {
         public static string RoleMenusUpdated {
             get {
                 return ResourceManager.GetString("RoleMenusUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Modulo ya asociado al rol.
+        /// </summary>
+        public static string RoleModuleAlreadyCreated {
+            get {
+                return ResourceManager.GetString("RoleModuleAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Modulo no asociado al rol.
+        /// </summary>
+        public static string RoleModuleAlreadyRemoved {
+            get {
+                return ResourceManager.GetString("RoleModuleAlreadyRemoved", resourceCulture);
             }
         }
         

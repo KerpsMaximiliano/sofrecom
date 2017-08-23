@@ -14,12 +14,14 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IFunctionalityService _functionalityService;
+        private readonly IModuleService _moduleService;
 
-        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService)
+        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService, IModuleService moduleService)
         {
             _userService = userService;
             _roleService = roleService;
             _functionalityService = functionalityService;
+            _moduleService = moduleService;
         }
 
         [HttpGet]
@@ -83,26 +85,17 @@ namespace Sofco.WebApi.Controllers.Admin
                     }
                 }
 
-                var roleModuleFunctionality = _functionalityService.GetFunctionalitiesByRole(model.Roles.Select(x => x.Value));
+                var modules = _moduleService.GetModulesByRole(model.Roles.Select(x => x.Value));
 
-                foreach (var roleModuleFunct in roleModuleFunctionality)
+                foreach (var module in modules)
                 {
-                    if(roleModuleFunct.Module != null)
-                    {
-                        if (!model.Modules.Any(x => x.Code == roleModuleFunct.Module.Code) && roleModuleFunct.Module.Active)
-                        {
-                            var module = new ModuleModelDetail(roleModuleFunct.Module);
+                    var moduleModel = new ModuleModelDetail(module);
 
-                            model.Modules.Add(module);
-                        }
-                    }
-                }
+                    var functionalities = _functionalityService.GetFunctionalitiesByModule(module.Id);
 
-                for (int i = 0; i < model.Modules.Count(); i++)
-                {
-                    var roleModuleFunctionalities = roleModuleFunctionality.Where(x => x.Module.Code == model.Modules[i].Code).ToList();
+                    moduleModel.Functionalities = functionalities.Select(x => new Option<string>(x.Code, x.Description)).ToList();
 
-                    model.Modules[i].Functionalities = roleModuleFunctionalities.Where(x => x.Functionality.Active).Select(x => new Option<string>(x.Functionality.Code, x.Functionality.Description)).ToList();
+                    model.Modules.Add(moduleModel);
                 }
             }
 

@@ -12,6 +12,7 @@ namespace Sofco.Model.Models
 
         public Menu Menu { get; set; }
 
-        public IList<RoleModuleFunctionality> RoleModuleFunctionality { get; set; }
+        public IList<RoleModule> RoleModule { get; set; }
+        public IList<ModuleFunctionality> ModuleFunctionality { get; set; }
     }
 }

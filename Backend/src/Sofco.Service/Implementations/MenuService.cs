@@ -9,13 +9,13 @@ namespace Sofco.Service.Implementations
 {
     public class MenuService : IMenuService
     {
-        private readonly IRoleModuleFunctionalityRepository _roleModuleFunctionalityRepository;
+        private readonly IMenuRepository _menuRepository;
         private readonly IUserGroupRepository _userGroupRepository;
         private readonly IRoleRepository _roleRepository;
 
-        public MenuService(IRoleModuleFunctionalityRepository roleModuleFunctionalityRepository, IUserGroupRepository userGroupRepository, IRoleRepository roleRepository)
+        public MenuService(IMenuRepository menuRepository, IUserGroupRepository userGroupRepository, IRoleRepository roleRepository)
         {
-            _roleModuleFunctionalityRepository = roleModuleFunctionalityRepository;
+            _menuRepository = menuRepository;
             _userGroupRepository = userGroupRepository;
             _roleRepository = roleRepository;
         }
@@ -26,9 +26,9 @@ namespace Sofco.Service.Implementations
 
             var roles = _roleRepository.GetRolesByGroup(groupsId);
 
-            var roleModuleFunctionality = _roleModuleFunctionalityRepository.GetModulesByRoles(roles.Select(x => x.Id));
+            var roleModule = _menuRepository.GetMenuByRoles(roles.Select(x => x.Id));
 
-            return roleModuleFunctionality.Select(x => x.Module.Menu).Distinct().ToList();
+            return roleModule.Select(x => x.Module.Menu).Distinct().ToList();
         }
     }
 }

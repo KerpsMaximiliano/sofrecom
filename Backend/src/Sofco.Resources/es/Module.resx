@@ -126,6 +126,9 @@
   <data name="Enabled" xml:space="preserve">
     <value>Modulo habilitado correctamente</value>
   </data>
+  <data name="FunctionalitiesUpdated" xml:space="preserve">
+    <value>Funcionalidades actualizadas</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Modulo no encontrada</value>
   </data>

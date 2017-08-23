@@ -1,5 +1,5 @@
 import { MenuService } from './services/menu.service';
-import { SolfacModule } from './views/solfac/solfac.module';
+import { BillingModule } from './views/billing/billing.module';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './guards/auth.guard';
 import { Http } from '@angular/http';
@@ -46,7 +46,7 @@ export function HttpLoaderFactory(http: Http) {
     ToastrModule.forRoot(),
     RouterModule.forRoot(ROUTES),
     AdminModule,
-    SolfacModule,
+    BillingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

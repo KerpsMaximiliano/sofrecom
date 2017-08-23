@@ -35,4 +35,16 @@ export class ModuleService {
     edit(model) {
         return this.http.put(`${this.baseUrl}/module`, model, { headers: this.headers}).map((res:Response) => res.json() );
     }
+    
+    assignFunctionalities(moduleId: number, objToSend: any){
+        return this.http.post(`${this.baseUrl}/module/${moduleId}/functionalities`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    unAssignFunctionality(moduleId: number, funcId: number) {
+        return this.http.delete(`${this.baseUrl}/module/${moduleId}/functionality/${funcId}`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
+    unAssignFunctionalities(moduleId: number, objToSend: any){
+        return this.http.post(`${this.baseUrl}/module/${moduleId}/functionalities`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
+    }
 }

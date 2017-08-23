@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Interfaces.Services;
+using Sofco.Core.Services;
 using Sofco.Model.Models;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
@@ -65,21 +66,20 @@ namespace Sofco.WebApi.Controllers.Admin
                     roleModel.Groups.Add(new GroupModel(group));
             }
 
-            foreach (var roleModuleFunct in response.Data.RoleModuleFunctionality)
+            foreach (var roleModule in response.Data.RoleModule)
             {
-                if (!roleModel.Modules.Any(x => x.Id == roleModuleFunct.ModuleId) && roleModuleFunct.Module.Active)
+                if (!roleModel.Modules.Any(x => x.Id == roleModule.ModuleId) && roleModule.Module.Active)
                 {
-                    var module = new ModuleModel(roleModuleFunct.Module);
+                    var module = new ModuleModel(roleModule.Module);
+
+                    foreach (var moduleFunctionality in roleModule.Module.ModuleFunctionality)
+                    {
+                        if(moduleFunctionality.Functionality.Active)
+                            module.Functionalities.Add(new FunctionalityModel(moduleFunctionality.Functionality));
+                    }
 
                     roleModel.Modules.Add(module);
                 }
-            }
-
-            for (int i = 0; i < roleModel.Modules.Count(); i++)
-            {
-                var roleModuleFunctionalities = response.Data.RoleModuleFunctionality.Where(x => x.ModuleId == roleModel.Modules[i].Id).ToList();
-
-                roleModel.Modules[i].Functionalities = roleModuleFunctionalities.Where(x => x.Functionality.Active).Select(x => new FunctionalityModel(x.Functionality)).ToList();
             }
 
             return Ok(roleModel);
@@ -158,11 +158,11 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(response);
         }
 
-        [HttpPost]
-        [Route("{roleId}/functionalities")]
-        public IActionResult ChangeFunctionalities(int roleId, [FromBody]RoleModuleFunctionalityModel model)
+        [HttpPut]
+        [Route("{id}/active/{active}")]
+        public IActionResult Active(int id, bool active)
         {
-            var response = _roleService.ChangeFunctionalities(roleId, model.ModuleId, model.FunctionalitiesToAdd, model.FunctionalitiesToRemove);
+            var response = _roleService.Active(id, active);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -170,10 +170,21 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpPost]
-        [Route("{roleId}/module/{moduleId}/functionality/{functionalityId}")]
-        public IActionResult AddFunctionality(int roleId, int moduleId, int functionalityId)
+        [Route("{roleId}/modules")]
+        public IActionResult AddModules(int roleId, [FromBody]List<int> modules)
         {
-            var response = _roleService.AddFunctionality(roleId, moduleId, functionalityId);
+            var response = _roleService.ChangeModules(roleId, modules);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{roleId}/modules/{moduleId}")]
+        public IActionResult AddModule(int roleId, int moduleId)
+        {
+            var response = _roleService.AddModule(roleId, moduleId);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -181,21 +192,10 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpDelete]
-        [Route("{roleId}/module/{moduleId}/functionality/{functionalityId}")]
-        public IActionResult DeleteFunctionality(int roleId, int moduleId, int functionalityId)
+        [Route("{roleId}/modules/{moduleId}")]
+        public IActionResult DeleteModule(int roleId, int moduleId)
         {
-            var response = _roleService.DeleteFunctionality(roleId, moduleId, functionalityId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPut]
-        [Route("{id}/active/{active}")]
-        public IActionResult Active(int id, bool active)
-        {
-            var response = _roleService.Active(id, active);
+            var response = _roleService.DeleteModule(roleId, moduleId);
 
             if (response.HasErrors()) return BadRequest(response);
 

@@ -69,8 +69,9 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   createTable(){
 
     let arrOrder = [[this.options.orderByColumn, this.options.orderByAscDesc]];
-
-
+    let title = this.options.exportOptions.title;
+    let columns = this.options.exportOptions.columns;
+ 
     setTimeout(()=>{
           $( document ).ready(function() {
             this.tableRef = $('#dt-component').DataTable({
@@ -78,8 +79,18 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
               order: arrOrder,//[this.options.orderByColumn, this.options.orderByAscDesc]
               oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
               buttons: [
-                'excelHtml5',
-                'pdfHtml5'
+                {
+                    extend: 'excelHtml5', title: title,
+                    exportOptions: {
+                        columns: columns
+                    }
+                },
+                {
+                  extend: 'pdfHtml5', title: title,
+                    exportOptions: {
+                        columns: columns
+                    }
+                }
               ]
             });
           });

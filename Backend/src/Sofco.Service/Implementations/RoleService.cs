@@ -13,14 +13,14 @@ namespace Sofco.Service.Implementations
     public class RoleService : IRoleService
     {
         private readonly IRoleRepository _roleRepository;
-        private readonly IRoleModuleFunctionalityRepository _roleModuleFunctionalityRepository;
+        private readonly IRoleModuleRepository _roleModuleRepository;
         private readonly IFunctionalityRepository _functionalityRepository;
         private readonly IModuleRepository _moduleRepository;
 
-        public RoleService(IRoleRepository repository, IRoleModuleFunctionalityRepository roleFunctionality, IFunctionalityRepository functionalityRepository, IModuleRepository moduleRepository)
+        public RoleService(IRoleRepository repository, IRoleModuleRepository roleFunctionality, IFunctionalityRepository functionalityRepository, IModuleRepository moduleRepository)
         {
             _roleRepository = repository;
-            _roleModuleFunctionalityRepository = roleFunctionality;
+            _roleModuleRepository = roleFunctionality;
             _functionalityRepository = functionalityRepository;
             _moduleRepository = moduleRepository;
         }
@@ -63,11 +63,6 @@ namespace Sofco.Service.Implementations
                 return _roleRepository.GetAllActivesReadOnly();
             else
                 return _roleRepository.GetAllReadOnly();
-        }
-
-        public IList<Role> GetAllFullReadOnly()
-        {
-            return _roleRepository.GetAllFullReadOnly();
         }
 
         public Response<Role> GetDetail(int id)
@@ -163,7 +158,49 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<Role> ChangeFunctionalities(int roleId, int moduleId, List<int> functionlitiesToAdd, List<int> functionlitiesToRemove)
+        public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
+        {
+            return _roleRepository.GetRolesByGroup(groupIds);
+        }
+
+        public Response<Role> ChangeModules(int roleId, List<int> modulesToAdd)
+        {
+            var response = new Response<Role>();
+
+            var roleExist = _roleRepository.ExistById(roleId);
+
+            if (!roleExist)
+            {
+                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                return response;
+            }
+
+            try
+            {
+                foreach (var moduleId in modulesToAdd)
+                {
+                    var entity = new RoleModule { RoleId = roleId, ModuleId = moduleId };
+                    var moduleExist = _moduleRepository.ExistById(moduleId);
+                    var roleModuleExist = _roleModuleRepository.ExistById(roleId, moduleId);
+
+                    if (moduleExist && !roleModuleExist)
+                    {
+                        _roleModuleRepository.Insert(entity);
+                    }
+                }
+
+                _roleModuleRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response<Role> AddModule(int roleId, int moduleId)
         {
             var response = new Response<Role>();
 
@@ -177,57 +214,32 @@ namespace Sofco.Service.Implementations
 
             var moduleExist = _moduleRepository.ExistById(moduleId);
 
-            if (!roleExist)
+            if (!moduleExist)
             {
                 response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
                 return response;
             }
 
-            try
+            var roleModuleExist = _roleModuleRepository.ExistById(roleId, moduleId);
+
+            if (roleModuleExist)
             {
-                foreach (var functionalityId in functionlitiesToAdd)
-                {
-                    var entity = new RoleModuleFunctionality { RoleId = roleId, ModuleId = moduleId, FunctionalityId = functionalityId };
-                    var functionalityExist = _functionalityRepository.ExistById(functionalityId);
-                    var roleModuleFunctionalityExist = _roleModuleFunctionalityRepository.ExistById(roleId, moduleId, functionalityId);
-
-                    if (functionalityExist && !roleModuleFunctionalityExist)
-                    {
-                        _roleModuleFunctionalityRepository.Insert(entity);
-                    }
-                }
-
-                foreach (var functionalityId in functionlitiesToRemove)
-                {
-                    var entity = new RoleModuleFunctionality { RoleId = roleId, ModuleId = moduleId, FunctionalityId = functionalityId };
-                    var functionalityExist = _functionalityRepository.ExistById(functionalityId);
-                    var roleModuleFunctionalityExist = _roleModuleFunctionalityRepository.ExistById(roleId, moduleId, functionalityId);
-
-                    if (functionalityExist && roleModuleFunctionalityExist)
-                    {
-                        _roleModuleFunctionalityRepository.Delete(entity);
-                    }
-                }
-
-                _roleModuleFunctionalityRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.RoleFunctionalitiesUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Role.RoleModuleAlreadyCreated, MessageType.Error));
             }
-            catch (Exception)
+            else
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                var entity = new RoleModule { RoleId = roleId, ModuleId = moduleId };
+                _roleModuleRepository.Insert(entity);
+                _roleModuleRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
             }
 
             return response;
         }
 
-        public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
+        public Response<Role> DeleteModule(int roleId, int moduleId)
         {
-            return _roleRepository.GetRolesByGroup(groupIds);
-        }
-
-        public Response<Functionality> AddFunctionality(int roleId, int moduleId, int functionalityId)
-        {
-            var response = new Response<Functionality>();
+            var response = new Response<Role>();
 
             var roleExist = _roleRepository.ExistById(roleId);
 
@@ -239,77 +251,24 @@ namespace Sofco.Service.Implementations
 
             var moduleExist = _moduleRepository.ExistById(moduleId);
 
-            if (!roleExist)
+            if (!moduleExist)
             {
                 response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
                 return response;
             }
 
-            var functionalityExist = _functionalityRepository.ExistById(functionalityId);
+            var roleModuleExist = _roleModuleRepository.ExistById(roleId, moduleId);
 
-            if (!functionalityExist)
+            if (!roleModuleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
-                return response;
-            }
-
-            var roleModuleFunctionalityExist = _roleModuleFunctionalityRepository.ExistById(roleId, moduleId, functionalityId);
-
-            if (roleModuleFunctionalityExist)
-            {
-                response.Messages.Add(new Message(Resources.es.Functionality.RoleFunctionalityAlreadyCreated, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Role.RoleModuleAlreadyRemoved, MessageType.Error));
             }
             else
             {
-                var entity = new RoleModuleFunctionality { RoleId = roleId, ModuleId = moduleId, FunctionalityId = functionalityId };
-                _roleModuleFunctionalityRepository.Insert(entity);
-                _roleModuleFunctionalityRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.RoleFunctionalitiesUpdated, MessageType.Success));
-            }
-
-            return response;
-        }
-
-        public Response<Functionality> DeleteFunctionality(int roleId, int moduleId, int functionalityId)
-        {
-            var response = new Response<Functionality>();
-
-            var roleExist = _roleRepository.ExistById(roleId);
-
-            if (!roleExist)
-            {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
-                return response;
-            }
-
-            var moduleExist = _moduleRepository.ExistById(moduleId);
-
-            if (!roleExist)
-            {
-                response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
-                return response;
-            }
-
-            var functionalityExist = _functionalityRepository.ExistById(functionalityId);
-
-            if (!functionalityExist)
-            {
-                response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
-                return response;
-            }
-
-            var roleModuleFunctionalityExist = _roleModuleFunctionalityRepository.ExistById(roleId, moduleId, functionalityId);
-
-            if (!roleModuleFunctionalityExist)
-            {
-                response.Messages.Add(new Message(Resources.es.Functionality.RoleFunctionalityAlreadyRemoved, MessageType.Error));
-            }
-            else
-            {
-                var entity = new RoleModuleFunctionality { RoleId = roleId, ModuleId = moduleId, FunctionalityId = functionalityId };
-                _roleModuleFunctionalityRepository.Delete(entity);
-                _roleModuleFunctionalityRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.RoleFunctionalitiesUpdated, MessageType.Success));
+                var entity = new RoleModule { RoleId = roleId, ModuleId = moduleId };
+                _roleModuleRepository.Delete(entity);
+                _roleModuleRepository.Save(string.Empty);
+                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
             }
 
             return response;

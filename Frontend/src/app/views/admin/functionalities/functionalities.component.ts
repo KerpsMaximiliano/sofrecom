@@ -37,6 +37,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       "fa-eye",     //other1Icon
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
+      { title: "Funcionalidades", columns: [0]},
       1,     //orderByColumn
       "asc"
       ); 
@@ -56,7 +57,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "description",  //name
-        "Description",  //title
+        "Descripción",  //title
         "",    //width
         1,     //visibility
         this.dataTypeEnum.string,  //dataType
@@ -64,28 +65,12 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "active",  //name
-        "Active",  //title
-        "100px",   //width
+        "Activo",  //title
+        "",   //width
         1,     //visibility
         this.dataTypeEnum.boolean,  //dataType
         this.alignmentEnum.center
-      ),
-      new DatatablesColumn(
-        "startDate",  //name
-        "Start Date",  //title
-        "100px",    //width
-        1,     //visibility
-        this.dataTypeEnum.date,  //dataType
-        this.alignmentEnum.right
-      ),
-      new DatatablesColumn(
-        "endDate",  //name
-        "End Date",  //title
-        "100px",    //width
-        1,     //visibility
-        this.dataTypeEnum.date,  //dataType
-        this.alignmentEnum.right
-      ),
+      )
     ];
 
     constructor(

@@ -10,7 +10,6 @@ namespace Sofco.Core.DAL
     {
         bool ExistById(int id);
         Module GetSingleWithFunctionalities(Expression<Func<Module, bool>> predicate);
-        IList<Module> GetAllFullReadOnly();
         IList<Module> GetAllActivesReadOnly();
     }
 }

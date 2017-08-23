@@ -8,19 +8,8 @@
           <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()">
             <strong><i class="fa fa-angle-left"></i> </strong>
           </a>
-
           
-          <a dropdownToggle>
-            <span class="block m-t-xs"> <strong class="font-bold">Sofco Ar</strong> </span>
-            <!--<span class="text-muted text-xs block">Art Director <b class="caret"></b> </span>-->
-          </a>
-          <ul class="animated fadeInRight dropdown-menu" *dropdownMenu>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Contacts</a></li>
-            <li><a href="#">Mailbox</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Logout</a></li>
-          </ul>
+          <span class="block m-t-xs text-white"> <strong class="font-bold">Sofco Ar</strong> </span>
         </div>
         <div class="logo-element">
           <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()" >
@@ -40,8 +29,8 @@
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasModule('ADMIN', 'USR')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasModule('ADMIN', 'ROL')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasModule('ADMIN', 'GRP')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasModule('ADMIN', 'ROL')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasModule('ADMIN', 'MOD')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasModule('ADMIN', 'FUNC')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
         </ul>
@@ -49,9 +38,11 @@
 
       <!--SOLFAC-->
       <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasMenu('FACT')">
-        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'solfac.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
-          <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('FACT', 'CUST')"><a [routerLink]="['/solfac/customers']">{{'solfac.customer.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('FACT', 'CUST')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasModule('FACT', 'SOLFA')"><a [routerLink]="['/billing/solfac']">{{'billing.solfac.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('FACT', 'REM')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.title' | translate }}</a></li>
         </ul>
       </li>
 

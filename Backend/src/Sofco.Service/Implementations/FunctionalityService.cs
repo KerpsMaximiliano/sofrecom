@@ -12,10 +12,12 @@ namespace Sofco.Service.Implementations
     public class FunctionalityService : IFunctionalityService
     {
         private readonly IFunctionalityRepository _functionalityRepository;
+        private readonly IModuleFunctionalityRepository _moduleFunctionalityRepository;
 
-        public FunctionalityService(IFunctionalityRepository functionalityRepository)
+        public FunctionalityService(IFunctionalityRepository functionalityRepository, IModuleFunctionalityRepository moduleFunctionalityRepository)
         {
             _functionalityRepository = functionalityRepository;
+            _moduleFunctionalityRepository = moduleFunctionalityRepository;
         }
 
         public Response<Functionality> Active(int id, bool active)
@@ -47,15 +49,11 @@ namespace Sofco.Service.Implementations
                 return _functionalityRepository.GetAllReadOnly();
         }
 
-        public IList<Functionality> GetAllFullReadOnly()
-        {
-            return _functionalityRepository.GetAllFullReadOnly();
-        }
 
         public Response<Functionality> GetById(int id)
         {
             var response = new Response<Functionality>();
-            var entity = _functionalityRepository.GetSingleWithRoles(x => x.Id == id);
+            var entity = _functionalityRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
@@ -67,14 +65,14 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public IList<RoleModuleFunctionality> GetFunctionalitiesByRole(IEnumerable<int> roleIds)
+        public IList<Functionality> GetFunctionalitiesByModule(int moduleId)
         {
-            return _functionalityRepository.GetModuleAndFuntionalitiesByRoles(roleIds);
+            return _moduleFunctionalityRepository.GetFuntionalitiesByModule(new int[] { moduleId });
         }
 
-        public IList<Functionality> GetFunctionalitiesByModuleAndRole(int moduleId, int roleId)
+        public IList<Functionality> GetFunctionalitiesByModule(IEnumerable<int> modules)
         {
-            return _functionalityRepository.GetFunctionalitiesByModuleAndRole(moduleId, roleId);
+            return _moduleFunctionalityRepository.GetFuntionalitiesByModule(modules);
         }
     }
 }

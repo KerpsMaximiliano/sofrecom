@@ -78,15 +78,17 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> Grupos
-                    <a class="pull-right"><a class="fa fa-plus icon-white" (click)="modalGroups.show()" ></a></a>
+                    <a class="pull-right" [hidden]="groupsToAdd.length == 0" (click)="modalGroups.show()"><i class="fa fa-plus icon-white" ></i></a>
                 </div>
                 <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let group of user.groups">
-                            <span [routerLink]="['/admin/groups/edit', group.value]" class="m-l-xs pointer">{{group.text}}</span>
-                            <a class="pull-right" (click)="unassignGroup(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
-                        </li>
-                    </ul>
+                    <div class="scroll">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let group of user.groups">
+                                <span [routerLink]="['/admin/groups/edit', group.value]" class="m-l-xs pointer">{{group.text}}</span>
+                                <a class="pull-right" (click)="openConfirmModal(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,4 +156,8 @@
         </div>
     </div>
 
+</ng2-modal>
+
+<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unassignGroup()">
+    ¿Esta seguro que desea eliminar el grupo?
 </ng2-modal>

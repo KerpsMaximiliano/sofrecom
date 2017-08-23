@@ -10,12 +10,12 @@ export class DatatablesOptions{
         public other1Icon: string = "",
         public other2Icon: string = "",
         public other3Icon: string = "",
+        public exportOptions: { title, columns } = { title: "default", columns: [0] },
         public orderByColumn: number = 0,
         public orderByAscDesc: string = "asc",
         public activeFieldName: string = "active",
         public idFieldName: string = "id",
         public descripFieldName: string = "description",
         public confirmDelete: boolean = true,
-        public confirmDeleteId: string = "modalNg2Datatables"
-        ){}
+        public confirmDeleteId: string = "modalNg2Datatables"){}
 }

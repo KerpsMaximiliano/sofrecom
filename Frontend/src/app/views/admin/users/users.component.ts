@@ -39,7 +39,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         false, //other3
         "fa-compress",     //other1Icon
         "fa-check",      //other2Icon
-        "fa-cogs"        //other3Icon
+        "fa-cogs",        //other3Icon
+        { title: "Usuarios", columns: [0, 1]}
     ); 
 
     private dataTypeEnum = DatatablesDataType;
@@ -47,11 +48,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     columns: DatatablesColumn[] = [
         new DatatablesColumn("id", "Id", "", 0, this.dataTypeEnum.number, this.alignmentEnum.left),
-        new DatatablesColumn("name", "Nombre", "60px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("email", "Mail", "60px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
+        new DatatablesColumn("name", "Nombre", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
+        new DatatablesColumn("email", "Mail", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
         new DatatablesColumn("active", "Activo", "10px", 1, this.dataTypeEnum.boolean, this.alignmentEnum.center),
-        new DatatablesColumn("startDate", "Fecha Alta", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.right),
-        new DatatablesColumn("endDate", "Fecha Baja", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.right),
+        new DatatablesColumn("startDate", "Fecha Alta", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
+        new DatatablesColumn("endDate", "Fecha Baja", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
     ]
 
     constructor(
@@ -59,9 +60,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private service: UserService,
       private messageService: MessageService) {
-          
-        this.options.descripFieldName = "name";
-       }
+    }
 
     ngOnInit() {
         this.getAll();

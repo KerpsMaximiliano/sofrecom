@@ -26,7 +26,7 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var item in menus)
             {
-                if(item.Modules.Any(x => x.RoleModuleFunctionality.Any(y => y.Functionality.Active)))
+                if(item.Modules.Any(x => x.RoleModule.Any(y => y.Module.Active)))
                 {
                     var menuModel = new MenuModel(item);
 
@@ -34,7 +34,7 @@ namespace Sofco.WebApi.Controllers.Admin
                     {
                         var moduleDetail = new ModuleModelDetail(module);
 
-                        foreach (var roleModuleFunct in module.RoleModuleFunctionality)
+                        foreach (var roleModuleFunct in module.ModuleFunctionality)
                         {
                             if (roleModuleFunct.Functionality.Active)
                                 moduleDetail.Functionalities.Add(new Option<string>(roleModuleFunct.Functionality.Code, roleModuleFunct.Functionality.Description));

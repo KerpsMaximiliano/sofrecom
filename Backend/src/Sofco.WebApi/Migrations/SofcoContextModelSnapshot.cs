@@ -171,21 +171,30 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleModuleFunctionality", b =>
+            modelBuilder.Entity("Sofco.Model.Relationships.ModuleFunctionality", b =>
+                {
+                    b.Property<int>("ModuleId");
+
+                    b.Property<int>("FunctionalityId");
+
+                    b.HasKey("ModuleId", "FunctionalityId");
+
+                    b.HasIndex("FunctionalityId");
+
+                    b.ToTable("ModuleFunctionality");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Relationships.RoleModule", b =>
                 {
                     b.Property<int>("RoleId");
 
                     b.Property<int>("ModuleId");
 
-                    b.Property<int>("FunctionalityId");
-
-                    b.HasKey("RoleId", "ModuleId", "FunctionalityId");
-
-                    b.HasIndex("FunctionalityId");
+                    b.HasKey("RoleId", "ModuleId");
 
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("RoleModuleFunctionality");
+                    b.ToTable("RoleModule");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.UserGroup", b =>
@@ -215,20 +224,28 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("MenuId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleModuleFunctionality", b =>
+            modelBuilder.Entity("Sofco.Model.Relationships.ModuleFunctionality", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Functionality", "Functionality")
-                        .WithMany("RoleModuleFunctionality")
+                        .WithMany("ModuleFunctionality")
                         .HasForeignKey("FunctionalityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Models.Module", "Module")
-                        .WithMany("RoleModuleFunctionality")
+                        .WithMany("ModuleFunctionality")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Relationships.RoleModule", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Module", "Module")
+                        .WithMany("RoleModule")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Models.Role", "Role")
-                        .WithMany("RoleModuleFunctionality")
+                        .WithMany("RoleModule")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

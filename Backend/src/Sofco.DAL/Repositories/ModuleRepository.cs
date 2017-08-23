@@ -27,18 +27,10 @@ namespace Sofco.DAL.Repositories
             return _context.Set<Module>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
-        public IList<Module> GetAllFullReadOnly()
-        {
-            return _context.Modules
-                .Include(x => x.RoleModuleFunctionality)
-                    .ThenInclude(x => x.Functionality)
-                .ToList();
-        }
-
         public Module GetSingleWithFunctionalities(Expression<Func<Module, bool>> predicate)
         {
             return _context.Set<Module>()
-                .Include(x => x.RoleModuleFunctionality)
+                .Include(x => x.ModuleFunctionality)
                     .ThenInclude(s => s.Functionality)
                 .SingleOrDefault(predicate);
         }

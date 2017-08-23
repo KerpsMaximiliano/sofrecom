@@ -6,10 +6,13 @@ namespace Sofco.Core.Services
 {
     public interface IModuleService
     {
-        IList<Module> GetAllFullReadOnly();
         IList<Module> GetAllReadOnly(bool active);
         Response<Module> GetById(int id);
         Response<Module> Active(int id, bool active);
         Response<Module> Update(Module data);
+        Response<Module> ChangeFunctionalities(int moduleId, List<int> functionlitiesToAdd);
+        Response<Functionality> AddFunctionality(int moduleId, int functionalityId);
+        Response<Functionality> DeleteFunctionality(int moduleId, int functionalityId);
+        IList<Module> GetModulesByRole(IEnumerable<int> enumerable);
     }
 }

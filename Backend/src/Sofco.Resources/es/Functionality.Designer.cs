@@ -87,29 +87,29 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Funcionalidad ya asociada al modulo.
+        /// </summary>
+        public static string ModuleFunctionalityAlreadyCreated {
+            get {
+                return ResourceManager.GetString("ModuleFunctionalityAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Funcionalidad no asociada al modulo.
+        /// </summary>
+        public static string ModuleFunctionalityAlreadyRemoved {
+            get {
+                return ResourceManager.GetString("ModuleFunctionalityAlreadyRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Funcionalidad no encontrada.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad ya asociada al rol.
-        /// </summary>
-        public static string RoleFunctionalityAlreadyCreated {
-            get {
-                return ResourceManager.GetString("RoleFunctionalityAlreadyCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad no asociada al rol.
-        /// </summary>
-        public static string RoleFunctionalityAlreadyRemoved {
-            get {
-                return ResourceManager.GetString("RoleFunctionalityAlreadyRemoved", resourceCulture);
             }
         }
     }

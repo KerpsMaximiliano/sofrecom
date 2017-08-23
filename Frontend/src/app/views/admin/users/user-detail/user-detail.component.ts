@@ -16,9 +16,10 @@ import { UserDetail } from "models/userDetail";
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
-
     private id;
     public user = <UserDetail>{};
+    private groupId: any;
+
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Asignar Grupos", //title
         "modalGroups", //id
@@ -27,14 +28,24 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         "Aceptar",     //Accept Button Text
         "Cancelar");   //Cancel Button Text
 
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+      "Confirmación de baja",
+      "confirmModal",
+      true,
+      true,
+      "Aceptar",
+      "Cancelar"
+    );
+
     private routeSubscrip: Subscription;
     private detailsSubscrip: Subscription;
 
     //GroupService
     public checkAtLeft:boolean = true;
-    public groupsToAdd: Option[];
+    public groupsToAdd: Option[] = new Array<Option>();
     public groupsToAddSubscrip: Subscription;
     @ViewChild('modalGroups') modalGroups;
+    @ViewChild('confirmModal') confirmModal;
     
     constructor(
         private service: UserService, 
@@ -48,9 +59,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.id = params['id'];
             this.getDetails();
         });
-        
     }
-
+ 
     getDetails(){
         this.detailsSubscrip = this.service.getDetail(this.id).subscribe(user => {
             this.user = user;
@@ -66,7 +76,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     getAllGroups(){
         this.groupsToAddSubscrip = this.groupService.getOptions().subscribe(data => {
-            this.groupsToAdd = null;
+            this.groupsToAdd = new Array<Option>();
             var groups = new Array<Option>();
             var index = 0;
             for(var i: number = 0; i<data.length; i++){
@@ -121,21 +131,23 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         );
     }
 
-    unassignGroup(groupId: number){
-        this.service.unassignGroup(this.user.id, groupId).subscribe(
+    unassignGroup(){
+        this.service.unassignGroup(this.user.id, this.groupId).subscribe(
             data => {
+                this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
             },
             err => {
+                this.confirmModal.hide();
                 var json = JSON.parse(err._body)
                 if(json.messages) this.messageService.showMessages(json.messages);
             }
         );
     }
 
-
-    /*click(index: number){
-        this.groupsToAdd[index].included = !this.groupsToAdd[index].included;
-    }*/
+    openConfirmModal(groupId){
+        this.groupId = groupId;
+        this.confirmModal.show();
+    }
 }

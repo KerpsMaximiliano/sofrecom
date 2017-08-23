@@ -39,6 +39,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
+    { title: "Grupos", columns: [0, 2, 3]},
     1,     //orderByColumn
     "asc"
     ); 
@@ -58,7 +59,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "description",  //name
-      "Description",  //title
+      "Descripción",  //title
       "",    //width
       1,     //visibility
       this.dataTypeEnum.string,  //dataType
@@ -66,7 +67,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "active",  //name
-      "Active",  //title
+      "Activo",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.boolean,  //dataType
@@ -74,7 +75,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "startDate",  //name
-      "Start Date",  //title
+      "Fecha Alta",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -82,7 +83,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "endDate",  //name
-      "End Date",  //title
+      "Fecha Baja",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -95,7 +96,6 @@ export class GroupsComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private service: GroupService,
       private messageService: MessageService) {
-
   }
 
   ngOnInit() {

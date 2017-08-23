@@ -79,8 +79,8 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <i class="fa fa-info-circle"></i> Módulos
-                        <a class="pull-right" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
-                    </div>
+                        <a class="pull-right" [hidden]="role.modules && role.modules.length == allModules.length" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
+                    </div> 
                     <div class="panel-body">
                         <div class="scroll">
                             <div class="dd">
@@ -88,16 +88,18 @@
                                     <li *ngFor="let m of role.modules" class="dd-item">
                                         <div class="dd-handle">
                                             {{m.description}}
-                                            <a class="pull-right" (click)="removeFunctionalities(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                            <a class="pull-right" (click)="addFunctionalities(m.id)"><i class="check-link fa fa-plus icon-success text-smaller"></i></a>
+                                    
+                                            <a class="pull-right" (click)="openConfirmModel(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                            <a class="pull-right" [hidden]="m.functionalities && m.functionalities.length == allFunctionalities.length" (click)="addFunctionality(m.id, m.description)"><i class="fa fa-plus"></i></a>
                                         </div>
                                         
                                         <ol class="dd-list">
                                             <li *ngFor="let f of m.functionalities" class="dd-item">
                                                 <div class="dd-handle">
                                                     {{f.description}}
-                                                    <a class="pull-right" (click)="removeFunctionality(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                                     <a class="pull-right" (click)="openConfirmFunctModel(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                                                 </div>
+                                               
                                             </li>
                                         </ol>
                                     </li>
@@ -125,38 +127,18 @@
             </div>
 
         </div>
-    </div>
+    </div> 
 
-    <ng2-modal [config]="funcModalConfig"  #funcModal (accept)="assignFunctionalities()"> <!--(accept)="" (cancel)=""-->
+    <ng2-modal [config]="moduleModalConfig" #moduleModal (accept)="assignModules()">
 
-        <h4 class="margin-bottom-m" *ngIf="!editMode">Seleccione el módulo a agregar y sus funcionalidades:</h4>
-        <h4 class="margin-bottom-m" *ngIf="editMode">Seleccione las funcionalidades a agregar:</h4>
-
+        <h4 class="margin-bottom-m">Seleccione los modulos a ser asginados al rol</h4>
         
-        <div class="row">
-            <!--COMBO DE MUDULOS-->
-            <div class="col-xs-12 margin-bottom-m" *ngIf="!editMode">
-                <div class="form-group">
-                    <label class="control-label">Módulo</label>
-                    <select class="form-control m-b" name="role" [(ngModel)]="cboModuleId" >
-                        <option *ngFor="let m of modules" [value]="m?.value">{{m?.text}}</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-xs-12 margin-bottom-m" *ngIf="editMode">
-                <div class="form-group text-m"><label><strong>Módulo:</strong> {{cboModuleText}}</label>
-                </div>
-            </div>
-        </div>
-        
-        <!--FUNCIONALIDADES PARA AGREGAR-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="scroll form-group">
-                    <div *ngFor="let f of funcsToAdd; let i = index"  style="margin-top:10px;">
-                        <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="f.included" >
-                            <label style="padding-left:20px;">{{f.text}}</label> 
+                    <div *ngFor="let m of modulesToAdd; let i = index"  style="margin-top:10px;">
+                        <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="m.included" >
+                            <label style="padding-left:20px;">{{m.text}}</label> 
                         </icheck>
                     </div>
                 </div>
@@ -165,6 +147,26 @@
     </ng2-modal>
 </section>
 
-<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="confirm(moduleId, functionalityId)">
-    {{modalMessage}}
+<ng2-modal [config]="functModalConfig" #functModal (accept)="assignFunctionalities()">
+    <h4 class="margin-bottom-m">Seleccion de funcionalidades a agrear al modulo: {{moduleSelected}}</h4>
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="scroll form-group">
+                <div *ngFor="let f of functionalitiesToAdd; let i = index"  style="margin-top:10px;">
+                    <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="f.included" >
+                        <label style="padding-left:20px;">{{f.text}}</label> 
+                    </icheck>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng2-modal>
+
+<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unAssignModule(moduleId)">
+    ¿Esta seguro que desea eliminar el modulo?
+</ng2-modal>
+
+<ng2-modal [config]="confirmFunctModalConfig"  #functConfirmModal (accept)="unAssignFunct()">
+    ¿Esta seguro que desea eliminar la funcionalidad?
 </ng2-modal>

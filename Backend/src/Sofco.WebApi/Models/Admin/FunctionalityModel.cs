@@ -11,14 +11,10 @@ namespace Sofco.WebApi.Models.Admin
             Id = functionality.Id;
             Description = functionality.Description;
             Active = functionality.Active;
-
-            Roles = new List<RoleModel>();
         }
 
         public string Description { get; set; }
 
         public bool Active { get; set; }
-
-        public IList<RoleModel> Roles { get; set; }
     }
 }

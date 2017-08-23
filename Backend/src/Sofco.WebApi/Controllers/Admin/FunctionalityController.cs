@@ -53,9 +53,6 @@ namespace Sofco.WebApi.Controllers.Admin
 
             var model = new FunctionalityModel(response.Data);
 
-            foreach (var roleFunctionality in response.Data.RoleModuleFunctionality)
-                model.Roles.Add(new RoleModel(roleFunctionality.Role));
-
              return Ok(model);
         }
 
@@ -68,20 +65,6 @@ namespace Sofco.WebApi.Controllers.Admin
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
-        }
-
-        [HttpGet]
-        [Route("{moduleId}/{roleId}")]
-        public IActionResult GetFunctionalitiesByModuleAndRole(int moduleId, int roleId)
-        {
-            var functionalities = _functionalityService.GetFunctionalitiesByModuleAndRole(moduleId, roleId);
-
-            var model = new List<Option<int>>();
-
-            foreach (var functionality in functionalities)
-                model.Add(new Option<int>(functionality.Id, functionality.Description));
-
-            return Ok(model);
         }
     }
 }

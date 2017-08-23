@@ -87,6 +87,15 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Funcionalidades actualizadas.
+        /// </summary>
+        public static string FunctionalitiesUpdated {
+            get {
+                return ResourceManager.GetString("FunctionalitiesUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Modulo no encontrada.
         /// </summary>
         public static string NotFound {

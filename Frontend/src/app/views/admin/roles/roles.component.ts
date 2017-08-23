@@ -39,8 +39,9 @@ export class RolesComponent implements OnInit, OnDestroy {
     "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
+    { title: "Roles", columns: [0, 2, 3]},
     1,     //orderByColumn
-    "asc"
+    "asc",
     ); 
 
   private dataTypeEnum = DatatablesDataType;
@@ -60,7 +61,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "description",  //name
-      "Description",  //title
+      "Descripción",  //title
       "",    //width
       1,     //visibility
       this.dataTypeEnum.string,  //dataType
@@ -68,7 +69,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "active",  //name
-      "Active",  //title
+      "Activo",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.boolean,  //dataType
@@ -76,7 +77,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "startDate",  //name
-      "Start Date",  //title
+      "Fecha Alta",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -84,7 +85,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "endDate",  //name
-      "End Date",  //title
+      "Fecha Baja",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -92,24 +93,12 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
   ];
 
-  private gridColIdSubscrip: Subscription;
-  private gridColDescripSubscrip: Subscription;
-  private gridColActiveSubscrip: Subscription;
-  private gridColStartDateSubscrip: Subscription;
-  private gridColEndDateSubscrip: Subscription;
-
   constructor(
       private router: Router,
       private route: ActivatedRoute,
       private service: RoleService,
       private messageService: MessageService,
       private tr: TranslateService) {
-
-        this.gridColIdSubscrip = tr.get('ADMIN.ROLES.GRID.id').subscribe(title => this.columns[0].title = title);
-        this.gridColDescripSubscrip = tr.get('ADMIN.ROLES.GRID.description').subscribe(title => this.columns[1].title = title);
-        this.gridColActiveSubscrip = tr.get('ADMIN.ROLES.GRID.active').subscribe(title => this.columns[2].title = title);
-        this.gridColStartDateSubscrip = tr.get('ADMIN.ROLES.GRID.startDate').subscribe(title => this.columns[3].title = title);
-        this.gridColEndDateSubscrip = tr.get('ADMIN.ROLES.GRID.endDate').subscribe(title => this.columns[4].title = title);
   }
 
   ngOnInit() {
@@ -121,12 +110,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     if(this.activateSubscrip) this.activateSubscrip.unsubscribe();
     if(this.deactivateSubscrip) this.deactivateSubscrip.unsubscribe();
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
-
-    if(this.gridColIdSubscrip) this.gridColIdSubscrip.unsubscribe();
-    if(this.gridColDescripSubscrip) this.gridColDescripSubscrip.unsubscribe();
-    if(this.gridColActiveSubscrip) this.gridColActiveSubscrip.unsubscribe();
-    if(this.gridColStartDateSubscrip) this.gridColStartDateSubscrip.unsubscribe();
-    if(this.gridColEndDateSubscrip) this.gridColEndDateSubscrip.unsubscribe();
   }
 
   getAll(callback = null){

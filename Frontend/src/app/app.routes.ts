@@ -1,5 +1,5 @@
-import { ServicesComponent } from './views/solfac/services/services.component';
-import { CustomersComponent } from './views/solfac/customers/customers.component';
+import { ServicesComponent } from './views/billing/services/services.component';
+import { CustomersComponent } from './views/billing/customers/customers.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RolesComponent } from './views/admin/roles/roles.component';
 import { UsersComponent } from './views/admin/users/users.component';
@@ -20,7 +20,7 @@ import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.co
 import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit.component";
 import { ModulesComponent } from "app/views/admin/modules/modules.component";
 import { ModuleEditComponent } from "app/views/admin/modules/module-edit/module-edit.component";
-import { ProjectsComponent } from "app/views/solfac/projects/projects.component";
+import { ProjectsComponent } from "app/views/billing/projects/projects.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -52,15 +52,17 @@ export const ROUTES:Routes = [
     ]
   },
   {
-    path: 'solfac', component: BasicLayoutComponent, canActivate: [AuthGuard],
+    path: 'billing', component: BasicLayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: 'customers', children:[
-        {path:"", component: CustomersComponent},
-        {path:":customerId/services", children: [
-          {path: "", component: ServicesComponent},
-          {path: ":serviceId/projects", component: ProjectsComponent}
+        { path:"", component: CustomersComponent },
+        { path:":customerId/services", children: [
+          { path: "", component: ServicesComponent },
+          { path: ":serviceId/projects", component: ProjectsComponent }
         ]}
-      ]}
+      ]},
+      { path: "solfac", component: StarterViewComponent },
+      { path: "remitos", component: StarterViewComponent },
     ]
   },
   {

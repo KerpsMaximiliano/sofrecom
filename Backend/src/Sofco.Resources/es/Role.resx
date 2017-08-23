@@ -135,6 +135,9 @@
   <data name="Enabled" xml:space="preserve">
     <value>Rol habilitado correctamente</value>
   </data>
+  <data name="ModulesUpdated" xml:space="preserve">
+    <value>Modulos del rol actualizados</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Rol no encontrado</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="RoleMenusUpdated" xml:space="preserve">
     <value>Cambio de menus actualizados correctamente</value>
+  </data>
+  <data name="RoleModuleAlreadyCreated" xml:space="preserve">
+    <value>Modulo ya asociado al rol</value>
+  </data>
+  <data name="RoleModuleAlreadyRemoved" xml:space="preserve">
+    <value>Modulo no asociado al rol</value>
   </data>
   <data name="Updated" xml:space="preserve">
     <value>Rol modificado correctamente</value>
