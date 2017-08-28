@@ -1,8 +1,8 @@
-import { CustomerService } from './../../../services/customer.service';
 import { MessageService } from 'app/services/message.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
+import { CustomerService } from "app/services/billing/customer.service";
 
 @Component({
   selector: 'app-customers',
@@ -15,7 +15,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
         private service: CustomerService,
         private messageService: MessageService) { }
 

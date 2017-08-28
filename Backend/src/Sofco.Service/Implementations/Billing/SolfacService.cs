@@ -1,0 +1,81 @@
+﻿using System;
+using System.Collections.Generic;
+using Sofco.Core.DAL.Billing;
+using Sofco.Core.Services.Billing;
+using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
+using Sofco.Model.Utils;
+
+namespace Sofco.Service.Implementations.Billing
+{
+    public class SolfacService : ISolfacService
+    {
+        private readonly ISolfacRepository _solfacRepository;
+
+        public SolfacService(ISolfacRepository solfacRepository)
+        {
+            _solfacRepository = solfacRepository;
+        }
+
+        public Response<Solfac> Add(Solfac solfac)
+        {
+            var response = Validate(solfac);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                solfac.UpdatedDate = DateTime.Now;
+                solfac.ModifiedByUserId = solfac.UserApplicantId;
+
+                _solfacRepository.Insert(solfac);
+                _solfacRepository.Save(string.Empty);
+
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacCreated, MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public IList<Solfac> GetAll()
+        {
+            return _solfacRepository.GetAllWithDocuments();
+        }
+
+        private Response<Solfac> Validate(Solfac solfac)
+        {
+            var response = new Response<Solfac>();
+
+            if(solfac.OtherProvince1Percentage > 0 && solfac.Province1Id == 0)
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
+
+            if (solfac.OtherProvince2Percentage > 0 && solfac.Province2Id == 0)
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
+
+            if (solfac.OtherProvince3Percentage > 0 && solfac.Province3Id == 0)
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
+
+            foreach (var hito in solfac.Hitos)
+            {
+                if(hito.Quantity <= 0)
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoQuantityRequired, MessageType.Error));
+
+                if(hito.UnitPrice <= 0)
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoUnitPriceRequired, MessageType.Error));
+            }
+
+            var totalPercentage = solfac.BuenosAiresPercentage + solfac.CapitalPercentage +
+                                  solfac.OtherProvince1Percentage + solfac.OtherProvince2Percentage +
+                                  solfac.OtherProvince3Percentage;
+
+            if(totalPercentage != 100)
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.TotalPercentageError, MessageType.Error));
+
+            return response;
+        }
+    }
+}

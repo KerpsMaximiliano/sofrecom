@@ -21,6 +21,8 @@ import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit
 import { ModulesComponent } from "app/views/admin/modules/modules.component";
 import { ModuleEditComponent } from "app/views/admin/modules/module-edit/module-edit.component";
 import { ProjectsComponent } from "app/views/billing/projects/projects.component";
+import { SolfacComponent } from "app/views/billing/solfac/solfac.component";
+import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -61,7 +63,8 @@ export const ROUTES:Routes = [
           { path: ":serviceId/projects", component: ProjectsComponent }
         ]}
       ]},
-      { path: "solfac", component: StarterViewComponent },
+      { path: "solfac", component: SolfacComponent },
+      { path: "searchSolfac", component: SolfacSearchComponent },
       { path: "remitos", component: StarterViewComponent },
     ]
   },

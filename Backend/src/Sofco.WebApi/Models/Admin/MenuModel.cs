@@ -1,5 +1,6 @@
 ﻿using Sofco.Model.Models;
 using System.Collections.Generic;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
 {

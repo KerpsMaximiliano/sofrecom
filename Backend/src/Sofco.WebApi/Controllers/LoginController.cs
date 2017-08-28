@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
+using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models;
 
 namespace Sofco.WebApi.Controllers

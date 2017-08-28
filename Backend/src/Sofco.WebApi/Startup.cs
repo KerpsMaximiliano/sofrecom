@@ -3,14 +3,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sofco.Core.DAL;
-using Sofco.Core.Interfaces.DAL;
-using Sofco.Core.Interfaces.Services;
-using Sofco.Core.Services;
+using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL.Common;
+using Sofco.Core.Services.Admin;
+using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Common;
 using Sofco.DAL;
-using Sofco.DAL.Repositories;
+using Sofco.DAL.Repositories.Admin;
+using Sofco.DAL.Repositories.Billing;
+using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models;
-using Sofco.Service.Implementations;
+using Sofco.Model.Models.Admin;
+using Sofco.Service.Implementations.Admin;
+using Sofco.Service.Implementations.Billing;
+using Sofco.Service.Implementations.Common;
 using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi
@@ -59,6 +66,8 @@ namespace Sofco.WebApi
             services.AddTransient<IFunctionalityService, FunctionalityService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IUtilsService, UtilsService>();
+            services.AddTransient<ISolfacService, SolfacService>();
 
             // Repositories
             services.AddTransient<ICustomerRepository, CustomerRepository>();
@@ -75,6 +84,8 @@ namespace Sofco.WebApi
             services.AddTransient<IRoleModuleRepository, RoleModuleRepository>();
             services.AddTransient<IModuleFunctionalityRepository, ModuleFunctionalityRepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IUtilsRepository, UtilsRepository>();
+            services.AddTransient<ISolfacRepository, SolfacRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

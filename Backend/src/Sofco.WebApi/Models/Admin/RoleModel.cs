@@ -4,6 +4,7 @@ using Sofco.Model.Models;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
 {

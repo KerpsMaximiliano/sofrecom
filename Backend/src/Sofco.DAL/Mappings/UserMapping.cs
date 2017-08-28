@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models;
+using Sofco.Model.Models.Admin;
 
-namespace Sofco.DAL.Mapping
+namespace Sofco.DAL.Mappings
 {
     public static class UserMapping
     {

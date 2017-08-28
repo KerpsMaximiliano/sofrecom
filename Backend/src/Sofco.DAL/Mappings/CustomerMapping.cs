@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Models;
 
-namespace Sofco.DAL.Mapping
+namespace Sofco.DAL.Mappings
 {
     public static class CustomerMapping
     {

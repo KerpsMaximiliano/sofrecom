@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Model.Models;
 using Sofco.Model.Interfaces;
 using System;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
 {

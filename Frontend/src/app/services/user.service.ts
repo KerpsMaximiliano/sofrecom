@@ -20,6 +20,10 @@ export class UserService {
        return this.http.get(`${this.baseUrl}/user/${id}`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
+    getOptions() {
+       return this.http.get(`${this.baseUrl}/user/options`, { headers: this.headers}).map((res:Response) => res.json());
+    }
+
     getDetail(id: string) {
        return this.http.get(`${this.baseUrl}/user/${id}/detail`, { headers: this.headers}).map((res:Response) => res.json());
     }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Services;
+using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;

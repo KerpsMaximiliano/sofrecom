@@ -1,7 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Models;
-using Sofco.DAL.Mapping;
+using Sofco.DAL.Mappings;
+using Sofco.DAL.Mappings.Billing;
+using Sofco.DAL.Mappings.Utils;
+using Sofco.Model.Models.Admin;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
 
 namespace Sofco.DAL
 {
@@ -12,7 +17,7 @@ namespace Sofco.DAL
         {
         }
 
-        public DbSet<Customer> Customers { get; set; }
+        // Admin Mappings
         public DbSet<Group> Groups { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -22,6 +27,17 @@ namespace Sofco.DAL
         public DbSet<Module> Modules { get; set; }
         public DbSet<RoleModule> RoleModule { get; set; }
         public DbSet<ModuleFunctionality> ModuleFunctionality { get; set; }
+
+        // Billing Mappings
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Hito> Hitos { get; set; }
+        public DbSet<Solfac> Solfacs { get; set; }
+
+        // Utils Mapping
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<ImputationNumber> ImputationNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +53,8 @@ namespace Sofco.DAL
             builder.MapFunctionalities();
             builder.MapRoleModule();
             builder.MapModuleFunctionality();
+            builder.MapSolfac();
+            builder.MapUtils();
         }
     }
 }

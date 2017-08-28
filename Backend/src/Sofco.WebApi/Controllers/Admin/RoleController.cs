@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Interfaces.Services;
-using Sofco.Core.Services;
+using Sofco.Core.Services.Admin;
 using Sofco.Model.Models;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {

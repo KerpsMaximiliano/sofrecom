@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Interfaces.Services;
-using Sofco.Core.Services;
+using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
@@ -46,9 +45,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<Option<int>>();
 
             foreach (var user in users)
-            {
                 model.Add(new Option<int>(user.Id, user.Name));
-            }
 
             return Ok(model);
         }

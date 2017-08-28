@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Relationships;
 
-namespace Sofco.DAL.Mapping
+namespace Sofco.DAL.Mappings
 {
     public static class RoleModuleMapping
     {

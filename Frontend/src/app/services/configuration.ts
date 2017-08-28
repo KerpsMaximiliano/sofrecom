@@ -23,7 +23,7 @@ export class  Configuration {
 
         this.UrlApiNode = "http://localhost:3000";
 
-        this.UrlCRM = "http://sofrelab-iis1.cloudapp.net:4090/api";
+        this.UrlCRM = "http://azsof01wd.sofrecom.local:8098/api";
 
         this.Authorization="29c05029-ddf4-4e5e-8a91-62c5af6ae294";
     }

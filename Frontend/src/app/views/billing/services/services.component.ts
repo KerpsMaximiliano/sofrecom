@@ -2,7 +2,7 @@ import { MessageService } from 'app/services/message.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
-import { ServiceService } from "app/services/service.service";
+import { ServiceService } from "app/services/billing/service.service";
 
 @Component({
   selector: 'app-services',

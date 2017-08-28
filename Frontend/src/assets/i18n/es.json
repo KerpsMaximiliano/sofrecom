@@ -71,7 +71,10 @@
             "title": "Solicitud de Facturación",
             "management": "Administración de SolFac",
             "edit": "Editar SolFac",
-            "add": "Crear SolFac"
+            "add": "Crear SolFac",
+            "solfacs": "Solicitudes Facturacíon",
+            "search": "Busqueda Solicitudes",
+            "list": "Listado de solicitudes"
         },
         "remito":{
             "title": "Remitos",
@@ -89,6 +92,13 @@
         "DELETE": "Eliminar",
         "ACTIVATE": "Activar",
         "DEACTIVATE": "Desactivar"
-    }
-    
+    },
+    "SendPending": "Pendiente Envío",
+    "PendingByManagementControl": "Pendiente revision Control Gestion",
+    "ManagementControlRejected": "Rechazado Control Gestión",
+    "PendingReviewByBudgetPlanning": "Pendiente revision P. Presupuestaria",
+    "BudgetPlanningReviewRejected": "Rechazado revision P. Presupuestaria",
+    "InvoicePending": "Pendiente Facturación",
+    "Invoiced": "Facturada",
+    "AmountCashed": "Cobrada"
 }
