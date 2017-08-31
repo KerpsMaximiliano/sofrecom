@@ -10,6 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import { DatatablesOptions } from "app/components/datatables/datatables.options";
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-functionalities',
@@ -77,7 +78,8 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private service: FunctionalityService,
-        private messageService: MessageService) { }
+        private messageService: MessageService,
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
       this.getAll();
@@ -92,8 +94,6 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
 
     getAll(callback = null){
       this.getAllSubscrip = this.service.getAll().subscribe(d => {
-        //d[1].active = true;
-        //d[1].startDate = new Date();
         this.data = d;
         if(callback != null){
           callback();
@@ -110,23 +110,6 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       });
     }
 
-/*
-    deleteClick(id: number){
-      console.log("Delete ID: " + id);
-      this.deleteSubscrip = this.service.deactivate(id).subscribe(
-        data => {
-          if(data.messages) this.messageService.showMessages(data.messages);
-
-          this.getEntity(id, (e)=>this.dt.updateById(id, e));
-        },
-        err => {
-          var json = JSON.parse(err._body)
-          if(json.messages) this.messageService.showMessages(json.messages);
-        }
-      );
-      //this.router.navigate(['/admin/roles/delete/'+id]);
-    }*/
-
     habInhab(obj: any){
         if (!obj.hab){
             this.deactivate(obj.id);
@@ -142,11 +125,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
 
                 this.getEntity(id, (e)=>this.dt.updateById(id, e));
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     activate(id: number){
@@ -156,11 +135,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
 
                 this.getEntity(id, (e)=>this.dt.updateById(id, e));
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 
 }

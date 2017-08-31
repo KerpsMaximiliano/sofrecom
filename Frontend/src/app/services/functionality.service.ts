@@ -21,11 +21,11 @@ export class FunctionalityService {
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/functionality/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/functionality/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/functionality/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/functionality/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     getOptions() {

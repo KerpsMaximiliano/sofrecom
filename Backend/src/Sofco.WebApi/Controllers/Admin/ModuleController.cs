@@ -4,10 +4,13 @@ using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/module")]
+    [Authorize]
     public class ModuleController : Controller
     {
         private readonly IModuleService _moduleService;
@@ -38,10 +41,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var modules = _moduleService.GetAllReadOnly(true);
-            var model = new List<Option<int>>();
+            var model = new List<SelectListItem>();
 
             foreach (var module in modules)
-                model.Add(new Option<int>(module.Id, module.Description));
+                model.Add(new SelectListItem { Value = module.Id.ToString(), Text = module.Description });
 
             return Ok(model);
         }

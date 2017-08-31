@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Models;
 using Sofco.DAL.Mappings;
+using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.Model.Models.Admin;

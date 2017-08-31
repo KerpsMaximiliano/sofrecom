@@ -28,10 +28,12 @@ namespace Sofco.Model.Models.Billing
         public User UserApplicant { get; set; }
         public string ImputationNumber1 { get; set; }
         public string ImputationNumber2 { get; set; }
+        public ImputationNumber ImputationNumber { get; set; }
         public int ImputationNumber3Id { get; set; }
         public decimal Amount { get; set; }
         public decimal Iva21 { get; set; }
         public decimal TotalAmount { get; set; }
+        public Currency Currency { get; set; }
         public int CurrencyId { get; set; }
         public decimal CapitalPercentage { get; set; }
         public decimal BuenosAiresPercentage { get; set; }
@@ -49,5 +51,6 @@ namespace Sofco.Model.Models.Billing
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public string ProjectId { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Model.Models;
 using Sofco.Model.Interfaces;
 using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
@@ -36,13 +37,13 @@ namespace Sofco.WebApi.Models.Admin
     {
         public UserDetailModel(User user) : base(user)
         {
-            Roles = new List<Option<int>>();
+            Roles = new List<SelectListItem>();
             Modules = new List<ModuleModelDetail>();
-            Groups = new List<Option<int>>();
+            Groups = new List<SelectListItem>();
         }
 
-        public new IList<Option<int>> Groups { get; set; }
-        public IList<Option<int>> Roles { get; set; }
+        public new IList<SelectListItem> Groups { get; set; }
+        public IList<SelectListItem> Roles { get; set; }
         public IList<ModuleModelDetail> Modules { get; set; }
     }
 }

@@ -13,11 +13,15 @@ export class SolfacService {
   }
 
   getOptions() {
-    return this.http.get(`${this.baseUrl}/solfac/options`).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfac/options`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   getAll() {
-    return this.http.get(`${this.baseUrl}/solfac`).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfac`, { headers: this.headers}).map((res:Response) => res.json());
+  }
+
+  get(solfacId) {
+    return this.http.get(`${this.baseUrl}/solfac/${solfacId}`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   add(model){

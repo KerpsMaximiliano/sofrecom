@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ServiceService } from "app/services/billing/service.service";
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-services',
@@ -19,12 +20,14 @@ export class ServicesComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
-        private messageService: MessageService) { }
+        private messageService: MessageService,
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.customerId = params['customerId'];
-        this.customerName = this.activatedRoute.snapshot.params['customerName']
+        var customer = JSON.parse(sessionStorage.getItem("customer"));
+        this.customerName = customer.nombre;
         this.getAll(this.customerId);
       });
       
@@ -39,12 +42,11 @@ export class ServicesComponent implements OnInit, OnDestroy {
       this.getAllSubscrip = this.service.getAll(customerId).subscribe(d => {
         this.services = d;
       },
-      err => {
-        console.log(err);
-      });
+      err => this.errorHandlerService.handleErrors(err));
     }
 
     goToProjects(service){
-      this.router.navigate([`/billing/customers/${this.customerId}/services/${service.Id}/projects`, {customerName: this.customerName, serviceName: service.Nombre}]);
+      sessionStorage.setItem("serviceName", service.nombre);
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${service.id}/projects`]);
     }
 }

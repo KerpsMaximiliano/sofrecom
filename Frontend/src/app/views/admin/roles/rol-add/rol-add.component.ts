@@ -4,6 +4,7 @@ import { Role } from 'models/role';
 import { RoleService } from 'app/services/role.service';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'app/services/message.service';
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-rol-add',
@@ -17,10 +18,11 @@ export class RolAddComponent implements OnInit {
     public funcsToAdd: Option[];
     public funcsAdded: Option[];
 
-    constructor(private service: RoleService, private messageService: MessageService,private router: Router) { }
+    constructor(private service: RoleService, 
+                private messageService: MessageService,private router: Router,
+                private errorHandlerService: ErrorHandlerService) { }
 
-    ngOnInit() {
-    }
+    ngOnInit() { }
 
     onSubmit(form){
       if(!form.invalid){
@@ -31,15 +33,7 @@ export class RolAddComponent implements OnInit {
             if(data.messages) this.messageService.showMessages(data.messages);
             this.router.navigate(["/admin/roles"]);
           },
-          err => {
-            var json = JSON.parse(err._body)
-            if(json.messages) this.messageService.showMessages(json.messages);
-          }
-        );
+          err => this.errorHandlerService.handleErrors(err));
       }
     }
-
-
-
-
 }

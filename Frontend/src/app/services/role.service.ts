@@ -44,11 +44,11 @@ export class RoleService {
   }
 
   deactivate(id: number) {
-    return this.http.put(`${this.baseUrl}/role/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+    return this.http.put(`${this.baseUrl}/role/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
   activate(id: number) {
-    return this.http.put(`${this.baseUrl}/role/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+    return this.http.put(`${this.baseUrl}/role/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
   assignModules(roleId: number, modules: any){

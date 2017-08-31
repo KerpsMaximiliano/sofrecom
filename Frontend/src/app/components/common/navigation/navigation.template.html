@@ -40,10 +40,22 @@
       <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasMenu('FACT')">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
-          <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('FACT', 'CUST')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasModule('FACT', 'SOLFA')"><a [routerLink]="['/billing/solfac']">{{'billing.solfac.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasModule('FACT', 'SOLBU')"><a [routerLink]="['/billing/searchSolfac']">{{'billing.solfac.search' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('FACT', 'REM')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.title' | translate }}</a></li>
+
+          <li class="">
+              <a href="#">{{'billing.solfac.title' | translate }}<span class="fa arrow"></span></a>
+              <ul class="nav nav-third-level collapse">
+                <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('FACT', 'SOLFA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
+                <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasModule('FACT', 'SOLBU')"><a [routerLink]="['/billing/searchSolfac']">{{'billing.solfac.search' | translate }}</a></li>
+              </ul>
+          </li>
+   
+          <li>
+            <a href="#">{{'billing.remito.title' | translate }}<span class="fa arrow"></span></a>
+            <ul class="nav nav-third-level collapse">
+              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('FACT', 'REM')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.new' | translate }}</a></li>
+              <li><a>{{'billing.remito.search' | translate }}</a></li>
+            </ul>
+          </li>
         </ul>
       </li>
     </ul>

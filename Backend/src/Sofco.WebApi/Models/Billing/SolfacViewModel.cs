@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.CodeAnalysis;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -23,6 +24,7 @@ namespace Sofco.WebApi.Models.Billing
         public string StatusName { get; set; }
         public string ContractNumber { get; set; }
         public string Project { get; set; }
+        public string ProjectId { get; set; }
 
         [Required(ErrorMessage = "El tipo de documento es requerido")]
         public int? DocumentTypeId { get; set; }
@@ -92,6 +94,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.AttachedParts = AttachedParts;
             solfac.ParticularSteps = ParticularSteps;
             solfac.TimeLimit = TimeLimit;
+            solfac.ProjectId = ProjectId;
 
             foreach (var hitoViewModel in Hitos)
                 solfac.Hitos.Add(hitoViewModel.CreateDomain());

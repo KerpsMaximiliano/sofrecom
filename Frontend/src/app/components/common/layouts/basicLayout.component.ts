@@ -1,6 +1,7 @@
 import { MenuService } from 'app/services/menu.service';
 import { Component } from '@angular/core';
 import { detectBody } from '../../../app.helpers';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var jQuery:any;
 
@@ -14,22 +15,22 @@ declare var jQuery:any;
 export class BasicLayoutComponent {
 
   constructor(private menuService: MenuService){
-
   }
 
   public ngOnInit():any {
+
     if(!this.menuService.menu){
       this.menuService.menu = JSON.parse(localStorage.getItem('menu'));
     }
+    
     if(!this.menuService.currentUser){
-      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      this.menuService.currentUser = currentUser.userName;
+      this.menuService.currentUser = Cookie.get('currentUser');
     }
+    
     detectBody();
   }
 
   public onResize(){
     detectBody();
   }
-
 }

@@ -3,10 +3,13 @@ using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/functionality")]
+    [Authorize]
     public class FunctionalityController : Controller
     {
         private readonly IFunctionalityService _functionalityService;
@@ -35,10 +38,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var functionalities = _functionalityService.GetAllReadOnly(true);
-            var model = new List<Option<int>>();
+            var model = new List<SelectListItem>();
 
             foreach (var functionality in functionalities)
-                model.Add(new Option<int>(functionality.Id, functionality.Description));
+                model.Add(new SelectListItem { Value = functionality.Id.ToString(), Text = functionality.Description });
 
             return Ok(model);
         }

@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/role")]
+    [Authorize]
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
@@ -28,10 +30,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult Getoptions()
         {
             var roles = _roleService.GetAllReadOnly(true);
-            var model = new List<Option<int>>();
+            var model = new List<SelectListItem>();
 
             foreach (var rol in roles)
-                model.Add(new Option<int>(rol.Id, rol.Description));
+                model.Add(new SelectListItem { Value = rol.Id.ToString(), Text = rol.Description });
 
             return Ok(model);
         }
@@ -68,7 +70,7 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var roleModule in response.Data.RoleModule)
             {
-                if (!roleModel.Modules.Any(x => x.Id == roleModule.ModuleId) && roleModule.Module.Active)
+                if (!roleModel.Modules.Any(x => x.Id.Equals(roleModule.ModuleId)) && roleModule.Module.Active)
                 {
                     var module = new ModuleModel(roleModule.Module);
 

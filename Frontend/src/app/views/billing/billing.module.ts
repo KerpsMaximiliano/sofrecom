@@ -14,12 +14,14 @@ import { SolfacService } from 'app/services/billing/solfac.service';
 
 import { CustomersComponent } from './customers/customers.component';
 import { ServicesComponent } from './services/services.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { SolfacComponent } from "./solfac/solfac.component";
+import { ProjectsComponent } from './projects/project-list/projects.component';
+import { SolfacComponent } from "./solfac/new/solfac.component";
 import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
+import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
+import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
 
 @NgModule({
-  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent],
+  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, SolfacDetailComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule],
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService],
   exports     : []

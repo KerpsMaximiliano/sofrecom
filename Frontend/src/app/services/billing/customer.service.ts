@@ -7,12 +7,14 @@ import { Service } from "app/services/service";
 export class CustomerService {
 
   private baseUrl: string;
+  private headers: Headers;
 
   constructor(private http: Http, private service: Service) {
-    this.baseUrl = this.service.UrlCRM;
+    this.baseUrl = this.service.UrlApi;
+    this.headers = this.service.getHeaders();
   }
 
   getAll(userMail) {
-    return this.http.get(`${this.baseUrl}/account?idManager=${userMail}`).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/customer/${userMail}`, { headers: this.headers }).map((res:Response) => res.json());
   }
 }

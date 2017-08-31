@@ -162,9 +162,15 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Currency");
+
                     b.Property<string>("Description");
 
-                    b.Property<string>("ExternalId");
+                    b.Property<string>("ExternalHitoId");
+
+                    b.Property<string>("ExternalProjectId");
+
+                    b.Property<short>("Month");
 
                     b.Property<short>("Quantity");
 
@@ -234,6 +240,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Project")
                         .HasMaxLength(100);
+
+                    b.Property<string>("ProjectId");
 
                     b.Property<int>("Province1Id");
 

@@ -2,6 +2,7 @@
 using Sofco.Model.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
@@ -47,11 +48,11 @@ namespace Sofco.WebApi.Models.Admin
         {
             Code = module.Code;
             Description = module.Description;
-            Functionalities = new List<Option<string>>();
+            Functionalities = new List<SelectListItem>();
         }
 
         public string Code { get; set; }
         public string Description { get; set; }
-        public IList<Option<string>> Functionalities { get; set; }
+        public IList<SelectListItem> Functionalities { get; set; }
     }
 }

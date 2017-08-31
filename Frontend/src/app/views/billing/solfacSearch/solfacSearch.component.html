@@ -21,34 +21,16 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>{{"billing.solfac.list" | translate}}</h5>
-
                 </div>
                 <div class="ibox-content">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Proyecto</th>
-                                <th>Razón Social</th>
-                                <th>Tipo Doc.</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let solfac of solfacs">
-                                <td>{{solfac.project}}</td>
-                                <td>{{solfac.businessName}}</td>
-                                <td>{{solfac.documentTypeName}}</td>
-                                <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{solfac.totalAmount | currency : "ARS"}}</td>
-                                <td><span class="label label-warning">{{ solfac.statusName | translate}}</span></td>
-                            </tr>
-                            <tr *ngIf="solfacs == null || solfacs.length == 0">
-                                <td colspan="7" class="text-center">No hay resultados</td>
-                            </tr>
-                        </tbody>
-                    </table>        
+                    <datatables #dt *ngIf="data != null" 
+                      [data] = "data" 
+                      [columns]="columns" 
+                      [editionType]=editionType
+                      [options]=options
+                      [locationTexts]=locationTexts
+                      (view) = "goToDetail($event)"
+                      ></datatables>
                 </div>
             </div>
         </div>

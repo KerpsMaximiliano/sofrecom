@@ -4,6 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from "app/services/authentication.service";
 import { MenuService } from "app/services/menu.service";
+import { Message } from 'models/message';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { UserService } from "app/services/user.service";
 
 @Component({
   selector: 'login',
@@ -16,13 +20,16 @@ export class LoginComponent implements OnInit {
 
     loginSubscrip: Subscription;
     menuSubscrip: Subscription;
+    userSubscrip: Subscription;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
         private menuService: MenuService,
-        private messageService: MessageService) { }
+        private messageService: MessageService,
+        private userService: UserService,
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
         // reset login status
@@ -34,29 +41,52 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
-            data => {
-                localStorage.setItem('currentUser', data.data.userName);
-                localStorage.setItem('currentUserMail', data.data.email);
-                this.menuService.currentUser = data.data.userName;
+        var usernameAzure = this.model.username.replace('sofrecom', 'tebrasofre.onmicrosoft');
+        usernameAzure = usernameAzure.replace('.ar', '');
 
-                this.menuSubscrip = this.menuService.get(this.menuService.currentUser).subscribe(
-                    data => {
-                        localStorage.setItem('menu', JSON.stringify(data));
-                        this.menuService.menu = data;
-                        this.router.navigate([this.returnUrl]);
-                    },
-                    error => {
-                        this.loading = false;
-                        if(error.messages) this.messageService.showMessages(error.messages);
-                    }
-                );
+        this.loginSubscrip = this.authenticationService.login(usernameAzure, this.model.password).subscribe(
+            data => {
+                this.onLoginSucces(data);
             },
             error => {
                 this.loading = false;
-                var json = JSON.parse(error._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
+                var err = new Message("Usuario o Contraseña invalidos", 1);
+                this.messageService.showMessages([err]);
         });
+    }
+
+    onLoginSucces(data){
+        Cookie.set('access_token', `Bearer ${data.access_token}`);  
+        Cookie.set('refresh_token', data.refresh_token);  
+
+        this.userService.reloadHeaders();
+        this.menuService.reloadHeaders();
+        
+        var userName = this.model.username.split("@")[0];
+
+        this.userSubscrip = this.userService.getByEmail(this.model.username).subscribe(
+            userData => {
+                Cookie.set('userInfo', JSON.stringify(userData));  
+                this.menuService.currentUser = userData.name;
+
+            },
+            error => this.errorHandlerService.handleErrors(error)
+        );
+
+        this.menuSubscrip = this.menuService.get(userName).subscribe(
+            data => {
+                localStorage.setItem('menu', JSON.stringify(data));
+                Cookie.set("currentUser", userName);
+                Cookie.set("currentUserMail", this.model.username);
+
+                this.menuService.menu = data;
+                this.router.navigate([this.returnUrl]);
+            },
+            error => {
+               this.loading = false;
+               this.errorHandlerService.handleErrors(error);
+            }
+        );
     }
 
     onSubmit(){

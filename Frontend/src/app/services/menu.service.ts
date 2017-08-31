@@ -4,6 +4,7 @@ import { Service } from "app/services/service";
 import { Menu } from "models/menu";
 import { Module } from "models/module";
 import { User } from "models/user";
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Injectable()
 export class MenuService {
@@ -17,7 +18,14 @@ export class MenuService {
         this.baseUrl = this.service.UrlApi;
         this.headers = this.service.getHeaders();
 
-        this.currentUser = localStorage.getItem("currentUser");
+        var userInfo = Cookie.get("userInfo");
+        if(userInfo){
+            this.currentUser = JSON.parse(userInfo).name;
+        }
+    }
+
+    reloadHeaders(){
+        this.headers = this.service.getHeaders();
     }
 
     get(userName: string) {
@@ -27,33 +35,6 @@ export class MenuService {
                            return rpta;
                         });
     }
-
-/*
-    private getMenu(menuCode: string){
-        var menuItems = null;
-        var menuItem = null;
-        if (this.menu){
-            menuItems = this.menu.filter(x => x.code == menuCode);
-        }
-        if (menuItems && menuItems.length > 0){
-            menuItem = menuItems[0];
-        }
-        return menuItem;
-    }
-
-    private getModule(menuCode: string, moduleCode: string){
-        var menuItem = this.getMenu(menuCode);
-        var moduleItems = null;
-        var moduleItem = null;
-        if (menuItem){
-            moduleItems = menuItem.modules.filter(x => x.code == menuCode);
-        }
-        if (moduleItems && moduleItems.length > 0){
-            moduleItem = moduleItems[0];
-        }
-        return moduleItem;
-    }
-*/
 
   getMenu(menu: string): Menu{
     var m = this.menu;

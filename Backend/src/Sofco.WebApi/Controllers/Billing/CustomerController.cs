@@ -1,51 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Services.Billing;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Sofco.WebApi.Models.Billing;
 
-namespace Sofco.WebApi.Controllers
+namespace Sofco.WebApi.Controllers.Billing
 {
     [Route("api/customer")]
+    [Authorize]
     public class CustomerController : Controller
     {
-        private readonly ICustomerService _customerService;
-
-        public CustomerController(ICustomerService customerService)
+        [HttpGet("{userMail}")]
+        public async Task <IActionResult> Get(string userMail)
         {
-            _customerService = customerService;
-        }
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("http://sofrelab-iis1.cloudapp.net:4090");
 
-        // GET: api/customer
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok("test");
-        }
+                    var response = await client.GetAsync($"/api/account?idManager={userMail}");
+                    response.EnsureSuccessStatusCode();
 
-        // GET api/customer/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            return Ok();
-        }
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    var customers = JsonConvert.DeserializeObject<IList<CustomerCrm>>(stringResult);
 
-        // POST api/customer
-        [HttpPost]
-        public IActionResult Post([FromBody]string value)
-        {
-            return Ok();
-        }
-
-        // PUT api/customer/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string value)
-        {
-            return Ok();
-        }
-
-        // DELETE api/customer/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            return Ok();
+                    return Ok(customers);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e);
+                }
+            }
         }
     }
 }

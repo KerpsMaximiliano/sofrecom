@@ -1,9 +1,10 @@
 import { MenuService } from 'app/services/menu.service';
 import { Service } from 'app/services/service';
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Injectable()
 export class AuthenticationService {
@@ -14,43 +15,26 @@ export class AuthenticationService {
                 private service: Service,
                 private menuService: MenuService) {
         this.baseUrl = this.service.UrlApi;
-        this.headers = this.service.getHeaders();
+        this.headers = this.service.getLoginHeaders();
     }
 
     login(username: string, password: string) {
-        var json = { mail: username, password: password };
+        let body = new URLSearchParams();
+        body.set("username", username);
+        body.set("password", password);
+        body.set("grant_type", this.service.GrantType);
+        body.set("client_id", this.service.ClientId);
+        body.set("resource", this.service.Resource);
 
         //temporal hasta que esté el servicio
-        return this.http.post(`${this.baseUrl}/login/`, json, { headers: this.headers}).map((res: Response) => res.json());
-
-        /*
-        return this.http.get(`${this.baseUrl}/user/1/detail`, { headers: this.headers}).map((res:Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-
-                return user;
-        });*/
-
-        /*return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-
-                return user;
-            });*/
+        return this.http.post(this.service.UrlAzure, body, { headers: this.headers}).map((res: Response) => res.json());
     }
 
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        Cookie.delete('access_token');
+        Cookie.delete('userInfo');
+        Cookie.delete('currentUser');
+        Cookie.delete('currentUserMail');
         localStorage.removeItem('menu');
     }
 }

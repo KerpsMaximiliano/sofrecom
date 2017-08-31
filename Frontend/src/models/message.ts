@@ -1,4 +1,6 @@
-export interface Message {
-    description: string,
-    type: number
+export class Message {
+    constructor(
+        public description: string,
+        public type: number
+    ){}
 }

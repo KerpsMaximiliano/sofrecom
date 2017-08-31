@@ -9,6 +9,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { User } from 'models/user';
 import { UserService } from 'app/services/user.service';
 import { UserDetail } from "models/userDetail";
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-user-detail',
@@ -52,7 +53,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute, 
         private router: Router,
         private groupService: GroupService,
-        private messageService: MessageService) { }
+        private messageService: MessageService,
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
         this.routeSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -124,11 +126,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
                 this.getDetails();
                 this.modalGroups.hide();
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     unassignGroup(){
@@ -140,8 +138,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.confirmModal.hide();
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
+                this.errorHandlerService.handleErrors(err);
             }
         );
     }

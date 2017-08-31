@@ -34,11 +34,11 @@ export class GroupService {
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/group/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/group/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/group/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/group/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     getOptions() {

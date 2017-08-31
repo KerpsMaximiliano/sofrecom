@@ -1,0 +1,134 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.solfac.detail' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'billing.solfac.detail' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-content">
+            <!-- Datos CRM -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <fieldset>
+                        <legend>Datos del Contrato</legend>
+                        <dl class="dl-horizontal">
+                            <dt>Razón Social:</dt><dd>{{model.businessName}}</dd>
+                            <dt>Contacto del Cliente: </dt><dd>{{model.clientName}}</dd>
+                            <dt>Teléfono: </dt><dd>{{model.celPhone}}</dd>
+                            <dt>Solicitante: </dt><dd>{{model.userApplicantName}}</dd>
+                        </dl>
+                    </fieldset>
+                </div>
+                <div class="col-lg-6">
+                    <fieldset>
+                        <legend>Datos del Documento</legend>
+                        <dl class="dl-horizontal">
+                            <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
+                            <dt>Nº de Contrato: </dt><dd>{{model.contractNumber}}</dd>
+                            <dt>Proyecto: </dt><dd>{{model.project}}</dd>
+                        </dl>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row">   
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Tipo de Documento: </dt><dd>{{model.documentType}}</dd>
+                        <dt>Moneda: </dt><dd>{{model.currencyName}}</dd>
+                        <dt>N° de imputación: </dt><dd>{{model.imputationNumber1 }} {{model.imputationNumber2 }} {{model.imputationNumber3 }}</dd>
+                        <dt>Plazo: </dt><dd>{{model.timeLimit}}</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Capital: </dt><dd>{{model.capitalPercentage}} %</dd>
+                        <dt>Provincia de Bs. As.: </dt><dd>{{model.buenosAiresPercentage}} %</dd>
+                        <dt *ngIf="model.otherProvince1Percentage > 0">{{model.provinceName1}}: </dt><dd *ngIf="model.otherProvince1Percentage > 0">{{model.otherProvince1Percentage}} %</dd>
+                        <dt *ngIf="model.otherProvince2Percentage > 0">{{model.provinceName2}}: </dt><dd *ngIf="model.otherProvince2Percentage > 0">{{model.otherProvince2Percentage}} %</dd>
+                        <dt *ngIf="model.otherProvince3Percentage > 0">{{model.provinceName3}}: </dt><dd *ngIf="model.otherProvince3Percentage > 0">{{model.otherProvince3Percentage}} %</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table invoice-table">
+                            <thead>
+                            <tr>
+                                <th>Detalle</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let detail of model.hitos">
+                                    <td class="col-lg-8">{{detail.description}}</td>
+                                    <td class="col-lg-1">{{detail.quantity | number: '1.2-2'}}</td>
+                                    <td class="col-lg-1">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
+                                    <td class="col-lg-1">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <table class="table invoice-total">
+                        <tbody>
+                            <tr>
+                                <td><strong>Importe Bruto :</strong></td>
+                                <td>{{ currencySymbol }} {{ model.amount | number: '1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>I.V.A. 21% :</strong></td>
+                                <td>{{ currencySymbol }} {{ model.iva21 | number: '1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Importe Total :</strong></td>
+                                <td>{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-info-circle"></i> Piezas Adjuntas
+                        </div>
+                        <div class="panel-body">
+                            <p *ngIf="model.attachedParts">{{model.attachedParts}}</p>
+                            <p *ngIf="model.attachedParts == null">No hay información disponible</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-info-circle"></i> Instrucciones Particulares
+                        </div>
+                        <div class="panel-body">
+                            <p *ngIf="model.particularSteps">{{model.particularSteps}}</p>
+                            <p *ngIf="model.particularSteps == null">No hay información disponible</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

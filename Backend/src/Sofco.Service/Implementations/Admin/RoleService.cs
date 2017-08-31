@@ -48,11 +48,11 @@ namespace Sofco.Service.Implementations.Admin
                 _roleRepository.Save(string.Empty);
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.es.Role.Enabled : Resources.es.Role.Disabled, MessageType.Success));
+                response.Messages.Add(new Message(active ? Resources.es.Admin.Role.Enabled : Resources.es.Admin.Role.Disabled, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Functionality.NotFound, MessageType.Error));
             return response;
         }
 
@@ -75,7 +75,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
             return response;
         }
 
@@ -90,7 +90,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
             return response;
         }
 
@@ -106,7 +106,7 @@ namespace Sofco.Service.Implementations.Admin
                 _roleRepository.Save(string.Empty);
 
                 response.Data = role;
-                response.Messages.Add(new Message(Resources.es.Role.Created, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.Created, MessageType.Success));
             }
             catch (Exception)
             {
@@ -126,7 +126,7 @@ namespace Sofco.Service.Implementations.Admin
 
                 _roleRepository.Update(role);
                 _roleRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.Updated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.Updated, MessageType.Success));
             }
             catch (Exception)
             {
@@ -149,11 +149,11 @@ namespace Sofco.Service.Implementations.Admin
                 _roleRepository.Save(string.Empty);
 
                 response.Data = entity;
-                response.Messages.Add(new Message(Resources.es.Role.Deleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.Deleted, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
             return response;
         }
 
@@ -170,7 +170,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -189,7 +189,7 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _roleModuleRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
             catch (Exception)
             {
@@ -207,7 +207,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -215,7 +215,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!moduleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Module.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -223,14 +223,14 @@ namespace Sofco.Service.Implementations.Admin
 
             if (roleModuleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Role.RoleModuleAlreadyCreated, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.RoleModuleAlreadyCreated, MessageType.Error));
             }
             else
             {
                 var entity = new RoleModule { RoleId = roleId, ModuleId = moduleId };
                 _roleModuleRepository.Insert(entity);
                 _roleModuleRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
             return response;
@@ -244,7 +244,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -252,7 +252,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!moduleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Module.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Module.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -260,14 +260,14 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleModuleExist)
             {
-                response.Messages.Add(new Message(Resources.es.Role.RoleModuleAlreadyRemoved, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.RoleModuleAlreadyRemoved, MessageType.Error));
             }
             else
             {
                 var entity = new RoleModule { RoleId = roleId, ModuleId = moduleId };
                 _roleModuleRepository.Delete(entity);
                 _roleModuleRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Role.ModulesUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
             return response;

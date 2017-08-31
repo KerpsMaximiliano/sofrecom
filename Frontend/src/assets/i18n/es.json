@@ -68,16 +68,20 @@
             "add": "Agregar Hito"
         },
         "solfac":{
-            "title": "Solicitud de Facturación",
+            "title": "Solicitud Facturación",
+            "new": "Generación",
             "management": "Administración de SolFac",
             "edit": "Editar SolFac",
             "add": "Crear SolFac",
             "solfacs": "Solicitudes Facturacíon",
-            "search": "Busqueda Solicitudes",
-            "list": "Listado de solicitudes"
+            "search": "Consulta",
+            "list": "Listado de solicitudes",
+            "detail": "Detalle de Facturación"
         },
         "remito":{
             "title": "Remitos",
+            "new": "Generación",
+            "search": "Consulta",
             "management": "Gestion de Remitos",
             "edit": "Editar Remito",
             "add": "Crear Remito"

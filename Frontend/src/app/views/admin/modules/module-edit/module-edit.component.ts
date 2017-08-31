@@ -7,6 +7,7 @@ import { FunctionalityService } from 'app/services/functionality.service';
 import { Module } from 'models/Module';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Option } from 'models/option';
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-module-edit',
@@ -50,7 +51,8 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute, 
         private router: Router,
         private messageService: MessageService,
-        private functionalityService: FunctionalityService) { 
+        private functionalityService: FunctionalityService,
+        private errorHandlerService: ErrorHandlerService) { 
     }
 
     ngOnInit() {
@@ -154,11 +156,7 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getEntity(this.id);
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     assignFunctionalities(){
@@ -173,10 +171,6 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
                 this.getEntity(this.id);
                 this.functionalityModal.hide();
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 }

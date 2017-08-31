@@ -78,6 +78,24 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Solicitud no encontrada.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Los porcetanjes no pueden ser menor a 0.
+        /// </summary>
+        public static string PercentageLessThan0 {
+            get {
+                return ResourceManager.GetString("PercentageLessThan0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La provincia es requerida si se incluye un porcentaje .
         /// </summary>
         public static string ProvinceRequired {
@@ -92,6 +110,15 @@ namespace Sofco.Resources.es.Billing {
         public static string SolfacCreated {
             get {
                 return ResourceManager.GetString("SolfacCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a El plazo no puede ser menor a 0.
+        /// </summary>
+        public static string TimeLimitLessThan0 {
+            get {
+                return ResourceManager.GetString("TimeLimitLessThan0", resourceCulture);
             }
         }
         

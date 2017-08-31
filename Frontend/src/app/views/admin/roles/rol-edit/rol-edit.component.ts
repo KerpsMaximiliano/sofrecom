@@ -10,6 +10,7 @@ import { FunctionalityService } from 'app/services/functionality.service';
 import { Role } from 'models/role';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Functionality } from "models/functionality";
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 declare var $: any;
 
 @Component({
@@ -85,7 +86,8 @@ export class RolEditComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute, 
         private router: Router,
         private messageService: MessageService,
-        private functionalityService: FunctionalityService) { 
+        private functionalityService: FunctionalityService,
+        private errorHandlerService: ErrorHandlerService) { 
     }
 
     ngOnInit() {
@@ -121,14 +123,10 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
         this.editSubscrip = this.service.edit(model).subscribe(
             data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
-            this.router.navigate(["/admin/roles"])
+                if(data.messages) this.messageService.showMessages(data.messages);
+                this.router.navigate(["/admin/roles"])
             },
-            err => {
-            var json = JSON.parse(err._body)
-            if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
         }
     }
 
@@ -228,8 +226,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.functConfirmModal.hide();
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
+                this.errorHandlerService.handleErrors(err);
             }
         );
     }
@@ -243,8 +240,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.confirmModal.hide();
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
+                this.errorHandlerService.handleErrors(err);
             }
         );
     }
@@ -260,11 +256,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
                 this.getDetails();
                 this.moduleModal.hide();
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     assignFunctionalities(){
@@ -278,10 +270,6 @@ export class RolEditComponent implements OnInit, OnDestroy {
                 this.getDetails();
                 this.functModal.hide();
             },
-            err => {
-                var json = JSON.parse(err._body)
-                if(json.messages) this.messageService.showMessages(json.messages);
-            }
-        );
+            err => this.errorHandlerService.handleErrors(err));
     }
 }

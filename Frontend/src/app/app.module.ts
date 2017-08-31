@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 
 // App views
 import {AppviewsModule} from "./views/appviews/appviews.module";
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 // App modules/components
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
@@ -27,6 +28,7 @@ import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -47,6 +49,7 @@ export function HttpLoaderFactory(http: Http) {
     RouterModule.forRoot(ROUTES),
     AdminModule,
     BillingModule,
+    ChartsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -60,6 +63,7 @@ export function HttpLoaderFactory(http: Http) {
     Configuration,
     Service,
     MenuService,
+    ErrorHandlerService,
     MessageService,
     AuthGuard,
     AuthenticationService

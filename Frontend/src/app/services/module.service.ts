@@ -21,11 +21,11 @@ export class ModuleService {
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/module/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/module/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/module/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/module/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     getOptions() {

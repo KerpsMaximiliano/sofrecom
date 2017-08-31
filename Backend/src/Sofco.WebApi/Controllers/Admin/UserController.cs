@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/user")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -42,10 +46,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var users = _userService.GetAllReadOnly(true);
-            var model = new List<Option<int>>();
+            var model = new List<UserSelectListItem>();
 
             foreach (var user in users)
-                model.Add(new Option<int>(user.Id, user.Name));
+                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName });
 
             return Ok(model);
         }
@@ -65,24 +69,24 @@ namespace Sofco.WebApi.Controllers.Admin
                 foreach (var userGroup in response.Data.UserGroups)
                 {
                     if(userGroup.Group.Active)
-                        model.Groups.Add(new Option<int>(userGroup.Group.Id, userGroup.Group.Description));
+                        model.Groups.Add(new SelectListItem { Value = userGroup.Group.Id.ToString(), Text = userGroup.Group.Description });
                 }
 
-                var roles = _roleService.GetRolesByGroup(model.Groups.Select(x => x.Value));
+                var roles = _roleService.GetRolesByGroup(model.Groups.Select(x => Convert.ToInt32(x.Value)));
 
                 foreach (var rol in roles)
                 {
                     if(rol != null)
                     {
-                        var roleModel = new Option<int>(rol.Id, rol.Description);
-                        if (!model.Roles.Any(x => x.Value == roleModel.Value) && rol.Active)
+                        var roleModel = new SelectListItem {Value = rol.Id.ToString(), Text = rol.Description };
+                        if (!model.Roles.Any(x => x.Value.Equals(roleModel.Value)) && rol.Active)
                         {
                             model.Roles.Add(roleModel);
                         }
                     }
                 }
 
-                var modules = _moduleService.GetModulesByRole(model.Roles.Select(x => x.Value));
+                var modules = _moduleService.GetModulesByRole(model.Roles.Select(x => Convert.ToInt32(x.Value)));
 
                 foreach (var module in modules)
                 {
@@ -90,7 +94,7 @@ namespace Sofco.WebApi.Controllers.Admin
 
                     var functionalities = _functionalityService.GetFunctionalitiesByModule(module.Id);
 
-                    moduleModel.Functionalities = functionalities.Select(x => new Option<string>(x.Code, x.Description)).ToList();
+                    moduleModel.Functionalities = functionalities.Select(x => new SelectListItem { Value = x.Code, Text = x.Description }).ToList();
 
                     model.Modules.Add(moduleModel);
                 }
@@ -113,6 +117,18 @@ namespace Sofco.WebApi.Controllers.Admin
             {
                 model.Groups.Add(new GroupModel(userGroup.Group));
             }
+
+            return Ok(model);
+        }
+
+        [HttpGet("email/{mail}")]
+        public IActionResult Get(string mail)
+        {
+            var response = _userService.GetByMail(mail);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var model = new UserModel(response.Data);
 
             return Ok(model);
         }

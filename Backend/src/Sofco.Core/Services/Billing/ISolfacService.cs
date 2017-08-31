@@ -8,5 +8,8 @@ namespace Sofco.Core.Services.Billing
     {
         Response<Solfac> Add(Solfac solfac);
         IList<Solfac> GetAll();
+        IList<Hito> GetHitosByProject(string projectId);
+        IList<Solfac> GetByProject(string projectId);
+        Response<Solfac> GetById(int id);
     }
 }

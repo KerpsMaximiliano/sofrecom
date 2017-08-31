@@ -47,11 +47,11 @@ namespace Sofco.Service.Implementations.Admin
                 _userRepository.Save(string.Empty);
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.es.User.Enabled : Resources.es.User.Disabled, MessageType.Success));
+                response.Messages.Add(new Message(active ? Resources.es.Admin.User.Enabled : Resources.es.Admin.User.Disabled, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
             return response;
         }
 
@@ -63,7 +63,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (user == null)
             {
-                response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (userGroup == null)
             {
-                response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -80,7 +80,7 @@ namespace Sofco.Service.Implementations.Admin
             _userGroupRepository.Insert(entity);
             _userGroupRepository.Save(string.Empty);
 
-            response.Messages.Add(new Message(Resources.es.User.GroupAssigned, MessageType.Success));
+            response.Messages.Add(new Message(Resources.es.Admin.User.GroupAssigned, MessageType.Success));
 
             return response;
         }
@@ -104,7 +104,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
             return response;
         }
 
@@ -116,7 +116,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -124,7 +124,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!groupExist)
             {
-                response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -135,7 +135,7 @@ namespace Sofco.Service.Implementations.Admin
                 _userGroupRepository.Delete(entity);
                 _userGroupRepository.Save(string.Empty);
 
-                response.Messages.Add(new Message(Resources.es.User.GroupRemoved, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.User.GroupRemoved, MessageType.Success));
             }
             catch (Exception)
             {
@@ -153,7 +153,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.es.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -184,7 +184,7 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _userGroupRepository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.User.UserGroupsUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.User.UserGroupsUpdated, MessageType.Success));
             }
             catch (Exception)
             {
@@ -202,7 +202,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if(user == null)
             {
-                response.Messages.Add(new Message(Resources.es.User.LoginFailed, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 

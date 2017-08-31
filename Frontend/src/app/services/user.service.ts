@@ -12,12 +12,20 @@ export class UserService {
         this.headers = this.service.getHeaders();
     }
 
+    reloadHeaders(){
+        this.headers = this.service.getHeaders();
+    }
+
     getAll() {
         return this.http.get(`${this.baseUrl}/user`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
     get(id: number) {
        return this.http.get(`${this.baseUrl}/user/${id}`, { headers: this.headers}).map((res:Response) => res.json());
+    }
+
+    getByEmail(mail: string) {
+       return this.http.get(`${this.baseUrl}/user/email/${mail}`, { headers: this.headers}).map((res:Response) => res.json());
     }
 
     getOptions() {
@@ -29,11 +37,11 @@ export class UserService {
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/user/${id}/active/false`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/user/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/user/${id}/active/true`, { headers: this.headers}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/user/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
     assignGroups(userId: number, objToSend: any){

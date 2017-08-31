@@ -20,21 +20,25 @@
                                                                 'text-left':
                                                                 'text-right'"
                                                 [routerLink]="(editionType == editionTypeEnum.HandInAllTheRow)?['edit', d[idColumnName]]:[]">
+
+                <!-- TIPO  NONE -->
+                <span *ngIf="column.dataType==dataTypeEnum.string">{{d[column.name]}}</span>
+
                 <!--CHECK PARA BOOLEAN-->
                 <span class="fa" *ngIf="column.dataType==dataTypeEnum.boolean" [ngClass]="(d[column.name])?'fa-check text-success':'fa-close text-danger'"></span>
                 
-                <!--DATO SI NO ES BOOLEAN-->
-                <span *ngIf="column.dataType!=dataTypeEnum.boolean">
-                    <span *ngIf="column.dataType!=dataTypeEnum.date">
-                        {{d[column.name]}}
-                    </span>
-                    <span *ngIf="column.dataType==dataTypeEnum.date">
-                        {{d[column.name] | date:'dd/MM/yyyy'}}
-                    </span>
-                </span>
+                <!-- TIPO MONEDA -->
+                <span *ngIf="column.dataType==dataTypeEnum.currency">{{d[column.name] | number: '1.2-2'}}</span>
+
+                <!-- TIPO LABELS -->
+                <span *ngIf="column.dataType==dataTypeEnum.labelWarning" class="label label-warning">{{d[column.name]}}</span>
+                <span *ngIf="column.dataType==dataTypeEnum.labelDanger" class="label label-danger">{{d[column.name]}}</span>
+                <span *ngIf="column.dataType==dataTypeEnum.labelPrimary" class="label label-primary">{{d[column.name]}}</span> 
+
+                <!-- TIPO DATE -->
+                <span *ngIf="column.dataType==dataTypeEnum.date">{{d[column.name] | date:'dd/MM/yyyy'}}</span>
             </td>
 
-            
             <!--<td *ngIf="!editionTypeEnum.HandInAllTheRow" *ngFor="let column of columns" >{{d[column.name]}}</td>-->
 
             <!--EDIT AND DELETE-->

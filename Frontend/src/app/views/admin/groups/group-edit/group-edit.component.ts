@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'app/services/group.service';
 import { Group } from 'models/Group';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 declare var $: any;
 
 @Component({
@@ -31,8 +32,8 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private activatedRoute: ActivatedRoute, 
     private router: Router,
-    private messageService: MessageService) { 
-    
+    private messageService: MessageService,
+    private errorHandlerService: ErrorHandlerService) { 
   }
 
   ngOnInit() {
@@ -83,11 +84,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
           if(data.messages) this.messageService.showMessages(data.messages);
           this.router.navigate(["/admin/groups"])
         },
-        err => {
-          var json = JSON.parse(err._body)
-          if(json.messages) this.messageService.showMessages(json.messages);
-        }
-      );
+        err => this.errorHandlerService.handleErrors(err));
     }
   }
 }

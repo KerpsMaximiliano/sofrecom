@@ -3,6 +3,8 @@ import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { CustomerService } from "app/services/billing/customer.service";
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-customers',
@@ -16,7 +18,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private service: CustomerService,
-        private messageService: MessageService) { }
+        private messageService: MessageService,
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
       this.getAll();
@@ -27,15 +30,14 @@ export class CustomersComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
-      this.getAllSubscrip = this.service.getAll(localStorage.getItem("currentUserMail")).subscribe(d => {
+      this.getAllSubscrip = this.service.getAll(Cookie.get("currentUserMail")).subscribe(d => {
         this.customers = d;
       },
-      err => {
-        console.log(err);
-      });
+      err => this.errorHandlerService.handleErrors(err));
     }
 
     goToServices(customer){
-        this.router.navigate([`/billing/customers/${customer.Id}/services`, {customerName: customer.Nombre}]);
+      sessionStorage.setItem("customer", JSON.stringify(customer));
+      this.router.navigate([`/billing/customers/${customer.id}/services`]);
     }
 }

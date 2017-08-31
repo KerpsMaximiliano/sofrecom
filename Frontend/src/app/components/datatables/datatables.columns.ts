@@ -9,9 +9,7 @@ export class DatatablesColumn {
         public width: string = '0', //0 es no aplicar width. x ej: 30px o 20%
         public visibility: number = 1, //1 -> visible. 0 -> invisible
         public dataType: DatatablesDataType = 1, //string
-        public alignment: DatatablesAlignment = 1 //left
+        public alignment: DatatablesAlignment = 1 //left,
     ){}
-
-    
 }
 

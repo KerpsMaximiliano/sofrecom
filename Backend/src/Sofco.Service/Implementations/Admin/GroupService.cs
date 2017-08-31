@@ -44,11 +44,11 @@ namespace Sofco.Service.Implementations.Admin
                 _repository.Save(string.Empty);
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.es.Group.Enabled : Resources.es.Group.Disabled, MessageType.Success));
+                response.Messages.Add(new Message(active ? Resources.es.Admin.Group.Enabled : Resources.es.Admin.Group.Disabled, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Functionality.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Functionality.NotFound, MessageType.Error));
             return response;
         }
 
@@ -77,7 +77,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
             return response;
         }
 
@@ -93,7 +93,7 @@ namespace Sofco.Service.Implementations.Admin
 
                     if(role == null)
                     {
-                        response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                        response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                         return response;
                     }
 
@@ -106,7 +106,7 @@ namespace Sofco.Service.Implementations.Admin
                 _repository.Save(string.Empty);
 
                 response.Data = group;
-                response.Messages.Add(new Message(Resources.es.Group.Created, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.Created, MessageType.Success));
             }
             catch (Exception ex)
             {
@@ -134,7 +134,7 @@ namespace Sofco.Service.Implementations.Admin
 
                         if (role == null)
                         {
-                            response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                            response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                             return response;
                         }
                              
@@ -148,7 +148,7 @@ namespace Sofco.Service.Implementations.Admin
 
                 _repository.Update(group);
                 _repository.Save(string.Empty);
-                response.Messages.Add(new Message(Resources.es.Group.Updated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.Updated, MessageType.Success));
             }
             catch (Exception)
             {
@@ -170,11 +170,11 @@ namespace Sofco.Service.Implementations.Admin
                 _repository.Delete(entity);
                 _repository.Save(string.Empty);
 
-                response.Messages.Add(new Message(Resources.es.Group.Deleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.Deleted, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
             return response;
         }
 
@@ -190,7 +190,7 @@ namespace Sofco.Service.Implementations.Admin
             _repository.Update(response.Data);
             _repository.Save(string.Empty);
 
-            response.Messages.Add(new Message(Resources.es.Group.RoleAssigned, MessageType.Success));
+            response.Messages.Add(new Message(Resources.es.Admin.Group.RoleAssigned, MessageType.Success));
             return response;
         }
 
@@ -206,7 +206,7 @@ namespace Sofco.Service.Implementations.Admin
             _repository.Update(response.Data);
             _repository.Save(string.Empty);
 
-            response.Messages.Add(new Message(Resources.es.Group.RoleRemoved, MessageType.Success));
+            response.Messages.Add(new Message(Resources.es.Admin.Group.RoleRemoved, MessageType.Success));
             return response;
         }
 
@@ -216,7 +216,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (role == null)
             {
-                response.Messages.Add(new Message(Resources.es.Role.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -224,7 +224,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (group == null)
             {
-                response.Messages.Add(new Message(Resources.es.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
                 return response;
             }
 

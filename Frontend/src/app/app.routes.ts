@@ -1,10 +1,10 @@
 import { ServicesComponent } from './views/billing/services/services.component';
 import { CustomersComponent } from './views/billing/customers/customers.component';
 import { AuthGuard } from './guards/auth.guard';
-import { RolesComponent } from './views/admin/roles/roles.component';
-import { UsersComponent } from './views/admin/users/users.component';
+import { RolesComponent } from './views/admin/roles/rol-list/roles.component';
+import { UsersComponent } from './views/admin/users/user-list/users.component';
 import { UserDetailComponent } from './views/admin/users/user-detail/user-detail.component';
-import { GroupsComponent } from './views/admin/groups/groups.component';
+import { GroupsComponent } from './views/admin/groups/group-list/groups.component';
 import { FunctionalitiesComponent } from './views/admin/functionalities/functionalities.component';
 import {Routes} from "@angular/router";
 
@@ -18,11 +18,13 @@ import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.compon
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
 import { GroupEditComponent } from "app/views/admin/groups/group-edit/group-edit.component";
-import { ModulesComponent } from "app/views/admin/modules/modules.component";
+import { ModulesComponent } from "app/views/admin/modules/module-list/modules.component";
 import { ModuleEditComponent } from "app/views/admin/modules/module-edit/module-edit.component";
-import { ProjectsComponent } from "app/views/billing/projects/projects.component";
-import { SolfacComponent } from "app/views/billing/solfac/solfac.component";
+import { ProjectsComponent } from "app/views/billing/projects/project-list/projects.component";
+import { SolfacComponent } from "app/views/billing/solfac/new/solfac.component";
 import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
+import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
+import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -63,7 +65,14 @@ export const ROUTES:Routes = [
           { path: ":serviceId/projects", component: ProjectsComponent }
         ]}
       ]},
-      { path: "solfac", component: SolfacComponent },
+
+      { path: "project/:projectId", component: ProjectDetailComponent },
+
+      { path: "solfac", children: [
+         { path: "", component: SolfacComponent },
+         { path: ":solfacId", component: SolfacDetailComponent },
+      ]},
+        
       { path: "searchSolfac", component: SolfacSearchComponent },
       { path: "remitos", component: StarterViewComponent },
     ]

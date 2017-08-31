@@ -46,6 +46,32 @@ namespace Sofco.Service.Implementations.Billing
             return _solfacRepository.GetAllWithDocuments();
         }
 
+        public IList<Hito> GetHitosByProject(string projectId)
+        {
+            return _solfacRepository.GetHitosByProject(projectId);
+        }
+
+        public IList<Solfac> GetByProject(string projectId)
+        {
+            return _solfacRepository.GetByProject(projectId);
+        }
+
+        public Response<Solfac> GetById(int id)
+        {
+            var response = new Response<Solfac>();
+
+            var solfac = _solfacRepository.GetById(id);
+
+            if (solfac == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
+                return response;
+            }
+
+            response.Data = solfac;
+            return response;
+        }
+
         private Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();
@@ -74,6 +100,18 @@ namespace Sofco.Service.Implementations.Billing
 
             if(totalPercentage != 100)
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.TotalPercentageError, MessageType.Error));
+
+            if (solfac.CapitalPercentage < 0 || solfac.BuenosAiresPercentage < 0 ||
+                solfac.OtherProvince1Percentage < 0 || solfac.OtherProvince2Percentage < 0 ||
+                solfac.OtherProvince3Percentage < 0)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.PercentageLessThan0, MessageType.Error));
+            }
+
+            if (solfac.TimeLimit <= 0)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.TimeLimitLessThan0, MessageType.Error));
+            }
 
             return response;
         }

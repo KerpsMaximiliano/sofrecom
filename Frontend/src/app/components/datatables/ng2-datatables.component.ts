@@ -75,7 +75,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     setTimeout(()=>{
           $( document ).ready(function() {
             this.tableRef = $('#dt-component').DataTable({
-              dom: 'Bfrtp',
+              dom: '<"html5buttons"B>lTfgitp',
               order: arrOrder,//[this.options.orderByColumn, this.options.orderByAscDesc]
               oLanguage: {"sZeroRecords": "", "sEmptyTable": ""},
               buttons: [

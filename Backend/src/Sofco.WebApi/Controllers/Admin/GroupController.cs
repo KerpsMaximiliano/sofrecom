@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models;
 using Sofco.WebApi.Config;
-using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/group")]
+    [Authorize]
     public class GroupController : Controller
     {
         private readonly IGroupService _groupService;
@@ -38,10 +39,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var groups = _groupService.GetAllReadOnly(true);
-            var model = new List<Option<int>>();
+            var model = new List<SelectListItem>();
 
             foreach (var group in groups)
-                model.Add(new Option<int>(group.Id, group.Description));
+                model.Add(new SelectListItem { Value = group.Id.ToString(), Text = group.Description });
 
             return Ok(model);
         }

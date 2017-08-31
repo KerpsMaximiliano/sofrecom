@@ -7,9 +7,13 @@
         public short Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Total { get; set; }
-        public string ExternalId { get; set; }
 
         public int SolfacId { get; set; }
         public Solfac Solfac { get; set; }
+        public string Currency { get; set; }
+        public short Month { get; set; }
+
+        public string ExternalProjectId { get; set; }
+        public string ExternalHitoId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Injectable()
 export class  Configuration {
@@ -8,8 +9,11 @@ export class  Configuration {
     UrlApi : string;
     UrlApiNode: string;
     UrlCRM: string;
-    Authorization: string;
     public currLang: string = 'es';
+    GrantType: string;
+    ClientId: string;
+    Resource: string;
+    TenantId: string;
 
     constructor(public tr: TranslateService){
         tr.addLangs(["en", "es"]);
@@ -23,9 +27,12 @@ export class  Configuration {
 
         this.UrlApiNode = "http://localhost:3000";
 
-        this.UrlCRM = "http://azsof01wd.sofrecom.local:8098/api";
+        this.UrlCRM = "http://sofrelab-iis1.cloudapp.net:4090/api";
 
-        this.Authorization="29c05029-ddf4-4e5e-8a91-62c5af6ae294";
+        this.GrantType = 'password';
+        this.ClientId = 'b261e1b1-b207-4987-bdd8-1d65bc8e1286';
+        this.Resource = 'https://tebrasofre.onmicrosoft.com/02b049bf-c2db-404e-a1d7-22bf0ea5a332';
+        this.TenantId = '0cd8cc48-a338-45eb-b01c-37c623d90a78';
     }
 
     setCurrLang(currLang: string){
@@ -35,9 +42,17 @@ export class  Configuration {
 
     getHeaders(){
         let headers = new Headers();
+        let token = Cookie.get('access_token');
+
         headers.append('Content-Type', 'application/json');
-        //headers.append('Authorization', '29c05029-ddf4-4e5e-8a91-62c5af6ae294');
+        headers.append('Authorization', token);
         
+        return headers;
+    }
+
+    getLoginHeaders(){
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
         return headers;
     }
 }

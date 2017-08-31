@@ -1,7 +1,7 @@
-import { ModuleService } from './../../services/module.service';
+import { ModuleService } from 'app/services/module.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { Ng2ModalModule } from './../../components/modal/ng2modal.module';
-import { ICheckModule } from './../../components/icheck/icheck.module';
+import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
+import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -12,19 +12,19 @@ import { UserService } from "app/services/user.service";
 import { GroupService } from "app/services/group.service";
 import { FunctionalityService } from "app/services/functionality.service";
 
-import { RolesComponent } from './roles/roles.component';
+import { RolesComponent } from './roles/rol-list/roles.component';
 import { RolAddComponent } from './roles/rol-add/rol-add.component';
 import { RolEditComponent } from './roles/rol-edit/rol-edit.component';
 
-import { UsersComponent } from './users/users.component';
+import { UsersComponent } from './users/user-list/users.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 
-import { GroupsComponent } from './groups/groups.component';
+import { GroupsComponent } from './groups/group-list/groups.component';
 
 import { FunctionalitiesComponent } from './functionalities/functionalities.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupAddComponent } from './groups/group-add/group-add.component';
-import { ModulesComponent } from './modules/modules.component';
+import { ModulesComponent } from './modules/module-list/modules.component';
 import { ModuleEditComponent } from './modules/module-edit/module-edit.component';
 
 @NgModule({

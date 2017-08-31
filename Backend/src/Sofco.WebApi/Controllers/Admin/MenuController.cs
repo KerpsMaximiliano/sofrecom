@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/menu")]
+    [Authorize]
     public class MenuController : Controller
     {
         private readonly IMenuService _menuService;
@@ -37,7 +39,7 @@ namespace Sofco.WebApi.Controllers.Admin
                         foreach (var roleModuleFunct in module.ModuleFunctionality)
                         {
                             if (roleModuleFunct.Functionality.Active)
-                                moduleDetail.Functionalities.Add(new Option<string>(roleModuleFunct.Functionality.Code, roleModuleFunct.Functionality.Description));
+                                moduleDetail.Functionalities.Add(new SelectListItem { Value = roleModuleFunct.Functionality.Code, Text = roleModuleFunct.Functionality.Description });
                         }
 
                         menuModel.Modules.Add(moduleDetail);

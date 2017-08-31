@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
@@ -18,7 +21,6 @@ using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Implementations.Common;
-using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi
 {
@@ -56,7 +58,7 @@ namespace Sofco.WebApi
                 options.AutomaticAuthentication = true;
             });
 
-            services.Configure<ActiveDirectoryConfig>(Configuration.GetSection("ActiveDirectory"));
+            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Services
             services.AddTransient<ICustomerService, CustomerService>();
@@ -91,6 +93,14 @@ namespace Sofco.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]),
+                Audience = Configuration["AzureAd:Audience"]
+            });
+
             app.UseCors(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseMvc();
         }

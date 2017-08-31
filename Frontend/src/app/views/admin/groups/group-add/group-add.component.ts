@@ -3,6 +3,7 @@ import { Group } from 'models/group';
 import { GroupService } from 'app/services/group.service';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from './../../../../services/message.service';
+import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 
 @Component({
   selector: 'app-group-add',
@@ -13,7 +14,10 @@ export class GroupAddComponent implements OnInit {
 
   public group: Group = <Group>{};
 
-  constructor(private service: GroupService, private messageService: MessageService,private router: Router) { }
+  constructor(private service: GroupService, 
+    private messageService: MessageService,
+    private router: Router,
+    private errorHandlerService: ErrorHandlerService) { }
 
   ngOnInit() {
   }
@@ -27,11 +31,7 @@ export class GroupAddComponent implements OnInit {
           if(data.messages) this.messageService.showMessages(data.messages);
           this.router.navigate(["/admin/groups"]);
         },
-        err => {
-          var json = JSON.parse(err._body)
-          if(json.messages) this.messageService.showMessages(json.messages);
-        }
-      );
+        err => this.errorHandlerService.handleErrors(err));
     }
   }
 }

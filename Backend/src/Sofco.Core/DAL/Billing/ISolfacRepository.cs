@@ -7,5 +7,8 @@ namespace Sofco.Core.DAL.Billing
     public interface ISolfacRepository : IBaseRepository<Solfac>
     {
         IList<Solfac> GetAllWithDocuments();
+        IList<Hito> GetHitosByProject(string projectId);
+        IList<Solfac> GetByProject(string projectId);
+        Solfac GetById(int id);
     }
 }
