@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from './../../services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from "app/services/authentication.service";
-import { MenuService } from "app/services/menu.service";
 import { Message } from 'models/message';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { UserService } from "app/services/user.service";
+import { AuthenticationService } from "app/services/common/authentication.service";
+import { MenuService } from "app/services/admin/menu.service";
+import { UserService } from "app/services/admin/user.service";
 
 @Component({
   selector: 'login',

@@ -1,4 +1,3 @@
-import { ModuleService } from 'app/services/module.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { ICheckModule } from 'app/components/icheck/icheck.module';
@@ -7,10 +6,6 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { Ng2DatatablesModule } from "app/components/datatables/ng2-datatables.module";
-import { RoleService } from "app/services/role.service";
-import { UserService } from "app/services/user.service";
-import { GroupService } from "app/services/group.service";
-import { FunctionalityService } from "app/services/functionality.service";
 
 import { RolesComponent } from './roles/rol-list/roles.component';
 import { RolAddComponent } from './roles/rol-add/rol-add.component';
@@ -26,6 +21,11 @@ import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupAddComponent } from './groups/group-add/group-add.component';
 import { ModulesComponent } from './modules/module-list/modules.component';
 import { ModuleEditComponent } from './modules/module-edit/module-edit.component';
+import { FunctionalityService } from "app/services/admin/functionality.service";
+import { GroupService } from "app/services/admin/group.service";
+import { ModuleService } from "app/services/admin/module.service";
+import { RoleService } from "app/services/admin/role.service";
+import { UserService } from "app/services/admin/user.service";
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent],

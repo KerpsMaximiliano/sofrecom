@@ -1,7 +1,7 @@
-import { MenuService } from 'app/services/menu.service';
 import { Component } from '@angular/core';
 import { detectBody } from '../../../app.helpers';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { MenuService } from "app/services/admin/menu.service";
 
 declare var jQuery:any;
 

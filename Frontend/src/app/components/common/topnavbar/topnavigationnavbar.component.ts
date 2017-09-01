@@ -1,9 +1,9 @@
-import { MenuService } from 'app/services/menu.service';
 import { ModuleService } from 'app/services/module.service';
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { smoothlyMenu } from '../../../app.helpers';
-declare var jQuery:any;
+import { MenuService } from "app/services/admin/menu.service";
+declare var jQuery: any;
 
 @Component({
   selector: 'topnavigationnavbar',

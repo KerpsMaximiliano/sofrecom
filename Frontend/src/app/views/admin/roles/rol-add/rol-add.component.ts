@@ -1,10 +1,10 @@
 import { Option } from 'models/option';
 import { Router } from '@angular/router';
 import { Role } from 'models/role';
-import { RoleService } from 'app/services/role.service';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'app/services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { RoleService } from "app/services/admin/role.service";
 
 @Component({
   selector: 'app-rol-add',

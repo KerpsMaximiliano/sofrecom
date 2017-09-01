@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from 'app/services/message.service';
 import { Router } from '@angular/router';
 import { Message } from "models/message";
+import { MessageService } from "app/services/common/message.service";
 
 @Injectable()
 export class ErrorHandlerService {

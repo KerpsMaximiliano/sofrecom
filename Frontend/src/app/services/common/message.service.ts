@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Message } from '../../models/message';
 import { ToastrService } from 'toastr-ng2';
+import { Message } from "models/message";
 
 @Injectable()
 export class MessageService {

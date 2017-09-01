@@ -1,4 +1,3 @@
-import { MessageService } from 'app/services/message.service';
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { HitoDetail } from "models/billing/solfac/hitoDetail";
@@ -21,8 +20,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
 
-    constructor(private messageService: MessageService,
-                private solfacService: SolfacService,
+    constructor(private solfacService: SolfacService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }

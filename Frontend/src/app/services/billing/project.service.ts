@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Role } from "models/role";
 import { Http, Response, Headers} from '@angular/http';
-import { Service } from "app/services/service";
+import { Service } from "app/services/common/service";
 
 @Injectable()
 export class ProjectService {

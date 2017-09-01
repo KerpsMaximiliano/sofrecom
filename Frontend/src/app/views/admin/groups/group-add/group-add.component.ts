@@ -1,9 +1,9 @@
 import { Router } from '@angular/router';
 import { Group } from 'models/group';
-import { GroupService } from 'app/services/group.service';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from './../../../../services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { GroupService } from "app/services/admin/group.service";
 
 @Component({
   selector: 'app-group-add',

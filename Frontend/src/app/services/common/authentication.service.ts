@@ -1,10 +1,10 @@
-import { MenuService } from 'app/services/menu.service';
-import { Service } from 'app/services/service';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Service } from "app/services/common/service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Injectable()
 export class AuthenticationService {

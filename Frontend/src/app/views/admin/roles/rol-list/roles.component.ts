@@ -1,7 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'app/services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { RoleService } from 'app/services/role.service';
 import { Role } from 'models/role';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -12,6 +11,7 @@ import { DatatablesOptions } from "app/components/datatables/datatables.options"
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { RoleService } from "app/services/admin/role.service";
 
 @Component({
   selector: 'app-roles',

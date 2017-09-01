@@ -1,4 +1,3 @@
-import { MessageService } from 'app/services/message.service';
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { Solfac } from 'models/billing/solfac/solfac';
@@ -6,9 +5,10 @@ import { HitoDetail } from "models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { Option } from "models/option";
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from "app/services/user.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { MessageService } from "app/services/common/message.service";
+import { UserService } from "app/services/admin/user.service";
 
 @Component({
   selector: 'app-solfac',

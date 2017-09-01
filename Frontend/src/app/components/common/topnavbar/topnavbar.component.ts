@@ -1,12 +1,12 @@
-import { MenuService } from 'app/services/menu.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from './../../../services/authentication.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Configuration } from 'app/services/configuration';
 import { Component } from '@angular/core';
 import { smoothlyMenu } from '../../../app.helpers';
 import * as _ from 'lodash';
-declare var jQuery:any;
+import { AuthenticationService } from "app/services/common/authentication.service";
+import { Configuration } from "app/services/common/configuration";
+import { MenuService } from "app/services/admin/menu.service";
+declare var jQuery: any;
 
 @Component({
   selector: 'topnavbar',

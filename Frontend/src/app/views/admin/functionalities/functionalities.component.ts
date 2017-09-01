@@ -1,6 +1,4 @@
-import { MessageService } from 'app/services/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { FunctionalityService } from 'app/services/functionality.service';
 import { Functionality } from 'models/functionality';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -11,6 +9,8 @@ import { DatatablesOptions } from "app/components/datatables/datatables.options"
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "app/services/common/message.service";
+import { FunctionalityService } from "app/services/admin/functionality.service";
 
 @Component({
   selector: 'app-functionalities',

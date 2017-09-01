@@ -1,4 +1,4 @@
-import { MessageService } from 'app/services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -9,8 +9,8 @@ import { DatatablesOptions } from "app/components/datatables/datatables.options"
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { User } from 'models/user';
-import { UserService } from 'app/services/user.service';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { UserService } from "app/services/admin/user.service";
 
 @Component({
   selector: 'app-users',

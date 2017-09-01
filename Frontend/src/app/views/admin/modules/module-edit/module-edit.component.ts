@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from 'app/services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModuleService } from 'app/services/module.service';
-import { FunctionalityService } from 'app/services/functionality.service';
 import { Module } from 'models/Module';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Option } from 'models/option';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { FunctionalityService } from "app/services/admin/functionality.service";
+import { ModuleService } from "app/services/admin/module.service";
 
 @Component({
   selector: 'app-module-edit',

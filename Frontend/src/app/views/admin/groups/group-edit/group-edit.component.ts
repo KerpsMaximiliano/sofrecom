@@ -1,12 +1,12 @@
 import { Role } from 'models/role';
-import { RoleService } from 'app/services/role.service';
 import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from 'app/services/message.service';
+import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GroupService } from 'app/services/group.service';
 import { Group } from 'models/Group';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { GroupService } from "app/services/admin/group.service";
+import { RoleService } from "app/services/admin/role.service";
 declare var $: any;
 
 @Component({

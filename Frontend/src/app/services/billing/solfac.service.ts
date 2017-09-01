@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { Service } from "app/services/service";
+import { Service } from "app/services/common/service";
 
 @Injectable()
 export class SolfacService {

@@ -89,8 +89,8 @@ namespace Sofco.WebApi.Models.Billing
             solfac.OtherProvince2Percentage = OtherProvince2Percentage.GetValueOrDefault();
             solfac.OtherProvince3Percentage = OtherProvince3Percentage.GetValueOrDefault();
             solfac.Province1Id = Province1Id;
-            solfac.Province2Id = Province3Id;
-            solfac.Province3Id = Province1Id;
+            solfac.Province2Id = Province2Id;
+            solfac.Province3Id = Province3Id;
             solfac.AttachedParts = AttachedParts;
             solfac.ParticularSteps = ParticularSteps;
             solfac.TimeLimit = TimeLimit;

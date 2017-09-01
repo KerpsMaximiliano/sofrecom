@@ -1,10 +1,7 @@
-import { MenuService } from './services/menu.service';
 import { BillingModule } from './views/billing/billing.module';
-import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './guards/auth.guard';
 import { Http } from '@angular/http';
-import { Service } from 'app/services/service';
-import { MessageService } from 'app/services/message.service';
+import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,12 +20,15 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 // App modules/components
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
 import { AdminModule } from "app/views/admin/admin.module";
-import { Configuration } from "app/services/configuration";
 import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { AuthenticationService } from "app/services/common/authentication.service";
+import { Configuration } from "app/services/common/configuration";
+import { MessageService } from "app/services/common/message.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");

@@ -1,4 +1,3 @@
-import { MessageService } from 'app/services/message.service';
 import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
@@ -19,7 +18,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private service: CustomerService,
-        private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {

@@ -2,7 +2,7 @@ import { Option } from 'models/option';
 import { Injectable } from '@angular/core';
 import { Role } from "models/role";
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
-import { Service } from "app/services/service";
+import { Service } from "app/services/common/service";
 
 @Injectable()
 export class RoleService {
