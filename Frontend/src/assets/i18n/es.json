@@ -45,21 +45,22 @@
         "title": "Facturación",
         "customer":{
             "title": "Clientes",
-            "management": "Administración de Clientes",
+            "management": "Listado de Clientes",
             "edit": "Editar Cliente",
             "add": "Agregar Cliente"
         },
         "service":{
             "title": "Servicios",
-            "management": "Administración de Servicios",
+            "management": "Listado de Servicios",
             "edit": "Editar Servicio",
             "add": "Agregar Servicio"
         },
         "project":{
             "title": "Proyectos",
-            "management": "Administración de Proyectos",
+            "management": "Listado de Proyectos",
             "edit": "Editar Proyecto",
-            "add": "Agregar Proyecto"
+            "add": "Agregar Proyecto",
+            "detail": "Detalle de Proyecto"
         },
         "hito":{
             "title": "Hitos",

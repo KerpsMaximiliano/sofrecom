@@ -15,6 +15,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     services: any[];
     public customerId: any;
     public customerName: string;
+    public loading:  boolean = true;
 
     constructor(
         private router: Router,
@@ -39,10 +40,16 @@ export class ServicesComponent implements OnInit, OnDestroy {
     }
 
     getAll(customerId){
+      this.loading = true;
+
       this.getAllSubscrip = this.service.getAll(customerId).subscribe(d => {
+        this.loading = false;
         this.services = d;
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => {
+        this.loading = false;
+        this.errorHandlerService.handleErrors(err)
+      });
     }
 
     goToProjects(service){

@@ -14,6 +14,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     getAllSubscrip: Subscription;
     customers: any[];
+    public loading:  boolean = true;
 
     constructor(
         private router: Router,
@@ -31,9 +32,13 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     getAll(){
       this.getAllSubscrip = this.service.getAll(Cookie.get("currentUserMail")).subscribe(d => {
+        this.loading = false;
         this.customers = d;
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => {
+        this.loading = false;
+        this.errorHandlerService.handleErrors(err)
+      });
     }
 
     goToServices(customer){

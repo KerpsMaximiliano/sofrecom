@@ -96,6 +96,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
       }
     }
 
+    getCurrencySymbol(currency){
+      switch(currency){
+        case "Peso": { return "$"; }
+        case "Dolar": { return "U$D"; }
+        case "Euro": { return "€"; }
+      }
+    }
+
     goToSolfacDetail(solfac){
         this.router.navigate(["/billing/solfac/" + solfac.id]);
     }

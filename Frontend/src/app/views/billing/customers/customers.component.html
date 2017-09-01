@@ -21,9 +21,10 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>{{"billing.customer.management" | translate}}</h5>
-
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+                    <spinner></spinner>
+
                     <table class="table table-striped">
                         <thead>
                             <tr>

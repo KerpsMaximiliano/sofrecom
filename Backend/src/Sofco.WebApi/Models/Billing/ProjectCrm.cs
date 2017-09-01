@@ -18,5 +18,6 @@ namespace Sofco.WebApi.Models.Billing
         public string ServiceType { get; set; }
         public string SolutionType { get; set; }
         public string TechnologyType { get; set; }
+        public string Currency { get; set; }
     }
 }

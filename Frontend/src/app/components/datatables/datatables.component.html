@@ -4,7 +4,7 @@
         <tr>
             <th *ngFor="let column of visibleColumns" [width] = "column.width">{{column.title}}</th>
             <th *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow" width="{{actionsColumnWidth}}px">
-                Actions
+                Acciones
             </th>
         </tr>
     </thead>

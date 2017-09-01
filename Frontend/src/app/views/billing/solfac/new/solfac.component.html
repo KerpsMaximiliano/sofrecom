@@ -134,15 +134,15 @@
                             <tbody>
                             <tr>
                                 <td><strong>Importe Bruto :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.amount | number }}</td>
+                                <td>{{ currencySymbol }} {{ model.amount | number: '1.2-2' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>I.V.A. 21% :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.iva21 | number }}</td>
+                                <td>{{ currencySymbol }} {{ model.iva21 | number: '1.2-2' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Importe Total :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.totalAmount | number }}</td>
+                                <td>{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</td>
                             </tr>
                             </tbody>
                         </table>

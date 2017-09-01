@@ -18,6 +18,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     serviceId: number;
     serviceName: string;
     customerName: string;
+    public loading:  boolean = true;
 
     constructor(
         private router: Router,
@@ -42,10 +43,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
+      this.loading = true;
+
       this.getAllSubscrip = this.service.getAll(this.serviceId).subscribe(d => {
+        this.loading = false;
         this.projects = d;
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => {
+        this.loading = false;
+        this.errorHandlerService.handleErrors(err)
+      });
     }
 
     goToServices(){
@@ -57,5 +64,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("serviceId", this.serviceId.toString());
       sessionStorage.setItem("projectDetail", JSON.stringify(project));
       this.router.navigate([`/billing/project/${project.id}`]);
+    }
+
+    getCurrencySymbol(currency){
+      switch(currency){
+        case "Peso": { return "$"; }
+        case "Dolar": { return "U$D"; }
+        case "Euro": { return "€"; }
+      }
     }
 }

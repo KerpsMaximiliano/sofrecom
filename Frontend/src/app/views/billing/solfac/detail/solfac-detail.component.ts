@@ -50,9 +50,9 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     setCurrencySymbol(currencyId){
       switch(currencyId){
-        case "1": { this.currencySymbol = "$"; break; }
-        case "2": { this.currencySymbol = "U$D"; break; }
-        case "3": { this.currencySymbol = "€"; break; }
+        case 1: { this.currencySymbol = "$"; break; }
+        case 2: { this.currencySymbol = "U$D"; break; }
+        case 3: { this.currencySymbol = "€"; break; }
       }
     }
 }

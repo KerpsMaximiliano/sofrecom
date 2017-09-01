@@ -13,5 +13,6 @@
         public string CUIT { get; set; }
         public string CurrencyId { get; set; }
         public string CurrencyDescription { get; set; }
+        public string Contact { get; set; }
     }
 }

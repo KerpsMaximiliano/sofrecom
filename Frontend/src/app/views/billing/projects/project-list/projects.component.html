@@ -34,7 +34,9 @@
                 <div class="ibox-title">
                     <h5>{{"billing.project.management" | translate}}</h5>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+                    <spinner></spinner>
+                    
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -51,7 +53,7 @@
                                 <td>{{project.nombre}}</td>
                                 <td>{{project.analytic}}</td>
                                 <td>{{project.purchaseOrder}}</td>
-                                <td>{{project.incomes | currency : "ARS" }}</td>
+                                <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
                                 <td> <i class="fa fa-calendar"></i> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
                                 <td> <i class="fa fa-calendar"></i> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
                             </tr>

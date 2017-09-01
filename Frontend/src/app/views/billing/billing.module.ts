@@ -19,10 +19,11 @@ import { SolfacComponent } from "./solfac/new/solfac.component";
 import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
 import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
 import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
+import { SpinnerModule } from "app/components/spinner/spinner.module";
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, SolfacDetailComponent],
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService],
   exports     : []
 })
