@@ -142,8 +142,6 @@ namespace Sofco.Service.Implementations.Admin
                     }
                 }
                      
-                group.ApplyTo(group);
-
                 if (group.Active) group.EndDate = null;
 
                 _repository.Update(group);

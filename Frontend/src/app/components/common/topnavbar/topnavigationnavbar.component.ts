@@ -1,4 +1,3 @@
-import { ModuleService } from 'app/services/module.service';
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { smoothlyMenu } from '../../../app.helpers';
@@ -13,7 +12,7 @@ export class TopNavigationNavbarComponent implements OnInit{
 
   private currentUser: string;
 
-  constructor(private menuService: MenuService){}
+  constructor(){}
 
   ngOnInit(){
     /*if(this.menuService){

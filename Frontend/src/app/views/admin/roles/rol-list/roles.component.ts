@@ -12,6 +12,7 @@ import { DatatablesDataType } from "app/components/datatables/datatables.datatyp
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { RoleService } from "app/services/admin/role.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
   selector: 'app-roles',
@@ -98,6 +99,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: RoleService,
+      private menuService: MenuService,
       private messageService: MessageService,
       private tr: TranslateService,
       private errorHandlerService: ErrorHandlerService) {

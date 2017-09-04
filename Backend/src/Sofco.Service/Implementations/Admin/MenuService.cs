@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models;
-using Sofco.Core.DAL;
 using System.Linq;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Admin
 {
@@ -21,15 +20,15 @@ namespace Sofco.Service.Implementations.Admin
             _roleRepository = roleRepository;
         }
 
-        public IList<Menu> GetMenu(string userName)
+        public IList<RoleFunctionality> GetFunctionalitiesByUserName(string userName)
         {
             var groupsId = _userGroupRepository.GetGroupsId(userName);
 
             var roles = _roleRepository.GetRolesByGroup(groupsId);
 
-            var roleModule = _menuRepository.GetMenuByRoles(roles.Select(x => x.Id));
+            var modules = _menuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
 
-            return roleModule.Select(x => x.Module.Menu).Distinct().ToList();
+            return modules;
         }
     }
 }

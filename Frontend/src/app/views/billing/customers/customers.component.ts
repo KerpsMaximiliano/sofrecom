@@ -4,6 +4,7 @@ import { Subscription } from "rxjs/Subscription";
 import { CustomerService } from "app/services/billing/customer.service";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
   selector: 'app-customers',
@@ -18,6 +19,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private service: CustomerService,
+        private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
@@ -32,6 +34,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
       this.getAllSubscrip = this.service.getAll(Cookie.get("currentUserMail")).subscribe(d => {
         this.loading = false;
         this.customers = d;
+
+        this.datatableService.init('#customerTable');
       },
       err => {
         this.loading = false;

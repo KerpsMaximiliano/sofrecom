@@ -18,42 +18,37 @@
           <p> &nbsp; </p>
         </div>
       </li>
-      <!--
-      <li [ngClass]="{active: activeRoute('starter')}">
-        <a [routerLink]="['/starterview']"><i class="fa fa-th-large"></i> <span class="nav-label">Starter view</span></a>
-      </li>
-      -->
 
       <!--ADMIN-->
-      <li [ngClass]="{active: activeRoute('admin')}" *ngIf="menuService.hasMenu('ADMIN')">
+      <li [ngClass]="{active: activeRoute('admin')}">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
-          <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasModule('ADMIN', 'USR')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasModule('ADMIN', 'GRP')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasModule('ADMIN', 'ROL')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasModule('ADMIN', 'MOD')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasModule('ADMIN', 'FUNC')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasFunctionality('GRP', 'QUERY')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasFunctionality('ROL', 'QUERY')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasFunctionality('MOD', 'QUERY')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasFunctionality('FUNC', 'QUERY')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
         </ul>
       </li>
 
       <!--SOLFAC-->
-      <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasMenu('FACT')">
+      <li [ngClass]="{active: activeRoute('solfac')}">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
 
-          <li class="">
+          <li class="" *ngIf="menuService.hasModule('SOLFA')">
               <a href="#">{{'billing.solfac.title' | translate }}<span class="fa arrow"></span></a>
               <ul class="nav nav-third-level collapse">
-                <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasModule('FACT', 'SOLFA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
-                <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasModule('FACT', 'SOLBU')"><a [routerLink]="['/billing/searchSolfac']">{{'billing.solfac.search' | translate }}</a></li>
+                <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
+                <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/searchSolfac']">{{'billing.solfac.search' | translate }}</a></li>
               </ul>
           </li>
    
-          <li>
-            <a href="#">{{'billing.remito.title' | translate }}<span class="fa arrow"></span></a>
+          <li *ngIf="menuService.hasModule('REM')">
+            <a href="#">{{'billing.invoice.title' | translate }}<span class="fa arrow"></span></a>
             <ul class="nav nav-third-level collapse">
-              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('FACT', 'REM')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.new' | translate }}</a></li>
-              <li><a>{{'billing.remito.search' | translate }}</a></li>
+              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('REM', 'ALTA')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.new' | translate }}</a></li>
+              <li *ngIf="menuService.hasModule('REM', 'QUERY')"><a>{{'billing.invoice.search' | translate }}</a></li>
             </ul>
           </li>
         </ul>

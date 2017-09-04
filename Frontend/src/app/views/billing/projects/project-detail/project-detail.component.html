@@ -63,6 +63,7 @@
                                             <ul class="nav nav-tabs">
                                                 <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="true">Solicitudes realizadas</a></li>
                                                 <li class=""><a href="#tab-2" data-toggle="tab" aria-expanded="false">Hitos</a></li>
+                                                <li class=""><a href="#tab-3" data-toggle="tab" aria-expanded="false">Remitos</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -98,7 +99,7 @@
                                                 </table>        
                                             </div>
 
-                                            <div class="tab-pane  table-scroll" id="tab-2">
+                                            <div class="tab-pane table-scroll" id="tab-2">
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
@@ -135,6 +136,10 @@
                                                 <div class="button-group">
                                                     <button *ngIf="generateSolfacVisible()" (click)="generateSolfac()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Generar Solicitud</button>
                                                 </div>
+                                            </div>
+
+                                            <div class="tab-pane" id="tab-3">
+                                                <button class="btn btn-primary" (click)="goToCreateInvoice()"> Crear remito <i class="fa fa-arrow-right"></i></button>
                                             </div>
                                         </div>
                                     </div>

@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ServiceService } from "app/services/billing/service.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
   selector: 'app-services',
@@ -20,6 +21,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
+        private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
@@ -43,6 +45,8 @@ export class ServicesComponent implements OnInit, OnDestroy {
       this.getAllSubscrip = this.service.getAll(customerId).subscribe(d => {
         this.loading = false;
         this.services = d;
+
+        this.datatableService.init('#serviceTable');
       },
       err => {
         this.loading = false;

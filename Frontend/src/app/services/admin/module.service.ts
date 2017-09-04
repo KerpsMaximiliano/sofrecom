@@ -32,19 +32,15 @@ export class ModuleService {
         return this.http.get(`${this.baseUrl}/module/options`, { headers: this.headers}).map((res:Response) => res.json() );
     }
 
+    getOptionsWithFunctionalities() {
+        return this.http.get(`${this.baseUrl}/module/modulesAndFunctionalities`, { headers: this.headers}).map((res:Response) => res.json() );
+    }
+
     edit(model) {
         return this.http.put(`${this.baseUrl}/module`, model, { headers: this.headers}).map((res:Response) => res.json() );
     }
-    
-    assignFunctionalities(moduleId: number, objToSend: any){
-        return this.http.post(`${this.baseUrl}/module/${moduleId}/functionalities`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
-    }
 
-    unAssignFunctionality(moduleId: number, funcId: number) {
-        return this.http.delete(`${this.baseUrl}/module/${moduleId}/functionality/${funcId}`, { headers: this.headers}).map((res:Response) => res.json() );
-    }
-
-    unAssignFunctionalities(moduleId: number, objToSend: any){
-        return this.http.post(`${this.baseUrl}/module/${moduleId}/functionalities`, objToSend, { headers: this.headers}).map((res:Response) => res.json() );
+    getFunctionalities(id: number) {
+        return this.http.get(`${this.baseUrl}/module/${id}/functionalities`, { headers: this.headers}).map((res:Response) => res.json() );
     }
 }

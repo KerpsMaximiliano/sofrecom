@@ -2,24 +2,21 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-12">
-            <h2>Roles</h2>
+            <h2>{{ 'ADMIN.ROLES.TITLE' | translate }}</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a [routerLink]="['/']">Home</a>
+                    <a [routerLink]="['/']">{{ 'HOME.TITLE' | translate }}</a>
                 </li>
                 <li>
-                    <a>Admin</a>
+                    <a>{{ 'ADMIN.TITLE' | translate }}</a>
                 </li>
                 <li>
-                    <a [routerLink]="['../../']">Roles</a>
+                    <a [routerLink]="['../../']">{{ 'ADMIN.ROLES.TITLE' | translate }}</a>
                 </li>
                 <li class="active">
-                    <strong>Editar</strong>
+                    <strong>{{ 'ACTIONS.EDIT' | translate }}</strong>
                 </li>
             </ol>
-        </div>
-        <div class="col-lg-2">
-
         </div>
     </div>
 
@@ -29,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Editar Rol</h5>
+                        <h5>{{ 'ADMIN.ROLES.EDIT' | translate }}</h5>
 
                         <div class="ibox-tools" >
                             <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
@@ -40,7 +37,7 @@
                         <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
 
                             <!--Description-->
-                            <div class="form-group"><label class="col-lg-2 control-label">Description</label>
+                            <div class="form-group"><label class="col-lg-2 control-label">{{ 'ADMIN.ROLES.GRID.description' | translate }}</label>
                                 <div class="col-lg-10">
                                 <input type="text"  
                                     name="description"
@@ -56,14 +53,14 @@
                             <div class="form-group" *ngIf="role" style="margin-top:-20px; margin-bottom:20px;">
                                 <div class="col-lg-12">
                                     <icheck  [(checked)]="role.active"> <!--(click)="onActiveClick($event)"-->
-                                        <label class="col-lg-2 control-label icheck-label">Active</label> 
+                                        <label class="col-lg-2 control-label icheck-label">{{ 'ADMIN.ROLES.GRID.active' | translate }}</label> 
                                     </icheck>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <div class="col-lg-offset-2 col-lg-2">
-                                    <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Aceptar</strong></button>
+                                    <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>{{ 'ACTIONS.ACCEPT' | translate }}</strong></button>
                                 </div>
                             </div>
                         </form>
@@ -78,8 +75,8 @@
             <div class="col-lg-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <i class="fa fa-info-circle"></i> Módulos
-                        <a class="pull-right" [hidden]="role.modules && role.modules.length == allModules.length" (click)="addModule()"><i class="fa fa-plus icon-white"></i></a>
+                        <i class="fa fa-info-circle"></i> {{ 'ADMIN.module.title' | translate }}
+                        <a class="pull-right" (click)="addFunctionality()"><i class="fa fa-plus icon-white"></i></a>
                     </div> 
                     <div class="panel-body">
                         <div class="scroll">
@@ -90,14 +87,13 @@
                                             {{m.description}}
                                     
                                             <a class="pull-right" (click)="openConfirmModel(m.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                                            <a class="pull-right" [hidden]="m.functionalities && m.functionalities.length == allFunctionalities.length" (click)="addFunctionality(m.id, m.description)"><i class="fa fa-plus"></i></a>
                                         </div>
                                         
                                         <ol class="dd-list">
                                             <li *ngFor="let f of m.functionalities" class="dd-item">
                                                 <div class="dd-handle">
                                                     {{f.description}}
-                                                     <a class="pull-right" (click)="openConfirmFunctModel(m.id, f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                                                     <a class="pull-right" (click)="openConfirmFunctModel(f.id)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                                                 </div>
                                                
                                             </li>
@@ -128,34 +124,27 @@
 
         </div>
     </div> 
-
-    <ng2-modal [config]="moduleModalConfig" #moduleModal (accept)="assignModules()">
-
-        <h4 class="margin-bottom-m">Seleccione los modulos a ser asginados al rol</h4>
-        
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="scroll form-group">
-                    <div *ngFor="let m of modulesToAdd; let i = index"  style="margin-top:10px;">
-                        <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="m.included" >
-                            <label style="padding-left:20px;">{{m.text}}</label> 
-                        </icheck>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng2-modal>
 </section>
 
 <ng2-modal [config]="functModalConfig" #functModal (accept)="assignFunctionalities()">
-    <h4 class="margin-bottom-m">Seleccion de funcionalidades a agrear al modulo: {{moduleSelected}}</h4>
+    <h4 class="margin-bottom-m">{{ 'ADMIN.FUNCTIONALITIES.select' | translate }}</h4>
     
+    <!--COMBO DE MODULOS-->
+    <div class="form-group">
+        <label class="col-xs-2 control-label">{{ 'ADMIN.module.title' | translate }}</label>
+        <div class="col-xs-10">
+            <select class="form-control m-b" name="role" (ngModelChange)="loadFunctionalities($event)" [(ngModel)]="moduleSelected">
+                <option *ngFor="let module of allModules" [value]="module?.id">{{module?.description}}</option>
+            </select>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="scroll form-group">
                 <div *ngFor="let f of functionalitiesToAdd; let i = index"  style="margin-top:10px;">
                     <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="f.included" >
-                        <label style="padding-left:20px;">{{f.text}}</label> 
+                        <label style="padding-left:20px;">{{f.description}}</label> 
                     </icheck>
                 </div>
             </div>
@@ -164,9 +153,9 @@
 </ng2-modal>
 
 <ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unAssignModule(moduleId)">
-    ¿Esta seguro que desea eliminar el modulo?
+       {{ 'ADMIN.module.deleteConfirm' | translate }}
 </ng2-modal>
 
 <ng2-modal [config]="confirmFunctModalConfig"  #functConfirmModal (accept)="unAssignFunct()">
-    ¿Esta seguro que desea eliminar la funcionalidad?
+    {{ 'ADMIN.FUNCTIONALITIES.deleteConfirm' | translate }}
 </ng2-modal>

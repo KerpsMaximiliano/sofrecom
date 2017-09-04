@@ -12,6 +12,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { Group } from 'models/group';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
   selector: 'app-groups',
@@ -96,6 +97,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: GroupService,
+      private menuService: MenuService,
       private messageService: MessageService,
       private errorHandlerService: ErrorHandlerService) {
   }

@@ -74,11 +74,13 @@ namespace Sofco.WebApi.Controllers.Admin
 
             if (errors.HasErrors()) return BadRequest(errors);
 
-            var userGroup = new Group();
+            var group = new Group();
+            group.Role = new Role();
 
-            model.ApplyTo(userGroup);
+            model.ApplyTo(group);
+            group.Role.Id = model.RoleId;
 
-            var response = _groupService.Insert(userGroup);
+            var response = _groupService.Insert(group);
 
             if (response.HasErrors()) return BadRequest(response);
 

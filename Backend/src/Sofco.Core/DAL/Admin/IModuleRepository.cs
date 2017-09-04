@@ -12,5 +12,6 @@ namespace Sofco.Core.DAL.Admin
         bool ExistById(int id);
         Module GetSingleWithFunctionalities(Expression<Func<Module, bool>> predicate);
         IList<Module> GetAllActivesReadOnly();
+        IList<Module> GetAllWithFunctionalitiesReadOnly();
     }
 }

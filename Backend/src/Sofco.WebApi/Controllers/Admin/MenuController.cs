@@ -2,9 +2,7 @@
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -22,30 +20,22 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("{userName}")]
         public IActionResult Get(string userName)
         {
-            var menus = _menuService.GetMenu(userName);
+            var roleFunctionalities = _menuService.GetFunctionalitiesByUserName(userName);
 
             var response = new List<MenuModel>();
 
-            foreach (var item in menus)
+            foreach (var item in roleFunctionalities)
             {
-                if(item.Modules.Any(x => x.RoleModule.Any(y => y.Module.Active)))
+                if (item.Functionality.Active && item.Functionality.Module.Active)
                 {
-                    var menuModel = new MenuModel(item);
-
-                    foreach (var module in item.Modules)
+                    var menu = new MenuModel
                     {
-                        var moduleDetail = new ModuleModelDetail(module);
+                        Description = item.Functionality.Description,
+                        Functionality = item.Functionality.Code,
+                        Module = item.Functionality.Module.Code
+                    };
 
-                        foreach (var roleModuleFunct in module.ModuleFunctionality)
-                        {
-                            if (roleModuleFunct.Functionality.Active)
-                                moduleDetail.Functionalities.Add(new SelectListItem { Value = roleModuleFunct.Functionality.Code, Text = roleModuleFunct.Functionality.Description });
-                        }
-
-                        menuModel.Modules.Add(moduleDetail);
-                    }
-
-                    response.Add(menuModel);
+                    response.Add(menu);
                 }
             }
 

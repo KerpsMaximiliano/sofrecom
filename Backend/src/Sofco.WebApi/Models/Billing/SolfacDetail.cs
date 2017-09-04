@@ -14,7 +14,6 @@ namespace Sofco.WebApi.Models.Billing
             Project = domain.Project;
             ProjectId = domain.ProjectId;
             ImputationNumber1 = domain.ImputationNumber1;
-            ImputationNumber2 = domain.ImputationNumber2;
             Amount = domain.Amount;
             Iva21 = domain.Iva21;
             TotalAmount = domain.TotalAmount;
@@ -58,7 +57,6 @@ namespace Sofco.WebApi.Models.Billing
         public string ProjectId { get; set; }
         public int CurrencyId { get; set; }
         public string ImputationNumber1 { get; set; }
-        public string ImputationNumber2 { get; set; }
         public string ImputationNumber3 { get; set; }
         public string UserApplicantName { get; set; }
         public decimal Amount { get; set; }

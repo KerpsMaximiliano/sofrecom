@@ -23,7 +23,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -104,5 +104,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     goToSolfacDetail(solfac){
         this.router.navigate(["/billing/solfac/" + solfac.id]);
+    }
+
+    goToCreateInvoice(){
+        this.router.navigate(["/billing/invoice/" + this.projectId]);
     }
 }

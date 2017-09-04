@@ -86,15 +86,14 @@ namespace Sofco.WebApi.Controllers.Admin
                     }
                 }
 
-                var modules = _moduleService.GetModulesByRole(model.Roles.Select(x => Convert.ToInt32(x.Value)));
+                var roleFunctionalities = _functionalityService.GetFunctionalitiesByRole(roles.Select(x => x.Id));
+                var modules = roleFunctionalities.Select(x => x.Functionality.Module).Distinct();
 
                 foreach (var module in modules)
                 {
                     var moduleModel = new ModuleModelDetail(module);
 
-                    var functionalities = _functionalityService.GetFunctionalitiesByModule(module.Id);
-
-                    moduleModel.Functionalities = functionalities.Select(x => new SelectListItem { Value = x.Code, Text = x.Description }).ToList();
+                    moduleModel.Functionalities = module.Functionalities.Select(x => new SelectListItem { Value = x.Code, Text = x.Description }).ToList();
 
                     model.Modules.Add(moduleModel);
                 }

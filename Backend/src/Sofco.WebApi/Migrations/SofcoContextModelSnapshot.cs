@@ -32,7 +32,11 @@ namespace Sofco.WebApi.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<int>("ModuleId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
 
                     b.ToTable("Functionalities");
                 });
@@ -187,6 +191,69 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Hitos");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Billing.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Analytic")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("City")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Cuit")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Project")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ProjectId");
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Service")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Zipcode")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300);
+
+                    b.Property<int>("InvoiceId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("InvoiceDetails");
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
                 {
                     b.Property<int>("Id")
@@ -218,10 +285,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("DocumentTypeId");
 
                     b.Property<string>("ImputationNumber1")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("ImputationNumber2")
-                        .HasMaxLength(10);
+                        .HasMaxLength(50);
 
                     b.Property<int>("ImputationNumber3Id");
 
@@ -263,7 +327,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CurrencyId");
+
                     b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ImputationNumber3Id");
 
                     b.HasIndex("UserApplicantId");
 
@@ -285,30 +353,17 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.ModuleFunctionality", b =>
-                {
-                    b.Property<int>("ModuleId");
-
-                    b.Property<int>("FunctionalityId");
-
-                    b.HasKey("ModuleId", "FunctionalityId");
-
-                    b.HasIndex("FunctionalityId");
-
-                    b.ToTable("ModuleFunctionality");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleModule", b =>
+            modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
                 {
                     b.Property<int>("RoleId");
 
-                    b.Property<int>("ModuleId");
+                    b.Property<int>("FunctionalityId");
 
-                    b.HasKey("RoleId", "ModuleId");
+                    b.HasKey("RoleId", "FunctionalityId");
 
-                    b.HasIndex("ModuleId");
+                    b.HasIndex("FunctionalityId");
 
-                    b.ToTable("RoleModule");
+                    b.ToTable("RoleFunctionality");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.UserGroup", b =>
@@ -376,6 +431,14 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Provinces");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Admin.Module", "Module")
+                        .WithMany("Functionalities")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Admin.Group", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
@@ -398,11 +461,29 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceDetail", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Billing.Invoice", "Invoice")
+                        .WithMany("Details")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
                 {
+                    b.HasOne("Sofco.Model.Utils.Currency", "Currency")
+                        .WithMany("Solfacs")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Sofco.Model.Utils.DocumentType", "DocumentType")
                         .WithMany("Solfacs")
                         .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Utils.ImputationNumber", "ImputationNumber")
+                        .WithMany("Solfacs")
+                        .HasForeignKey("ImputationNumber3Id")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
@@ -411,28 +492,15 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.ModuleFunctionality", b =>
+            modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Admin.Functionality", "Functionality")
-                        .WithMany("ModuleFunctionality")
+                        .WithMany("RoleFunctionality")
                         .HasForeignKey("FunctionalityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.Module", "Module")
-                        .WithMany("ModuleFunctionality")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleModule", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Admin.Module", "Module")
-                        .WithMany("RoleModule")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
-                        .WithMany("RoleModule")
+                        .WithMany("RoleFunctionality")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

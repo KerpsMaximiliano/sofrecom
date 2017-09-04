@@ -209,5 +209,10 @@ namespace Sofco.Service.Implementations.Admin
             response.Data = user;
             return response;
         }
+
+        public bool HasDirectorGroup(string userMail)
+        {
+            return _userRepository.HasDirectorGroup(userMail);
+        }
     }
 }

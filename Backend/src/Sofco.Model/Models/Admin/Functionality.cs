@@ -10,6 +10,9 @@ namespace Sofco.Model.Models.Admin
         public bool Active { get; set; }
         public string Code { get; set; }
 
-        public IList<ModuleFunctionality> ModuleFunctionality { get; set; }
+        public int ModuleId { get; set; }
+        public Module Module { get; set; }
+
+        public IList<RoleFunctionality> RoleFunctionality { get; set; }
     }
 }

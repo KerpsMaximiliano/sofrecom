@@ -10,7 +10,8 @@ namespace Sofco.Model.Models.Admin
         public string Description { get; set; }
 
         public IList<Group> Groups { get; set; }
-        public IList<RoleModule> RoleModule { get; set; }
+
+        public IList<RoleFunctionality> RoleFunctionality { get; set; }
 
         public bool Active { get; set; }
         public DateTime StartDate { get; set; }

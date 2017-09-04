@@ -35,6 +35,7 @@ namespace Sofco.WebApi.Models.Admin
         public DateTime? EndDate { get; set; }
 
         public RoleModel Role { get; set; }
+        public int RoleId { get; set; }
 
         public List<UserModel> Users { get; set; }
 

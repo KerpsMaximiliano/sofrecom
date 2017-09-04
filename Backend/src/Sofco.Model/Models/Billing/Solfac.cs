@@ -27,7 +27,6 @@ namespace Sofco.Model.Models.Billing
         public int UserApplicantId { get; set; }
         public User UserApplicant { get; set; }
         public string ImputationNumber1 { get; set; }
-        public string ImputationNumber2 { get; set; }
         public ImputationNumber ImputationNumber { get; set; }
         public int ImputationNumber3Id { get; set; }
         public decimal Amount { get; set; }

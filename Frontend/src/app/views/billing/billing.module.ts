@@ -16,15 +16,18 @@ import { CustomersComponent } from './customers/customers.component';
 import { ServicesComponent } from './services/services.component';
 import { ProjectsComponent } from './projects/project-list/projects.component';
 import { SolfacComponent } from "./solfac/new/solfac.component";
-import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
 import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
 import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
 import { SpinnerModule } from "app/components/spinner/spinner.module";
+import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
+import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
+import { InvoiceService } from "app/services/billing/invoice.service";
 
 @NgModule({
-  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, SolfacDetailComponent],
+  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
+                 SolfacDetailComponent, InvoiceComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
-  providers   : [CustomerService, ServiceService, ProjectService, SolfacService],
+  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   exports     : []
 })
 

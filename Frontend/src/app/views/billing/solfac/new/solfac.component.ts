@@ -54,8 +54,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.amount = 0;
       this.model.iva21 = 0;
       this.model.totalAmount = 0;
+      this.model.imputationNumber1 = project.analytic;
       this.model.imputationNumber3 = 1;
-      this.model.currencyId = 1;
+      this.model.currencyId = this.getCurrencyId(project.currency);
 
       this.model.hitos = new Array<HitoDetail>();
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
@@ -161,6 +162,14 @@ export class SolfacComponent implements OnInit, OnDestroy {
         case "1": { this.currencySymbol = "$"; break; }
         case "2": { this.currencySymbol = "U$D"; break; }
         case "3": { this.currencySymbol = "€"; break; }
+      }
+    }
+
+    getCurrencyId(currency){
+      switch(currency){
+        case "Peso": { return 1; }
+        case "Dolar": { return 2; }
+        case "Euro": { return 3; }
       }
     }
 

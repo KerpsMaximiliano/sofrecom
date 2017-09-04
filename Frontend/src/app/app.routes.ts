@@ -22,9 +22,10 @@ import { ModulesComponent } from "app/views/admin/modules/module-list/modules.co
 import { ModuleEditComponent } from "app/views/admin/modules/module-edit/module-edit.component";
 import { ProjectsComponent } from "app/views/billing/projects/project-list/projects.component";
 import { SolfacComponent } from "app/views/billing/solfac/new/solfac.component";
-import { SolfacSearchComponent } from "app/views/billing/solfacSearch/solfacSearch.component";
 import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
 import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
+import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
+import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -74,7 +75,7 @@ export const ROUTES:Routes = [
       ]},
         
       { path: "searchSolfac", component: SolfacSearchComponent },
-      { path: "remitos", component: StarterViewComponent },
+      { path: "invoice/:projectId", component: InvoiceComponent },
     ]
   },
   {

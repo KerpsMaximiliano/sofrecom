@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.DAL.Repositories.Admin
@@ -29,11 +28,15 @@ namespace Sofco.DAL.Repositories.Admin
             return _context.Set<Module>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
+        public IList<Module> GetAllWithFunctionalitiesReadOnly()
+        {
+            return _context.Modules.Include(x => x.Functionalities).ToList().AsReadOnly();
+        }
+
         public Module GetSingleWithFunctionalities(Expression<Func<Module, bool>> predicate)
         {
             return _context.Set<Module>()
-                .Include(x => x.ModuleFunctionality)
-                    .ThenInclude(s => s.Functionality)
+                .Include(x => x.Functionalities)
                 .SingleOrDefault(predicate);
         }
     }

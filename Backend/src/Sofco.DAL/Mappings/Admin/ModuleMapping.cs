@@ -11,6 +11,8 @@ namespace Sofco.DAL.Mappings.Admin
             builder.Entity<Module>().HasKey(_ => _.Id);
             builder.Entity<Module>().Property(_ => _.Description).HasMaxLength(50).IsRequired();
             builder.Entity<Module>().Property(_ => _.Code).HasMaxLength(5).IsRequired();
+
+            builder.Entity<Module>().HasMany(x => x.Functionalities).WithOne(x => x.Module).HasForeignKey(x => x.ModuleId);
         }
     }
 }

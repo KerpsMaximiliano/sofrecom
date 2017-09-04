@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sofco.Model.Interfaces;
-using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Admin
 {
@@ -12,7 +11,6 @@ namespace Sofco.Model.Models.Admin
 
         public Menu Menu { get; set; }
 
-        public IList<RoleModule> RoleModule { get; set; }
-        public IList<ModuleFunctionality> ModuleFunctionality { get; set; }
+        public IList<Functionality> Functionalities { get; set; }
     }
 }

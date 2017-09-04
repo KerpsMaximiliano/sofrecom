@@ -31,10 +31,9 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return _context.Set<Role>()
                     .Include(x => x.Groups)
-                    .Include(x => x.RoleModule)
-                        .ThenInclude(x => x.Module)
-                            .ThenInclude(x => x.ModuleFunctionality)
-                                  .ThenInclude(x => x.Functionality)
+                    .Include(x => x.RoleFunctionality)
+                        .ThenInclude(x => x.Functionality)
+                            .ThenInclude(x => x.Module)
                    .SingleOrDefault(x => x.Id == id);
         }
 

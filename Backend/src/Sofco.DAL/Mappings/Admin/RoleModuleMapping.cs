@@ -3,21 +3,21 @@ using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Mappings.Admin
 {
-    public static class RoleModuleMapping
+    public static class RoleFunctionalityMapping
     {
-        public static void MapRoleModule(this ModelBuilder builder)
+        public static void MapRoleFunctionality(this ModelBuilder builder)
         {
-            builder.Entity<RoleModule>().HasKey(t => new { t.RoleId, t.ModuleId });
+            builder.Entity<RoleFunctionality>().HasKey(t => new { t.RoleId, t.FunctionalityId });
 
-            builder.Entity<RoleModule>()
+            builder.Entity<RoleFunctionality>()
                  .HasOne(pt => pt.Role)
-                 .WithMany(p => p.RoleModule)
+                 .WithMany(p => p.RoleFunctionality)
                  .HasForeignKey(pt => pt.RoleId);
 
-            builder.Entity<RoleModule>()
-                 .HasOne(pt => pt.Module)
-                 .WithMany(p => p.RoleModule)
-                 .HasForeignKey(pt => pt.ModuleId);
+            builder.Entity<RoleFunctionality>()
+                 .HasOne(pt => pt.Functionality)
+                 .WithMany(p => p.RoleFunctionality)
+                 .HasForeignKey(pt => pt.FunctionalityId);
         }
     }
 }

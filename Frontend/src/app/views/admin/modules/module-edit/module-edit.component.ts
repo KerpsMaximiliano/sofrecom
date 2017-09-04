@@ -20,13 +20,15 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
     private paramsSubscrip: Subscription;
     private getSubscrip: Subscription;
     private editSubscrip: Subscription;
-    private functSubscrip: Subscription;
+    private activateSubscrip: Subscription;
+    private deactivateSubscrip: Subscription;
     public functionalityId: number = 0;
     public allFunctionalities: any[] = new Array<any>();
     public functsToAdd: any[];
     public checkAtLeft:boolean = true;
+    private functionalitySelected: any;
+    public modalMessage: string = "";
  
-    @ViewChild('functionalityModal') functionalityModal;
     @ViewChild('confirmModal') confirmModal;
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -37,14 +39,6 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
       "Aceptar",
       "Cancelar"
     );
-
-    public functionalityModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "Asignar Funcionalidades", //title
-      "functionalityModal", //id
-      true,          //Accept Button
-      true,          //Cancel Button
-      "Aceptar",     //Accept Button Text
-      "Cancelar");   //Cancel Button Text
 
     constructor(
         private service: ModuleService, 
@@ -66,13 +60,13 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
         if(this.editSubscrip) this.editSubscrip.unsubscribe();
-        if(this.functSubscrip) this.functSubscrip.unsubscribe();
+        if(this.activateSubscrip) this.activateSubscrip.unsubscribe();
+        if(this.deactivateSubscrip) this.deactivateSubscrip.unsubscribe();
     }
 
     getEntity(id: number){
         this.getSubscrip = this.service.get(id).subscribe((data) => {
             this.module = data;
-            this.getAllFunctionalities();
         });
     }
 
@@ -99,78 +93,45 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
       }
     }
 
-    getAllFunctionalities(){
-        this.functSubscrip = this.functionalityService.getOptions().subscribe(data => {
-            this.allFunctionalities = data;
-        });
-    }
-
-    private isOptionInArray(arr: any[], option: Option): boolean{
-        var esta: boolean = false;
-
-        for(var i: number = 0; i<arr.length; i++){
-            if(arr[i]["id"].toString() == option.value ){
-                esta = true;
-                break;
-            }
-        }
-
-        return esta;
-    }
-
-    selectFunctionalities(){
-      this.functsToAdd = null;
-      var localFunct = new Array<Option>();
-      var index = 0;
-
-      for(var i: number = 0; i < this.allFunctionalities.length; i++){
-
-          if(!this.isOptionInArray(this.module.functionalities, this.allFunctionalities[i]) ){
-              this.allFunctionalities[i].included = false;
-              this.allFunctionalities[i].index = index;
-              localFunct.push(this.allFunctionalities[i]);
-              index++;
-          }
-      }
-
-      this.functsToAdd = localFunct;
-    }
-
-    addFunctionality(){
-      this.selectFunctionalities();
-      this.functionalityModal.show();
-    }
-
-    openConfirmModal(functionalityId){
-        this.functionalityId = functionalityId;
-        this.confirmModal.show();
-    }
-
-    unAssignFunctionality(functionalityId: number){
-        var moduleIndex = this.module.functionalities.findIndex(m => m.id == functionalityId);
-
+    deactivate(){
         this.confirmModal.hide();
 
-        this.service.unAssignFunctionality(this.id, functionalityId).subscribe(
+        this.deactivateSubscrip = this.functionalityService.deactivate(this.functionalitySelected.id).subscribe(
             data => {
+                this.functionalitySelected.active = !this.functionalitySelected.active;
                 if(data.messages) this.messageService.showMessages(data.messages);
-                this.getEntity(this.id);
             },
             err => this.errorHandlerService.handleErrors(err));
     }
 
-    assignFunctionalities(){
+    activate(){
+        this.confirmModal.hide();
 
-        var arrFunctToAdd = this.functsToAdd.filter((el)=> el.included).map((item) => {
-            return item.value
-        });
-
-        this.service.assignFunctionalities(this.id, arrFunctToAdd).subscribe(
+        this.activateSubscrip = this.functionalityService.activate(this.functionalitySelected.id).subscribe(
             data => {
+                this.functionalitySelected.active = !this.functionalitySelected.active;
                 if(data.messages) this.messageService.showMessages(data.messages);
-                this.getEntity(this.id);
-                this.functionalityModal.hide();
             },
             err => this.errorHandlerService.handleErrors(err));
     }
+
+    habInhabClick(obj){
+      this.functionalitySelected = obj;
+
+      if (obj.active){
+        this.confirm = this.deactivate;
+        this.confirmModalConfig.acceptButtonText = "Deshabilitar";
+        this.confirmModalConfig.title = "Confirmación de baja";
+        this.modalMessage = "Está seguro de dar de baja " + obj.description + "?";
+        this.confirmModal.show();
+      } else {
+        this.confirm = this.activate;
+        this.confirmModalConfig.acceptButtonText = "Habilitar"
+        this.confirmModalConfig.title = "Confirmación de alta";
+        this.modalMessage = "Está seguro de dar de alta " + obj.description + "?";
+        this.confirmModal.show();
+      }
+  }
+
+  confirm() {}
 }

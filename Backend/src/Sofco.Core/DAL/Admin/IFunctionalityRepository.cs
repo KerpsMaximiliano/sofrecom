@@ -2,6 +2,7 @@
 using Sofco.Core.DAL.Common;
 using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Core.DAL.Admin
 {
@@ -9,5 +10,7 @@ namespace Sofco.Core.DAL.Admin
     {
         bool ExistById(int id);
         IList<Functionality> GetAllActivesReadOnly();
+        IList<Functionality> GetFuntionalitiesByModule(IEnumerable<int> modules);
+        IList<RoleFunctionality> GetFuntionalitiesByRole(IEnumerable<int> roles);
     }
 }

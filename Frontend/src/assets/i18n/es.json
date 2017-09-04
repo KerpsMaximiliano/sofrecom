@@ -14,7 +14,8 @@
                 "startDate": "Fecha Alta",
                 "endDate": "Fecha Elim",
                 "actions": "Acciones"
-            }
+            },
+            "descriptionRequired": "El campo descripción es requerido"
         },
         "USERS": {
             "TITLE": "Usuarios",
@@ -32,13 +33,16 @@
             "TITLE": "Funcionalidades",
             "MANAGEMENT": "Administración de Funcionalidades",
             "EDIT": "Editar Funcionalidad",
-            "ADD": "Agregar Funcionalidad"
+            "ADD": "Agregar Funcionalidad",
+            "select": "Seleccionar funcionalidades",
+            "deleteConfirm": "¿Esta seguro que desea eliminar la funcionalidad?"
         },
         "module": {
-            "title": "Modulos",
+            "title": "Módulos",
             "management": "Administración de Modulos",
             "edit": "Editar Modulo",
-            "add": "Agregar Modulo"
+            "add": "Agregar Modulo",
+            "deleteConfirm": "¿Esta seguro que desea eliminar el modulo?"
         }
     },
     "billing":{
@@ -79,11 +83,11 @@
             "list": "Listado de solicitudes",
             "detail": "Detalle de Facturación"
         },
-        "remito":{
+        "invoice":{
             "title": "Remitos",
             "new": "Generación",
             "search": "Consulta",
-            "management": "Gestion de Remitos",
+            "management": "Solicitud de Remitos",
             "edit": "Editar Remito",
             "add": "Crear Remito"
         }
@@ -96,7 +100,8 @@
         "EDIT": "Editar",
         "DELETE": "Eliminar",
         "ACTIVATE": "Activar",
-        "DEACTIVATE": "Desactivar"
+        "DEACTIVATE": "Desactivar",
+        "ACCEPT": "Aceptar"
     },
     "SendPending": "Pendiente Envío",
     "PendingByManagementControl": "Pendiente revision Control Gestion",

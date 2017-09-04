@@ -49,6 +49,28 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model);
         }
 
+        [HttpGet]
+        [Route("modulesAndFunctionalities")]
+        public IActionResult GetOptionsWithFunctionalities()
+        {
+            var modules = _moduleService.GetAllWithFunctionalitiesReadOnly();
+            var model = new List<ModuleModel>();
+
+            foreach (var module in modules)
+            {
+                var moduleToAdd = new ModuleModel(module);
+
+                foreach (var funct in module.Functionalities) {
+                    moduleToAdd.Functionalities.Add(new FunctionalityModel(funct));
+                }
+
+                model.Add(moduleToAdd);
+            }
+               
+
+            return Ok(model);
+        }
+
         // GET api/module/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -59,10 +81,9 @@ namespace Sofco.WebApi.Controllers.Admin
 
             var model = new ModuleModel(response.Data);
 
-            foreach (var moduleFunctionality in response.Data.ModuleFunctionality)
+            foreach (var functionality in response.Data.Functionalities)
             {
-                if(moduleFunctionality.Functionality.Active)
-                    model.Functionalities.Add(new FunctionalityModel(moduleFunctionality.Functionality));
+                model.Functionalities.Add(new FunctionalityModel(functionality));
             }
 
             return Ok(model);
@@ -110,39 +131,6 @@ namespace Sofco.WebApi.Controllers.Admin
                 model.Add(new FunctionalityModel(functionality));
 
             return Ok(model);
-        }
-
-        [HttpPost]
-        [Route("{moduleId}/functionalities")]
-        public IActionResult ChangeFunctionalities(int moduleId, [FromBody]List<int> model)
-        {
-            var response = _moduleService.ChangeFunctionalities(moduleId, model);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPost]
-        [Route("{moduleId}/functionality/{functionalityId}")]
-        public IActionResult AddFunctionality(int moduleId, int functionalityId)
-        {
-            var response = _moduleService.AddFunctionality(moduleId, functionalityId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpDelete]
-        [Route("{moduleId}/functionality/{functionalityId}")]
-        public IActionResult DeleteFunctionality(int moduleId, int functionalityId)
-        {
-            var response = _moduleService.DeleteFunctionality(moduleId, functionalityId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
         }
     }
 }

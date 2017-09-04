@@ -36,78 +36,23 @@ export class MenuService {
                         });
     }
 
-  getMenu(menu: string): Menu{
-    var m = this.menu;
-    var i: number;
-    var rpta = null;
-    if(m){
-      i = m.findIndex(x => x.code == menu);
-      rpta = m[i];
-    }
-    return rpta;
-  }
-
-  getModule(menu: string, module: string): Module{
-    var m = this.getMenu(menu);
-    var i: number;
-    var rpta = null;
-    if(m && m.modules){
-        i = m.modules.findIndex(x => x.code == module);
-        if(i > -1){
-            rpta = m.modules[i];
-        }
-    }
-    return rpta;
-  }
-
-  hasMenu(menu: string){
-    var m = this.menu ;
-    var rpta: boolean = (m != null && m != undefined) &&
-                         m.findIndex(x => x.code == menu) > -1;
-
-    return rpta;
-  }
-
-  hasModule(menu: string, module: string){
-    var m = this.getMenu(menu);
-    var rpta: boolean = (m != null && m != undefined) &&
-                         m.modules.findIndex(x => x.code == module) > -1;
-
-    return rpta;
-  }
-
-  hasFunctionality(menu: string, module: string, functionality: string){
-    var mod = this.getModule(menu, module);
-    var rpta: boolean = (mod != null && mod != undefined) &&
-                        mod.functionalities.findIndex(x => x.code == functionality) > -1;
-
-    return rpta;
-  }
-
-/*
-    private getFunctionality(menuCode: string, moduleCode: string, funcCode: string){
-        var moduleItem = this.getModule(menuCode, moduleCode);
-        var funcItems = null;
-        var funcItem = null;
-        if (moduleItem){
-            funcItems = moduleItem.functionalities.filter(x => x.code == funcCode);
-        }
-        if (funcItems && funcItems.length > 0){
-            funcItem = funcItems[0];
-        }
-        return funcItem;
-    }*/
-
-/*
-    hasMenu(menuCode: string){
-        var menuItem = this.getMenu(menuCode);
-        return (menuItem != null && menuItem != undefined);
+    hasModule(module: string){
+        return this.menu.findIndex(x => x.module == module) > -1;
     }
 
-    hasModule(menuCode: string, moduleCode: string){
-        var menuItem = this.hasModule(menuCode, moduleCode);
-        return (menuItem != null && menuItem != undefined);
-    }*/
+    hasFunctionality(module: string, functionality: string){
+        return this.menu.findIndex(x => x.module == module && x.functionality == functionality) > -1;
+    }
 
+    hasMenu(modules: string[]){
+        var result = false;
 
+        modules.forEach(item => {
+            if(this.hasModule(item)){
+                result = true;
+            }
+        });
+
+        return result;
+    }
 }

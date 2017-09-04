@@ -13,7 +13,7 @@ import { DatatablesLocationTexts } from 'app/components/datatables/datatables.lo
 
 @Component({
   selector: 'app-solfacSearch',
-  templateUrl: './solfacSearch.component.html'
+  templateUrl: './solfac-search.component.html'
 })
 export class SolfacSearchComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;

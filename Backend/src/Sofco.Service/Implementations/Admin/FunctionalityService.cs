@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models;
 using Sofco.Model.Utils;
-using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Model.Enums;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Admin
 {
     public class FunctionalityService : IFunctionalityService
     {
         private readonly IFunctionalityRepository _functionalityRepository;
-        private readonly IModuleFunctionalityRepository _moduleFunctionalityRepository;
 
-        public FunctionalityService(IFunctionalityRepository functionalityRepository, IModuleFunctionalityRepository moduleFunctionalityRepository)
+        public FunctionalityService(IFunctionalityRepository functionalityRepository)
         {
             _functionalityRepository = functionalityRepository;
-            _moduleFunctionalityRepository = moduleFunctionalityRepository;
         }
 
         public Response<Functionality> Active(int id, bool active)
@@ -67,12 +64,17 @@ namespace Sofco.Service.Implementations.Admin
 
         public IList<Functionality> GetFunctionalitiesByModule(int moduleId)
         {
-            return _moduleFunctionalityRepository.GetFuntionalitiesByModule(new int[] { moduleId });
+            return _functionalityRepository.GetFuntionalitiesByModule(new int[] { moduleId });
         }
 
         public IList<Functionality> GetFunctionalitiesByModule(IEnumerable<int> modules)
         {
-            return _moduleFunctionalityRepository.GetFuntionalitiesByModule(modules);
+            return _functionalityRepository.GetFuntionalitiesByModule(modules);
+        }
+
+        public IList<RoleFunctionality> GetFunctionalitiesByRole(IEnumerable<int> roles)
+        {
+            return _functionalityRepository.GetFuntionalitiesByRole(roles);
         }
     }
 }

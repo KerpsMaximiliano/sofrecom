@@ -39,10 +39,6 @@ export class RoleService {
     return this.http.put(`${this.baseUrl}/role`, model, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
-  delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/role/${id}`, { headers: this.headers}).map((res:Response) => res.json() );
-  }
-
   deactivate(id: number) {
     return this.http.put(`${this.baseUrl}/role/${id}/active/false`, {}, { headers: this.headers}).map((res:Response) => res.json() );
   }
@@ -51,11 +47,15 @@ export class RoleService {
     return this.http.put(`${this.baseUrl}/role/${id}/active/true`, {}, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
-  assignModules(roleId: number, modules: any){
-      return this.http.post(`${this.baseUrl}/role/${roleId}/modules`, modules, { headers: this.headers}).map((res:Response) => res.json() );
+  assignFunctionalities(roleId: number, functionalities: any){
+      return this.http.post(`${this.baseUrl}/role/${roleId}/functionalities`, functionalities, { headers: this.headers}).map((res:Response) => res.json() );
   }
 
-  unAssignModule(roleId: number, moduleId: number) {
-      return this.http.delete(`${this.baseUrl}/role/${roleId}/modules/${moduleId}`, { headers: this.headers}).map((res:Response) => res.json() );
+  unAssignFunctionality(roleId: number, functionalityId: number) {
+      return this.http.delete(`${this.baseUrl}/role/${roleId}/functionalities/${functionalityId}`, { headers: this.headers}).map((res:Response) => res.json() );
+  }
+
+  unAssignFunctionalities(roleId: number, functionalities: any){
+      return this.http.put(`${this.baseUrl}/role/${roleId}/functionalities`, functionalities, { headers: this.headers}).map((res:Response) => res.json() );
   }
 }

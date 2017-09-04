@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
+using Sofco.Model.Models.Admin;
 using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.Admin
@@ -15,16 +16,12 @@ namespace Sofco.DAL.Repositories.Admin
             _context = context;
         }
 
-        public IList<RoleModule> GetMenuByRoles(IEnumerable<int> roleIds)
+        public IList<RoleFunctionality> GetFunctionalitiesByRoles(IEnumerable<int> roleIds)
         {
-            return _context.RoleModule
-                .Include(x => x.Module) 
-                    .ThenInclude(x => x.Menu)
-                .Include(x => x.Module)
-                    .ThenInclude(x => x.ModuleFunctionality)
-                        .ThenInclude(x => x.Functionality)
-                .Where(x => roleIds.Contains(x.RoleId) && x.Module != null)
-                .Distinct()
+            return _context.RoleFunctionality
+                .Where(x => roleIds.Contains(x.RoleId))
+                .Include(x => x.Functionality)
+                    .ThenInclude(x => x.Module)
                 .ToList();
         }
     }

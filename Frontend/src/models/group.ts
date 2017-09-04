@@ -7,7 +7,8 @@ export interface Group {
     active: boolean
     role: Role,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    roleId: number
 }
 
 /*

@@ -1,5 +1,4 @@
-﻿using Sofco.Model.Models;
-using Sofco.Model.Utils;
+﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
 using Sofco.Model.Models.Admin;
 
@@ -15,8 +14,9 @@ namespace Sofco.Core.Services.Admin
         IList<Role> GetRolesByGroup(IEnumerable<int> groupIds);
         Response<Role> GetDetail(int id);
         Response<Role> Active(int id, bool active);
-        Response<Role> ChangeModules(int roleId, List<int> modulesToAdd);
-        Response<Role> AddModule(int roleId, int moduleId);
-        Response<Role> DeleteModule(int roleId, int moduleId);
+        Response<Role> AddFunctionalities(int roleId, List<int> functionalitiesToAdd);
+        Response<Role> AddFunctionality(int roleId, int moduleId);
+        Response<Role> DeleteFunctionality(int roleId, int moduleId);
+        Response<Role> RemoveFunctionalities(int roleId, List<int> functionalities);
     }
 }

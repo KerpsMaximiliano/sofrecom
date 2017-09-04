@@ -12,7 +12,6 @@ export class Solfac {
         public documentTypeId: number,
         public userApplicantId: number,
         public imputationNumber1: string,
-        public imputationNumber2: string,
         public imputationNumber3: number,
         public amount: number,
         public iva21: number,

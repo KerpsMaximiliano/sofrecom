@@ -14,8 +14,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.CelPhone).HasMaxLength(15);
             builder.Entity<Solfac>().Property(_ => _.ContractNumber).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(100);
-            builder.Entity<Solfac>().Property(_ => _.ImputationNumber1).HasMaxLength(10);
-            builder.Entity<Solfac>().Property(_ => _.ImputationNumber2).HasMaxLength(10);
+            builder.Entity<Solfac>().Property(_ => _.ImputationNumber1).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.AttachedParts).HasMaxLength(500);
             builder.Entity<Solfac>().Property(_ => _.ParticularSteps).HasMaxLength(500);
 

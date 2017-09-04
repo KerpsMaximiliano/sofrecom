@@ -26,13 +26,16 @@ namespace Sofco.DAL
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
-        public DbSet<RoleModule> RoleModule { get; set; }
-        public DbSet<ModuleFunctionality> ModuleFunctionality { get; set; }
+
+        // RelationShips
+        public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
 
         // Billing Mappings
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Hito> Hitos { get; set; }
         public DbSet<Solfac> Solfacs { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -52,10 +55,10 @@ namespace Sofco.DAL
             builder.MapUsers();
             builder.MapUserGroups();
             builder.MapFunctionalities();
-            builder.MapRoleModule();
-            builder.MapModuleFunctionality();
             builder.MapSolfac();
             builder.MapUtils();
+            builder.MapRoleFunctionality();
+            builder.MapInvoice();
         }
     }
 }

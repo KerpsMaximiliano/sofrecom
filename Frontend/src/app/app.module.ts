@@ -29,6 +29,7 @@ import { AuthenticationService } from "app/services/common/authentication.servic
 import { Configuration } from "app/services/common/configuration";
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -63,6 +64,7 @@ export function HttpLoaderFactory(http: Http) {
     Configuration,
     Service,
     MenuService,
+    DataTableService,
     ErrorHandlerService,
     MessageService,
     AuthGuard,

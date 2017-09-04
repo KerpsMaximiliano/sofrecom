@@ -20,23 +20,15 @@
         <div class="ibox-content">
             <!-- Datos CRM -->
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <fieldset>
                         <legend>Datos del Contrato</legend>
                         <dl class="dl-horizontal">
+                            <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
                             <dt>Razón Social:</dt><dd>{{model.businessName}}</dd>
                             <dt>Contacto del Cliente: </dt><dd>{{model.clientName}}</dd>
                             <dt>Teléfono: </dt><dd>{{model.celphone}}</dd>
                             <dt>Solicitante: </dt><dd>{{model.userApplicantName}}</dd>
-                        </dl>
-                    </fieldset>
-                </div>
-                <div class="col-lg-6">
-                    <fieldset>
-                        <legend>Datos del Documento</legend>
-                        <dl class="dl-horizontal">
-                            <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
-                            <dt>Nº de Contrato: </dt><dd>{{model.contractNumber}}</dd>
                             <dt>Proyecto: </dt><dd>{{model.project}}</dd>
                         </dl>
                     </fieldset>
@@ -45,17 +37,14 @@
         
             <div class="row">
                 <!-- Numero de imputacion-->
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6 col-sm-8">
                     <div class="form-group">
                         <label class="control-label">N° de imputación</label>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
                                 <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control"> 
                             </div>
-                            <div class="col-lg-4">
-                                <input type="text" name="imputationNumber2" [(ngModel)]="model.imputationNumber2" class="form-control"> 
-                            </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <select class="form-control m-b" [(ngModel)]="model.imputationNumber3">
                                     <option *ngFor="let impNumber of imputationNumbers" [value]="impNumber?.value">{{impNumber?.text}}</option>
                                 </select>
@@ -65,7 +54,7 @@
                 </div>
 
                 <!-- Plazo -->
-                <div class="col-lg-2">
+                <div class="col-lg-2 col-md-4 col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Plazo</label>
                         <input type="number" class="form-control" [(ngModel)]="model.timeLimit">
@@ -75,7 +64,7 @@
 
             <div class="row">
                 <!-- Tipo de documento -->
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Tipo de documento</label>
                         <select class="form-control m-b" [(ngModel)]="model.documentTypeId" (ngModelChange)="changeDocumentType()">
@@ -85,11 +74,19 @@
                 </div>
 
                 <!-- Moneda -->
-                <div class="col-lg-2">
+                <div class="col-lg-2 col-md-3 col-sm-3">
                     <label class="control-label">Moneda</label>
                     <select class="form-control" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
                         <option *ngFor="let currency of currencies" [value]="currency?.value">{{currency?.text}}</option>
                     </select>
+                </div>
+
+                <!-- Numero de contrato -->
+                <div class="col-lg-6 col-md-5 col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label">N° de OC o N° Contrato</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.contractNumber">
+                    </div>
                 </div>
             </div>
 
@@ -165,7 +162,7 @@
 
                         <!-- Capital -->
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <label class="control-label">Capital %:</label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.capitalPercentage"> 
@@ -176,7 +173,7 @@
 
                         <!-- Buenos Aires -->
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <label class="control-label">Provincia de Bs. As. %: </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.buenosAiresPercentage"> 
@@ -187,14 +184,14 @@
 
                         <!-- Otras -->
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince1Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province1Id">
@@ -206,14 +203,14 @@
 
                         <!-- Otras -->
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince2Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province2Id">
@@ -225,14 +222,14 @@
 
                         <!-- Otras -->
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince3Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province3Id">
@@ -247,21 +244,19 @@
 
             <!-- Piezas adjuntas y instrucciones particulares -->
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="form-group">
                         <label class="control-label">Piezas Adjuntas:</label>
                         <textarea class="form-control" name="attachedBoxes" rows="5" [(ngModel)]="model.attachedParts"></textarea>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="form-group">
                         <label class="control-label">Instrucciones Particulares:</label>
                         <textarea class="form-control" name="particularSteps" rows="5" [(ngModel)]="model.particularSteps"></textarea>
                     </div>
                 </div>
             </div>
-
-    
         </div>
         <div class="ibox-footer">
             <div class="text-right">

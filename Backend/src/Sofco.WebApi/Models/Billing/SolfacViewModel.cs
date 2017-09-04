@@ -77,7 +77,6 @@ namespace Sofco.WebApi.Models.Billing
             solfac.DocumentTypeId = DocumentTypeId.GetValueOrDefault();
             solfac.UserApplicantId = UserApplicantId.GetValueOrDefault();
             solfac.ImputationNumber1 = ImputationNumber1;
-            solfac.ImputationNumber2 = ImputationNumber2;
             solfac.ImputationNumber3Id = ImputationNumber3.GetValueOrDefault();
             solfac.Amount = Amount;
             solfac.Iva21 = Iva21;

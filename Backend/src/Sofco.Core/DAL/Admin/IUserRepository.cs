@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
@@ -13,5 +12,6 @@ namespace Sofco.Core.DAL.Admin
         User GetSingleWithUserGroup(Expression<Func<User, bool>> predicate);
         IList<User> GetAllFullReadOnly();
         IList<User> GetAllActivesReadOnly();
+        bool HasDirectorGroup(string userMail);
     }
 }
