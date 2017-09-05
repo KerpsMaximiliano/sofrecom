@@ -1,5 +1,4 @@
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Functionality } from 'models/functionality';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";

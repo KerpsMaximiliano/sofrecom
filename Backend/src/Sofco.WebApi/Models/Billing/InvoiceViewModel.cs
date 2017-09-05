@@ -5,6 +5,29 @@ namespace Sofco.WebApi.Models.Billing
 {
     public class InvoiceViewModel
     {
+        public InvoiceViewModel(Invoice invoice)
+        {
+            Id = invoice.Id;
+            AccountName = invoice.AccountName;
+            Address = invoice.Address;
+            Zipcode = invoice.Zipcode;
+            City = invoice.City;
+            Province = invoice.Province;
+            Country = invoice.Country;
+            Cuit = invoice.Cuit;
+            Service = invoice.Service;
+            Project = invoice.Project;
+            ProjectId = invoice.ProjectId;
+            Analytic = invoice.Analytic;
+
+            Details = new List<InvoiceDetailViewModel>();
+
+            foreach (var detail in invoice.Details)
+            {
+                Details.Add(new InvoiceDetailViewModel { Description = detail.Description, Quantity = detail.Quantity });
+            }
+        }
+
         public int Id { get; set; }
         public string AccountName { get; set; }
         public string Address { get; set; }

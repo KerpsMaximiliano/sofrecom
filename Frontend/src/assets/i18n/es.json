@@ -89,7 +89,8 @@
             "search": "Consulta",
             "management": "Solicitud de Remitos",
             "edit": "Editar Remito",
-            "add": "Crear Remito"
+            "add": "Crear Remito",
+            "detail": "Detalle de Remito"
         }
     },
     "HOME": {

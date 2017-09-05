@@ -36,7 +36,7 @@
                                 <dl class="dl-vertical">
                                     <dt>Orden de compra</dt> <dd> {{ project.purchaseOrder }} </dd>
                                     <dt>Analitica</dt> <dd> {{ project.analytic }} </dd>
-                                    <dt>Ingresos esperados</dt> <dd> {{ getCurrencySymbol(project.currency) }} {{ project.incomes | number: '1.2-2' }} </dd>
+                                    <dt><i class="fa fa-money"></i> Ingresos esperados</dt> <dd> {{ getCurrencySymbol(project.currency) }} {{ project.incomes | number: '1.2-2' }} </dd>
                                 </dl>
                             </div>
                             <div class="col-lg-4">
@@ -48,8 +48,8 @@
                             </div>
                             <div class="col-lg-4">
                                 <dl class="dl-vertical">
-                                    <dt>Fecha inicio</dt> <dd>{{ project.startDate | date:'dd/MM/yyyy' }}</dd>
-                                    <dt>Fecha fin</dt> <dd> {{ project.endDate | date:'dd/MM/yyyy' }} </dd>
+                                    <dt><i class="fa fa-calendar"></i> Fecha inicio</dt> <dd>{{ project.startDate | date:'dd/MM/yyyy' }}</dd>
+                                    <dt><i class="fa fa-calendar"></i> Fecha fin</dt> <dd> {{ project.endDate | date:'dd/MM/yyyy' }} </dd>
                                     <dt>Oportunidad </dt> <dd> {{ project.opportunityName }} </dd>
                                 </dl>
                             </div>
@@ -139,7 +139,33 @@
                                             </div>
 
                                             <div class="tab-pane" id="tab-3">
-                                                <button class="btn btn-primary" (click)="goToCreateInvoice()"> Crear remito <i class="fa fa-arrow-right"></i></button>
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CUIT</th>
+                                                            <th>Ciudad</th>
+                                                            <th>Cuenta</th>
+                                                            <th>Servicio</th>
+                                                            <th>Analitica</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)">
+                                                            <td>{{ invoice.cuit }}</td>
+                                                            <td>{{ invoice.city }}</td>
+                                                            <td>{{ invoice.accountName }}</td>
+                                                            <td>{{ invoice.service }}</td>
+                                                            <td>{{ invoice.analytic }}</td>
+                                                        </tr>
+                                                        <tr *ngIf="invoices == null || invoices.length == 0">
+                                                            <td colspan="5" class="text-center">No hay remitos generados</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="button-group">
+                                                    <button class="btn btn-primary" (click)="goToCreateInvoice()"> Crear remito <i class="fa fa-arrow-right"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

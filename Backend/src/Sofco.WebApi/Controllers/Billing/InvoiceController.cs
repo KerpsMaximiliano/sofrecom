@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Config;
@@ -17,6 +18,18 @@ namespace Sofco.WebApi.Controllers.Billing
             _invoiceService = invoiceService;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = _invoiceService.GetById(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var model = new InvoiceViewModel(response.Data);
+
+            return Ok(model);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] InvoiceViewModel model)
         {
@@ -27,6 +40,16 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
+        }
+
+        [HttpGet("project/{projectId}")]
+        public IActionResult GetInvoices(string projectId)
+        {
+            var invoices = _invoiceService.GetByProject(projectId);
+
+            var model = invoices.Select(x => new InvoiceRowDetailViewModel(x));
+
+            return Ok(model);
         }
     }
 }

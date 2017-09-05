@@ -1,4 +1,5 @@
-import { Module } from './module';
+import { Module } from "models/admin/module";
+
 export class Functionality {
     constructor(
         public id: number,

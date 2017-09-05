@@ -1,7 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'app/services/common/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Role } from 'models/role';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";

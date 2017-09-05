@@ -22,10 +22,11 @@ import { SpinnerModule } from "app/components/spinner/spinner.module";
 import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
 import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
 import { InvoiceService } from "app/services/billing/invoice.service";
+import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
-                 SolfacDetailComponent, InvoiceComponent],
+                 SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent],
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   exports     : []

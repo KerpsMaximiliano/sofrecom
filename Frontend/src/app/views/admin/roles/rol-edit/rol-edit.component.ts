@@ -1,18 +1,16 @@
-import { Module } from 'models/module';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Option } from 'models/option';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role } from 'models/role';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Functionality } from "models/functionality";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { FunctionalityService } from "app/services/admin/functionality.service";
 import { ModuleService } from "app/services/admin/module.service";
 import { RoleService } from "app/services/admin/role.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { Role } from "models/admin/role";
 declare var $: any;
 
 @Component({

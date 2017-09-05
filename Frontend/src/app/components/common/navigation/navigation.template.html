@@ -40,14 +40,14 @@
               <a href="#">{{'billing.solfac.title' | translate }}<span class="fa arrow"></span></a>
               <ul class="nav nav-third-level collapse">
                 <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
-                <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/searchSolfac']">{{'billing.solfac.search' | translate }}</a></li>
+                <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/search']">{{'billing.solfac.search' | translate }}</a></li>
               </ul>
           </li>
    
           <li *ngIf="menuService.hasModule('REM')">
             <a href="#">{{'billing.invoice.title' | translate }}<span class="fa arrow"></span></a>
             <ul class="nav nav-third-level collapse">
-              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('REM', 'ALTA')"><a [routerLink]="['/billing/remitos']">{{'billing.remito.new' | translate }}</a></li>
+              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('REM', 'ALTA')"><a [routerLink]="['/billing/remitos']">{{'billing.invoice.new' | translate }}</a></li>
               <li *ngIf="menuService.hasModule('REM', 'QUERY')"><a>{{'billing.invoice.search' | translate }}</a></li>
             </ul>
           </li>

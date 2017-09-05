@@ -1,12 +1,11 @@
 import { Router } from '@angular/router';
-import { Group } from 'models/group';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService } from 'app/services/common/message.service';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { Subscription } from "rxjs/Subscription";
 import { RoleService } from "app/services/admin/role.service";
-import { Role } from "models/role";
+import { Group } from "models/admin/group";
 
 @Component({
   selector: 'app-group-add',
@@ -34,7 +33,6 @@ export class GroupAddComponent implements OnInit, OnDestroy {
       this.group.active = true;
       this.service.add(this.group).subscribe(
         data => {
-          console.log(data);
           if(data.messages) this.messageService.showMessages(data.messages);
           this.router.navigate(["/admin/groups"]);
         },

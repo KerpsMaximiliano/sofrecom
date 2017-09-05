@@ -26,6 +26,7 @@ import { ProjectDetailComponent } from "app/views/billing/projects/project-detai
 import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
 import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
 import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
+import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -72,10 +73,10 @@ export const ROUTES:Routes = [
       { path: "solfac", children: [
          { path: "", component: SolfacComponent },
          { path: ":solfacId", component: SolfacDetailComponent },
+         { path: "search", component: SolfacSearchComponent },
       ]},
-        
-      { path: "searchSolfac", component: SolfacSearchComponent },
-      { path: "invoice/:projectId", component: InvoiceComponent },
+      { path: "invoice/new/project/:projectId", component: InvoiceComponent },
+      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent }
     ]
   },
   {

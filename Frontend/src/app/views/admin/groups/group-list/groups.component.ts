@@ -9,7 +9,6 @@ import { Subscription } from "rxjs/Subscription";
 import { DatatablesOptions } from "app/components/datatables/datatables.options";
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { Group } from 'models/group';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { MenuService } from "app/services/admin/menu.service";

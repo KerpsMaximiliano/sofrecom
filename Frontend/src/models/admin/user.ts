@@ -1,4 +1,5 @@
-import { Group } from './group';
+
+import { Group } from "models/admin/group";
 
 export interface User {
     id: number,

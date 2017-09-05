@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Role } from "models/role";
 import { Http, Response, Headers} from '@angular/http';
 import { Service } from "app/services/common/service";
 
@@ -24,5 +23,9 @@ export class ProjectService {
 
   getSolfacs(projectId){
       return this.http.get(`${this.baseUrl}/solfac/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  }
+
+  getInvoices(projectId){
+      return this.http.get(`${this.baseUrl}/invoice/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 }

@@ -18,6 +18,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     project: any;
     hitos: any[] = new Array();
     solfacs: any[] = new Array();
+    invoices: any[] = new Array();
 
     constructor(
         private router: Router,
@@ -31,6 +32,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.project = JSON.parse(sessionStorage.getItem("projectDetail"));
             this.getSolfacs(this.projectId);
             this.getHitos(this.projectId);
+            this.getInvoices(this.projectId);
         });
     }
 
@@ -47,6 +49,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     getHitos(projectId){
         this.getHitosSubscrip = this.service.getHitos(projectId).subscribe(d => {
             this.hitos = d;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getInvoices(projectId){
+        this.getHitosSubscrip = this.service.getInvoices(projectId).subscribe(d => {
+            this.invoices = d;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -106,7 +115,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(["/billing/solfac/" + solfac.id]);
     }
 
-    goToCreateInvoice(){
-        this.router.navigate(["/billing/invoice/" + this.projectId]);
+    goToInvoiceDetail(invoice){
+        this.router.navigate(["/billing/invoice/" + invoice.id + "/project/" + this.projectId]);
     }
+
+    goToCreateInvoice(){
+        this.router.navigate(["/billing/invoice/new/project/" + this.projectId]);
+    } 
 }

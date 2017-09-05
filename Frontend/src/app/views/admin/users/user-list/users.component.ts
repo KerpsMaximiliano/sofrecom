@@ -8,7 +8,6 @@ import { Subscription } from "rxjs/Subscription";
 import { DatatablesOptions } from "app/components/datatables/datatables.options";
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { User } from 'models/user';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { UserService } from "app/services/admin/user.service";
 

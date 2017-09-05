@@ -15,4 +15,8 @@ export class InvoiceService {
   add(model){
      return this.http.post(`${this.baseUrl}/invoice`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
+
+  getById(id){
+     return this.http.get(`${this.baseUrl}/invoice/${id}`, { headers: this.headers}).map((res:Response) => res.json());
+  }
 }

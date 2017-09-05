@@ -50,7 +50,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
     }
 
     addDetail(){

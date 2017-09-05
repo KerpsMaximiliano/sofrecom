@@ -1,6 +1,5 @@
 import { MessageService } from 'app/services/common/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Module } from 'models/module';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";

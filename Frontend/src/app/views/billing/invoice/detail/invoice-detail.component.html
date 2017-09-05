@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>{{'billing.invoice.management' | translate }}</h2>
+        <h2>{{'billing.invoice.detail' | translate }}</h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
             <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
                 <a>{{'billing.project.title' | translate }}</a>
             </li>
             <li>
-                <a (click)="cancel()">{{ model.project }}</a>
-            </li>
-            <li>
-                <a>{{'billing.title' | translate }}</a>
+                <a (click)="goBack()">{{ model.project }}</a>
             </li>
             <li class="active">
                 <strong>{{'billing.invoice.title' | translate }}</strong>
@@ -24,13 +24,33 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-title">
-          <h3>Datos del cliente</h3>
+            <h3 class="pull-left">Datos del remito</h3>
+          
+            <div class="ibox-tools" >
+                <a class="btn btn-sm btn-rounded btn-primary">Exportar excel</a>
+                <a class="btn btn-sm btn-rounded btn-primary">Aprobar</a>
+                <a class="btn btn-sm btn-rounded btn-danger"><span class="text-white">Rechazar</span></a>
+            </div>
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
-                        <dt>Cuenta: </dt><dd>{{model.accountName}}</dd>
+                        <dt><h4>Número de remito: </h4></dt>
+                        <dd><h4 class="text-navy">INV-000567F7-00</h4></dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>Estado: </h4></dt>
+                        <dd><span class="label label-warning">Borrador</span></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
                         <dt>Dirección:</dt><dd>{{model.address}}</dd>
                         <dt>Código postal: </dt><dd>{{model.zipcode}}</dd>
                         <dt>Ciudad: </dt><dd>{{model.city}}</dd>
@@ -38,9 +58,10 @@
                         <dt>Pais: </dt><dd>{{model.country}}</dd>
                     </dl>
                 </div>
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
                         <dt>C.U.I.T.: </dt><dd>{{model.cuit}}</dd>
+                        <dt>Nombre de cuenta: </dt><dd>{{model.accountName}}</dd>
                         <dt>Servicio: </dt><dd>{{model.service}}</dd>
                         <dt>Proyecto: </dt><dd>{{model.project}}</dd>
                         <dt>Analítica: </dt><dd>{{model.analytic}}</dd>
@@ -49,39 +70,20 @@
             </div>
         
             <!-- Detalles -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title text-white">
-                        Detalles
-                    </h4>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a class="btn btn-sm btn-rounded btn-primary" (click)="addDetail()">{{ 'ACTIONS.ADD' | translate }}</a>
-                        </div>
-                    </div>
-
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="table-responsive">
                         <table class="table invoice-table" *ngIf="model.details.length > 0">
                             <thead>
                             <tr>
                                 <th>Descripción</th>
                                 <th>Cantidad</th>
-                                <th>Eliminar</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let detail of model.details; let i = index">
-                                    <td class="col-lg-9 col-sm-9">
-                                        <input type="text" class="form-control" [(ngModel)]="detail.description">
-                                    </td>
-                                    <td class="col-lg-2 col-sm-2">
-                                        <input type="number" class="form-control" [(ngModel)]="detail.quantity">
-                                    </td>
-                                    <td class="col-lg-1 col-sm-1">
-                                        <button class="btn btn-danger btn-xs" (click)="deleteDetail(i)" ><span class="fa fa-trash"></span></button>    
-                                    </td>
+                                <tr *ngFor="let detail of model.details">
+                                    <td class="col-lg-9 col-sm-9">{{detail.description}}</td>
+                                    <td class="col-lg-2 col-sm-2">{{detail.quantity}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -91,8 +93,7 @@
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> Cancelar </button>
-                <button class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> Guardar </button>
+                <button class="btn btn-danger" (click)="goBack()"><i class="fa fa-arrow-left"></i> Volver </button>
             </div>
         </div>
     </div>
