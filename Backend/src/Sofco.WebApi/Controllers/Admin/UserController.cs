@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Framework.Mail;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/user")]
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -30,12 +31,14 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var users = _userService.GetAllReadOnly(false);
+            //var users = _userService.GetAllReadOnly(false);
 
+            //var model = new List<UserModel>();
+
+            //foreach (var user in users)
+            //    model.Add(new UserModel(user));
             var model = new List<UserModel>();
-
-            foreach (var user in users)
-                model.Add(new UserModel(user));
+            MailSender.Send();
 
             return Ok(model);
         }

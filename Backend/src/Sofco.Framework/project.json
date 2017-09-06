@@ -1,7 +1,8 @@
-﻿{
+{
   "version": "1.0.0-*",
 
   "dependencies": {
+    "MailKit": "1.18.1.1",
     "NETStandard.Library": "1.6.1"
   },
 
