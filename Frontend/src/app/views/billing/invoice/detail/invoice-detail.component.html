@@ -102,9 +102,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-5" *ngIf="showUploader()">
-                    <h3 *ngIf="!model.excelFileName || model.invoiceStatus == 'Rejected'">Importar Excel</h3>
-                    <h3 *ngIf="model.excelFileName && model.invoiceStatus == 'Sent'">Importar PDF</h3>
+                <div class="col-lg-5" *ngIf="showUploader">
+                    <h3 *ngIf="isExcel">Importar Excel</h3>
+                    <h3 *ngIf="!isExcel">Importar PDF</h3>
 
                     <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
 

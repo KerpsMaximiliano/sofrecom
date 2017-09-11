@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Services.Billing;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -41,9 +42,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public IList<Solfac> GetAll()
+        public IList<Solfac> Search(SolfacParams parameter)
         {
-            return _solfacRepository.GetAllWithDocuments();
+            return _solfacRepository.SearchByParams(parameter);
         }
 
         public IList<Hito> GetHitosByProject(string projectId)

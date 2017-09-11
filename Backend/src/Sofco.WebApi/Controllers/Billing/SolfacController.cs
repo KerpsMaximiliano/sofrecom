@@ -6,6 +6,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
+using Sofco.Model.DTO;
+using Sofco.Model.Enums;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -23,10 +26,18 @@ namespace Sofco.WebApi.Controllers.Billing
             _solfacService = solfacService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        [Route("search")]
+        public IActionResult Search([FromBody] SolfacParams parameters)
         {
-            var solfacs = _solfacService.GetAll();
+            var solfacs = _solfacService.Search(parameters);
+
+            if (!solfacs.Any())
+            {
+                var response = new Response();
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFounds, MessageType.Warning));
+                return Ok(response);
+            }
 
             var list = solfacs.Select(x => new SolfacSearchDetail(x));
 

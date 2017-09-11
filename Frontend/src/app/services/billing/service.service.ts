@@ -16,4 +16,8 @@ export class ServiceService {
   getAll(customerId) {
        return this.http.get(`${this.baseUrl}/service/${customerId}`, { headers: this.headers }).map((res:Response) => res.json());
   }
+
+  getOptions(customerId) {  
+    return this.http.get(`${this.baseUrl}/service/${customerId}/options`, { headers: this.headers }).map((res:Response) => res.json());
+  }
 }

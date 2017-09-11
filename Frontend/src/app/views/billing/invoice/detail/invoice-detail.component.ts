@@ -30,6 +30,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     invoiceNumber: string;
     public uploader: FileUploader = new FileUploader({url:""});
 
+    public showUploader: boolean = false;
+    public isExcel: boolean = true;
+
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Incluya número de remito antes de aprobar",
         "confirmModal",
@@ -66,6 +69,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     configUploader(){
+        this.showUploader = false;
+        this.isExcel = true;
 
         if(!this.model.excelFileName){
             this.excelConfig();
@@ -75,7 +80,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 this.excelConfig();
             }
             else {
-                if(!this.model.pdfFileName){
+                if(!this.model.pdfFileName || (this.model.pdfFileName && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent])){
                     this.pdfConfig();
                 }
             }
@@ -93,6 +98,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         };
 
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+        this.isExcel = false;
+        this.showUploader = true;
     }
 
     excelConfig(){
@@ -106,6 +113,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         };
 
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+        this.isExcel = true;
+        this.showUploader = true;
     }
 
     goBack(){
@@ -130,6 +139,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.service.sendToDaf(this.model.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Sent];
+            this.configUploader();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -138,6 +148,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.service.reject(this.model.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Rejected];
+            this.configUploader();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -146,6 +157,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.service.annulment(this.model.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Cancelled];
+            this.configUploader();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -170,6 +182,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Approved];
                 this.model.invoiceNumber = this.invoiceNumber;
+
+                this.configUploader();
             },
             err => this.errorHandlerService.handleErrors(err));
         }
@@ -201,19 +215,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             setTimeout(() => { this.goBack(); }, 1500)
         },
         err => this.errorHandlerService.handleErrors(err));
-    }
-
-    showUploader(){
-        if(this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Cancelled]){
-            return false;
-        }
-
-        if(!this.model.excelFileName || (!this.model.pdfFileName && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent])
-                                     || (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected])) {
-            return true;
-        }
-
-        return false;
     }
 
     canCancel(){

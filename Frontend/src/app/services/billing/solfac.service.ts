@@ -16,8 +16,8 @@ export class SolfacService {
     return this.http.get(`${this.baseUrl}/solfac/options`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
-  getAll() {
-    return this.http.get(`${this.baseUrl}/solfac`, { headers: this.headers}).map((res:Response) => res.json());
+  search(parameters) {
+    return this.http.post(`${this.baseUrl}/solfac/search`, parameters, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   get(solfacId) {

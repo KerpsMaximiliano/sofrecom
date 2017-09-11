@@ -126,6 +126,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>Solicitud no encontrada</value>
   </data>
+  <data name="NotFounds" xml:space="preserve">
+    <value>No se han encontrado solicitudes con esos parametros de busqueda.</value>
+  </data>
   <data name="PercentageLessThan0" xml:space="preserve">
     <value>Los porcetanjes no pueden ser menor a 0</value>
   </data>

@@ -62,6 +62,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.imputationNumber1 = project.analytic;
       this.model.imputationNumber3 = 1;
       this.model.currencyId = this.getCurrencyId(project.currency);
+      this.model.analytic = project.analytic;
+      this.model.serviceId = sessionStorage.getItem("serviceId");
+      this.model.customerId = customer.id;
 
       this.model.hitos = new Array<HitoDetail>();
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));

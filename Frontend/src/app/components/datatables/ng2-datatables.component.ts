@@ -91,6 +91,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
                     }
                 }
               ],
+              oSearch: { "bSmart": false, "bRegex": true },
               language:
                 {
                     "sProcessing": "Procesando...",

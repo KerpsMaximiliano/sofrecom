@@ -6,10 +6,15 @@ export class DataTableService {
     
     constructor() { }
 
+    destroy(selector){
+        $(selector).DataTable().destroy();
+    }
+
     init(selector){
         setTimeout(()=>{
             $( document ).ready(function() {
             this.tableRef = $(selector).DataTable({
+                    oSearch: { "bSmart": false, "bRegex": true },
                     language:
                     {
                         "sProcessing": "Procesando...",

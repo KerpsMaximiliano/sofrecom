@@ -17,6 +17,10 @@ export class ProjectService {
       return this.http.get(`${this.baseUrl}/project/${serviceId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
+  getOptions(serviceId) {  
+    return this.http.get(`${this.baseUrl}/project/${serviceId}/options`, { headers: this.headers }).map((res:Response) => res.json());
+  }
+
   getHitos(projectId){
       return this.http.get(`${this.baseUrl}/project/${projectId}/hitos`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }

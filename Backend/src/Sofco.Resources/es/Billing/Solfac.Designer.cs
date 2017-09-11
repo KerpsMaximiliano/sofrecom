@@ -87,6 +87,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a No se han encontrado solicitudes con esos parametros de busqueda..
+        /// </summary>
+        public static string NotFounds {
+            get {
+                return ResourceManager.GetString("NotFounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Los porcetanjes no pueden ser menor a 0.
         /// </summary>
         public static string PercentageLessThan0 {

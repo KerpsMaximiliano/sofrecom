@@ -3,13 +3,14 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-
-import { DatatablesOptions } from "app/components/datatables/datatables.options";
-import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
-import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
-import { DatatablesColumn } from "app/components/datatables/datatables.columns";
-import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
+import { Option } from "app/models/option";
+import { CustomerService } from "app/services/billing/customer.service";
+import { ServiceService } from "app/services/billing/service.service";
+import { ProjectService } from "app/services/billing/project.service";
+import { UserService } from "app/services/admin/user.service";
+import { Cookie } from "ng2-cookies/ng2-cookies";
+import { DataTableService } from "app/services/common/datatable.service";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
   selector: 'app-solfacSearch',
@@ -19,49 +20,34 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     data;
 
-    editionType = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
-    locationTexts = new DatatablesLocationTexts("Assign");
+    public customers: Option[] = new Array<Option>();
+    public services: Option[] = new Array<Option>();
+    public projects: Option[] = new Array<Option>();
+    public userApplicants: Option[] = new Array<Option>();
 
-    @ViewChild('dt') dt; 
-  
-    options = new DatatablesOptions( 
-        false,  //edit
-        false,  //delete
-        true,  //view
-        false,  //habInhab
-        false,  //other
-        false, //other2
-        false, //other3
-        "fa-compress",     //other1Icon
-        "fa-check",      //other2Icon
-        "fa-cogs",        //other3Icon
-        { title: "Solicitudes", columns: [0, 1, 2, 3, 4, 5]}
-    ); 
+    customerId: string = "0";
+    serviceId: string = "0";
+    projectId: string = "0";
+    userApplicantId: string = "0";
+    analytic: string;
 
-    private dataTypeEnum = DatatablesDataType;
-    private alignmentEnum = DatatablesAlignment;
-
-    columns: DatatablesColumn[] = [
-        new DatatablesColumn("id", "Id", "", 0, this.dataTypeEnum.number, this.alignmentEnum.left),
-        new DatatablesColumn("project", "Proyecto", "", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("businessName", "Razón Social", "", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("documentTypeName", "Tipo Doc.", "", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("startDate", "Fecha", "", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
-        new DatatablesColumn("totalAmount", "Total", "", 1, this.dataTypeEnum.currency, this.alignmentEnum.center),
-        new DatatablesColumn("statusName", "Estado", "", 1, this.dataTypeEnum.labelWarning, this.alignmentEnum.center),
-    ]
+    public loading:  boolean = false;
 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: SolfacService,
+        private customerService: CustomerService,
+        private messageService: MessageService,
+        private serviceService: ServiceService,
+        private projectService: ProjectService,
+        private datatableService: DataTableService,
+        private userService: UserService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
-        this.getAllSubscrip = this.service.getAll().subscribe(data => {
-            this.data = data;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        this.getCustomers();
+        this.getUserOptions();
     }
 
     ngOnDestroy(){
@@ -78,5 +64,80 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     goToDetail(id: number) {
         this.router.navigate(["/billing/solfac/" + id]);
+    }
+
+    getUserOptions(){
+        this.userService.getOptions().subscribe(data => {
+          this.userApplicants = data;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getCustomers(){
+        this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+          this.customers = data;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    customerChange(){
+        this.serviceId = "0";
+        this.projectId = "0";
+        this.projects = [];
+        this.services = [];
+
+        if(this.customerId != "0"){
+            this.serviceService.getOptions(this.customerId).subscribe(data => {
+                this.services = data;
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
+    }
+
+    serviceChange(){
+        this.projectId = "0";
+        this.projects = [];
+
+        if(this.serviceId != "0"){
+            this.projectService.getOptions(this.serviceId).subscribe(data => {
+                this.projects = data;
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
+    }
+
+    search(){
+        var parameters = {
+            customerId: this.customerId,
+            serviceId: this.serviceId,
+            projectId: this.projectId,
+            userApplicantId: this.userApplicantId,
+            analytic: this.analytic
+        }
+
+        this.loading = true;
+
+        this.getAllSubscrip = this.service.search(parameters).subscribe(data => {
+
+            setTimeout(() => {
+                this.data = [];
+
+                if(data.messages) {
+                    this.messageService.showMessages(data.messages);
+                }      
+                else{
+                    this.data = data;
+                }      
+
+                this.datatableService.destroy('#solfacsTable');
+                this.datatableService.init('#solfacsTable');
+
+                this.loading = false;
+            }, 500)
+        },
+        err => {
+            this.loading = false;
+            this.errorHandlerService.handleErrors(err)
+        });
     }
 }

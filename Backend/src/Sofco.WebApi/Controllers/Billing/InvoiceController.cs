@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.FileManager;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
@@ -18,11 +20,13 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly IInvoiceService _invoiceService;
         private readonly IInvoiceFileManager _invoiceFileManager;
+        private readonly EmailConfig _emailConfig;
 
-        public InvoiceController(IInvoiceService invoiceService, IInvoiceFileManager invoiceFileManager)
+        public InvoiceController(IInvoiceService invoiceService, IInvoiceFileManager invoiceFileManager, IOptions<EmailConfig> emailConfig)
         {
             _invoiceService = invoiceService;
             _invoiceFileManager = invoiceFileManager;
+            _emailConfig = emailConfig.Value;
         }
 
         [HttpGet("{id}")]
@@ -165,11 +169,49 @@ namespace Sofco.WebApi.Controllers.Billing
             return BadRequest();
         }
 
+        [HttpPost]
+        [Route("{invoiceId}/Pdf")]
+        public IActionResult Pdf(int invoiceId)
+        {
+            if (Request.Form.Files.Any())
+            {
+                try
+                {
+                    var response = _invoiceService.GetById(invoiceId);
+
+                    if (response.HasErrors()) return BadRequest(response);
+
+                    var file = Request.Form.Files.First();
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(memoryStream);
+                        response.Data.PdfFile = memoryStream.ToArray();
+                    }
+
+                    response = _invoiceService.SavePdf(response.Data);
+
+                    if (response.HasErrors()) return BadRequest(response);
+
+                    return Ok(response);
+
+                }
+                catch (Exception e)
+                {
+                    var error = new Response();
+                    error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+                    return BadRequest(error);
+                }
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut]
         [Route("{invoiceId}/sendToDaf")]
         public IActionResult SendToDaf(int invoiceId)
         {
-            var response = _invoiceService.SendToDaf(invoiceId);
+            var response = _invoiceService.SendToDaf(invoiceId, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -207,44 +249,6 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
-        }
-
-        [HttpPost]
-        [Route("{invoiceId}/Pdf")]
-        public IActionResult Pdf(int invoiceId)
-        {
-            if (Request.Form.Files.Any())
-            {
-                try
-                {
-                    var response = _invoiceService.GetById(invoiceId);
-
-                    if (response.HasErrors()) return BadRequest(response);
-
-                    var file = Request.Form.Files.First();
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        file.CopyTo(memoryStream);
-                        response.Data.PdfFile = memoryStream.ToArray();
-                    }
-
-                    response = _invoiceService.SavePdf(response.Data);
-
-                    if (response.HasErrors()) return BadRequest(response);
-
-                    return Ok(response);
-
-                }
-                catch (Exception e)
-                {
-                    var error = new Response();
-                    error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                    return BadRequest(error);
-                }
-            }
-
-            return BadRequest();
         }
 
         [HttpDelete("{id}")]

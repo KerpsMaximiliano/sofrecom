@@ -53,6 +53,8 @@ namespace Sofco.Model.Models.Billing
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string ProjectId { get; set; }
-
+        public string CustomerId { get; set; }
+        public string ServiceId { get; set; }
+        public string Analytic { get; set; }
     }
 }

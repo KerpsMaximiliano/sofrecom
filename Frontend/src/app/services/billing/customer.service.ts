@@ -16,4 +16,8 @@ export class CustomerService {
   getAll(userMail) {
     return this.http.get(`${this.baseUrl}/customer/${userMail}`, { headers: this.headers }).map((res:Response) => res.json());
   }
+
+  getOptions(userMail) {
+    return this.http.get(`${this.baseUrl}/customer/${userMail}/options`, { headers: this.headers }).map((res:Response) => res.json());
+  }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Repositories.Billing
@@ -38,6 +39,28 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.Hitos)
                 .Include(x => x.Invoice)
                 .SingleOrDefault(x => x.Id == id);
+        }
+
+        public IList<Solfac> SearchByParams(SolfacParams parameters)
+        {
+            IQueryable<Solfac> query = _context.Solfacs;
+
+            if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
+                query = query.Where(x => x.CustomerId == parameters.CustomerId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
+                query = query.Where(x => x.ServiceId == parameters.ServiceId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
+                query = query.Where(x => x.ProjectId == parameters.ProjectId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.Analytic))
+                query = query.Where(x => x.Analytic.ToLowerInvariant().Equals(parameters.Analytic.ToLowerInvariant()));
+
+            if (parameters.UserApplicantId > 0)
+                query = query.Where(x => x.UserApplicantId == parameters.UserApplicantId);
+
+            return query.Include(x => x.DocumentType).ToList();
         }
     }
 }

@@ -31,6 +31,9 @@ export class Solfac {
         public timeLimit: string,
         public userApplicantName: string,
         public projectId: string,
-        public invoiceId: string
+        public invoiceId: string,
+        public customerId: string,
+        public serviceId: string,
+        public analytic: string
     ){}
 }

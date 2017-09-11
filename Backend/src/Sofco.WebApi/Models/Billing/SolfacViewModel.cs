@@ -64,6 +64,10 @@ namespace Sofco.WebApi.Models.Billing
 
         public int InvoiceId { get; set; }
 
+        public string CustomerId { get; set; }
+        public string ServiceId { get; set; }
+        public string Analytic { get; set; }
+
         #endregion
 
         public Solfac CreateDomain()
@@ -96,6 +100,9 @@ namespace Sofco.WebApi.Models.Billing
             solfac.ParticularSteps = ParticularSteps;
             solfac.TimeLimit = TimeLimit;
             solfac.ProjectId = ProjectId;
+            solfac.ServiceId = ServiceId;
+            solfac.CustomerId = CustomerId;
+            solfac.Analytic = Analytic;
 
             if (solfac.InvoiceId > 0)
                 solfac.InvoiceId = InvoiceId;
@@ -105,5 +112,6 @@ namespace Sofco.WebApi.Models.Billing
 
             return solfac;
         }
+
     }
 }

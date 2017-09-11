@@ -4,11 +4,7 @@ using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Sofco.Framework.Mail;
-using Sofco.WebApi.Config;
-using Microsoft.Extensions.Options;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -19,14 +15,12 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IFunctionalityService _functionalityService;
-        private readonly EmailConfig _emailConfig;
 
-        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService, IOptions<EmailConfig> emailConfig)
+        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService)
         {
             _userService = userService;
             _roleService = roleService;
             _functionalityService = functionalityService;
-            _emailConfig = emailConfig.Value;
         }
 
         [HttpGet]
@@ -38,10 +32,6 @@ namespace Sofco.WebApi.Controllers.Admin
 
             foreach (var user in users)
                 model.Add(new UserModel(user));
-
-            //var model = new List<UserModel>();
-            //MailSender.Send("domiguel@sofrecom.com.ar", _emailConfig.EmailFrom, _emailConfig.DisplyNameFrom,
-            //    "Test", "Esto es una prueba", _emailConfig.SmtpServer, _emailConfig.SmtpPort, _emailConfig.SmtpDomain);
 
             return Ok(model.OrderBy(x => x.Name));
         }

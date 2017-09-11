@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Services.Billing;
+using Sofco.Framework.Mail;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -14,11 +17,13 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, IUserRepository userRepository)
+        public InvoiceService(IInvoiceRepository invoiceRepository, IUserRepository userRepository, IHostingEnvironment hostingEnvironment)
         {
             _invoiceRepository = invoiceRepository;
             _userRepository = userRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -107,7 +112,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Invoice> SendToDaf(int invoiceId)
+        public Response<Invoice> SendToDaf(int invoiceId, EmailConfig emailConfig)
         {
             var response = new Response<Invoice>();
 
@@ -126,6 +131,12 @@ namespace Sofco.Service.Implementations.Billing
                 _invoiceRepository.Save(string.Empty);
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.SentToDaf, MessageType.Success));
+
+                if (_hostingEnvironment.IsStaging() || _hostingEnvironment.IsProduction())
+                {
+                    MailSender.Send("ledrughieri@sofrecom.com.ar", emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
+                        "Test", "Esto es una prueba", emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);
+                }
             }
             catch (Exception e)
             {
