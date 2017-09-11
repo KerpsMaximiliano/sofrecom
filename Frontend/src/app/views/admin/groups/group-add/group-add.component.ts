@@ -5,7 +5,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { Subscription } from "rxjs/Subscription";
 import { RoleService } from "app/services/admin/role.service";
-import { Group } from "models/admin/group";
+import { Group } from "app/models/admin/group";
 
 @Component({
   selector: 'app-group-add',

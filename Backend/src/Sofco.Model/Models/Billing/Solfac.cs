@@ -7,7 +7,7 @@ using Sofco.Model.Models.Admin;
 
 namespace Sofco.Model.Models.Billing
 {
-    public class Solfac
+    public class Solfac : BaseEntity
     {
         public Solfac()
         {
@@ -15,7 +15,6 @@ namespace Sofco.Model.Models.Billing
             StartDate = DateTime.Now;
         }
 
-        public int Id { get; set; }
         public string ClientName { get; set; }
         public string BusinessName { get; set; }
         public string CelPhone { get; set; }
@@ -47,9 +46,13 @@ namespace Sofco.Model.Models.Billing
         public short TimeLimit { get; set; }
         public IList<Hito> Hitos { get; set; }
 
+        public int? InvoiceId { get; set; }
+        public Invoice Invoice { get; set; }
+
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string ProjectId { get; set; }
+
     }
 }

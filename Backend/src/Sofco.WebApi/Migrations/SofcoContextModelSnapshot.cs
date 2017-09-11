@@ -216,6 +216,24 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Cuit")
                         .HasMaxLength(100);
 
+                    b.Property<byte[]>("ExcelFile");
+
+                    b.Property<DateTime>("ExcelFileCreatedDate");
+
+                    b.Property<string>("ExcelFileName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("InvoiceStatus");
+
+                    b.Property<byte[]>("PdfFile");
+
+                    b.Property<DateTime>("PdfFileCreatedDate");
+
+                    b.Property<string>("PdfFileName");
+
                     b.Property<string>("Project")
                         .HasMaxLength(100);
 
@@ -227,31 +245,16 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Service")
                         .HasMaxLength(100);
 
+                    b.Property<int>("UserId");
+
                     b.Property<string>("Zipcode")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(300);
-
-                    b.Property<int>("InvoiceId");
-
-                    b.Property<int>("Quantity");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.ToTable("InvoiceDetails");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
@@ -288,6 +291,8 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("ImputationNumber3Id");
+
+                    b.Property<int?>("InvoiceId");
 
                     b.Property<decimal>("Iva21");
 
@@ -332,6 +337,9 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("DocumentTypeId");
 
                     b.HasIndex("ImputationNumber3Id");
+
+                    b.HasIndex("InvoiceId")
+                        .IsUnique();
 
                     b.HasIndex("UserApplicantId");
 
@@ -461,11 +469,11 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceDetail", b =>
+            modelBuilder.Entity("Sofco.Model.Models.Billing.Invoice", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Invoice", "Invoice")
-                        .WithMany("Details")
-                        .HasForeignKey("InvoiceId")
+                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                        .WithMany("Invoices")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -485,6 +493,10 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Solfacs")
                         .HasForeignKey("ImputationNumber3Id")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.Billing.Invoice", "Invoice")
+                        .WithOne("Solfac")
+                        .HasForeignKey("Sofco.Model.Models.Billing.Solfac", "InvoiceId");
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")

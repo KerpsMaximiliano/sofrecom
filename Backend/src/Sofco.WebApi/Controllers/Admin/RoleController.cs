@@ -48,7 +48,7 @@ namespace Sofco.WebApi.Controllers.Admin
             foreach (var rol in roles)
                 model.Add(new RoleModel(rol));
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Description));
         }
 
         // GET: api/role

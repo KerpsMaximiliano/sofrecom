@@ -29,7 +29,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 try
                 {
-                    client.BaseAddress = new Uri("http://sofrelab-iis1.cloudapp.net:4090");
+                    client.BaseAddress = new Uri("http://azsof01wd:8098");
                     var response = await client.GetAsync($"/api/project?idService={serviceId}");
                     response.EnsureSuccessStatusCode();
 
@@ -55,7 +55,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 try
                 {
-                    client.BaseAddress = new Uri("http://sofrelab-iis1.cloudapp.net:4090");
+                    client.BaseAddress = new Uri("http://azsof01wd:8098");
                     var response = await client.GetAsync($"/api/InvoiceMilestone?idProject={projectId}");
                     response.EnsureSuccessStatusCode();
 
@@ -64,7 +64,17 @@ namespace Sofco.WebApi.Controllers.Billing
 
                     foreach (var hitoCrm in hitosCRM)
                     {
-                        hitoCrm.Billed = hitos.Any(x => x.ExternalHitoId == hitoCrm.Id);
+                        var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
+
+                        if (existHito != null)
+                        {
+                            hitoCrm.Billed = true;
+                            hitoCrm.AmmountBilled = existHito.Total;
+                        }
+                        else
+                        {
+                            hitoCrm.Billed = false;
+                        }
                     }
 
                     return Ok(hitosCRM);

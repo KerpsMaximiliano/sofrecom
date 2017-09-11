@@ -3,6 +3,7 @@ using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
@@ -30,7 +31,7 @@ namespace Sofco.WebApi.Controllers.Admin
             foreach (var group in groups)
                 model.Add(new GroupModel(group));
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Description));
         }
 
         // GET: api/group/options

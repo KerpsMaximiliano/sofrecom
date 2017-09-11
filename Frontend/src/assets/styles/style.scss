@@ -184,3 +184,31 @@ ul.indented{
 .pointer {
   cursor: pointer;
 }
+
+.text-white{
+  color: white;
+}
+
+.text-dark{
+  color: black;
+}
+
+.label-SendPending {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-Sent {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-Rejected, .label-Cancelled {
+  background-color: #ED5565;
+  color: #FFFFFF;
+}
+
+.label-Approved {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}

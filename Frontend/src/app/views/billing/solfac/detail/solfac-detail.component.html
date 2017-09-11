@@ -38,6 +38,12 @@
                             <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
                             <dt>Nº de Contrato: </dt><dd>{{model.contractNumber}}</dd>
                             <dt>Proyecto: </dt><dd>{{model.project}}</dd>
+
+                            <dt *ngIf="model.invoiceId > 0">Número de remito: </dt>
+                            <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
+
+                            <dt *ngIf="model.invoiceId > 0">PDF: </dt>
+                            <dd *ngIf="model.invoiceId > 0"><a (click)="exportPdf()">{{model.pdfFileName}}</a></dd>
                         </dl>
                     </fieldset>
                 </div>
@@ -128,6 +134,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button class="btn btn-success" (click)="goToProject()"><i class="fa fa-cogs"></i> Ir al Proyecto </button>
+                <button class="btn btn-success" (click)="goToSearch()"><i class="fa fa-cogs"></i> Ir a Consultas </button>
             </div>
         </div>
     </div>

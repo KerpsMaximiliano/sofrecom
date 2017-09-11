@@ -3,9 +3,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
-import { Invoice, Detail } from "models/billing/invoice/invoice";
+import { Invoice } from "app/models/billing/invoice/invoice";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { MessageService } from "app/services/common/message.service";
+import * as FileSaver from "file-saver";
+import { FileUploader } from 'ng2-file-upload';
+import { MenuService } from "app/services/admin/menu.service";
+import { InvoiceStatus } from "app/models/enums/invoiceStatus";
+declare var $: any;
 
 @Component({
   selector: 'app-invoice',
@@ -16,13 +21,17 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     public model: Invoice = new Invoice();
     paramsSubscrip: Subscription;
+    sendToDafSubscrip: Subscription;
     projectId: string;
     project: any;
     customer: any;
+    public uploader: FileUploader;
+    excelUploaded: boolean = false;
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService) {}
 
@@ -44,21 +53,13 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.model.project = this.project.nombre;
         this.model.projectId = this.projectId;
         this.model.analytic = this.project.analytic;
+        this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.SendPending];
         this.model.service = sessionStorage.getItem("serviceName");
-
-        this.model.details.push(new Detail("", 0));
     }
 
     ngOnDestroy() {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
-    }
-
-    addDetail(){
-        this.model.details.push(new Detail("", 0));
-    }
-
-    deleteDetail(index){
-        this.model.details.splice(index, 1);
+        if(this.sendToDafSubscrip) this.sendToDafSubscrip.unsubscribe();
     }
 
     save(){
@@ -66,14 +67,60 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
 
-          setTimeout(() => {
-            this.router.navigate([`/billing/project/${this.projectId}`]);
-          }, 1500)
+          this.configUploader(data.data.id);
+
+          this.model.id = data.data.id;
+
+          this.exportToExcel();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
     cancel(){
       this.router.navigate([`/billing/project/${this.projectId}`]);
+    }
+
+    exportToExcel(){
+        this.service.export(this.model).subscribe(file => {
+            FileSaver.saveAs(file, `remito_${new Date().toLocaleString()}.xlsx`);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    sendToDaf(){
+        this.service.sendToDaf(this.model.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            setTimeout(() => {
+                this.cancel();
+            }, 1500)
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    private configUploader(id){
+        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(id), authToken: Cookie.get('access_token') });
+        this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            this.excelUploaded = true;
+        };
+    }
+
+    canSendInvoice(){
+        if(this.menuService.hasFunctionality('REM', 'SEND') && this.model.id > 0 && this.excelUploaded){
+            return true;
+        }
+
+        return false;
+    }
+
+    delete(){
+        this.service.delete(this.model.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            setTimeout(() => { this.cancel(); }, 1500)
+        },
+        err => this.errorHandlerService.handleErrors(err));
     }
 }

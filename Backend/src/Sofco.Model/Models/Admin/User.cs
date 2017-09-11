@@ -17,5 +17,6 @@ namespace Sofco.Model.Models.Admin
 
         public IList<UserGroup> UserGroups { get; set; }
         public IList<Solfac> Solfacs { get; set; }
+        public IList<Invoice> Invoices { get; set; }
     }
 }

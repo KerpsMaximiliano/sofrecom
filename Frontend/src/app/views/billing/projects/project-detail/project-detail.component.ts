@@ -3,6 +3,8 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MenuService } from "app/services/admin/menu.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
   selector: 'app-project-detail',
@@ -14,6 +16,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getHitosSubscrip: Subscription;
     getSolfacSubscrip: Subscription;
+    getInvoicesSubscrip: Subscription;
     projectId: string;
     project: any;
     hitos: any[] = new Array();
@@ -24,6 +27,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
+        private datatableService: DataTableService,
+        public menuService: MenuService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
@@ -40,6 +45,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getHitosSubscrip) this.getHitosSubscrip.unsubscribe();
         if(this.getSolfacSubscrip) this.getHitosSubscrip.unsubscribe();
+        if(this.getInvoicesSubscrip) this.getInvoicesSubscrip.unsubscribe();
     }
 
     goToProjects(){
@@ -49,13 +55,17 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     getHitos(projectId){
         this.getHitosSubscrip = this.service.getHitos(projectId).subscribe(d => {
             this.hitos = d;
+
+            this.datatableService.init('#hitoTable');
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
     getInvoices(projectId){
-        this.getHitosSubscrip = this.service.getInvoices(projectId).subscribe(d => {
+        this.getInvoicesSubscrip = this.service.getInvoices(projectId).subscribe(d => {
             this.invoices = d;
+
+            this.datatableService.init('#invoiceTable');
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -63,6 +73,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     getSolfacs(projectId){
         this.getSolfacSubscrip = this.service.getSolfacs(projectId).subscribe(d => {
             this.solfacs = d;
+
+            this.datatableService.init('#solfacTable');
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -122,4 +134,20 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     goToCreateInvoice(){
         this.router.navigate(["/billing/invoice/new/project/" + this.projectId]);
     } 
+
+    canCreateInvoice(){
+        return this.menuService.hasFunctionality('REM', 'ALTA');
+    }
+
+    canCreateSolfac(){
+        return this.menuService.hasFunctionality('SOLFA', 'ALTA');
+    }
+
+    canSeeInvoices(){
+        return this.menuService.hasFunctionality('REM', 'QUERY');
+    }
+
+    canSeeSolfacs(){
+        return this.menuService.hasFunctionality('SOLFA', 'QUERY');
+    }
 }

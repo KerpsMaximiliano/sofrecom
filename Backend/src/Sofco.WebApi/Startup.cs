@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.FileManager;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
@@ -16,6 +17,7 @@ using Sofco.DAL;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Framework.FileManager.Billing;
 using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
@@ -89,6 +91,9 @@ namespace Sofco.WebApi
             services.AddTransient<IUtilsRepository, UtilsRepository>();
             services.AddTransient<ISolfacRepository, SolfacRepository>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+
+            // File Manager
+            services.AddTransient<IInvoiceFileManager, InvoiceFileManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Message } from "models/message";
+import { Message } from "app/models/message";
 import { MessageService } from "app/services/common/message.service";
 
 @Injectable()

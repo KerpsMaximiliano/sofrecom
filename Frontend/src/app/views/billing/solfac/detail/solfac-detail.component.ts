@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
-import { HitoDetail } from "models/billing/solfac/hitoDetail";
+import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import * as FileSaver from "file-saver";
+import { InvoiceService } from "app/services/billing/invoice.service";
 
 @Component({
   selector: 'app-solfac-detail',
@@ -22,6 +24,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     constructor(private solfacService: SolfacService,
                 private activatedRoute: ActivatedRoute,
+                private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
 
@@ -52,5 +55,20 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         case 2: { this.currencySymbol = "U$D"; break; }
         case 3: { this.currencySymbol = "€"; break; }
       }
+    }
+
+    goToProject(){
+      this.router.navigate([`/billing/project/${this.model.projectId}`]);
+    }
+
+    goToSearch(){
+      this.router.navigate([`/billing/solfac/search`]);
+    }
+
+    exportPdf(){
+        this.invoiceService.getPdf(this.model.invoiceId).subscribe(file => {
+            FileSaver.saveAs(file, this.model.pdfFileName);
+        },
+        err => this.errorHandlerService.handleErrors(err));
     }
 }

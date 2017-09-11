@@ -69,7 +69,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   createTable(){
 
     let arrOrder = [[this.options.orderByColumn, this.options.orderByAscDesc]];
-    let title = this.options.exportOptions.title + "_" + new Date().toLocaleString();
+    let title = this.options.exportOptions.title + "_" + new Date().toLocaleDateString();
     let columns = this.options.exportOptions.columns;
  
     setTimeout(()=>{

@@ -5,8 +5,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { RoleService } from "app/services/admin/role.service";
-import { Group } from "models/admin/group";
-import { Role } from "models/admin/role";
+import { Group } from "app/models/admin/group";
+import { Role } from "app/models/admin/role";
 declare var $: any;
 
 @Component({

@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +36,7 @@ namespace Sofco.WebApi.Controllers.Admin
             foreach (var user in users)
                 model.Add(new UserModel(user));
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Name));
         }
 
         // GET: api/user/options

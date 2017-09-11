@@ -96,7 +96,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: GroupService,
-      private menuService: MenuService,
+      public menuService: MenuService,
       private messageService: MessageService,
       private errorHandlerService: ErrorHandlerService) {
   }

@@ -12,6 +12,8 @@ namespace Sofco.DAL.Mappings.Admin
             builder.Entity<User>().Property(_ => _.Name).HasMaxLength(50).IsRequired();
             builder.Entity<User>().Property(_ => _.Email).HasMaxLength(50).IsRequired();
             builder.Entity<User>().Property(_ => _.UserName).HasMaxLength(50).IsRequired();
+
+            builder.Entity<User>().HasMany(x => x.Invoices).WithOne(x => x.User).HasForeignKey(x => x.UserId);
         }
     }
 }

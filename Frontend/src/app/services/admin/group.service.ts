@@ -1,7 +1,7 @@
-import { Group } from 'models/group';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from "app/services/common/service";
+import { Group } from "app/models/admin/group";
 
 @Injectable()
 export class GroupService {

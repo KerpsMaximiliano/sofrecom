@@ -72,8 +72,8 @@ export const ROUTES:Routes = [
 
       { path: "solfac", children: [
          { path: "", component: SolfacComponent },
-         { path: ":solfacId", component: SolfacDetailComponent },
          { path: "search", component: SolfacSearchComponent },
+         { path: ":solfacId", component: SolfacDetailComponent }
       ]},
       { path: "invoice/new/project/:projectId", component: InvoiceComponent },
       { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent }

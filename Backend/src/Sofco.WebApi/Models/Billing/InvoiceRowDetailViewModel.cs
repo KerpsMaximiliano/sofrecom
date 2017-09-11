@@ -1,4 +1,6 @@
-﻿using Sofco.Model.Models.Billing;
+﻿using System;
+using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Models.Billing
 {
@@ -11,7 +13,8 @@ namespace Sofco.WebApi.Models.Billing
             Cuit = invoice.Cuit;
             Service = invoice.Service;
             City = invoice.City;
-            Analytic = invoice.Analytic;
+            CreatedDate = invoice.CreatedDate;
+            InvoiceStatus = invoice.InvoiceStatus.ToString();
         }
 
         public int Id { get; set; }
@@ -19,6 +22,7 @@ namespace Sofco.WebApi.Models.Billing
         public string Cuit { get; set; }
         public string Service { get; set; }
         public string City { get; set; }
-        public string Analytic { get; set; }
+        public string InvoiceStatus { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
-import { Solfac } from 'models/billing/solfac/solfac';
-import { HitoDetail } from "models/billing/solfac/hitoDetail";
+import { Solfac } from 'app/models/billing/solfac/solfac';
+import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
-import { Option } from "models/option";
+import { Option } from "app/models/option";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { MessageService } from "app/services/common/message.service";
 import { UserService } from "app/services/admin/user.service";
+import { InvoiceService } from "app/services/billing/invoice.service";
 
 @Component({
   selector: 'app-solfac',
@@ -22,24 +23,28 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public documentTypes: Option[] = new Array<Option>();
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
+    public invoices: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
-
+ 
     getOptionsSubs: Subscription;
+    getInvoiceOptionsSubs: Subscription;
 
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
+                private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
 
     ngOnInit() {
-      this.getOptions();
-      this.getUserOptions();
-
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
       var customer = JSON.parse(sessionStorage.getItem("customer"));
+
+      this.getOptions();
+      this.getUserOptions();
+      this.getInvoicesOptions(project.id);
 
       this.projectId = project.id;
 
@@ -71,6 +76,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
        if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
+       if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
     }
 
     getUserOptions(){
@@ -82,6 +88,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
           this.model.userApplicantName = userapplicant.text;
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getInvoicesOptions(projectId){
+      this.getInvoiceOptionsSubs = this.invoiceService.getOptions(projectId).subscribe(data => {
+        this.invoices = data;
+      },
+      err => this.errorHandlerService.handleErrors(err));
     }
 
     getOptions(){

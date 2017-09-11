@@ -62,6 +62,8 @@ namespace Sofco.WebApi.Models.Billing
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        public int InvoiceId { get; set; }
+
         #endregion
 
         public Solfac CreateDomain()
@@ -94,6 +96,9 @@ namespace Sofco.WebApi.Models.Billing
             solfac.ParticularSteps = ParticularSteps;
             solfac.TimeLimit = TimeLimit;
             solfac.ProjectId = ProjectId;
+
+            if (solfac.InvoiceId > 0)
+                solfac.InvoiceId = InvoiceId;
 
             foreach (var hitoViewModel in Hitos)
                 solfac.Hitos.Add(hitoViewModel.CreateDomain());

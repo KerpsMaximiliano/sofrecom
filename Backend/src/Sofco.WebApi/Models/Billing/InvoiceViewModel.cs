@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Models.Billing
 {
     public class InvoiceViewModel
     {
+        public InvoiceViewModel()
+        {
+            
+        }
+
         public InvoiceViewModel(Invoice invoice)
         {
             Id = invoice.Id;
@@ -19,13 +25,13 @@ namespace Sofco.WebApi.Models.Billing
             Project = invoice.Project;
             ProjectId = invoice.ProjectId;
             Analytic = invoice.Analytic;
-
-            Details = new List<InvoiceDetailViewModel>();
-
-            foreach (var detail in invoice.Details)
-            {
-                Details.Add(new InvoiceDetailViewModel { Description = detail.Description, Quantity = detail.Quantity });
-            }
+            ExcelFileName = invoice.ExcelFileName;
+            PdfFileName = invoice.PdfFileName;
+            ExcelFileCreatedDate = invoice.ExcelFileCreatedDate;
+            PdfFileCreatedDate = invoice.PdfFileCreatedDate;
+            CreatedDate = invoice.CreatedDate;
+            InvoiceStatus = invoice.InvoiceStatus.ToString();
+            InvoiceNumber = invoice.InvoiceNumber;
         }
 
         public int Id { get; set; }
@@ -41,7 +47,14 @@ namespace Sofco.WebApi.Models.Billing
         public string ProjectId { get; set; }
         public string Analytic { get; set; }
 
-        public IList<InvoiceDetailViewModel> Details { get; set; }
+        public string ExcelFileName { get; set; }
+        public string PdfFileName { get; set; }
+        public string InvoiceNumber { get; set; }
+
+        public string InvoiceStatus { get; set; }
+        public DateTime ExcelFileCreatedDate { get; set; }
+        public DateTime PdfFileCreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public Invoice CreateDomain()
         {
@@ -59,10 +72,6 @@ namespace Sofco.WebApi.Models.Billing
             domain.ProjectId = ProjectId;
             domain.Analytic = Analytic;
 
-            foreach (var detail in Details) {
-                domain.Details.Add(new InvoiceDetail { Description = detail.Description, Quantity = detail.Quantity });
-            }
-
             return domain;
         }
     }
@@ -73,3 +82,4 @@ namespace Sofco.WebApi.Models.Billing
         public int Quantity { get; set; }
     }
 }
+

@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { ICheckModule } from "app/components/icheck/icheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { TranslateModule } from "@ngx-translate/core";
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { CustomerService } from "app/services/billing/customer.service";
 import { ProjectService } from 'app/services/billing/project.service';
@@ -24,10 +25,11 @@ import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.componen
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
 
+
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent],
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   exports     : []
 })

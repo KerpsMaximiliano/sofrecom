@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
-import { Menu } from "models/menu";
-import { Module } from "models/module";
-import { User } from "models/user";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
+import { Menu } from "app/models/admin/menu";
 
 @Injectable()
 export class MenuService {

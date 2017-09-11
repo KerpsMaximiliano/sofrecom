@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using Sofco.Model.Enums;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.Model.Models.Billing
 {
     public class Invoice
     {
-        public Invoice()
-        {
-            Details = new List<InvoiceDetail>();
-        }
-
         public int Id { get; set; }
         public string AccountName { get; set; }
         public string Address { get; set; }
@@ -23,17 +19,20 @@ namespace Sofco.Model.Models.Billing
         public string ProjectId { get; set; }
         public string Analytic { get; set; }
 
-        public IList<InvoiceDetail> Details { get; set; }
         public DateTime CreatedDate { get; set; }
-    }
+        public byte[] ExcelFile { get; set; }
+        public byte[] PdfFile { get; set; }
+        public string ExcelFileName { get; set; }
+        public string PdfFileName { get; set; }
 
-    public class InvoiceDetail
-    {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public int Quantity { get; set; }
+        public InvoiceStatus InvoiceStatus { get; set; }
+        public DateTime ExcelFileCreatedDate { get; set; }
+        public DateTime PdfFileCreatedDate { get; set; }
+        public string InvoiceNumber { get; set; }
 
-        public int InvoiceId { get; set; }
-        public Invoice Invoice { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+        public Solfac Solfac { get; set; }
     }
 }

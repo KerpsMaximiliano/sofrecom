@@ -111,5 +111,10 @@
     "BudgetPlanningReviewRejected": "Rechazado revision P. Presupuestaria",
     "InvoicePending": "Pendiente Facturación",
     "Invoiced": "Facturada",
-    "AmountCashed": "Cobrada"
+    "AmountCashed": "Cobrada",
+    "Rejected": "Rechazado",
+    "Sent": "Enviado",
+    "Approved": "Aprobado",
+    "Related": "Relacionado",
+    "Cancelled": "Anulado"
 }

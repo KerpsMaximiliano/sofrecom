@@ -98,7 +98,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       private router: Router,
       private route: ActivatedRoute,
       private service: RoleService,
-      private menuService: MenuService,
+      public menuService: MenuService,
       private messageService: MessageService,
       private tr: TranslateService,
       private errorHandlerService: ErrorHandlerService) {
@@ -134,7 +134,6 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 
   editClick(id: number){
-    console.log("Edit ID: " + id);
     this.router.navigate(['/admin/roles/edit/'+id]);
   }
 

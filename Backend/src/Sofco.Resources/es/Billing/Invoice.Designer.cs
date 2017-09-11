@@ -60,6 +60,42 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Remito aprobado exitosamente.
+        /// </summary>
+        public static string Approved {
+            get {
+                return ResourceManager.GetString("Approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Remito anulado exitosamente.
+        /// </summary>
+        public static string Cancelled {
+            get {
+                return ResourceManager.GetString("Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Solo se pueden eliminar los remitos que esten pendientes de envío.
+        /// </summary>
+        public static string CannotDelete {
+            get {
+                return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Remito eliminado exitosamente.
+        /// </summary>
+        public static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La descripción del detalle es requerida.
         /// </summary>
         public static string DescriptionRequired {
@@ -78,11 +114,29 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Excel guardo exitosamente.
+        /// </summary>
+        public static string ExcelUpload {
+            get {
+                return ResourceManager.GetString("ExcelUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Remito generado exitosamente.
         /// </summary>
         public static string InvoiceCreated {
             get {
                 return ResourceManager.GetString("InvoiceCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Número de remito es requerido.
+        /// </summary>
+        public static string InvoiceNumerRequired {
+            get {
+                return ResourceManager.GetString("InvoiceNumerRequired", resourceCulture);
             }
         }
         
@@ -96,11 +150,38 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a PDF guardo exitosamente.
+        /// </summary>
+        public static string PdfUpload {
+            get {
+                return ResourceManager.GetString("PdfUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La cantidad del detalle es requerida.
         /// </summary>
         public static string QuantityRequired {
             get {
                 return ResourceManager.GetString("QuantityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Remito rechazado exitosamente.
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Remito enviado correctamente a la DAF.
+        /// </summary>
+        public static string SentToDaf {
+            get {
+                return ResourceManager.GetString("SentToDaf", resourceCulture);
             }
         }
     }

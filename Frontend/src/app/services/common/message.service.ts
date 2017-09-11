@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'toastr-ng2';
-import { Message } from "models/message";
+import { Message } from "app/models/message";
 
 @Injectable()
 export class MessageService {
@@ -16,5 +16,9 @@ export class MessageService {
                 case 2: this.toastrService.warning(value.description); break;
             }
         })
+    }
+
+    showError(message: string){
+        this.toastrService.error(message);
     }
 }

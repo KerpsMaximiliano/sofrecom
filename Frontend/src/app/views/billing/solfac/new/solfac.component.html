@@ -17,21 +17,25 @@
 
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
+        <div class="ibox-title">
+            <h3>Datos del contrato</h3>
+        </div>
         <div class="ibox-content">
             <!-- Datos CRM -->
             <div class="row">
-                <div class="col-lg-12">
-                    <fieldset>
-                        <legend>Datos del Contrato</legend>
-                        <dl class="dl-horizontal">
-                            <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
-                            <dt>Razón Social:</dt><dd>{{model.businessName}}</dd>
-                            <dt>Contacto del Cliente: </dt><dd>{{model.clientName}}</dd>
-                            <dt>Teléfono: </dt><dd>{{model.celphone}}</dd>
-                            <dt>Solicitante: </dt><dd>{{model.userApplicantName}}</dd>
-                            <dt>Proyecto: </dt><dd>{{model.project}}</dd>
-                        </dl>
-                    </fieldset>
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
+                        <dt>Razón Social:</dt><dd>{{model.businessName}}</dd>
+                        <dt>Proyecto: </dt><dd>{{model.project}}</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Contacto del Cliente: </dt><dd>{{model.clientName}}</dd>
+                        <dt>Teléfono: </dt><dd>{{model.celphone}}</dd>
+                        <dt>Solicitante: </dt><dd>{{model.userApplicantName}}</dd>
+                    </dl>
                 </div>
             </div>
         
@@ -60,6 +64,16 @@
                         <input type="number" class="form-control" [(ngModel)]="model.timeLimit">
                     </div>
                 </div>
+
+                <!-- Numero de remito -->
+                <div class="col-lg-4 col-md-5 col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label">Asociar Remito</label>
+                        <select class="form-control m-b" [(ngModel)]="model.invoiceId">
+                            <option *ngFor="let invoice of invoices" [value]="invoice?.value">{{invoice?.text}}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -82,7 +96,7 @@
                 </div>
 
                 <!-- Numero de contrato -->
-                <div class="col-lg-6 col-md-5 col-sm-5">
+                <div class="col-lg-4 col-md-5 col-sm-5">
                     <div class="form-group">
                         <label class="control-label">N° de OC o N° Contrato</label>
                         <input type="text" class="form-control" [(ngModel)]="model.contractNumber">

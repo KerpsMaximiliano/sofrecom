@@ -1,5 +1,5 @@
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Option } from 'models/option';
+import { Option } from 'app/models/option';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { ModuleService } from "app/services/admin/module.service";
 import { RoleService } from "app/services/admin/role.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Role } from "models/admin/role";
+import { Role } from "app/models/admin/role";
 declare var $: any;
 
 @Component({
@@ -84,7 +84,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
         private moduleService: ModuleService,
         private activatedRoute: ActivatedRoute, 
         private router: Router,
-        private menuService: MenuService,
+        public menuService: MenuService,
         private messageService: MessageService,
         private functionalityService: FunctionalityService,
         private errorHandlerService: ErrorHandlerService) { 
@@ -225,6 +225,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
+                this.confirmModal.hide();
             },
             err => this.errorHandlerService.handleErrors(err));
     }

@@ -4,6 +4,7 @@ using Sofco.WebApi.Config;
 using Sofco.WebApi.Models;
 using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -32,7 +33,7 @@ namespace Sofco.WebApi.Controllers.Admin
             foreach (var module in modules)
                 model.Add(new ModuleModel(module));
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Description));
         }
 
         // GET: api/module/options

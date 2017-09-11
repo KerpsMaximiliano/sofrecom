@@ -28,9 +28,23 @@
         </div>
         <div class="ibox-content">
             <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>Número de remito: </h4></dt>
+                        <dd><h4 class="text-navy">00-0000000-00</h4></dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>Estado: </h4></dt>
+                        <dd><span class="label label-warning">{{ model.invoiceStatus | translate }}</span></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <dl class="dl-horizontal">
-                        <dt>Cuenta: </dt><dd>{{model.accountName}}</dd>
                         <dt>Dirección:</dt><dd>{{model.address}}</dd>
                         <dt>Código postal: </dt><dd>{{model.zipcode}}</dd>
                         <dt>Ciudad: </dt><dd>{{model.city}}</dd>
@@ -41,58 +55,47 @@
                 <div class="col-lg-6 col-md-6">
                     <dl class="dl-horizontal">
                         <dt>C.U.I.T.: </dt><dd>{{model.cuit}}</dd>
+                        <dt>Cuenta: </dt><dd>{{model.accountName}}</dd>
                         <dt>Servicio: </dt><dd>{{model.service}}</dd>
                         <dt>Proyecto: </dt><dd>{{model.project}}</dd>
                         <dt>Analítica: </dt><dd>{{model.analytic}}</dd>
                     </dl>
                 </div>
             </div>
-        
-            <!-- Detalles -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title text-white">
-                        Detalles
-                    </h4>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a class="btn btn-sm btn-rounded btn-primary" (click)="addDetail()">{{ 'ACTIONS.ADD' | translate }}</a>
-                        </div>
-                    </div>
 
-                    <div class="table-responsive">
-                        <table class="table invoice-table" *ngIf="model.details.length > 0">
-                            <thead>
-                            <tr>
-                                <th>Descripción</th>
-                                <th>Cantidad</th>
-                                <th>Eliminar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let detail of model.details; let i = index">
-                                    <td class="col-lg-9 col-sm-9">
-                                        <input type="text" class="form-control" [(ngModel)]="detail.description">
-                                    </td>
-                                    <td class="col-lg-2 col-sm-2">
-                                        <input type="number" class="form-control" [(ngModel)]="detail.quantity">
-                                    </td>
-                                    <td class="col-lg-1 col-sm-1">
-                                        <button class="btn btn-danger btn-xs" (click)="deleteDetail(i)" ><span class="fa fa-trash"></span></button>    
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="row" *ngIf="model.id > 0 && !excelUploaded">
+                <div class="col-lg-8">
+                    <input type="file" ng2FileSelect [uploader]="uploader" />
+                </div>
+            </div>
+
+            <div class="row" *ngIf="model.id > 0 && !excelUploaded">
+                <div class="col-lg-6">
+                    <div class="uploader-margin-top">
+                        <label *ngIf="uploader.getNotUploadedItems().length">Progreso:</label>
+                        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> Importar
+                        </button>
                     </div>
                 </div>
             </div>
+
+            <div class="alert alert-success" *ngIf="model.id > 0 && excelUploaded">
+                Se ha importado el excel exitosamente. Puede dejar el remito en borrador o enviarlo a la DAF para su aprobación
+            </div>
+
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> Cancelar </button>
-                <button class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> Guardar </button>
+                <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> Cancelar </button>
+                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="delete()"><i class="fa fa-times"></i> Eliminar </button>
+                <button *ngIf="model.id > 0" class="btn btn-success" (click)="cancel()"><i class="fa fa-cogs"></i> Dejar en borrador </button>
+                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> Crear y Exportar </button>
+                <button *ngIf="canSendInvoice()" class="btn btn-primary" (click)="sendToDaf()"><i class="fa fa-save"></i> Enviar a DAF </button>
             </div>
         </div>
     </div>

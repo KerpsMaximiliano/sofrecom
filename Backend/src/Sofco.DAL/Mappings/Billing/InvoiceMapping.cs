@@ -19,11 +19,11 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Invoice>().Property(_ => _.Service).HasMaxLength(100);
             builder.Entity<Invoice>().Property(_ => _.Project).HasMaxLength(100);
             builder.Entity<Invoice>().Property(_ => _.Analytic).HasMaxLength(100);
-            builder.Entity<Invoice>().HasMany(x => x.Details).WithOne(x => x.Invoice).HasForeignKey(x => x.InvoiceId);
+            builder.Entity<Invoice>().Property(_ => _.ExcelFileName).HasMaxLength(50);
+            builder.Entity<Invoice>().Property(_ => _.InvoiceNumber).HasMaxLength(50);
 
-            builder.Entity<InvoiceDetail>().HasKey(_ => _.Id);
-            builder.Entity<InvoiceDetail>().Property(_ => _.Description).HasMaxLength(300);
-            builder.Entity<InvoiceDetail>().HasOne(x => x.Invoice).WithMany(x => x.Details).HasForeignKey(x => x.InvoiceId);
+            builder.Entity<Invoice>().HasOne(x => x.User).WithMany(x => x.Invoices).HasForeignKey(x => x.UserId);
+            builder.Entity<Invoice>().HasOne(x => x.Solfac).WithOne(x => x.Invoice).HasForeignKey<Solfac>(x => x.InvoiceId);
         }
     }
 }

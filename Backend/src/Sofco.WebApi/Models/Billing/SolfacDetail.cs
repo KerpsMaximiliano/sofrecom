@@ -40,12 +40,25 @@ namespace Sofco.WebApi.Models.Billing
             if(domain.Currency != null)
                 CurrencyName = domain.Currency.Text;
 
+            if (domain.Invoice != null)
+            {
+                InvoiceId = domain.Invoice.Id;
+                InvoiceNumber = domain.Invoice.InvoiceNumber;
+                PdfFileName = domain.Invoice.PdfFileName;
+            }
+
             Hitos = new List<HitoViewModel>();
 
             foreach (var hito in domain.Hitos){
                 Hitos.Add(new HitoViewModel(hito));
             }
         }
+
+        public string PdfFileName { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public int InvoiceId { get; set; }
 
         public string ClientName { get; set; }
         public string BusinessName { get; set; }

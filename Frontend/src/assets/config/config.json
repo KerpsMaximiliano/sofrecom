@@ -1,0 +1,8 @@
+{
+    "UrlApi": "http://localhost:9696/api",
+    "UrlCRM": "http://azsof01wd:8098/api",
+    "GrantType": "password",
+    "ClientId": "b261e1b1-b207-4987-bdd8-1d65bc8e1286",
+    "Resource": "https://tebrasofre.onmicrosoft.com/02b049bf-c2db-404e-a1d7-22bf0ea5a332",
+    "TenantId": "0cd8cc48-a338-45eb-b01c-37c623d90a78"
+}

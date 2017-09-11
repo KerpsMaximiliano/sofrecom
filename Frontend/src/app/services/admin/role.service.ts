@@ -1,8 +1,8 @@
-import { Option } from 'models/option';
+import { Option } from 'app/models/option';
 import { Injectable } from '@angular/core';
-import { Role } from "models/role";
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from "app/services/common/service";
+import { Role } from "app/models/admin/role";
 
 @Injectable()
 export class RoleService {

@@ -40,7 +40,7 @@
               <a href="#">{{'billing.solfac.title' | translate }}<span class="fa arrow"></span></a>
               <ul class="nav nav-third-level collapse">
                 <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
-                <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/search']">{{'billing.solfac.search' | translate }}</a></li>
+                <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.search' | translate }}</a></li>
               </ul>
           </li>
    

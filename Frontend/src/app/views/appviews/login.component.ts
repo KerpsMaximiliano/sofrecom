@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Message } from 'models/message';
+import { Message } from 'app/models/message';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { AuthenticationService } from "app/services/common/authentication.service";

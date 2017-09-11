@@ -40,7 +40,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         "fa-compress",     //other1Icon
         "fa-check",      //other2Icon
         "fa-cogs",        //other3Icon
-        { title: "Usuarios", columns: [0, 1]}
+        { title: "Usuarios", columns: [0, 1, 3, 4]}
     ); 
 
     private dataTypeEnum = DatatablesDataType;

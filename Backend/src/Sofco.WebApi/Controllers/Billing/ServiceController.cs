@@ -20,7 +20,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 try
                 {
-                    client.BaseAddress = new Uri("http://sofrelab-iis1.cloudapp.net:4090");
+                    client.BaseAddress = new Uri("http://azsof01wd:8098");
                     var response = await client.GetAsync($"/api/service?idAccount={customerId}");
                     response.EnsureSuccessStatusCode();
 

@@ -1,5 +1,5 @@
 import { MessageService } from 'app/services/common/message.service';
-import { Option } from 'models/option';
+import { Option } from 'app/models/option';
 import { Subscription } from 'rxjs/Subscription';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { UserService } from "app/services/admin/user.service";
-import { UserDetail } from "models/admin/userDetail";
+import { UserDetail } from "app/models/admin/userDetail";
 
 @Component({
   selector: 'app-user-detail',

@@ -25,11 +25,11 @@
     <div class="ibox">
         <div class="ibox-title">
             <h3 class="pull-left">Datos del remito</h3>
-          
-            <div class="ibox-tools" >
-                <a class="btn btn-sm btn-rounded btn-primary">Exportar excel</a>
-                <a class="btn btn-sm btn-rounded btn-primary">Aprobar</a>
-                <a class="btn btn-sm btn-rounded btn-danger"><span class="text-white">Rechazar</span></a>
+            <div class="ibox-tools">
+                <a *ngIf="canCancel()" (click)="annulment()" class="btn btn-sm btn-rounded btn-danger">
+                    <i class="fa fa-times icon-white"></i> 
+                    <span class="text-white">Anular</span> 
+                </a>
             </div>
         </div>
         <div class="ibox-content">
@@ -37,13 +37,14 @@
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
                         <dt><h4>Número de remito: </h4></dt>
-                        <dd><h4 class="text-navy">INV-000567F7-00</h4></dd>
+                        <dd><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
+                        <dt>Fecha creación:</dt><dd>{{model.createdDate | date:'dd/MM/yyyy' }}</dd>
                     </dl>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
-                        <dt><h4>Estado: </h4></dt>
-                        <dd><span class="label label-warning">Borrador</span></dd>
+                        <dt><h3>Estado: </h3></dt>
+                        <dd><span class="label label-{{model.invoiceStatus}} invoiceStatus">{{ model.invoiceStatus | translate }}</span></dd>
                     </dl>
                 </div>
             </div>
@@ -68,33 +69,80 @@
                     </dl>
                 </div>
             </div>
-        
-            <!-- Detalles -->
+
             <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <div class="table-responsive">
-                        <table class="table invoice-table" *ngIf="model.details.length > 0">
-                            <thead>
-                            <tr>
-                                <th>Descripción</th>
-                                <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let detail of model.details">
-                                    <td class="col-lg-9 col-sm-9">{{detail.description}}</td>
-                                    <td class="col-lg-2 col-sm-2">{{detail.quantity}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col-lg-7">
+                    <h3 *ngIf="model.excelFileName || model.pdfFileName">Archivos Adjuntos</h3>
+
+                    <div class="file-box" *ngIf="model.excelFileName">
+                        <div class="file">
+                            <a (click)="exportExcel()">
+                                <span class="corner"></span>
+                                <div class="icon"><i class="fa fa-file"></i></div>
+                                <div class="file-name">
+                                    {{ model.excelFileName }}
+                                    <br>
+                                    <small>Creado: {{ model.excelFileCreatedDate | date:'dd/MM/yyyy' }}</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="file-box" *ngIf="model.pdfFileName">
+                        <div class="file">
+                            <a (click)="exportPdf()">
+                                <span class="corner"></span>
+                                <div class="icon"><i class="fa fa-file"></i></div>
+                                <div class="file-name">
+                                    {{ model.pdfFileName }}
+                                    <br>
+                                    <small>Creado: {{ model.pdfFileCreatedDate | date:'dd/MM/yyyy' }}</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5" *ngIf="showUploader()">
+                    <h3 *ngIf="!model.excelFileName || model.invoiceStatus == 'Rejected'">Importar Excel</h3>
+                    <h3 *ngIf="model.excelFileName && model.invoiceStatus == 'Sent'">Importar PDF</h3>
+
+                    <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+
+                    <div class="uploader-margin-top">
+                        <label *ngIf="uploader.getNotUploadedItems().length">Progreso:</label>
+                        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> Importar
+                        </button>
+                        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-download"></span> Quitar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button class="btn btn-danger" (click)="goBack()"><i class="fa fa-arrow-left"></i> Volver </button>
+                <button class="btn btn-default" (click)="goBack()"><i class="fa fa-arrow-left"></i> Volver </button>
+                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="delete()"><i class="fa fa-times"></i> Eliminar </button>
+                <button class="btn btn-primary" (click)="openModal()" *ngIf="canApprovedInvoice()"><i class="fa fa-check"></i> Aprobar </button>
+                <button class="btn btn-danger" (click)="reject()" *ngIf="canRejectInvoice()"><i class="fa fa-times"></i> Rechazar </button>
+                <button *ngIf="model.excelFileName && (model.invoiceStatus == 'SendPending' || model.invoiceStatus == 'Rejected')" class="btn btn-primary" (click)="sendToDaf()"><i class="fa fa-save"></i> Enviar a DAF </button>
             </div>
         </div>
     </div>
 </div>
+
+ <ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="approve()">
+       <div class="row">
+           <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="control-label">Número de remito</label>
+                    <input type="text" class="form-control" [(ngModel)]="invoiceNumber">
+                </div>
+           </div>
+       </div>
+</ng2-modal> 
