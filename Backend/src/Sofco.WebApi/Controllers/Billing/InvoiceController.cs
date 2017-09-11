@@ -2,14 +2,12 @@
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.FileManager;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.WebApi.Config;
 using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using Sofco.Core.FileManager;
 using Sofco.Model.Models.Billing;
 

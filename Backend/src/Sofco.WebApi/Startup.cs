@@ -23,6 +23,7 @@ using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Implementations.Common;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi
 {
@@ -59,6 +60,9 @@ namespace Sofco.WebApi
             services.Configure<IISOptions>(options => {
                 options.AutomaticAuthentication = true;
             });
+
+            //Config
+            services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
