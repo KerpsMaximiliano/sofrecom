@@ -3,9 +3,6 @@ import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-declare function require(name:string);
-var config = require('../../../assets/config/config.json');
-
 @Injectable()
 export class  Configuration {
 
@@ -24,16 +21,15 @@ export class  Configuration {
         tr.setDefaultLang(browserLang);
         tr.use(this.currLang);
 
-        this.UrlApi = config.UrlApi;
-        this.UrlCRM = config.UrlCRM;
+        //this.UrlApi = "http://azsof01wd:8081/api"  
+        this.UrlApi = "http://localhost:9696/api" 
+        
+        this.UrlCRM = "http://azsof01wd:8098/api";
 
-        //"UrlApi": "http://azsof01wd:8081/api"  DEV
-        //"UrlApi": "http://localhost:9696/api"  LOCALHOST
-
-        this.GrantType = config.GrantType;
-        this.ClientId = config.ClientId;
-        this.Resource = config.Resource;
-        this.TenantId = config.TenantId;
+        this.GrantType = "password";
+        this.ClientId = "b261e1b1-b207-4987-bdd8-1d65bc8e1286";
+        this.Resource = "https://tebrasofre.onmicrosoft.com/02b049bf-c2db-404e-a1d7-22bf0ea5a332";
+        this.TenantId = "0cd8cc48-a338-45eb-b01c-37c623d90a78";
     }
 
     setCurrLang(currLang: string){

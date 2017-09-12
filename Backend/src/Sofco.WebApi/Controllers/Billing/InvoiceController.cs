@@ -222,7 +222,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{invoiceId}/reject")]
         public IActionResult Reject(int invoiceId)
         {
-            var response = _invoiceService.Reject(invoiceId);
+            var response = _invoiceService.Reject(invoiceId, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -244,7 +244,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{invoiceId}/approve/{invoiceNumber}")]
         public IActionResult Approve(int invoiceId, string invoiceNumber)
         {
-            var response = _invoiceService.Approve(invoiceId, invoiceNumber);
+            var response = _invoiceService.Approve(invoiceId, invoiceNumber, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
 

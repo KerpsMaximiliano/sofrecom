@@ -22,5 +22,11 @@ namespace Sofco.Model.Utils
         {
             return Messages.Any(x => x.Type == MessageType.Error);
         }
+
+        public void AddMessages(IList<Message> list)
+        {
+            foreach (var message in list)
+                Messages.Add(message);
+        }
     }
 }

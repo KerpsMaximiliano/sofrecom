@@ -13,5 +13,6 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetAllFullReadOnly();
         IList<User> GetAllActivesReadOnly();
         bool HasDirectorGroup(string userMail);
+        IList<string> GetUserMailsByGroupId(int groupId);
     }
 }

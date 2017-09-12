@@ -123,8 +123,17 @@
   <data name="Cancelled" xml:space="preserve">
     <value>Remito anulado exitosamente</value>
   </data>
+  <data name="CannotApprove" xml:space="preserve">
+    <value>No se puede aprobar el remito en el estado actual</value>
+  </data>
   <data name="CannotDelete" xml:space="preserve">
     <value>Solo se pueden eliminar los remitos que esten pendientes de envío</value>
+  </data>
+  <data name="CannotReject" xml:space="preserve">
+    <value>No se puede rechazar el remito en el estado actual</value>
+  </data>
+  <data name="CannotSendToDaf" xml:space="preserve">
+    <value>No se puede enviar a la DAF en el estado actual del remito</value>
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>Remito eliminado exitosamente</value>
@@ -143,6 +152,12 @@
   </data>
   <data name="InvoiceNumerRequired" xml:space="preserve">
     <value>Número de remito es requerido</value>
+  </data>
+  <data name="NeedExcelToSend" xml:space="preserve">
+    <value>Se necesita adjuntar el remito en formato excel antes de ser enviado a la DAF</value>
+  </data>
+  <data name="NeedPdfToApprove" xml:space="preserve">
+    <value>Se necesita adjuntar el remito en formato pdf antes de ser aprobado</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Remito no encontrado</value>

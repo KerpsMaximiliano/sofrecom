@@ -7,5 +7,7 @@
         public string SmtpDomain { get; set; }
         public string EmailFrom { get; set; }
         public string DisplyNameFrom { get; set; }
+        public string SiteUrl { get; set; }
+        public int DafGroupId { get; set; }
     }
 }

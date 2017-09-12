@@ -91,7 +91,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), authToken: Cookie.get('access_token') });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.model.pdfFileName = `${this.model.accountName}_${this.model.project}_${new Date().toLocaleDateString()}.pdf`;
+            this.model.pdfFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.pdf`;
             this.model.pdfFileCreatedDate = new Date().toLocaleDateString();
             this.configUploader();
             this.clearSelectedFile();
@@ -106,7 +106,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id), authToken: Cookie.get('access_token') });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.model.excelFileName = `${this.model.accountName}_${this.model.project}_${new Date().toLocaleDateString()}.xlsx`;
+            this.model.excelFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`;
             this.model.excelFileCreatedDate = new Date().toLocaleDateString();
             this.configUploader();
             this.clearSelectedFile();
@@ -221,5 +221,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         return this.model.id > 0 && (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] 
                                   || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]
                                   || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected])
+    }
+
+    private getDateForFile(){
+        var date = new Date();
+
+        var yyyy = date.getFullYear().toString();
+        var mm = (date.getMonth()+1).toString();
+        var dd  = date.getDate().toString();
+
+        var mmChars = mm.split('');
+        var ddChars = dd.split('');
+
+        return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
     }
 }

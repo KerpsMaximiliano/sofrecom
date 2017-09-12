@@ -1,11 +1,5 @@
 ﻿using MailKit.Net.Smtp;
-using MailKit.Security;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Sofco.Framework.Mail
 {
@@ -23,10 +17,10 @@ namespace Sofco.Framework.Mail
             message.From.Add(new MailboxAddress(fromDisplayName, fromEmail));
             AddRecipients(message, recipients);
             message.Subject = subject;
-            message.Body = new TextPart("plain")
-            {
-                Text = body
-            };
+
+            var bodyBuilder = new BodyBuilder { HtmlBody = body };
+
+            message.Body = bodyBuilder.ToMessageBody();
 
             using (var client = new SmtpClient())
             {

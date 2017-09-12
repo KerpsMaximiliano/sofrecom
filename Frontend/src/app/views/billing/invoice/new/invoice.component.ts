@@ -82,7 +82,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     exportToExcel(){
         this.service.export(this.model).subscribe(file => {
-            FileSaver.saveAs(file, `remito_${new Date().toLocaleString()}.xlsx`);
+            FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -122,5 +122,18 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             setTimeout(() => { this.cancel(); }, 1500)
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    private getDateForFile(){
+        var date = new Date();
+
+        var yyyy = date.getFullYear().toString();
+        var mm = (date.getMonth()+1).toString();
+        var dd  = date.getDate().toString();
+
+        var mmChars = mm.split('');
+        var ddChars = dd.split('');
+
+        return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
     }
 }

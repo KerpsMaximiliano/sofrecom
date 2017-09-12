@@ -19,7 +19,8 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Invoice>().Property(_ => _.Service).HasMaxLength(100);
             builder.Entity<Invoice>().Property(_ => _.Project).HasMaxLength(100);
             builder.Entity<Invoice>().Property(_ => _.Analytic).HasMaxLength(100);
-            builder.Entity<Invoice>().Property(_ => _.ExcelFileName).HasMaxLength(50);
+            builder.Entity<Invoice>().Property(_ => _.ExcelFileName).HasMaxLength(150);
+            builder.Entity<Invoice>().Property(_ => _.PdfFileName).HasMaxLength(150);
             builder.Entity<Invoice>().Property(_ => _.InvoiceNumber).HasMaxLength(50);
 
             builder.Entity<Invoice>().HasOne(x => x.User).WithMany(x => x.Invoices).HasForeignKey(x => x.UserId);

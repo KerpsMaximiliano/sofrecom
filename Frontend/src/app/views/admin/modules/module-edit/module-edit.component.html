@@ -31,21 +31,6 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
 
-                        <!-- Code -->
-                        <div class="form-group"><label class="col-xs-2 control-label">Código</label>
-                            <div class="col-xs-4">
-                              <input type="text"  
-                                  name="code"
-                                  class="form-control" 
-                                  [(ngModel)]="module.code"
-                                  #descripRef="ngModel"
-                                  required
-                                  maxlength="5"> 
-                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
-
-                            </div>
-                        </div>
-
                         <!--Description-->
                         <div class="form-group"><label class="col-xs-2 control-label">Descripción</label>
                             <div class="col-xs-10">

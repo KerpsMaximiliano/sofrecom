@@ -38,7 +38,6 @@ namespace Sofco.WebApi.Models.Admin
         {
             data.Description = Description;
             data.Active = Active;
-            data.Code = Code;
         }
     }
 

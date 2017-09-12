@@ -78,11 +78,38 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a No se puede aprobar el remito en el estado actual.
+        /// </summary>
+        public static string CannotApprove {
+            get {
+                return ResourceManager.GetString("CannotApprove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Solo se pueden eliminar los remitos que esten pendientes de envío.
         /// </summary>
         public static string CannotDelete {
             get {
                 return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a No se puede rechazar el remito en el estado actual.
+        /// </summary>
+        public static string CannotReject {
+            get {
+                return ResourceManager.GetString("CannotReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a No se puede enviar a la DAF en el estado actual del remito.
+        /// </summary>
+        public static string CannotSendToDaf {
+            get {
+                return ResourceManager.GetString("CannotSendToDaf", resourceCulture);
             }
         }
         
@@ -137,6 +164,24 @@ namespace Sofco.Resources.es.Billing {
         public static string InvoiceNumerRequired {
             get {
                 return ResourceManager.GetString("InvoiceNumerRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Se necesita adjuntar el remito en formato excel antes de ser enviado a la DAF.
+        /// </summary>
+        public static string NeedExcelToSend {
+            get {
+                return ResourceManager.GetString("NeedExcelToSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Se necesita adjuntar el remito en formato pdf antes de ser aprobado.
+        /// </summary>
+        public static string NeedPdfToApprove {
+            get {
+                return ResourceManager.GetString("NeedPdfToApprove", resourceCulture);
             }
         }
         

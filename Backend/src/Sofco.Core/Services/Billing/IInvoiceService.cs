@@ -15,8 +15,8 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> GetExcel(int invoiceId);
         Response<Invoice> SavePdf(Invoice responseData);
         Response<Invoice> GetPdf(int invoiceId);
-        Response<Invoice> Reject(int invoiceId);
-        Response<Invoice> Approve(int invoiceId, string invoiceNumber);
+        Response<Invoice> Reject(int invoiceId, EmailConfig emailConfig);
+        Response<Invoice> Approve(int invoiceId, string invoiceNumber, EmailConfig emailConfig);
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
         Response<Invoice> Annulment(int invoiceId);

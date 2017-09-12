@@ -52,5 +52,10 @@ namespace Sofco.DAL.Repositories.Admin
                     .ThenInclude(s => s.Group)
               .SingleOrDefault(predicate);
         }
+
+        public IList<string> GetUserMailsByGroupId(int groupId)
+        {
+            return _context.UserGroup.Include(x => x.User).Where(x => x.GroupId == groupId).Select(x => x.User.Email).ToList();
+        }
     }
 }

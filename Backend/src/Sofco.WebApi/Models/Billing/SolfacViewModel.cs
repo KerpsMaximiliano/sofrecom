@@ -104,7 +104,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.CustomerId = CustomerId;
             solfac.Analytic = Analytic;
 
-            if (solfac.InvoiceId > 0)
+            if (InvoiceId > 0)
                 solfac.InvoiceId = InvoiceId;
 
             foreach (var hitoViewModel in Hitos)
