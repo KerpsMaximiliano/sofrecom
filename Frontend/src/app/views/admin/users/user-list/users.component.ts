@@ -77,9 +77,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     getAll() {
-        this.getAllSubscrip = this.service.getAll().subscribe(d => {
-            this.data = d;
-        });
+        this.getAllSubscrip = this.service.getAll().subscribe(
+            d => {
+                this.data = d;
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     goToDetail(id: number) {
@@ -87,11 +89,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     getEntity(id: number, callback = null){
-        this.getSubscrip = this.service.get(id).subscribe((data) => {
-            if(callback != null){
-                callback(data);
-            }
-        });
+        this.getSubscrip = this.service.get(id).subscribe(
+            data => {
+                if(callback != null){
+                    callback(data);
+                }
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     habInhab(obj: any){

@@ -66,7 +66,8 @@
 
             <div class="row" *ngIf="model.id > 0 && !excelUploaded">
                 <div class="col-lg-8">
-                    <input type="file" ng2FileSelect [uploader]="uploader" />
+                    <h3>{{'billing.invoice.excelImport' | translate }}</h3>
+                    <input type="file" #selectedFile ng2FileSelect [uploader]="uploader" />
                 </div>
             </div>
 
@@ -81,6 +82,10 @@
                         <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                             <span class="glyphicon glyphicon-upload"></span> Importar
                         </button>
+
+                        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -93,11 +98,15 @@
         <div class="ibox-footer">
             <div class="text-right">
                 <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> Cancelar </button>
-                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="delete()"><i class="fa fa-times"></i> Eliminar </button>
+                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="showConfirmDelete()"><i class="fa fa-times"></i> Eliminar </button>
                 <button *ngIf="model.id > 0" class="btn btn-success" (click)="cancel()"><i class="fa fa-cogs"></i> Dejar en borrador </button>
                 <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> Crear y Exportar </button>
-                <button *ngIf="canSendInvoice()" class="btn btn-primary" (click)="sendToDaf()"><i class="fa fa-save"></i> Enviar a DAF </button>
+                <button *ngIf="canSendInvoice()" class="btn btn-primary" (click)="showConfirmSendToDaf()"><i class="fa fa-save"></i> Enviar a DAF </button>
             </div>
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

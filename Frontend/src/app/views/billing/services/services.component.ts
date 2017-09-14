@@ -27,8 +27,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.customerId = params['customerId'];
-        var customer = JSON.parse(sessionStorage.getItem("customer"));
-        this.customerName = customer.nombre;
+        this.customerName = sessionStorage.getItem("customerName");
         this.getAll(this.customerId);
       });
       
@@ -56,6 +55,8 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
     goToProjects(service){
       sessionStorage.setItem("serviceName", service.nombre);
+      sessionStorage.setItem("serviceId", service.id);
+      
       this.router.navigate([`/billing/customers/${this.customerId}/services/${service.id}/projects`]);
     }
 }

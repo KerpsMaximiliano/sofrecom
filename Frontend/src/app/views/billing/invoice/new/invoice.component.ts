@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
@@ -10,6 +10,7 @@ import * as FileSaver from "file-saver";
 import { FileUploader } from 'ng2-file-upload';
 import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 declare var $: any;
 
 @Component({
@@ -19,6 +20,8 @@ declare var $: any;
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
 
+    @ViewChild('selectedFile') selectedFile: any;
+    
     public model: Invoice = new Invoice();
     paramsSubscrip: Subscription;
     sendToDafSubscrip: Subscription;
@@ -27,6 +30,16 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     customer: any;
     public uploader: FileUploader;
     excelUploaded: boolean = false;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -55,6 +68,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.model.analytic = this.project.analytic;
         this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.SendPending];
         this.model.service = sessionStorage.getItem("serviceName");
+        this.model.serviceId = sessionStorage.getItem("serviceId");
+        this.model.customerId = this.customer.id;
     }
 
     ngOnDestroy() {
@@ -89,6 +104,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     sendToDaf(){
         this.service.sendToDaf(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
+            
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
@@ -104,6 +121,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.excelUploaded = true;
+            this.messageService.succes("Excel importado correctamente");
         };
     }
 
@@ -117,6 +135,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     delete(){
         this.service.delete(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
+
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => { this.cancel(); }, 1500)
@@ -135,5 +155,25 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         var ddChars = dd.split('');
 
         return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    }
+
+    confirm() {}
+
+    showConfirmDelete(){
+        this.confirm = this.delete;
+        this.confirmModal.show();
+    }
+
+    showConfirmSendToDaf(){
+        this.confirm = this.sendToDaf;
+        this.confirmModal.show();
     }
 }

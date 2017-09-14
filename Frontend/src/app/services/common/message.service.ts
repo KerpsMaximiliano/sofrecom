@@ -21,4 +21,8 @@ export class MessageService {
     showError(message: string){
         this.toastrService.error(message);
     }
+
+    succes(message){
+        this.toastrService.success(message);
+    }
 }

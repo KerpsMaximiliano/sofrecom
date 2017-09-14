@@ -20,6 +20,7 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('agreeModal') agreeModal;
     @ViewChild('confirmModal') confirmModal;
 
     public model: Invoice = new Invoice();
@@ -33,13 +34,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     public showUploader: boolean = false;
     public isExcel: boolean = true;
 
+    public agreeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "billing.invoice.includeInvoiceNumber",
+        "agreeModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Incluya número de remito antes de aprobar",
+        "ACTIONS.confirmTitle",
         "confirmModal",
         true,
         true,
-        "Aceptar",
-        "Cancelar"
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     constructor(private router: Router,
@@ -58,6 +68,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 this.model = d;
 
                 this.configUploader();
+
+                sessionStorage.setItem("serviceName", this.model.service);
+                sessionStorage.setItem("serviceId", this.model.serviceId);
+                sessionStorage.setItem("customerId", this.model.customerId);
+                sessionStorage.setItem("customerName", this.model.accountName);
             },
             err => this.errorHandlerService.handleErrors(err));
         });
@@ -91,6 +106,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), authToken: Cookie.get('access_token') });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            this.messageService.succes("PDF importado correctamente");
+
             this.model.pdfFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.pdf`;
             this.model.pdfFileCreatedDate = new Date().toLocaleDateString();
             this.configUploader();
@@ -106,6 +123,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id), authToken: Cookie.get('access_token') });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            this.messageService.succes("Excel importado correctamente");
+
             this.model.excelFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`;
             this.model.excelFileCreatedDate = new Date().toLocaleDateString();
             this.configUploader();
@@ -137,6 +156,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     sendToDaf(){
         this.service.sendToDaf(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Sent];
             this.configUploader();
@@ -146,6 +166,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     reject(){
         this.service.reject(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Rejected];
             this.configUploader();
@@ -155,6 +176,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     annulment(){
         this.service.annulment(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Cancelled];
             this.configUploader();
@@ -171,14 +193,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     openModal(){
-        this.confirmModal.show();
+        this.agreeModal.show();
     }
 
     approve(){
         if(this.invoiceNumber && this.invoiceNumber != ""){
 
             this.service.approve(this.model.id, this.invoiceNumber).subscribe(data => {
-                this.confirmModal.hide();
+                this.agreeModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Approved];
                 this.model.invoiceNumber = this.invoiceNumber;
@@ -200,6 +222,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         return false;
     }
 
+    canSendToDaf(){
+        if(this.model.excelFileName && 
+           this.menuService.hasFunctionality('REM', 'SEND') &&
+          (this.model.invoiceStatus == 'SendPending' || this.model.invoiceStatus == 'Rejected')){
+            return true;
+        }
+
+        return false;
+    }
+
     canApprovedInvoice(){
         if(this.menuService.hasFunctionality('REM', 'APROB') && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] && this.model.pdfFileName){
             return true;
@@ -210,6 +242,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     delete(){
         this.service.delete(this.model.id).subscribe(data => {
+            this.confirmModal.hide();
+            
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => { this.goBack(); }, 1500)
@@ -235,4 +269,26 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
         return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
     }
-}
+
+    confirm() {}
+
+    showConfirmDelete(){
+        this.confirm = this.delete;
+        this.confirmModal.show();
+    }
+
+    showConfirmReject(){
+        this.confirm = this.reject;
+        this.confirmModal.show();
+    }
+
+    showConfirmSendToDaf(){
+        this.confirm = this.sendToDaf;
+        this.confirmModal.show();
+    }
+
+    showConfirmAnnulment(){
+        this.confirm = this.annulment;
+        this.confirmModal.show();
+    }
+} 

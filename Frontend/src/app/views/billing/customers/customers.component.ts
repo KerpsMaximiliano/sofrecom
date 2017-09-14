@@ -45,6 +45,9 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     goToServices(customer){
       sessionStorage.setItem("customer", JSON.stringify(customer));
+      sessionStorage.setItem("customerId", customer.id);
+      sessionStorage.setItem("customerName", customer.nombre);
+      
       this.router.navigate([`/billing/customers/${customer.id}/services`]);
     }
 }

@@ -17,11 +17,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     getHitosSubscrip: Subscription;
     getSolfacSubscrip: Subscription;
     getInvoicesSubscrip: Subscription;
+    getProjectSubscrip: Subscription;
     projectId: string;
     project: any;
     hitos: any[] = new Array();
     solfacs: any[] = new Array();
     invoices: any[] = new Array();
+    public loading:  boolean = true;
 
     constructor(
         private router: Router,
@@ -34,7 +36,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.projectId = params['projectId'];
-            this.project = JSON.parse(sessionStorage.getItem("projectDetail"));
+            this.getProject(params['projectId']);
             this.getSolfacs(this.projectId);
             this.getHitos(this.projectId);
             this.getInvoices(this.projectId);
@@ -46,10 +48,30 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(this.getHitosSubscrip) this.getHitosSubscrip.unsubscribe();
         if(this.getSolfacSubscrip) this.getHitosSubscrip.unsubscribe();
         if(this.getInvoicesSubscrip) this.getInvoicesSubscrip.unsubscribe();
+        if(this.getProjectSubscrip) this.getProjectSubscrip.unsubscribe();
     }
 
     goToProjects(){
         this.router.navigate([`/billing/customers/${sessionStorage.getItem("customerId")}/services/${sessionStorage.getItem("serviceId")}/projects`]);
+    }
+
+    getProject(projectId){
+        var project = sessionStorage.getItem("projectDetail");
+
+        if(project){
+            this.project = JSON.parse(project);
+            this.loading = false;
+        }
+        else{
+            this.getProjectSubscrip = this.service.getById(projectId).subscribe(data => {
+                this.project = data;
+                this.loading = false;
+            },
+            err => {
+                this.loading = false;
+                this.errorHandlerService.handleErrors(err);
+            });
+        }
     }
 
     getHitos(projectId){

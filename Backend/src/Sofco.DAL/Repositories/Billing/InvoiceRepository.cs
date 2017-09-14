@@ -25,7 +25,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public Invoice GetById(int id)
         {
-            IQueryable<Invoice> query = _context.Invoices;
+            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User);
                 
             query = GetProperties(query);
 
@@ -113,7 +113,11 @@ namespace Sofco.DAL.Repositories.Billing
                 ExcelFileCreatedDate = x.ExcelFileCreatedDate,
                 PdfFileCreatedDate = x.PdfFileCreatedDate,
                 InvoiceStatus = x.InvoiceStatus,
-                InvoiceNumber = x.InvoiceNumber
+                InvoiceNumber = x.InvoiceNumber,
+                UserId = x.UserId,
+                User = x.User,
+                CustomerId = x.CustomerId,
+                ServiceId = x.ServiceId
             });
         }
     }

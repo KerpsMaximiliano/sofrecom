@@ -65,5 +65,7 @@ namespace Sofco.WebApi.Models.Billing
         public int Month { get; set; }
         public bool Billed { get; set; }
         public decimal AmmountBilled { get; set; }
+        public string Status { get; set; }
+        public string StatusCode { get; set; }
     }
 }

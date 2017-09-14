@@ -57,10 +57,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ServiceCrm>> GetServices(string customerId)
         {
+            var username = User.Identity.Name.Split('@');
+            var mail = $"{username[0]}@sofrecom.com.ar";
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_crmConfig.Url);
-                var response = await client.GetAsync($"/api/service?idAccount={customerId}");
+                var response = await client.GetAsync($"/api/service?idAccount={customerId}&idManager={mail}");
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();

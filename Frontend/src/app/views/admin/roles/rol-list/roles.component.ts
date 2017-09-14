@@ -116,21 +116,24 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 
   getAll(callback = null){
-    this.getAllSubscrip = this.service.getAll().subscribe(d => {
-      this.data = d;
-      if(callback != null){
-        callback();
-      }
-    });
+    this.getAllSubscrip = this.service.getAll().subscribe(
+      d => {
+        this.data = d;
+        if(callback != null){
+          callback();
+        }
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 
   getEntity(id: number, callback = null){
-    this.getSubscrip = this.service.get(id).subscribe((data) => {
-      
-      if(callback != null){
-        callback(data);
-      }
-    });
+    this.getSubscrip = this.service.get(id).subscribe(
+      data => {
+        if(callback != null){
+          callback(data);
+        }
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 
   editClick(id: number){

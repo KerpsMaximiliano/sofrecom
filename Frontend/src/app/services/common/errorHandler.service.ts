@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Message } from "app/models/message";
 import { MessageService } from "app/services/common/message.service";
+import { AuthenticationService } from "app/services/common/authentication.service";
 
 @Injectable()
 export class ErrorHandlerService {
     constructor(private messageService: MessageService,
+                private authenticationService: AuthenticationService,
                 private router: Router){}
 
     public handleErrors(response){
@@ -17,8 +19,9 @@ export class ErrorHandlerService {
             default: break;
         }
     }
-
+ 
     private handle401(response){
+        this.authenticationService.logout();
         this.router.navigate(["/login"]);
     }
 

@@ -13,7 +13,6 @@ import {LoginComponent} from "./views/appviews/login.component";
 
 import {BlankLayoutComponent} from "./components/common/layouts/blankLayout.component";
 import {BasicLayoutComponent} from "./components/common/layouts/basicLayout.component";
-import { TopNavigationLayoutComponent } from "./components/common/layouts/topNavigationlayout.component";
 import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
@@ -37,9 +36,9 @@ export const ROUTES:Routes = [
     path: 'admin', component: BasicLayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: 'roles', children:[
-        { path: '', component: RolesComponent },
-        { path: 'add', component: RolAddComponent },
-        { path: 'edit/:id', component: RolEditComponent }
+        { path: '', component: RolesComponent, data: [{ module: "ROL", functionality: "QUERY" }] },
+        { path: 'add', component: RolAddComponent, data: { module: "ROL", functionality: "ALTA" } },
+        { path: 'edit/:id', component: RolEditComponent, data: { module: "ROL", functionality: "DETAL" } }
       ]},
       { path: 'groups', children:[
         {path: '', component: GroupsComponent},
@@ -68,19 +67,20 @@ export const ROUTES:Routes = [
         ]}
       ]},
 
-      { path: "project/:projectId", component: ProjectDetailComponent },
+      { path: "project/:projectId", component: ProjectDetailComponent, canActivate: [AuthGuard] },
 
-      { path: "solfac", children: [
+      { path: "solfac", canActivate: [AuthGuard],
+        children: [
          { path: "", component: SolfacComponent },
          { path: "search", component: SolfacSearchComponent },
          { path: ":solfacId", component: SolfacDetailComponent }
       ]},
-      { path: "invoice/new/project/:projectId", component: InvoiceComponent },
-      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent }
+      { path: "invoice/new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard] },
+      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard] }
     ]
   },
   {
-    path: '', component: BasicLayoutComponent,
+    path: '', component: BasicLayoutComponent, canActivate: [AuthGuard],
     children: [
       {path: 'inicio', component: StarterViewComponent, canActivate: [AuthGuard]}
     ]

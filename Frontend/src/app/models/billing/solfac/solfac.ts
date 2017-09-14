@@ -34,6 +34,7 @@ export class Solfac {
         public invoiceId: string,
         public customerId: string,
         public serviceId: string,
-        public analytic: string
+        public analytic: string,
+        public remito: boolean
     ){}
 }

@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { AuthenticationService } from "app/services/common/authentication.service";
 import { Configuration } from "app/services/common/configuration";
 import { MenuService } from "app/services/admin/menu.service";
+import { Cookie } from "ng2-cookies/ng2-cookies";
 declare var jQuery: any;
 
 @Component({
@@ -22,8 +23,16 @@ export class TopNavbarComponent {
         private authService: AuthenticationService,
         private router: Router,
         public menuService: MenuService){
-      let browserLang = translateService.getBrowserLang();
-      configService.setCurrLang(browserLang);
+
+        var lang = Cookie.get("lang");
+
+        if(lang){
+          configService.setCurrLang(lang);
+        }
+        else{
+          lang = translateService.getBrowserLang();
+          configService.setCurrLang(lang);
+        }
 
       this.userName = this.menuService.currentUser;
   }
@@ -38,6 +47,7 @@ export class TopNavbarComponent {
   }
 
   selectLanguage(lang){
+    Cookie.set("lang", lang);
     this.configService.setCurrLang(lang);
   }
 

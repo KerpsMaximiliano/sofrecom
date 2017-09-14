@@ -27,11 +27,13 @@ namespace Sofco.WebApi.Models.Billing
             Analytic = invoice.Analytic;
             ExcelFileName = invoice.ExcelFileName;
             PdfFileName = invoice.PdfFileName;
-            ExcelFileCreatedDate = invoice.ExcelFileCreatedDate;
-            PdfFileCreatedDate = invoice.PdfFileCreatedDate;
+            ExcelFileCreatedDate = invoice.ExcelFileCreatedDate.ToString("d");
+            PdfFileCreatedDate = invoice.PdfFileCreatedDate.ToString("d");
             CreatedDate = invoice.CreatedDate;
             InvoiceStatus = invoice.InvoiceStatus.ToString();
             InvoiceNumber = invoice.InvoiceNumber;
+            ServiceId = invoice.ServiceId;
+            CustomerId = invoice.CustomerId;
         }
 
         public int Id { get; set; }
@@ -45,6 +47,8 @@ namespace Sofco.WebApi.Models.Billing
         public string Service { get; set; }
         public string Project { get; set; }
         public string ProjectId { get; set; }
+        public string ServiceId { get; set; }
+        public string CustomerId { get; set; }
         public string Analytic { get; set; }
 
         public string ExcelFileName { get; set; }
@@ -52,8 +56,8 @@ namespace Sofco.WebApi.Models.Billing
         public string InvoiceNumber { get; set; }
 
         public string InvoiceStatus { get; set; }
-        public DateTime ExcelFileCreatedDate { get; set; }
-        public DateTime PdfFileCreatedDate { get; set; }
+        public string ExcelFileCreatedDate { get; set; }
+        public string PdfFileCreatedDate { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public Invoice CreateDomain()
@@ -71,6 +75,8 @@ namespace Sofco.WebApi.Models.Billing
             domain.Project = Project;
             domain.ProjectId = ProjectId;
             domain.Analytic = Analytic;
+            domain.CustomerId = CustomerId;
+            domain.ServiceId = ServiceId;
 
             return domain;
         }

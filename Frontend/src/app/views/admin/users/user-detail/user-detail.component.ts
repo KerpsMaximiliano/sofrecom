@@ -62,10 +62,12 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
  
     getDetails(){
-        this.detailsSubscrip = this.service.getDetail(this.id).subscribe(user => {
-            this.user = user;
-            this.getAllGroups();
-        });
+        this.detailsSubscrip = this.service.getDetail(this.id).subscribe(
+            user => {
+                this.user = user;
+                this.getAllGroups();
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     ngOnDestroy(){
@@ -75,23 +77,25 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     getAllGroups(){
-        this.groupsToAddSubscrip = this.groupService.getOptions().subscribe(data => {
-            this.groupsToAdd = new Array<Option>();
-            var groups = new Array<Option>();
-            var index = 0;
-            for(var i: number = 0; i<data.length; i++){
+        this.groupsToAddSubscrip = this.groupService.getOptions().subscribe(
+            data => {
+                this.groupsToAdd = new Array<Option>();
+                var groups = new Array<Option>();
+                var index = 0;
+                for(var i: number = 0; i<data.length; i++){
 
-                if(!this.isOptionInArray(this.user.groups, data[i]) ){
-                    data[i].included = false;
-                    data[i].index = index;
-                    groups.push(data[i]);
-                    index++;
+                    if(!this.isOptionInArray(this.user.groups, data[i]) ){
+                        data[i].included = false;
+                        data[i].index = index;
+                        groups.push(data[i]);
+                        index++;
+                    }
+                    
                 }
-                
-            }
 
-            this.groupsToAdd = groups;
-        });
+                this.groupsToAdd = groups;
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     private isOptionInArray(arrGroup, option: Option): boolean{

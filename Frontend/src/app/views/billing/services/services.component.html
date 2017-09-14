@@ -34,10 +34,10 @@
                     <table class="table table-striped" id="serviceTable">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Industria</th>
-                                <th>Fecha inicio</th>
-                                <th>Fecha fin</th>
+                                <th>{{"billing.service.grid.name" | translate}}</th>
+                                <th>{{"billing.service.grid.industry" | translate}}</th>
+                                <th>{{"billing.service.grid.startDate" | translate}}</th>
+                                <th>{{"billing.service.grid.endDate" | translate}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,9 +46,6 @@
                                 <td>{{service.industry}}</td>
                                 <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{service.endDate | date:'dd/MM/yyyy'}}</td>
-                            </tr>
-                            <tr *ngIf="services == null || services.length == 0">
-                                <td colspan="4" class="text-center">No hay resultados</td>
                             </tr>
                         </tbody>
                     </table>  

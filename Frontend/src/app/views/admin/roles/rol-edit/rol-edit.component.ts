@@ -107,9 +107,11 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
 
     getDetails(){
-        this.getSubscrip = this.service.getDetail(this.id).subscribe((data) => {
-        this.role = data;
-        });
+        this.getSubscrip = this.service.getDetail(this.id).subscribe(
+            data => {
+                this.role = data;
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
  
     onSubmit(form){
@@ -130,9 +132,11 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
 
     getAllModules(){
-        this.modulesSubscrip = this.moduleService.getOptionsWithFunctionalities().subscribe(data => {
-            this.allModules = data;
-        });
+        this.modulesSubscrip = this.moduleService.getOptionsWithFunctionalities().subscribe(
+            data => {
+                this.allModules = data;
+            },
+            err => this.errorHandlerService.handleErrors(err));
     }
 
     addFunctionality(){

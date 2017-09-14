@@ -18,6 +18,8 @@ export class Invoice {
     public pdfFileCreatedDate: string;
     public createdDate: string;
     public invoiceNumber: string;
+    public serviceId: string;
+    public customerId: string;
 
     constructor(){}
 }

@@ -51,20 +51,81 @@
             "title": "Clientes",
             "management": "Listado de Clientes",
             "edit": "Editar Cliente",
-            "add": "Agregar Cliente"
+            "add": "Agregar Cliente",
+            "grid": {
+                "name": "Nombre",
+                "cuit": "CUIT",
+                "address": "Dirección",
+                "province": "Provincia",
+                "country": "País"
+            }
         },
         "service":{
             "title": "Servicios",
             "management": "Listado de Servicios",
             "edit": "Editar Servicio",
-            "add": "Agregar Servicio"
+            "add": "Agregar Servicio",
+            "grid": {
+                "name": "Nombre",
+                "industry": "Industria",
+                "startDate": "Fecha Inicio",
+                "endDate": "Fecha Fin"
+            }
         },
         "project":{
             "title": "Proyectos",
             "management": "Listado de Proyectos",
             "edit": "Editar Proyecto",
             "add": "Agregar Proyecto",
-            "detail": "Detalle de Proyecto"
+            "grid": {
+                "name": "Nombre",
+                "analytic": "Analítica",
+                "purchaseOrder": "Orden compra",
+                "incomes": "Ingresos Estimados",
+                "startDate": "Fecha Inicio",
+                "endDate": "Fecha Fin"
+            },
+            "detail": {
+                "title": "Detalle de Proyecto",
+                "analytic": "Analítica",
+                "purchaseOrder": "Orden compra",
+                "incomes": "Ingresos Estimados",
+                "startDate": "Fecha Inicio",
+                "endDate": "Fecha Fin",
+                "oportunity": "Oportunidad",
+                "serviceType": "Tipo de Servicio",
+                "solutionType": "Tipo de Solución",
+                "technology": "Tipo de Tecnología",
+                "invoices": {
+                    "title": "Remitos",
+                    "cuit": "CUIT",
+                    "name": "Nombre",
+                    "account": "Cuenta",
+                    "service": "Servicio",
+                    "date": "Fecha",
+                    "status": "Estado",
+                    "create": "Crear remito"
+                },
+                "milestone": {
+                    "title": "Hitos",
+                    "description": "Descripción",
+                    "amount": "Monto",
+                    "ammountBilled": "M. Facturado",
+                    "startDate": "Fecha Creación",
+                    "month": "Mes",
+                    "status": "Estado",
+                    "new": "Generar Solicitud"
+                },
+                "requests": {
+                    "title": "Solicitudes",
+                    "project": "Proyecto",
+                    "businessName": "Razón Social",
+                    "docType": "Tipo Doc.",
+                    "date": "Fecha",
+                    "total": "Total",
+                    "status": "Estado"
+                }
+            }
         },
         "hito":{
             "title": "Hitos",
@@ -90,11 +151,33 @@
             "management": "Solicitud de Remitos",
             "edit": "Editar Remito",
             "add": "Crear Remito",
-            "detail": "Detalle de Remito"
+            "detail": "Detalle de Remito",
+            "information": "Datos del remito",
+            "invoiceNumber": "Número de remito",
+            "createdDate": "Fecha Creación",
+            "account": "Cuenta",
+            "service": "Servicio",
+            "project": "Proyecto",
+            "cuit": "CUIT",
+            "status": "Estado",
+            "address": "Dirección",
+            "zipCode": "Código postal",
+            "city": "Ciudad",
+            "province": "Estado/Provincia",
+            "country": "País",
+            "attachments": "Archivos Adjuntos",
+            "createdAt": "Creado",
+            "excelImport": "Importar Excel",
+            "pdfImport": "Importar PDF",
+            "progress": "Progreso",
+            "import": "Importar",
+            "quit": "Quitar",
+            "includeInvoiceNumber": "Incluya número de remito antes de aprobar"
         }
     },
     "HOME": {
-        "TITLE": "Inicio"
+        "TITLE": "Inicio",
+        "welcome": "Bienvenido a SofcoAr!"
     },
     "ACTIONS":{
         "ADD": "Agregar",
@@ -102,7 +185,17 @@
         "DELETE": "Eliminar",
         "ACTIVATE": "Activar",
         "DEACTIVATE": "Desactivar",
-        "ACCEPT": "Aceptar"
+        "ACCEPT": "Aceptar",
+        "cancel": "Cancelar",
+        "yes": "Si",
+        "no": "No",
+        "back": "Volver",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "sendToDaf": "Enviar a DAF",
+        "annulment": "Anular",
+        "confirmTitle": "Confirmar acción",
+        "confirmBody": "¿Esta seguro que desea confirmar la acción?"
     },
     "SendPending": "Pendiente Envío",
     "PendingByManagementControl": "Pendiente revision Control Gestion",
@@ -116,5 +209,10 @@
     "Sent": "Enviado",
     "Approved": "Aprobado",
     "Related": "Relacionado",
-    "Cancelled": "Anulado"
-}
+    "Cancelled": "Anulado",
+    "Proyectado": "Proyectado",
+    "Pendiente": "Pendiente",
+    "A ser facturado": "A ser facturado",
+    "Facturado": "Facturado",
+    "Pagado": "Pagado"
+} 

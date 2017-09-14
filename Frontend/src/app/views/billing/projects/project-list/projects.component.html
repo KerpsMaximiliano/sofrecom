@@ -40,12 +40,12 @@
                     <table class="table table-striped" id="projectTable">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Analítica</th>
-                                <th>Orden compra</th>
-                                <th>Ingresos Estimados</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
+                                <th>{{"billing.project.grid.name" | translate}}</th>
+                                <th>{{"billing.project.grid.analytic" | translate}}</th>
+                                <th>{{"billing.project.grid.purchaseOrder" | translate}}</th>
+                                <th>{{"billing.project.grid.incomes" | translate}}</th>
+                                <th>{{"billing.project.grid.startDate" | translate}}</th>
+                                <th>{{"billing.project.grid.endDate" | translate}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,9 +56,6 @@
                                 <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
                                 <td> <i class="fa fa-calendar"></i> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
                                 <td> <i class="fa fa-calendar"></i> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
-                            </tr>
-                            <tr *ngIf="projects == null || projects.length == 0">
-                                <td colspan="6" class="text-center">No hay resultados</td>
                             </tr>
                         </tbody>
                     </table>        

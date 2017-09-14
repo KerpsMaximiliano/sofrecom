@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Core.Services.Billing;
+using Sofco.Model.Enums;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models.Billing;
 
@@ -43,7 +45,30 @@ namespace Sofco.WebApi.Controllers.Billing
             }
         }
 
-        [HttpGet("{serviceId}")]
+        [HttpGet("{projectId}")]
+        public async Task<IActionResult> GetById(string projectId)
+        {
+            try
+            {
+                var project = await GetProjectById(projectId);
+
+                if (project.Id.Equals("00000000-0000-0000-0000-000000000000"))
+                {
+                    var response = new Response();
+                    response.Messages.Add(new Message(Resources.es.Billing.Project.NotFound, MessageType.Error));
+
+                    return BadRequest(response);
+                }
+
+                return Ok(project);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("service/{serviceId}")]
         public async Task<IActionResult> Get(string serviceId)
         {
             try
@@ -60,16 +85,34 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ProjectCrm>> GetProjects(string serviceId)
         {
+            var username = User.Identity.Name.Split('@');
+            var mail = $"{username[0]}@sofrecom.com.ar";
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_crmConfig.Url);
-                var response = await client.GetAsync($"/api/project?idService={serviceId}");
+                var response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={mail}");
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 var projects = JsonConvert.DeserializeObject<IList<ProjectCrm>>(stringResult);
 
                 return projects;
+            }
+        }
+
+        private async Task<ProjectCrm> GetProjectById(string projectId)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_crmConfig.Url);
+                var response = await client.GetAsync($"/api/project/{projectId}");
+                response.EnsureSuccessStatusCode();
+
+                var stringResult = await response.Content.ReadAsStringAsync();
+                var project = JsonConvert.DeserializeObject<ProjectCrm>(stringResult);
+
+                return project;
             }
         }
 
@@ -92,16 +135,19 @@ namespace Sofco.WebApi.Controllers.Billing
 
                     foreach (var hitoCrm in hitosCRM)
                     {
-                        var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
-
-                        if (existHito != null)
+                        if (hitoCrm.Status.Equals("Pendiente") || hitoCrm.Status.Equals("Proyectado"))
                         {
-                            hitoCrm.Billed = true;
-                            hitoCrm.AmmountBilled = existHito.Total;
+                            var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
+
+                            if (existHito != null)
+                            {
+                                hitoCrm.Billed = true;
+                                hitoCrm.AmmountBilled = existHito.UnitPrice;
+                            }
                         }
                         else
                         {
-                            hitoCrm.Billed = false;
+                            hitoCrm.Billed = true;
                         }
                     }
 

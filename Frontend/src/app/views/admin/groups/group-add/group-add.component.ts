@@ -45,8 +45,10 @@ export class GroupAddComponent implements OnInit, OnDestroy {
   }
 
   getAllRoles(){
-    this.getRolesSubscrip = this.roleService.getOptions().subscribe(d => {
-      this.roles = d;
-    });
+    this.getRolesSubscrip = this.roleService.getOptions().subscribe(
+      d => {
+        this.roles = d;
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 }

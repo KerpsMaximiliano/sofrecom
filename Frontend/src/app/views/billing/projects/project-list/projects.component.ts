@@ -14,8 +14,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     projects: any[];
     getAllSubscrip: Subscription;
     paramsSubscrip: Subscription;
-    customerId: number;
-    serviceId: number;
+    customerId: string;
+    serviceId: string;
     serviceName: string;
     customerName: string;
     public loading:  boolean = true;
@@ -31,7 +31,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.customerId = params['customerId'];
         this.serviceId = params['serviceId'];
-        this.customerName = JSON.parse(sessionStorage.getItem('customer')).nombre;
+        this.customerName = sessionStorage.getItem('customerName');
         this.serviceName = sessionStorage.getItem('serviceName');
         this.getAll();
       });
@@ -62,9 +62,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     goToProjectDetail(project){
-      sessionStorage.setItem("customerId", this.customerId.toString());
-      sessionStorage.setItem("serviceId", this.serviceId.toString());
+      sessionStorage.setItem("customerId", this.customerId);
+      sessionStorage.setItem("serviceId", this.serviceId);
       sessionStorage.setItem("projectDetail", JSON.stringify(project));
+      
       this.router.navigate([`/billing/project/${project.id}`]);
     }
 

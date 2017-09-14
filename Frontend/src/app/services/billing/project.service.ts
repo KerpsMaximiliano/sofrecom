@@ -13,8 +13,12 @@ export class ProjectService {
     this.headers = this.service.getHeaders();
   }
 
-  getAll(serviceId: number) {
-      return this.http.get(`${this.baseUrl}/project/${serviceId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  getAll(serviceId) {
+      return this.http.get(`${this.baseUrl}/project/service/${serviceId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  }
+
+  getById(projectId) {
+      return this.http.get(`${this.baseUrl}/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getOptions(serviceId) {  

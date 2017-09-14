@@ -31,10 +31,8 @@ export class AuthenticationService {
     }
 
     logout() {
-        Cookie.delete('access_token');
-        Cookie.delete('userInfo');
-        Cookie.delete('currentUser');
-        Cookie.delete('currentUserMail');
+        Cookie.deleteAll();
+        sessionStorage.clear();
         localStorage.removeItem('menu');
     }
 }

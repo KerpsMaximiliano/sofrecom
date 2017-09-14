@@ -96,7 +96,7 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     Id = invoice.Id,
                     ExcelFile = invoice.ExcelFile,
-                    ExcelFileName = string.Concat("REMITO", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".xlsx"),
+                    ExcelFileName = string.Concat("REMITO_", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".xlsx"),
                     ExcelFileCreatedDate = datetime
                 };
 
@@ -142,7 +142,7 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     Id = invoice.Id,
                     PdfFile = invoice.PdfFile,
-                    PdfFileName = string.Concat("REMITO", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".pdf"),
+                    PdfFileName = string.Concat("REMITO_", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".pdf"),
                     PdfFileCreatedDate = datetime
                 };
 
@@ -206,7 +206,10 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.SentToDaf, MessageType.Success));
 
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
+                var recipients = _userRepository.GetUserMailsByGroupId(emailConfig.DafGroupId);
+                var recipientsAsString = string.Join(";", recipients);
+
+                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, recipientsAsString);
             }
             catch (Exception e)
             {
@@ -246,7 +249,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Reject, MessageType.Success));
 
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
+                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, invoice.User.Email);
             }
             catch (Exception e)
             {
@@ -292,7 +295,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Approved, MessageType.Success));
 
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
+                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, invoice.User.Email);
             }
             catch (Exception e)
             {
@@ -368,16 +371,14 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice)
+        private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice, string recipients)
         {
             if (!_hostingEnvironment.IsStaging() && !_hostingEnvironment.IsProduction()) return;
 
             var subject = invoiceStatusHandler.GetSubjectMail(invoice);
             var body = invoiceStatusHandler.GetBodyMail(invoice, emailConfig.SiteUrl);
-            var recipients = _userRepository.GetUserMailsByGroupId(emailConfig.DafGroupId);
-            var recipientsAsString = string.Join(";", recipients);
 
-            MailSender.Send(recipientsAsString, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
+            MailSender.Send(recipients, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
                 subject, body, emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);
         }
     }

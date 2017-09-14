@@ -52,18 +52,23 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   }
 
   getEntity(id: number){
-    this.getSubscrip = this.service.get(id).subscribe((data) => {
-      this.module = data;
-      if(!data.role){
-        this.module.role = <Role>{};
-      }
-    });
+    this.getSubscrip = this.service.get(id).subscribe(
+      data => {
+        this.module = data;
+
+        if(!data.role){
+          this.module.role = <Role>{};
+        }
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 
   getAllRoles(){
-    this.getRolesSubscrip = this.roleService.getOptions().subscribe(d => {
-      this.roles = d;
-    });
+    this.getRolesSubscrip = this.roleService.getOptions().subscribe(
+      d => {
+        this.roles = d;
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 
   onSubmit(form){

@@ -43,14 +43,6 @@
                 <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.search' | translate }}</a></li>
               </ul>
           </li>
-   
-          <li *ngIf="menuService.hasModule('REM')">
-            <a href="#">{{'billing.invoice.title' | translate }}<span class="fa arrow"></span></a>
-            <ul class="nav nav-third-level collapse">
-              <li [ngClass]="{active: activeRoute('remitos')}" *ngIf="menuService.hasModule('REM', 'ALTA')"><a [routerLink]="['/billing/remitos']">{{'billing.invoice.new' | translate }}</a></li>
-              <li *ngIf="menuService.hasModule('REM', 'QUERY')"><a>{{'billing.invoice.search' | translate }}</a></li>
-            </ul>
-          </li>
         </ul>
       </li>
     </ul>

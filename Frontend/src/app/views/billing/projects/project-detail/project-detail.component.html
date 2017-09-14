@@ -1,171 +1,171 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>{{'billing.project.detail' | translate }}</h2>
+        <h2>{{'billing.project.detail.title' | translate }}</h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
             <li>
-                <a>{{'billing.title' | translate }}</a>
+                <span>{{'billing.title' | translate }}</span>
             </li>
-            <li class="active">
+            <li>
                 <a (click)="goToProjects()">{{'billing.project.title' | translate }}</a>
             </li>
             <li>
-                <a>{{ project.nombre }}</a>
+                <span>{{ project?.nombre}}</span>
             </li>
         </ol>
     </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="wrapper wrapper-content animated fadeInUp">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="m-b-md">
-                                    <h2><i class="fa fa-building"></i> {{ project.nombre }}</h2>
-                                </div>    
+    <div class="ibox">
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="m-b-md">
+                        <h2><i class="fa fa-building"></i> {{ project?.nombre }}</h2>
+                    </div>    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <dl class="dl-vertical">
+                        <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.purchaseOrder' | translate }} </dt> <dd> {{ project?.purchaseOrder }} </dd>
+                        <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.analytic' | translate }}</dt> <dd> {{ project?.analytic }} </dd>
+                        <dt><i class="fa fa-money"></i> {{'billing.project.detail.incomes' | translate }}</dt> <dd> {{ getCurrencySymbol(project?.currency) }} {{ project?.incomes | number: '1.2-2' }} </dd>
+                    </dl>
+                </div>
+                <div class="col-lg-4">
+                    <dl class="dl-vertical">
+                        <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.serviceType' | translate }}</dt> <dd>{{ project?.serviceType }}</dd>
+                        <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.solutionType' | translate }}</dt> <dd> {{ project?.solutionType }} </dd>
+                        <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.technology' | translate }}</dt> <dd> {{ project?.technologyType }} </dd>
+                    </dl>
+                </div>
+                <div class="col-lg-4">
+                    <dl class="dl-vertical">
+                        <dt><i class="fa fa-calendar"></i> {{'billing.project.detail.startDate' | translate }} </dt> <dd>{{ project?.startDate | date:'dd/MM/yyyy' }}</dd>
+                        <dt><i class="fa fa-calendar"></i> {{'billing.project.detail.endDate' | translate }} </dt> <dd> {{ project?.endDate | date:'dd/MM/yyyy' }} </dd>
+                        <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.oportunity' | translate }} </dt> <dd> {{ project?.opportunityName }} </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row m-t-sm">
+                <div class="col-lg-12">
+                    <div class="panel blank-panel">
+                        <div class="panel-heading">
+                            <div class="panel-options"> 
+                                <ul class="nav nav-tabs">
+                                    <li class="active" *ngIf="canSeeInvoices()"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
+                                    <li class=""><a href="#tab-2" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
+                                    <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-3" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <dl class="dl-vertical">
-                                    <dt><i class="fa fa-file-text-o"></i> Orden de compra</dt> <dd> {{ project.purchaseOrder }} </dd>
-                                    <dt><i class="fa fa-file-text-o"></i> Analitica</dt> <dd> {{ project.analytic }} </dd>
-                                    <dt><i class="fa fa-money"></i> Ingresos esperados</dt> <dd> {{ getCurrencySymbol(project.currency) }} {{ project.incomes | number: '1.2-2' }} </dd>
-                                </dl>
-                            </div>
-                            <div class="col-lg-4">
-                                <dl class="dl-vertical">
-                                    <dt><i class="fa fa-wrench"></i> Tipo de Servicio</dt> <dd>{{ project.serviceType }}</dd>
-                                    <dt><i class="fa fa-wrench"></i> Tipo de Solución</dt> <dd> {{ project.solutionType }} </dd>
-                                    <dt><i class="fa fa-wrench"></i> Tipo de Tecnología</dt> <dd> {{ project.technologyType }} </dd>
-                                </dl>
-                            </div>
-                            <div class="col-lg-4">
-                                <dl class="dl-vertical">
-                                    <dt><i class="fa fa-calendar"></i> Fecha inicio</dt> <dd>{{ project.startDate | date:'dd/MM/yyyy' }}</dd>
-                                    <dt><i class="fa fa-calendar"></i> Fecha fin</dt> <dd> {{ project.endDate | date:'dd/MM/yyyy' }} </dd>
-                                    <dt><i class="fa fa-file-text-o"></i> Oportunidad </dt> <dd> {{ project.opportunityName }} </dd>
-                                </dl>
-                            </div>
-                        </div>
 
-                        <div class="row m-t-sm">
-                            <div class="col-lg-12">
-                                <div class="panel blank-panel">
-                                    <div class="panel-heading">
-                                        <div class="panel-options"> 
-                                            <ul class="nav nav-tabs">
-                                                <li class="active" *ngIf="canSeeInvoices()"><a href="#tab-1" data-toggle="tab" aria-expanded="false">Remitos</a></li>
-                                                <li class=""><a href="#tab-2" data-toggle="tab" aria-expanded="false">Hitos</a></li>
-                                                <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-3" data-toggle="tab" aria-expanded="true">Solicitudes realizadas</a></li>
-                                            </ul>
-                                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-1" *ngIf="canSeeInvoices()">
+                                    <table class="table table-striped" id="invoiceTable">
+                                        <thead>
+                                            <tr>
+                                                <th>{{'billing.project.detail.invoices.cuit' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.name' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.account' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.service' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.date' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.status' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)">
+                                                <td>{{ invoice.cuit }}</td>
+                                                <td>{{ invoice.city }}</td>
+                                                <td>{{ invoice.accountName }}</td>
+                                                <td>{{ invoice.service }}</td>
+                                                <td>{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
+                                                <td><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="button-group" *ngIf="canCreateInvoice()">
+                                        <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
                                     </div>
+                                </div>
+                    
+                                <div class="tab-pane" id="tab-2">
+                                    <table class="table table-striped" id="hitoTable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>{{'billing.project.detail.milestone.description' | translate }}</th>
+                                                <th>{{'billing.project.detail.milestone.amount' | translate }}</th>
+                                                <th>{{'billing.project.detail.milestone.ammountBilled' | translate }}</th>
+                                                <th>{{'billing.project.detail.milestone.startDate' | translate }}</th>
+                                                <th>{{'billing.project.detail.milestone.month' | translate }}</th>
+                                                <th>{{'billing.project.detail.milestone.status' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let hito of hitos">
+                                                <td class="col-lg-1">
+                                                    <icheck [(checked)]="hito.included" *ngIf="hito.billed == false"></icheck>
+                                                </td>
+                                                <td>{{ hito.name }}</td>
+                                                <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number }}</td>
+                                                <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammountBilled | number }}</td>
+                                                <td>{{ hito.startDate | date:'dd/MM/yyyy' }}</td>
+                                                <td>{{ hito.month }}</td>
+                                                <td>
+                                                    <span class="label label-warning">{{ hito.status | translate }}</span> 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                                    <div class="panel-body">
-                                        <div class="tab-content">
-                                            <div class="tab-pane active" id="tab-1" *ngIf="canSeeInvoices()">
-                                                <table class="table table-striped" id="invoiceTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>CUIT</th>
-                                                            <th>Ciudad</th>
-                                                            <th>Cuenta</th>
-                                                            <th>Servicio</th>
-                                                            <th>Fecha</th>
-                                                            <th>Estado</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)">
-                                                            <td>{{ invoice.cuit }}</td>
-                                                            <td>{{ invoice.city }}</td>
-                                                            <td>{{ invoice.accountName }}</td>
-                                                            <td>{{ invoice.service }}</td>
-                                                            <td>{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
-                                                            <td><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <div class="button-group" *ngIf="canCreateInvoice()">
-                                                    <button class="btn btn-primary" (click)="goToCreateInvoice()"> Crear remito <i class="fa fa-arrow-right"></i></button>
-                                                </div>
-                                            </div>
-                             
-                                            <div class="tab-pane" id="tab-2">
-                                                <table class="table table-striped" id="hitoTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Descripción</th>
-                                                            <th>Monto</th>
-                                                            <th>M. Facturado</th>
-                                                            <th>Fecha Creación</th>
-                                                            <th>Mes</th>
-                                                            <th>Sol. Generada</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let hito of hitos">
-                                                            <td class="col-lg-1">
-                                                                <icheck [(checked)]="hito.included" *ngIf="hito.billed == false"></icheck>
-                                                            </td>
-                                                            <td>{{ hito.name }}</td>
-                                                            <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number }}</td>
-                                                            <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammountBilled | number }}</td>
-                                                            <td>{{ hito.startDate | date:'dd/MM/yyyy' }}</td>
-                                                            <td>{{ hito.month }}</td>
-                                                            <td>
-                                                                <span *ngIf="hito.billed == true" class="label label-primary">Si</span>
-                                                                <span *ngIf="hito.billed == false" class="label label-warning">No</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <div class="button-group" *ngIf="generateSolfacVisible() && canCreateSolfac()">
-                                                    <button (click)="generateSolfac()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Generar Solicitud</button>
-                                                </div>
-                                            </div>
-
-                                            <div class="tab-pane" id="tab-3" *ngIf="canSeeSolfacs()">
-                                                <table class="table table-striped" id="solfacTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Proyecto</th>
-                                                            <th>Razón Social</th>
-                                                            <th>Tipo Doc.</th>
-                                                            <th>Fecha</th>
-                                                            <th>Total</th>
-                                                            <th>Estado</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let solfac of solfacs" (click)="goToSolfacDetail(solfac)">
-                                                            <td>{{solfac.project}}</td>
-                                                            <td>{{solfac.businessName}}</td>
-                                                            <td>{{solfac.documentTypeName}}</td>
-                                                            <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                                            <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
-                                                            <td><span class="label label-warning">{{ solfac.statusName | translate}}</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>        
-                                            </div>
-                                        </div>
+                                    <div class="button-group" *ngIf="generateSolfacVisible() && canCreateSolfac()">
+                                        <button (click)="generateSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
                                     </div>
+                                </div>
+
+                                <div class="tab-pane" id="tab-3" *ngIf="canSeeSolfacs()">
+                                    <table class="table table-striped" id="solfacTable">
+                                        <thead>
+                                            <tr>
+                                                <th>{{'billing.project.detail.requests.project' | translate }}</th>
+                                                <th>{{'billing.project.detail.requests.businessName' | translate }}</th>
+                                                <th>{{'billing.project.detail.requests.docType' | translate }}</th>
+                                                <th>{{'billing.project.detail.requests.date' | translate }}</th>
+                                                <th>{{'billing.project.detail.requests.total' | translate }}</th>
+                                                <th>{{'billing.project.detail.requests.status' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let solfac of solfacs" (click)="goToSolfacDetail(solfac)">
+                                                <td>{{solfac.project}}</td>
+                                                <td>{{solfac.businessName}}</td>
+                                                <td>{{solfac.documentTypeName}}</td>
+                                                <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
+                                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
+                                                <td><span class="label label-warning">{{ solfac.statusName | translate}}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>        
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button class="btn btn-default" (click)="goToProjects()"><i class="fa fa-arrow-left"></i> Volver </button>
             </div>
         </div>
     </div>

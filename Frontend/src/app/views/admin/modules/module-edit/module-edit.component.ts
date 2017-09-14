@@ -65,9 +65,11 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
     }
 
     getEntity(id: number){
-        this.getSubscrip = this.service.get(id).subscribe((data) => {
+        this.getSubscrip = this.service.get(id).subscribe(
+          data => {
             this.module = data;
-        });
+          },
+          err => this.errorHandlerService.handleErrors(err));      
     }
 
     onSubmit(form){
@@ -114,7 +116,7 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     habInhabClick(obj){
       this.functionalitySelected = obj;
 

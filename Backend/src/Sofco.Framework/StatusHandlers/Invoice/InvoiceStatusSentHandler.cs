@@ -9,9 +9,9 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
-                                                "Se ha cargado un REMITO que requiere revisión y generación. </br>" +
-                                                "Para imprimirlo, utilice el documento adjunto. </br>" +
-                                                "Una vez generado el pdf, por favor adjuntarlo en el siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
+                                                "Se ha cargado un REMITO que requiere revisión y generación (pdf). </br>" +
+                                                "Para imprimirlo, utilice el documento anexado al registro. </br>" +
+                                                "Una vez generado el pdf, por favor importarlo en el siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
                                                 "Muchas gracias." +
                                             "</span>" +
                                         "</font>";

@@ -28,11 +28,11 @@
                     <table class="table table-striped" id="customerTable">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>CUIT</th>
-                                <th>Dirección</th>
-                                <th>Provincia</th>
-                                <th>Pais</th>
+                                <th>{{"billing.customer.grid.name" | translate}}</th>
+                                <th>{{"billing.customer.grid.cuit" | translate}}</th>
+                                <th>{{"billing.customer.grid.address" | translate}}</th>
+                                <th>{{"billing.customer.grid.province" | translate}}</th>
+                                <th>{{"billing.customer.grid.country" | translate}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,9 +42,6 @@
                                 <td>{{customer.address}}</td>
                                 <td>{{customer.province}}</td>
                                 <td>{{customer.country}}</td>
-                            </tr>
-                            <tr *ngIf="customers == null || customers.length == 0">
-                                <td colspan="5" class="text-center">No hay resultados</td>
                             </tr>
                         </tbody>
                     </table>        

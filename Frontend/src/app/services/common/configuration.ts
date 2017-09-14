@@ -42,7 +42,7 @@ export class  Configuration {
         let token = Cookie.get('access_token');
 
         headers.append('Content-Type', 'application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://azsof01wd');
+        headers.append('Access-Control-Allow-Origin', '*');
         headers.append('Authorization', token);
         
         return headers;
@@ -51,6 +51,7 @@ export class  Configuration {
     getLoginHeaders(){
         let headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Access-Control-Allow-Origin', '*');
         return headers;
     }
 }

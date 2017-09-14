@@ -40,6 +40,14 @@
             </div>
         
             <div class="row">
+                <!-- Plazo -->
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Plazo</label>
+                        <input type="number" class="form-control" [(ngModel)]="model.timeLimit">
+                    </div>
+                </div>
+
                 <!-- Numero de imputacion-->
                 <div class="col-lg-4 col-md-6 col-sm-8">
                     <div class="form-group">
@@ -57,16 +65,8 @@
                     </div>
                 </div>
 
-                <!-- Plazo -->
-                <div class="col-lg-2 col-md-4 col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Plazo</label>
-                        <input type="number" class="form-control" [(ngModel)]="model.timeLimit">
-                    </div>
-                </div>
-
                 <!-- Numero de remito -->
-                <div class="col-lg-4 col-md-5 col-sm-5">
+                <div class="col-lg-4 col-md-5 col-sm-5" *ngIf="model.remito">
                     <div class="form-group">
                         <label class="control-label">Asociar Remito</label>
                         <select class="form-control m-b" [(ngModel)]="model.invoiceId">
@@ -176,36 +176,22 @@
 
                         <!-- Capital -->
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <label class="control-label">Capital %:</label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.capitalPercentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Buenos Aires -->
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <label class="control-label">Provincia de Bs. As. %: </label>
-                                <div class="input-group m-b">
-                                    <input type="number" class="form-control" min="0" [(ngModel)]="model.buenosAiresPercentage"> 
-                                    <span class="input-group-addon">%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Otras -->
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-lg-offset-3">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince1Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province1Id">
@@ -215,16 +201,24 @@
                             </div>
                         </div>
 
-                        <!-- Otras -->
+                        <!-- Buenos Aires -->
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4">
+                                <label class="control-label">Provincia de Bs. As. %: </label>
+                                <div class="input-group m-b">
+                                    <input type="number" class="form-control" min="0" [(ngModel)]="model.buenosAiresPercentage"> 
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-lg-offset-3">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince2Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province2Id">
@@ -236,14 +230,14 @@
 
                         <!-- Otras -->
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-lg-offset-6">
                                 <label class="control-label">Otras Provincias %:  </label>
                                 <div class="input-group m-b">
                                     <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince3Percentage"> 
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-5">
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label">Provincia</label>
                                     <select class="form-control m-b" [(ngModel)]="model.province3Id">
