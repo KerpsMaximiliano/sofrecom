@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers} from '@angular/http';
+import { Http, Response} from '@angular/http';
 import { Service } from "app/services/common/service";
 
 @Injectable()
 export class ProjectService {
 
   private baseUrl: string;
-  private headers: Headers;
 
   constructor(private http: Http, private service: Service) {
     this.baseUrl = this.service.UrlApi;
-    this.headers = this.service.getHeaders();
   }
 
   getAll(serviceId) {
@@ -22,7 +20,7 @@ export class ProjectService {
   }
 
   getOptions(serviceId) {  
-    return this.http.get(`${this.baseUrl}/project/${serviceId}/options`, { headers: this.headers }).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/project/${serviceId}/options`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
   }
 
   getHitos(projectId){

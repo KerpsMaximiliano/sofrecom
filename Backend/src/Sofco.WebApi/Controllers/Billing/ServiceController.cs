@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Config;
 using Sofco.WebApi.Models.Billing;
 
@@ -18,10 +19,12 @@ namespace Sofco.WebApi.Controllers.Billing
     public class ServiceController : Controller
     {
         private readonly CrmConfig _crmConfig;
+        private readonly IUserService _userService;
 
-        public ServiceController(IOptions<CrmConfig> crmOptions)
+        public ServiceController(IOptions<CrmConfig> crmOptions, IUserService userService)
         {
             _crmConfig = crmOptions.Value;
+            _userService = userService;
         }
 
         [HttpGet("{customerId}/options")]
@@ -60,10 +63,23 @@ namespace Sofco.WebApi.Controllers.Billing
             var username = User.Identity.Name.Split('@');
             var mail = $"{username[0]}@sofrecom.com.ar";
 
+            var hasDirectorGroup = this._userService.HasDirectorGroup(mail);
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_crmConfig.Url);
-                var response = await client.GetAsync($"/api/service?idAccount={customerId}&idManager={mail}");
+
+                HttpResponseMessage response;
+
+                if (hasDirectorGroup)
+                {
+                    response = await client.GetAsync($"/api/service?idAccount={customerId}");
+                }
+                else
+                {
+                    response = await client.GetAsync($"/api/service?idAccount={customerId}&idManager={mail}");
+                }
+
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();

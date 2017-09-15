@@ -11,7 +11,7 @@ export class  Service {
     UrlAzure: string;
     GrantType: string;
     ClientId: string;
-    Resource: string;
+    Resource: string; 
 
     constructor(private config: Configuration){
 

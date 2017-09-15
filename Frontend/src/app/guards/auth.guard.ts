@@ -14,9 +14,24 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (Cookie.get('access_token') && Cookie.get('currentUser')) {
-            return true;            
-        }
 
+            if(route.data && JSON.stringify(route.data) !== JSON.stringify({})){
+                var data = <any>route.data;
+
+                if(this.menuService.hasFunctionality(data.module, data.functionality)){
+                    return true;
+                }
+                else{
+                    this.router.navigate(['/403']);
+                    return false;
+                }
+            }
+            else{
+                return true;
+            }
+
+        }
+        
         Cookie.delete('access_token');
         Cookie.delete('userInfo');
         Cookie.delete('currentUser');

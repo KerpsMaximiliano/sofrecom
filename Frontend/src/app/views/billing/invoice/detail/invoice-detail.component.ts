@@ -87,6 +87,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.showUploader = false;
         this.isExcel = true;
 
+        if(this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Cancelled]) return;
+
         if(!this.model.excelFileName){
             this.excelConfig();
         }
@@ -95,7 +97,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 this.excelConfig();
             }
             else {
-                if(!this.model.pdfFileName || (this.model.pdfFileName && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent])){
+                if(this.menuService.hasFunctionality('REM', 'APROB') && 
+                  (!this.model.pdfFileName || (this.model.pdfFileName && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent]))){
+
                     this.pdfConfig();
                 }
             }
@@ -137,7 +141,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     goBack(){
-        this.router.navigate([`/billing/project/${this.projectId}`]);
+        this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
     }
  
     exportExcel(){

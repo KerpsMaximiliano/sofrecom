@@ -63,6 +63,7 @@ namespace Sofco.WebApi
             //Config
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
+            services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
@@ -22,11 +23,13 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly ISolfacService _solfacService;
         private readonly CrmConfig _crmConfig;
+        private readonly IUserService _userService;
 
-        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions)
+        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService)
         {
             _solfacService = solfacService;
             _crmConfig = crmOptions.Value;
+            _userService = userService;
         }
 
         [HttpGet("{serviceId}/options")]
@@ -87,11 +90,23 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var username = User.Identity.Name.Split('@');
             var mail = $"{username[0]}@sofrecom.com.ar";
+            var hasDirectorGroup = this._userService.HasDirectorGroup(mail);
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_crmConfig.Url);
-                var response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={mail}");
+
+                HttpResponseMessage response;
+
+                if (hasDirectorGroup)
+                {
+                    response = await client.GetAsync($"/api/project?idService={serviceId}");
+                }
+                else
+                {
+                    response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={mail}");
+                }
+               
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();

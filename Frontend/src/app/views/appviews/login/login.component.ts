@@ -32,24 +32,18 @@ export class LoginComponent implements OnInit {
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
-        // reset login status
-        this.authenticationService.logout();
-
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
-        this.loading = true;
-        var usernameAzure = this.model.username.replace('sofrecom', 'tebrasofre.onmicrosoft');
-        usernameAzure = usernameAzure.replace('.ar', '');
+        var userName = this.model.username.split("@")[0];
 
-        this.loginSubscrip = this.authenticationService.login(usernameAzure, this.model.password).subscribe(
+        this.loginSubscrip = this.authenticationService.login(userName, this.model.password).subscribe(
             data => {
                 this.onLoginSucces(data);
             },
             error => {
-                this.loading = false;
                 var err = new Message("Usuario o Contraseña invalidos", 1);
                 this.messageService.showMessages([err]);
         });
@@ -59,9 +53,6 @@ export class LoginComponent implements OnInit {
         Cookie.set('access_token', `Bearer ${data.access_token}`);  
         Cookie.set('refresh_token', data.refresh_token);  
 
-        this.userService.reloadHeaders();
-        this.menuService.reloadHeaders();
-        
         var userName = this.model.username.split("@")[0];
 
         this.userSubscrip = this.userService.getByEmail(this.model.username).subscribe(
@@ -83,7 +74,6 @@ export class LoginComponent implements OnInit {
                 this.router.navigate([this.returnUrl]);
             },
             error => {
-               this.loading = false;
                this.errorHandlerService.handleErrors(error);
             }
         );

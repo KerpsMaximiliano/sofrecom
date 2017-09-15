@@ -8,6 +8,18 @@
             <li>
                 <span>{{'billing.title' | translate }}</span>
             </li>
+             <li>
+                <a [routerLink]="['/billing/customers/']">{{'billing.customer.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{customerName}}</a>
+            </li>
+            <li>
+                <a (click)="goToServices()">{{'billing.service.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{serviceName}}</a>
+            </li>
             <li>
                 <a (click)="goToProjects()">{{'billing.project.title' | translate }}</a>
             </li>

@@ -66,7 +66,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("serviceId", this.serviceId);
       sessionStorage.setItem("projectDetail", JSON.stringify(project));
       
-      this.router.navigate([`/billing/project/${project.id}`]);
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${project.id}`]);
     }
 
     getCurrencySymbol(currency){

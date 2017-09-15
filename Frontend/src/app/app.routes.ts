@@ -7,10 +7,6 @@ import { UserDetailComponent } from './views/admin/users/user-detail/user-detail
 import { GroupsComponent } from './views/admin/groups/group-list/groups.component';
 import { FunctionalitiesComponent } from './views/admin/functionalities/functionalities.component';
 import {Routes} from "@angular/router";
-
-import {StarterViewComponent} from "./views/appviews/starterview.component";
-import {LoginComponent} from "./views/appviews/login.component";
-
 import {BlankLayoutComponent} from "./components/common/layouts/blankLayout.component";
 import {BasicLayoutComponent} from "./components/common/layouts/basicLayout.component";
 import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
@@ -26,6 +22,9 @@ import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-de
 import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
 import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
 import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
+import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.component";
+import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
+import { LoginComponent } from "app/views/appviews/login/login.component";
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -33,54 +32,60 @@ export const ROUTES:Routes = [
 
   // App views
   {
-    path: 'admin', component: BasicLayoutComponent, canActivate: [AuthGuard],
+    path: 'admin', component: BasicLayoutComponent,
     children: [
       { path: 'roles', children:[
-        { path: '', component: RolesComponent, data: [{ module: "ROL", functionality: "QUERY" }] },
+        { path: '', component: RolesComponent, canActivate: [AuthGuard], data: { module: "ROL", functionality: "QUERY" } },
         { path: 'add', component: RolAddComponent, data: { module: "ROL", functionality: "ALTA" } },
         { path: 'edit/:id', component: RolEditComponent, data: { module: "ROL", functionality: "DETAL" } }
       ]},
+
       { path: 'groups', children:[
-        {path: '', component: GroupsComponent},
-        {path: 'add', component: GroupAddComponent},
-        {path: 'edit/:id', component: GroupEditComponent}
+        {path: '', component: GroupsComponent, canActivate: [AuthGuard], data: { module: "GRP", functionality: "QUERY" } },
+        {path: 'add', component: GroupAddComponent, canActivate: [AuthGuard], data: { module: "GRP", functionality: "ALTA" } },
+        {path: 'edit/:id', component: GroupEditComponent, canActivate: [AuthGuard], data: { module: "GRP", functionality: "UPDAT" } }
       ]},
+
       { path: "users", children: [
-         { path: '', component: UsersComponent },
-         { path: 'detail/:id', component: UserDetailComponent }
+         { path: '', component: UsersComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "QUERY" } },
+         { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "DETAL" } }
       ]},
-      { path: "functionalities", component: FunctionalitiesComponent },
+
+      { path: "functionalities", component: FunctionalitiesComponent, canActivate: [AuthGuard], data: { module: "FUNC", functionality: "QUERY" } },
+
       { path: "entities", children: [
-        { path: '', component: ModulesComponent },
-        { path: 'edit/:id', component: ModuleEditComponent }
+        { path: '', component: ModulesComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "QUERY" } },
+        { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "DETAL" } }
       ]},
     ]
   },
   {
-    path: 'billing', component: BasicLayoutComponent, canActivate: [AuthGuard],
+    path: 'billing', component: BasicLayoutComponent,
     children: [
       { path: 'customers', children:[
-        { path:"", component: CustomersComponent },
+        { path:"", component: CustomersComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
         { path:":customerId/services", children: [
-          { path: "", component: ServicesComponent },
-          { path: ":serviceId/projects", component: ProjectsComponent }
+          { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
+          { path: ":serviceId/projects", children: [
+            { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },
+            { path: ":projectId", component: ProjectDetailComponent, canActivate: [AuthGuard] },
+          ]}, 
         ]}
       ]},
 
-      { path: "project/:projectId", component: ProjectDetailComponent, canActivate: [AuthGuard] },
-
-      { path: "solfac", canActivate: [AuthGuard],
+      { path: "solfac",
         children: [
-         { path: "", component: SolfacComponent },
-         { path: "search", component: SolfacSearchComponent },
-         { path: ":solfacId", component: SolfacDetailComponent }
+         { path: "", component: SolfacComponent, canActivate: [AuthGuard] },
+         { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
+         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard] }
       ]},
-      { path: "invoice/new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard] },
-      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard] }
+
+      { path: "invoice/new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "ALTA" } },
+      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } }
     ]
   },
   {
-    path: '', component: BasicLayoutComponent, canActivate: [AuthGuard],
+    path: '', component: BasicLayoutComponent,
     children: [
       {path: 'inicio', component: StarterViewComponent, canActivate: [AuthGuard]}
     ]
@@ -89,6 +94,7 @@ export const ROUTES:Routes = [
     path: '', component: BlankLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
+      { path: '403', component: ForbiddenComponent, canActivate: [AuthGuard] }
     ]
   },
 

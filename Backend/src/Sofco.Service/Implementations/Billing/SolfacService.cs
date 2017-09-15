@@ -12,10 +12,12 @@ namespace Sofco.Service.Implementations.Billing
     public class SolfacService : ISolfacService
     {
         private readonly ISolfacRepository _solfacRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
-        public SolfacService(ISolfacRepository solfacRepository)
+        public SolfacService(ISolfacRepository solfacRepository, IInvoiceRepository invoiceRepository)
         {
             _solfacRepository = solfacRepository;
+            _invoiceRepository = invoiceRepository;
         }
 
         public Response<Solfac> Add(Solfac solfac)
@@ -30,6 +32,13 @@ namespace Sofco.Service.Implementations.Billing
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 
                 _solfacRepository.Insert(solfac);
+
+                if (solfac.InvoiceId.HasValue && solfac.InvoiceId.Value > 0)
+                {
+                    var invoiceToModif = new Invoice { Id = solfac.InvoiceId.Value, InvoiceStatus = InvoiceStatus.Related };
+                    _invoiceRepository.UpdateStatus(invoiceToModif);
+                }
+
                 _solfacRepository.Save(string.Empty);
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacCreated, MessageType.Success));

@@ -92,7 +92,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
 
     cancel(){
-      this.router.navigate([`/billing/project/${this.projectId}`]);
+      this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
     }
 
     exportToExcel(){

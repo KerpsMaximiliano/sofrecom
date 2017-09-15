@@ -17,10 +17,10 @@
           </a>
           <p> &nbsp; </p>
         </div>
-      </li>
+      </li> 
 
       <!--ADMIN-->
-      <li [ngClass]="{active: activeRoute('admin')}">
+      <li [ngClass]="{active: activeRoute('admin')}" *ngIf="menuService.hasAdminMenu()">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
@@ -32,7 +32,7 @@
       </li>
 
       <!--SOLFAC-->
-      <li [ngClass]="{active: activeRoute('solfac')}">
+      <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasBillingMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
 

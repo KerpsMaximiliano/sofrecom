@@ -19,6 +19,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     getInvoicesSubscrip: Subscription;
     getProjectSubscrip: Subscription;
     projectId: string;
+    customerId: string;
+    serviceId: string;
+    customerName: string;
+    serviceName: string;
     project: any;
     hitos: any[] = new Array();
     solfacs: any[] = new Array();
@@ -36,6 +40,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.projectId = params['projectId'];
+            this.customerId = params['customerId'];
+            this.serviceId = params['serviceId'];
+
+            this.customerName = sessionStorage.getItem('customerName');
+            this.serviceName = sessionStorage.getItem('serviceName');
+
             this.getProject(params['projectId']);
             this.getSolfacs(this.projectId);
             this.getHitos(this.projectId);
@@ -52,7 +62,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     goToProjects(){
-        this.router.navigate([`/billing/customers/${sessionStorage.getItem("customerId")}/services/${sessionStorage.getItem("serviceId")}/projects`]);
+        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects`]);
+    }
+
+    goToServices(){
+      this.router.navigate([`/billing/customers/${this.customerId}/services`]);
     }
 
     getProject(projectId){

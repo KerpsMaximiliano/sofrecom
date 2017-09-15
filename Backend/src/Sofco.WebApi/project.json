@@ -34,7 +34,8 @@
     "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.2",
-    "Sofco.Framework": "1.0.0-*"
+    "Sofco.Framework": "1.0.0-*",
+    "RestSharp.NetCore": "105.2.3"
   },
 
   "tools": {
