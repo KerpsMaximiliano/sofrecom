@@ -60,6 +60,33 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Solfac anulada correctamente.
+        /// </summary>
+        public static string CancelledSucces {
+            get {
+                return ResourceManager.GetString("CancelledSucces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a No se puede cambiar el estado.
+        /// </summary>
+        public static string CannotChangeStatus {
+            get {
+                return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Solfac eliminada correctamente.
+        /// </summary>
+        public static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Cantidad no puede ser menor o igual a 0.
         /// </summary>
         public static string HitoQuantityRequired {
@@ -78,6 +105,33 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La Solfac ha sido facturada correctamente.
+        /// </summary>
+        public static string InvoicedSuccess {
+            get {
+                return ResourceManager.GetString("InvoicedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La Solfac se ha enviado a la DAF correctamente.
+        /// </summary>
+        public static string InvoicePendingSuccess {
+            get {
+                return ResourceManager.GetString("InvoicePendingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La Solfac ha sido rechazada correctamente.
+        /// </summary>
+        public static string ManagementControlRejectedSuccess {
+            get {
+                return ResourceManager.GetString("ManagementControlRejectedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Solicitud no encontrada.
         /// </summary>
         public static string NotFound {
@@ -92,6 +146,15 @@ namespace Sofco.Resources.es.Billing {
         public static string NotFounds {
             get {
                 return ResourceManager.GetString("NotFounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La Solfac se ha enviado correctamente a Control de Gestión.
+        /// </summary>
+        public static string PendingByManagementControlSuccess {
+            get {
+                return ResourceManager.GetString("PendingByManagementControlSuccess", resourceCulture);
             }
         }
         

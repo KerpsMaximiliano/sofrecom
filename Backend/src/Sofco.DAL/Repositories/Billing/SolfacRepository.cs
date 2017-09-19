@@ -29,6 +29,13 @@ namespace Sofco.DAL.Repositories.Billing
             return _context.Solfacs.Where(x => x.ProjectId == projectId).Include(x => x.DocumentType).ToList();
         }
 
+        public Solfac GetByIdWithUser(int id)
+        {
+            return _context.Solfacs
+                .Include(x => x.UserApplicant)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
         public Solfac GetById(int id)
         {
             return _context.Solfacs
@@ -61,6 +68,11 @@ namespace Sofco.DAL.Repositories.Billing
                 query = query.Where(x => x.UserApplicantId == parameters.UserApplicantId);
 
             return query.Include(x => x.DocumentType).ToList();
+        }
+
+        public void UpdateStatus(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("Status").IsModified = true;
         }
     }
 }

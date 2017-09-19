@@ -66,6 +66,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
+        public string Service { get; set; }
         public string Analytic { get; set; }
 
         #endregion
@@ -103,6 +104,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.ServiceId = ServiceId;
             solfac.CustomerId = CustomerId;
             solfac.Analytic = Analytic;
+            solfac.Service = Service;
 
             if (InvoiceId > 0)
                 solfac.InvoiceId = InvoiceId;

@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _userRepository.Update(entity);
-                _userRepository.Save(string.Empty);
+                _userRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Admin.User.Enabled : Resources.es.Admin.User.Disabled, MessageType.Success));
@@ -78,7 +78,7 @@ namespace Sofco.Service.Implementations.Admin
             var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
             _userGroupRepository.Insert(entity);
-            _userGroupRepository.Save(string.Empty);
+            _userGroupRepository.Save();
 
             response.Messages.Add(new Message(Resources.es.Admin.User.GroupAssigned, MessageType.Success));
 
@@ -133,7 +133,7 @@ namespace Sofco.Service.Implementations.Admin
                 var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
                 _userGroupRepository.Delete(entity);
-                _userGroupRepository.Save(string.Empty);
+                _userGroupRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Admin.User.GroupRemoved, MessageType.Success));
             }
@@ -183,7 +183,7 @@ namespace Sofco.Service.Implementations.Admin
                     }
                 }
 
-                _userGroupRepository.Save(string.Empty);
+                _userGroupRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.User.UserGroupsUpdated, MessageType.Success));
             }
             catch (Exception)

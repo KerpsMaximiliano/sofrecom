@@ -193,7 +193,7 @@ ul.indented{
   color: black;
 }
 
-.label-SendPending {
+.label-SendPending, .label-PendingByManagementControl, .label-InvoicePending {
   background-color: #f8ac59;
   color: #FFFFFF;
 }
@@ -203,12 +203,12 @@ ul.indented{
   color: #FFFFFF;
 }
 
-.label-Rejected, .label-Cancelled {
+.label-Rejected, .label-Cancelled, .label-ManagementControlRejected {
   background-color: #ED5565;
   color: #FFFFFF;
 }
 
-.label-Approved {
+.label-Approved, .label-Invoiced, .label-AmountCashed {
   background-color: #1ab394;
   color: #FFFFFF;
 }
@@ -221,3 +221,7 @@ ul.indented{
 .error-desc{
   font-size: 14px;
 }
+
+.btn-right{
+  float: right;
+} 

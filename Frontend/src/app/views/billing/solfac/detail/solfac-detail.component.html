@@ -35,7 +35,7 @@
                     <fieldset>
                         <legend>Datos del Documento</legend>
                         <dl class="dl-horizontal">
-                            <dt>Estado: </dt><dd><span class="label label-warning">{{model.statusName}}</span></dd>
+                            <dt>Estado: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate }}</span></dd>
                             <dt>Nº de Contrato: </dt><dd>{{model.contractNumber}}</dd>
                             <dt>Proyecto: </dt><dd>{{model.project}}</dd>
 
@@ -137,9 +137,19 @@
             </div>
         </div>
         <div class="ibox-footer">
-            <div class="text-right">
-                <button class="btn btn-success" (click)="goToProject()"><i class="fa fa-cogs"></i> Ir al Proyecto </button>
-                <button class="btn btn-success" (click)="goToSearch()"><i class="fa fa-cogs"></i> Ir a Consultas </button>
+            <button class="btn btn-success" (click)="goToProject()"> Ir al Proyecto <i class="fa fa-building"></i></button>
+            <button class="btn btn-success" (click)="goToSearch()"> Ir a Consultas <i class="fa fa-search"></i></button>
+            
+            <div class="btn-right">
+                <button class="btn btn-danger" (click)="delete()" *ngIf="canDelete()"> Eliminar <i class="fa fa-times"></i></button>
+
+                <button class="btn btn-primary" (click)="sendToCDG()" *ngIf="canSendToCDG()"> Enviar a CDG <i class="fa fa-envelope"></i></button>
+                <button class="btn btn-danger" (click)="rejectByCDG()" *ngIf="canRejectByCDG()"> Rechazar <i class="fa fa-times"></i></button>
+
+                <button class="btn btn-primary" (click)="sendToDAF()" *ngIf="canSendToDAF()"> Enviar a DAF <i class="fa fa-envelope"></i></button>
+
+                <button class="btn btn-primary" (click)="sendToBill()" *ngIf="canSendToBill()"> Facturar  <i class="fa fa-money"></i></button>
+                <button class="btn btn-primary" (click)="sendToCash()" *ngIf="canSendToCash()"> Cobrar <i class="fa fa-save"></i> </button>
             </div>
         </div>
     </div>

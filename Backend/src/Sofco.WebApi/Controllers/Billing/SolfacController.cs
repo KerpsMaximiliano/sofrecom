@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -19,11 +21,13 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly IUtilsService _utilsService;
         private readonly ISolfacService _solfacService;
+        private readonly EmailConfig _emailConfig;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig)
         {
             _utilsService = utilsService;
             _solfacService = solfacService;
+            _emailConfig = emailConfig.Value;
         }
 
         [HttpPost]
@@ -107,6 +111,49 @@ namespace Sofco.WebApi.Controllers.Billing
             var domain = model.CreateDomain();
 
             var response = _solfacService.Add(domain);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("send")]
+        public IActionResult Send([FromBody] SolfacViewModel model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
+            var domain = model.CreateDomain();
+
+            var response = _solfacService.Add(domain);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var handleStatus = _solfacService.ChangeStatus(response.Data, SolfacStatus.PendingByManagementControl, _emailConfig);
+
+            response.AddMessages(handleStatus.Messages);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/status/{status}")]
+        public IActionResult ChangeStatus(int id, SolfacStatus status)
+        {
+            var response = _solfacService.ChangeStatus(id, status, _emailConfig);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = _solfacService.Delete(id);
 
             if (response.HasErrors()) return BadRequest(response);
 

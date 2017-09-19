@@ -21,6 +21,6 @@ namespace Sofco.Core.DAL.Common
         void BeginTransaction();
         void Rollback();
         void Commit(string nombreUsuario);
-        void Save(string nombreUsuario);
+        void Save();
     }
 }

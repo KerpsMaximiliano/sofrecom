@@ -117,17 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>No se puede cambiar el estado</value>
+  </data>
   <data name="HitoQuantityRequired" xml:space="preserve">
     <value>Cantidad no puede ser menor o igual a 0</value>
   </data>
   <data name="HitoUnitPriceRequired" xml:space="preserve">
     <value>Precio Unitario no puede ser menor o igual a 0</value>
   </data>
+  <data name="InvoicedSuccess" xml:space="preserve">
+    <value>La Solfac ha sido facturada correctamente</value>
+  </data>
+  <data name="InvoicePendingSuccess" xml:space="preserve">
+    <value>La Solfac se ha enviado a la DAF correctamente</value>
+  </data>
+  <data name="ManagementControlRejectedSuccess" xml:space="preserve">
+    <value>La Solfac ha sido rechazada correctamente</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Solicitud no encontrada</value>
   </data>
   <data name="NotFounds" xml:space="preserve">
     <value>No se han encontrado solicitudes con esos parametros de busqueda.</value>
+  </data>
+  <data name="PendingByManagementControlSuccess" xml:space="preserve">
+    <value>La Solfac se ha enviado correctamente a Control de Gestión</value>
   </data>
   <data name="PercentageLessThan0" xml:space="preserve">
     <value>Los porcetanjes no pueden ser menor a 0</value>
@@ -143,5 +158,11 @@
   </data>
   <data name="TotalPercentageError" xml:space="preserve">
     <value>La suma de porcentajes no puede ser distinta a 100%</value>
+  </data>
+  <data name="CancelledSucces" xml:space="preserve">
+    <value>Solfac anulada correctamente</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Solfac eliminada correctamente</value>
   </data>
 </root>

@@ -41,7 +41,7 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _repository.Update(entity);
-                _repository.Save(string.Empty);
+                _repository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Admin.Group.Enabled : Resources.es.Admin.Group.Disabled, MessageType.Success));
@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Admin
                 group.StartDate = DateTime.Now;
 
                 _repository.Insert(group);
-                _repository.Save(string.Empty);
+                _repository.Save();
 
                 response.Data = group;
                 response.Messages.Add(new Message(Resources.es.Admin.Group.Created, MessageType.Success));
@@ -145,7 +145,7 @@ namespace Sofco.Service.Implementations.Admin
                 if (group.Active) group.EndDate = null;
 
                 _repository.Update(group);
-                _repository.Save(string.Empty);
+                _repository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Group.Updated, MessageType.Success));
             }
             catch (Exception)
@@ -166,7 +166,7 @@ namespace Sofco.Service.Implementations.Admin
                 entity.EndDate = DateTime.Now;
 
                 _repository.Delete(entity);
-                _repository.Save(string.Empty);
+                _repository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Admin.Group.Deleted, MessageType.Success));
                 return response;
@@ -186,7 +186,7 @@ namespace Sofco.Service.Implementations.Admin
 
             response.Data.Role = role;
             _repository.Update(response.Data);
-            _repository.Save(string.Empty);
+            _repository.Save();
 
             response.Messages.Add(new Message(Resources.es.Admin.Group.RoleAssigned, MessageType.Success));
             return response;
@@ -202,7 +202,7 @@ namespace Sofco.Service.Implementations.Admin
 
             response.Data.Role = null;
             _repository.Update(response.Data);
-            _repository.Save(string.Empty);
+            _repository.Save();
 
             response.Messages.Add(new Message(Resources.es.Admin.Group.RoleRemoved, MessageType.Success));
             return response;

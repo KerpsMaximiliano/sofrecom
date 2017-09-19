@@ -8,6 +8,7 @@
         public string EmailFrom { get; set; }
         public string DisplyNameFrom { get; set; }
         public string SiteUrl { get; set; }
-        public int DafGroupId { get; set; }
+        public string DafMail { get; set; }
+        public string CdgMail { get; set; }
     }
 }

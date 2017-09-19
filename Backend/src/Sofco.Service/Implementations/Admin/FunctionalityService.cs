@@ -27,7 +27,7 @@ namespace Sofco.Service.Implementations.Admin
                 entity.Active = active;
 
                 _functionalityRepository.Update(entity);
-                _functionalityRepository.Save(string.Empty);
+                _functionalityRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Admin.Functionality.Enabled : Resources.es.Admin.Functionality.Disabled, MessageType.Success));

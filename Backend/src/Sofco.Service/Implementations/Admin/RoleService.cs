@@ -45,7 +45,7 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _roleRepository.Update(entity);
-                _roleRepository.Save(string.Empty);
+                _roleRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Admin.Role.Enabled : Resources.es.Admin.Role.Disabled, MessageType.Success));
@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Admin
                 role.StartDate = DateTime.Now;
 
                 _roleRepository.Insert(role);
-                _roleRepository.Save(string.Empty);
+                _roleRepository.Save();
 
                 response.Data = role;
                 response.Messages.Add(new Message(Resources.es.Admin.Role.Created, MessageType.Success));
@@ -125,7 +125,7 @@ namespace Sofco.Service.Implementations.Admin
                 if (role.Active) role.EndDate = null;
 
                 _roleRepository.Update(role);
-                _roleRepository.Save(string.Empty);
+                _roleRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Role.Updated, MessageType.Success));
             }
             catch (Exception)
@@ -146,7 +146,7 @@ namespace Sofco.Service.Implementations.Admin
                 entity.EndDate = DateTime.Now;
 
                 _roleRepository.Delete(entity);
-                _roleRepository.Save(string.Empty);
+                _roleRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(Resources.es.Admin.Role.Deleted, MessageType.Success));
@@ -188,7 +188,7 @@ namespace Sofco.Service.Implementations.Admin
                     }
                 }
 
-                _roleFunctionalityRepository.Save(string.Empty);
+                _roleFunctionalityRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
             catch (Exception)
@@ -229,7 +229,7 @@ namespace Sofco.Service.Implementations.Admin
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
                 _roleFunctionalityRepository.Insert(entity);
-                _roleFunctionalityRepository.Save(string.Empty);
+                _roleFunctionalityRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
@@ -266,7 +266,7 @@ namespace Sofco.Service.Implementations.Admin
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
                 _roleFunctionalityRepository.Delete(entity);
-                _roleFunctionalityRepository.Save(string.Empty);
+                _roleFunctionalityRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
@@ -299,7 +299,7 @@ namespace Sofco.Service.Implementations.Admin
                     }
                 }
 
-                _roleFunctionalityRepository.Save(string.Empty);
+                _roleFunctionalityRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Role.ModulesUpdated, MessageType.Success));
             }
             catch (Exception)

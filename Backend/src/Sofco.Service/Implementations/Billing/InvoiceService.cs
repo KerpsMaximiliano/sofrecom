@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Billing
                 invoice.UserId = user.Id;
 
                 _invoiceRepository.Insert(invoice);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceCreated, MessageType.Success));
@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations.Billing
                 };
 
                 _invoiceRepository.UpdateExcel(invoiceToSave);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.ExcelUpload, MessageType.Success));
@@ -147,7 +147,7 @@ namespace Sofco.Service.Implementations.Billing
                 };
 
                 _invoiceRepository.UpdatePdf(invoiceToSave);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.PdfUpload, MessageType.Success));
@@ -202,14 +202,11 @@ namespace Sofco.Service.Implementations.Billing
 
                 var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Sent };
                 _invoiceRepository.UpdateStatus(invoiceToModif);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.SentToDaf, MessageType.Success));
 
-                var recipients = _userRepository.GetUserMailsByGroupId(emailConfig.DafGroupId);
-                var recipientsAsString = string.Join(";", recipients);
-
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, recipientsAsString);
+                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, emailConfig.DafMail);
             }
             catch (Exception e)
             {
@@ -245,7 +242,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Rejected };
                 _invoiceRepository.UpdateStatus(invoiceToModif);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Reject, MessageType.Success));
 
@@ -291,7 +288,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = invoiceNumber };
                 _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Approved, MessageType.Success));
 
@@ -331,7 +328,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 _invoiceRepository.Delete(invoice);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Deleted, MessageType.Success));
             }
@@ -359,7 +356,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var invoice = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Cancelled };
                 _invoiceRepository.UpdateStatus(invoice);
-                _invoiceRepository.Save(string.Empty);
+                _invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Cancelled, MessageType.Success));
             }

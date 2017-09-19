@@ -7,6 +7,7 @@ namespace Sofco.WebApi.Models.Billing
     {
         public SolfacDetail(Solfac domain)
         {
+            Id = domain.Id;
             ClientName = domain.ClientName;
             BusinessName = domain.BusinessName;
             CelPhone = domain.CelPhone;
@@ -27,6 +28,9 @@ namespace Sofco.WebApi.Models.Billing
             OtherProvince1Percentage = domain.OtherProvince1Percentage;
             OtherProvince2Percentage = domain.OtherProvince2Percentage;
             OtherProvince3Percentage = domain.OtherProvince3Percentage;
+
+            CustomerId = domain.CustomerId;
+            ServiceId = domain.ServiceId;
 
             if (domain.ImputationNumber != null)
                 ImputationNumber3 = domain.ImputationNumber.Text;
@@ -54,6 +58,8 @@ namespace Sofco.WebApi.Models.Billing
             }
         }
 
+        public int Id { get; set; }
+
         public string PdfFileName { get; set; }
 
         public string InvoiceNumber { get; set; }
@@ -68,6 +74,8 @@ namespace Sofco.WebApi.Models.Billing
         public string DocumentType { get; set; }
         public string Project { get; set; }
         public string ProjectId { get; set; }
+        public string ServiceId { get; set; }
+        public string CustomerId { get; set; }
         public int CurrencyId { get; set; }
         public string ImputationNumber1 { get; set; }
         public string ImputationNumber3 { get; set; }

@@ -6,7 +6,7 @@ export class Solfac {
         public clientName: string,
         public celphone: string,
         public statusName: string,
-        public statusId: number,
+        public statusId: string,
         public contractNumber: string,
         public project: string,
         public documentTypeId: number,
@@ -34,6 +34,7 @@ export class Solfac {
         public invoiceId: string,
         public customerId: string,
         public serviceId: string,
+        public service: string,
         public analytic: string,
         public remito: boolean
     ){}

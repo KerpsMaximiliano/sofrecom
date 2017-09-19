@@ -10,6 +10,8 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { MessageService } from "app/services/common/message.service";
 import { UserService } from "app/services/admin/user.service";
 import { InvoiceService } from "app/services/billing/invoice.service";
+import { SolfacStatus } from "app/models/enums/solfacStatus";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
   selector: 'app-solfac',
@@ -34,6 +36,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
+                private menuService: MenuService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
@@ -51,7 +54,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.businessName = customer.nombre;
       this.model.clientName = customer.contact;
       this.model.celphone = customer.telephone;
-      this.model.statusName = "Pendiente de envío";
+      this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
+      this.model.statusId = SolfacStatus[SolfacStatus.SendPending];
       this.model.contractNumber = project.purchaseOrder;
       this.model.project = project.nombre;
       this.model.projectId = project.id;
@@ -64,6 +68,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
       this.model.serviceId = sessionStorage.getItem("serviceId");
+      this.model.service = sessionStorage.getItem("serviceName");
       this.model.customerId = customer.id;
       this.model.remito = project.remito;
 
@@ -168,10 +173,30 @@ export class SolfacComponent implements OnInit, OnDestroy {
           if(data.messages) this.messageService.showMessages(data.messages);
 
           setTimeout(() => {
-            this.router.navigate([`/billing/project/${this.projectId}`]);
+            this.cancel();
           }, 1500)
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    canSave(){
+      return this.menuService.hasFunctionality("SOLFA", "ALTA");
+    }
+
+    send(){
+      this.solfacService.send(this.model).subscribe(
+        data => {
+          if(data.messages) this.messageService.showMessages(data.messages);
+
+          setTimeout(() => {
+            this.cancel();
+          }, 1500)
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    canSend(){
+      return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.menuService.hasFunctionality("SOLFA", "SCDG");
     }
 
     setCurrencySymbol(currencyId){
@@ -191,6 +216,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     cancel(){
-      this.router.navigate([`/billing/project/${this.projectId}`]);
+      this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
     }
 }

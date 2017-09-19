@@ -68,7 +68,6 @@ namespace Sofco.WebApi
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Services
-            services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IUserService, UserService>();
@@ -80,7 +79,6 @@ namespace Sofco.WebApi
             services.AddTransient<IInvoiceService, InvoiceService>();
 
             // Repositories
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IBaseRepository<Customer>, BaseRepository<Customer>>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IBaseRepository<Group>, BaseRepository<Group>>();

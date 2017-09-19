@@ -122,13 +122,8 @@ namespace Sofco.DAL.Repositories.Common
         /// <summary>
         /// Graba todos los cambios realizados en el contexto.
         /// </summary>
-        public void Save(string nombreUsuario)
+        public void Save()
         {
-            // Genera la auditoria.
-            /* foreach (var entry in context.ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Deleted || p.State == EntityState.Modified))
-             {
-                 context.Set<AuditoriaObjeto>().AddRange(AuditRecords(entry, nombreUsuario));
-             }*/
             _context.SaveChanges();
         }
 
@@ -145,7 +140,7 @@ namespace Sofco.DAL.Repositories.Common
 
         public void Commit(string nombreUsuario)
         {
-            Save(nombreUsuario);
+            Save();
             if (_contextTransaction != null)
             {
                 _contextTransaction.Commit();

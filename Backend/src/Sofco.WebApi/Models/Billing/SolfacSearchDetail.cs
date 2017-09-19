@@ -15,7 +15,7 @@ namespace Sofco.WebApi.Models.Billing
             Amount = domain.Amount;
             Iva21 = domain.Iva21;
             TotalAmount = domain.TotalAmount;
-            StatusName = "Pendiente de envío";
+            StatusName = domain.Status.ToString();
             CurrencyId = domain.CurrencyId;
         }
 

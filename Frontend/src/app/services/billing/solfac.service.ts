@@ -27,4 +27,16 @@ export class SolfacService {
   add(model){
      return this.http.post(`${this.baseUrl}/solfac`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
+
+  send(model){
+     return this.http.post(`${this.baseUrl}/solfac/send`, model, { headers: this.headers}).map((res:Response) => res.json());
+  }
+
+  changeStatus(id, status){
+     return this.http.post(`${this.baseUrl}/solfac/${id}/status/${status}`, {}, { headers: this.headers}).map((res:Response) => res.json());
+  }
+
+  delete(id){
+     return this.http.delete(`${this.baseUrl}/solfac/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  }
 }

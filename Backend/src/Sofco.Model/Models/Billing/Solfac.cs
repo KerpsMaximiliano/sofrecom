@@ -14,25 +14,16 @@ namespace Sofco.Model.Models.Billing
             Hitos = new Collection<Hito>();
             StartDate = DateTime.Now;
         }
-
-        public string ClientName { get; set; }
+        
         public string BusinessName { get; set; }
         public string CelPhone { get; set; }
         public SolfacStatus Status { get; set; }
         public string ContractNumber { get; set; }
-        public string Project { get; set; }
-        public DocumentType DocumentType { get; set; }
-        public int DocumentTypeId { get; set; }
-        public int UserApplicantId { get; set; }
-        public User UserApplicant { get; set; }
-        public string ImputationNumber1 { get; set; }
-        public ImputationNumber ImputationNumber { get; set; }
-        public int ImputationNumber3Id { get; set; }
+
         public decimal Amount { get; set; }
         public decimal Iva21 { get; set; }
         public decimal TotalAmount { get; set; }
-        public Currency Currency { get; set; }
-        public int CurrencyId { get; set; }
+
         public decimal CapitalPercentage { get; set; }
         public decimal BuenosAiresPercentage { get; set; }
         public decimal OtherProvince1Percentage { get; set; }
@@ -44,17 +35,37 @@ namespace Sofco.Model.Models.Billing
         public string AttachedParts { get; set; }
         public string ParticularSteps { get; set; }
         public short TimeLimit { get; set; }
+        public string Analytic { get; set; }
+
         public IList<Hito> Hitos { get; set; }
+
+        public int CurrencyId { get; set; }
+        public Currency Currency { get; set; }
 
         public int? InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
 
+        public int DocumentTypeId { get; set; }
+        public DocumentType DocumentType { get; set; }
+
+        public int UserApplicantId { get; set; }
+        public User UserApplicant { get; set; }
+
+        public string ImputationNumber1 { get; set; }
+        public ImputationNumber ImputationNumber { get; set; }
+        public int ImputationNumber3Id { get; set; }
+
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
+
         public string ProjectId { get; set; }
+        public string Project { get; set; }
+
         public string CustomerId { get; set; }
+        public string ClientName { get; set; }
+
         public string ServiceId { get; set; }
-        public string Analytic { get; set; }
+        public string Service { get; set; }
     }
 }

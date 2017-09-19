@@ -30,7 +30,7 @@ namespace Sofco.Service.Implementations.Admin
                 entity.Active = active;
 
                 _moduleRepository.Update(entity);
-                _moduleRepository.Save(string.Empty);
+                _moduleRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.es.Admin.Module.Enabled : Resources.es.Admin.Module.Disabled, MessageType.Success));
@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Admin
             try
             {
                 _moduleRepository.Update(data);
-                _moduleRepository.Save(string.Empty);
+                _moduleRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Admin.Module.Updated, MessageType.Success));
             }
             catch (Exception)

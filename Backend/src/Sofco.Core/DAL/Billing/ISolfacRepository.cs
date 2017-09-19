@@ -12,5 +12,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Solfac> GetByProject(string projectId);
         Solfac GetById(int id);
         IList<Solfac> SearchByParams(SolfacParams parameters);
+        void UpdateStatus(Solfac solfacToModif);
+        Solfac GetByIdWithUser(int id);
     }
 }

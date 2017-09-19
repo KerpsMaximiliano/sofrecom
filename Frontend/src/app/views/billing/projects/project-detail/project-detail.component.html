@@ -164,7 +164,7 @@
                                                 <td>{{solfac.documentTypeName}}</td>
                                                 <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
                                                 <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
-                                                <td><span class="label label-warning">{{ solfac.statusName | translate}}</span></td>
+                                                <td><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>        
