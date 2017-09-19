@@ -24,19 +24,19 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-title">
-          <h3>Datos del cliente</h3>
+          <h3>{{'billing.invoice.information' | translate }}</h3>
         </div>
         <div class="ibox-content">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
-                        <dt><h4>Número de remito: </h4></dt>
+                        <dt><h4>{{'billing.invoice.invoiceNumber' | translate }}: </h4></dt>
                         <dd><h4 class="text-navy">00-0000000-00</h4></dd>
                     </dl>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <dl class="dl-horizontal">
-                        <dt><h4>Estado: </h4></dt>
+                        <dt><h4>{{'billing.invoice.status' | translate }}: </h4></dt>
                         <dd><span class="label label-warning">{{ model.invoiceStatus | translate }}</span></dd>
                     </dl>
                 </div>
@@ -45,21 +45,19 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <dl class="dl-horizontal">
-                        <dt>Cuenta: </dt><dd>{{model.accountName}}</dd>
-                        <dt>Servicio: </dt><dd>{{model.service}}</dd>
-                        <dt>Proyecto: </dt><dd>{{model.project}}</dd>
-                        <dt>C.U.I.T.: </dt><dd>{{model.cuit}}</dd>
-
-             
+                        <dt>{{'billing.invoice.account' | translate }}: </dt><dd>{{model.accountName}}</dd>
+                        <dt>{{'billing.invoice.service' | translate }}: </dt><dd>{{model.service}}</dd>
+                        <dt>{{'billing.invoice.project' | translate }}: </dt><dd>{{model.project}}</dd>
+                        <dt>{{'billing.invoice.cuit' | translate }}: </dt><dd>{{model.cuit}}</dd>
                     </dl>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <dl class="dl-horizontal">
-                        <dt>Dirección:</dt><dd>{{model.address}}</dd>
-                        <dt>Código postal: </dt><dd>{{model.zipcode}}</dd>
-                        <dt>Ciudad: </dt><dd>{{model.city}}</dd>
-                        <dt>Estado/Provincia: </dt><dd>{{model.province}}</dd>
-                        <dt>Pais: </dt><dd>{{model.country}}</dd>
+                        <dt>{{'billing.invoice.address' | translate }}:</dt><dd>{{model.address}}</dd>
+                        <dt>{{'billing.invoice.zipCode' | translate }}: </dt><dd>{{model.zipcode}}</dd>
+                        <dt>{{'billing.invoice.city' | translate }}: </dt><dd>{{model.city}}</dd>
+                        <dt>{{'billing.invoice.province' | translate }}: </dt><dd>{{model.province}}</dd>
+                        <dt>{{'billing.invoice.country' | translate }}: </dt><dd>{{model.country}}</dd>
                     </dl>
                 </div>
             </div>
@@ -74,13 +72,13 @@
             <div class="row" *ngIf="model.id > 0 && !excelUploaded">
                 <div class="col-lg-6">
                     <div class="uploader-margin-top">
-                        <label *ngIf="uploader.getNotUploadedItems().length">Progreso:</label>
+                        <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
                         <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
                             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                         </div>
 
                         <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                            <span class="glyphicon glyphicon-upload"></span> Importar
+                            <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                         </button>
 
                         <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
@@ -91,17 +89,17 @@
             </div>
             
             <div class="alert alert-success" *ngIf="model.id > 0 && excelUploaded">
-                Se ha importado el excel exitosamente. Puede dejar el remito en borrador o enviarlo a la DAF para su aprobación
+                {{'billing.invoice.excelUploaded' | translate }}
             </div>
 
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> Cancelar </button>
-                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="showConfirmDelete()"><i class="fa fa-times"></i> Eliminar </button>
-                <button *ngIf="model.id > 0" class="btn btn-success" (click)="cancel()"><i class="fa fa-cogs"></i> Dejar en borrador </button>
-                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> Crear y Exportar </button>
-                <button *ngIf="canSendInvoice()" class="btn btn-primary" (click)="showConfirmSendToDaf()"><i class="fa fa-save"></i> Enviar a DAF </button>
+                <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> {{'ACTIONS.cancel' | translate }} </button>
+                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
+                <button *ngIf="model.id > 0" class="btn btn-success" (click)="cancel()"><i class="fa fa-cogs"></i> {{'billing.invoice.draft' | translate }} </button>
+                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> {{'billing.invoice.createAndExport' | translate }} </button>
+                <button *ngIf="canSendInvoice()" class="btn btn-primary" (click)="showConfirmSendToDaf()"><i class="fa fa-save"></i> {{'ACTIONS.sendToDaf' | translate }} </button>
             </div>
         </div>
     </div>

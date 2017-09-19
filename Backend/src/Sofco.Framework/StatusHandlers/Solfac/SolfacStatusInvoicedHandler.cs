@@ -18,7 +18,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private const string MailSubject = "SOLFAC - FACTURADA - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Solfac solfac)
+        public Response Validate(Model.Models.Billing.Solfac solfac, string comment)
         {
             var response = new Response();
 

@@ -78,6 +78,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Se debe agregar un motivo de rechazo.
+        /// </summary>
+        public static string CommentRequired {
+            get {
+                return ResourceManager.GetString("CommentRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Solfac eliminada correctamente.
         /// </summary>
         public static string Deleted {

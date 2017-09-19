@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
@@ -20,12 +22,17 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacRepository _solfacRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IUserRepository _userRepository;
 
-        public SolfacService(ISolfacRepository solfacRepository, IInvoiceRepository invoiceRepository, IHostingEnvironment hostingEnvironment, IUserRepository userRepository)
+        public SolfacService(ISolfacRepository solfacRepository, 
+            IInvoiceRepository invoiceRepository, 
+            IHostingEnvironment hostingEnvironment, 
+            IUserRepository userRepository)
         {
             _solfacRepository = solfacRepository;
             _invoiceRepository = invoiceRepository;
             _hostingEnvironment = hostingEnvironment;
+            _userRepository = userRepository;
         }
 
         public Response<Solfac> Add(Solfac solfac)
@@ -39,8 +46,13 @@ namespace Sofco.Service.Implementations.Billing
                 solfac.UpdatedDate = DateTime.Now;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 
+                // Add History
+                solfac.Histories.Add(GetHistory(SolfacStatus.None, solfac.Status, solfac.UserApplicantId, string.Empty));
+
+                // Insert Solfac
                 _solfacRepository.Insert(solfac);
 
+                // Update Invoice Status to Related
                 if (solfac.InvoiceId.HasValue && solfac.InvoiceId.Value > 0)
                 {
                     var invoiceToModif = new Invoice { Id = solfac.InvoiceId.Value, InvoiceStatus = InvoiceStatus.Related };
@@ -91,11 +103,11 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response ChangeStatus(int id, SolfacStatus status, EmailConfig emailConfig)
+        public Response ChangeStatus(int solfacId, SolfacStatus status, EmailConfig emailConfig, int userId, string comment)
         {
             var response = new Response();
 
-            var solfac = _solfacRepository.GetByIdWithUser(id);
+            var solfac = _solfacRepository.GetByIdWithUser(solfacId);
 
             if (solfac == null)
             {
@@ -103,7 +115,47 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            return ChangeStatus(solfac, status, emailConfig);
+            return ChangeStatus(solfac, status, emailConfig, userId, comment);
+        }
+
+        public Response ChangeStatus(Solfac solfac, SolfacStatus status, EmailConfig emailConfig, int userId, string comment)
+        {
+            var response = new Response();
+
+            try
+            {
+                var solfacStatusHandler = SolfacStatusFactory.GetInstance(status);
+
+                // Validate status
+                var statusErrors = solfacStatusHandler.Validate(solfac, comment);
+
+                if (statusErrors.HasErrors())
+                {
+                    response.AddMessages(statusErrors.Messages);
+                    return response;
+                }
+              
+                // Update Status
+                var solfacToModif = new Solfac { Id = solfac.Id, Status = status };
+                _solfacRepository.UpdateStatus(solfacToModif);
+
+                // Add history
+                var history = GetHistory(solfac.Id, solfac.Status, status, userId, comment);
+                _solfacRepository.AddHistory(history);
+
+                // Save
+                _solfacRepository.Save();
+                response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
+
+                // Send Mail
+                HandleSendMail(emailConfig, solfacStatusHandler, solfac);
+            }
+            catch (Exception e)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
         }
 
         public Response Delete(int id)
@@ -133,36 +185,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response ChangeStatus(Solfac solfac, SolfacStatus status, EmailConfig emailConfig)
+        public ICollection<SolfacHistory> GetHistories(int id)
         {
-            var response = new Response();
-
-            try
-            {
-                var solfacStatusHandler = SolfacStatusFactory.GetInstance(status);
-
-                var statusErrors = solfacStatusHandler.Validate(solfac);
-
-                if (statusErrors.HasErrors())
-                {
-                    response.AddMessages(statusErrors.Messages);
-                    return response;
-                }
-
-                var solfacToModif = new Solfac { Id = solfac.Id, Status = status };
-                _solfacRepository.UpdateStatus(solfacToModif);
-                _solfacRepository.Save();
-
-                response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
-
-                HandleSendMail(emailConfig, solfacStatusHandler, solfac);
-            }
-            catch (Exception e)
-            {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
-            }
-
-            return response;
+            return _solfacRepository.GetHistories(id);
         }
 
         private Response<Solfac> Validate(Solfac solfac)
@@ -219,6 +244,27 @@ namespace Sofco.Service.Implementations.Billing
 
             MailSender.Send(recipients, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
                 subject, body, emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);
+        }
+
+        private SolfacHistory GetHistory(int solfacId, SolfacStatus statusFrom, SolfacStatus statusTo, int userId, string comment)
+        {
+            var history = GetHistory(statusFrom, statusTo, userId, comment);
+            history.SolfacId = solfacId;
+            return history;
+        }
+
+        private SolfacHistory GetHistory(SolfacStatus statusFrom, SolfacStatus statusTo, int userId, string comment)
+        {
+            var history = new SolfacHistory
+            {
+                SolfacStatusFrom = statusFrom,
+                SolfacStatusTo = statusTo,
+                UserId = userId,
+                Comment = comment,
+                CreatedDate = DateTime.Now
+            };
+
+            return history;
         }
     }
 }

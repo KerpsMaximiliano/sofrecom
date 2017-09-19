@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
             userData => {
                 Cookie.set('userInfo', JSON.stringify(userData));  
                 this.menuService.currentUser = userData.name;
-
+                this.menuService.user = userData;
             },
             error => this.errorHandlerService.handleErrors(error)
         );

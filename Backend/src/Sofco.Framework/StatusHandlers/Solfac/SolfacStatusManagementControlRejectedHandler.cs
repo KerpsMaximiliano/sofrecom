@@ -19,13 +19,18 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private const string MailSubject = "SOLFAC - RECHAZADA por Control de Gestión - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Solfac solfac)
+        public Response Validate(Model.Models.Billing.Solfac solfac, string comment)
         {
             var response = new Response();
 
             if (solfac.Status != SolfacStatus.PendingByManagementControl)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
+            }
+
+            if (string.IsNullOrWhiteSpace(comment))
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CommentRequired, MessageType.Error));
             }
             
             return response;

@@ -9,13 +9,6 @@ declare var $: any;
 })
 export class Ng2ModalComponent implements OnInit {
 
-/*  @Input() title: string = "Modal Title";
-  @Input() id: string = "MyModal";
-  @Input() acceptButton: boolean = true;
-  @Input() cancelButton: boolean = true;
-  @Input() acceptButtonText: string = "Accept";
-  @Input() cancelButtonText: string = "Cancel";*/
-
   @Input() config: Ng2ModalConfig = new Ng2ModalConfig(
     "Modal Title", //title
     "ModalId",     //id
@@ -26,8 +19,6 @@ export class Ng2ModalComponent implements OnInit {
   );
   @Output() close = new EventEmitter<any>();
   @Output() accept = new EventEmitter<any>();
-
-  
 
   constructor() { }
 

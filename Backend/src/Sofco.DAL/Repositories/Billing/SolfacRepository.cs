@@ -48,6 +48,16 @@ namespace Sofco.DAL.Repositories.Billing
                 .SingleOrDefault(x => x.Id == id);
         }
 
+        public ICollection<SolfacHistory> GetHistories(int solfacId)
+        {
+            return _context.SolfacHistories.Where(x => x.SolfacId == solfacId).Include(x => x.User).ToList().AsReadOnly();
+        }
+
+        public void AddHistory(SolfacHistory history)
+        {
+            _context.SolfacHistories.Add(history);
+        }
+
         public IList<Solfac> SearchByParams(SolfacParams parameters)
         {
             IQueryable<Solfac> query = _context.Solfacs;

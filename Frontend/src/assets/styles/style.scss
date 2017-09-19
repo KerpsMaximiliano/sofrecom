@@ -193,8 +193,13 @@ ul.indented{
   color: black;
 }
 
-.label-SendPending, .label-PendingByManagementControl, .label-InvoicePending {
+.label-SendPending, .label-PendingByManagementControl {
   background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-InvoicePending{
+  background-color: #23c6c8;
   color: #FFFFFF;
 }
 

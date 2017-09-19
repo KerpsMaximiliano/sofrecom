@@ -165,4 +165,7 @@
   <data name="Deleted" xml:space="preserve">
     <value>Solfac eliminada correctamente</value>
   </data>
+  <data name="CommentRequired" xml:space="preserve">
+    <value>Se debe agregar un motivo de rechazo</value>
+  </data>
 </root>

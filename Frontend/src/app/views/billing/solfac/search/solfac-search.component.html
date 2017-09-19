@@ -21,27 +21,27 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="client">Cliente</label>
+                        <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="customerId" (ngModelChange)="customerChange()">
-                            <option value="0">Seleccione una opción</option>
+                            <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="service">Servicio</label>
+                        <label class="control-label" for="service">{{'billing.solfac.service' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="serviceId" (ngModelChange)="serviceChange()">
-                            <option value="0">Seleccione una opción</option>
+                            <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let service of services" [value]="service?.value">{{service?.text}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="quantity">Proyecto</label>
+                        <label class="control-label" for="quantity">{{'billing.solfac.project' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="projectId">
-                            <option value="0">Seleccione una opción</option>
+                            <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let project of projects" [value]="project?.value">{{project?.text}}</option>
                         </select>
                     </div>
@@ -50,15 +50,15 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="analytic">Analítica</label>
+                        <label class="control-label" for="analytic">{{'billing.solfac.analytic' | translate }}</label>
                         <input class="form-control" name="analytic" placeholder="Analítica" type="text" [(ngModel)]="analytic">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="quantity">Solicitante</label>
+                        <label class="control-label" for="quantity">{{'billing.solfac.userApplicant' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="userApplicantId">
-                            <option value="0">Seleccione una opción</option>
+                            <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let userApplicant of userApplicants" [value]="userApplicant?.value">{{userApplicant?.text}}</option>
                         </select>
                     </div>
@@ -67,7 +67,7 @@
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button class="btn btn-success" (click)="search()"> Buscar <i class="fa fa-search"></i></button>
+                <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>
@@ -84,11 +84,11 @@
                     <table class="table table-striped" id="solfacsTable">
                         <thead>
                             <tr>
-                                <th>Proyecto</th>
-                                <th>Razón Social</th>
-                                <th>Tipo Doc.</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
+                                <th>{{'billing.solfac.project' | translate }}</th>
+                                <th>{{'billing.solfac.businessName' | translate }}</th>
+                                <th>{{'billing.solfac.documentType' | translate }}</th>
+                                <th>{{'billing.solfac.date' | translate }}</th>
+                                <th>{{'billing.solfac.milestone.total' | translate }}</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>

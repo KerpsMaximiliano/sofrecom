@@ -131,7 +131,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors()) return BadRequest(response);
 
-            var handleStatus = _solfacService.ChangeStatus(response.Data, SolfacStatus.PendingByManagementControl, _emailConfig);
+            var handleStatus = _solfacService.ChangeStatus(response.Data, SolfacStatus.PendingByManagementControl, _emailConfig, response.Data.UserApplicantId, string.Empty);
 
             response.AddMessages(handleStatus.Messages);
 
@@ -139,10 +139,10 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        [Route("{id}/status/{status}")]
-        public IActionResult ChangeStatus(int id, SolfacStatus status)
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody] StatusChangeViewModel model)
         {
-            var response = _solfacService.ChangeStatus(id, status, _emailConfig);
+            var response = _solfacService.ChangeStatus(id, model.Status, _emailConfig, model.UserId, model.Comment);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -158,6 +158,16 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = _solfacService.GetHistories(id);
+
+            var list = histories.Select(x => new SolfacHistoryViewModel(x));
+
+            return Ok(list);
         }
     }
 }

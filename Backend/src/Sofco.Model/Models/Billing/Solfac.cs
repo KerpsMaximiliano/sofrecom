@@ -12,6 +12,7 @@ namespace Sofco.Model.Models.Billing
         public Solfac()
         {
             Hitos = new Collection<Hito>();
+            Histories = new Collection<SolfacHistory>();
             StartDate = DateTime.Now;
         }
         
@@ -38,6 +39,7 @@ namespace Sofco.Model.Models.Billing
         public string Analytic { get; set; }
 
         public IList<Hito> Hitos { get; set; }
+        public ICollection<SolfacHistory> Histories { get; set; }
 
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }

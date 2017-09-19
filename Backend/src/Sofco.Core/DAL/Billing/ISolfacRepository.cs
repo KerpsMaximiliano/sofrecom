@@ -14,5 +14,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Solfac> SearchByParams(SolfacParams parameters);
         void UpdateStatus(Solfac solfacToModif);
         Solfac GetByIdWithUser(int id);
+        ICollection<SolfacHistory> GetHistories(int solfacId);
+        void AddHistory(SolfacHistory history);
     }
 }

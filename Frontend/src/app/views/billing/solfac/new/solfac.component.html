@@ -18,7 +18,7 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-title">
-            <h3>{{ 'billing.solfac.contractInfo' }}</h3>
+            <h3>{{ 'billing.solfac.contractInfo' | translate }}</h3>
         </div>
         <div class="ibox-content">
             <!-- Datos CRM -->
@@ -98,7 +98,7 @@
                 <!-- Numero de contrato -->
                 <div class="col-lg-4 col-md-5 col-sm-5">
                     <div class="form-group">
-                        <label class="control-label">{{'billing.solfac.contractNumber' | translate }}/label>
+                        <label class="control-label">{{'billing.solfac.contractNumber' | translate }}</label>
                         <input type="text" class="form-control input-sm" [(ngModel)]="model.contractNumber">
                     </div>
                 </div>

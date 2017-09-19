@@ -18,6 +18,8 @@
         Invoiced,
 
         // Cobrada
-        AmountCashed
+        AmountCashed,
+
+        None
     }
 }

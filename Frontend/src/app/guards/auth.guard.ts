@@ -32,10 +32,8 @@ export class AuthGuard implements CanActivate {
 
         }
         
-        Cookie.delete('access_token');
-        Cookie.delete('userInfo');
-        Cookie.delete('currentUser');
-        Cookie.delete('currentUserMail');
+        Cookie.deleteAll();
+        sessionStorage.clear();
         localStorage.removeItem('menu');
 
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});

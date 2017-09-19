@@ -10,6 +10,7 @@ export class MenuService {
 
     public menu: Menu[];
     public currentUser: any;
+    public user: any;
 
     constructor(private http: Http, private service: Service) {
         this.baseUrl = this.service.UrlApi;
@@ -23,8 +24,11 @@ export class MenuService {
         }
 
         var userInfo = Cookie.get("userInfo");
+
         if(userInfo){
-            this.currentUser = JSON.parse(userInfo).name;
+            var jsonParsed = JSON.parse(userInfo);
+            this.currentUser = jsonParsed.name;
+            this.user = jsonParsed;
         }
     }
 

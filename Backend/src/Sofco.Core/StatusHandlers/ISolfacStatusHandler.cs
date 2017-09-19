@@ -6,7 +6,7 @@ namespace Sofco.Core.StatusHandlers
 {
     public interface ISolfacStatusHandler
     {
-        Response Validate(Solfac solfac);
+        Response Validate(Solfac solfac, string comment);
         string GetBodyMail(Solfac solfac, string siteUrl);
         string GetSubjectMail(Solfac solfac);
         string GetRecipients(Solfac solfac, EmailConfig emailConfig);

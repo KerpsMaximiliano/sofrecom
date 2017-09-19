@@ -14,8 +14,9 @@ namespace Sofco.Core.Services.Billing
         IList<Hito> GetHitosByProject(string projectId);
         IList<Solfac> GetByProject(string projectId);
         Response<Solfac> GetById(int id);
-        Response ChangeStatus(Solfac solfac, SolfacStatus status, EmailConfig emailConfig);
-        Response ChangeStatus(int id, SolfacStatus status, EmailConfig emailConfig);
+        Response ChangeStatus(Solfac solfac, SolfacStatus status, EmailConfig emailConfig, int userId, string comment);
+        Response ChangeStatus(int solfacId, SolfacStatus status, EmailConfig emailConfig, int userId, string comment);
         Response Delete(int id);
+        ICollection<SolfacHistory> GetHistories(int id);
     }
 }
