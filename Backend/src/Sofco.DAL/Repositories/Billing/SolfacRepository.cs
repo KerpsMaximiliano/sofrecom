@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Repositories.Billing
@@ -58,6 +59,34 @@ namespace Sofco.DAL.Repositories.Billing
             _context.SolfacHistories.Add(history);
         }
 
+        public void SaveAttachment(SolfacAttachment attachment)
+        {
+            _context.SolfacAttachments.Add(attachment);
+        }
+
+        public ICollection<SolfacAttachment> GetFiles(int solfacId)
+        {
+            return _context.SolfacAttachments
+                .Where(x => x.SolfacId == solfacId)
+                .Select(x => new SolfacAttachment
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CreationDate = x.CreationDate
+                })
+                .ToList();
+        }
+
+        public SolfacAttachment GetFileById(int fileId)
+        {
+            return _context.SolfacAttachments.SingleOrDefault(x => x.Id == fileId);
+        }
+
+        public void DeleteFile(SolfacAttachment file)
+        {
+            _context.SolfacAttachments.Remove(file);
+        }
+
         public IList<Solfac> SearchByParams(SolfacParams parameters)
         {
             IQueryable<Solfac> query = _context.Solfacs;
@@ -76,6 +105,9 @@ namespace Sofco.DAL.Repositories.Billing
 
             if (parameters.UserApplicantId > 0)
                 query = query.Where(x => x.UserApplicantId == parameters.UserApplicantId);
+
+            if (parameters.Status != SolfacStatus.None)
+                query = query.Where(x => x.Status == parameters.Status);
 
             return query.Include(x => x.DocumentType).ToList();
         }

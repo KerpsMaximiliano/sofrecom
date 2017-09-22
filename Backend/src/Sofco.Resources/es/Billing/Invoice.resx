@@ -150,6 +150,9 @@
   <data name="InvoiceCreated" xml:space="preserve">
     <value>Remito generado exitosamente</value>
   </data>
+  <data name="InvoiceNumerAlreadyExist" xml:space="preserve">
+    <value>Número del remito ya existe</value>
+  </data>
   <data name="InvoiceNumerRequired" xml:space="preserve">
     <value>Número de remito es requerido</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Remito no encontrado</value>
+  </data>
+  <data name="NotFounds" xml:space="preserve">
+    <value>No se han encontrado remitos con los parametros de busqueda seleccionados.</value>
   </data>
   <data name="PdfUpload" xml:space="preserve">
     <value>PDF guardo exitosamente</value>

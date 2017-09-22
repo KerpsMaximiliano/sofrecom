@@ -1,8 +1,8 @@
 export enum SolfacStatus {
-    SendPending = 0,
-    PendingByManagementControl = 1,
-    ManagementControlRejected = 2,
-    InvoicePending = 3,
-    Invoiced = 4,
-    AmountCashed = 5
+    SendPending = 1,
+    PendingByManagementControl = 2,
+    ManagementControlRejected = 3,
+    InvoicePending = 4,
+    Invoiced = 5,
+    AmountCashed = 6
 }

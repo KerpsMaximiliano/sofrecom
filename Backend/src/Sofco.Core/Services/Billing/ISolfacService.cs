@@ -18,5 +18,10 @@ namespace Sofco.Core.Services.Billing
         Response ChangeStatus(int solfacId, SolfacStatus status, EmailConfig emailConfig, int userId, string comment);
         Response Delete(int id);
         ICollection<SolfacHistory> GetHistories(int id);
+        Response Update(Solfac domain, string modelComments);
+        Response<SolfacAttachment> SaveFile(int solfacId, byte[] fileAsArrayBytes, string fileFileName);
+        ICollection<SolfacAttachment> GetFiles(int solfacId);
+        Response<SolfacAttachment> GetFileById(int fileId);
+        Response DeleteFile(int id);
     }
 }

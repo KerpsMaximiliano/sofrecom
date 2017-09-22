@@ -13,6 +13,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public HitoViewModel(Hito hito)
         {
+            Id = hito.Id;
             Description = hito.Description;
             Quantity = hito.Quantity;
             UnitPrice = hito.UnitPrice;
@@ -42,6 +43,7 @@ namespace Sofco.WebApi.Models.Billing
         {
             var hito = new Hito();
 
+            hito.Id = Id;
             hito.Description = Description;
             hito.Quantity = Quantity;
             hito.UnitPrice = UnitPrice;

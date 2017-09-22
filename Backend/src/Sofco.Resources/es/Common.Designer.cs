@@ -67,5 +67,41 @@ namespace Sofco.Resources.es {
                 return ResourceManager.GetString("ErrorSave", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Error al enviar el mail.
+        /// </summary>
+        public static string ErrorSendMail {
+            get {
+                return ResourceManager.GetString("ErrorSendMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Ocurrio un error al exportar el archivo.
+        /// </summary>
+        public static string ExportFileError {
+            get {
+                return ResourceManager.GetString("ExportFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Archivo no encontrado.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Ocurrio un error al guardar el archivo.
+        /// </summary>
+        public static string SaveFileError {
+            get {
+                return ResourceManager.GetString("SaveFileError", resourceCulture);
+            }
+        }
     }
 }

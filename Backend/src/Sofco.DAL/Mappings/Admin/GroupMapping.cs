@@ -10,6 +10,7 @@ namespace Sofco.DAL.Mappings.Admin
             // Primary Key
             builder.Entity<Group>().HasKey(_ => _.Id);
             builder.Entity<Group>().Property(_ => _.Description).HasMaxLength(50).IsRequired();
+            builder.Entity<Group>().Property(_ => _.Email).HasMaxLength(100).IsRequired();
         }
     }
 }

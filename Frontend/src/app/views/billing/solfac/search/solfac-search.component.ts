@@ -11,6 +11,8 @@ import { UserService } from "app/services/admin/user.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
+import { SolfacStatus } from 'app/models/enums/solfacStatus';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-solfacSearch',
@@ -24,12 +26,14 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public services: Option[] = new Array<Option>();
     public projects: Option[] = new Array<Option>();
     public userApplicants: Option[] = new Array<Option>();
+    public statuses: Option[] = new Array<Option>();
 
     customerId: string = "0";
     serviceId: string = "0";
     projectId: string = "0";
     userApplicantId: string = "0";
     analytic: string;
+    status: string = "0";
 
     public loading:  boolean = false;
 
@@ -41,6 +45,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
+        private menuService: MenuService,
         private datatableService: DataTableService,
         private userService: UserService,
         private errorHandlerService: ErrorHandlerService) { }
@@ -48,6 +53,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getCustomers();
         this.getUserOptions();
+        this.getStatuses();
     }
 
     ngOnDestroy(){
@@ -62,13 +68,27 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
       }
     }
 
-    goToDetail(id: number) {
-        this.router.navigate(["/billing/solfac/" + id]);
+    goToDetail(solfac) {
+        if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
+        (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+        {
+            this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
+        }
+        else{
+            this.router.navigate(["/billing/solfac/" + solfac.id]);
+        }
     }
 
     getUserOptions(){
         this.userService.getOptions().subscribe(data => {
           this.userApplicants = data;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getStatuses(){
+        this.service.getStatus().subscribe(data => {
+          this.statuses = data;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -112,7 +132,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             serviceId: this.serviceId,
             projectId: this.projectId,
             userApplicantId: this.userApplicantId,
-            analytic: this.analytic
+            analytic: this.analytic,
+            status: this.status
         }
 
         this.loading = true;

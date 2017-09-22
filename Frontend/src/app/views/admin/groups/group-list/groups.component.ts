@@ -53,14 +53,22 @@ export class GroupsComponent implements OnInit, OnDestroy {
     new DatatablesColumn(
       "id",      //name
       "Id",      //title
-      "90px",    //width
+      "",    //width
       0,         //visibility
       this.dataTypeEnum.number,  //dataType
       this.alignmentEnum.left
     ),
     new DatatablesColumn(
       "description",  //name
-      "Descripción",  //title
+      "ADMIN.description",  //title
+      "",    //width
+      1,     //visibility
+      this.dataTypeEnum.string,  //dataType
+      this.alignmentEnum.left
+    ),
+    new DatatablesColumn(
+      "email",  //name
+      "ADMIN.GROUPS.mail",  //title
       "",    //width
       1,     //visibility
       this.dataTypeEnum.string,  //dataType
@@ -68,7 +76,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "active",  //name
-      "Activo",  //title
+      "ADMIN.active",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.boolean,  //dataType
@@ -76,7 +84,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "startDate",  //name
-      "Fecha Alta",  //title
+      "ADMIN.startDate",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -84,7 +92,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "endDate",  //name
-      "Fecha Baja",  //title
+      "ADMIN.endDate",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType

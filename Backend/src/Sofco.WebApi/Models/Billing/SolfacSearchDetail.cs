@@ -10,7 +10,10 @@ namespace Sofco.WebApi.Models.Billing
             Id = domain.Id;
             Project = domain.Project;
             BusinessName = domain.BusinessName;
-            DocumentTypeName = domain.DocumentType.Text;
+
+            if (domain.DocumentType != null)
+                DocumentTypeName = domain.DocumentType.Text;
+
             StartDate = domain.StartDate;
             Amount = domain.Amount;
             Iva21 = domain.Iva21;
@@ -29,5 +32,33 @@ namespace Sofco.WebApi.Models.Billing
         public decimal TotalAmount { get; set; }
         public string StatusName { get; set; }
         public int CurrencyId { get; set; }
+    }
+
+    public class InvoiceSearchDetail
+    {
+        public InvoiceSearchDetail(Invoice invoice)
+        {
+            Id = invoice.Id;
+            InvoiceNumber = invoice.InvoiceNumber;
+            AccountName = invoice.AccountName;
+            Service = invoice.Service;
+            Project = invoice.Project;
+            ProjectId = invoice.ProjectId;
+            CreatedDate = invoice.CreatedDate;
+            StatusName = invoice.InvoiceStatus.ToString();
+
+            if (invoice.User != null)
+                User = invoice.User.Name;
+        }
+
+        public int Id { get; set; }
+        public string InvoiceNumber { get; set; }
+        public string AccountName { get; set; }
+        public string Service { get; set; }
+        public string Project { get; set; }
+        public string ProjectId { get; set; }
+        public string User { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string StatusName { get; set; }
     }
 }

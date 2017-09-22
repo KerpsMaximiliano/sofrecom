@@ -16,5 +16,9 @@ namespace Sofco.Core.DAL.Billing
         Solfac GetByIdWithUser(int id);
         ICollection<SolfacHistory> GetHistories(int solfacId);
         void AddHistory(SolfacHistory history);
+        void SaveAttachment(SolfacAttachment attachment);
+        ICollection<SolfacAttachment> GetFiles(int solfacId);
+        SolfacAttachment GetFileById(int fileId);
+        void DeleteFile(SolfacAttachment file);
     }
 }

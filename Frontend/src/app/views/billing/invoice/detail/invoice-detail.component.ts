@@ -107,7 +107,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     pdfConfig(){
-        this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), authToken: Cookie.get('access_token') });
+        this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), 
+                                          authToken: Cookie.get('access_token'),
+                                          maxFileSize: 10*1024*1024,
+                                          allowedMimeType: ['application/pdf'],
+                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.messageService.succes("PDF importado correctamente");
@@ -124,7 +128,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     excelConfig(){
-        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id), authToken: Cookie.get('access_token') });
+        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id),
+                                          authToken: Cookie.get('access_token') ,
+                                          maxFileSize: 10*1024*1024,
+                                          allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+                                        });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.messageService.succes("Excel importado correctamente");
@@ -159,7 +167,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     sendToDaf(){
-        this.service.sendToDaf(this.model.id).subscribe(data => {
+        this.service.changeStatus(this.model.id, InvoiceStatus.Sent, "", "").subscribe(data => {
             this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Sent];
@@ -169,7 +177,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     reject(){
-        this.service.reject(this.model.id).subscribe(data => {
+        this.service.changeStatus(this.model.id, InvoiceStatus.Rejected, "", "").subscribe(data => {
             this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Rejected];
@@ -203,7 +211,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     approve(){
         if(this.invoiceNumber && this.invoiceNumber != ""){
 
-            this.service.approve(this.model.id, this.invoiceNumber).subscribe(data => {
+            this.service.changeStatus(this.model.id, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
                 this.agreeModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Approved];
@@ -256,9 +264,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     canCancel(){
-        return this.model.id > 0 && (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] 
-                                  || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]
-                                  || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected])
+        return this.model.id > 0 && this.menuService.hasFunctionality('REM', 'ANNUL') 
+                                 && (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] 
+                                 || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]
+                                 || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected])
     }
 
     private getDateForFile(){

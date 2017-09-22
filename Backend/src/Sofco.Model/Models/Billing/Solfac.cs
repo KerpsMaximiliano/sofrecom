@@ -33,7 +33,6 @@ namespace Sofco.Model.Models.Billing
         public int Province1Id { get; set; }
         public int Province2Id { get; set; }
         public int Province3Id { get; set; }
-        public string AttachedParts { get; set; }
         public string ParticularSteps { get; set; }
         public short TimeLimit { get; set; }
         public string Analytic { get; set; }
@@ -69,5 +68,7 @@ namespace Sofco.Model.Models.Billing
 
         public string ServiceId { get; set; }
         public string Service { get; set; }
+
+        public List<SolfacAttachment> Attachments { get; set; }
     }
 }

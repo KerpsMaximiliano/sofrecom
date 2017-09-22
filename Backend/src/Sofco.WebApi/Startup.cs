@@ -12,11 +12,14 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
+using Sofco.Core.StatusHandlers;
 using Sofco.DAL;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Framework.FileManager.Billing;
+using Sofco.Framework.StatusHandlers.Invoice;
+using Sofco.Framework.StatusHandlers.Solfac;
 using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
@@ -97,6 +100,10 @@ namespace Sofco.WebApi
 
             // File Manager
             services.AddTransient<IInvoiceFileManager, InvoiceFileManager>();
+
+            // Factories
+            services.AddTransient<ISolfacStatusFactory, SolfacStatusFactory>();
+            services.AddTransient<IInvoiceStatusFactory, InvoiceStatusFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

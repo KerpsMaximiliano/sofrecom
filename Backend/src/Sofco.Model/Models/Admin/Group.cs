@@ -19,11 +19,6 @@ namespace Sofco.Model.Models.Admin
 
         public DateTime? EndDate { get; set; }
 
-        public void ApplyTo(Group item)
-        {
-            item.Id = this.Id;
-            item.Description = this.Description;
-            item.Active = this.Active;
-        }
+        public string Email { get; set; }
     }
 }

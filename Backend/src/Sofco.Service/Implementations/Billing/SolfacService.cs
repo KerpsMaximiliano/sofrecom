@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
@@ -22,17 +20,17 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacRepository _solfacRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IUserRepository _userRepository;
+        private readonly ISolfacStatusFactory _solfacStatusFactory;
 
         public SolfacService(ISolfacRepository solfacRepository, 
-            IInvoiceRepository invoiceRepository, 
-            IHostingEnvironment hostingEnvironment, 
-            IUserRepository userRepository)
+            IInvoiceRepository invoiceRepository,
+            ISolfacStatusFactory solfacStatusFactory, 
+            IHostingEnvironment hostingEnvironment)
         {
             _solfacRepository = solfacRepository;
             _invoiceRepository = invoiceRepository;
             _hostingEnvironment = hostingEnvironment;
-            _userRepository = userRepository;
+            _solfacStatusFactory = solfacStatusFactory;
         }
 
         public Response<Solfac> Add(Solfac solfac)
@@ -122,10 +120,10 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
+            var solfacStatusHandler = _solfacStatusFactory.GetInstance(status);
+
             try
             {
-                var solfacStatusHandler = SolfacStatusFactory.GetInstance(status);
-
                 // Validate status
                 var statusErrors = solfacStatusHandler.Validate(solfac, comment);
 
@@ -146,13 +144,20 @@ namespace Sofco.Service.Implementations.Billing
                 // Save
                 _solfacRepository.Save();
                 response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
 
+            try
+            {
                 // Send Mail
                 HandleSendMail(emailConfig, solfacStatusHandler, solfac);
             }
             catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
             }
 
             return response;
@@ -166,7 +171,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (solfac == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -188,6 +193,118 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<SolfacHistory> GetHistories(int id)
         {
             return _solfacRepository.GetHistories(id);
+        }
+
+        public Response Update(Solfac solfac, string comments)
+        {
+            var response = Validate(solfac);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                solfac.UpdatedDate = DateTime.Now;
+
+                // Add History
+                solfac.Histories.Add(GetHistory(solfac.Status, solfac.Status, solfac.UserApplicantId, comments));
+
+                // Insert Solfac
+                _solfacRepository.Update(solfac);
+
+                // Update Invoice Status to Related
+                if (solfac.InvoiceId.HasValue && solfac.InvoiceId.Value > 0)
+                {
+                    var invoiceToModif = new Invoice { Id = solfac.InvoiceId.Value, InvoiceStatus = InvoiceStatus.Related };
+                    _invoiceRepository.UpdateStatus(invoiceToModif);
+                }
+
+                // Save changes
+                _solfacRepository.Save();
+
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response<SolfacAttachment> SaveFile(int solfacId, byte[] fileAsArrayBytes, string fileFileName)
+        {
+            var response = new Response<SolfacAttachment>();
+
+            var solfac = _solfacRepository.GetSingle(x => x.Id == solfacId);
+
+            if (solfac == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
+                return response;
+            }
+
+            var attachment = new SolfacAttachment
+            {
+                SolfacId = solfacId,
+                Name = fileFileName,
+                CreationDate = DateTime.Now,
+                File = fileAsArrayBytes
+            };
+
+            _solfacRepository.SaveAttachment(attachment);
+            _solfacRepository.Save();
+
+            response.Data = attachment;
+            response.Messages.Add(new Message(Resources.es.Billing.Solfac.FileAdded, MessageType.Success));
+
+            return response;
+        }
+
+        public ICollection<SolfacAttachment> GetFiles(int solfacId)
+        {
+            return _solfacRepository.GetFiles(solfacId);
+        }
+
+        public Response<SolfacAttachment> GetFileById(int fileId)
+        {
+            var response = new Response<SolfacAttachment>();
+
+            var file = _solfacRepository.GetFileById(fileId);
+
+            if (file == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.FileNotFound, MessageType.Error));
+                return response;
+            }
+
+            response.Data = file;
+            return response;
+        }
+
+        public Response DeleteFile(int id)
+        {
+            var response = new Response();
+
+            var file = _solfacRepository.GetFileById(id);
+
+            if (file == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.FileNotFound, MessageType.Error));
+                return response;
+            }
+
+            try
+            {
+                _solfacRepository.DeleteFile(file);
+                _solfacRepository.Save();
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.FileDeleted, MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
         }
 
         private Response<Solfac> Validate(Solfac solfac)

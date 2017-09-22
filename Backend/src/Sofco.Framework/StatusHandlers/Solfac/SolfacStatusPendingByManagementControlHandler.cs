@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Config;
+using Sofco.Core.DAL.Admin;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
@@ -7,6 +8,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusPendingByManagementControlHandler : ISolfacStatusHandler
     {
+        private readonly IGroupRepository _groupRepository;
+
+        public SolfacStatusPendingByManagementControlHandler(IGroupRepository groupRepository)
+        {
+            _groupRepository = groupRepository;
+        }
+
         private const string MailBody = "<font size='3'>" +
                                         "<span style='font-size:12pt'>" +
                                         "Estimados, </br></br>" +
@@ -45,7 +53,8 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            return emailConfig.CdgMail;
+            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
+            return group.Email;
         }
 
         public string GetSuccessMessage()

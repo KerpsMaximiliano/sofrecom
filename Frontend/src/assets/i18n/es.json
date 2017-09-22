@@ -2,6 +2,12 @@
     "ADMIN": {
         "TITLE": "Administración",
         "SHORT_TITLE": "Admin",
+        "description": "Descripción",
+        "active": "Activo",
+        "startDate": "Fecha Alta",
+        "endDate": "Fecha Elim",
+        "actions": "Acciones",
+        "action": "Acción",
         "ROLES": {
             "TITLE": "Roles",
             "MANAGEMENT": "Administración de Roles",
@@ -27,7 +33,9 @@
             "TITLE": "Grupos",
             "MANAGEMENT": "Administración de Grupos",
             "EDIT": "Editar Grupo",
-            "ADD": "Agregar Grupo"
+            "ADD": "Agregar Grupo",
+            "mail": "Email",
+            "rolAsigned": "Rol asignado"
         },
         "FUNCTIONALITIES": {
             "TITLE": "Funcionalidades",
@@ -98,10 +106,7 @@
                 "technology": "Tipo de Tecnología",
                 "invoices": {
                     "title": "Remitos",
-                    "cuit": "CUIT",
-                    "name": "Nombre",
-                    "account": "Cuenta",
-                    "service": "Servicio",
+                    "invoiceNumber": "Número remito",
                     "date": "Fecha",
                     "status": "Estado",
                     "create": "Crear remito"
@@ -141,6 +146,7 @@
             "add": "Crear SolFac",
             "solfacs": "Solicitudes Facturacíon",
             "search": "Consulta",
+            "searchTitle": "Consultar Solfacs",
             "list": "Listado de solicitudes",
             "detail": "Detalle de Facturación",
             "contractInfo": "Datos del contrato",
@@ -154,7 +160,7 @@
             "timeLimit": "Plazo",
             "imputationNumber": "N° de imputación",
             "invoice": "Asociar Remito",
-            "documentType": "Tipo de documento",
+            "documentType": "Tipo doc.",
             "currency": "Moneda",
             "date": "Fecha",
             "contractNumber": "N° de OC o N° Contrato",
@@ -164,6 +170,8 @@
             "movements": "Movimientos",
             "client": "Cliente",
             "service": "Servicio",
+            "attachments": "Archivos Adjuntos",
+            "import": "Importar archivo",
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
@@ -174,7 +182,7 @@
                 "totalAmount": "Importe Total"
             },
             "impositiveInfo": {
-                "title": "Información Impositiva. Servicios prestados en:",
+                "title": "Información Impositiva",
                 "capital": "Capital %:",
                 "bsas": "Provincia de Bs. As",
                 "otherProvince": "Otras Provincias",
@@ -194,18 +202,21 @@
         "invoice":{
             "title": "Remitos",
             "new": "Generación",
+            "searchTitle": "Consultar Remitos",
             "search": "Consulta",
             "management": "Solicitud de Remitos",
             "edit": "Editar Remito",
             "add": "Crear Remito",
             "detail": "Detalle de Remito",
             "information": "Datos del remito",
-            "invoiceNumber": "Número de remito",
+            "invoiceNumber": "N° Remito",
             "createdDate": "Fecha Creación",
             "account": "Cuenta",
             "service": "Servicio",
             "project": "Proyecto",
+            "list": "Listado de remitos",
             "cuit": "CUIT",
+            "user": "Solicitante",
             "status": "Estado",
             "address": "Dirección",
             "zipCode": "Código postal",
@@ -239,6 +250,7 @@
         "cancel": "Cancelar",
         "yes": "Si",
         "no": "No",
+        "update": "Actualizar",
         "search": "Buscar",
         "close": "Cerrar",
         "back": "Volver",
@@ -249,8 +261,8 @@
         "save": "Guardar",
         "saveAndSend": "Guardar y Enviar",
         "sendToCDG": "Enviar a CDG",
-        "bill": "Facturar",
-        "cash": "Cobrar",
+        "bill": "Facturada",
+        "cash": "Cobrada",
         "goToProject": "Ir al Proyecto",
         "goToSearch": "Ir a Consultas",
         "confirmTitle": "Confirmar acción",
@@ -274,5 +286,6 @@
     "Pagado": "Pagado",
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
-    "comments": "Comentarios"
+    "comments": "Comentarios",
+    "selectAnOption": "Seleccione una opción"
 } 

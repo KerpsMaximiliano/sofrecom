@@ -120,4 +120,16 @@
   <data name="ErrorSave" xml:space="preserve">
     <value>Ocurrio un error al guardar</value>
   </data>
+  <data name="ErrorSendMail" xml:space="preserve">
+    <value>Error al enviar el mail</value>
+  </data>
+  <data name="ExportFileError" xml:space="preserve">
+    <value>Ocurrio un error al exportar el archivo</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Archivo no encontrado</value>
+  </data>
+  <data name="SaveFileError" xml:space="preserve">
+    <value>Ocurrio un error al guardar el archivo</value>
+  </data>
 </root>

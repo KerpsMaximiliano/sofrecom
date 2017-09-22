@@ -78,9 +78,10 @@ export class GroupEditComponent implements OnInit, OnDestroy {
         id: this.module.id,
         description: this.module.description,
         active: this.module.active,
+        email: this.module.email,
         role: {
           id: this.module.role.id,
-          description: "TODO: borrar"
+          description: "fake"
         }
       }
 

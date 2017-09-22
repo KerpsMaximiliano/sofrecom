@@ -41,12 +41,12 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   public  deleteRowIndex: number = 0;
 
   public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-    "Confirmación de baja", //title
+    "ACTIONS.confirmBody", //title
     "modalConfirm", //id
     true,          //Accept Button
     true,          //Cancel Button
-    "Deshabilitar",     //Accept Button Text
-    "Cancelar");   //Cancel Button Text
+    "ACTIONS.DEACTIVATE",     //Accept Button Text
+    "ACTIONS.cancel");   //Cancel Button Text
 
   @ViewChild("modalNg2Datatables") confirmModal;
 
@@ -91,6 +91,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
                     }
                 }
               ],
+              scrollX: true,
               oSearch: { "bSmart": false, "bRegex": true },
               language:
                 {
@@ -212,14 +213,12 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
 
     if (active){
       this.confirm = this.disableEntity;
-      this.modalConfig.acceptButtonText = "Deshabilitar";
-      this.modalConfig.title = "Confirmación de baja";
+      this.modalConfig.acceptButtonText = "ACTIONS.DEACTIVATE";
       this.modalMessage = this.locationTexts.disableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
       this.confirmModal.show();
     } else {
       this.confirm = this.enableEntity;
-      this.modalConfig.acceptButtonText = "Habilitar"
-      this.modalConfig.title = "Confirmación de alta";
+      this.modalConfig.acceptButtonText = "ACTIONS.ACTIVATE"
       this.modalMessage = this.locationTexts.enableQuestion.replace("¶", this.data[index][this.options.descripFieldName])
       this.confirmModal.show();
     }

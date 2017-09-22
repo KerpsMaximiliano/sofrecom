@@ -36,6 +36,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Description.Equals("Directores")));
         }
 
+        public Group GetGroup(int userId)
+        {
+            return _context.UserGroup
+                .Where(x => x.UserId == userId)
+                .Include(x => x.User)
+                .Include(x => x.Group)
+                .Select(x => x.Group)
+                .SingleOrDefault();
+        }
+
         public IList<User> GetAllFullReadOnly()
         {
             return _context.Set<User>()
@@ -51,11 +61,6 @@ namespace Sofco.DAL.Repositories.Admin
               .Include(x => x.UserGroups)
                     .ThenInclude(s => s.Group)
               .SingleOrDefault(predicate);
-        }
-
-        public IList<string> GetUserMailsByGroupId(int groupId)
-        {
-            return _context.UserGroup.Include(x => x.User).Where(x => x.GroupId == groupId).Select(x => x.User.Email).ToList();
         }
     }
 }

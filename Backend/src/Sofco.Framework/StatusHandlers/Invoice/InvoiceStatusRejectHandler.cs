@@ -1,4 +1,6 @@
-﻿using Sofco.Core.StatusHandlers;
+﻿using Sofco.Core.Config;
+using Sofco.Core.StatusHandlers;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
@@ -17,7 +19,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         private const string MailSubject = "REMITO RECHAZADO por DAF - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Invoice invoice)
+        public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var response = new Response();
 
@@ -40,6 +42,16 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
         {
             return string.Format(MailSubject, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
+        }
+
+        public string GetSuccessMessage()
+        {
+            return Resources.es.Billing.Invoice.Reject;
+        }
+
+        public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        {
+            return invoice.User.Email;
         }
     }
 }

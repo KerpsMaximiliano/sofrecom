@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Config;
+using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
@@ -11,14 +13,13 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> GetById(int id);
         Response<Invoice> Add(Invoice invoice, string identityName);
         Response<Invoice> SaveExcel(Invoice responseData);
-        Response<Invoice> SendToDaf(int invoiceId, EmailConfig emailConfig);
         Response<Invoice> GetExcel(int invoiceId);
         Response<Invoice> SavePdf(Invoice responseData);
         Response<Invoice> GetPdf(int invoiceId);
-        Response<Invoice> Reject(int invoiceId, EmailConfig emailConfig);
-        Response<Invoice> Approve(int invoiceId, string invoiceNumber, EmailConfig emailConfig);
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
         Response<Invoice> Annulment(int invoiceId);
+        ICollection<Invoice> Search(InvoiceParams parameters);
+        Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters);
     }
 }

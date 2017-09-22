@@ -159,6 +159,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Número del remito ya existe.
+        /// </summary>
+        public static string InvoiceNumerAlreadyExist {
+            get {
+                return ResourceManager.GetString("InvoiceNumerAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Número de remito es requerido.
         /// </summary>
         public static string InvoiceNumerRequired {
@@ -191,6 +200,15 @@ namespace Sofco.Resources.es.Billing {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a No se han encontrado remitos con los parametros de busqueda seleccionados..
+        /// </summary>
+        public static string NotFounds {
+            get {
+                return ResourceManager.GetString("NotFounds", resourceCulture);
             }
         }
         

@@ -13,8 +13,10 @@ export class DataTableService {
     init(selector){
         setTimeout(()=>{
             $( document ).ready(function() {
+
             this.tableRef = $(selector).DataTable({
                     oSearch: { "bSmart": false, "bRegex": true },
+                    scrollX: true,
                     language:
                     {
                         "sProcessing": "Procesando...",
@@ -43,5 +45,12 @@ export class DataTableService {
                 });
             });
         });
+    }
+
+    adjustColumns(){
+        setTimeout(()=>{
+            $('.dataTables_scrollHeadInner').css("width", "100%");
+            $('.dataTables_scrollHeadInner table').css("width", "100%");
+        }, 1000);
     }
 }

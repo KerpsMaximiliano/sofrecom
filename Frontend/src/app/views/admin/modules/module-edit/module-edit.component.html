@@ -25,23 +25,21 @@
                 <div class="ibox-title">
                     <h5>{{'ADMIN.module.edit' | translate }}</h5>
                     <div class="ibox-tools" >
-                        <a [routerLink]="['../../']"><i class="fa fa-close"></i></a>
+                        <a [routerLink]="['/admin/entities']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                     </div>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
 
                         <!--Description-->
-                        <div class="form-group"><label class="col-xs-2 control-label">Descripción</label>
+                        <div class="form-group"><label class="col-xs-2 control-label">{{'ADMIN.description' | translate }}</label>
                             <div class="col-xs-10">
                               <input type="text"  
                                   name="description"
                                   class="form-control" 
                                   [(ngModel)]="module.description"
                                   #descripRef="ngModel"
-                                  required> 
-                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
-
+                                  disabled> 
                             </div>
                         </div>
 
@@ -49,7 +47,7 @@
                         <div class="form-group" *ngIf="module">
                             <div class="col-xs-12">
                                  <icheck  [(checked)]="module.active">
-                                     <label class="col-xs-2 control-label icheck-label">Activo</label> 
+                                     <label class="col-xs-2 control-label icheck-label">{{'ADMIN.active' | translate }}</label> 
                                  </icheck>
                             </div>
                         </div>
@@ -59,7 +57,7 @@
                         <!--ACEPTAR-->
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-2">
-                                <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Aceptar</strong></button>
+                                <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>{{'ACTIONS.ACCEPT' | translate }}</strong></button>
                             </div>
                         </div>
                     </form>
@@ -74,15 +72,15 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-info-circle"></i> Funcionalidades
+                <i class="fa fa-info-circle"></i> {{'ACTIONS.FUNCTIONALITIES.TITLE' | translate }}
             </div>
             <div class="panel-body scroll">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Descripción</th>
-                            <th>Activo</th>
-                            <th>Acción</th>
+                            <th>{{'ADMIN.description' | translate }}</th>
+                            <th>{{'ADMIN.active' | translate }}</th>
+                            <th>{{'ADMIN.action' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -8,5 +8,6 @@ export interface Group {
     role: Role,
     startDate: Date,
     endDate: Date,
-    roleId: number
+    roleId: number,
+    email: string
 }

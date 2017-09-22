@@ -52,6 +52,10 @@ namespace Sofco.WebApi.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.Property<DateTime?>("EndDate");
 
                     b.Property<int?>("RoleId");
@@ -271,9 +275,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Analytic");
 
-                    b.Property<string>("AttachedParts")
-                        .HasMaxLength(500);
-
                     b.Property<decimal>("BuenosAiresPercentage");
 
                     b.Property<string>("BusinessName")
@@ -359,6 +360,27 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Solfacs");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<byte[]>("File");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("SolfacId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolfacId");
+
+                    b.ToTable("SolfacAttachments");
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -374,7 +396,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("SolfacStatusTo");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -543,6 +565,14 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacAttachment", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
+                        .WithMany("Attachments")
+                        .HasForeignKey("SolfacId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacHistory", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
@@ -552,7 +582,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>

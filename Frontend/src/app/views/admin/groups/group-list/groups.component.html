@@ -13,9 +13,6 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
-
-    </div>
 </div>
 
 
@@ -24,9 +21,10 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>{{'ADMIN.GROUPS.MANAGEMENT' | translate }}</h5>
+                    <h4 class="pull-left">{{'ADMIN.GROUPS.MANAGEMENT' | translate }}</h4>
+                    
                     <div class="ibox-tools" >
-                        <a *ngIf="menuService.hasFunctionality('GRP', 'ALTA')" [routerLink]="['add']"><i class="fa fa-plus"></i></a>
+                        <a *ngIf="menuService.hasFunctionality('GRP', 'ALTA')" [routerLink]="['add']" class="btn btn-primary btn-link"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
                     </div>
                 </div>
                 <div class="ibox-content" *ngIf="data != null && options != null">

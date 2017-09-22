@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -89,6 +90,49 @@ namespace Sofco.DAL.Repositories.Billing
             return _context.Invoices
                 .Include(x => x.Solfac)
                 .Where(x => x.Solfac == null && x.InvoiceStatus == InvoiceStatus.Approved && x.ProjectId == projectId).ToList();
+        }
+
+        public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
+        {
+            IQueryable<Invoice> query = _context.Invoices;
+
+            if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
+                query = query.Where(x => x.CustomerId == parameters.CustomerId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
+                query = query.Where(x => x.ServiceId == parameters.ServiceId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
+                query = query.Where(x => x.ProjectId == parameters.ProjectId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.InvoiceNumber))
+                query = query.Where(x => x.InvoiceNumber.ToLowerInvariant().Equals(parameters.InvoiceNumber.ToLowerInvariant()));
+
+            if (parameters.UserId > 0)
+                query = query.Where(x => x.UserId == parameters.UserId);
+
+            if (parameters.Status != null)
+                query = query.Where(x => x.InvoiceStatus == parameters.Status);
+
+            return query.Include(x => x.User)
+                        .Select(x => new Invoice
+                                {
+                                    Id = x.Id,
+                                    InvoiceNumber = x.InvoiceNumber,
+                                    AccountName = x.AccountName,
+                                    Service = x.Service,
+                                    Project = x.Project,
+                                    ProjectId = x.ProjectId,
+                                    User = x.User,
+                                    CreatedDate = x.CreatedDate,
+                                    InvoiceStatus = x.InvoiceStatus
+                                })
+                                .ToList();
+        }
+
+        public bool InvoiceNumberExist(string invoiceNumber)
+        {
+            return _context.Invoices.Any(x => x.InvoiceNumber == invoiceNumber);
         }
 
         private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)

@@ -6,6 +6,16 @@ namespace Sofco.WebApi.Models.Billing
     {
         public int UserId { get; set; }
         public string Comment { get; set; }
+    }
+
+    public class InvoiceStatusChangeViewModel : StatusChangeViewModel
+    {
+        public InvoiceStatus Status { get; set; }
+        public string InvoiceNumber { get; set; }
+    }
+
+    public class SolfacStatusChangeViewModel : StatusChangeViewModel
+    {
         public SolfacStatus Status { get; set; }
     }
 }

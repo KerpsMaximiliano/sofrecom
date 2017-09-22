@@ -1,17 +1,28 @@
-﻿using Sofco.Core.StatusHandlers;
+﻿using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.Billing;
+using Sofco.Core.StatusHandlers;
 using Sofco.Model.Enums;
 
 namespace Sofco.Framework.StatusHandlers.Invoice
 {
-    public static class InvoiceStatusFactory
+    public class InvoiceStatusFactory : IInvoiceStatusFactory
     {
-        public static IInvoiceStatusHandler GetInstance(InvoiceStatus status)
+        private readonly IGroupRepository _groupRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
+
+        public InvoiceStatusFactory(IGroupRepository groupRepository, IInvoiceRepository invoiceRepository)
+        {
+            _groupRepository = groupRepository;
+            _invoiceRepository = invoiceRepository;
+        }
+
+        public IInvoiceStatusHandler GetInstance(InvoiceStatus status)
         {
             switch (status)
             {
-                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler();
+                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(_groupRepository);
                 case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler();
-                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler();
+                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(_invoiceRepository);
                 default: return null;
             }
         }

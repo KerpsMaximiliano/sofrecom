@@ -9,6 +9,7 @@ using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -20,12 +21,17 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IUserRepository _userRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IInvoiceStatusFactory _invoiceStatusFactory;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, IUserRepository userRepository, IHostingEnvironment hostingEnvironment)
+        public InvoiceService(IInvoiceRepository invoiceRepository, 
+            IUserRepository userRepository, 
+            IHostingEnvironment hostingEnvironment,
+            IInvoiceStatusFactory invoiceStatusFactory)
         {
             _invoiceRepository = invoiceRepository;
             _userRepository = userRepository;
             _hostingEnvironment = hostingEnvironment;
+            _invoiceStatusFactory = invoiceStatusFactory;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -176,23 +182,24 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Invoice> SendToDaf(int invoiceId, EmailConfig emailConfig)
+        public Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters)
         {
-            var response = new Response<Invoice>();
+            var response = new Response();
+
+            var invoice = _invoiceRepository.GetById(invoiceId);
+
+            if (invoice == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                return response;
+            }
+
+            var invoiceStatusHandler = _invoiceStatusFactory.GetInstance(status);
 
             try
             {
-                var invoice = _invoiceRepository.GetById(invoiceId);
-
-                if (invoice == null)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                    return response;
-                }
-
-                var invoiceStatusHandler = InvoiceStatusFactory.GetInstance(InvoiceStatus.Sent);
-
-                var statusErrors = invoiceStatusHandler.Validate(invoice);
+                // Validate status
+                var statusErrors = invoiceStatusHandler.Validate(invoice, parameters);
 
                 if (statusErrors.HasErrors())
                 {
@@ -200,103 +207,35 @@ namespace Sofco.Service.Implementations.Billing
                     return response;
                 }
 
-                var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Sent };
-                _invoiceRepository.UpdateStatus(invoiceToModif);
+                // Update Status
+                if (status == InvoiceStatus.Approved)
+                {
+                    var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = status, InvoiceNumber = parameters.InvoiceNumber };
+                    _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
+                }
+                else
+                {
+                    var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = status };
+                    _invoiceRepository.UpdateStatus(invoiceToModif);
+                }
+
+                // Save
                 _invoiceRepository.Save();
-
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.SentToDaf, MessageType.Success));
-
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, emailConfig.DafMail);
+                response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
             catch (Exception e)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
-
-            return response;
-        }
-
-        public Response<Invoice> Reject(int invoiceId, EmailConfig emailConfig)
-        {
-            var response = new Response<Invoice>();
 
             try
             {
-                var invoice = _invoiceRepository.GetById(invoiceId);
-
-                if (invoice == null)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                    return response;
-                }
-
-                var invoiceStatusHandler = InvoiceStatusFactory.GetInstance(InvoiceStatus.Rejected);
-
-                var statusErrors = invoiceStatusHandler.Validate(invoice);
-
-                if (statusErrors.HasErrors())
-                {
-                    response.AddMessages(statusErrors.Messages);
-                    return response;
-                }
-
-                var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Rejected };
-                _invoiceRepository.UpdateStatus(invoiceToModif);
-                _invoiceRepository.Save();
-
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.Reject, MessageType.Success));
-
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, invoice.User.Email);
+                // Send Mail
+                HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
             }
             catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
-            }
-
-            return response;
-        }
-
-        public Response<Invoice> Approve(int invoiceId, string invoiceNumber, EmailConfig emailConfig)
-        {
-            var response = new Response<Invoice>();
-
-            try
-            {
-                if (string.IsNullOrWhiteSpace(invoiceNumber))
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceNumerRequired, MessageType.Error));
-                    return response;
-                }
-
-                var invoice = _invoiceRepository.GetById(invoiceId);
-
-                if (invoice == null)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                    return response;
-                }
-
-                var invoiceStatusHandler = InvoiceStatusFactory.GetInstance(InvoiceStatus.Approved);
-
-                var statusErrors = invoiceStatusHandler.Validate(invoice);
-
-                if (statusErrors.HasErrors())
-                {
-                    response.AddMessages(statusErrors.Messages);
-                    return response;
-                }
-
-                var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = invoiceNumber };
-                _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
-                _invoiceRepository.Save();
-
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.Approved, MessageType.Success));
-
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice, invoice.User.Email);
-            }
-            catch (Exception e)
-            {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
             }
 
             return response;
@@ -368,12 +307,18 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice, string recipients)
+        public ICollection<Invoice> Search(InvoiceParams parameters)
+        {
+            return _invoiceRepository.SearchByParams(parameters);
+        }
+
+        private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice)
         {
             if (!_hostingEnvironment.IsStaging() && !_hostingEnvironment.IsProduction()) return;
 
             var subject = invoiceStatusHandler.GetSubjectMail(invoice);
             var body = invoiceStatusHandler.GetBodyMail(invoice, emailConfig.SiteUrl);
+            var recipients = invoiceStatusHandler.GetRecipients(invoice, emailConfig);
 
             MailSender.Send(recipients, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
                 subject, body, emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);

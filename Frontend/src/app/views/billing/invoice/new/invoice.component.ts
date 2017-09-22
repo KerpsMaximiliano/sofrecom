@@ -103,7 +103,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
 
     sendToDaf(){
-        this.service.sendToDaf(this.model.id).subscribe(data => {
+        this.service.changeStatus(this.model.id, InvoiceStatus.Sent, "", "").subscribe(data => {
             this.confirmModal.hide();
             
             if(data.messages) this.messageService.showMessages(data.messages);
@@ -116,7 +116,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
 
     private configUploader(id){
-        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(id), authToken: Cookie.get('access_token') });
+        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(id), authToken: Cookie.get('access_token'), maxFileSize: 10*1024*1024 });
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

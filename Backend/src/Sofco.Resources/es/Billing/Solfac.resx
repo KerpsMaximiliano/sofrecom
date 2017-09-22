@@ -139,7 +139,7 @@
     <value>Solicitud no encontrada</value>
   </data>
   <data name="NotFounds" xml:space="preserve">
-    <value>No se han encontrado solicitudes con esos parametros de busqueda.</value>
+    <value>No se han encontrado solicitudes con los parametros de busqueda seleccionados.</value>
   </data>
   <data name="PendingByManagementControlSuccess" xml:space="preserve">
     <value>La Solfac se ha enviado correctamente a Control de Gestión</value>
@@ -167,5 +167,17 @@
   </data>
   <data name="CommentRequired" xml:space="preserve">
     <value>Se debe agregar un motivo de rechazo</value>
+  </data>
+  <data name="SolfacUpdated" xml:space="preserve">
+    <value>Solicitud de facturación actualizada correctamente</value>
+  </data>
+  <data name="InfoUpdate" xml:space="preserve">
+    <value>Actualización de datos</value>
+  </data>
+  <data name="FileAdded" xml:space="preserve">
+    <value>Archivo importado correctamente</value>
+  </data>
+  <data name="FileDeleted" xml:space="preserve">
+    <value>Archivo eliminado correctamente</value>
   </data>
 </root>

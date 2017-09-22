@@ -5,6 +5,7 @@ import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { SolfacStatus } from 'app/models/enums/solfacStatus';
 
 @Component({
   selector: 'app-project-detail',
@@ -28,6 +29,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     solfacs: any[] = new Array();
     invoices: any[] = new Array();
     public loading:  boolean = true;
+
+    @ViewChild('hito') hito;
 
     constructor(
         private router: Router,
@@ -79,6 +82,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         else{
             this.getProjectSubscrip = this.service.getById(projectId).subscribe(data => {
                 this.project = data;
+                sessionStorage.setItem("projectDetail", JSON.stringify(data));
                 this.loading = false;
             },
             err => {
@@ -93,6 +97,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.hitos = d;
 
             this.datatableService.init('#hitoTable');
+            this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -111,6 +116,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.datatableService.init('#solfacTable');
+            this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -158,9 +164,16 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         case "Euro": { return "€"; }
       }
     }
-
+ 
     goToSolfacDetail(solfac){
-        this.router.navigate(["/billing/solfac/" + solfac.id]);
+        if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
+          (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+        {
+            this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
+        }
+        else{
+            this.router.navigate(["/billing/solfac/" + solfac.id]);
+        }
     }
 
     goToInvoiceDetail(invoice){

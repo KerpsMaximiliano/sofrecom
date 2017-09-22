@@ -16,7 +16,7 @@ export class  Configuration {
     TenantId: string;
 
     constructor(public tr: TranslateService){
-        tr.addLangs(["en", "es"]);
+        tr.addLangs(["en", "es", "fr"]);
         let browserLang = tr.getBrowserLang();
         tr.setDefaultLang(browserLang);
         tr.use(this.currLang);

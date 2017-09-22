@@ -25,6 +25,8 @@ import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice
 import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.component";
 import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
 import { LoginComponent } from "app/views/appviews/login/login.component";
+import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
+import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -75,13 +77,18 @@ export const ROUTES:Routes = [
 
       { path: "solfac",
         children: [
-         { path: "", component: SolfacComponent, canActivate: [AuthGuard] },
+         { path: "", component: SolfacComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
+         { path: ":solfacId/edit", component: SolfacEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
          { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
-         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard] }
+         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } }
       ]},
 
-      { path: "invoice/new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "ALTA" } },
-      { path: "invoice/:id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } }
+      { path: "invoice",
+        children: [
+        { path: "new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "ALTA" } },
+        { path: ":id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } },
+        { path: "search", component: InvoiceSearchComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } },
+      ]},
     ]
   },
   {

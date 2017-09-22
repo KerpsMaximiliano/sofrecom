@@ -18,19 +18,19 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-success dim" (click)="goToProject()"> {{ 'ACTIONS.goToProject' | translate }} <i class="fa fa-building"></i></button>
-            <button class="btn btn-success dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
+            <button class="btn btn-success btn-outline dim" (click)="goToProject()"> {{ 'ACTIONS.goToProject' | translate }} <i class="fa fa-building"></i></button>
+            <button class="btn btn-success btn-outline dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
 
             <div class="btn-right">
-                <button class="btn btn-danger dim" (click)="showConfirmDelete()" *ngIf="canDelete()"> {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
+                <button class="btn btn-danger btn-outline dim" (click)="showConfirmDelete()" *ngIf="canDelete()"> {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
 
-                <button class="btn btn-primary dim" (click)="showConfirmSendToCDG()" *ngIf="canSendToCDG()"> {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i></button>
-                <button class="btn btn-danger dim" (click)="showConfirmRejectByCDG()" *ngIf="canRejectByCDG()"> {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
+                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCDG()" *ngIf="canSendToCDG()"> {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i></button>
+                <button class="btn btn-danger btn-outline dim" (click)="showConfirmRejectByCDG()" *ngIf="canRejectByCDG()"> {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
 
-                <button class="btn btn-primary dim" (click)="showConfirmSendToDaf()" *ngIf="canSendToDAF()"> {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i></button>
+                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToDaf()" *ngIf="canSendToDAF()"> {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i></button>
 
-                <button class="btn btn-primary dim" (click)="showConfirmSendToBill()" *ngIf="canSendToBill()"> {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i></button>
-                <button class="btn btn-primary dim" (click)="showConfirmSendToCash()" *ngIf="canSendToCash()"> {{ 'ACTIONS.cash' | translate }} <i class="fa fa-money"></i> </button>
+                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToBill()" *ngIf="canSendToBill()"> {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i></button>
+                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCash()" *ngIf="canSendToCash()"> {{ 'ACTIONS.cash' | translate }} <i class="fa fa-money"></i> </button>
             </div>
         </div>
     </div>
@@ -39,8 +39,11 @@
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
         </ul>
         <div class="tab-content">
+
+            <!-- Datos generales -->
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body">
                     <!-- Datos CRM -->
@@ -102,10 +105,10 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let detail of model.hitos">
-                                            <td class="col-lg-8">{{detail.description}}</td>
+                                            <td class="col-lg-7">{{detail.description}}</td>
                                             <td class="col-lg-1">{{detail.quantity | number: '1.2-2'}}</td>
                                             <td class="col-lg-1">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
-                                            <td class="col-lg-1">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                            <td class="col-lg-2">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -131,18 +134,7 @@
                     </div>
         
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <i class="fa fa-info-circle"></i> {{'billing.solfac.attachedParts' | translate }}
-                                </div>
-                                <div class="panel-body">
-                                    <p *ngIf="model.attachedParts">{{model.attachedParts}}</p>
-                                    <p *ngIf="model.attachedParts == null">{{ 'noInfoAvailable' | translate }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <i class="fa fa-info-circle"></i> {{'billing.solfac.particularSteps' | translate }}
@@ -156,32 +148,18 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Movimientos -->
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">
-                    <table class="table table-striped" id="invoiceTable">
-                        <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th class="text-center">{{'billing.solfac.histories.createdDate' | translate }}</th>
-                                <th class="text-center">{{'billing.solfac.histories.userName' | translate }}</th>
-                                <th>{{'billing.solfac.histories.solfacStatusFrom' | translate }}</th>
-                                <th>{{'billing.solfac.histories.solfacStatusTo' | translate }}</th>
-                                <th class="text-center">{{'billing.solfac.histories.comment' | translate }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let history of histories; let i = index">
-                                <td class="text-center col-lg-1">{{i+1}}</td>
-                                <td class="text-center col-lg-2">{{ history.createdDate | date: "dd/MM/yyyy HH:mm" }}</td>
-                                <td class="text-center col-lg-2">{{ history.userName }}</td>
-                                <td><span class="label label-{{history.solfacStatusFrom}}">{{ history.solfacStatusFrom | translate}}</span></td>
-                                <td><span class="label label-{{history.solfacStatusTo}}">{{ history.solfacStatusTo | translate}}</span></td>
-                                <td class="text-center col-lg-1">
-                                    <button *ngIf="history.comment" (click)="showComments(history)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <solfac-history #history [solfacId]="solfacId"></solfac-history>
+                </div>
+            </div>
+
+            <!-- Attachments -->
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <solfac-attachments [solfacId]="solfacId"></solfac-attachments>
                 </div>
             </div>
         </div>
@@ -202,8 +180,3 @@
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
-
-<ng2-modal [config]="commentsModalConfig" #commentsModal>
-    <pre>{{ historyComments }}</pre>
-</ng2-modal>
-    

@@ -36,6 +36,7 @@ namespace Sofco.DAL
         public DbSet<Solfac> Solfacs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
+        public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }

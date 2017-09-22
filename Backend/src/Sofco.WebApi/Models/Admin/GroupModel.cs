@@ -1,6 +1,5 @@
 ﻿using Sofco.Model;
 using Sofco.Model.Interfaces;
-using Sofco.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +21,7 @@ namespace Sofco.WebApi.Models.Admin
             Active = group.Active;
             StartDate = group.StartDate;
             EndDate = group.EndDate;
+            Email = group.Email;
 
             Users = new List<UserModel>();
         }
@@ -29,6 +29,9 @@ namespace Sofco.WebApi.Models.Admin
         [Required(ErrorMessage = "El campo descripción es requerido")]
         [MaxLength(50, ErrorMessage = "El campo descripción debe tener un maximo de 50 caracteres")]
         public string Description { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
 
         public bool Active { get; set; }
         public DateTime StartDate { get; set; }
@@ -44,6 +47,7 @@ namespace Sofco.WebApi.Models.Admin
             group.Id = Id;
             group.Description = Description;
             group.Active = Active;
+            group.Email = Email;
         }
     }
 

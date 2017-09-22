@@ -2,9 +2,9 @@
 <table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%" *ngIf="data">
     <thead>
         <tr>
-            <th *ngFor="let column of visibleColumns" [width] = "column.width">{{column.title}}</th>
+            <th *ngFor="let column of visibleColumns" [width] = "column.width">{{column.title | translate}}</th>
             <th *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow" width="{{actionsColumnWidth}}px">
-                Acciones
+                {{ 'ADMIN.actions' | translate }}
             </th>
         </tr>
     </thead>

@@ -29,38 +29,36 @@
                 <div class="ibox-title">
                     <h5>{{'ADMIN.GROUPS.ADD' | translate }}</h5>
 
-
                     <div class="ibox-tools" >
-                        <!--<a ng-click="showhide()"> <i class="fa fa-chevron-up"></i></a>
-                        <a>
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <a ng-click="closebox()"><i class="fa fa-times"></i></a>-->
-                        <a [routerLink]="['../../groups']"><i class="fa fa-close"></i></a>
+                        <a [routerLink]="['/admin/groups']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                     </div>
-
-
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
 
                         <!--Description-->
-                        <div class="form-group"><label class="col-lg-2 control-label">Description</label>
-                            <div class="col-lg-10">
+                        <div class="form-group"><label class="col-lg-2 control-label">{{'ADMIN.description' | translate }}</label>
+                            <div class="col-lg-6">
                               <input type="text"  
                                   name="description"
                                   class="form-control" 
                                   [(ngModel)]="group.description"
                                   #descripRef="ngModel"
                                   required> 
-                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">Description is required</div>
+                            </div>
+                        </div>
 
+                        <!--Mail-->
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">{{'ADMIN.GROUPS.mail' | translate }}</label>
+                            <div class="col-lg-6">
+                                <input type="email" name="email" class="form-control" [(ngModel)]="group.email"> 
                             </div>
                         </div>
 
                         <!--COMBO DE ROLES-->
-                        <div class="form-group"><label class="col-xs-2 control-label">Rol asignado</label>
-                            <div class="col-xs-10">
+                        <div class="form-group"><label class="col-xs-2 control-label">{{'ADMIN.GROUPS.rolAsigned' | translate }}</label>
+                            <div class="col-xs-6">
                               <select class="form-control m-b" name="role" [(ngModel)]="group.roleId">
                                   <option *ngFor="let role of roles" [value]="role?.value">{{role?.text}}</option>
                               </select>
@@ -69,7 +67,7 @@
                         
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <button class="btn btn-sm btn-white" type="submit" >Aceptar</button>
+                                <button class="btn btn-sm btn-white" type="submit">{{'ACTIONS.ACCEPT' | translate }}</button>
                             </div>
                         </div>
                     </form>

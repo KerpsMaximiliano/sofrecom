@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.Core.DAL.Billing
@@ -16,5 +17,7 @@ namespace Sofco.Core.DAL.Billing
         void UpdatePdf(Invoice invoice);
         void UpdateStatusAndApprove(Invoice invoice);
         IList<Invoice> GetOptions(string projectId);
+        ICollection<Invoice> SearchByParams(InvoiceParams parameters);
+        bool InvoiceNumberExist(string parametersInvoiceNumber);
     }
 }

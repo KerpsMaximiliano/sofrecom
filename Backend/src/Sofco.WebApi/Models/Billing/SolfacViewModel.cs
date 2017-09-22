@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.CodeAnalysis;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -27,7 +26,7 @@ namespace Sofco.WebApi.Models.Billing
         public string ProjectId { get; set; }
 
         [Required(ErrorMessage = "El tipo de documento es requerido")]
-        public int? DocumentTypeId { get; set; }
+        public int? DocumentType { get; set; }
         [Required(ErrorMessage = "El solicitante es requerido")]
         public int? UserApplicantId { get; set; }
 
@@ -69,6 +68,8 @@ namespace Sofco.WebApi.Models.Billing
         public string Service { get; set; }
         public string Analytic { get; set; }
 
+        public bool IsNew { get; set; }
+
         #endregion
 
         public Solfac CreateDomain()
@@ -81,7 +82,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Status = StatusId;
             solfac.ContractNumber = ContractNumber;
             solfac.Project = Project;
-            solfac.DocumentTypeId = DocumentTypeId.GetValueOrDefault();
+            solfac.DocumentTypeId = DocumentType.GetValueOrDefault();
             solfac.UserApplicantId = UserApplicantId.GetValueOrDefault();
             solfac.ImputationNumber1 = ImputationNumber1;
             solfac.ImputationNumber3Id = ImputationNumber3.GetValueOrDefault();
@@ -97,7 +98,6 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Province1Id = Province1Id;
             solfac.Province2Id = Province2Id;
             solfac.Province3Id = Province3Id;
-            solfac.AttachedParts = AttachedParts;
             solfac.ParticularSteps = ParticularSteps;
             solfac.TimeLimit = TimeLimit;
             solfac.ProjectId = ProjectId;

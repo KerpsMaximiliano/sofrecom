@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.FileManager;
 using Sofco.Core.Services.Billing;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Models.Billing;
@@ -208,43 +210,10 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPut]
-        [Route("{invoiceId}/sendToDaf")]
-        public IActionResult SendToDaf(int invoiceId)
-        {
-            var response = _invoiceService.SendToDaf(invoiceId, _emailConfig);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPut]
-        [Route("{invoiceId}/reject")]
-        public IActionResult Reject(int invoiceId)
-        {
-            var response = _invoiceService.Reject(invoiceId, _emailConfig);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPut]
         [Route("{invoiceId}/annulment")]
         public IActionResult Annulment(int invoiceId)
         {
             var response = _invoiceService.Annulment(invoiceId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpPut]
-        [Route("{invoiceId}/approve/{invoiceNumber}")]
-        public IActionResult Approve(int invoiceId, string invoiceNumber)
-        {
-            var response = _invoiceService.Approve(invoiceId, invoiceNumber, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -259,6 +228,51 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody] InvoiceStatusChangeViewModel model)
+        {
+            var response = _invoiceService.ChangeStatus(id, model.Status, _emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber });
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("search")]
+        public IActionResult Search([FromBody] InvoiceParams parameters)
+        {
+            var invoices = _invoiceService.Search(parameters);
+
+            if (!invoices.Any())
+            {
+                var response = new Response();
+                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFounds, MessageType.Warning));
+                return Ok(response);
+            }
+
+            var list = invoices.Select(x => new InvoiceSearchDetail(x));
+
+            return Ok(list);
+        }
+
+        [HttpGet("status")]
+        public IActionResult GetInvoiceStatuses()
+        {
+            return Ok(GetStatuses());
+        }
+
+        private IEnumerable<SelectListItem> GetStatuses()
+        {
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.SendPending).ToString(), Text = InvoiceStatus.SendPending.ToString() };
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.Sent).ToString(), Text = InvoiceStatus.Sent.ToString() };
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.Rejected).ToString(), Text = InvoiceStatus.Rejected.ToString() };
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.Approved).ToString(), Text = InvoiceStatus.Approved.ToString() };
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.Related).ToString(), Text = InvoiceStatus.Related.ToString() };
+            yield return new SelectListItem { Value = ((int)InvoiceStatus.Cancelled).ToString(), Text = InvoiceStatus.Cancelled.ToString() };
         }
     }
 }

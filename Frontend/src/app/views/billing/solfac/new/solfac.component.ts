@@ -4,7 +4,7 @@ import { Solfac } from 'app/models/billing/solfac/solfac';
 import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { Option } from "app/models/option";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { MessageService } from "app/services/common/message.service";
@@ -29,9 +29,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
+
+    public solfacId: number = 0;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
+    paramsSubscrip: Subscription;
+    getDetailSubscrip: Subscription;
 
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
@@ -42,11 +46,22 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private router: Router) { }
 
     ngOnInit() {
+      this.getOptions();
+      this.getUserOptions();
+      this.setNewModel();
+    }
+
+    ngOnDestroy(){
+       if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
+       if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
+       if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+       if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+    }
+
+    setNewModel(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
       var customer = JSON.parse(sessionStorage.getItem("customer"));
 
-      this.getOptions();
-      this.getUserOptions();
       this.getInvoicesOptions(project.id);
 
       this.projectId = project.id;
@@ -59,7 +74,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.contractNumber = project.purchaseOrder;
       this.model.project = project.nombre;
       this.model.projectId = project.id;
-      this.model.documentTypeId = 1;
+      this.model.documentType = 1;
       this.model.amount = 0;
       this.model.iva21 = 0;
       this.model.totalAmount = 0;
@@ -81,11 +96,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
       });
 
       this.calculate();
-    }
-
-    ngOnDestroy(){
-       if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
-       if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
     }
 
     getUserOptions(){
@@ -127,7 +137,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     calculateDetail(detail: HitoDetail){
       if(detail.quantity > 0 && detail.unitPrice > 0){
 
-        if(this.model.documentTypeId == 3 || this.model.documentTypeId == 4){
+        if(this.model.documentType == 3 || this.model.documentType == 4){
             detail.total = detail.quantity * (detail.unitPrice * 1.21);
         }
         else{
@@ -157,7 +167,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.amount += detail.total;
       });
 
-      if(this.model.documentTypeId == 1 || this.model.documentTypeId == 2){
+      if(this.model.documentType == 1 || this.model.documentType == 2){
         this.model.iva21 = this.model.amount * 0.21;
       }
       else{
@@ -171,16 +181,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.solfacService.add(this.model).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
-
-          setTimeout(() => {
-            this.cancel();
-          }, 1500)
+          this.solfacId = data.data.id;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
     canSave(){
-      return this.menuService.hasFunctionality("SOLFA", "ALTA");
+      return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.solfacId == 0;
     }
 
     send(){
@@ -196,7 +203,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     canSend(){
-      return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.menuService.hasFunctionality("SOLFA", "SCDG");
+      return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.menuService.hasFunctionality("SOLFA", "SCDG") && this.solfacId == 0;
     }
 
     setCurrencySymbol(currencyId){

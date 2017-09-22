@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Common;
 using Sofco.WebApi.Models.Billing;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -90,7 +92,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 Currencies = _utilsService.GetCurrencies().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
                 DocumentTypes = _utilsService.GetDocumentTypes().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
                 ImputationNumbers = _utilsService.GetImputationNumbers().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                Provinces = new List<SelectListItem> {new SelectListItem { Value = "0", Text = "Seleccione una opción" }}
+                Provinces = new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Seleccione una opción" } }
             };
 
             var provinces = _utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
@@ -111,6 +113,22 @@ namespace Sofco.WebApi.Controllers.Billing
             var domain = model.CreateDomain();
 
             var response = _solfacService.Add(domain);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] SolfacDetail model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
+            var domain = model.CreateDomain();
+
+            var response = _solfacService.Update(domain, model.Comments);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -140,7 +158,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("{id}/status")]
-        public IActionResult ChangeStatus(int id, [FromBody] StatusChangeViewModel model)
+        public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeViewModel model)
         {
             var response = _solfacService.ChangeStatus(id, model.Status, _emailConfig, model.UserId, model.Comment);
 
@@ -168,6 +186,101 @@ namespace Sofco.WebApi.Controllers.Billing
             var list = histories.Select(x => new SolfacHistoryViewModel(x));
 
             return Ok(list);
+        }
+
+        [HttpPost]
+        [Route("{solfacId}/file")]
+        public IActionResult Excel(int solfacId)
+        {
+            if (Request.Form.Files.Any())
+            {
+                try
+                {
+                    var file = Request.Form.Files.First();
+                    byte[] fileAsArrayBytes;
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(memoryStream);
+                        fileAsArrayBytes = memoryStream.ToArray();
+                    }
+
+                    var response = _solfacService.SaveFile(solfacId, fileAsArrayBytes, file.FileName);
+
+                    if (response.HasErrors()) return BadRequest(response);
+
+                    var responseFile = new Response<SolfacAttachmentViewModel>();
+                    responseFile.Messages = response.Messages;
+                    responseFile.Data = new SolfacAttachmentViewModel(response.Data);
+
+                    return Ok(responseFile);
+
+                }
+                catch (Exception e)
+                {
+                    var error = new Response();
+                    error.Messages.Add(new Message(Resources.es.Common.SaveFileError, MessageType.Error));
+                    return BadRequest(error);
+                }
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("{solfacId}/files")]
+        public IActionResult GetFiles(int solfacId)
+        {
+            var files = _solfacService.GetFiles(solfacId);
+
+            return Ok(files.Select(x => new SolfacAttachmentViewModel(x)));
+        }
+
+        [HttpGet]
+        [Route("file/{fileId}")]
+        public IActionResult GetFile(int fileId)
+        {
+            try
+            {
+                var response = _solfacService.GetFileById(fileId);
+
+                if (response.HasErrors()) return BadRequest(response);
+
+                return File(response.Data.File, "application/octet-stream", response.Data.Name);
+            }
+            catch (Exception e)
+            {
+                var response = new Response();
+                response.Messages.Add(new Message(Resources.es.Common.ExportFileError, MessageType.Error));
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("status")]
+        public IActionResult GetSolfacStatuses()
+        {
+            return Ok(GetStatuses());
+        }
+
+        [HttpDelete]
+        [Route("file/{id}")]
+        public IActionResult DeleteFile(int id)
+        {
+            var response = _solfacService.DeleteFile(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        private IEnumerable<SelectListItem> GetStatuses()
+        {
+            yield return new SelectListItem { Value = ((int)SolfacStatus.SendPending).ToString(), Text = SolfacStatus.SendPending.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.PendingByManagementControl).ToString(), Text = SolfacStatus.PendingByManagementControl.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.ManagementControlRejected).ToString(), Text = SolfacStatus.ManagementControlRejected.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.InvoicePending).ToString(), Text = SolfacStatus.InvoicePending.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.Invoiced).ToString(), Text = SolfacStatus.Invoiced.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.AmountCashed).ToString(), Text = SolfacStatus.AmountCashed.ToString() };
         }
     }
 }

@@ -96,6 +96,24 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Archivo importado correctamente.
+        /// </summary>
+        public static string FileAdded {
+            get {
+                return ResourceManager.GetString("FileAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Archivo eliminado correctamente.
+        /// </summary>
+        public static string FileDeleted {
+            get {
+                return ResourceManager.GetString("FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Cantidad no puede ser menor o igual a 0.
         /// </summary>
         public static string HitoQuantityRequired {
@@ -110,6 +128,15 @@ namespace Sofco.Resources.es.Billing {
         public static string HitoUnitPriceRequired {
             get {
                 return ResourceManager.GetString("HitoUnitPriceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Actualización de datos.
+        /// </summary>
+        public static string InfoUpdate {
+            get {
+                return ResourceManager.GetString("InfoUpdate", resourceCulture);
             }
         }
         
@@ -150,7 +177,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se han encontrado solicitudes con esos parametros de busqueda..
+        ///    Busca una cadena localizada similar a No se han encontrado solicitudes con los parametros de busqueda seleccionados..
         /// </summary>
         public static string NotFounds {
             get {
@@ -191,6 +218,15 @@ namespace Sofco.Resources.es.Billing {
         public static string SolfacCreated {
             get {
                 return ResourceManager.GetString("SolfacCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Solicitud de facturación actualizada correctamente.
+        /// </summary>
+        public static string SolfacUpdated {
+            get {
+                return ResourceManager.GetString("SolfacUpdated", resourceCulture);
             }
         }
         

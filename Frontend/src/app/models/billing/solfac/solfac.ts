@@ -9,7 +9,7 @@ export class Solfac {
         public statusId: string,
         public contractNumber: string,
         public project: string,
-        public documentTypeId: number,
+        public documentType: number,
         public userApplicantId: number,
         public imputationNumber1: string,
         public imputationNumber3: number,

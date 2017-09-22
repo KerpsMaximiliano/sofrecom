@@ -2,6 +2,8 @@
 {
     public enum SolfacStatus
     {
+        None,
+
         // Pendiente de envio
         SendPending,
 
@@ -18,8 +20,6 @@
         Invoiced,
 
         // Cobrada
-        AmountCashed,
-
-        None
+        AmountCashed
     }
 }

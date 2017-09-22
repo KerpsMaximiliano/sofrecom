@@ -24,13 +24,20 @@ import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-se
 import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
-
+import { SolfacHistoryComponent } from 'app/views/billing/solfac/history/solfac-history.component';
+import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
+import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
+import { SolfacAttachmentsComponent } from 'app/views/billing/solfac/attachments/solfac-attachments.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
-                 SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent],
+                 SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
+                 SolfacAttachmentsComponent],
+
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
+
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
+  
   exports     : []
 })
 

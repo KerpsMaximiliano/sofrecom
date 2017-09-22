@@ -1,4 +1,7 @@
-﻿using Sofco.Core.StatusHandlers;
+﻿using Sofco.Core.Config;
+using Sofco.Core.DAL.Admin;
+using Sofco.Core.StatusHandlers;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
@@ -6,6 +9,13 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusSentHandler : IInvoiceStatusHandler
     {
+        private readonly IGroupRepository _groupRepository;
+
+        public InvoiceStatusSentHandler(IGroupRepository groupRepository)
+        {
+            _groupRepository = groupRepository;
+        }
+
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
@@ -18,7 +28,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         private const string MailSubject = "REMITO - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Invoice invoice)
+        public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var response = new Response();
 
@@ -48,6 +58,17 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
         {
             return string.Format(MailSubject, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
+        }
+
+        public string GetSuccessMessage()
+        {
+            return Resources.es.Billing.Invoice.SentToDaf;
+        }
+
+        public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        {
+            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
+            return group.Email;
         }
     }
 }

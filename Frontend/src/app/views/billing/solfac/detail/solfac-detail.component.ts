@@ -21,7 +21,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
     @ViewChild('rejectModal') rejectModal;
-    @ViewChild('commentsModal') commentsModal;
+    @ViewChild('history') history: any;
 
     public rejectModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.solfac.addComments",
@@ -41,25 +41,13 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "comments",
-        "commentsModal",
-        false,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.close"
-    );
-
     public model: any = {};
-    private solfacId: any;
+    public solfacId: any;
     public currencySymbol: string = "$";
-    public histories: any[] = new Array<any>();
     public rejectComments: string;
-    public historyComments: string;
 
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
-    getHistoriesSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
 
     constructor(private solfacService: SolfacService,
@@ -74,7 +62,6 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.solfacId = params['solfacId'];
             this.getSolfac();
-            this.getHistories();
         });
     }
 
@@ -82,20 +69,12 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
-        if(this.getHistoriesSubscrip) this.getHistoriesSubscrip.unsubscribe();
     }
 
     getSolfac(){
         this.getDetailSubscrip = this.solfacService.get(this.solfacId).subscribe(d => {
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    getHistories(){
-        this.getDetailSubscrip = this.solfacService.getHistories(this.solfacId).subscribe(d => {
-            this.histories = d;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -185,7 +164,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.statusName = SolfacStatus[SolfacStatus.PendingByManagementControl];
-                this.getHistories();
+                this.history.getHistories();
             },
             error => {
                 this.confirmModal.hide();
@@ -204,7 +183,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 this.rejectModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.statusName = SolfacStatus[SolfacStatus.ManagementControlRejected];
-                this.getHistories();
+                this.history.getHistories();
             },
             error => {
                 this.rejectModal.hide();
@@ -218,7 +197,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.statusName = SolfacStatus[SolfacStatus.InvoicePending];
-                this.getHistories();
+                this.history.getHistories();
             },
             error => {
                 this.confirmModal.hide();
@@ -232,7 +211,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.statusName = SolfacStatus[SolfacStatus.Invoiced];
-                this.getHistories();
+                this.history.getHistories();
             },
             error => {
                 this.confirmModal.hide();
@@ -246,7 +225,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.model.statusName = SolfacStatus[SolfacStatus.AmountCashed];
-                this.getHistories();
+                this.history.getHistories();
             },
             error => {
                 this.confirmModal.hide();
@@ -296,10 +275,5 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     showConfirmDelete(){
         this.confirm = this.delete;
         this.confirmModal.show();
-    }
-
-    showComments(history){
-        this.historyComments = history.comment;
-        this.commentsModal.show();
     }
 }

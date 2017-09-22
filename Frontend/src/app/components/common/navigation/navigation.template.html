@@ -22,6 +22,7 @@
       <!--ADMIN-->
       <li [ngClass]="{active: activeRoute('admin')}" *ngIf="menuService.hasAdminMenu()">
         <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
+
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
           <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasFunctionality('GRP', 'QUERY')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
@@ -31,18 +32,13 @@
         </ul>
       </li>
 
-      <!--SOLFAC-->
-      <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasBillingMenu()">
+      <!--BILLING-->
+      <li [ngClass]="{active: activeRoute('billing')}" *ngIf="menuService.hasBillingMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
-        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('solfac')}">
-
-          <li class="" *ngIf="menuService.hasModule('SOLFA')">
-              <a href="#">{{'billing.solfac.title' | translate }}<span class="fa arrow"></span></a>
-              <ul class="nav nav-third-level collapse">
-                <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.solfac.new' | translate }}</a></li>
-                <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.search' | translate }}</a></li>
-              </ul>
-          </li>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('billing')}">
+            <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.searchTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('searchInvoice')}" *ngIf="menuService.hasFunctionality('REM', 'QUERY')"><a [routerLink]="['/billing/invoice/search']">{{'billing.invoice.searchTitle' | translate }}</a></li>
         </ul>
       </li>
     </ul>

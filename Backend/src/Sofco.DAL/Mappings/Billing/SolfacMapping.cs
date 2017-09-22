@@ -15,7 +15,6 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.ContractNumber).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.ImputationNumber1).HasMaxLength(50);
-            builder.Entity<Solfac>().Property(_ => _.AttachedParts).HasMaxLength(500);
             builder.Entity<Solfac>().Property(_ => _.ParticularSteps).HasMaxLength(500);
 
             builder.Entity<Solfac>().HasOne(x => x.UserApplicant).WithMany(x => x.Solfacs).HasForeignKey(x => x.UserApplicantId);
@@ -25,6 +24,9 @@ namespace Sofco.DAL.Mappings.Billing
 
             builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Histories).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
+            builder.Entity<Solfac>().HasMany(x => x.Attachments).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
+
+            builder.Entity<SolfacAttachment>().Property(_ => _.Name).HasMaxLength(200);
         }
 
         public static void MapHitos(this ModelBuilder builder)

@@ -22,15 +22,23 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInUp">
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+
+            <div class="btn-right">
+                <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
+                <button class="btn btn-primary btn-outline dim" *ngIf="canApprovedInvoice()"(click)="openModal()">{{'ACTIONS.approve' | translate }} <i class="fa fa-check"></i></button>
+                <button class="btn btn-danger btn-outline dim" *ngIf="canRejectInvoice()"(click)="showConfirmReject()">{{'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
+                <button class="btn btn-primary btn-outline dim" *ngIf="canSendToDaf()" (click)="showConfirmSendToDaf()">{{'ACTIONS.sendToDaf' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-danger btn-outline dim" *ngIf="canCancel()"(click)="showConfirmAnnulment()">{{'ACTIONS.annulment' | translate }} <i class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
     <div class="ibox">
         <div class="ibox-title">
-            <h3 class="pull-left">{{'billing.invoice.information' | translate }}</h3>
-            <div class="ibox-tools">
-                <a *ngIf="canCancel()" (click)="showConfirmAnnulment()" class="btn btn-sm btn-rounded btn-danger">
-                    <i class="fa fa-times icon-white"></i> 
-                    <span class="text-white">{{'ACTIONS.annulment' | translate }}</span> 
-                </a>
-            </div>
+            <h3>{{'billing.invoice.information' | translate }}</h3>
         </div>
         <div class="ibox-content">
             <div class="row">
@@ -121,15 +129,6 @@
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="ibox-footer">
-            <div class="text-right">
-                <button class="btn btn-default" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
-                <button *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" class="btn btn-danger" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
-                <button class="btn btn-primary" (click)="openModal()" *ngIf="canApprovedInvoice()"><i class="fa fa-check"></i> {{'ACTIONS.approve' | translate }} </button>
-                <button class="btn btn-danger" (click)="showConfirmReject()" *ngIf="canRejectInvoice()"><i class="fa fa-times"></i> {{'ACTIONS.reject' | translate }} </button>
-                <button *ngIf="canSendToDaf()" class="btn btn-primary" (click)="showConfirmSendToDaf()"><i class="fa fa-save"></i> {{'ACTIONS.sendToDaf' | translate }} </button>
             </div>
         </div>
     </div>
