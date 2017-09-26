@@ -210,7 +210,7 @@
     "Cancelled": "Cancelled",
     "Proyectado": "Projected",
     "Pendiente": "Pending",
-    "A ser facturado": "To be billed",
+    "ToBeBilled": "To be billed",
     "Facturado": "Billed",
     "Pagado": "Cashed"
 }

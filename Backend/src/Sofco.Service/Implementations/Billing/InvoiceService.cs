@@ -258,7 +258,7 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            if (invoice.InvoiceStatus != InvoiceStatus.SendPending)
+            if (invoice.InvoiceStatus != InvoiceStatus.SendPending && invoice.InvoiceStatus != InvoiceStatus.Rejected)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotDelete, MessageType.Error));
                 return response;

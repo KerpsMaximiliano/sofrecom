@@ -40,7 +40,7 @@ namespace Sofco.WebApi.Models.Billing
         public decimal Iva21 { get; set; }
         public decimal TotalAmount { get; set; }
 
-        [Required(ErrorMessage = "El la moneda es requerida")]
+        [Required(ErrorMessage = "La moneda es requerida")]
         public int? CurrencyId { get; set; }
 
         public decimal? CapitalPercentage { get; set; }

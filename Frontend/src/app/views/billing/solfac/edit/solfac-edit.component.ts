@@ -53,7 +53,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
     @ViewChild('updateModal') updateModal;
     public updateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "billing.solfac.addComments",
+      "billing.solfac.addUpdateComments",
       "updateModal",
       true,
       true,

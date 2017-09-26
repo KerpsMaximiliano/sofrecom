@@ -273,7 +273,7 @@
      "Cancelled": "Annulé",
      "Proyectado": "Projeté",
      "Pendiente": "En Attente",
-     "A ser facturado": "Doit être facturé",
+     "ToBeBilled": "Doit être facturé",
      "Facturado": "Facturé",
      "Pagado": "Payé",
      "noInfoAvailable": "Il n’y a pas d’information disponible",

@@ -199,7 +199,8 @@
             },
             "attachedParts": "Piezas Adjuntas",
             "particularSteps": "Instrucciones Particulares",
-            "addComments": "Incluya los comentarios del rechazo"
+            "addComments": "Ingrese los motivos del rechazo",
+            "addUpdateComments": "Ingrese los cambios que se realizaron"
         },
         "invoice":{
             "title": "Remitos",
@@ -283,11 +284,11 @@
     "Cancelled": "Anulado",
     "Proyectado": "Proyectado",
     "Pendiente": "Pendiente",
-    "A ser facturado": "A ser facturado",
+    "ToBeBilled": "A ser facturado",
     "Facturado": "Facturado",
     "Pagado": "Pagado",
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
     "comments": "Comentarios",
     "selectAnOption": "Seleccione una opción"
-} 
+}  

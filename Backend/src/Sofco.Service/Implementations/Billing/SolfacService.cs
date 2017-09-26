@@ -101,9 +101,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig)
+        public Response<SolfacChangeStatusResponse> ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
-            var response = new Response();
+            var response = new Response<SolfacChangeStatusResponse>();
 
             var solfac = _solfacRepository.GetByIdWithUser(solfacId);
 
@@ -116,9 +116,9 @@ namespace Sofco.Service.Implementations.Billing
             return ChangeStatus(solfac, parameters, emailConfig);
         }
 
-        public Response ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig)
+        public Response<SolfacChangeStatusResponse> ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
-            var response = new Response();
+            var response = new Response<SolfacChangeStatusResponse>();
 
             var solfacStatusHandler = _solfacStatusFactory.GetInstance(parameters.Status);
 
@@ -152,6 +152,8 @@ namespace Sofco.Service.Implementations.Billing
                 // Save
                 _solfacRepository.Save();
                 response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
+
+                response.Data = new SolfacChangeStatusResponse { HitoStatus = solfacStatusHandler.GetHitoStatus(), Hitos = _solfacRepository.GetHitosIdsBySolfacId(solfac.Id) };
             }
             catch (Exception e)
             {

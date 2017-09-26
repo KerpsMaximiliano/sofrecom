@@ -14,6 +14,10 @@ using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Config;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -24,12 +28,14 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly IUtilsService _utilsService;
         private readonly ISolfacService _solfacService;
         private readonly EmailConfig _emailConfig;
+        private readonly CrmConfig _crmConfig;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, IOptions<CrmConfig> crmOptions)
         {
             _utilsService = utilsService;
             _solfacService = solfacService;
             _emailConfig = emailConfig.Value;
+            _crmConfig = crmOptions.Value;
         }
 
         [HttpPost]
@@ -116,6 +122,9 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors()) return BadRequest(response);
 
+            var solfacChangeStatusResponse = new SolfacChangeStatusResponse { HitoStatus = HitoStatus.Pending, Hitos = response.Data.Hitos.Select(x => x.ExternalHitoId).ToList() };
+            ChangeHitoStatus(solfacChangeStatusResponse);
+
             return Ok(response);
         }
 
@@ -153,7 +162,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var handleStatus = _solfacService.ChangeStatus(response.Data, solfacStatusParams, _emailConfig);
 
-            response.AddMessages(handleStatus.Messages);
+            if (handleStatus.HasErrors())
+            {
+                response.AddMessages(handleStatus.Messages);
+                return BadRequest(response);
+            }
+
+            ChangeHitoStatus(handleStatus.Data);
 
             return Ok(response);
         }
@@ -168,7 +183,33 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors()) return BadRequest(response);
 
+            ChangeHitoStatus(response.Data);
+
             return Ok(response);
+        }
+
+        private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_crmConfig.Url);
+                HttpResponseMessage response;
+
+                foreach (var item in data.Hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)data.HitoStatus}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+            }
         }
 
         [HttpDelete]

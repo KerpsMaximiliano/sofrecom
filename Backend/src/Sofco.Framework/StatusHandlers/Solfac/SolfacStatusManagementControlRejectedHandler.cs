@@ -58,5 +58,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             return Resources.es.Billing.Solfac.ManagementControlRejectedSuccess;
         }
+
+        public HitoStatus GetHitoStatus()
+        {
+            return HitoStatus.Pending;
+        }
     }
 }

@@ -129,7 +129,7 @@
                                                 <td>{{ hito.startDate | date:'dd/MM/yyyy' }}</td>
                                                 <td>{{ hito.month }}</td>
                                                 <td>
-                                                    <span class="label label-warning">{{ hito.status | translate }}</span> 
+                                                    <span class="label label-{{hito.status}}">{{ hito.status | translate }}</span> 
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -158,7 +158,7 @@
                                                 <td>{{solfac.businessName}}</td>
                                                 <td>{{solfac.documentTypeName}}</td>
                                                 <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
+                                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.amount | number: '1.2-2' }}</td>
                                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                                             </tr>
                                         </tbody>

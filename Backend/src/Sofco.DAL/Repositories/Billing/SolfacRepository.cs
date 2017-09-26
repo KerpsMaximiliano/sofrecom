@@ -38,6 +38,14 @@ namespace Sofco.DAL.Repositories.Billing
                 .SingleOrDefault(x => x.Id == id);
         }
 
+        public ICollection<string> GetHitosIdsBySolfacId(int solfacId)
+        {
+            return _context.Hitos
+                .Where(x => x.SolfacId == solfacId)
+                .Select(x => x.ExternalHitoId)
+                .ToList();
+        }
+
         public Solfac GetById(int id)
         {
             return _context.Solfacs

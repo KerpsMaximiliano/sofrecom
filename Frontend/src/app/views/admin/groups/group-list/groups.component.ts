@@ -41,7 +41,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
     { title: "Grupos", columns: [0, 2, 3]},
-    1,     //orderByColumn
+    0,     //orderByColumn
     "asc"
     ); 
 

@@ -38,7 +38,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
       { title: "Funcionalidades", columns: [0]},
-      1,     //orderByColumn
+      0,     //orderByColumn
       "asc"
       ); 
 

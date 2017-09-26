@@ -26,7 +26,6 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Sofco.Service": "1.0.0-*",
     "Sofco.Core": "1.0.0-*",
     "Sofco.Model": "1.0.0-*",
     "Sofco.DAL": "1.0.0-*",
@@ -35,7 +34,8 @@
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.2",
     "Sofco.Framework": "1.0.0-*",
-    "RestSharp.NetCore": "105.2.3"
+    "RestSharp.NetCore": "105.2.3",
+    "Sofco.Service": "1.0.0-*"
   },
 
   "tools": {

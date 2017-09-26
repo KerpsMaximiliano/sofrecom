@@ -57,5 +57,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             return Resources.es.Billing.Solfac.InvoicedSuccess;
         }
+
+        public HitoStatus GetHitoStatus()
+        {
+            return HitoStatus.Billed;
+        }
     }
 }

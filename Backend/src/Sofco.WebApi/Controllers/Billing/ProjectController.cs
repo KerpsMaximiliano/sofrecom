@@ -150,19 +150,22 @@ namespace Sofco.WebApi.Controllers.Billing
 
                     foreach (var hitoCrm in hitosCRM)
                     {
-                        if (hitoCrm.Status.Equals("Pendiente") || hitoCrm.Status.Equals("Proyectado"))
-                        {
-                            var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
+                        var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
 
-                            if (existHito != null)
-                            {
-                                hitoCrm.Billed = true;
-                                hitoCrm.AmmountBilled = existHito.UnitPrice;
-                            }
-                        }
-                        else
+                        if (existHito != null)
                         {
                             hitoCrm.Billed = true;
+                            hitoCrm.AmmountBilled = existHito.UnitPrice;
+                        }
+
+                        if (!hitoCrm.Status.Equals("Pendiente") && !hitoCrm.Status.Equals("Proyectado"))
+                        {
+                            hitoCrm.Billed = true;
+                        }
+
+                        if(hitoCrm.Status.Equals("A ser facturado"))
+                        {
+                            hitoCrm.Status = HitoStatus.ToBeBilled.ToString();
                         }
                     }
 
