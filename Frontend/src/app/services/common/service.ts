@@ -6,22 +6,9 @@ import { Configuration } from "app/services/common/configuration";
 export class  Service {
 
     UrlApi : string;
-    UrlApiNode: string;
-    UrlCRM: string;
-    UrlAzure: string;
-    GrantType: string;
-    ClientId: string;
-    Resource: string; 
 
     constructor(private config: Configuration){
-
         this.UrlApi = config.UrlApi;
-        this.UrlApiNode = config.UrlApiNode;
-        this.UrlCRM = config.UrlCRM;
-        this.GrantType = config.GrantType;
-        this.ClientId = config.ClientId;
-        this.Resource = config.Resource;
-        this.UrlAzure = `https://login.windows.net/${config.TenantId}/oauth2/token?api-version=1.1`;
     }
 
     getHeaders(){
