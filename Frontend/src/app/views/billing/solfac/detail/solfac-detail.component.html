@@ -29,12 +29,12 @@
 
                 <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToDaf()" *ngIf="canSendToDAF()"> {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i></button>
 
-                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToBill()" *ngIf="canSendToBill()"> {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i></button>
+                <button class="btn btn-primary btn-outline dim" (click)="agreeModal.show()" *ngIf="canSendToBill()"> {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i></button>
                 <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCash()" *ngIf="canSendToCash()"> {{ 'ACTIONS.cash' | translate }} <i class="fa fa-money"></i> </button>
             </div>
         </div>
     </div>
-
+ 
     <div class="tabs-container margin-bottom-20">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
@@ -54,6 +54,9 @@
                                 <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd>{{model.clientName}}</dd>
                                 <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd>{{model.celPhone}}</dd>
                                 <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
+
+                                <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
                             </dl>
                         </div>
                         <div class="col-lg-6">
@@ -180,3 +183,10 @@
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
+
+<ng2-modal [config]="agreeModalConfig"  #agreeModal (accept)="sendToBill()">
+    <div class="form-group">
+        <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
+        <input type="text" class="form-control" [(ngModel)]="invoiceCode">
+    </div>
+ </ng2-modal> 

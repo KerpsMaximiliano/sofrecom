@@ -36,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let customer of customers" (click)="goToServices(customer)">
+                            <tr *ngFor="let customer of customers" (click)="goToServices(customer)" class="pointer">
                                 <td>{{customer.nombre}}</td>
                                 <td>{{customer.cuit}}</td>
                                 <td>{{customer.address}}</td>

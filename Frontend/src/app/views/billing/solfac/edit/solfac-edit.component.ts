@@ -220,7 +220,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     sendToCDG(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.PendingByManagementControl, "").subscribe(
+        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.PendingByManagementControl, "", "").subscribe(
             data => {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);

@@ -141,6 +141,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a El número de factura es requerido.
+        /// </summary>
+        public static string InvoiceCodeRequired {
+            get {
+                return ResourceManager.GetString("InvoiceCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La Solfac ha sido facturada correctamente.
         /// </summary>
         public static string InvoicedSuccess {

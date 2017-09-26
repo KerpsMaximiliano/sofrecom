@@ -39,6 +39,7 @@ namespace Sofco.WebApi.Models.Billing
             Province1Id = domain.Province1Id;
             Province2Id = domain.Province2Id;
             Province3Id = domain.Province3Id;
+            InvoiceCode = domain.InvoiceCode;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -109,6 +110,7 @@ namespace Sofco.WebApi.Models.Billing
         public string AttachedParts { get; set; }
         public string ParticularSteps { get; set; }
         public short TimeLimit { get; set; }
+        public string InvoiceCode { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
         public string ProvinceName1 { get; set; }

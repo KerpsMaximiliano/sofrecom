@@ -7,13 +7,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class  Configuration {
 
     UrlApi : string;
-    UrlApiNode: string;
-    UrlCRM: string;
+
     public currLang: string = 'es';
-    GrantType: string;
-    ClientId: string;
-    Resource: string;
-    TenantId: string;
 
     constructor(public tr: TranslateService){
         tr.addLangs(["en", "es", "fr"]);

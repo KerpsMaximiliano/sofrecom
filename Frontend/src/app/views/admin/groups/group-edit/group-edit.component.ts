@@ -71,6 +71,10 @@ export class GroupEditComponent implements OnInit, OnDestroy {
       err => this.errorHandlerService.handleErrors(err));
   }
 
+  goToGroups(){
+    this.router.navigate(['/admin/groups']);
+  }
+
   onSubmit(form){
     if(!form.invalid){
 

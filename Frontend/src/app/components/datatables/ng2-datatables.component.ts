@@ -10,7 +10,8 @@ import { DatatablesEditionType } from "./datatables.edition-type";
 import { DatatablesAlignment } from "./datatables.alignment";
 import { Subject } from 'rxjs/Rx';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-declare var $:any;
+import { MenuService } from 'app/services/admin/menu.service';
+declare var $: any;
 
 @Component({
   selector: 'datatables',
@@ -26,6 +27,8 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   @Input() idColumnName: string = "id";
   @Input() editionType: number = DatatablesEditionType.ButtonsAtTheEndOfTheRow;
   @Input() locationTexts = new DatatablesLocationTexts();
+  @Input() module: string = "";
+
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
   @Output() view = new EventEmitter<number>();
@@ -53,7 +56,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   private tableRef: any;
   public modalMessage: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private menuService: MenuService) {
     this.data = [];
   }
     
@@ -191,6 +194,14 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     if(this.options.b_other2){ this.actionsColumnWidth += 28 }
     if(this.options.b_other3){ this.actionsColumnWidth += 28 }
     this.actionsColumnWidth += 10;
+  }
+
+  canEdit(){
+    return this.menuService.hasFunctionality(this.module, "UPDAT");
+  }
+
+  canHabInhab(){
+    return this.menuService.hasFunctionality(this.module, "HABIN");
   }
 
   editClick(id:number){

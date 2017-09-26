@@ -17,5 +17,6 @@ namespace Sofco.WebApi.Models.Billing
     public class SolfacStatusChangeViewModel : StatusChangeViewModel
     {
         public SolfacStatus Status { get; set; }
+        public string InvoiceCode { get; set; }
     }
 }

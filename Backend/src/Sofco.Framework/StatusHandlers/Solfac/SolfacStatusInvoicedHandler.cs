@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.Config;
 using Sofco.Core.StatusHandlers;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
@@ -18,13 +19,18 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private const string MailSubject = "SOLFAC - FACTURADA - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Solfac solfac, string comment)
+        public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var response = new Response();
 
             if (solfac.Status != SolfacStatus.InvoicePending)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
+            }
+
+            if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeRequired, MessageType.Error));
             }
             
             return response;

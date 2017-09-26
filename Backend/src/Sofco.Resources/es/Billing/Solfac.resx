@@ -180,4 +180,7 @@
   <data name="FileDeleted" xml:space="preserve">
     <value>Archivo eliminado correctamente</value>
   </data>
+  <data name="InvoiceCodeRequired" xml:space="preserve">
+    <value>El número de factura es requerido</value>
+  </data>
 </root>

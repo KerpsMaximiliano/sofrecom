@@ -20,6 +20,7 @@ namespace Sofco.Model.Models.Billing
         public string CelPhone { get; set; }
         public SolfacStatus Status { get; set; }
         public string ContractNumber { get; set; }
+        public string InvoiceCode { get; set; }
 
         public decimal Amount { get; set; }
         public decimal Iva21 { get; set; }

@@ -21,6 +21,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
     @ViewChild('rejectModal') rejectModal;
+    @ViewChild('agreeModal') agreeModal;
     @ViewChild('history') history: any;
 
     public rejectModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -41,10 +42,20 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    public agreeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "billing.solfac.includeInvoiceCode",
+        "agreeModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+ 
     public model: any = {};
     public solfacId: any;
     public currencySymbol: string = "$";
     public rejectComments: string;
+    invoiceCode: string;
 
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
@@ -159,7 +170,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
 
     sendToCDG(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.PendingByManagementControl, "").subscribe(
+        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.PendingByManagementControl, "", "").subscribe(
             data => {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -178,7 +189,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.ManagementControlRejected, this.rejectComments).subscribe(
+        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.ManagementControlRejected, this.rejectComments, "").subscribe(
             data => {
                 this.rejectModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -192,7 +203,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
 
     sendToDAF(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.InvoicePending, "").subscribe(
+        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.InvoicePending, "", "").subscribe(
             data => {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -206,21 +217,26 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
 
     sendToBill(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.Invoiced, "").subscribe(
-            data => {
-                this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.statusName = SolfacStatus[SolfacStatus.Invoiced];
-                this.history.getHistories();
-            },
-            error => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
+        if(this.invoiceCode && this.invoiceCode != ""){
+
+            this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.Invoiced, "", this.invoiceCode).subscribe(
+                data => {
+                    this.agreeModal.hide();
+                    if(data.messages) this.messageService.showMessages(data.messages);
+                    this.model.statusName = SolfacStatus[SolfacStatus.Invoiced];
+                    this.history.getHistories();
+                },
+                error => {
+                    this.agreeModal.hide();
+                    this.errorHandlerService.handleErrors(error);
+                });
+        }else{
+            this.messageService.showError("El número de factura es requerido");
+        }
     }
 
     sendToCash(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.AmountCashed, "").subscribe(
+        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.AmountCashed, "", "").subscribe(
             data => {
                 this.confirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -246,6 +262,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    
     confirm() {}
     
     showConfirmSendToCDG(){

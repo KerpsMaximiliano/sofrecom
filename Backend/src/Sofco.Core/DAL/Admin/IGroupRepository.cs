@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
@@ -15,5 +14,6 @@ namespace Sofco.Core.DAL.Admin
         bool ExistById(int id);
         IList<Group> GetAllFullReadOnly();
         IList<Group> GetAllActivesReadOnly();
+        bool DescriptionExist(string description, int id);
     }
 }

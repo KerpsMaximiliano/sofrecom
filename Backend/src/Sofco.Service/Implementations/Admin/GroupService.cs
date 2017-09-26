@@ -52,12 +52,6 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-
-        public IList<Group> GetAllFullReadOnly()
-        {
-            return _repository.GetAllFullReadOnly();
-        }
-
         public IList<Group> GetAllReadOnly(bool active)
         {
             if (active)
@@ -87,18 +81,10 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
-                if(group.Role != null)
-                {
-                    var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
+                ValidateRol(group, response);
+                ValidateDescription(group, response);
 
-                    if(role == null)
-                    {
-                        response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
-                        return response;
-                    }
-
-                    group.Role = role;
-                }
+                if (response.HasErrors()) return response;
 
                 group.StartDate = DateTime.Now;
 
@@ -114,6 +100,29 @@ namespace Sofco.Service.Implementations.Admin
             }
 
             return response;
+        }
+
+        private void ValidateRol(Group group, Response<Group> response)
+        {
+            if (group.Role != null)
+            {
+                var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
+
+                if (role == null)
+                {
+                    response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
+                }
+
+                group.Role = role;
+            }
+        }
+
+        private void ValidateDescription(Group group, Response<Group> response)
+        {
+            if (_repository.DescriptionExist(group.Description, group.Id))
+            {
+                response.Messages.Add(new Message(Resources.es.Admin.Group.DescriptionAlreadyExist, MessageType.Error));
+            }
         }
 
         public Response<Group> Update(Group group, int roleId)
@@ -135,13 +144,16 @@ namespace Sofco.Service.Implementations.Admin
                         if (role == null)
                         {
                             response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
-                            return response;
                         }
                              
                         group.Role = role;
                     }
                 }
-                     
+
+                if (response.HasErrors()) return response;
+
+                ValidateDescription(group, response);
+
                 if (group.Active) group.EndDate = null;
 
                 _repository.Update(group);

@@ -27,7 +27,7 @@
             <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
+                <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && (model.invoiceStatus == 'SendPending' || model.invoiceStatus == 'Rejected')" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
                 <button class="btn btn-primary btn-outline dim" *ngIf="canApprovedInvoice()"(click)="openModal()">{{'ACTIONS.approve' | translate }} <i class="fa fa-check"></i></button>
                 <button class="btn btn-danger btn-outline dim" *ngIf="canRejectInvoice()"(click)="showConfirmReject()">{{'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
                 <button class="btn btn-primary btn-outline dim" *ngIf="canSendToDaf()" (click)="showConfirmSendToDaf()">{{'ACTIONS.sendToDaf' | translate }} <i class="fa fa-save"></i></button>

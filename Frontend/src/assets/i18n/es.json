@@ -165,6 +165,8 @@
             "date": "Fecha",
             "contractNumber": "N° de OC o N° Contrato",
             "invoiceNumber": "Número de remito",
+            "invoiceCode": "Número de factura",
+            "includeInvoiceCode": "Incluya número de factura antes de facturar",
             "pdf": "PDF",
             "days": "Días",
             "movements": "Movimientos",

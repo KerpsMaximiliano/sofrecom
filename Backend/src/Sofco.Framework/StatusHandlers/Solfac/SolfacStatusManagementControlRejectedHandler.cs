@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.Config;
 using Sofco.Core.StatusHandlers;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
@@ -19,7 +20,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private const string MailSubject = "SOLFAC - RECHAZADA por Control de Gestión - {0} - {1} - {2} - {3}";
 
-        public Response Validate(Model.Models.Billing.Solfac solfac, string comment)
+        public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var response = new Response();
 
@@ -28,7 +29,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            if (string.IsNullOrWhiteSpace(comment))
+            if (string.IsNullOrWhiteSpace(parameters.Comment))
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CommentRequired, MessageType.Error));
             }

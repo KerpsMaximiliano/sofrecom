@@ -16,6 +16,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.ImputationNumber1).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.ParticularSteps).HasMaxLength(500);
+            builder.Entity<Solfac>().Property(_ => _.InvoiceCode).HasMaxLength(50).IsRequired(false);
 
             builder.Entity<Solfac>().HasOne(x => x.UserApplicant).WithMany(x => x.Solfacs).HasForeignKey(x => x.UserApplicantId);
             builder.Entity<Solfac>().HasOne(x => x.DocumentType).WithMany(x => x.Solfacs).HasForeignKey(x => x.DocumentTypeId);

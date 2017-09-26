@@ -49,11 +49,12 @@ export class SolfacService {
      return this.http.post(`${this.baseUrl}/solfac/send`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
 
-  changeStatus(id, status, comment){
+  changeStatus(id, status, comment, invoiceCode){
      var body = {
        userId: this.menuService.user.id,
        comment: comment,
-       status: status
+       status: status,
+       invoiceCode: invoiceCode
      }
 
      return this.http.post(`${this.baseUrl}/solfac/${id}/status`, body, { headers: this.headers}).map((res:Response) => res.json());

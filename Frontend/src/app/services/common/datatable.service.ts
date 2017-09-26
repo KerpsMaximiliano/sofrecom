@@ -16,7 +16,7 @@ export class DataTableService {
 
             this.tableRef = $(selector).DataTable({
                     oSearch: { "bSmart": false, "bRegex": true },
-                    scrollX: true,
+                    //scrollX: true,
                     language:
                     {
                         "sProcessing": "Procesando...",

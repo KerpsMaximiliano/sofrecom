@@ -35,7 +35,6 @@ namespace Sofco.Framework.FileManager.Billing
             sheet.Cells["D11"].Value = invoice.Address;
             sheet.Cells["D12"].Value = invoice.City;
             sheet.Cells["D13"].Value = invoice.Cuit;
-            sheet.Cells["I4"].Value = DateTime.Now.ToString("d");
 
             return excel;
         }

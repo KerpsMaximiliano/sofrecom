@@ -39,7 +39,7 @@ export const ROUTES:Routes = [
       { path: 'roles', children:[
         { path: '', component: RolesComponent, canActivate: [AuthGuard], data: { module: "ROL", functionality: "QUERY" } },
         { path: 'add', component: RolAddComponent, data: { module: "ROL", functionality: "ALTA" } },
-        { path: 'edit/:id', component: RolEditComponent, data: { module: "ROL", functionality: "DETAL" } }
+        { path: 'edit/:id', component: RolEditComponent, data: { module: "ROL", functionality: "UPDAT" } }
       ]},
 
       { path: 'groups', children:[
@@ -50,14 +50,14 @@ export const ROUTES:Routes = [
 
       { path: "users", children: [
          { path: '', component: UsersComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "QUERY" } },
-         { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "DETAL" } }
+         { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "UPDAT" } }
       ]},
 
       { path: "functionalities", component: FunctionalitiesComponent, canActivate: [AuthGuard], data: { module: "FUNC", functionality: "QUERY" } },
 
       { path: "entities", children: [
         { path: '', component: ModulesComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "QUERY" } },
-        { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "DETAL" } }
+        { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "UPDAT" } }
       ]},
     ]
   },

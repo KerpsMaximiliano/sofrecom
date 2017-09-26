@@ -97,7 +97,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.hitos = d;
 
             this.datatableService.init('#hitoTable');
-            this.datatableService.adjustColumns();
+            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -116,7 +116,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.datatableService.init('#solfacTable');
-            this.datatableService.adjustColumns();
+            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }

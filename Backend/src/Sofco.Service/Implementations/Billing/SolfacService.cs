@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response ChangeStatus(int solfacId, SolfacStatus status, EmailConfig emailConfig, int userId, string comment)
+        public Response ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
             var response = new Response();
 
@@ -113,19 +113,19 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            return ChangeStatus(solfac, status, emailConfig, userId, comment);
+            return ChangeStatus(solfac, parameters, emailConfig);
         }
 
-        public Response ChangeStatus(Solfac solfac, SolfacStatus status, EmailConfig emailConfig, int userId, string comment)
+        public Response ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
             var response = new Response();
 
-            var solfacStatusHandler = _solfacStatusFactory.GetInstance(status);
+            var solfacStatusHandler = _solfacStatusFactory.GetInstance(parameters.Status);
 
             try
             {
                 // Validate status
-                var statusErrors = solfacStatusHandler.Validate(solfac, comment);
+                var statusErrors = solfacStatusHandler.Validate(solfac, parameters);
 
                 if (statusErrors.HasErrors())
                 {
@@ -134,11 +134,19 @@ namespace Sofco.Service.Implementations.Billing
                 }
               
                 // Update Status
-                var solfacToModif = new Solfac { Id = solfac.Id, Status = status };
-                _solfacRepository.UpdateStatus(solfacToModif);
+                if(parameters.Status == SolfacStatus.Invoiced)
+                {
+                    var solfacToModif = new Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode };
+                    _solfacRepository.UpdateStatusAndInvoiceCode(solfacToModif);
+                }
+                else
+                {
+                    var solfacToModif = new Solfac { Id = solfac.Id, Status = parameters.Status };
+                    _solfacRepository.UpdateStatus(solfacToModif);
+                }
 
                 // Add history
-                var history = GetHistory(solfac.Id, solfac.Status, status, userId, comment);
+                var history = GetHistory(solfac.Id, solfac.Status, parameters.Status, parameters.UserId, parameters.Comment);
                 _solfacRepository.AddHistory(history);
 
                 // Save

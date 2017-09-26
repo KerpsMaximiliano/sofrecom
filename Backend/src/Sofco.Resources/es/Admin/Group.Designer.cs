@@ -78,6 +78,15 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La descripción ya existe.
+        /// </summary>
+        public static string DescriptionAlreadyExist {
+            get {
+                return ResourceManager.GetString("DescriptionAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Grupo deshabilitado correctamente.
         /// </summary>
         public static string Disabled {

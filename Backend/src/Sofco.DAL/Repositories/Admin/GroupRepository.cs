@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.DAL.Repositories.Admin
@@ -14,6 +13,11 @@ namespace Sofco.DAL.Repositories.Admin
     {
         public GroupRepository(SofcoContext context) : base(context)
         {
+        }
+
+        public bool DescriptionExist(string description, int id)
+        {
+            return _context.Groups.Any(x => x.Description == description && x.Id != id);
         }
 
         public bool ExistById(int id)
