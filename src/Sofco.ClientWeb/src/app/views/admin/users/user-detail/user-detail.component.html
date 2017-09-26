@@ -1,0 +1,163 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Usuarios</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">Home</a>
+            </li>
+            <li>
+                <a>Administración</a>
+            </li>
+            <li>
+                <a [routerLink]="['../../']">Usuarios</a>
+            </li>
+            <li class="active">
+                <strong>Detalle</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3 class="pull-left">Detalle del usuario</h3>
+                    
+                    <div class="ibox-tools" >
+                        <a [routerLink]="['/admin/users']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <dl class="dl-horizontal">
+                                <dt>Nombre:</dt>
+                                <dd>{{user.name}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Usuario:</dt>
+                                <dd>{{user.userName}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Mail:</dt>
+                                <dd>{{user.email}}</dd>
+                            </dl>
+                                <dl class="dl-horizontal">
+                                <dt>Estado:</dt>
+                                <dd>
+                                    <span *ngIf="user.active == true" class="label label-primary">Activo</span>
+                                    <span *ngIf="user.active == false" class="label label-danger">Inactivo</span>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-6" *ngIf="user">
+                            <dl class="dl-horizontal" *ngIf="user.groups">
+                                <dt>Grupos :</dt>
+                                <dd>{{user.groups.length}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" *ngIf="user.roles">
+                                <dt>Roles :</dt>
+                                <dd>{{user.roles.length}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" *ngIf="user.modules">
+                                <dt>Modulos :</dt>
+                                <dd>{{user.modules.length}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- GRUPOS -->
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Grupos
+                    <a class="pull-right" [hidden]="groupsToAdd.length == 0" (click)="modalGroups.show()"><i class="fa fa-plus icon-white" ></i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="scroll">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let group of user.groups">
+                                <span [routerLink]="['/admin/groups/edit', group.value]" class="m-l-xs pointer">{{group.text}}</span>
+                                <a class="pull-right" (click)="openConfirmModal(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLES -->
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Roles
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list m-t small-list">
+                        <li *ngFor="let role of user.roles">
+                            <span [routerLink]="['/admin/roles/edit', role.value]" class="m-l-xs pointer">{{role.text}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">   
+         <!--MODULES-->
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> Módulos
+                </div>
+                <div class="panel-body">
+                    <div class="scroll">
+                        <div class="dd">
+                            <ol class="dd-list">
+                                <li *ngFor="let m of user.modules" class="dd-item">
+                                    <div class="dd-handle">
+                                        {{m.description}}
+                                    </div>
+                                    
+                                    <ol class="dd-list">
+                                        <li *ngFor="let f of m.functionalities" class="dd-item">
+                                            <div class="dd-handle">
+                                                {{f.text}}
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng2-modal [config]="modalConfig"  #modalGroups (accept)="assignGroups()"> <!--(accept)="" (cancel)=""-->
+
+    <h4>Seleccione los grupos a ser asignados al usuario:</h4>
+
+    <div class="scroll">
+        <div *ngFor="let g of groupsToAdd; let i = index"  style="margin-top:10px;">
+            <icheck  [checkAtLeft]="checkAtLeft" [(checked)]="groupsToAdd[i].included" >
+                <label style="padding-left:20px;">{{g.text}}</label> 
+            </icheck>
+        </div>
+    </div>
+
+</ng2-modal>
+
+<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unassignGroup()">
+    ¿Esta seguro que desea eliminar el grupo?
+</ng2-modal>

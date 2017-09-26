@@ -1,0 +1,47 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'ADMIN.GROUPS.TITLE' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'ADMIN.GROUPS.TITLE' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4 class="pull-left">{{'ADMIN.GROUPS.MANAGEMENT' | translate }}</h4>
+                    
+                    <div class="ibox-tools" >
+                        <a *ngIf="menuService.hasFunctionality('GRP', 'ALTA')" [routerLink]="['add']" class="btn btn-primary btn-link"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-content" *ngIf="data != null && options != null">
+                    <datatables #dt
+                      [data] = "data" 
+                      [columns]="columns" 
+                      [editionType]=editionType
+                      [options]=options
+                      [locationTexts]=locationTexts
+                      (edit) = "editClick($event)"
+                      (other1) = "assginFeatures($event)"
+                      (habInhab) = "habInhab($event)"
+                      module="GRP"
+                      ></datatables>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

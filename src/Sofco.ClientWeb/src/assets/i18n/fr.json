@@ -1,0 +1,284 @@
+{
+    "ADMIN": {
+         "TITLE": "Administration",
+         "SHORT_TITLE": "Admin",
+         "ROLES": {
+             "TITLE": "Rôles",
+             "MANAGEMENT": "Administration de Rôles",
+             "EDIT": "Éditer Rôle",
+             "ADD": "Ajouter Rôle",
+             "GRID": {
+                 "id": "Id",
+                 "description": "Description",
+                 "active": "Actif",
+                 "startDate": "Date de Création",
+                 "endDate": "Date Elim",
+                 "actions": "Actions"
+             },
+             "descriptionRequired": "Le champ description est obligatoire"
+         },
+         "USERS": {
+             "TITLE": "Utilisateurs",
+             "MANAGEMENT": "Administration d’Utilisateurs",
+             "EDIT": "Éditer Utilisateur",
+             "ADD": "Ajouter Utilisateur"
+         },
+         "GROUPS": {
+             "TITLE": "Groupes",
+             "MANAGEMENT": "Administration de Groupes",
+             "EDIT": "Éditer Groupe",
+             "ADD": "Ajouter Groupe"
+         },
+         "FUNCTIONALITIES": {
+             "TITLE": "Fonctionnalités",
+             "MANAGEMENT": "Administration de Fonctionnalités",
+             "EDIT": "Éditer Fonctionnalité",
+             "ADD": "Ajouter Fonctionnalité",
+             "select": "Sélectionner Fonctionnalités",
+             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer la fonctionnalité?"
+         },
+         "module": {
+             "title": "Modules",
+             "management": "Administration de Modules",
+             "edit": "Éditer Module",
+             "add": "Ajouter Module",
+             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer le module?"
+         }
+     },
+     "billing":{
+         "title": "Facturation",
+         "customer":{
+             "title": "Clients",
+             "management": "Liste de Clients",
+             "edit": "Éditer Client",
+             "add": "Ajouter Client",
+             "grid": {
+                 "name": "Nom",
+                 "cuit": "NIF",
+                 "address": "Adress",
+                 "province": "Région",
+                 "country": "Pays"
+             }
+         },
+         "service":{
+             "title": "Services",
+             "management": "Liste de Services",
+             "edit": "Éditer Service",
+             "add": "Ajouter Service",
+             "grid": {
+                 "name": "Nom",
+                 "industry": "Industrie",
+                 "startDate": "Date de Début",
+                 "endDate": "Date de Finalisation"
+             }
+         },
+         "project":{
+             "title": "Projets",
+             "management": "Liste de Projets",
+             "edit": "Éditer Projet",
+             "add": "Ajouter Projet ",
+             "grid": {
+                 "name": "Nom",
+                 "analytic": "Imputation Analytique",
+                 "purchaseOrder": "Ordre d’Achat",
+                 "incomes": "Rémunération Estimée",
+                 "startDate": "Date de Début",
+                 "endDate": "Date de Finalisation"
+             },
+             "detail": {
+                 "title": "Nom du Projet",
+                 "analytic": " Numéro de Projet ",
+                 "purchaseOrder": "Ordre d’Achat",
+                 "incomes": " Rémunération Estimée",
+                 "startDate": " Date de Début",
+                 "endDate": " Date de Finalisation",
+                 "oportunity": "Opportunité",
+                 "serviceType": "Catégorie de Service",
+                 "solutionType": " Catégorie de Solution",
+                 "technology": "Catégorie de Technologie",
+                 "invoices": {
+                     "title": "Accusé de Réception",
+                     "invoiceNumber": "Numéro Accusé de Réception",
+                     "date": "Date",
+                     "status": "État",
+                     "create": "Créer Accusé de Réception"
+                 },
+                 "milestone": {
+                     "title": "Jalons",
+                     "description": "Description",
+                     "amount": "Montant",
+                     "ammountBilled": "M. Facturé",
+                     "startDate": "Date de Création",
+                     "month": "Mois",
+                     "status": "État",
+                     "new": "Générer Demande"
+                 },
+                 "requests": {
+                     "title": "Demandes",
+                     "project": "Projet",
+                     "businessName": "Raison Sociale",
+                     "docType": "Catégorie de Doc.",
+                     "date": "Date",
+                     "total": "Total",
+                     "status": "État"
+                 }
+             }
+         },
+         "hito":{
+             "title": "Jalons",
+             "management": "Administration de Jalons",
+             "edit": "Éditer Jalon",
+             "add": "Ajouter Jalon"
+         },
+         "solfac":{
+             "title": "Demande de Facturation",
+             "new": "Génération",
+             "management": "Administration de SolFac",
+             "edit": "Éditer SolFac",
+             "add": "Créer SolFac",
+             "solfacs": "Demande de Facturation",
+             "search": "Recherche",
+             "searchTitle": "Rechercher Solfacs",
+             "list": "Liste de demandes",
+             "detail": "Détail de Facturation",
+             "contractInfo": "Info du contrat",
+             "status": "État",
+             "businessName":"Raison Sociale",
+             "project": "Projet",
+             "clientName": "Contact du Client",
+             "celphone": "Portable",
+             "userApplicant": "Requérant",
+             "analytic": "Imputation Analytique",
+             "timeLimit": "Temps Maximale",
+             "imputationNumber": "N° de imputation",
+             "invoice": "Associer Accusé de Réception",
+             "documentType": "Catégorie doc.",
+             "currency": "Monnaie",
+             "date": "Date",
+             "contractNumber": "N° de OA ou N° de Contrat",
+             "invoiceNumber": "Numéro d’Accusé de Réception",
+             "pdf": "PDF",
+             "days": "Jours",
+             "movements": "Mouvements",
+             "client": "Client",
+             "service": "Service",
+             "attachments": "Fichiers Adjoints",
+             "import": "Télécharger le fichier",
+             "milestone": {
+                 "detail": "Detail",
+                 "quantity": "Quantité",
+                 "unitPrice": "Prix Unitaire",
+                 "total": "Total",
+                 "amount": "Montant Brut",
+                 "iva21": "T.V.A. 21%",
+                 "totalAmount": "Montant Total"
+             },
+             "impositiveInfo": {
+                 "title": "Information fiscale",
+                 "capital": "Capital %:",
+                 "bsas": "Région de Bs. As",
+                 "otherProvince": "Autres Régions",
+                 "province": "Région"
+             },
+             "histories": {
+                 "createdDate": "Date de Création",
+                 "userName": "Utilisateur",
+                 "comment": "Commentaires",
+                 "solfacStatusFrom": "État initial",
+                 "solfacStatusTo": "État final"
+             },
+             "attachedParts": "Pièces Adjointes",
+             "particularSteps": "Instructions Particulaires",
+             "addComments": "Inclure les commentaires du rejet"
+         },
+         "invoice":{
+             "title": "Accusés de Réception",
+             "new": "Génération",
+             "searchTitle": "Rechercher Accusés de Réception",
+             "search": "Recherche",
+             "management": "Demande d’Accusés de Réception",
+             "edit": "Éditer Accusé de Réception",
+             "add": "Créer Accusé de Réception",
+             "detail": "Détail de Accusé de Réception",
+             "information": "Info de l’Accusé de Réception",
+             "invoiceNumber": "N° Accusé de Réception",
+             "createdDate": "Date de Création",
+             "account": "Compte",
+             "service": "Service",
+             "project": "Projet",
+             "list": "Liste d’Accusé de Réceptions",
+             "cuit": "NIF",
+             "user": "Requérant",
+             "status": "État",
+             "address": "Adress",
+             "zipCode": "Code postal",
+             "city": "Ville",
+             "province": "Région",
+             "country": "Pays",
+             "attachments": "Fichiers Adjoints",
+             "createdAt": "Créé",
+             "excelImport": "Télécharger Excel",
+             "pdfImport": " Télécharger PDF",
+             "progress": "Progress",
+             "import": "Télécharger",
+             "quit": "Enlever",
+             "includeInvoiceNumber": "Ajoutez le numéro d’Accusé de Réception avant de valider",
+             "excelUploaded": "Le document Excel a été téléchargé avec succès. Vous pouvez enregistrer l’Accusé de Réception en version provisoire ou l’envoyer à la DAF pour être validé.",
+             "draft": "Enregistrer en version préliminaire",
+             "createAndExport": "Créer et Exporter"
+         }
+     },
+     "HOME": {
+         "TITLE": "Accueil",
+         "welcome": "Bienvenu à SofcoAr!"
+     },
+     "ACTIONS":{
+         "ADD": "Ajouter",
+         "EDIT": "Éditer",
+         "DELETE": "Éliminer",
+         "ACTIVATE": "Activer",
+         "DEACTIVATE": "Désactiver",
+         "ACCEPT": "Accepter",
+         "cancel": "Annuler",
+         "yes": "Oui",
+         "no": "Non",
+         "update": "Actualiser",
+         "search": "Rechercher",
+         "close": "Fermer",
+         "back": "Retour",
+         "approve": "Valider",
+         "reject": "Rejeter",
+         "sendToDaf": "Envoyer à la DAF",
+         "annulment": "Annuler",
+         "save": "Enregistrer",
+         "saveAndSend": "Enregistrer et Envoyer",
+         "sendToCDG": "Envoyer à CDG",
+         "bill": "Facturée",
+         "cash": "Facturation Perçue",
+         "goToProject": "Aller au Projet",
+         "goToSearch": "Aller à Recherches",
+         "confirmTitle": "Confirmer action",
+         "confirmBody": "¿Etes-vous sûr de vouloir confirmer l’action?"
+     },
+     "SendPending": "En Attente d’être Envoyer",
+     "PendingByManagementControl": "E.A. de Révision de Control Gestion",
+     "ManagementControlRejected": "Rejeté par Control Gestion",
+     "InvoicePending": "En Attente d’être facturée",
+     "Invoiced": "Facturée",
+     "AmountCashed": "Facturation Perçue",
+     "Rejected": "Rejeté",
+     "Sent": "Envoyé",
+     "Approved": "Validé",
+     "Related": "Associé",
+     "Cancelled": "Annulé",
+     "Proyectado": "Projeté",
+     "Pendiente": "En Attente",
+     "ToBeBilled": "Doit être facturé",
+     "Facturado": "Facturé",
+     "Pagado": "Payé",
+     "noInfoAvailable": "Il n’y a pas d’information disponible",
+     "None": "Vide",
+     "comments": "Commentaires",
+     "selectAnOption": "Sélectionner une option"
+ }
+ 
