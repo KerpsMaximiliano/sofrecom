@@ -12,26 +12,26 @@ export class ProjectService {
   }
 
   getAll(serviceId) {
-      return this.http.get(`${this.baseUrl}/project/service/${serviceId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+      return this.http.get(`${this.baseUrl}/projects/service/${serviceId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getById(projectId) {
-      return this.http.get(`${this.baseUrl}/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+      return this.http.get(`${this.baseUrl}/projects/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getOptions(serviceId) {  
-    return this.http.get(`${this.baseUrl}/project/${serviceId}/options`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/projects/${serviceId}/options`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
   }
 
   getHitos(projectId){
-      return this.http.get(`${this.baseUrl}/project/${projectId}/hitos`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+      return this.http.get(`${this.baseUrl}/projects/${projectId}/hitos`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getSolfacs(projectId){
-      return this.http.get(`${this.baseUrl}/solfac/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+      return this.http.get(`${this.baseUrl}/solfacs/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getInvoices(projectId){
-      return this.http.get(`${this.baseUrl}/invoice/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+      return this.http.get(`${this.baseUrl}/invoices/project/${projectId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 }

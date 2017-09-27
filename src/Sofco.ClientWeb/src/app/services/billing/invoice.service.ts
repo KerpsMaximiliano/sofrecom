@@ -12,31 +12,31 @@ export class InvoiceService {
   }
 
   getUrlForImportExcel(id){
-    return `${this.baseUrl}/invoice/${id}/excel`;
+    return `${this.baseUrl}/invoices/${id}/excel`;
   }
 
   getUrlForImportPdf(id){
-    return `${this.baseUrl}/invoice/${id}/pdf`;
+    return `${this.baseUrl}/invoices/${id}/pdf`;
   }
  
   add(model){
-     return this.http.post(`${this.baseUrl}/invoice`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/invoices`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getById(id){
-     return this.http.get(`${this.baseUrl}/invoice/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.get(`${this.baseUrl}/invoices/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   delete(id){
-     return this.http.delete(`${this.baseUrl}/invoice/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.delete(`${this.baseUrl}/invoices/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getOptions(projectId){
-     return this.http.get(`${this.baseUrl}/invoice/${projectId}/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   annulment(id){
-     return this.http.put(`${this.baseUrl}/invoice/${id}/annulment`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.put(`${this.baseUrl}/invoices/${id}/annulment`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   changeStatus(id, status, comment, invoiceNumber){
@@ -47,11 +47,11 @@ export class InvoiceService {
       invoiceNumber: invoiceNumber
     }
 
-    return this.http.post(`${this.baseUrl}/invoice/${id}/status`, body, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/invoices/${id}/status`, body, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
  }
 
   getExcel(id){
-     return this.http.get(`${this.baseUrl}/invoice/${id}/excel`,
+     return this.http.get(`${this.baseUrl}/invoices/${id}/excel`,
       { headers: this.service.getHeaders(),
         responseType: ResponseContentType.Blob
       })
@@ -66,7 +66,7 @@ export class InvoiceService {
   }
 
   getPdf(id){
-     return this.http.get(`${this.baseUrl}/invoice/${id}/pdf`,
+     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf`,
       { headers: this.service.getHeaders(),
         responseType: ResponseContentType.Blob
       })
@@ -81,7 +81,7 @@ export class InvoiceService {
   }
 
   export(model){
-    return this.http.post(`${this.baseUrl}/invoice/excel`,
+    return this.http.post(`${this.baseUrl}/invoices/excel`,
       model,  
       { headers: this.service.getHeaders(),
         responseType: ResponseContentType.Blob
@@ -90,10 +90,10 @@ export class InvoiceService {
   }
 
   search(parameters) {
-    return this.http.post(`${this.baseUrl}/invoice/search`, parameters, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/invoices/search`, parameters, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getStatus() {
-    return this.http.get(`${this.baseUrl}/invoice/status`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/invoices/status`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 }

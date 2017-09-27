@@ -17,7 +17,7 @@ using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
-    [Route("api/project")]
+    [Route("api/projects")]
     [Authorize]
     public class ProjectController : Controller
     {

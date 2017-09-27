@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
-    [Route("api/module")]
+    [Route("api/modules")]
     [Authorize]
     public class ModuleController : Controller
     {

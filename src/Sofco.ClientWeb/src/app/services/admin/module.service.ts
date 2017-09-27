@@ -11,34 +11,34 @@ export class ModuleService {
     }
 
     getAll() {
-        return this.http.get(`${this.baseUrl}/module`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+        return this.http.get(`${this.baseUrl}/modules`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
     }
 
     get(id: number) {
-       return this.http.get(`${this.baseUrl}/module/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+       return this.http.get(`${this.baseUrl}/modules/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/module/${id}/active/false`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/modules/${id}/active/false`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/module/${id}/active/true`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/modules/${id}/active/true`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     getOptions() {
-        return this.http.get(`${this.baseUrl}/module/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.get(`${this.baseUrl}/modules/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     getOptionsWithFunctionalities() {
-        return this.http.get(`${this.baseUrl}/module/modulesAndFunctionalities`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.get(`${this.baseUrl}/modules/modulesAndFunctionalities`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     edit(model) {
-        return this.http.put(`${this.baseUrl}/module`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/modules`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     getFunctionalities(id: number) {
-        return this.http.get(`${this.baseUrl}/module/${id}/functionalities`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.get(`${this.baseUrl}/modules/${id}/functionalities`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 }

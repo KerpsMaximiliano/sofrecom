@@ -12,34 +12,34 @@ export class GroupService {
     }
 
     getAll() {
-        return this.http.get(`${this.baseUrl}/group`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+        return this.http.get(`${this.baseUrl}/groups`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
     }
 
     get(id: number) {
-       return this.http.get(`${this.baseUrl}/group/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+       return this.http.get(`${this.baseUrl}/groups/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
     }
 
     add(model : Group) {
-        return this.http.post(`${this.baseUrl}/group`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+        return this.http.post(`${this.baseUrl}/groups`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
     }
 
     edit(model) {
-        return this.http.put(`${this.baseUrl}/group`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/groups`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     delete(id: number) {
-        return this.http.delete(`${this.baseUrl}/group/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.delete(`${this.baseUrl}/groups/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/group/${id}/active/false`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/groups/${id}/active/false`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/group/${id}/active/true`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.put(`${this.baseUrl}/groups/${id}/active/true`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 
     getOptions() {
-        return this.http.get(`${this.baseUrl}/group/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
+        return this.http.get(`${this.baseUrl}/groups/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json() );
     }
 }

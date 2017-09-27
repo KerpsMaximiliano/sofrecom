@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
-    [Route("api/user")]
+    [Route("api/users")]
     //[Authorize]
     public class UserController : Controller
     {

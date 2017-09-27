@@ -10,7 +10,7 @@ using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
-    [Route("api/group")]
+    [Route("api/groups")]
     [Authorize]
     public class GroupController : Controller
     {

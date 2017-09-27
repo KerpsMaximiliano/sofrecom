@@ -11,7 +11,7 @@ using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
-    [Route("api/role")]
+    [Route("api/roles")]
     [Authorize]
     public class RoleController : Controller
     {

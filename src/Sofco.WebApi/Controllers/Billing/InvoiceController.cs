@@ -16,7 +16,7 @@ using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
-    [Route("api/invoice")]
+    [Route("api/invoices")]
     [Authorize]
     public class InvoiceController : Controller
     {

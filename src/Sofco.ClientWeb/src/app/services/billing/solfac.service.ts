@@ -14,27 +14,27 @@ export class SolfacService {
   }
 
   getOptions() {
-    return this.http.get(`${this.baseUrl}/solfac/options`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/options`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   search(parameters) {
-    return this.http.post(`${this.baseUrl}/solfac/search`, parameters, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/solfacs/search`, parameters, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   get(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfac/${solfacId}`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   getStatus() {
-    return this.http.get(`${this.baseUrl}/solfac/status`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/status`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   getHistories(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfac/${solfacId}/histories`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/histories`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   getAttachments(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfac/${solfacId}/files`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/files`, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   add(model){
@@ -46,7 +46,7 @@ export class SolfacService {
   }
 
   send(model){
-     return this.http.post(`${this.baseUrl}/solfac/send`, model, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs/send`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   changeStatus(id, status, comment, invoiceCode){
@@ -57,23 +57,23 @@ export class SolfacService {
        invoiceCode: invoiceCode
      }
 
-     return this.http.post(`${this.baseUrl}/solfac/${id}/status`, body, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, body, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   delete(id){
-     return this.http.delete(`${this.baseUrl}/solfac/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.delete(`${this.baseUrl}/solfacs/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   deleteFile(id){
-    return this.http.delete(`${this.baseUrl}/solfac/file/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+    return this.http.delete(`${this.baseUrl}/solfacs/file/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
  }
 
   getUrlForImportFile(id){
-    return `${this.baseUrl}/solfac/${id}/file`;
+    return `${this.baseUrl}/solfacs/${id}/file`;
   }
 
   getFile(id){
-    return this.http.get(`${this.baseUrl}/solfac/file/${id}`,
+    return this.http.get(`${this.baseUrl}/solfacs/file/${id}`,
      { headers: this.service.getHeaders(),
        responseType: ResponseContentType.Blob
      })

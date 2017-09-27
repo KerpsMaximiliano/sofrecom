@@ -21,7 +21,7 @@ using System.Text;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
-    [Route("api/solfac")]
+    [Route("api/solfacs")]
     [Authorize]
     public class SolfacController : Controller
     {
