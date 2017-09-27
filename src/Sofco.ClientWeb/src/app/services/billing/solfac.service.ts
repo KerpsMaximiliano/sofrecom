@@ -38,11 +38,11 @@ export class SolfacService {
   }
 
   add(model){
-     return this.http.post(`${this.baseUrl}/solfac`, model, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   update(model){
-    return this.http.put(`${this.baseUrl}/solfac`, model, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.put(`${this.baseUrl}/solfacs`, model, { headers: this.headers}).map((res:Response) => res.json());
   }
 
   send(model){

@@ -16,8 +16,8 @@ export class  Configuration {
         tr.setDefaultLang(browserLang);
         tr.use(this.currLang);
 
-        //this.UrlApi = "http://azsof01wd:8081/api"  
-        this.UrlApi = "http://localhost:9696/api" 
+        this.UrlApi = "http://azsof01wd:8081/api"  
+        //this.UrlApi = "http://localhost:9696/api" 
     }
 
     setCurrLang(currLang: string){
