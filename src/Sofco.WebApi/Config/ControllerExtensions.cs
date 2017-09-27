@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using System.Linq;
 
 namespace Sofco.WebApi.Config
 {

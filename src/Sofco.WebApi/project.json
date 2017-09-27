@@ -61,7 +61,9 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "warningsAsErrors": false,
+    "additionalArguments": [ "/ruleset:../../etc/stylecop/StyleCopeRules.ruleset", "/additionalfile:../../etc/stylecop/stylecop.json" ]
   },
 
   "runtimeOptions": {
