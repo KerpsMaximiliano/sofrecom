@@ -261,7 +261,7 @@ namespace Sofco.WebApi.Controllers.Billing
                     return Ok(responseFile);
 
                 }
-                catch (Exception e)
+                catch
                 {
                     var error = new Response();
                     error.Messages.Add(new Message(Resources.es.Common.SaveFileError, MessageType.Error));
@@ -293,7 +293,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return File(response.Data.File, "application/octet-stream", response.Data.Name);
             }
-            catch (Exception e)
+            catch
             {
                 var response = new Response();
                 response.Messages.Add(new Message(Resources.es.Common.ExportFileError, MessageType.Error));
