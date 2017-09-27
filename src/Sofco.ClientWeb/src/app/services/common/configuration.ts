@@ -2,6 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { environment } from '../../../environments/environment'
 
 @Injectable()
 export class  Configuration {
@@ -16,8 +17,7 @@ export class  Configuration {
         tr.setDefaultLang(browserLang);
         tr.use(this.currLang);
 
-        this.UrlApi = "http://azsof01wd:8081/api"  
-        //this.UrlApi = "http://localhost:9696/api" 
+        this.UrlApi = environment.urlApi;
     }
 
     setCurrLang(currLang: string){

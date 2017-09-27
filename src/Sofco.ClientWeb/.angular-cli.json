@@ -47,7 +47,8 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "azsof01wd": "environments/environment.azsof01wd.ts"
       }
     }
   ],
