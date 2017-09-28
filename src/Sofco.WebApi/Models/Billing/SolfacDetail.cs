@@ -44,6 +44,7 @@ namespace Sofco.WebApi.Models.Billing
             Province3Id = domain.Province3Id;
             InvoiceCode = domain.InvoiceCode;
             InvoiceDate = domain.InvoiceDate;
+            CashedDate = domain.CashedDate;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -116,6 +117,7 @@ namespace Sofco.WebApi.Models.Billing
         public short TimeLimit { get; set; }
         public string InvoiceCode { get; set; }
         public DateTime? InvoiceDate { get; set; }
+        public DateTime? CashedDate { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
         public string ProvinceName1 { get; set; }

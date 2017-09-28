@@ -186,4 +186,7 @@
   <data name="InvoiceDateRequired" xml:space="preserve">
     <value>Fecha de facturación es requerida</value>
   </data>
+  <data name="CashedDateRequired" xml:space="preserve">
+    <value>La fecha de cobro es requerida</value>
+  </data>
 </root>

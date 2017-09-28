@@ -29,6 +29,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
+
+            if (!parameters.CashedDate.HasValue)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
+            }
             
             return response;
         }
@@ -60,10 +65,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Cashed;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository _solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
         {
-            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
-            _solfacRepository.UpdateStatus(solfacToModif);
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, CashedDate = parameters.CashedDate };
+            solfacRepository.UpdateStatusAndCashed(solfacToModif);
         }
     }
 }

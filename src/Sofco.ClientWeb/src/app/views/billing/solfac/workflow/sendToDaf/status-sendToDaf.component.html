@@ -1,0 +1,7 @@
+<button class="btn btn-primary btn-outline dim" (click)="sendToDafModal.show()" *ngIf="canSendToDAF()"> 
+    {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i>
+</button>
+
+<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

@@ -1,0 +1,7 @@
+<button class="btn btn-danger btn-outline dim" (click)="deleteModal.show()" *ngIf="canDelete()"> 
+    {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i>
+</button>
+
+<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="delete()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

@@ -78,6 +78,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de cobro es requerida.
+        /// </summary>
+        public static string CashedDateRequired {
+            get {
+                return ResourceManager.GetString("CashedDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Se debe agregar un motivo de rechazo.
         /// </summary>
         public static string CommentRequired {

@@ -11,7 +11,6 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { DatepickerOptions } from 'ng2-datepicker';
 
 @Component({
   selector: 'app-solfac-detail',
@@ -20,56 +19,15 @@ import { DatepickerOptions } from 'ng2-datepicker';
 })
 export class SolfacDetailComponent implements OnInit, OnDestroy {
 
-    @ViewChild('confirmModal') confirmModal;
-    @ViewChild('rejectModal') rejectModal;
-    @ViewChild('agreeModal') agreeModal;
     @ViewChild('history') history: any;
-
-    public rejectModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.solfac.addComments",
-        "rejectModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
-    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "ACTIONS.confirmTitle",
-        "confirmModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
-    public agreeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.solfac.includeInvoiceCode",
-        "agreeModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
  
     public model: any = {};
     public solfacId: any;
     public currencySymbol: string = "$";
-    public rejectComments: string;
-    invoiceCode: string;
-    invoiceDate: Date = new Date();
 
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
-
-    public options: DatepickerOptions = {
-        minYear: 1970,
-        maxYear: 2030,
-        displayFormat: 'DD/MM/YYYY',
-        barTitleFormat: 'MMMM YYYY',
-        firstCalendarDay: 1
-      };
 
     constructor(private solfacService: SolfacService,
                 private activatedRoute: ActivatedRoute,
@@ -91,7 +49,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
     }
-
+ 
     getSolfac(){
         this.getDetailSubscrip = this.solfacService.get(this.solfacId).subscribe(d => {
             this.model = d;
@@ -126,209 +84,10 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    canSendToCDG(){
-        if((this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-           this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])
-           && this.menuService.hasFunctionality("SOLFA", "SCDG")){
-
-            return true;
-        }
-
-        return false;
-    }
-
-    canRejectByCDG(){
-        if(this.model.statusName == SolfacStatus[SolfacStatus.PendingByManagementControl] &&
-           this.menuService.hasFunctionality("SOLFA", "REJEC")){
-            return true;
-        }
-
-        return false;
-    }
-
-    canSendToDAF(){
-        if(this.model.statusName == SolfacStatus[SolfacStatus.PendingByManagementControl] &&
-           this.menuService.hasFunctionality("SOLFA", "SDAF")){
-            return true;
-        }
-
-        return false;
-    }
-
-    canSendToBill(){
-        if(this.model.statusName == SolfacStatus[SolfacStatus.InvoicePending] && 
-           this.menuService.hasFunctionality("SOLFA", "BILL")){
-            return true;
-        }
-
-        return false;
-    }
-
-    canSendToCash(){
-        if(this.model.statusName == SolfacStatus[SolfacStatus.Invoiced] && 
-           this.menuService.hasFunctionality("SOLFA", "CASH")){
-            return true;
-        }
-
-        return false;
-    }
-
-    canDelete(){
-        if(this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-           this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]){
-            return true;
-        }
-
-        return false;
-    }
-
-    sendToCDG(){
-        var json = {
-            status: SolfacStatus.PendingByManagementControl
-        }
-
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-            data => {
-                this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.statusName = SolfacStatus[SolfacStatus.PendingByManagementControl];
-                this.history.getHistories();
-            },
-            error => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
-    }
-
-    rejectByCDG(){
-        if(!this.rejectComments || this.rejectComments == ""){
-            this.messageService.showError("Se debe agregar un motivo de rechazo");
-            return;
-        }
-
-        var json = {
-            status: SolfacStatus.ManagementControlRejected,
-            comment: this.rejectComments
-        }
-
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-            data => {
-                this.rejectModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.statusName = SolfacStatus[SolfacStatus.ManagementControlRejected];
-                this.history.getHistories();
-            },
-            error => {
-                this.rejectModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
-    }
-
-    sendToDAF(){
-        var json = {
-            status: SolfacStatus.InvoicePending
-        }
-
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-            data => {
-                this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.statusName = SolfacStatus[SolfacStatus.InvoicePending];
-                this.history.getHistories();
-            },
-            error => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
-    }
-
-    sendToBill(){
-        if(this.invoiceCode && this.invoiceCode != ""){
-
-            var json = {
-                status: SolfacStatus.Invoiced,
-                invoiceCode: this.invoiceCode,
-                invoiceDate: this.invoiceDate
-              }
-
-            this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-                data => {
-                    this.agreeModal.hide();
-                    if(data.messages) this.messageService.showMessages(data.messages);
-                    this.model.statusName = SolfacStatus[SolfacStatus.Invoiced];
-                    this.history.getHistories();
-                    this.model.invoiceCode = this.invoiceCode;
-                    this.model.invoiceDate = this.invoiceDate;
-                },
-                error => {
-                    this.agreeModal.hide();
-                    this.errorHandlerService.handleErrors(error);
-                });
-        }else{
-            this.messageService.showError("El número de factura es requerido");
-        }
-    }
-
-    sendToCash(){
-        var json = {
-            status: SolfacStatus.AmountCashed
-        }
-
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-            data => {
-                this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.statusName = SolfacStatus[SolfacStatus.AmountCashed];
-                this.history.getHistories();
-            },
-            error => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
-    }
-
-    delete(){
-        this.solfacService.delete(this.model.id).subscribe(data => {
-            this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            setTimeout(() => { this.goToProject(); }, 1500)
-        },
-        err => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(err);
-        });
-    }
-
-    
-    confirm() {}
-    
-    showConfirmSendToCDG(){
-        this.confirm = this.sendToCDG;
-        this.confirmModal.show();
-    }
-
-    showConfirmRejectByCDG(){
-        this.rejectModal.show();
-    }
-
-    showConfirmSendToDaf(){
-        this.confirm = this.sendToDAF;
-        this.confirmModal.show();
-    }
-
-    showConfirmSendToBill(){
-        this.confirm = this.sendToBill;
-        this.confirmModal.show();
-    }
-
-    showConfirmSendToCash(){
-        this.confirm = this.sendToCash;
-        this.confirmModal.show();
-    }
-
-    showConfirmDelete(){
-        this.confirm = this.delete;
-        this.confirmModal.show();
+    updateStatus(event){
+        if(event.statusName) this.model.statusName = event.statusName;
+        if(event.invoiceCode) this.model.invoiceCode = event.invoiceCode;
+        if(event.invoiceDate) this.model.invoiceDate = event.invoiceDate;
+        if(event.cashedDate) this.model.cashedDate = event.cashedDate;
     }
 }

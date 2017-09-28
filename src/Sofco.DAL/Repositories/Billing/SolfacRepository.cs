@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
@@ -124,6 +123,12 @@ namespace Sofco.DAL.Repositories.Billing
         public void UpdateStatus(Solfac solfac)
         {
             _context.Entry(solfac).Property("Status").IsModified = true;
+        }
+
+        public void UpdateStatusAndCashed(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("CashedDate").IsModified = true;
+            UpdateStatus(solfac);
         }
 
         public void UpdateStatusAndInvoice(Solfac solfac)

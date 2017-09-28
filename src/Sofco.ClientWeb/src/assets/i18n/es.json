@@ -176,6 +176,7 @@
             "attachments": "Archivos Adjuntos",
             "import": "Importar archivo",
             "invoiceDate": "Fecha de Facturación",
+            "cashedDate": "Fecha Cobro",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"

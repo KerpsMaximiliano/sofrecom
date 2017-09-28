@@ -15,6 +15,6 @@ namespace Sofco.Core.StatusHandlers
         string GetRecipients(Solfac solfac, EmailConfig emailConfig);
         string GetSuccessMessage();
         HitoStatus GetHitoStatus();
-        void SaveStatus(Solfac solfac, SolfacStatusParams parameters, ISolfacRepository _solfacRepository);
+        void SaveStatus(Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository);
     }
 }

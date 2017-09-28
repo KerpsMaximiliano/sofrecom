@@ -1,10 +1,8 @@
-﻿using System;
-using Sofco.Core.Config;
+﻿using Sofco.Core.Config;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
@@ -71,10 +69,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Billed;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository _solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
-             _solfacRepository.UpdateStatusAndInvoice(solfacToModif);
+             solfacRepository.UpdateStatusAndInvoice(solfacToModif);
         }
     }
 }

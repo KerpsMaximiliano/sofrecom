@@ -39,16 +39,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
 
-    @ViewChild('confirmModal') confirmModal;
-    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "ACTIONS.confirmTitle",
-        "confirmModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -98,9 +88,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.imputationNumber3 = 1;
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
+      this.model.customerId = sessionStorage.getItem("customerId")
       this.model.serviceId = sessionStorage.getItem("serviceId");
       this.model.service = sessionStorage.getItem("serviceName");
-      this.model.customerId = customer.id;
       this.model.remito = project.remito;
 
       this.model.hitos = new Array<HitoDetail>();
@@ -230,78 +220,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
     }
 
-    canSendToCDG(){
-      if(this.solfacId > 0 
-         && (this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-            this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])
-         && this.menuService.hasFunctionality("SOLFA", "SCDG")){
-
-          return true;
-      }
-
-      return false;
-    }
-
-    sendToCDG(){
-      var json = {
-        status: SolfacStatus.PendingByManagementControl
-      }
-
-      this.changeStatusSubscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
-          data => {
-              this.confirmModal.hide();
-              if(data.messages) this.messageService.showMessages(data.messages);
-
-              setTimeout(() => {
-                  this.cancel();
-              }, 500);
-          },
-          error => {
-              this.confirmModal.hide();
-              this.errorHandlerService.handleErrors(error);
-          });
-    }
-
-    confirm() { }
-
-    canDelete(){
-      if(this.solfacId > 0 && (this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-                               this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])){
-          return true;
-      }
-
-      return false;
-    }
-
-    showConfirmDelete(){
-      this.confirm = this.delete;
-      this.confirmModal.show();
-    }
-
-    delete(){
-        this.solfacService.delete(this.solfacId).subscribe(data => {
-            this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            setTimeout(() => { this.cancel() }, 500)
-        },
-        err => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(err);
-        });
-      }
-
     getCurrencyId(currency){
       switch(currency){
         case "Peso": { return 1; }
         case "Dolar": { return 2; }
         case "Euro": { return 3; }
       }
-    }
-
-    showConfirmSendToCDG(){
-      this.confirm = this.sendToCDG;
-      this.confirmModal.show();
     }
 
     cancel(){

@@ -1,0 +1,14 @@
+<button class="btn btn-primary btn-outline dim" (click)="billModal.show()" *ngIf="canSendToBill()"> 
+    {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i>
+</button>
+
+<ng2-modal [config]="billModalConfig" #billModal (accept)="sendToBill()">
+    <div class="form-group">
+        <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
+        <input type="text" class="form-control" [(ngModel)]="invoiceCode">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{'billing.solfac.invoiceDate' | translate }}</label>
+        <ng-datepicker [(ngModel)]="invoiceDate" [options]="options"></ng-datepicker>
+    </div>
+</ng2-modal> 

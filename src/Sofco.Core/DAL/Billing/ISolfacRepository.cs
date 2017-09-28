@@ -22,5 +22,6 @@ namespace Sofco.Core.DAL.Billing
         void DeleteFile(SolfacAttachment file);
         void UpdateStatusAndInvoice(Solfac solfacToModif);
         ICollection<string> GetHitosIdsBySolfacId(int solfacId);
+        void UpdateStatusAndCashed(Solfac solfacToModif);
     }
 }

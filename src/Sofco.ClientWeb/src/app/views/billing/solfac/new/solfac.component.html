@@ -21,10 +21,11 @@
             <button class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                    <button class="btn btn-danger btn-outline dim" (click)="showConfirmDelete()" *ngIf="canDelete()"> {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
                 <button class="btn btn-primary btn-outline dim" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
                 <button class="btn btn-primary btn-outline dim" (click)="send()" *ngIf="canSend()"> {{'ACTIONS.saveAndSend' | translate }} <i class="fa fa-save"></i></button>
-                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCDG()" *ngIf="canSendToCDG()"> {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i></button>
+
+                <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
+                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="cancel()"></status-sendToCdg>
             </div>
         </div>
     </div>
@@ -277,7 +278,3 @@
         </div>
     </div>
 </div>
-
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
-</ng2-modal> 

@@ -49,6 +49,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.customerName = sessionStorage.getItem('customerName');
             this.serviceName = sessionStorage.getItem('serviceName');
 
+            sessionStorage.setItem('customerId', params['customerId']);
+            sessionStorage.setItem('serviceId', params['serviceId']);
+            sessionStorage.setItem('projectId', params['projectId']);
+
             this.getProject(params['projectId']);
             this.getSolfacs(this.projectId);
             this.getHitos(this.projectId);

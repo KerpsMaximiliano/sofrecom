@@ -282,6 +282,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("CapitalPercentage");
 
+                    b.Property<DateTime?>("CashedDate");
+
                     b.Property<string>("CelPhone")
                         .HasMaxLength(15);
 
@@ -305,7 +307,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("InvoiceCode")
                         .HasMaxLength(50);
 
-                    b.Property<DateTime>("InvoiceDate");
+                    b.Property<DateTime?>("InvoiceDate");
 
                     b.Property<int?>("InvoiceId");
 

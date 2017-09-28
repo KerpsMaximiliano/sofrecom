@@ -159,7 +159,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors()) return BadRequest(response);
 
-            var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, string.Empty, string.Empty, SolfacStatus.PendingByManagementControl);
+            var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, SolfacStatus.PendingByManagementControl);
 
             var handleStatus = _solfacService.ChangeStatus(response.Data, solfacStatusParams, _emailConfig);
 
@@ -178,7 +178,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeViewModel model)
         {
-            var solfacStatusParams = new SolfacStatusParams(model.UserId, model.Comment, model.InvoiceCode, model.Status, model.InvoiceDate);
+            var solfacStatusParams = model.CreateStatusParams();
 
             var response = _solfacService.ChangeStatus(id, solfacStatusParams, _emailConfig);
 

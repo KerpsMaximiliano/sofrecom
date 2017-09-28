@@ -98,8 +98,6 @@
                                 <th>{{'billing.project.grid.manager' | translate }}</th>
                                 <th>{{'billing.solfac.documentType' | translate }}</th>
                                 <th>{{'billing.solfac.date' | translate }}</th>
-                                <th>{{'billing.solfac.grid.invoiceCode' | translate }}</th>
-                                <th>{{'billing.solfac.grid.invoiceDate' | translate }}</th>
                                 <th>{{'billing.solfac.milestone.total' | translate }}</th>
                                 <th class="text-center">{{'billing.solfac.status' | translate }}</th>
                             </tr>
@@ -111,8 +109,6 @@
                                 <td>{{ solfac.manager}}</td>
                                 <td>{{ solfac.documentTypeName}}</td>
                                 <td>{{ solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{ solfac.invoiceCode }}</td>
-                                <td>{{ solfac.invoiceDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                             </tr>

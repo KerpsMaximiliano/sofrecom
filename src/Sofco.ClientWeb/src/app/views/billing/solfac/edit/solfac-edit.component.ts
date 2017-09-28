@@ -13,6 +13,7 @@ import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-solfac-edit',
@@ -43,16 +44,6 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
     @ViewChild('history') history: any;
 
-    @ViewChild('confirmModal') confirmModal;
-    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "ACTIONS.confirmTitle",
-        "confirmModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
- 
     @ViewChild('updateModal') updateModal;
     public updateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "billing.solfac.addUpdateComments",
@@ -209,74 +200,9 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
           });
     }
 
-    canSendToCDG(){
-        if((this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-           this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])
-           && this.menuService.hasFunctionality("SOLFA", "SCDG")){
-
-            return true;
-        }
-
-        return false;
-    }
-
-    showConfirmSendToCDG(){
-      this.confirm = this.sendToCDG;
-      this.confirmModal.show();
-    }
-
-    sendToCDG(){
-      var json = {
-        status: SolfacStatus.PendingByManagementControl
-      }
-
-      this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
-          data => {
-              this.confirmModal.hide();
-              if(data.messages) this.messageService.showMessages(data.messages);
-
-              setTimeout(() => {
-                  this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]); 
-              }, 0);
-          },
-          error => {
-              this.confirmModal.hide();
-              this.errorHandlerService.handleErrors(error);
-          });
-    }
-
-    canDelete(){
-      if(this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
-         this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]){
-          return true;
-      }
-
-      return false;
-    }
-
-    showConfirmDelete(){
-      this.confirm = this.delete;
-      this.confirmModal.show();
-    }
-
-    delete(){
-      this.solfacService.delete(this.model.id).subscribe(data => {
-          this.confirmModal.hide();
-          if(data.messages) this.messageService.showMessages(data.messages);
-
-          setTimeout(() => { this.goToProject() }, 1500)
-      },
-      err => {
-          this.confirmModal.hide();
-          this.errorHandlerService.handleErrors(err);
-      });
-    }
-
     goToSearch(){
       this.router.navigate([`/billing/solfac/search`]);
     }
-
-    confirm() {}
 
     setCurrencySymbol(currencyId){
       switch(currencyId){
@@ -301,4 +227,11 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     showUpdateModal(){
       this.updateModal.show();
     }
+
+    exportPdf(){
+      this.invoiceService.getPdf(this.model.invoiceId).subscribe(file => {
+          FileSaver.saveAs(file, this.model.pdfFileName);
+      },
+      err => this.errorHandlerService.handleErrors(err));
+  }
 }
