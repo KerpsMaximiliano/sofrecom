@@ -6,58 +6,51 @@ import { MenuService } from 'app/services/admin/menu.service';
 @Injectable()
 export class SolfacService {
   private baseUrl: string;
-  private headers: Headers;
 
   constructor(private http: Http, private service: Service, private menuService: MenuService) {
     this.baseUrl = this.service.UrlApi;
-    this.headers = this.service.getHeaders();
   }
 
   getOptions() {
-    return this.http.get(`${this.baseUrl}/solfacs/options`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   search(parameters) {
-    return this.http.post(`${this.baseUrl}/solfacs/search`, parameters, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/solfacs/search`, parameters, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   get(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getStatus() {
-    return this.http.get(`${this.baseUrl}/solfacs/status`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/status`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getHistories(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/histories`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/histories`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   getAttachments(solfacId) {
-    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/files`, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/files`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   add(model){
-     return this.http.post(`${this.baseUrl}/solfacs`, model, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   update(model){
-    return this.http.put(`${this.baseUrl}/solfacs`, model, { headers: this.headers}).map((res:Response) => res.json());
+    return this.http.put(`${this.baseUrl}/solfacs`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   send(model){
-     return this.http.post(`${this.baseUrl}/solfacs/send`, model, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs/send`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
-  changeStatus(id, status, comment, invoiceCode){
-     var body = {
-       userId: this.menuService.user.id,
-       comment: comment,
-       status: status,
-       invoiceCode: invoiceCode
-     }
+  changeStatus(id, json){
+     json.userId = this.menuService.user.id;
 
-     return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, body, { headers: this.headers}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, json, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
   delete(id){

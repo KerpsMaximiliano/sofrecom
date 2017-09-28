@@ -305,6 +305,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("InvoiceCode")
                         .HasMaxLength(50);
 
+                    b.Property<DateTime>("InvoiceDate");
+
                     b.Property<int?>("InvoiceId");
 
                     b.Property<decimal>("Iva21");

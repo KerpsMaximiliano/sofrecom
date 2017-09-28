@@ -16,6 +16,7 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
 
     @Input() solfacId: number;
+    @Input() status: string;
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('confirmDeleteFileModal') confirmModal;
     

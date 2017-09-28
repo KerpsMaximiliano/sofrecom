@@ -60,6 +60,7 @@ namespace Sofco.Model.Models.Billing
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public DateTime? InvoiceDate { get; set; }
 
         public string ProjectId { get; set; }
         public string Project { get; set; }

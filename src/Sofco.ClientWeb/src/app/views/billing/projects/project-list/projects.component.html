@@ -41,6 +41,7 @@
                         <thead>
                             <tr>
                                 <th>{{"billing.project.grid.name" | translate}}</th>
+                                <th>{{"billing.project.grid.manager" | translate}}</th>
                                 <th>{{"billing.project.grid.analytic" | translate}}</th>
                                 <th>{{"billing.project.grid.purchaseOrder" | translate}}</th>
                                 <th>{{"billing.project.grid.incomes" | translate}}</th>
@@ -51,6 +52,7 @@
                         <tbody>
                             <tr *ngFor="let project of projects" (click)="goToProjectDetail(project)" class="pointer">
                                 <td>{{project.nombre}}</td>
+                                <td>{{project.manager}}</td>
                                 <td>{{project.analytic}}</td>
                                 <td>{{project.purchaseOrder}}</td>
                                 <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>

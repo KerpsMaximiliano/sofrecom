@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="quantity">{{'billing.solfac.userApplicant' | translate }}</label>
+                        <label class="control-label" for="quantity">{{'billing.project.grid.manager' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="userApplicantId">
                             <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let userApplicant of userApplicants" [value]="userApplicant?.value">{{userApplicant?.text}}</option>
@@ -90,23 +90,29 @@
                 <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
                     <spinner></spinner>
 
-                    <table class="table table-striped" width="100%" id="solfacsTable">
+                    <table class="table table-striped dataTable" role="grid" id="solfacsTable">
                         <thead>
                             <tr>
-                                <th class="col-xs-3">{{'billing.solfac.businessName' | translate }}</th>
-                                <th class="col-xs-3">{{'billing.solfac.project' | translate }}</th>
-                                <th class="col-xs-2">{{'billing.solfac.documentType' | translate }}</th>
-                                <th class="col-xs-2">{{'billing.solfac.date' | translate }}</th>
-                                <th class="col-xs-2">{{'billing.solfac.milestone.total' | translate }}</th>
+                                <th>{{'billing.solfac.businessName' | translate }}</th>
+                                <th>{{'billing.solfac.project' | translate }}</th>
+                                <th>{{'billing.project.grid.manager' | translate }}</th>
+                                <th>{{'billing.solfac.documentType' | translate }}</th>
+                                <th>{{'billing.solfac.date' | translate }}</th>
+                                <th>{{'billing.solfac.grid.invoiceCode' | translate }}</th>
+                                <th>{{'billing.solfac.grid.invoiceDate' | translate }}</th>
+                                <th>{{'billing.solfac.milestone.total' | translate }}</th>
                                 <th class="text-center">{{'billing.solfac.status' | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" class="pointer">
-                                <td>{{solfac.businessName}}</td>
-                                <td>{{solfac.project}}</td>
-                                <td>{{solfac.documentTypeName}}</td>
-                                <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ solfac.businessName}}</td>
+                                <td>{{ solfac.project}}</td>
+                                <td>{{ solfac.manager}}</td>
+                                <td>{{ solfac.documentTypeName}}</td>
+                                <td>{{ solfac.startDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ solfac.invoiceCode }}</td>
+                                <td>{{ solfac.invoiceDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                             </tr>

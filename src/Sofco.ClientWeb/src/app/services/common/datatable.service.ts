@@ -10,13 +10,14 @@ export class DataTableService {
         $(selector).DataTable().destroy();
     }
 
-    init(selector){
+    init(selector, scroll){
         setTimeout(()=>{
             $( document ).ready(function() {
 
-            this.tableRef = $(selector).DataTable({
+                var options = {
                     oSearch: { "bSmart": false, "bRegex": true },
-                    //scrollX: true,
+                    // scrollX: false,
+                    responsive: true,
                     language:
                     {
                         "sProcessing": "Procesando...",
@@ -42,7 +43,12 @@ export class DataTableService {
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                         }
                     }
-                });
+                };
+
+                // if(scroll) options.scrollX = true;
+
+                this.tableRef = $(selector).DataTable(options);
+                
             });
         });
     }

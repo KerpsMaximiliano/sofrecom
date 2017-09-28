@@ -56,6 +56,12 @@
                                 <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate}}</span></dd>
                                 <dt>{{'billing.solfac.project' | translate }}: </dt><dd>{{model.project}}</dd>
                                 <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
+
+                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.invoiceNumber' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
+
+                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.pdf' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceId > 0"><a (click)="exportPdf()">{{model.pdfFileName}}</a></dd>
                             </dl>
                         </div>
                     </div>

@@ -41,6 +41,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
 
+    @ViewChild('history') history: any;
+
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -50,7 +52,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
-
+ 
     @ViewChild('updateModal') updateModal;
     public updateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "billing.solfac.addUpdateComments",
@@ -97,6 +99,9 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
             this.getInvoicesOptions(this.model.projectId);
+
+            sessionStorage.setItem('customerName', this.model.businessName);
+            sessionStorage.setItem('serviceName', this.model.serviceName);
         }
         else{
             this.messageService.showError("No se puede modificar la solicitud en el estado actual");
@@ -196,6 +201,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
           data => {
             this.updateModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
+            this.history.getHistories();
           },
           err => {
             this.updateModal.hide();
@@ -220,19 +226,23 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     sendToCDG(){
-        this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, SolfacStatus.PendingByManagementControl, "", "").subscribe(
-            data => {
-                this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
+      var json = {
+        status: SolfacStatus.PendingByManagementControl
+      }
 
-                setTimeout(() => {
-                    this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]); 
-                }, 0);
-            },
-            error => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(error);
-            });
+      this.changeStatusSubscrip = this.solfacService.changeStatus(this.model.id, json).subscribe(
+          data => {
+              this.confirmModal.hide();
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              setTimeout(() => {
+                  this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]); 
+              }, 0);
+          },
+          error => {
+              this.confirmModal.hide();
+              this.errorHandlerService.handleErrors(error);
+          });
     }
 
     canDelete(){

@@ -151,7 +151,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
                 }      
 
                 this.datatableService.destroy('#solfacsTable');
-                this.datatableService.init('#solfacsTable');
+                this.datatableService.init('#solfacsTable', true);
 
                 this.loading = false;
             }, 500)

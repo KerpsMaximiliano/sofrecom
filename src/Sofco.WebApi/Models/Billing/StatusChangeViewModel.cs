@@ -1,4 +1,5 @@
 ﻿using Sofco.Model.Enums;
+using System;
 
 namespace Sofco.WebApi.Models.Billing
 {
@@ -18,5 +19,6 @@ namespace Sofco.WebApi.Models.Billing
     {
         public SolfacStatus Status { get; set; }
         public string InvoiceCode { get; set; }
+        public DateTime? InvoiceDate { get; set; }
     }
 }

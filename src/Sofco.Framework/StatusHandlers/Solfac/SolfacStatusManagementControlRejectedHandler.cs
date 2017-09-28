@@ -1,17 +1,22 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using Sofco.Core.Config;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusManagementControlRejectedHandler : ISolfacStatusHandler
     {
-        private const string MailBody = "<font size='3'>" +
+        private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: </br>" +
+                                                "*" +
+                                                "</br>" +
                                                 "Por favor, ingresar al siguiente <a href='{0}' target='_blank'>link</a> para modificar el formulario " +
                                                 "y enviar nuevamente </br></br>" +
                                                 "Muchas gracias." +
@@ -32,6 +37,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             if (string.IsNullOrWhiteSpace(parameters.Comment))
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CommentRequired, MessageType.Error));
+            }
+
+            if (!response.HasErrors())
+            {
+                MailBody = MailBody.Replace("*", parameters.Comment);
             }
             
             return response;
@@ -62,6 +72,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         public HitoStatus GetHitoStatus()
         {
             return HitoStatus.Pending;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository _solfacRepository)
+        {
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
+            _solfacRepository.UpdateStatus(solfacToModif);
         }
     }
 }

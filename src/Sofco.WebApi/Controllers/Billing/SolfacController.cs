@@ -18,6 +18,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -177,7 +178,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeViewModel model)
         {
-            var solfacStatusParams = new SolfacStatusParams(model.UserId, model.Comment, model.InvoiceCode, model.Status);
+            var solfacStatusParams = new SolfacStatusParams(model.UserId, model.Comment, model.InvoiceCode, model.Status, model.InvoiceDate);
 
             var response = _solfacService.ChangeStatus(id, solfacStatusParams, _emailConfig);
 

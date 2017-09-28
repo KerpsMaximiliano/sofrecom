@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { Solfac } from 'app/models/billing/solfac/solfac';
 import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
@@ -12,6 +12,7 @@ import { UserService } from "app/services/admin/user.service";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-solfac',
@@ -36,6 +37,17 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getInvoiceOptionsSubs: Subscription;
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
+    changeStatusSubscrip: Subscription;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
@@ -56,6 +68,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+       if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
     }
 
     setNewModel(){
@@ -66,9 +79,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.projectId = project.id;
 
-      this.model.businessName = customer.nombre;
-      this.model.clientName = customer.contact;
-      this.model.celphone = customer.telephone;
+      if(customer){
+        this.model.businessName = customer.nombre;
+        this.model.clientName = customer.contact;
+        this.model.celphone = customer.telephone;
+      }
+
       this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
       this.model.statusId = SolfacStatus[SolfacStatus.SendPending];
       this.model.contractNumber = project.purchaseOrder;
@@ -91,7 +107,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoDetail = new HitoDetail(hito.name, 1, hito.ammount, project.id, hito.id);
+        var hitoDetail = new HitoDetail(hito.name, 1, hito.ammount, project.id, hito.id, hito.money);
         this.model.hitos.push(hitoDetail);
       });
 
@@ -214,12 +230,78 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
     }
 
+    canSendToCDG(){
+      if(this.solfacId > 0 
+         && (this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
+            this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])
+         && this.menuService.hasFunctionality("SOLFA", "SCDG")){
+
+          return true;
+      }
+
+      return false;
+    }
+
+    sendToCDG(){
+      var json = {
+        status: SolfacStatus.PendingByManagementControl
+      }
+
+      this.changeStatusSubscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
+          data => {
+              this.confirmModal.hide();
+              if(data.messages) this.messageService.showMessages(data.messages);
+
+              setTimeout(() => {
+                  this.cancel();
+              }, 500);
+          },
+          error => {
+              this.confirmModal.hide();
+              this.errorHandlerService.handleErrors(error);
+          });
+    }
+
+    confirm() { }
+
+    canDelete(){
+      if(this.solfacId > 0 && (this.model.statusName == SolfacStatus[SolfacStatus.SendPending] || 
+                               this.model.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])){
+          return true;
+      }
+
+      return false;
+    }
+
+    showConfirmDelete(){
+      this.confirm = this.delete;
+      this.confirmModal.show();
+    }
+
+    delete(){
+        this.solfacService.delete(this.solfacId).subscribe(data => {
+            this.confirmModal.hide();
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            setTimeout(() => { this.cancel() }, 500)
+        },
+        err => {
+            this.confirmModal.hide();
+            this.errorHandlerService.handleErrors(err);
+        });
+      }
+
     getCurrencyId(currency){
       switch(currency){
         case "Peso": { return 1; }
         case "Dolar": { return 2; }
         case "Euro": { return 3; }
       }
+    }
+
+    showConfirmSendToCDG(){
+      this.confirm = this.sendToCDG;
+      this.confirmModal.show();
     }
 
     cancel(){

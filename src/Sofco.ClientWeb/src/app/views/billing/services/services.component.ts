@@ -45,7 +45,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.services = d;
 
-        this.datatableService.init('#serviceTable');
+        this.datatableService.init('#serviceTable', true);
       },
       err => {
         this.loading = false;

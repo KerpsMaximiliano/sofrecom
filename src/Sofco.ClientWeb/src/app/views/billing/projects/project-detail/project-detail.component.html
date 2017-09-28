@@ -46,6 +46,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <dl class="dl-vertical">
+                        <dt><i class="fa fa-user"></i> {{'billing.project.grid.manager' | translate }}</dt> <dd> {{ project?.manager }} </dd>
                         <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.purchaseOrder' | translate }} </dt> <dd> {{ project?.purchaseOrder }} </dd>
                         <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.analytic' | translate }}</dt> <dd> {{ project?.analytic }} </dd>
                         <dt><i class="fa fa-money"></i> {{'billing.project.detail.incomes' | translate }}</dt> <dd> {{ getCurrencySymbol(project?.currency) }} {{ project?.incomes | number: '1.2-2' }} </dd>

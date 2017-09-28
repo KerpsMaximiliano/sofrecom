@@ -133,7 +133,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 }      
 
                 this.datatableService.destroy('#invoiceTable');
-                this.datatableService.init('#invoiceTable');
+                this.datatableService.init('#invoiceTable', true);
 
                 this.loading = false;
             }, 500)

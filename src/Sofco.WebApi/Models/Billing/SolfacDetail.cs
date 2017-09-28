@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
+using Sofco.WebApi.Migrations;
 
 namespace Sofco.WebApi.Models.Billing
 {
@@ -11,7 +14,7 @@ namespace Sofco.WebApi.Models.Billing
             
         }
 
-        public SolfacDetail(Solfac domain)
+        public SolfacDetail(Model.Models.Billing.Solfac domain)
         {
             Id = domain.Id;
             ClientName = domain.ClientName;
@@ -40,6 +43,7 @@ namespace Sofco.WebApi.Models.Billing
             Province2Id = domain.Province2Id;
             Province3Id = domain.Province3Id;
             InvoiceCode = domain.InvoiceCode;
+            InvoiceDate = domain.InvoiceDate;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -111,6 +115,7 @@ namespace Sofco.WebApi.Models.Billing
         public string ParticularSteps { get; set; }
         public short TimeLimit { get; set; }
         public string InvoiceCode { get; set; }
+        public DateTime? InvoiceDate { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
         public string ProvinceName1 { get; set; }
@@ -123,9 +128,9 @@ namespace Sofco.WebApi.Models.Billing
 
         public string Comments { get; set; }
 
-        public Solfac CreateDomain()
+        public Model.Models.Billing.Solfac CreateDomain()
         {
-            var solfac = new Solfac();
+            var solfac = new Model.Models.Billing.Solfac();
 
             solfac.Id = Id;
             solfac.ClientName = ClientName;

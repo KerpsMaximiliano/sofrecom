@@ -73,7 +73,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 invoice.CreatedDate = DateTime.Now;
                 invoice.InvoiceStatus = InvoiceStatus.SendPending;
-                invoice.InvoiceNumber = "00-00000000-00000";
+                invoice.InvoiceNumber = "0000-00000000";
                 invoice.UserId = user.Id;
 
                 _invoiceRepository.Insert(invoice);

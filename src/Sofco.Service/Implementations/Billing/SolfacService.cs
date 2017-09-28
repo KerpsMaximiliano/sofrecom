@@ -132,18 +132,9 @@ namespace Sofco.Service.Implementations.Billing
                     response.AddMessages(statusErrors.Messages);
                     return response;
                 }
-              
+
                 // Update Status
-                if(parameters.Status == SolfacStatus.Invoiced)
-                {
-                    var solfacToModif = new Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode };
-                    _solfacRepository.UpdateStatusAndInvoiceCode(solfacToModif);
-                }
-                else
-                {
-                    var solfacToModif = new Solfac { Id = solfac.Id, Status = parameters.Status };
-                    _solfacRepository.UpdateStatus(solfacToModif);
-                }
+                solfacStatusHandler.SaveStatus(solfac, parameters, _solfacRepository);
 
                 // Add history
                 var history = GetHistory(solfac.Id, solfac.Status, parameters.Status, parameters.UserId, parameters.Comment);
@@ -185,8 +176,16 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
+
             try
             {
+                if (solfac.InvoiceId.HasValue)
+                {
+                    var invoice = _invoiceRepository.GetSingle(x => x.Id == solfac.InvoiceId);
+                    invoice.InvoiceStatus = InvoiceStatus.Approved;
+                    _invoiceRepository.UpdateStatus(invoice);
+                }
+
                 _solfacRepository.Delete(solfac);
                 _solfacRepository.Save();
 

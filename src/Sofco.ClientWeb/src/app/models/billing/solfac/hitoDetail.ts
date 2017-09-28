@@ -7,6 +7,7 @@ export class HitoDetail {
         public quantity: number,
         public unitPrice: number,
         public externalProjectId: string,
-        public externalHitoId: string
+        public externalHitoId: string,
+        public currency: string
     ){}
 }

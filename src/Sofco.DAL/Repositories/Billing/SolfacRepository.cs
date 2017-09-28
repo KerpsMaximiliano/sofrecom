@@ -118,7 +118,7 @@ namespace Sofco.DAL.Repositories.Billing
             if (parameters.Status != SolfacStatus.None)
                 query = query.Where(x => x.Status == parameters.Status);
 
-            return query.Include(x => x.DocumentType).ToList();
+            return query.Include(x => x.DocumentType).Include(x => x.UserApplicant).ToList();
         }
 
         public void UpdateStatus(Solfac solfac)
@@ -126,9 +126,10 @@ namespace Sofco.DAL.Repositories.Billing
             _context.Entry(solfac).Property("Status").IsModified = true;
         }
 
-        public void UpdateStatusAndInvoiceCode(Solfac solfac)
+        public void UpdateStatusAndInvoice(Solfac solfac)
         {
             _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
+            _context.Entry(solfac).Property("InvoiceDate").IsModified = true;
             UpdateStatus(solfac);
         }
     }

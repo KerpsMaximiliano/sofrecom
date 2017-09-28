@@ -150,6 +150,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de facturación es requerida.
+        /// </summary>
+        public static string InvoiceDateRequired {
+            get {
+                return ResourceManager.GetString("InvoiceDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La Solfac ha sido facturada correctamente.
         /// </summary>
         public static string InvoicedSuccess {

@@ -183,4 +183,7 @@
   <data name="InvoiceCodeRequired" xml:space="preserve">
     <value>El número de factura es requerido</value>
   </data>
+  <data name="InvoiceDateRequired" xml:space="preserve">
+    <value>Fecha de facturación es requerida</value>
+  </data>
 </root>

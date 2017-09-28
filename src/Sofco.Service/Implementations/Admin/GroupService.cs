@@ -1,9 +1,7 @@
-﻿using Sofco.Model.Models;
-using Sofco.Model.Utils;
+﻿using Sofco.Model.Utils;
 using Sofco.Model.Enums;
 using System.Collections.Generic;
 using System;
-using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Models.Admin;

@@ -54,6 +54,7 @@
                                 <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd>{{model.clientName}}</dd>
                                 <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd>{{model.celPhone}}</dd>
                                 <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
+                                <dt *ngIf="model.invoiceDate">{{'billing.solfac.invoiceDate' | translate }}: </dt><dd *ngIf="model.invoiceDate">{{model.invoiceDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
 
                                 <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
@@ -162,7 +163,7 @@
             <!-- Attachments -->
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body">
-                    <solfac-attachments [solfacId]="solfacId"></solfac-attachments>
+                    <solfac-attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
                 </div>
             </div>
         </div>
@@ -188,5 +189,9 @@
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
         <input type="text" class="form-control" [(ngModel)]="invoiceCode">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{'billing.solfac.invoiceDate' | translate }}</label>
+        <ng-datepicker [(ngModel)]="invoiceDate" [options]="options"></ng-datepicker>
     </div>
  </ng2-modal> 
