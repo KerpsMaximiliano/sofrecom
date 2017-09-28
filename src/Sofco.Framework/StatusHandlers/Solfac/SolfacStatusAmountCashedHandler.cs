@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
@@ -60,7 +63,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return Resources.es.Billing.Solfac.InvoicedSuccess;
         }
 
-        public HitoStatus GetHitoStatus()
+        private HitoStatus GetHitoStatus()
         {
             return HitoStatus.Cashed;
         }
@@ -69,6 +72,30 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, CashedDate = parameters.CashedDate };
             solfacRepository.UpdateStatusAndCashed(solfacToModif);
+            solfac.CashedDate = parameters.CashedDate;
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&BillingDate={solfac.CashedDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

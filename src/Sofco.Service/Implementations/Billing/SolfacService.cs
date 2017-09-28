@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.Mail;
-using Sofco.Framework.StatusHandlers.Solfac;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
@@ -21,16 +22,19 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ISolfacStatusFactory _solfacStatusFactory;
+        private readonly CrmConfig _crmConfig;
 
         public SolfacService(ISolfacRepository solfacRepository, 
             IInvoiceRepository invoiceRepository,
             ISolfacStatusFactory solfacStatusFactory, 
-            IHostingEnvironment hostingEnvironment)
+            IHostingEnvironment hostingEnvironment,
+            IOptions<CrmConfig> crmOptions)
         {
             _solfacRepository = solfacRepository;
             _invoiceRepository = invoiceRepository;
             _hostingEnvironment = hostingEnvironment;
             _solfacStatusFactory = solfacStatusFactory;
+            _crmConfig = crmOptions.Value;
         }
 
         public Response<Solfac> Add(Solfac solfac)
@@ -57,10 +61,13 @@ namespace Sofco.Service.Implementations.Billing
                     _invoiceRepository.UpdateStatus(invoiceToModif);
                 }
 
+                // Save
                 _solfacRepository.Save();
 
                 response.Data = solfac;
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacCreated, MessageType.Success));
+
+                UpdateHitos(solfac.Hitos, response);
             }
             catch (Exception e)
             {
@@ -101,7 +108,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<SolfacChangeStatusResponse> ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig)
+        public Response ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
             var response = new Response<SolfacChangeStatusResponse>();
 
@@ -116,9 +123,9 @@ namespace Sofco.Service.Implementations.Billing
             return ChangeStatus(solfac, parameters, emailConfig);
         }
 
-        public Response<SolfacChangeStatusResponse> ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig)
+        public Response ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig)
         {
-            var response = new Response<SolfacChangeStatusResponse>();
+            var response = new Response();
 
             var solfacStatusHandler = _solfacStatusFactory.GetInstance(parameters.Status);
 
@@ -144,7 +151,8 @@ namespace Sofco.Service.Implementations.Billing
                 _solfacRepository.Save();
                 response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
 
-                response.Data = new SolfacChangeStatusResponse { HitoStatus = solfacStatusHandler.GetHitoStatus(), Hitos = _solfacRepository.GetHitosIdsBySolfacId(solfac.Id) };
+                // Update Hitos
+                solfacStatusHandler.UpdateHitos(_solfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac, _crmConfig.Url);
             }
             catch (Exception e)
             {
@@ -229,6 +237,8 @@ namespace Sofco.Service.Implementations.Billing
 
                 // Save changes
                 _solfacRepository.Save();
+
+                UpdateHitos(solfac.Hitos, response);
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
             }
@@ -391,6 +401,41 @@ namespace Sofco.Service.Implementations.Billing
             };
 
             return history;
+        }
+
+        private async void UpdateHitos(IList<Hito> hitos, Response response)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_crmConfig.Url);
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var description = string.Empty;
+                        if (item.Description != item.DescriptionOld)
+                        {
+                            description = $"Name={item.Description}";
+                        }
+
+                        var unitPrice = string.Empty;
+                        if (item.UnitPrice != item.UnitPriceOld)
+                        {
+                            unitPrice = $"Ammount={item.UnitPrice}";
+                        }
+
+                        var stringContent = new StringContent(string.Join("&", description, unitPrice), Encoding.UTF8, "application/x-www-form-urlencoded");
+                        var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
+
+                        httpResponse.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                        response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Warning));
+                    }
+                }
+            }
         }
     }
 }

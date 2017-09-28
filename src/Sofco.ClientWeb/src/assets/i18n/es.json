@@ -184,7 +184,7 @@
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Precio Unitario",
+                "unitPrice": "Monto",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",

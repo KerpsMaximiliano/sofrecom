@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Config;
 using Sofco.WebApi.Models.Billing;
+using Sofco.Core.Config;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -43,7 +43,7 @@ namespace Sofco.WebApi.Controllers.Billing
             }
         }
 
-        [HttpGet("{userMail}")]
+        [HttpGet("user/{userMail}")]
         public async Task <IActionResult> Get(string userMail)
         {
             try
@@ -58,6 +58,44 @@ namespace Sofco.WebApi.Controllers.Billing
             }
         }
 
+        [HttpGet("{customerId}")]
+        public async Task<IActionResult> GetById(string customerId)
+        {
+            try
+            {
+                var customer = await GetCustomerById(customerId);
+
+                if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
+                {
+                    var response = new Model.Utils.Response();
+                    response.Messages.Add(new Model.Utils.Message(Resources.es.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
+
+                    return BadRequest(response);
+                }
+
+                return Ok(customer);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        private async Task<CustomerCrm> GetCustomerById(string customerId)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_crmConfig.Url);
+                var response = await client.GetAsync($"/api/account/{customerId}");
+                response.EnsureSuccessStatusCode();
+
+                var stringResult = await response.Content.ReadAsStringAsync();
+                var customer = JsonConvert.DeserializeObject<CustomerCrm>(stringResult);
+
+                return customer;
+            }
+        }
+
         private async Task<IList<CustomerCrm>> GetCustomers(string userMail)
         {
             using (var client = new HttpClient())
@@ -67,7 +105,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 var hasDirectorGroup = this._userService.HasDirectorGroup(userMail);
 
                 HttpResponseMessage response;
-
+                 
                 if (hasDirectorGroup)
                 {
                     response = await client.GetAsync($"/api/account");

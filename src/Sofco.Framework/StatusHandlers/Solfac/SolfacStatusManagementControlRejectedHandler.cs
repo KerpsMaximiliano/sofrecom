@@ -1,4 +1,8 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -76,6 +80,29 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             solfacRepository.UpdateStatus(solfacToModif);
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

@@ -12,10 +12,14 @@ export class CustomerService {
   }
 
   getAll(userMail) {
-    return this.http.get(`${this.baseUrl}/customers/${userMail}`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/customers/user/${userMail}`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
   }
 
   getOptions(userMail) {
     return this.http.get(`${this.baseUrl}/customers/${userMail}/options`, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
+  }
+
+  getById(customerId) {
+    return this.http.get(`${this.baseUrl}/customers/${customerId}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json()); 
   }
 }

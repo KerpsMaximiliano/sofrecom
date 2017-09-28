@@ -105,6 +105,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Ocurrio un error al actualizar el/los hitos en el CRM.
+        /// </summary>
+        public static string ErrorSaveOnHitos {
+            get {
+                return ResourceManager.GetString("ErrorSaveOnHitos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Archivo importado correctamente.
         /// </summary>
         public static string FileAdded {

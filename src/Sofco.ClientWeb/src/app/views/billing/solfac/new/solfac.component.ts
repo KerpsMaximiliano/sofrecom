@@ -13,6 +13,7 @@ import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { CustomerService } from 'app/services/billing/customer.service';
 
 @Component({
   selector: 'app-solfac',
@@ -43,6 +44,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private solfacService: SolfacService,
                 private userService: UserService,
                 private menuService: MenuService,
+                private customerService: CustomerService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
@@ -74,6 +76,14 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
       }
+      else{
+        this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
+          this.model.businessName = data.nombre;
+          this.model.clientName = data.contact;
+          this.model.celphone = data.telephone;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+      }
 
       this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
       this.model.statusId = SolfacStatus[SolfacStatus.SendPending];
@@ -88,7 +98,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.imputationNumber3 = 1;
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
-      this.model.customerId = sessionStorage.getItem("customerId")
+      this.model.customerId = sessionStorage.getItem("customerId");
       this.model.serviceId = sessionStorage.getItem("serviceId");
       this.model.service = sessionStorage.getItem("serviceName");
       this.model.remito = project.remito;

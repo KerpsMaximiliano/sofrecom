@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Config;
+using Sofco.Core.Config;
 using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing

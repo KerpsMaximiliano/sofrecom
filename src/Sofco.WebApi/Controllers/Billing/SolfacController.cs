@@ -169,8 +169,6 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(response);
             }
 
-            ChangeHitoStatus(handleStatus.Data);
-
             return Ok(response);
         }
 
@@ -183,8 +181,6 @@ namespace Sofco.WebApi.Controllers.Billing
             var response = _solfacService.ChangeStatus(id, solfacStatusParams, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
-
-            ChangeHitoStatus(response.Data);
 
             return Ok(response);
         }
@@ -209,7 +205,6 @@ namespace Sofco.WebApi.Controllers.Billing
                     {
                     }
                 }
-
             }
         }
 

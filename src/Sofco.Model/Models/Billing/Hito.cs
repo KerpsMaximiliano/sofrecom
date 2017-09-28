@@ -1,4 +1,6 @@
-﻿namespace Sofco.Model.Models.Billing
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Sofco.Model.Models.Billing
 {
     public class Hito
     {
@@ -15,5 +17,11 @@
 
         public string ExternalProjectId { get; set; }
         public string ExternalHitoId { get; set; }
+
+        [NotMapped]
+        public string DescriptionOld { get; set; }
+
+        [NotMapped]
+        public decimal UnitPriceOld { get; set; }
     }
 }

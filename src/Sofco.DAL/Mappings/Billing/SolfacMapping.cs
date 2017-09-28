@@ -35,6 +35,9 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Hito>().HasKey(_ => _.Id);
             builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(100);
 
+            builder.Entity<Hito>().Ignore(_ => _.DescriptionOld);
+            builder.Entity<Hito>().Ignore(_ => _.UnitPriceOld);
+
             builder.Entity<Hito>().HasOne(x => x.Solfac).WithMany(x => x.Hitos).HasForeignKey(x => x.SolfacId);
         }
     }

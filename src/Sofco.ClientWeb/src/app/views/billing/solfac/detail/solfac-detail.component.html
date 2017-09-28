@@ -27,7 +27,7 @@
                 <status-reject [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-reject>
                 <status-sendToDaf [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToDaf>
                 <status-bill [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-bill>
-                <status-cash [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()"></status-cash>
+                <status-cash [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-cash>
             </div>
         </div>
     </div>
