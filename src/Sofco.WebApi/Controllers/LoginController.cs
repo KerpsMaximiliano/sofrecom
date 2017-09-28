@@ -11,21 +11,27 @@ namespace Sofco.WebApi.Controllers
     [Route("api/login")]
     public class LoginController : Controller
     {
-        private readonly AzureAdConfig _azureAdOptions;
+        private readonly AzureAdConfig azureAdOptions;
 
         public LoginController(IOptions<AzureAdConfig> azureAdOptions)
         {
-            _azureAdOptions = azureAdOptions.Value;
+            this.azureAdOptions = azureAdOptions.Value;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
-            var client = new RestClient($"https://login.windows.net/{_azureAdOptions.Tenant}/oauth2/token?api-version=1.1");
+            var client = new RestClient($"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1");
+
             IRestRequest request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddParameter("application/x-www-form-urlencoded", $"username={model.UserName}%40tebrasofre.onmicrosoft.com&password={model.Password}&grant_type={_azureAdOptions.GrantType}&client_id={_azureAdOptions.ClientId}&resource={_azureAdOptions.Audience}", ParameterType.RequestBody);
+            request.AddParameter("application/x-www-form-urlencoded", 
+                $"username={model.UserName}%40tebrasofre.onmicrosoft.com"
+                +$"&password={model.Password}"
+                +$"&grant_type={azureAdOptions.GrantType}"
+                +$"&client_id={azureAdOptions.ClientId}"
+                +$"&resource={azureAdOptions.Audience}", ParameterType.RequestBody);
 
             var tcs = new TaskCompletionSource<IRestResponse>();
 

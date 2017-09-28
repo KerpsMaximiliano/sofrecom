@@ -87,7 +87,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return File(excel.GetAsByteArray(), "application/octet-stream", fileName);
             }
-            catch (Exception e)
+            catch
             {
                 var response = new Response();
                 response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
@@ -106,7 +106,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return File(response.Data.ExcelFile, "application/octet-stream", response.Data.ExcelFileName);
             }
-            catch (Exception e)
+            catch
             {
                 var response = new Response();
                 response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
@@ -125,7 +125,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return File(response.Data.PdfFile, "application/octet-stream", response.Data.PdfFileName);
             }
-            catch (Exception e)
+            catch
             {
                 var response = new Response();
                 response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
@@ -160,7 +160,7 @@ namespace Sofco.WebApi.Controllers.Billing
                     return Ok(response);
 
                 }
-                catch (Exception e)
+                catch
                 {
                     var error = new Response();
                     error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
@@ -198,7 +198,7 @@ namespace Sofco.WebApi.Controllers.Billing
                     return Ok(response);
 
                 }
-                catch (Exception e)
+                catch
                 {
                     var error = new Response();
                     error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));

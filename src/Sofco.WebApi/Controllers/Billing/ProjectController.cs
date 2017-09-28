@@ -65,7 +65,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return Ok(project);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return Ok(projects);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -172,7 +172,7 @@ namespace Sofco.WebApi.Controllers.Billing
                     return Ok(hitosCRM);
 
                 }
-                catch (Exception e)
+                catch
                 {
                     return BadRequest();
                 }
