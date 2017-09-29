@@ -8,6 +8,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { FunctionalityService } from "app/services/admin/functionality.service";
 import { ModuleService } from "app/services/admin/module.service";
 import { Module } from "app/models/admin/module";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-module-edit',
@@ -32,12 +33,12 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "Confirmación de baja",
+      "ACTIONS.confirmDelete",
       "confirmModal",
       true,
       true,
-      "Aceptar",
-      "Cancelar"
+      "ACTIONS.ACCEPT",
+      "ACTIONS.cancel"
     );
 
     constructor(
@@ -46,7 +47,8 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
         private router: Router,
         private messageService: MessageService,
         private functionalityService: FunctionalityService,
-        private errorHandlerService: ErrorHandlerService) { 
+        private errorHandlerService: ErrorHandlerService,
+        private i18nService: I18nService) { 
     }
 
     ngOnInit() {
@@ -122,15 +124,15 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
 
       if (obj.active){
         this.confirm = this.deactivate;
-        this.confirmModalConfig.acceptButtonText = "Deshabilitar";
-        this.confirmModalConfig.title = "Confirmación de baja";
-        this.modalMessage = "Está seguro de dar de baja " + obj.description + "?";
+        this.confirmModalConfig.acceptButtonText = "ACTIONS.disable";
+        this.confirmModalConfig.title = "ACTIONS.confirmDelete";
+        this.modalMessage = this.i18nService.translate("ACTIONS.areYouSureConfirmDelete") + obj.description + "?";
         this.confirmModal.show();
       } else {
         this.confirm = this.activate;
-        this.confirmModalConfig.acceptButtonText = "Habilitar"
-        this.confirmModalConfig.title = "Confirmación de alta";
-        this.modalMessage = "Está seguro de dar de alta " + obj.description + "?";
+        this.confirmModalConfig.acceptButtonText = "ACTIONS.enable"
+        this.confirmModalConfig.title = "ACTIONS.confirmAdd";
+        this.modalMessage = this.i18nService.translate("ACTIONS.areYouSureConfirmAdd") + obj.description + "?";
         this.confirmModal.show();
       }
   }

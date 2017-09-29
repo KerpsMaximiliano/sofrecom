@@ -11,6 +11,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-invoice-detail',
@@ -56,6 +57,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
                 public menuService: MenuService,
+                private i18nService: I18nService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService) {}
 
@@ -114,7 +116,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                          });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.messageService.succes("PDF importado correctamente");
+            this.messageService.succes(this.i18nService.translate("billing.invoice.pdfAddedSucces"));
 
             this.model.pdfFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.pdf`;
             this.model.pdfFileCreatedDate = new Date().toLocaleDateString();
@@ -135,7 +137,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.messageService.succes("Excel importado correctamente");
+            this.messageService.succes(this.i18nService.translate("billing.invoice.excelAddedSucces"));
 
             this.model.excelFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`;
             this.model.excelFileCreatedDate = new Date().toLocaleDateString();
@@ -222,7 +224,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             err => this.errorHandlerService.handleErrors(err));
         }
         else{
-            this.messageService.showError("El número de remito es requerido");
+            this.messageService.showError(this.i18nService.translate("billing.invoice.invoiceNumberRequired"));
         }
     }
 

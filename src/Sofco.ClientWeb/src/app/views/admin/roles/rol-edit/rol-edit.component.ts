@@ -33,7 +33,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
     private modulesSubscrip: Subscription;
     private functionalitiesToAddSubscrip: Subscription;
 
-  //EntitiesService
+    //EntitiesService
     public editMode: boolean = false;
     public checkAtLeft:boolean = true;
     public functionalitiesToAdd: any[] = new Array<any>();
@@ -46,38 +46,38 @@ export class RolEditComponent implements OnInit, OnDestroy {
     @ViewChild('functConfirmModal') functConfirmModal;
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Confirmación de baja",
+        "ACTIONS.confirmDelete",
         "confirmModal",
         true,
         true,
-        "Aceptar",
-        "Cancelar"
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     public confirmFunctModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Confirmación de baja",
+        "ACTIONS.confirmDelete",
         "functConfirmModal",
         true,
         true,
-        "Aceptar",
-        "Cancelar"
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     public moduleModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Asignar Módulos", //title
+        "ADMIN.ROLES.addModule", //title
         "moduleModal", //id
         true,          //Accept Button
         true,          //Cancel Button
-        "Aceptar",     //Accept Button Text
-        "Cancelar");   //Cancel Button Text
+        "ACTIONS.ACCEPT",     //Accept Button Text
+        "ACTIONS.cancel");   //Cancel Button Text
 
     public functModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Asignar Funcionalidades", //title
+        "ADMIN.ROLES.addFunctionality", //title
         "functModal", //id
         true,          //Accept Button
         true,          //Cancel Button
-        "Aceptar",     //Accept Button Text
-        "Cancelar");   //Cancel Button Text
+        "ACTIONS.ACCEPT",     //Accept Button Text
+        "ACTIONS.cancel");   //Cancel Button Text
 
     constructor(
         private service: RoleService, 

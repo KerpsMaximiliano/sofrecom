@@ -10,6 +10,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MessageService } from "app/services/common/message.service";
 import { FunctionalityService } from "app/services/admin/functionality.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-functionalities',
@@ -37,7 +38,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       "fa-eye",     //other1Icon
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
-      { title: "Funcionalidades", columns: [0]},
+      { title: this.i18nService.translate("ADMIN.FUNCTIONALITIES.TITLE"), columns: [0]},
       0,     //orderByColumn
       "asc"
       ); 
@@ -57,7 +58,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "description",  //name
-        "Descripción",  //title
+        "ADMIN.description",  //title
         "",    //width
         1,     //visibility
         this.dataTypeEnum.string,  //dataType
@@ -65,7 +66,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "active",  //name
-        "Activo",  //title
+        "ADMIN.active",  //title
         "",   //width
         1,     //visibility
         this.dataTypeEnum.boolean,  //dataType
@@ -77,6 +78,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private service: FunctionalityService,
+        private i18nService: I18nService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService) { }
 

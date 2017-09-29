@@ -12,6 +12,9 @@ using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
+    /// <summary>
+    /// Estado para enviar a la DAF
+    /// </summary>
     public class SolfacStatusInvoicePendingHandler : ISolfacStatusHandler
     {
         private readonly IGroupRepository _groupRepository;
@@ -58,7 +61,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.CdgMail);
+            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
             return group.Email;
         }
 

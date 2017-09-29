@@ -49,6 +49,7 @@ export class TopNavbarComponent {
   selectLanguage(lang){
     Cookie.set("lang", lang);
     this.configService.setCurrLang(lang);
+    window.location.reload();
   }
 
   logout(){

@@ -12,6 +12,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-groups',
@@ -40,7 +41,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
-    { title: "Grupos", columns: [0, 2, 3]},
+    { title: this.i18nService.translate("ADMIN.GROUPS.TITLE"), columns: [0, 2, 3]},
     0,     //orderByColumn
     "asc"
     ); 
@@ -105,6 +106,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private service: GroupService,
       public menuService: MenuService,
+      private i18nService: I18nService,
       private messageService: MessageService,
       private errorHandlerService: ErrorHandlerService) {
   }

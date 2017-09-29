@@ -59,7 +59,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
+            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.CdgMail);
             return group.Email;
         }
 
