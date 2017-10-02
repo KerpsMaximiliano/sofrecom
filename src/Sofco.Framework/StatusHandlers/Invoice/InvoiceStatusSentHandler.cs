@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -10,10 +11,12 @@ namespace Sofco.Framework.StatusHandlers.Invoice
     public class InvoiceStatusSentHandler : IInvoiceStatusHandler
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
-        public InvoiceStatusSentHandler(IGroupRepository groupRepository)
+        public InvoiceStatusSentHandler(IGroupRepository groupRepository, IInvoiceRepository invoiceRepository)
         {
             _groupRepository = groupRepository;
+            _invoiceRepository = invoiceRepository;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -69,6 +72,12 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
             return group.Email;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        {
+            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Sent };
+            _invoiceRepository.UpdateStatus(invoiceToModif);
         }
     }
 }

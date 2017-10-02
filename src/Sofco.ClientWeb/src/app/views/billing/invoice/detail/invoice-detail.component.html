@@ -29,7 +29,9 @@
 
             <div class="btn-right">
                 <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && (model.invoiceStatus == 'SendPending' || model.invoiceStatus == 'Rejected')" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
-                <button class="btn btn-primary btn-outline dim" *ngIf="canApprovedInvoice()"(click)="openModal()">{{'ACTIONS.approve' | translate }} <i class="fa fa-check"></i></button>
+
+                <status-approve [invoiceId]="invoiceId" [pdfFileName]="model.pdfFileName" [status]="model.invoiceStatus" (updateStatus)="updateStatus($event)" (history)="history.getHistories()"></status-approve>
+
                 <button class="btn btn-danger btn-outline dim" *ngIf="canRejectInvoice()"(click)="showConfirmReject()">{{'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
                 <button class="btn btn-primary btn-outline dim" *ngIf="canSendToDaf()" (click)="showConfirmSendToDaf()">{{'ACTIONS.sendToDaf' | translate }} <i class="fa fa-save"></i></button>
                 <button class="btn btn-danger btn-outline dim" *ngIf="canCancel()"(click)="showConfirmAnnulment()">{{'ACTIONS.annulment' | translate }} <i class="fa fa-times"></i></button>
@@ -37,114 +39,118 @@
         </div>
     </div>
 
-    <div class="ibox">
-        <div class="ibox-title">
-            <h3>{{'billing.invoice.information' | translate }}</h3>
-        </div>
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt><h4>{{'billing.invoice.invoiceNumber' | translate }}: </h4></dt>
-                        <dd><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
-                    </dl>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt><h3>{{'billing.invoice.status' | translate }}: </h3></dt>
-                        <dd><span class="label label-{{model.invoiceStatus}} invoiceStatus">{{ model.invoiceStatus | translate }}</span></dd>
-                    </dl>
-                </div>
+    <div class="tabs-container margin-bottom-20">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{'billing.invoice.information' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- Datos generales -->
+            <div id="tab-1" class="tab-pane active"> 
+                <div class="panel-body">  
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <dl class="dl-horizontal">
+                                <dt><h4>{{'billing.invoice.invoiceNumber' | translate }}: </h4></dt>
+                                <dd><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <dl class="dl-horizontal">
+                                <dt><h3>{{'billing.invoice.status' | translate }}: </h3></dt>
+                                <dd><span class="label label-{{model.invoiceStatus}} invoiceStatus">{{ model.invoiceStatus | translate }}</span></dd>
+                            </dl>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.invoice.createdDate' | translate }}: </dt><dd>{{model.createdDate | date:'dd/MM/yyyy' }}</dd>
+                                <dt>{{'billing.invoice.account' | translate }}: </dt><dd>{{model.accountName}}</dd>
+                                <dt>{{'billing.invoice.service' | translate }}: </dt><dd>{{model.service}}</dd>
+                                <dt>{{'billing.invoice.project' | translate }}: </dt><dd>{{model.project}}</dd>
+                                <dt>{{'billing.invoice.cuit' | translate }}: </dt><dd>{{model.cuit}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.invoice.address' | translate }}:</dt><dd>{{model.address}}</dd>
+                                <dt>{{'billing.invoice.zipCode' | translate }}: </dt><dd>{{model.zipcode}}</dd>
+                                <dt>{{'billing.invoice.city' | translate }}: </dt><dd>{{model.city}}</dd>
+                                <dt>{{'billing.invoice.province' | translate }}: </dt><dd>{{model.province}}</dd>
+                                <dt>{{'billing.invoice.country' | translate }}: </dt><dd>{{model.country}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <h3 *ngIf="model.excelFileName || model.pdfFileName">{{'billing.invoice.attachments' | translate }}</h3>
+        
+                            <div class="file-box" *ngIf="model.excelFileName">
+                                <div class="file">
+                                    <a (click)="exportExcel()">
+                                        <span class="corner"></span>
+                                        <div class="icon"><i class="fa fa-file"></i></div>
+                                        <div class="file-name">
+                                            {{ model.excelFileName }}
+                                            <br>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ model.excelFileCreatedDate }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="file-box" *ngIf="model.pdfFileName">
+                                <div class="file">
+                                    <a (click)="exportPdf()">
+                                        <span class="corner"></span>
+                                        <div class="icon"><i class="fa fa-file"></i></div>
+                                        <div class="file-name">
+                                            {{ model.pdfFileName }}
+                                            <br>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ model.pdfFileCreatedDate }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-5" *ngIf="showUploader">
+                            <h3 *ngIf="isExcel">{{'billing.invoice.excelImport' | translate }}</h3>
+                            <h3 *ngIf="!isExcel">{{'billing.invoice.pdfImport' | translate }}</h3>
+        
+                            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+        
+                            <div class="uploader-margin-top">
+                                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+        
+                                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                                </button>
+                                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
 
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{'billing.invoice.createdDate' | translate }}: </dt><dd>{{model.createdDate | date:'dd/MM/yyyy' }}</dd>
-                        <dt>{{'billing.invoice.account' | translate }}: </dt><dd>{{model.accountName}}</dd>
-                        <dt>{{'billing.invoice.service' | translate }}: </dt><dd>{{model.service}}</dd>
-                        <dt>{{'billing.invoice.project' | translate }}: </dt><dd>{{model.project}}</dd>
-                        <dt>{{'billing.invoice.cuit' | translate }}: </dt><dd>{{model.cuit}}</dd>
-                    </dl>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{'billing.invoice.address' | translate }}:</dt><dd>{{model.address}}</dd>
-                        <dt>{{'billing.invoice.zipCode' | translate }}: </dt><dd>{{model.zipcode}}</dd>
-                        <dt>{{'billing.invoice.city' | translate }}: </dt><dd>{{model.city}}</dd>
-                        <dt>{{'billing.invoice.province' | translate }}: </dt><dd>{{model.province}}</dd>
-                        <dt>{{'billing.invoice.country' | translate }}: </dt><dd>{{model.country}}</dd>
-                    </dl>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-7">
-                    <h3 *ngIf="model.excelFileName || model.pdfFileName">{{'billing.invoice.attachments' | translate }}</h3>
-
-                    <div class="file-box" *ngIf="model.excelFileName">
-                        <div class="file">
-                            <a (click)="exportExcel()">
-                                <span class="corner"></span>
-                                <div class="icon"><i class="fa fa-file"></i></div>
-                                <div class="file-name">
-                                    {{ model.excelFileName }}
-                                    <br>
-                                    <small>{{'billing.invoice.createdAt' | translate }}: {{ model.excelFileCreatedDate }}</small>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="file-box" *ngIf="model.pdfFileName">
-                        <div class="file">
-                            <a (click)="exportPdf()">
-                                <span class="corner"></span>
-                                <div class="icon"><i class="fa fa-file"></i></div>
-                                <div class="file-name">
-                                    {{ model.pdfFileName }}
-                                    <br>
-                                    <small>{{'billing.invoice.createdAt' | translate }}: {{ model.pdfFileCreatedDate }}</small>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-5" *ngIf="showUploader">
-                    <h3 *ngIf="isExcel">{{'billing.invoice.excelImport' | translate }}</h3>
-                    <h3 *ngIf="!isExcel">{{'billing.invoice.pdfImport' | translate }}</h3>
-
-                    <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
-
-                    <div class="uploader-margin-top">
-                        <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                        </div>
-
-                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                            <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                        </button>
-                        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
-                            <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                        </button>
-                    </div>
+            <!-- Movimientos -->
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <invoice-history #history [invoiceId]="invoiceId"></invoice-history>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
- <ng2-modal [config]="agreeModalConfig"  #agreeModal (accept)="approve()">
-       <div class="row">
-           <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="control-label">{{'billing.invoice.invoiceNumber' | translate }}</label>
-                    <input type="text" class="form-control" data-mask="9999-99999999" id="invoiceNumber">
-                </div>
-           </div>
-       </div>
-</ng2-modal> 
 
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>

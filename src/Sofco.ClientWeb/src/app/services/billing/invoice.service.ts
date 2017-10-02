@@ -39,10 +39,6 @@ export class InvoiceService {
      return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
-  annulment(id){
-     return this.http.put(`${this.baseUrl}/invoices/${id}/annulment`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
-  }
-
   changeStatus(id, status, comment, invoiceNumber){
     var body = {
       userId: this.menuService.user.id,
@@ -99,5 +95,9 @@ export class InvoiceService {
 
   getStatus() {
     return this.http.get(`${this.baseUrl}/invoices/status`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  }
+
+  getHistories(invoiceId) {
+    return this.http.get(`${this.baseUrl}/invoices/${invoiceId}/histories`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 }

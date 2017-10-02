@@ -23,28 +23,20 @@ declare var $: any;
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('selectedFile') selectedFile: any;
-    @ViewChild('agreeModal') agreeModal;
     @ViewChild('confirmModal') confirmModal;
-
+    @ViewChild('history') history: any;
+    
     public model: Invoice = new Invoice();
     paramsSubscrip: Subscription;
     getSubscrip: Subscription;
 
     projectId;
+    public invoiceId;
     invoiceNumber: string;
     public uploader: FileUploader = new FileUploader({url:""});
 
     public showUploader: boolean = false;
     public isExcel: boolean = true;
-
-    public agreeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.invoice.includeInvoiceNumber",
-        "agreeModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -67,6 +59,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
 
             this.projectId = params['projectId'];
+            this.invoiceId = params['id'];
 
             this.getSubscrip = this.service.getById(params['id']).subscribe(d => {
                 this.model = d;
@@ -191,7 +184,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     annulment(){
-        this.service.annulment(this.model.id).subscribe(data => {
+        this.service.changeStatus(this.model.id, InvoiceStatus.Cancelled, "", "").subscribe(data => {
             this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Cancelled];
@@ -208,30 +201,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.selectedFile.nativeElement.value = '';
     }
 
-    openModal(){
-        this.agreeModal.show();
-    }
-
-    approve(){
-        this.invoiceNumber = $('#invoiceNumber').val();
-
-        if(this.invoiceNumber && this.invoiceNumber != "" && this.invoiceNumber.length == 13){
-
-            this.service.changeStatus(this.model.id, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
-                this.agreeModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Approved];
-                this.model.invoiceNumber = this.invoiceNumber;
-
-                this.configUploader();
-            },
-            err => this.errorHandlerService.handleErrors(err));
-        }
-        else{
-            this.messageService.showError(this.i18nService.translate("billing.invoice.invoiceNumberRequired"));
-        }
-    }
-
     canRejectInvoice(){
         if(this.menuService.hasFunctionality('REM', 'REJEC') && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent]){
             return true;
@@ -244,14 +213,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(this.model.excelFileName && 
            this.menuService.hasFunctionality('REM', 'SEND') &&
           (this.model.invoiceStatus == 'SendPending' || this.model.invoiceStatus == 'Rejected')){
-            return true;
-        }
-
-        return false;
-    }
-
-    canApprovedInvoice(){
-        if(this.menuService.hasFunctionality('REM', 'APROB') && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] && this.model.pdfFileName){
             return true;
         }
 
@@ -309,5 +270,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     showConfirmAnnulment(){
         this.confirm = this.annulment;
         this.confirmModal.show();
+    }
+
+    updateStatus(event){
+        if(event.invoiceStatus) this.model.invoiceStatus = event.invoiceStatus;
+        if(event.invoiceNumber) this.model.invoiceNumber = event.invoiceNumber;
+
+        if(event.reloadUploader && event.reloadUploader == true) this.configUploader();
     }
 } 

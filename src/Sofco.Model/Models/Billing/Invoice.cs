@@ -1,12 +1,19 @@
 ﻿using System;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Sofco.Model.Models.Billing
 {
-    public class Invoice
+    public class Invoice : BaseEntity
     {
-        public int Id { get; set; }
+        public Invoice()
+        {
+            Histories = new Collection<InvoiceHistory>();
+            CreatedDate = DateTime.Now;
+        }
+
         public string AccountName { get; set; }
         public string Address { get; set; }
         public string Zipcode { get; set; }
@@ -36,6 +43,8 @@ namespace Sofco.Model.Models.Billing
         public Solfac Solfac { get; set; }
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
+
+        public ICollection<InvoiceHistory> Histories { get; set; }
 
         public Invoice Clone()
         {

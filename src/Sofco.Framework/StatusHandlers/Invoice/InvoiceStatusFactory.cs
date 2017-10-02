@@ -20,9 +20,10 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             switch (status)
             {
-                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(_groupRepository);
-                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler();
+                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(_groupRepository, _invoiceRepository);
+                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler(_invoiceRepository);
                 case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(_invoiceRepository);
+                case InvoiceStatus.Cancelled: return new InvoiceStatusAnnulmentHandler(_invoiceRepository);
                 default: return null;
             }
         }
