@@ -1,53 +1,35 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using RestSharp;
-using Sofco.WebApi.Config;
-using Sofco.WebApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Services;
+using Sofco.Model.Users;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers
 {
     [Route("api/login")]
     public class LoginController : Controller
     {
-        private readonly AzureAdConfig azureAdOptions;
+        private readonly ILoginService service;
 
-        public LoginController(IOptions<AzureAdConfig> azureAdOptions)
+        public LoginController(ILoginService service)
         {
-            this.azureAdOptions = azureAdOptions.Value;
+            this.service = service;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
+        public IActionResult Login([FromBody]UserLogin userLogin)
         {
-            var client = new RestClient($"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1");
+            var result = service.Login(userLogin);
 
-            IRestRequest request = new RestRequest(Method.POST);
-            request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddParameter("application/x-www-form-urlencoded", 
-                $"username={model.UserName}%40tebrasofre.onmicrosoft.com"
-                +$"&password={model.Password}"
-                +$"&grant_type={azureAdOptions.GrantType}"
-                +$"&client_id={azureAdOptions.ClientId}"
-                +$"&resource={azureAdOptions.Audience}", ParameterType.RequestBody);
+            return result.CreateResponse(this);
+        }
 
-            var tcs = new TaskCompletionSource<IRestResponse>();
+        [HttpPost]
+        [Route("refresh")]
+        public IActionResult RefreshToken([FromBody]UserLoginRefresh userLoginRefresh)
+        {
+            var result = service.Refresh(userLoginRefresh);
 
-            client.ExecuteAsync(request, r =>
-            {
-                tcs.SetResult(r);
-            });
-
-            var response = (RestResponse) await tcs.Task;
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                return Ok(response.Content);
-            }
-
-            return BadRequest();
+            return result.CreateResponse(this);
         }
     }
 }

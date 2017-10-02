@@ -123,9 +123,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     this.getAllSubscrip = this.service.getAll().subscribe(
       d => {
         this.data = d;
-        if(callback != null){
-          callback();
-        }
+        if(callback != null){ callback(); }
       },
       err => this.errorHandlerService.handleErrors(err));
   }
@@ -133,9 +131,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
   getEntity(id: number, callback = null){
     this.getSubscrip = this.service.get(id).subscribe(
       data => {
-        if(callback != null){
-          callback(data);
-        }
+        if(callback != null){ callback(data); }
       },
       err => this.errorHandlerService.handleErrors(err));
   }

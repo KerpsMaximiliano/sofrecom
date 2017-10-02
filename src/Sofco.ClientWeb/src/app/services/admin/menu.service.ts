@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
 import { Menu } from "app/models/admin/menu";
+import { HttpAuth } from "app/services/common/http-auth";
 
 @Injectable()
 export class MenuService {
@@ -12,7 +13,7 @@ export class MenuService {
     public currentUser: any;
     public user: any;
 
-    constructor(private http: Http, private service: Service) {
+    constructor(private http: HttpAuth, private service: Service) {
         this.baseUrl = this.service.UrlApi;
  
         if(!this.menu){
@@ -33,7 +34,7 @@ export class MenuService {
     }
 
     get(userName: string) {
-       return this.http.get(`${this.baseUrl}/menu/${userName}`, { headers: this.service.getHeaders()})
+       return this.http.get(`${this.baseUrl}/menu/${userName}`)
                        .map((res:Response) => {
                            var rpta = res.json();
                            return rpta;

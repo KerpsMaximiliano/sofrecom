@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Response, Headers } from '@angular/http';
 import { Service } from "app/services/common/service";
+import { HttpAuth } from "app/services/common/http-auth";
 
 @Injectable()
 export class ServiceService {
@@ -8,16 +9,15 @@ export class ServiceService {
   private baseUrl: string;
   private headers: Headers;
 
-  constructor(private http: Http, private service: Service) {
+  constructor(private http: HttpAuth, private service: Service) {
     this.baseUrl = this.service.UrlApi;
-    this.headers = this.service.getHeaders();
   }
 
   getAll(customerId) {
-       return this.http.get(`${this.baseUrl}/services/${customerId}`, { headers: this.headers }).map((res:Response) => res.json());
+       return this.http.get(`${this.baseUrl}/services/${customerId}`).map((res:Response) => res.json());
   }
 
   getOptions(customerId) {  
-    return this.http.get(`${this.baseUrl}/services/${customerId}/options`, { headers: this.headers }).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/services/${customerId}/options`).map((res:Response) => res.json());
   }
 }

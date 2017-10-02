@@ -36,7 +36,8 @@
     "Sofco.Framework": "1.0.0-*",
     "RestSharp.NetCore": "105.2.3",
     "Sofco.Service": "1.0.0-*",
-    "StyleCop.Analyzers": "1.0.2"
+    "StyleCop.Analyzers": "1.0.2",
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1"
   },
 
   "tools": {

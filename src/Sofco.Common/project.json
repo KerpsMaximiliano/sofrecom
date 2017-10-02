@@ -3,9 +3,7 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.1",
-    "Sofco.Model": "1.0.0-*",
-    "EPPlus.Core": "1.1.0",
-    "Sofco.Common": "1.0.0-*"
+    "System.ComponentModel.Annotations": "4.3.0"
   },
 
   "frameworks": {

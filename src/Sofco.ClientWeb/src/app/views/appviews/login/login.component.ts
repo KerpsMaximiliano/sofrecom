@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     }
 
     onLoginSucces(data){
-        Cookie.set('access_token', `Bearer ${data.access_token}`);  
+        Cookie.set('access_token', data.access_token);
         Cookie.set('refresh_token', data.refresh_token);  
 
         var userName = this.model.username.split("@")[0];

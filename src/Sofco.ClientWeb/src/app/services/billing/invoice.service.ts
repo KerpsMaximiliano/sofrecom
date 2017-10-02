@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, ResponseContentType } from '@angular/http';
+import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { MenuService } from 'app/services/admin/menu.service';
+import { HttpAuth } from "app/services/common/http-auth";
 
 @Injectable()
 export class InvoiceService {
   private baseUrl: string;
 
-  constructor(private http: Http, private service: Service, private menuService: MenuService) {
+  constructor(private http: HttpAuth, private service: Service, private menuService: MenuService) {
     this.baseUrl = this.service.UrlApi;
   }
 
@@ -20,23 +21,23 @@ export class InvoiceService {
   }
  
   add(model){
-     return this.http.post(`${this.baseUrl}/invoices`, model, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/invoices`, model).map((res:Response) => res.json());
   }
 
   getById(id){
-     return this.http.get(`${this.baseUrl}/invoices/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.get(`${this.baseUrl}/invoices/${id}`).map((res:Response) => res.json());
   }
 
   delete(id){
-     return this.http.delete(`${this.baseUrl}/invoices/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.delete(`${this.baseUrl}/invoices/${id}`).map((res:Response) => res.json());
   }
 
   getOptions(projectId){
-     return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`).map((res:Response) => res.json());
   }
 
   annulment(id){
-     return this.http.put(`${this.baseUrl}/invoices/${id}/annulment`, {}, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+     return this.http.put(`${this.baseUrl}/invoices/${id}/annulment`, {}).map((res:Response) => res.json());
   }
 
   changeStatus(id, status, comment, invoiceNumber){
@@ -47,12 +48,12 @@ export class InvoiceService {
       invoiceNumber: invoiceNumber
     }
 
-    return this.http.post(`${this.baseUrl}/invoices/${id}/status`, body, { headers: this.service.getHeaders() }).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/invoices/${id}/status`, body).map((res:Response) => res.json());
  }
 
   getExcel(id){
      return this.http.get(`${this.baseUrl}/invoices/${id}/excel`,
-      { headers: this.service.getHeaders(),
+      {
         responseType: ResponseContentType.Blob
       })
       .map((res:any) => {
@@ -67,7 +68,7 @@ export class InvoiceService {
 
   getPdf(id){
      return this.http.get(`${this.baseUrl}/invoices/${id}/pdf`,
-      { headers: this.service.getHeaders(),
+      {
         responseType: ResponseContentType.Blob
       })
       .map((res:any) => {
@@ -81,19 +82,20 @@ export class InvoiceService {
   }
 
   export(model){
+    debugger;
     return this.http.post(`${this.baseUrl}/invoices/excel`,
       model,  
-      { headers: this.service.getHeaders(),
+      {
         responseType: ResponseContentType.Blob
       })
       .map((res:any) => new Blob([res._body],{ type: 'application/vnd.ms-excel' }));
   }
 
   search(parameters) {
-    return this.http.post(`${this.baseUrl}/invoices/search`, parameters, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+    return this.http.post(`${this.baseUrl}/invoices/search`, parameters).map((res:Response) => res.json());
   }
 
   getStatus() {
-    return this.http.get(`${this.baseUrl}/invoices/status`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/invoices/status`).map((res:Response) => res.json());
   }
 }
