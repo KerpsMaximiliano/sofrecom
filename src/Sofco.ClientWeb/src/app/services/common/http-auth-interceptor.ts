@@ -41,7 +41,6 @@ export class InterceptorConfig {
             options.headers = new Headers();
         }
         options.headers.append('Content-Type', 'application/json');
-        debugger;
         return options;
     }
   

@@ -17,11 +17,14 @@ export class MenuService {
 
     constructor(private http: HttpAuth, private service: Service) {
         this.baseUrl = this.service.UrlApi;
- 
+        
         if(!this.menu){
             var menu = JSON.parse(localStorage.getItem('menu'));
-            this.menu = menu.menus;
-            this.userIsDirector = menu.isDirector;
+            if(menu != null)
+            {
+                this.menu = menu.menus;
+                this.userIsDirector = menu.isDirector;
+            }
         }
 
         if(!this.currentUser){

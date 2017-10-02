@@ -13,7 +13,7 @@ export class CustomerService {
   }
 
   getAll(userMail) {
-    return this.http.get(`${this.baseUrl}/customers/${userMail}`).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/customers/user/${userMail}`).map((res:Response) => res.json());
   }
 
   getOptions(userMail) {
