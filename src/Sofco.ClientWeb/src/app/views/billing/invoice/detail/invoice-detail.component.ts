@@ -105,7 +105,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     pdfConfig(){
         this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), 
-                                          authToken: Cookie.get('access_token'),
+                                          authToken: 'Bearer ' + Cookie.get('access_token'),
                                           maxFileSize: 10*1024*1024,
                                           allowedMimeType: ['application/pdf'],
                                          });
@@ -126,7 +126,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     excelConfig(){
         this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id),
-                                          authToken: Cookie.get('access_token') ,
+                                          authToken: 'Bearer ' + Cookie.get('access_token') ,
                                           maxFileSize: 10*1024*1024,
                                           allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                                         });

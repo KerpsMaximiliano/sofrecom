@@ -13,6 +13,7 @@ export class AuthenticationService {
     constructor(private http: Http, 
                 private service: Service,
                 private menuService: MenuService) {
+    
         this.baseUrl = this.service.UrlApi;
     }
 
@@ -22,8 +23,13 @@ export class AuthenticationService {
             password: password
         }
 
-        //temporal hasta que esté el servicio
-        return this.http.post(`${this.service.UrlApi}/login`, json, { headers: this.service.getLoginHeaders()}).map((res: Response) => res.json());
+        return this.http.post(`${this.service.UrlApi}/login`, json, { headers: this.service.getLoginHeaders()}).map(this.loginResponseHanlder);
+    }
+
+    loginResponseHanlder(response:Response)
+    {
+        var data  = JSON.parse(response.json().data);
+        return data;
     }
 
     logout() {
