@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Config;
 using Sofco.WebApi.Models.Billing;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -60,10 +61,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ServiceCrm>> GetServices(string customerId)
         {
-            var username = User.Identity.Name.Split('@');
-            var mail = $"{username[0]}@sofrecom.com.ar";
-
-            var hasDirectorGroup = this._userService.HasDirectorGroup(mail);
+            var hasDirectorGroup = this._userService.HasDirectorGroup(this.GetUserMail());
 
             using (var client = new HttpClient())
             {
@@ -77,7 +75,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 }
                 else
                 {
-                    response = await client.GetAsync($"/api/service?idAccount={customerId}&idManager={mail}");
+                    response = await client.GetAsync($"/api/service?idAccount={customerId}&idManager={this.GetUserMail()}");
                 }
 
                 response.EnsureSuccessStatusCode();

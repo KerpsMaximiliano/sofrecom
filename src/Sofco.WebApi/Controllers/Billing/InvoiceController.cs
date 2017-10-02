@@ -13,6 +13,7 @@ using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Models.Billing;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -245,7 +246,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] InvoiceParams parameters)
         {
-            var invoices = _invoiceService.Search(parameters);
+            var invoices = _invoiceService.Search(parameters, this.GetUserMail());
 
             if (!invoices.Any())
             {
@@ -263,6 +264,17 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult GetInvoiceStatuses()
         {
             return Ok(GetStatuses());
+        }
+
+        [HttpPost]
+        [Route("{id}/clone")]
+        public IActionResult Clone(int id)
+        {
+            var response = _invoiceService.Clone(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         private IEnumerable<SelectListItem> GetStatuses()

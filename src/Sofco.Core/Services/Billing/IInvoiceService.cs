@@ -19,7 +19,8 @@ namespace Sofco.Core.Services.Billing
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
         Response<Invoice> Annulment(int invoiceId);
-        ICollection<Invoice> Search(InvoiceParams parameters);
+        ICollection<Invoice> Search(InvoiceParams parameters, string userMail);
         Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters);
+        Response<Invoice> Clone(int id);
     }
 }

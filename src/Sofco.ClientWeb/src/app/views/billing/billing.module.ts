@@ -35,12 +35,13 @@ import { StatusBillComponent } from 'app/views/billing/solfac/workflow/bill/stat
 import { StatusSendToCdgComponent } from 'app/views/billing/solfac/workflow/sendToCdg/status-sendToCdg.component';
 import { StatusSendToDafComponent } from 'app/views/billing/solfac/workflow/sendToDaf/status-sendToDaf.component';
 import { StatusRejectComponent } from 'app/views/billing/solfac/workflow/reject/status-reject.component';
+import { CloneInvoiceComponent } from 'app/views/billing/invoice/workflow/clone.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
-                 StatusSendToDafComponent, StatusRejectComponent],
+                 StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
 

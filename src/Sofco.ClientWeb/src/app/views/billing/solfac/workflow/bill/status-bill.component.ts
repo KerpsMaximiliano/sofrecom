@@ -8,6 +8,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { DatepickerOptions } from 'ng2-datepicker';
+declare var $: any;
 
 @Component({
   selector: 'status-bill',
@@ -62,9 +63,11 @@ export class StatusBillComponent implements OnDestroy  {
 
         return false;
     } 
-
+ 
     sendToBill(){
-        if(this.invoiceCode && this.invoiceCode != ""){
+        this.invoiceCode = $('#invoiceCode').val();
+
+        if(this.invoiceCode && this.invoiceCode != "" && this.invoiceCode.length == 13){
 
             var json = {
                 status: SolfacStatus.Invoiced,

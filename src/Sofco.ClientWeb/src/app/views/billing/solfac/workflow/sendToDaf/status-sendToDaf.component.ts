@@ -31,6 +31,7 @@ export class StatusSendToDafComponent implements OnDestroy  {
   @Output() updateStatus: EventEmitter<any> = new EventEmitter();
 
   subscrip: Subscription;
+  public comments: string;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
@@ -53,7 +54,8 @@ export class StatusSendToDafComponent implements OnDestroy  {
 
     sendToDAF(){
         var json = {
-            status: SolfacStatus.InvoicePending
+            status: SolfacStatus.InvoicePending,
+            comment: this.comments
         }
 
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(

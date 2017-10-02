@@ -31,6 +31,10 @@ export class InvoiceService {
      return this.http.delete(`${this.baseUrl}/invoices/${id}`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }
 
+  clone(id){
+    return this.http.post(`${this.baseUrl}/invoices/${id}/clone`, { }, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+  }
+
   getOptions(projectId){
      return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
   }

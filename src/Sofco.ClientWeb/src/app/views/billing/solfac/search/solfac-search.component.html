@@ -21,6 +21,21 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
+                        <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
                         <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="customerId" (ngModelChange)="customerChange()">
                             <option value="0">{{'selectAnOption' | translate }}</option>
@@ -47,6 +62,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -54,7 +70,7 @@
                         <input class="form-control" name="analytic" placeholder="Analítica" type="text" [(ngModel)]="analytic">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" *ngIf="showUserApplicantFilter()">
                     <div class="form-group">
                         <label class="control-label" for="quantity">{{'billing.project.grid.manager' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="userApplicantId">
@@ -74,8 +90,10 @@
                 </div>
             </div>
         </div>
+
         <div class="ibox-footer">
             <div class="text-right">
+                <button class="btn btn-success" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                 <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
             </div>
         </div>

@@ -191,6 +191,8 @@
             "import": "Importar archivo",
             "invoiceDate": "Fecha de Facturación",
             "cashedDate": "Fecha Cobro",
+            "dateSince": "Fecha desde",
+            "dateTo": "Fecha hasta",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -307,7 +309,9 @@
         "confirmDelete": "Confirmación de baja",
         "confirmAdd": "Confirmación de alta",
         "areYouSureConfirmAdd": "Está seguro de dar de alta ",
-        "areYouSureConfirmDelete": "Está seguro de dar de baja "
+        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "clone": "Clonar",
+        "clean": "Limpiar"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

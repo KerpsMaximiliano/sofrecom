@@ -34,6 +34,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     userApplicantId: string = "0";
     analytic: string;
     status: string = "0";
+    dateSince: Date = new Date();
+    dateTo: Date = new Date();
+    
+    public dateOptions;
 
     public loading:  boolean = false;
 
@@ -48,7 +52,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private menuService: MenuService,
         private datatableService: DataTableService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private errorHandlerService: ErrorHandlerService) {
+
+            this.dateOptions = this.menuService.getDatePickerOptions();
+         }
 
     ngOnInit() {
         this.getCustomers();
@@ -126,6 +133,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         }
     }
 
+    showUserApplicantFilter(){
+        return this.menuService.userIsDirector;
+    }
+
     search(){
         var parameters = {
             customerId: this.customerId,
@@ -133,7 +144,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             projectId: this.projectId,
             userApplicantId: this.userApplicantId,
             analytic: this.analytic,
-            status: this.status
+            status: this.status,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo
         }
 
         this.loading = true;
@@ -160,5 +173,16 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    clean(){
+        this.customerId = "0";
+        this.serviceId = "0";
+        this.projectId = "0";
+        this.userApplicantId = "0";
+        this.analytic = "";
+        this.status = "0";
+        this.dateSince= new Date();
+        this.dateTo = new Date();
     }
 }

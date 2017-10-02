@@ -82,7 +82,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceCreated, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -112,7 +112,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.ExcelUpload, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -158,7 +158,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.PdfUpload, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -223,7 +223,7 @@ namespace Sofco.Service.Implementations.Billing
                 _invoiceRepository.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -233,7 +233,7 @@ namespace Sofco.Service.Implementations.Billing
                 // Send Mail
                 HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
             }
@@ -271,7 +271,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Deleted, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -299,7 +299,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Cancelled, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -307,9 +307,18 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public ICollection<Invoice> Search(InvoiceParams parameters)
+        public ICollection<Invoice> Search(InvoiceParams parameters, string userMail)
         {
-            return _invoiceRepository.SearchByParams(parameters);
+            var isDirector = _userRepository.HasDirectorGroup(userMail);
+
+            if (isDirector)
+            {
+                return _invoiceRepository.SearchByParams(parameters);
+            }
+            else
+            {
+                return _invoiceRepository.SearchByParamsAndUser(parameters, userMail);
+            }
         }
 
         private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice)
@@ -322,6 +331,34 @@ namespace Sofco.Service.Implementations.Billing
 
             MailSender.Send(recipients, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
                 subject, body, emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);
+        }
+
+        public Response<Invoice> Clone(int id)
+        {
+            var response = new Response<Invoice>();
+
+            var invoice = _invoiceRepository.GetById(id);
+
+            if(invoice == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                return response;
+            }
+
+            var invoiceToClone = invoice.Clone();
+
+            try
+            {
+                _invoiceRepository.Insert(invoiceToClone);
+                _invoiceRepository.Save();
+                response.Data = invoiceToClone;
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
         }
     }
 }

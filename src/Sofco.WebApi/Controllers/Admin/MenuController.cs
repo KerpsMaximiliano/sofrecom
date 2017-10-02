@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Admin;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -11,10 +12,12 @@ namespace Sofco.WebApi.Controllers.Admin
     public class MenuController : Controller
     {
         private readonly IMenuService _menuService;
+        private readonly IUserService _userService;
 
-        public MenuController(IMenuService menuService)
+        public MenuController(IMenuService menuService, IUserService userService)
         {
             _menuService = menuService;
+            _userService = userService;
         }
 
         [HttpGet("{userName}")]
@@ -22,7 +25,7 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var roleFunctionalities = _menuService.GetFunctionalitiesByUserName(userName);
 
-            var response = new List<MenuModel>();
+            var response = new MenuResponse();
 
             foreach (var item in roleFunctionalities)
             {
@@ -35,9 +38,11 @@ namespace Sofco.WebApi.Controllers.Admin
                         Module = item.Functionality.Module.Code
                     };
 
-                    response.Add(menu);
+                    response.Menus.Add(menu);
                 }
             }
+
+            response.IsDirector = _userService.HasDirectorGroup(this.GetUserMail());
 
             return Ok(response);
         }

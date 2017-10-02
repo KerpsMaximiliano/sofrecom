@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
@@ -92,44 +93,6 @@ namespace Sofco.DAL.Repositories.Billing
                 .Where(x => x.Solfac == null && x.InvoiceStatus == InvoiceStatus.Approved && x.ProjectId == projectId).ToList();
         }
 
-        public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
-        {
-            IQueryable<Invoice> query = _context.Invoices;
-
-            if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
-                query = query.Where(x => x.CustomerId == parameters.CustomerId);
-
-            if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
-                query = query.Where(x => x.ServiceId == parameters.ServiceId);
-
-            if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
-                query = query.Where(x => x.ProjectId == parameters.ProjectId);
-
-            if (!string.IsNullOrWhiteSpace(parameters.InvoiceNumber))
-                query = query.Where(x => x.InvoiceNumber.ToLowerInvariant().Equals(parameters.InvoiceNumber.ToLowerInvariant()));
-
-            if (parameters.UserId > 0)
-                query = query.Where(x => x.UserId == parameters.UserId);
-
-            if (parameters.Status != null)
-                query = query.Where(x => x.InvoiceStatus == parameters.Status);
-
-            return query.Include(x => x.User)
-                        .Select(x => new Invoice
-                                {
-                                    Id = x.Id,
-                                    InvoiceNumber = x.InvoiceNumber,
-                                    AccountName = x.AccountName,
-                                    Service = x.Service,
-                                    Project = x.Project,
-                                    ProjectId = x.ProjectId,
-                                    User = x.User,
-                                    CreatedDate = x.CreatedDate,
-                                    InvoiceStatus = x.InvoiceStatus
-                                })
-                                .ToList();
-        }
-
         public bool InvoiceNumberExist(string invoiceNumber)
         {
             return _context.Invoices.Any(x => x.InvoiceNumber == invoiceNumber);
@@ -163,6 +126,75 @@ namespace Sofco.DAL.Repositories.Billing
                 CustomerId = x.CustomerId,
                 ServiceId = x.ServiceId
             });
+        }
+
+        public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
+        {
+            IQueryable<Invoice> query = _context.Invoices;
+
+            query = ApplyFilters(parameters, query).Include(x => x.User);
+
+            return query.Select(x => new Invoice
+                        {
+                            Id = x.Id,
+                            InvoiceNumber = x.InvoiceNumber,
+                            AccountName = x.AccountName,
+                            Service = x.Service,
+                            Project = x.Project,
+                            ProjectId = x.ProjectId,
+                            User = x.User,
+                            CreatedDate = x.CreatedDate,
+                            InvoiceStatus = x.InvoiceStatus
+                        })
+                        .ToList();
+        }
+
+        private static IQueryable<Invoice> ApplyFilters(InvoiceParams parameters, IQueryable<Invoice> query)
+        {
+            query = query.Where(x => x.CreatedDate.Date >= parameters.DateSince.Date && x.CreatedDate.Date <= parameters.DateTo.Date);
+
+            if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
+                query = query.Where(x => x.CustomerId == parameters.CustomerId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
+                query = query.Where(x => x.ServiceId == parameters.ServiceId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
+                query = query.Where(x => x.ProjectId == parameters.ProjectId);
+
+            if (!string.IsNullOrWhiteSpace(parameters.InvoiceNumber))
+                query = query.Where(x => x.InvoiceNumber.ToLowerInvariant().Equals(parameters.InvoiceNumber.ToLowerInvariant()));
+
+            if (parameters.userApplicantId > 0)
+                query = query.Where(x => x.UserId == parameters.userApplicantId);
+
+            if (parameters.Status != null)
+                query = query.Where(x => x.InvoiceStatus == parameters.Status);
+
+            return query;
+        }
+
+        public ICollection<Invoice> SearchByParamsAndUser(InvoiceParams parameters, string userMail)
+        {
+            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User);
+
+            query = query.Where(x => x.User.Email == userMail);
+
+            query = ApplyFilters(parameters, query);
+
+            return query.Select(x => new Invoice
+                        {
+                            Id = x.Id,
+                            InvoiceNumber = x.InvoiceNumber,
+                            AccountName = x.AccountName,
+                            Service = x.Service,
+                            Project = x.Project,
+                            ProjectId = x.ProjectId,
+                            User = x.User,
+                            CreatedDate = x.CreatedDate,
+                            InvoiceStatus = x.InvoiceStatus
+                        })
+                        .ToList();
         }
     }
 }

@@ -38,7 +38,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
       "fa-eye",     //other1Icon
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
-      { title: this.i18nService.translate("ADMIN.MODULES.TITLE"), columns: [0]},
+      { title: this.i18nService.translate("ADMIN.module.title"), columns: [0]},
       0,     //orderByColumn
       "asc"
       ); 

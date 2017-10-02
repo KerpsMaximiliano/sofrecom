@@ -13,6 +13,8 @@ import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 import { I18nService } from 'app/services/common/i18n.service';
 
+declare var $: any;
+
 @Component({
   selector: 'app-invoice-detail',
   templateUrl: './invoice-detail.component.html',
@@ -211,7 +213,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     approve(){
-        if(this.invoiceNumber && this.invoiceNumber != ""){
+        this.invoiceNumber = $('#invoiceNumber').val();
+
+        if(this.invoiceNumber && this.invoiceNumber != "" && this.invoiceNumber.length == 13){
 
             this.service.changeStatus(this.model.id, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
                 this.agreeModal.hide();

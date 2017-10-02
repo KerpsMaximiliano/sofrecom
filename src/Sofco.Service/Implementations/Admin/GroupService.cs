@@ -92,7 +92,7 @@ namespace Sofco.Service.Implementations.Admin
                 response.Data = group;
                 response.Messages.Add(new Message(Resources.es.Admin.Group.Created, MessageType.Success));
             }
-            catch (Exception ex)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }

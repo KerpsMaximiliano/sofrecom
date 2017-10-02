@@ -21,6 +21,21 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
+                            <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
+                            <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
+                            <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
                             <label class="control-label" for="client">{{'billing.invoice.account' | translate }}</label>
                             <select class="form-control m-b" [(ngModel)]="customerId" (ngModelChange)="customerChange()">
                                 <option value="0">{{'selectAnOption' | translate }}</option>
@@ -50,11 +65,11 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label" for="analytic">{{'billing.invoice.invoiceNumber' | translate }}</label>
-                            <input class="form-control" name="analytic" placeholder="{{'billing.invoice.invoiceNumber' | translate }}" type="text" [(ngModel)]="invoiceNumber">
+                            <label class="control-label" for="invoiceNumber">{{'billing.invoice.invoiceNumber' | translate }}</label>
+                            <input class="form-control" id="invoiceNumber" name="invoiceNumber" data-mask="9999-99999999" type="text">
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" *ngIf="showUserApplicantFilter()">
                         <div class="form-group">
                             <label class="control-label" for="quantity">{{'billing.invoice.user' | translate }}</label>
                             <select class="form-control m-b" [(ngModel)]="userApplicantId">
@@ -76,6 +91,7 @@
             </div>
             <div class="ibox-footer">
                 <div class="text-right">
+                    <button class="btn btn-success" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                     <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                 </div>
             </div>

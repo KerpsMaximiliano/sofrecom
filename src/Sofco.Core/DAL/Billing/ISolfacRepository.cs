@@ -23,5 +23,6 @@ namespace Sofco.Core.DAL.Billing
         void UpdateStatusAndInvoice(Solfac solfacToModif);
         ICollection<string> GetHitosIdsBySolfacId(int solfacId);
         void UpdateStatusAndCashed(Solfac solfacToModif);
+        IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, string userMail);
     }
 }

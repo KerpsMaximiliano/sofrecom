@@ -13,6 +13,7 @@ using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
+using Sofco.Core.DAL.Admin;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -22,12 +23,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ISolfacStatusFactory _solfacStatusFactory;
+        private readonly IUserRepository _userRepository;
         private readonly CrmConfig _crmConfig;
 
         public SolfacService(ISolfacRepository solfacRepository, 
             IInvoiceRepository invoiceRepository,
             ISolfacStatusFactory solfacStatusFactory, 
             IHostingEnvironment hostingEnvironment,
+            IUserRepository userRepository,
             IOptions<CrmConfig> crmOptions)
         {
             _solfacRepository = solfacRepository;
@@ -35,6 +38,7 @@ namespace Sofco.Service.Implementations.Billing
             _hostingEnvironment = hostingEnvironment;
             _solfacStatusFactory = solfacStatusFactory;
             _crmConfig = crmOptions.Value;
+            _userRepository = userRepository;
         }
 
         public Response<Solfac> Add(Solfac solfac)
@@ -69,7 +73,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 UpdateHitos(solfac.Hitos, response);
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -77,9 +81,18 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public IList<Solfac> Search(SolfacParams parameter)
+        public IList<Solfac> Search(SolfacParams parameter, string userMail)
         {
-            return _solfacRepository.SearchByParams(parameter);
+            var isDirector = _userRepository.HasDirectorGroup(userMail);
+
+            if (isDirector)
+            {
+                return _solfacRepository.SearchByParams(parameter);
+            }
+            else
+            {
+                return _solfacRepository.SearchByParamsAndUser(parameter, userMail);
+            }
         }
 
         public IList<Hito> GetHitosByProject(string projectId)
@@ -154,7 +167,7 @@ namespace Sofco.Service.Implementations.Billing
                 // Update Hitos
                 solfacStatusHandler.UpdateHitos(_solfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac, _crmConfig.Url);
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }

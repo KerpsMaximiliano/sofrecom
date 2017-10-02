@@ -19,5 +19,6 @@ namespace Sofco.Core.DAL.Billing
         IList<Invoice> GetOptions(string projectId);
         ICollection<Invoice> SearchByParams(InvoiceParams parameters);
         bool InvoiceNumberExist(string parametersInvoiceNumber);
+        ICollection<Invoice> SearchByParamsAndUser(InvoiceParams parameters, string userMail);
     }
 }

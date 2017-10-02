@@ -5,10 +5,10 @@
 <ng2-modal [config]="billModalConfig" #billModal (accept)="sendToBill()">
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
-        <input type="text" class="form-control" [(ngModel)]="invoiceCode">
+        <input type="text" class="form-control" id="invoiceCode" data-mask="9999-99999999">
     </div>
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.invoiceDate' | translate }}</label>
         <ng-datepicker [(ngModel)]="invoiceDate" [options]="options"></ng-datepicker>
     </div>
-</ng2-modal> 
+</ng2-modal>  
