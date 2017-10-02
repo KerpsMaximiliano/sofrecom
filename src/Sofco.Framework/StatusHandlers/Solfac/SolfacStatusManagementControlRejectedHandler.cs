@@ -1,4 +1,9 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Sofco.Core.Config;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -8,10 +13,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusManagementControlRejectedHandler : ISolfacStatusHandler
     {
-        private const string MailBody = "<font size='3'>" +
+        private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: </br>" +
+                                                "*" +
+                                                "</br>" +
                                                 "Por favor, ingresar al siguiente <a href='{0}' target='_blank'>link</a> para modificar el formulario " +
                                                 "y enviar nuevamente </br></br>" +
                                                 "Muchas gracias." +
@@ -32,6 +39,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             if (string.IsNullOrWhiteSpace(parameters.Comment))
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CommentRequired, MessageType.Error));
+            }
+
+            if (!response.HasErrors())
+            {
+                MailBody = MailBody.Replace("*", parameters.Comment);
             }
             
             return response;
@@ -62,6 +74,35 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         public HitoStatus GetHitoStatus()
         {
             return HitoStatus.Pending;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        {
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
+            solfacRepository.UpdateStatus(solfacToModif);
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

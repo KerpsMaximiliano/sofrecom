@@ -96,9 +96,47 @@ namespace Sofco.DAL.Repositories.Billing
             _context.SolfacAttachments.Remove(file);
         }
 
+        public void UpdateStatus(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("Status").IsModified = true;
+        }
+
+        public void UpdateStatusAndCashed(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("CashedDate").IsModified = true;
+            UpdateStatus(solfac);
+        }
+
+        public void UpdateStatusAndInvoice(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
+            _context.Entry(solfac).Property("InvoiceDate").IsModified = true;
+            UpdateStatus(solfac);
+        }
+
+        public IList<Solfac> SearchByParamsAndUser(SolfacParams parameters, string userMail)
+        {
+            IQueryable<Solfac> query = _context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
+
+            query = query.Where(x => x.UserApplicant.Email == userMail);
+
+            query = ApplyFilters(parameters, query);
+
+            return query.ToList();
+        }
+
         public IList<Solfac> SearchByParams(SolfacParams parameters)
         {
-            IQueryable<Solfac> query = _context.Solfacs;
+            IQueryable<Solfac> query = _context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
+
+            query = ApplyFilters(parameters, query);
+
+            return query.ToList();
+        }
+
+        private static IQueryable<Solfac> ApplyFilters(SolfacParams parameters, IQueryable<Solfac> query)
+        {
+            query = query.Where(x => x.StartDate.Date >= parameters.DateSince.Date && x.StartDate.Date <= parameters.DateTo.Date);
 
             if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
                 query = query.Where(x => x.CustomerId == parameters.CustomerId);
@@ -118,18 +156,7 @@ namespace Sofco.DAL.Repositories.Billing
             if (parameters.Status != SolfacStatus.None)
                 query = query.Where(x => x.Status == parameters.Status);
 
-            return query.Include(x => x.DocumentType).ToList();
-        }
-
-        public void UpdateStatus(Solfac solfac)
-        {
-            _context.Entry(solfac).Property("Status").IsModified = true;
-        }
-
-        public void UpdateStatusAndInvoiceCode(Solfac solfac)
-        {
-            _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
-            UpdateStatus(solfac);
+            return query;
         }
     }
 }

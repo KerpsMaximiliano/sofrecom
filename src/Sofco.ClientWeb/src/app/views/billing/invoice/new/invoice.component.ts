@@ -11,6 +11,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from 'app/services/common/i18n.service';
 declare var $: any;
 
 @Component({
@@ -45,6 +46,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
                 public menuService: MenuService,
+                private i18nService: I18nService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService) {}
 
@@ -127,7 +129,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.excelUploaded = true;
-            this.messageService.succes("Excel importado correctamente");
+            this.messageService.succes(this.i18nService.translate("billing.invoice.excelAddedSucces"));
         };
     }
 

@@ -10,6 +10,7 @@ import { DatatablesDataType } from "app/components/datatables/datatables.datatyp
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { UserService } from "app/services/admin/user.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-users',
@@ -40,7 +41,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         "fa-compress",     //other1Icon
         "fa-check",      //other2Icon
         "fa-cogs",        //other3Icon
-        { title: "Usuarios", columns: [0, 1, 3, 4]},
+        { title: this.i18nService.translate("ADMIN.USERS.TITLE"), columns: [0, 1, 3, 4]},
         0,     //orderByColumn
         "asc"
     ); 
@@ -50,11 +51,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     columns: DatatablesColumn[] = [
         new DatatablesColumn("id", "Id", "", 0, this.dataTypeEnum.number, this.alignmentEnum.left),
-        new DatatablesColumn("name", "Nombre", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("email", "Mail", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
-        new DatatablesColumn("active", "Activo", "10px", 1, this.dataTypeEnum.boolean, this.alignmentEnum.center),
-        new DatatablesColumn("startDate", "Fecha Alta", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
-        new DatatablesColumn("endDate", "Fecha Baja", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
+        new DatatablesColumn("name", "ADMIN.name", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
+        new DatatablesColumn("email", "ADMIN.mail", "70px", 1, this.dataTypeEnum.string, this.alignmentEnum.left),
+        new DatatablesColumn("active", "ADMIN.active", "10px", 1, this.dataTypeEnum.boolean, this.alignmentEnum.center),
+        new DatatablesColumn("startDate", "ADMIN.startDate", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
+        new DatatablesColumn("endDate", "ADMIN.endDate", "15px", 1, this.dataTypeEnum.date, this.alignmentEnum.center),
     ]
 
     constructor(
@@ -62,7 +63,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private service: UserService,
       private messageService: MessageService,
-      private errorHandlerService: ErrorHandlerService) {
+      private errorHandlerService: ErrorHandlerService,
+      private i18nService: I18nService) {
 
       this.options.descripFieldName = "name";
     }

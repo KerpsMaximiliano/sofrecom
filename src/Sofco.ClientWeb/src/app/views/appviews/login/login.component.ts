@@ -8,6 +8,7 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { AuthenticationService } from "app/services/common/authentication.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { UserService } from "app/services/admin/user.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
         private menuService: MenuService,
         private messageService: MessageService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private errorHandlerService: ErrorHandlerService,
+        private i18nservice: I18nService) { }
 
     ngOnInit() {
         // get return url from route parameters or default to '/'
@@ -44,7 +46,7 @@ export class LoginComponent implements OnInit {
                 this.onLoginSucces(data);
             },
             error => {
-                var err = new Message("Usuario o Contraseña invalidos", 1);
+                var err = new Message(this.i18nservice.translate("HOME.loginFailed"), 1);
                 this.messageService.showMessages([err]);
         });
     }
@@ -70,7 +72,8 @@ export class LoginComponent implements OnInit {
                 Cookie.set("currentUser", userName);
                 Cookie.set("currentUserMail", this.model.username);
 
-                this.menuService.menu = data;
+                this.menuService.menu = data.menus;
+                this.menuService.userIsDirector = data.isDirector;
                 this.router.navigate([this.returnUrl]);
             },
             error => {

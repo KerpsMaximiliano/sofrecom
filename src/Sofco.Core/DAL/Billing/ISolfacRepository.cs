@@ -20,7 +20,9 @@ namespace Sofco.Core.DAL.Billing
         ICollection<SolfacAttachment> GetFiles(int solfacId);
         SolfacAttachment GetFileById(int fileId);
         void DeleteFile(SolfacAttachment file);
-        void UpdateStatusAndInvoiceCode(Solfac solfacToModif);
+        void UpdateStatusAndInvoice(Solfac solfacToModif);
         ICollection<string> GetHitosIdsBySolfacId(int solfacId);
+        void UpdateStatusAndCashed(Solfac solfacToModif);
+        IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, string userMail);
     }
 }

@@ -12,8 +12,9 @@ using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.WebApi.Config;
+using Sofco.Core.Config;
 using Sofco.WebApi.Models.Billing;
+using Sofco.WebApi.Config;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -88,9 +89,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ProjectCrm>> GetProjects(string serviceId)
         {
-            var username = User.Identity.Name.Split('@');
-            var mail = $"{username[0]}@sofrecom.com.ar";
-            var hasDirectorGroup = this._userService.HasDirectorGroup(mail);
+            var hasDirectorGroup = this._userService.HasDirectorGroup(this.GetUserMail());
 
             using (var client = new HttpClient())
             {
@@ -104,7 +103,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 }
                 else
                 {
-                    response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={mail}");
+                    response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={this.GetUserMail()}");
                 }
                
                 response.EnsureSuccessStatusCode();

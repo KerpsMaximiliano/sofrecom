@@ -1,4 +1,4 @@
-﻿namespace Sofco.WebApi.Config
+﻿namespace Sofco.Core.Config
 {
     public class CrmConfig
     {

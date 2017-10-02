@@ -1,4 +1,5 @@
 ﻿using Sofco.Model.Enums;
+using System;
 
 namespace Sofco.Model.DTO
 {
@@ -10,5 +11,7 @@ namespace Sofco.Model.DTO
         public string Analytic { get; set; }
         public SolfacStatus Status { get; set; }
         public int UserApplicantId { get; set; }
+        public DateTime DateSince { get; set; }
+        public DateTime DateTo { get; set; }
     }
 }

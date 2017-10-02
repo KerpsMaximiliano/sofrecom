@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { Solfac } from 'app/models/billing/solfac/solfac';
 import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
@@ -12,6 +12,8 @@ import { UserService } from "app/services/admin/user.service";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { CustomerService } from 'app/services/billing/customer.service';
 
 @Component({
   selector: 'app-solfac',
@@ -36,11 +38,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getInvoiceOptionsSubs: Subscription;
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
+    changeStatusSubscrip: Subscription;
 
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
                 private menuService: MenuService,
+                private customerService: CustomerService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
@@ -56,6 +60,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+       if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
     }
 
     setNewModel(){
@@ -66,9 +71,20 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.projectId = project.id;
 
-      this.model.businessName = customer.nombre;
-      this.model.clientName = customer.contact;
-      this.model.celphone = customer.telephone;
+      if(customer){
+        this.model.businessName = customer.nombre;
+        this.model.clientName = customer.contact;
+        this.model.celphone = customer.telephone;
+      }
+      else{
+        this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
+          this.model.businessName = data.nombre;
+          this.model.clientName = data.contact;
+          this.model.celphone = data.telephone;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+      }
+
       this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
       this.model.statusId = SolfacStatus[SolfacStatus.SendPending];
       this.model.contractNumber = project.purchaseOrder;
@@ -82,16 +98,16 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.imputationNumber3 = 1;
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
+      this.model.customerId = sessionStorage.getItem("customerId");
       this.model.serviceId = sessionStorage.getItem("serviceId");
       this.model.service = sessionStorage.getItem("serviceName");
-      this.model.customerId = customer.id;
       this.model.remito = project.remito;
 
       this.model.hitos = new Array<HitoDetail>();
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoDetail = new HitoDetail(hito.name, 1, hito.ammount, project.id, hito.id);
+        var hitoDetail = new HitoDetail(hito.name, 1, hito.ammount, project.id, hito.id, hito.money);
         this.model.hitos.push(hitoDetail);
       });
 

@@ -2,11 +2,22 @@
     "ADMIN": {
         "TITLE": "Administration",
         "SHORT_TITLE": "Admin",
+        "description": "Description",
+        "active": "Active",
+        "name": "Name",
+        "mail": "Mail",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "actions": "Actions",
+        "action": "Action",
+        "inactive": "Inactive",
         "ROLES": {
             "TITLE": "Roles",
             "MANAGEMENT": "Roles Management",
             "EDIT": "Edit Role",
             "ADD": "Add Role",
+            "addModule": "Modules Assignment",
+            "addFunctionality": "Funtionalities Assignment",
             "GRID": {
                 "id": "Id",
                 "description": "Description",
@@ -14,25 +25,38 @@
                 "startDate": "Start Date",
                 "endDate": "End Date",
                 "actions": "Actions"
-            }
+            },
+            "descriptionRequired": "The field description is required"
         },
         "USERS": {
             "TITLE": "Users",
             "MANAGEMENT": "Users Management",
             "EDIT": "Edit User",
-            "ADD": "Add User"
+            "ADD": "Add User",
+            "detail": "Detail",
+            "userDetail": "User Detail",
+            "name": "Name",
+            "user": "User",
+            "mail": "Mail",
+            "status": "Status",
+            "selectGroups": "Select the groups to be assigned to the user:",
+            "deleteGroup": "¿Are you sure you want to delete the group?",
+            "addGroup": "Groups Assignment"
         },
         "GROUPS": {
             "TITLE": "Groups",
             "MANAGEMENT": "Groups Management",
             "EDIT": "Edit Group",
-            "ADD": "Add Group"
+            "ADD": "Add Group",
+            "mail": "Mail",
+            "rolAsigned": "Rol assigned"
         },
         "FUNCTIONALITIES": {
             "TITLE": "Functionalities",
             "MANAGEMENT": "Functionality Management",
             "EDIT": "Edit Functionality",
             "ADD": "Add Functionality",
+            "select": "Select functionalities",
             "deleteConfirm": "¿Are you sure you want to delete the functionality?"
         },
         "module": {
@@ -81,7 +105,8 @@
                 "purchaseOrder": "Purchase Order",
                 "incomes": "Estimated Incomes",
                 "startDate": "Start Date",
-                "endDate": "End Date"
+                "endDate": "End Date",
+                "manager": "Manager"
             },
             "detail": {
                 "title": "Project Detail",
@@ -96,10 +121,7 @@
                 "technology": "Type of Technology",
                 "invoices": {
                     "title": "Invoices",
-                    "cuit": "CUIT",
-                    "name": "Name",
-                    "account": "Account",
-                    "service": "Service",
+                    "invoiceNumber": "Invoice Number",
                     "date": "Date",
                     "status": "Status",
                     "create": "New Invoice"
@@ -140,11 +162,73 @@
             "solfacs": "Invoice Requests",
             "search": "Search",
             "list": "List of Invoice Requests",
-            "detail": "Invoice Request Detail"
+            "detail": "Invoice Request Detail",
+            "contractInfo": "Contract Detail",
+            "status": "Status",
+            "businessName":"Business Name",
+            "project": "Project",
+            "clientName": "Client Name",
+            "celphone": "Celphone",
+            "userApplicant": "User applicant",
+            "analytic": "Analytic",
+            "timeLimit": "Time limit",
+            "imputationNumber": "Imputation Number",
+            "invoice": "Invoice Assignment",
+            "documentType": "Doc. type",
+            "currency": "Currency",
+            "date": "Date",
+            "contractNumber": "N° of OC or N° Contract",
+            "invoiceNumber": "Invoice Number",
+            "invoiceCode": "Bill Number",
+            "includeInvoiceCode": "Include bill number before invoicing",
+            "pdf": "PDF",
+            "days": "Days",
+            "movements": "Movements",
+            "client": "Client",
+            "service": "Service",
+            "attachments": "Attachments",
+            "import": "Import file",
+            "invoiceDate": "Invoice Date",
+            "cashedDate": "Cash Date",
+            "dateSince": "Date since",
+            "dateTo": "Date to",
+            "grid": {
+                "invoiceDate": "Billing",
+                "invoiceCode": "Invoice"
+            },
+            "milestone": {
+                "detail": "Detail",
+                "quantity": "Quantity",
+                "unitPrice": "Ammount",
+                "total": "Total",
+                "amount": "Gross Amount",
+                "iva21": "I.V.A. 21%",
+                "totalAmount": "Total Ammount"
+            },
+            "impositiveInfo": {
+                "title": "Impositive information",
+                "capital": "Capital %:",
+                "bsas": "Province of Bs. As",
+                "otherProvince": "Other Provinces",
+                "province": "Province"
+            },
+            "histories": {
+                "createdDate": "Creation Date",
+                "userName": "Username",
+                "comment": "Comments",
+                "solfacStatusFrom": "Initial Status",
+                "solfacStatusTo": "Final Status"
+            },
+            "attachedParts": "Attachments",
+            "particularSteps": "Particular steps",
+            "addComments": "Enter Reasons for Rejection",
+            "addUpdateComments": "Enter the changes that were made",
+            "cannotUpdateSolfac": "Can not modify the request in the current state"
         },
         "invoice":{
             "title": "Invoice",
             "new": "New",
+            "searchTitle": "Search invoices",
             "search": "Search",
             "management": "Invoice Request",
             "edit": "Invoice Edit",
@@ -156,7 +240,9 @@
             "account": "Account",
             "service": "Servive",
             "project": "Project",
+            "list": "Invoices´s List",
             "cuit": "CUIT",
+            "user": "User Applicant",
             "status": "Status",
             "address": "Address",
             "zipCode": "Zip Code",
@@ -170,12 +256,25 @@
             "progress": "Progress",
             "import": "Import",
             "quit": "Quit",
-            "includeInvoiceNumber": "Add invoice number before agree"
+            "includeInvoiceNumber": "Add invoice number before agree",
+            "excelUploaded": "Excel has successfully been imported. You can leave the draft in the draft or send it to the DAF for approval",
+            "draft": "Leave in draft",
+            "createAndExport": "Create and Export",
+            "pdfAddedSucces": "PDF has successfully been imported",
+            "excelAddedSucces": "Excel has successfully been imported",
+            "invoiceNumberRequired": "The invoice number is required"
         }
     },
     "HOME": {
         "TITLE": "Home",
-        "welcome": "Welcome to SofcoAr!"
+        "welcome": "Welcome to SofcoAr!",
+        "login": "Login",
+        "logout": "Logout",
+        "loginFailed": "Invalid credentials",
+        "user": "User",
+        "password": "Password",
+        "forbidden": "Unauthorized access",
+        "forbiddenMessage": "Sorry, you do not have access to the requested page. Please return to the home page."
     },
     "ACTIONS":{
         "ADD": "Add",
@@ -183,23 +282,39 @@
         "DELETE": "Delete",
         "ACTIVATE": "Activate",
         "DEACTIVATE": "Deactivate",
+        "enable": "Enable",
+        "disable": "Disable",
         "ACCEPT": "Ok",
         "cancel": "Cancel",
         "yes": "Yes",
         "no": "No",
+        "update": "Update",
+        "search": "Search",
+        "close": "Close",
         "back": "Back",
         "approve": "Agree",
         "reject": "Reject",
         "sendToDaf": "Send to DAF",
         "annulment": "Annulment",
+        "save": "Save",
+        "saveAndSend": "Save and Send",
+        "sendToCDG": "Send to CDG",
+        "bill": "Invoiced",
+        "cash": "Cashed",
+        "goToProject": "Go to projects",
+        "goToSearch": "Go to search",
         "confirmTitle": "Confirm action",
-        "confirmBody": "Are you sure you want to confirm this action?"
+        "confirmBody": "Are you sure you want to confirm this action?",
+        "confirmDelete": "Delete Confirm",
+        "confirmAdd": "Confirmación de alta",
+        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
+        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "clonar": "Clone",
+        "clean": "Clean"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
     "ManagementControlRejected": "Rejected by Management Control",
-    "PendingReviewByBudgetPlanning": "Pendiente revision P. Presupuestaria",
-    "BudgetPlanningReviewRejected": "Rechazado revision P. Presupuestaria",
     "InvoicePending": "Invoice Pending",
     "Invoiced": "Billed",
     "AmountCashed": "Cashed",
@@ -212,5 +327,9 @@
     "Pendiente": "Pending",
     "ToBeBilled": "To be billed",
     "Facturado": "Billed",
-    "Pagado": "Cashed"
+    "Pagado": "Cashed",
+    "noInfoAvailable": "No information available",
+    "None": "None",
+    "comments": "Comments",
+    "selectAnOption": "Select an option"
 }

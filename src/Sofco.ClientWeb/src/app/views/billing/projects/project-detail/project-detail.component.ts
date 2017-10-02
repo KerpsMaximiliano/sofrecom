@@ -49,6 +49,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.customerName = sessionStorage.getItem('customerName');
             this.serviceName = sessionStorage.getItem('serviceName');
 
+            sessionStorage.setItem('customerId', params['customerId']);
+            sessionStorage.setItem('serviceId', params['serviceId']);
+            sessionStorage.setItem('projectId', params['projectId']);
+
             this.getProject(params['projectId']);
             this.getSolfacs(this.projectId);
             this.getHitos(this.projectId);
@@ -96,7 +100,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.getHitosSubscrip = this.service.getHitos(projectId).subscribe(d => {
             this.hitos = d;
 
-            this.datatableService.init('#hitoTable');
+            this.datatableService.init('#hitoTable', false);
             //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -106,7 +110,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.getInvoicesSubscrip = this.service.getInvoices(projectId).subscribe(d => {
             this.invoices = d;
 
-            this.datatableService.init('#invoiceTable');
+            this.datatableService.init('#invoiceTable', false);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -115,7 +119,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.getSolfacSubscrip = this.service.getSolfacs(projectId).subscribe(d => {
             this.solfacs = d;
 
-            this.datatableService.init('#solfacTable');
+            this.datatableService.init('#solfacTable', false);
             //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));

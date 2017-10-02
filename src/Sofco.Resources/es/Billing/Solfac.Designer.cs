@@ -78,6 +78,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de cobro es requerida.
+        /// </summary>
+        public static string CashedDateRequired {
+            get {
+                return ResourceManager.GetString("CashedDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Se debe agregar un motivo de rechazo.
         /// </summary>
         public static string CommentRequired {
@@ -92,6 +101,15 @@ namespace Sofco.Resources.es.Billing {
         public static string Deleted {
             get {
                 return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Ocurrio un error al actualizar el/los hitos en el CRM.
+        /// </summary>
+        public static string ErrorSaveOnHitos {
+            get {
+                return ResourceManager.GetString("ErrorSaveOnHitos", resourceCulture);
             }
         }
         
@@ -146,6 +164,15 @@ namespace Sofco.Resources.es.Billing {
         public static string InvoiceCodeRequired {
             get {
                 return ResourceManager.GetString("InvoiceCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de facturación es requerida.
+        /// </summary>
+        public static string InvoiceDateRequired {
+            get {
+                return ResourceManager.GetString("InvoiceDateRequired", resourceCulture);
             }
         }
         

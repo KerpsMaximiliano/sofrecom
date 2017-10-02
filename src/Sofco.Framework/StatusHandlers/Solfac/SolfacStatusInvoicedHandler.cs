@@ -1,4 +1,9 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Sofco.Core.Config;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -32,6 +37,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeRequired, MessageType.Error));
             }
+
+            if (!parameters.InvoiceDate.HasValue)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateRequired, MessageType.Error));
+            }
             
             return response;
         }
@@ -58,9 +68,39 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return Resources.es.Billing.Solfac.InvoicedSuccess;
         }
 
-        public HitoStatus GetHitoStatus()
+        private HitoStatus GetHitoStatus()
         {
             return HitoStatus.Billed;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        {
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
+             solfacRepository.UpdateStatusAndInvoice(solfacToModif);
+            solfac.InvoiceDate = parameters.InvoiceDate;
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

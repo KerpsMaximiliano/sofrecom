@@ -20,20 +20,20 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private groupId: any;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Asignar Grupos", //title
+        "ADMIN.USERS.addGroup", //title
         "modalGroups", //id
         true,          //Accept Button
         false,          //Cancel Button
-        "Aceptar",     //Accept Button Text
-        "Cancelar");   //Cancel Button Text
+        "ACTIONS.ACCEPT",     //Accept Button Text
+        "ACTIONS.cancel");   //Cancel Button Text
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "Confirmación de baja",
+      "ACTIONS.confirmDelete",
       "confirmModal",
       true,
       true,
-      "Aceptar",
-      "Cancelar"
+      "ACTIONS.ACCEPT",
+      "ACTIONS.cancel"
     );
 
     private routeSubscrip: Subscription;

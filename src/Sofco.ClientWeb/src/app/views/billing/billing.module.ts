@@ -28,13 +28,22 @@ import { SolfacHistoryComponent } from 'app/views/billing/solfac/history/solfac-
 import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
 import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
 import { SolfacAttachmentsComponent } from 'app/views/billing/solfac/attachments/solfac-attachments.component';
+import { NgDatepickerModule } from 'ng2-datepicker';
+import { StatusDeleteComponent } from 'app/views/billing/solfac/workflow/delete/status-delete.component';
+import { StatusCashComponent } from 'app/views/billing/solfac/workflow/cash/status-cash.component';
+import { StatusBillComponent } from 'app/views/billing/solfac/workflow/bill/status-bill.component';
+import { StatusSendToCdgComponent } from 'app/views/billing/solfac/workflow/sendToCdg/status-sendToCdg.component';
+import { StatusSendToDafComponent } from 'app/views/billing/solfac/workflow/sendToDaf/status-sendToDaf.component';
+import { StatusRejectComponent } from 'app/views/billing/solfac/workflow/reject/status-reject.component';
+import { CloneInvoiceComponent } from 'app/views/billing/invoice/workflow/clone.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
-                 SolfacAttachmentsComponent],
+                 SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
+                 StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
+  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   

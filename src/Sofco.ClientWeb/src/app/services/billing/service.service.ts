@@ -7,7 +7,6 @@ import { HttpAuth } from "app/services/common/http-auth";
 export class ServiceService {
 
   private baseUrl: string;
-  private headers: Headers;
 
   constructor(private http: HttpAuth, private service: Service) {
     this.baseUrl = this.service.UrlApi;

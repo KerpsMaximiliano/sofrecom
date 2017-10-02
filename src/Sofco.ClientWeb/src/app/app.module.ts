@@ -29,6 +29,7 @@ import { Configuration } from "app/services/common/configuration";
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 import { HttpAuth } from "app/services/common/http-auth";
 
@@ -66,6 +67,7 @@ export function HttpLoaderFactory(http: Http) {
     Service,
     MenuService,
     DataTableService,
+    I18nService,
     ErrorHandlerService,
     MessageService,
     AuthGuard,

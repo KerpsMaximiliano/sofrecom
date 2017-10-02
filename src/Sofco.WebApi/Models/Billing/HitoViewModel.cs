@@ -14,9 +14,9 @@ namespace Sofco.WebApi.Models.Billing
         public HitoViewModel(Hito hito)
         {
             Id = hito.Id;
-            Description = hito.Description;
+            Description = DescriptionOld = hito.Description;
             Quantity = hito.Quantity;
-            UnitPrice = hito.UnitPrice;
+            UnitPrice = UnitPriceOld = hito.UnitPrice;
             Total = hito.Total;
             ExternalProjectId = hito.ExternalProjectId;
             ExternalHitoId = hito.ExternalHitoId;
@@ -39,6 +39,9 @@ namespace Sofco.WebApi.Models.Billing
         public string Currency { get; set; }
         public short Month { get; set; }
 
+        public string DescriptionOld { get; set; }
+        public decimal UnitPriceOld { get; set; }
+
         public Hito CreateDomain()
         {
             var hito = new Hito();
@@ -52,6 +55,8 @@ namespace Sofco.WebApi.Models.Billing
             hito.ExternalHitoId = ExternalHitoId;
             hito.Currency = Currency;
             hito.Month = Month;
+            hito.DescriptionOld = DescriptionOld;
+            hito.UnitPriceOld = UnitPriceOld;
 
             return hito;
         }

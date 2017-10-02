@@ -18,6 +18,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -42,7 +43,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] SolfacParams parameters)
         {
-            var solfacs = _solfacService.Search(parameters);
+            var solfacs = _solfacService.Search(parameters, this.GetUserMail());
 
             if (!solfacs.Any())
             {
@@ -158,7 +159,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors()) return BadRequest(response);
 
-            var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, string.Empty, string.Empty, SolfacStatus.PendingByManagementControl);
+            var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, SolfacStatus.PendingByManagementControl);
 
             var handleStatus = _solfacService.ChangeStatus(response.Data, solfacStatusParams, _emailConfig);
 
@@ -168,8 +169,6 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(response);
             }
 
-            ChangeHitoStatus(handleStatus.Data);
-
             return Ok(response);
         }
 
@@ -177,13 +176,11 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeViewModel model)
         {
-            var solfacStatusParams = new SolfacStatusParams(model.UserId, model.Comment, model.InvoiceCode, model.Status);
+            var solfacStatusParams = model.CreateStatusParams();
 
             var response = _solfacService.ChangeStatus(id, solfacStatusParams, _emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
-
-            ChangeHitoStatus(response.Data);
 
             return Ok(response);
         }
@@ -208,7 +205,6 @@ namespace Sofco.WebApi.Controllers.Billing
                     {
                     }
                 }
-
             }
         }
 

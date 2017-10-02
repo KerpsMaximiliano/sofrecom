@@ -19,4 +19,8 @@ export class CustomerService {
   getOptions(userMail) {
     return this.http.get(`${this.baseUrl}/customers/${userMail}/options`).map((res:Response) => res.json());
   }
+
+  getById(customerId) {
+    return this.http.get(`${this.baseUrl}/customers/${customerId}`).map((res:Response) => res.json()); 
+  }
 }

@@ -12,6 +12,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { RoleService } from "app/services/admin/role.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-roles',
@@ -40,7 +41,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
-    { title: "Roles", columns: [0, 2, 3]},
+    { title: this.i18nService.translate("ADMIN.ROLES.TITLE"), columns: [0, 2, 3]},
     0,     //orderByColumn
     "asc",
     ); 
@@ -62,7 +63,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "description",  //name
-      "Descripción",  //title
+      "ADMIN.description",  //title
       "",    //width
       1,     //visibility
       this.dataTypeEnum.string,  //dataType
@@ -70,7 +71,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "active",  //name
-      "Activo",  //title
+      "ADMIN.active",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.boolean,  //dataType
@@ -78,7 +79,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "startDate",  //name
-      "Fecha Alta",  //title
+      "ADMIN.startDate",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -86,7 +87,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     ),
     new DatatablesColumn(
       "endDate",  //name
-      "Fecha Baja",  //title
+      "ADMIN.endDate",  //title
       "100px",    //width
       1,     //visibility
       this.dataTypeEnum.date,  //dataType
@@ -101,6 +102,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       public menuService: MenuService,
       private messageService: MessageService,
       private tr: TranslateService,
+      private i18nService: I18nService,
       private errorHandlerService: ErrorHandlerService) {
   }
 

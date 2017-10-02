@@ -250,3 +250,7 @@ ul.indented{
 .btn-right{
   float: right;
 } 
+
+.ngx-datepicker-calendar-container{
+  z-index: 1000;
+}

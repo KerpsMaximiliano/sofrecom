@@ -11,6 +11,8 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { InvoiceService } from 'app/services/billing/invoice.service';
+import { MenuService } from 'app/services/admin/menu.service';
+declare var $: any;
 
 @Component({
   selector: 'app-invoice-search',
@@ -30,8 +32,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     serviceId: string = "0";
     projectId: string = "0";
     userApplicantId: string = "0";
-    invoiceNumber: string;
     status: string = "";
+    dateSince: Date = new Date();
+    dateTo: Date = new Date();
+    
+    public dateOptions;
 
     public loading:  boolean = false;
 
@@ -41,11 +46,15 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private service: InvoiceService,
         private customerService: CustomerService,
         private messageService: MessageService,
+        private menuService: MenuService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
         private datatableService: DataTableService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private errorHandlerService: ErrorHandlerService) {
+
+            this.dateOptions = this.menuService.getDatePickerOptions();
+         }
 
     ngOnInit() {
         this.getCustomers();
@@ -114,8 +123,10 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             serviceId: this.serviceId,
             projectId: this.projectId,
             userApplicantId: this.userApplicantId,
-            invoiceNumber: this.invoiceNumber,
-            status: this.status
+            invoiceNumber: $('#invoiceNumber').val(),
+            status: this.status,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo
         }
 
         this.loading = true;
@@ -133,7 +144,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 }      
 
                 this.datatableService.destroy('#invoiceTable');
-                this.datatableService.init('#invoiceTable');
+                this.datatableService.init('#invoiceTable', true);
 
                 this.loading = false;
             }, 500)
@@ -142,5 +153,20 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    showUserApplicantFilter(){
+        return this.menuService.userIsDirector;
+    }
+
+    clean(){
+        this.customerId = "0";
+        this.serviceId = "0";
+        this.projectId = "0";
+        this.userApplicantId = "0";
+        $('#invoiceNumber').val("");
+        this.status = "";
+        this.dateSince= new Date();
+        this.dateTo = new Date();
     }
 }

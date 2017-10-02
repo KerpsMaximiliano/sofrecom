@@ -49,7 +49,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.projects = d;
 
-        this.datatableService.init('#projectTable');
+        this.datatableService.init('#projectTable', true);
       },
       err => {
         this.loading = false;

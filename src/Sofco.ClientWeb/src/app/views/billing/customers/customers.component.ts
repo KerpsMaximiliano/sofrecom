@@ -35,7 +35,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.customers = d;
 
-        this.datatableService.init('#customerTable');
+        this.datatableService.init('#customerTable', true);
       },
       err => {
         this.loading = false;

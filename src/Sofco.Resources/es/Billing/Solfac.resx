@@ -183,4 +183,13 @@
   <data name="InvoiceCodeRequired" xml:space="preserve">
     <value>El número de factura es requerido</value>
   </data>
+  <data name="InvoiceDateRequired" xml:space="preserve">
+    <value>Fecha de facturación es requerida</value>
+  </data>
+  <data name="CashedDateRequired" xml:space="preserve">
+    <value>La fecha de cobro es requerida</value>
+  </data>
+  <data name="ErrorSaveOnHitos" xml:space="preserve">
+    <value>Ocurrio un error al actualizar el/los hitos en el CRM</value>
+  </data>
 </root>

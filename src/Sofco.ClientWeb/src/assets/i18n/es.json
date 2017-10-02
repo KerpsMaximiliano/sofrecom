@@ -4,15 +4,20 @@
         "SHORT_TITLE": "Admin",
         "description": "Descripción",
         "active": "Activo",
+        "name": "Nombre",
+        "mail": "Mail",
         "startDate": "Fecha Alta",
-        "endDate": "Fecha Elim",
+        "endDate": "Fecha Baja",
         "actions": "Acciones",
         "action": "Acción",
+        "inactive": "Inactivo",
         "ROLES": {
             "TITLE": "Roles",
             "MANAGEMENT": "Administración de Roles",
             "EDIT": "Editar Rol",
             "ADD": "Agregar Rol",
+            "addModule": "Asignar Módulos",
+            "addFunctionality": "Asignar Funcionalidades",
             "GRID": {
                 "id": "Id",
                 "description": "Descripción",
@@ -27,7 +32,16 @@
             "TITLE": "Usuarios",
             "MANAGEMENT": "Administración de Usuarios",
             "EDIT": "Editar Usuario",
-            "ADD": "Agregar Usuario"
+            "ADD": "Agregar Usuario",
+            "detail": "Detalle",
+            "userDetail": "Detalle del usuario",
+            "name": "Nombre",
+            "user": "Usuario",
+            "mail": "Mail",
+            "status": "Estado",
+            "selectGroups": "Seleccione los grupos a ser asignados al usuario:",
+            "deleteGroup": "¿Esta seguro que desea eliminar el grupo?",
+            "addGroup": "Asignar Grupos"
         },
         "GROUPS": {
             "TITLE": "Grupos",
@@ -91,7 +105,8 @@
                 "purchaseOrder": "Orden compra",
                 "incomes": "Ingresos Estimados",
                 "startDate": "Fecha Inicio",
-                "endDate": "Fecha Fin"
+                "endDate": "Fecha Fin",
+                "manager": "Gerente"
             },
             "detail": {
                 "title": "Detalle de Proyecto",
@@ -174,10 +189,18 @@
             "service": "Servicio",
             "attachments": "Archivos Adjuntos",
             "import": "Importar archivo",
+            "invoiceDate": "Fecha de Facturación",
+            "cashedDate": "Fecha Cobro",
+            "dateSince": "Fecha desde",
+            "dateTo": "Fecha hasta",
+            "grid": {
+                "invoiceDate": "Facturación",
+                "invoiceCode": "Factura"
+            },
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Precio Unitario",
+                "unitPrice": "Monto",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
@@ -200,7 +223,8 @@
             "attachedParts": "Piezas Adjuntas",
             "particularSteps": "Instrucciones Particulares",
             "addComments": "Ingrese los motivos del rechazo",
-            "addUpdateComments": "Ingrese los cambios que se realizaron"
+            "addUpdateComments": "Ingrese los cambios que se realizaron",
+            "cannotUpdateSolfac": "No se puede modificar la solicitud en el estado actual"
         },
         "invoice":{
             "title": "Remitos",
@@ -236,12 +260,22 @@
             "includeInvoiceNumber": "Incluya número de remito antes de aprobar",
             "excelUploaded": "Se ha importado el excel exitosamente. Puede dejar el remito en borrador o enviarlo a la DAF para su aprobación",
             "draft": "Dejar en borrador",
-            "createAndExport": "Crear y Exportar"
+            "createAndExport": "Crear y Exportar",
+            "pdfAddedSucces": "PDF importado correctamente",
+            "excelAddedSucces": "Excel importado correctamente",
+            "invoiceNumberRequired": "El número de remito es requerido"
         }
     },
     "HOME": {
         "TITLE": "Inicio",
-        "welcome": "Bienvenido a SofcoAr!"
+        "welcome": "Bienvenido a SofcoAr!",
+        "login": "Login",
+        "logout": "Logout",
+        "loginFailed": "Usuario o Contraseña invalidos",
+        "user": "Usuario",
+        "password": "Contraseña",
+        "forbidden": "Acceso no Autorizado",
+        "forbiddenMessage": "Lo sentimos, usted no tiene acceso a la página solicitada. Por favor vuelva a la página de inicio."
     },
     "ACTIONS":{
         "ADD": "Agregar",
@@ -249,6 +283,8 @@
         "DELETE": "Eliminar",
         "ACTIVATE": "Activar",
         "DEACTIVATE": "Desactivar",
+        "enable": "Habilitar",
+        "disable": "Deshabilitar",
         "ACCEPT": "Aceptar",
         "cancel": "Cancelar",
         "yes": "Si",
@@ -269,16 +305,22 @@
         "goToProject": "Ir al Proyecto",
         "goToSearch": "Ir a Consultas",
         "confirmTitle": "Confirmar acción",
-        "confirmBody": "¿Esta seguro que desea confirmar la acción?"
+        "confirmBody": "¿Esta seguro que desea confirmar la acción?",
+        "confirmDelete": "Confirmación de baja",
+        "confirmAdd": "Confirmación de alta",
+        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
+        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "clone": "Clonar",
+        "clean": "Limpiar"
     },
-    "SendPending": "Pendiente Envío",
+    "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
     "ManagementControlRejected": "Rechazado Control Gestión",
     "InvoicePending": "Pendiente Facturación",
     "Invoiced": "Facturada",
     "AmountCashed": "Cobrada",
     "Rejected": "Rechazado",
-    "Sent": "Enviado",
+    "Sent": "Pendiente Aprobación",
     "Approved": "Aprobado",
     "Related": "Relacionado",
     "Cancelled": "Anulado",

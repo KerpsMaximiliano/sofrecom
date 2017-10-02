@@ -1,4 +1,9 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Sofco.Core.Config;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -27,6 +32,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
+
+            if (!parameters.CashedDate.HasValue)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
+            }
             
             return response;
         }
@@ -53,9 +63,39 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return Resources.es.Billing.Solfac.InvoicedSuccess;
         }
 
-        public HitoStatus GetHitoStatus()
+        private HitoStatus GetHitoStatus()
         {
             return HitoStatus.Cashed;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        {
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, CashedDate = parameters.CashedDate };
+            solfacRepository.UpdateStatusAndCashed(solfacToModif);
+            solfac.CashedDate = parameters.CashedDate;
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&BillingDate={solfac.CashedDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

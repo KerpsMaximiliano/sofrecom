@@ -1,5 +1,10 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -54,7 +59,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
+            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.CdgMail);
             return group.Email;
         }
 
@@ -63,9 +68,38 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return Resources.es.Billing.Solfac.PendingByManagementControlSuccess;
         }
 
-        public HitoStatus GetHitoStatus()
+        private HitoStatus GetHitoStatus()
         {
             return HitoStatus.Pending;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        {
+            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
+            solfacRepository.UpdateStatus(solfacToModif);
+        }
+
+        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage response;
+
+                foreach (var item in hitos)
+                {
+                    try
+                    {
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
         }
     }
 }

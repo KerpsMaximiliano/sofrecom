@@ -4,12 +4,14 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
 import { Menu } from "app/models/admin/menu";
 import { HttpAuth } from "app/services/common/http-auth";
+import { DatepickerOptions } from 'ng2-datepicker';
 
 @Injectable()
 export class MenuService {
     private baseUrl: string;
 
     public menu: Menu[];
+    public userIsDirector: boolean;
     public currentUser: any;
     public user: any;
 
@@ -17,7 +19,9 @@ export class MenuService {
         this.baseUrl = this.service.UrlApi;
  
         if(!this.menu){
-            this.menu = JSON.parse(localStorage.getItem('menu'));
+            var menu = JSON.parse(localStorage.getItem('menu'));
+            this.menu = menu.menus;
+            this.userIsDirector = menu.isDirector;
         }
 
         if(!this.currentUser){
@@ -63,5 +67,17 @@ export class MenuService {
        }
 
        return false;
+    }
+    
+    getDatePickerOptions(){
+        var options: DatepickerOptions = {
+            minYear: 1970,
+            maxYear: 2030,
+            displayFormat: 'DD/MM/YYYY',
+            barTitleFormat: 'MMMM YYYY',
+            firstCalendarDay: 1
+          };
+
+        return options;
     }
 }

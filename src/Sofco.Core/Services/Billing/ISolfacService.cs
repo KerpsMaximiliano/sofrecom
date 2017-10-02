@@ -9,12 +9,12 @@ namespace Sofco.Core.Services.Billing
     public interface ISolfacService
     {
         Response<Solfac> Add(Solfac solfac);
-        IList<Solfac> Search(SolfacParams parameter);
+        IList<Solfac> Search(SolfacParams parameter, string userMail);
         IList<Hito> GetHitosByProject(string projectId);
         IList<Solfac> GetByProject(string projectId);
         Response<Solfac> GetById(int id);
-        Response<SolfacChangeStatusResponse> ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig);
-        Response<SolfacChangeStatusResponse> ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig);
+        Response ChangeStatus(Solfac solfac, SolfacStatusParams parameters, EmailConfig emailConfig);
+        Response ChangeStatus(int solfacId, SolfacStatusParams parameters, EmailConfig emailConfig);
         Response Delete(int id);
         ICollection<SolfacHistory> GetHistories(int id);
         Response Update(Solfac domain, string modelComments);

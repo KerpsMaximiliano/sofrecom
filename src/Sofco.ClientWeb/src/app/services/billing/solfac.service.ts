@@ -48,15 +48,10 @@ export class SolfacService {
      return this.http.post(`${this.baseUrl}/solfacs/send`, model).map((res:Response) => res.json());
   }
 
-  changeStatus(id, status, comment, invoiceCode){
-     var body = {
-       userId: this.menuService.user.id,
-       comment: comment,
-       status: status,
-       invoiceCode: invoiceCode
-     }
+  changeStatus(id, json){
+     json.userId = this.menuService.user.id;
 
-     return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, body).map((res:Response) => res.json());
+     return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, json).map((res:Response) => res.json());
   }
 
   delete(id){

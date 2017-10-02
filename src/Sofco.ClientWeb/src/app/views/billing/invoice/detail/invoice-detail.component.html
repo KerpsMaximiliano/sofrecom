@@ -25,6 +25,7 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+            <clone-invoice [invoiceId]="model.id"></clone-invoice>
 
             <div class="btn-right">
                 <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && (model.invoiceStatus == 'SendPending' || model.invoiceStatus == 'Rejected')" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
@@ -139,7 +140,7 @@
            <div class="col-lg-12">
                 <div class="form-group">
                     <label class="control-label">{{'billing.invoice.invoiceNumber' | translate }}</label>
-                    <input type="text" class="form-control" [(ngModel)]="invoiceNumber">
+                    <input type="text" class="form-control" data-mask="9999-99999999" id="invoiceNumber">
                 </div>
            </div>
        </div>

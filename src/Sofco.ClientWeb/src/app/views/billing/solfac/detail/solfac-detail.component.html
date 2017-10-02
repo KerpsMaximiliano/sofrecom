@@ -14,7 +14,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
         <div class="col-lg-12">
@@ -22,15 +22,12 @@
             <button class="btn btn-success btn-outline dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
 
             <div class="btn-right">
-                <button class="btn btn-danger btn-outline dim" (click)="showConfirmDelete()" *ngIf="canDelete()"> {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
-
-                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCDG()" *ngIf="canSendToCDG()"> {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i></button>
-                <button class="btn btn-danger btn-outline dim" (click)="showConfirmRejectByCDG()" *ngIf="canRejectByCDG()"> {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
-
-                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToDaf()" *ngIf="canSendToDAF()"> {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i></button>
-
-                <button class="btn btn-primary btn-outline dim" (click)="agreeModal.show()" *ngIf="canSendToBill()"> {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i></button>
-                <button class="btn btn-primary btn-outline dim" (click)="showConfirmSendToCash()" *ngIf="canSendToCash()"> {{ 'ACTIONS.cash' | translate }} <i class="fa fa-money"></i> </button>
+                <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
+                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToCdg>
+                <status-reject [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-reject>
+                <status-sendToDaf [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToDaf>
+                <status-bill [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-bill>
+                <status-cash [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-cash>
             </div>
         </div>
     </div>
@@ -42,7 +39,7 @@
             <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
         </ul>
         <div class="tab-content">
-
+ 
             <!-- Datos generales -->
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body">
@@ -54,9 +51,15 @@
                                 <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd>{{model.clientName}}</dd>
                                 <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd>{{model.celPhone}}</dd>
                                 <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
-
+                                
                                 <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
+
+                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.invoiceNumber' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
+        
+                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.pdf' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceId > 0"><a (click)="exportPdf()">{{model.pdfFileName}}</a></dd>
                             </dl>
                         </div>
                         <div class="col-lg-6">
@@ -65,11 +68,8 @@
                                 <dt>{{'billing.solfac.contractNumber' | translate }}: </dt><dd>{{model.contractNumber}}</dd>
                                 <dt>{{'billing.solfac.project' | translate }}: </dt><dd>{{model.project}}</dd>
         
-                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.invoiceNumber' | translate }}: </dt>
-                                <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
-        
-                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.pdf' | translate }}: </dt>
-                                <dd *ngIf="model.invoiceId > 0"><a (click)="exportPdf()">{{model.pdfFileName}}</a></dd>
+                                <dt *ngIf="model.invoiceDate">{{'billing.solfac.invoiceDate' | translate }}: </dt><dd *ngIf="model.invoiceDate">{{model.invoiceDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
+                                <dt *ngIf="model.cashedDate">{{'billing.solfac.cashedDate' | translate }}: </dt><dd *ngIf="model.cashedDate">{{model.cashedDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -162,31 +162,9 @@
             <!-- Attachments -->
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body">
-                    <solfac-attachments [solfacId]="solfacId"></solfac-attachments>
+                    <solfac-attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="rejectByCDG()">
-        <div class="row">
-            <div class="col-lg-12">
-                 <div class="form-group">
-                     <label class="control-label">{{'comments' | translate }}</label>
-                     <textarea class="form-control" name="particularSteps" rows="10" [(ngModel)]="rejectComments"></textarea>
-                 </div>
-            </div>
-        </div>
- </ng2-modal> 
-
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
-</ng2-modal>
-
-<ng2-modal [config]="agreeModalConfig"  #agreeModal (accept)="sendToBill()">
-    <div class="form-group">
-        <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
-        <input type="text" class="form-control" [(ngModel)]="invoiceCode">
-    </div>
- </ng2-modal> 

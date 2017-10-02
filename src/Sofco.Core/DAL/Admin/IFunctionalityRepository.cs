@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Relationships;
 

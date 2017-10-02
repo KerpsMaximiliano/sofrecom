@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>Usuarios</h2>
+        <h2>{{ 'ADMIN.USERS.TITLE' | translate }}</h2>
         <ol class="breadcrumb">
             <li>
-                <a [routerLink]="['/']">Home</a>
+                <a [routerLink]="['/']">{{ 'HOME.TITLE' | translate }}</a>
             </li>
             <li>
-                <a>Administración</a>
+                <a>{{ 'ADMIN.TITLE' | translate }}</a>
             </li>
             <li>
-                <a [routerLink]="['../../']">Usuarios</a>
+                <a [routerLink]="['../../']">{{ 'ADMIN.USERS.TITLE' | translate }}</a>
             </li>
             <li class="active">
-                <strong>Detalle</strong>
+                <strong>{{ 'ADMIN.USERS.detail' | translate }}</strong>
             </li>
         </ol>
     </div>
@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h3 class="pull-left">Detalle del usuario</h3>
+                    <h3 class="pull-left">{{ 'ADMIN.USERS.userDetail' | translate }}</h3>
                     
                     <div class="ibox-tools" >
                         <a [routerLink]="['/admin/users']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
@@ -33,36 +33,36 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <dl class="dl-horizontal">
-                                <dt>Nombre:</dt>
+                                <dt>{{ 'ADMIN.USERS.name' | translate }}:</dt>
                                 <dd>{{user.name}}</dd>
                             </dl>
                             <dl class="dl-horizontal">
-                                <dt>Usuario:</dt>
+                                <dt>{{ 'ADMIN.USERS.user' | translate }}:</dt>
                                 <dd>{{user.userName}}</dd>
                             </dl>
                             <dl class="dl-horizontal">
-                                <dt>Mail:</dt>
+                                <dt>{{ 'ADMIN.USERS.mail' | translate }}:</dt>
                                 <dd>{{user.email}}</dd>
                             </dl>
                                 <dl class="dl-horizontal">
-                                <dt>Estado:</dt>
+                                <dt>{{ 'ADMIN.USERS.status' | translate }}:</dt>
                                 <dd>
-                                    <span *ngIf="user.active == true" class="label label-primary">Activo</span>
-                                    <span *ngIf="user.active == false" class="label label-danger">Inactivo</span>
+                                    <span *ngIf="user.active == true" class="label label-primary">{{ 'ADMIN.active' | translate }}</span>
+                                    <span *ngIf="user.active == false" class="label label-danger">{{ 'ADMIN.inactive' | translate }}</span>
                                 </dd>
                             </dl>
                         </div>
                         <div class="col-lg-6" *ngIf="user">
                             <dl class="dl-horizontal" *ngIf="user.groups">
-                                <dt>Grupos :</dt>
+                                <dt>{{ 'ADMIN.GROUPS.TITLE' | translate }} :</dt>
                                 <dd>{{user.groups.length}}</dd>
                             </dl>
                             <dl class="dl-horizontal" *ngIf="user.roles">
-                                <dt>Roles :</dt>
+                                <dt>{{ 'ADMIN.ROLES.TITLE' | translate }} :</dt>
                                 <dd>{{user.roles.length}}</dd>
                             </dl>
                             <dl class="dl-horizontal" *ngIf="user.modules">
-                                <dt>Modulos :</dt>
+                                <dt>{{ 'ADMIN.module.title' | translate }} :</dt>
                                 <dd>{{user.modules.length}}</dd>
                             </dl>
                         </div>
@@ -77,7 +77,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Grupos
+                    <i class="fa fa-info-circle"></i> {{ 'ADMIN.GROUPS.TITLE' | translate }}
                     <a class="pull-right" [hidden]="groupsToAdd.length == 0" (click)="modalGroups.show()"><i class="fa fa-plus icon-white" ></i></a>
                 </div>
                 <div class="panel-body">
@@ -97,7 +97,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Roles
+                    <i class="fa fa-info-circle"></i> {{ 'ADMIN.ROLES.TITLE' | translate }}
                 </div>
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
@@ -115,7 +115,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> Módulos
+                    <i class="fa fa-info-circle"></i> {{ 'ADMIN.module.title' | translate }}
                 </div>
                 <div class="panel-body">
                     <div class="scroll">
@@ -144,9 +144,9 @@
 </div>
 
 
-<ng2-modal [config]="modalConfig"  #modalGroups (accept)="assignGroups()"> <!--(accept)="" (cancel)=""-->
+<ng2-modal [config]="modalConfig"  #modalGroups (accept)="assignGroups()">
 
-    <h4>Seleccione los grupos a ser asignados al usuario:</h4>
+    <h4>{{ 'ADMIN.USERS.selectGroups' | translate }}</h4>
 
     <div class="scroll">
         <div *ngFor="let g of groupsToAdd; let i = index"  style="margin-top:10px;">
@@ -159,5 +159,5 @@
 </ng2-modal>
 
 <ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unassignGroup()">
-    ¿Esta seguro que desea eliminar el grupo?
+    {{ 'ADMIN.USERS.deleteGroup' | translate }}
 </ng2-modal>

@@ -14,12 +14,18 @@ namespace Sofco.WebApi.Models.Billing
             if (domain.DocumentType != null)
                 DocumentTypeName = domain.DocumentType.Text;
 
+            if (domain.UserApplicant != null)
+                Manager = domain.UserApplicant.Name;
+
             StartDate = domain.StartDate;
             Amount = domain.Amount;
             Iva21 = domain.Iva21;
             TotalAmount = domain.TotalAmount;
             StatusName = domain.Status.ToString();
             CurrencyId = domain.CurrencyId;
+
+            InvoiceDate = domain.InvoiceDate;
+            InvoiceCode = domain.InvoiceCode;
         }
 
         public int Id { get; set; }
@@ -27,11 +33,14 @@ namespace Sofco.WebApi.Models.Billing
         public string BusinessName { get; set; }
         public string DocumentTypeName { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime? InvoiceDate { get; set; }
         public decimal Amount { get; set; }
         public decimal Iva21 { get; set; }
         public decimal TotalAmount { get; set; }
         public string StatusName { get; set; }
         public int CurrencyId { get; set; }
+        public string Manager { get; set; }
+        public string InvoiceCode { get; set; }
     }
 
     public class InvoiceSearchDetail

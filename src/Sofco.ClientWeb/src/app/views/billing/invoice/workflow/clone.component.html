@@ -1,0 +1,7 @@
+<button class="btn btn-success btn-outline dim" *ngIf="invoiceId > 0" (click)="cloneModal.show()">
+    <i class="fa fa-clone"></i> {{'ACTIONS.clone' | translate }} 
+</button>
+
+<ng2-modal [config]="cloneModalConfig" #cloneModal (accept)="clone()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

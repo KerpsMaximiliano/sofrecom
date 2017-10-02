@@ -44,8 +44,8 @@ export class SolfacHistoryComponent implements OnInit, OnDestroy {
             this.histories = d;
 
             this.datatableService.destroy('#historyTable');
-            this.datatableService.init('#historyTable');
-            this.datatableService.adjustColumns();
+            this.datatableService.init('#historyTable', false);
+            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }

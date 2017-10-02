@@ -36,5 +36,31 @@ namespace Sofco.Model.Models.Billing
         public Solfac Solfac { get; set; }
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
+
+        public Invoice Clone()
+        {
+            var invoice = new Invoice();
+
+            invoice.AccountName = this.AccountName;
+            invoice.Address = this.Address;
+            invoice.Analytic = this.Analytic;
+            invoice.City = this.City;
+            invoice.Country = this.Country;
+            invoice.Cuit = this.Cuit;
+            invoice.Project = this.Project;
+            invoice.ProjectId = this.ProjectId;
+            invoice.ProjectId = this.ProjectId;
+            invoice.Service = this.Service;
+            invoice.ServiceId = this.ServiceId;
+            invoice.CustomerId = this.CustomerId;
+            invoice.Province = this.Province;
+            invoice.Zipcode = this.Zipcode;
+            invoice.UserId = this.UserId;
+
+            invoice.CreatedDate = DateTime.Now;
+            invoice.InvoiceStatus = InvoiceStatus.SendPending;
+
+            return invoice;
+        }
     }
 }

@@ -11,6 +11,7 @@ import { DatatablesAlignment } from "./datatables.alignment";
 import { Subject } from 'rxjs/Rx';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { MenuService } from 'app/services/admin/menu.service';
+import { Configuration } from 'app/services/common/configuration';
 declare var $: any;
 
 @Component({
@@ -56,7 +57,7 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
   private tableRef: any;
   public modalMessage: string;
 
-  constructor(private router: Router, private menuService: MenuService) {
+  constructor(private router: Router, private menuService: MenuService, private config: Configuration) {
     this.data = [];
   }
     
@@ -75,6 +76,11 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
     let title = this.options.exportOptions.title + "_" + this.getDateForFile();
     let columns = this.options.exportOptions.columns;
  
+    var lang = {};
+    if(this.config.currLang == "es" || this.config.currLang == "fr"){
+      lang = this.getLanguageEs();
+    }
+
     setTimeout(()=>{
           $( document ).ready(function() {
             this.tableRef = $('#dt-component').DataTable({
@@ -96,35 +102,41 @@ export class Ng2DatatablesComponent implements OnInit, OnChanges {
               ],
               scrollX: true,
               oSearch: { "bSmart": false, "bRegex": true },
-              language:
-                {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Sin información disponible para esta tabla",
-                    "sInfo": "Mostrando del registro _START_ al _END_ de un total de _TOTAL_",
-                    "sInfoEmpty": "Mostrando del registro 0 al 0 de un total de 0",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
+              language: lang
             });
           });
     });
   }
+
+  getLanguageEs(){
+    var language =
+     {
+         sProcessing: "Procesando...",
+         sLengthMenu: "Mostrar _MENU_ registros",
+         sZeroRecords: "No se encontraron resultados",
+         sEmptyTable: "Sin información disponible para esta tabla",
+         sInfo: "Mostrando del registro _START_ al _END_ de un total de _TOTAL_",
+         sInfoEmpty: "Mostrando del registro 0 al 0 de un total de 0",
+         sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+         sInfoPostFix: "",
+         sSearch: "Buscar:",
+         sUrl: "",
+         sInfoThousands: ",",
+         sLoadingRecords: "Cargando...",
+         oPaginate: {
+             sFirst: "Primero",
+             sLast: "Último",
+             sNext: "Siguiente",
+             sPrevious: "Anterior"
+         },
+         oAria: {
+             sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+             sSortDescending: ": Activar para ordenar la columna de manera descendente"
+         }
+     };
+
+     return language;
+ }
 
   getDateForFile(){
       var date = new Date();

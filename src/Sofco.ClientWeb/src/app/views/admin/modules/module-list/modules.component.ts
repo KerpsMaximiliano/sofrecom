@@ -10,6 +10,7 @@ import { DatatablesDataType } from "app/components/datatables/datatables.datatyp
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { ModuleService } from "app/services/admin/module.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-modules',
@@ -37,7 +38,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
       "fa-eye",     //other1Icon
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
-      { title: "Modulos", columns: [0]},
+      { title: this.i18nService.translate("ADMIN.module.title"), columns: [0]},
       0,     //orderByColumn
       "asc"
       ); 
@@ -57,7 +58,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "description",  //name
-        "Descripción",  //title
+        "ADMIN.description",  //title
         "",    //width
         1,     //visibility
         this.dataTypeEnum.string,  //dataType
@@ -65,7 +66,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
       ),
       new DatatablesColumn(
         "active",  //name
-        "Activo",  //title
+        "ADMIN.active",  //title
         "",   //width
         1,     //visibility
         this.dataTypeEnum.boolean,  //dataType
@@ -78,6 +79,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private service: ModuleService,
         private messageService: MessageService,
+        private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {

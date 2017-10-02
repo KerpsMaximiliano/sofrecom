@@ -33,7 +33,7 @@
                                 <small>{{'billing.invoice.createdAt' | translate }}: {{ file.creationDate | date: 'dd/MM/yyyy HH:mm' }}</small>
                             </div>
                         </a>
-                        <div class="file-name remove-file text-center pointer" (click)="showConfirm(file.id, i)">
+                        <div *ngIf="status != 'Invoiced' && status != 'AmountCashed'" class="file-name remove-file text-center pointer" (click)="showConfirm(file.id, i)">
                             {{ 'ACTIONS.DELETE' | translate }}
                         </div>
                     </div>
