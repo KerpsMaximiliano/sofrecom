@@ -1,8 +1,9 @@
-﻿namespace Sofco.WebApi.Models
+﻿namespace Sofco.Model.Users
 {
-    public class LoginViewModel
+    public class UserLogin
     {
         public string UserName { get; set; }
+
         public string Password { get; set; }
     }
 }

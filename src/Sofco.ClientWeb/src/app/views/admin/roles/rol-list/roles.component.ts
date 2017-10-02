@@ -117,14 +117,9 @@ export class RolesComponent implements OnInit, OnDestroy {
     if(this.getSubscrip) this.getSubscrip.unsubscribe();
   }
 
-  getAll(callback = null){
+  getAll(){
     this.getAllSubscrip = this.service.getAll().subscribe(
-      d => {
-        this.data = d;
-        if(callback != null){
-          callback();
-        }
-      },
+      res => { this.data = res; },
       err => this.errorHandlerService.handleErrors(err));
   }
 

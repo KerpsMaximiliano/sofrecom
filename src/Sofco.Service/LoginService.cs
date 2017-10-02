@@ -1,0 +1,56 @@
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Services;
+using Sofco.Common.Domains;
+using Sofco.Model.Users;
+using Sofco.Service.Settings;
+using Sofco.Service.Http.Interfaces;
+
+namespace Sofco.Service
+{
+    public class LoginService : ILoginService
+    {
+        private readonly AzureAdConfig azureAdOptions;
+
+        private readonly IBaseHttpClient<string> client;
+
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient<string> client)
+        {
+            this.azureAdOptions = azureAdOptions.Value;
+            this.client = client;
+        }
+
+        public Result Login(UserLogin userLogin)
+        {
+            var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
+
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", azureAdOptions.GrantType),
+                new KeyValuePair<string, string>("client_id", azureAdOptions.ClientId),
+                new KeyValuePair<string, string>("resource", azureAdOptions.Audience),
+                new KeyValuePair<string, string>("username", $"{userLogin.UserName}@tebrasofre.onmicrosoft.com"),
+                new KeyValuePair<string, string>("password", userLogin.Password)
+             };
+
+            return client.Post(uri, new FormUrlEncodedContent(pairs));
+        }
+
+        public Result Refresh(UserLoginRefresh userLoginRefresh)
+        {
+            var refreshToken = userLoginRefresh.RefreshToken;
+
+            var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
+
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                new KeyValuePair<string, string>("client_id", azureAdOptions.ClientId),
+                new KeyValuePair<string, string>("refresh_token", refreshToken)
+             };
+
+            return client.Post(uri, new FormUrlEncodedContent(pairs));
+        }
+    }
+}

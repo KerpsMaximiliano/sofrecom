@@ -31,7 +31,7 @@ export class  Configuration {
 
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
-        headers.append('Authorization', token);
+        headers.append('Authorization', 'Bearer '+ token);
         
         return headers;
     }

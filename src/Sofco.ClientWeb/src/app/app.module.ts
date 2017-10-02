@@ -1,11 +1,10 @@
 import { BillingModule } from './views/billing/billing.module';
 import { AuthGuard } from './guards/auth.guard';
-import { Http } from '@angular/http';
 import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { XHRBackend, Http, HttpModule, RequestOptions, ConnectionBackend } from '@angular/http';
 import {RouterModule} from "@angular/router";
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,6 +30,8 @@ import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { I18nService } from 'app/services/common/i18n.service';
+
+import { HttpAuth } from "app/services/common/http-auth";
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -70,8 +71,17 @@ export function HttpLoaderFactory(http: Http) {
     ErrorHandlerService,
     MessageService,
     AuthGuard,
-    AuthenticationService
+    AuthenticationService,
+    {
+       provide: HttpAuth,
+       useFactory: getHttpAuth,
+       deps: [XHRBackend, RequestOptions, Service]
+    }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function getHttpAuth(backend: ConnectionBackend, defaultOptions: RequestOptions, service: Service) {
+  return new HttpAuth(backend, defaultOptions, service);
+}

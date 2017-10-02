@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Net.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.FileManager;
+using Sofco.Core.Services;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
@@ -22,10 +24,15 @@ using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
 using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
+using Sofco.Service;
+using Sofco.Service.Http;
+using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Implementations.Admin;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Implementations.Common;
+using Sofco.Service.Settings;
 using Sofco.WebApi.Config;
+using Sofco.WebApi.Filters;
 
 namespace Sofco.WebApi
 {
@@ -41,6 +48,7 @@ namespace Sofco.WebApi
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -52,8 +60,12 @@ namespace Sofco.WebApi
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sofco.WebApi")));
 
             services.AddMvc().AddJsonOptions(options => {
-                    options.SerializerSettings.ReferenceLoopHandling =
+                    options.SerializerSettings.ReferenceLoopHandling = 
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+            services.AddMvc(options => {
+                options.Filters.Add(new VersionHeaderFilter());
             });
 
             services.AddOptions();
@@ -68,6 +80,8 @@ namespace Sofco.WebApi
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
 
+            services.AddSingleton(new HttpClient());
+            services.AddSingleton(typeof(IBaseHttpClient<>), typeof(BaseHttpClient<>));
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Services
@@ -80,6 +94,7 @@ namespace Sofco.WebApi
             services.AddTransient<IUtilsService, UtilsService>();
             services.AddTransient<ISolfacService, SolfacService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<ILoginService, LoginService>();
 
             // Repositories
             services.AddTransient<IBaseRepository<Customer>, BaseRepository<Customer>>();
