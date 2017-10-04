@@ -31,8 +31,8 @@ using Sofco.Service.Implementations.Admin;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Implementations.Common;
 using Sofco.Service.Settings;
-using Sofco.WebApi.Config;
 using Sofco.WebApi.Filters;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sofco.WebApi
 {
@@ -52,12 +52,17 @@ namespace Sofco.WebApi
             Configuration = builder.Build();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddDbContext<SofcoContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sofco.WebApi")));
+                   options
+                   .UseSqlServer(
+                       Configuration.GetConnectionString("DefaultConnection"), 
+                       b => b
+                       .MigrationsAssembly("Sofco.WebApi")
+                       .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName))
+                    );
 
             services.AddMvc().AddJsonOptions(options => {
                     options.SerializerSettings.ReferenceLoopHandling = 
