@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Model.Models;
-using Sofco.DAL.Mappings;
 using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Utils;
@@ -13,6 +12,8 @@ namespace Sofco.DAL
 {
     public class SofcoContext : DbContext
     {
+        public const string AppSchemaName = "app";
+
         public SofcoContext(DbContextOptions<SofcoContext> options)
             : base(options)
         {
@@ -48,6 +49,8 @@ namespace Sofco.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.HasDefaultSchema(AppSchemaName);
 
             builder.MapCustomers();
             builder.MapRoles();
