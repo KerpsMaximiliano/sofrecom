@@ -28,13 +28,12 @@
             <clone-invoice [invoiceId]="model.id"></clone-invoice>
 
             <div class="btn-right">
-                <button class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && (model.invoiceStatus == 'SendPending' || model.invoiceStatus == 'Rejected')" (click)="showConfirmDelete()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
+                <button class="btn btn-danger btn-outline dim" *ngIf="canDelete()" (click)="confirmModal.show()"><i class="fa fa-times"></i> {{'ACTIONS.DELETE' | translate }} </button>
 
-                <status-approve [invoiceId]="invoiceId" [pdfFileName]="model.pdfFileName" [status]="model.invoiceStatus" (updateStatus)="updateStatus($event)" (history)="history.getHistories()"></status-approve>
-
-                <button class="btn btn-danger btn-outline dim" *ngIf="canRejectInvoice()"(click)="showConfirmReject()">{{'ACTIONS.reject' | translate }} <i class="fa fa-times"></i></button>
-                <button class="btn btn-primary btn-outline dim" *ngIf="canSendToDaf()" (click)="showConfirmSendToDaf()">{{'ACTIONS.sendToDaf' | translate }} <i class="fa fa-save"></i></button>
-                <button class="btn btn-danger btn-outline dim" *ngIf="canCancel()"(click)="showConfirmAnnulment()">{{'ACTIONS.annulment' | translate }} <i class="fa fa-times"></i></button>
+                <invoice-status-approve [invoiceId]="invoiceId" [pdfFileName]="model.pdfFileName" [status]="model.invoiceStatus" (updateStatus)="updateStatus($event)" (history)="history.getHistories()"></invoice-status-approve>
+                <invoice-status-sendToDaf [invoiceId]="invoiceId" [excelFileName]="model.excelFileName" [status]="model.invoiceStatus" (callback)="updateStatus($event)" (history)="history.getHistories()"></invoice-status-sendToDaf>
+                <invoice-status-reject [invoiceId]="invoiceId" [status]="model.invoiceStatus" (updateStatus)="updateStatus($event)" (history)="history.getHistories()"></invoice-status-reject>
+                <invoice-status-annulment [invoiceId]="invoiceId" [status]="model.invoiceStatus" (updateStatus)="updateStatus($event)" (history)="history.getHistories()"></invoice-status-annulment>
             </div>
         </div>
     </div>
@@ -152,6 +151,6 @@
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="delete()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

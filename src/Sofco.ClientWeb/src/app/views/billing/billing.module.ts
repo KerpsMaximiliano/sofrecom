@@ -38,12 +38,16 @@ import { StatusRejectComponent } from 'app/views/billing/solfac/workflow/reject/
 import { CloneInvoiceComponent } from 'app/views/billing/invoice/workflow/clone/clone.component';
 import { InvoiceHistoryComponent } from 'app/views/billing/invoice/history/invoice-history.component';
 import { StatusApproveComponent } from 'app/views/billing/invoice/workflow/approve/status-approve.component';
+import { InvoiceStatusSendToDafComponent } from 'app/views/billing/invoice/workflow/sendToDaf/status-sendToDaf.component';
+import { InvoiceStatusRejectComponent } from 'app/views/billing/invoice/workflow/reject/invoice-status-reject.component';
+import { InvoiceStatusAnnulmentComponent } from 'app/views/billing/invoice/workflow/annulment/status-annulment.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
-                 StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent],
+                 StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
+                 InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
 

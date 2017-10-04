@@ -27,8 +27,9 @@
             <button *ngIf="model.id > 0" class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-pencil"></i> {{'billing.invoice.draft' | translate }} </button>
 
             <div class="btn-right">
-                <button (click)="showConfirmDelete()" class="btn btn-danger btn-outline dim" *ngIf="model.id > 0 && model.invoiceStatus == 'SendPending'" >{{'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
-                <button (click)="showConfirmSendToDaf()" class="btn btn-primary btn-outline dim" *ngIf="canSendInvoice()">{{'ACTIONS.sendToDaf' | translate }} <i class="fa fa-save"></i></button>
+                <button (click)="confirm.show()" class="btn btn-danger btn-outline dim" *ngIf="canDelete()" >{{'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
+
+                <invoice-status-sendToDaf [invoiceId]="model.id" [excelFileName]="model.excelFileName" [status]="model.invoiceStatus" (callback)="sendCallback($event)"></invoice-status-sendToDaf>
             </div>
         </div>
     </div>
@@ -73,14 +74,14 @@
                 </div>
             </div>
 
-            <div class="row" *ngIf="model.id > 0 && !excelUploaded">
+            <div class="row" *ngIf="canUploadExcel()">
                 <div class="col-lg-8">
                     <h3>{{'billing.invoice.excelImport' | translate }}</h3>
                     <input type="file" #selectedFile ng2FileSelect [uploader]="uploader" />
                 </div>
             </div>
 
-            <div class="row" *ngIf="model.id > 0 && !excelUploaded">
+            <div class="row" *ngIf="canUploadExcel()">
                 <div class="col-lg-6">
                     <div class="uploader-margin-top">
                         <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
@@ -113,6 +114,6 @@
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="delete()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

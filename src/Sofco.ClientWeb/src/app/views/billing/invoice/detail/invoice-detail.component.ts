@@ -46,7 +46,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
-
+ 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
@@ -83,18 +83,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     configUploader(){
         this.showUploader = false;
         this.isExcel = true;
+        var canUploadExcel = this.menuService.hasFunctionality("REM", "ADEXC");
+        var canUploadPdf = this.menuService.hasFunctionality("REM", "ADPDF");
 
         if(this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Cancelled]) return;
 
-        if(!this.model.excelFileName){
+        if(!this.model.excelFileName && canUploadExcel){
             this.excelConfig();
         }
         else{
-            if(this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected] || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.SendPending]){
+            if((this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected] || 
+               this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.SendPending]) && canUploadExcel){
+
                 this.excelConfig();
             }
             else {
-                if(this.menuService.hasFunctionality('REM', 'APROB') && 
+                if(this.menuService.hasFunctionality('REM', 'APROB') && canUploadPdf &&
                   (!this.model.pdfFileName || (this.model.pdfFileName && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent]))){
 
                     this.pdfConfig();
@@ -163,36 +167,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    sendToDaf(){
-        this.service.changeStatus(this.model.id, InvoiceStatus.Sent, "", "").subscribe(data => {
-            this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-            this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Sent];
-            this.configUploader();
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    reject(){
-        this.service.changeStatus(this.model.id, InvoiceStatus.Rejected, "", "").subscribe(data => {
-            this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-            this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Rejected];
-            this.configUploader();
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    annulment(){
-        this.service.changeStatus(this.model.id, InvoiceStatus.Cancelled, "", "").subscribe(data => {
-            this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-            this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.Cancelled];
-            this.configUploader();
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
     clearSelectedFile(){
         if(this.uploader.queue.length > 0){
             this.uploader.queue[0].remove();
@@ -201,18 +175,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.selectedFile.nativeElement.value = '';
     }
 
-    canRejectInvoice(){
-        if(this.menuService.hasFunctionality('REM', 'REJEC') && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent]){
-            return true;
-        }
+    canDelete(){
+        if(this.model.id > 0 && 
+           (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.SendPending] ||
+            this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected]) &&
+           this.menuService.hasFunctionality("REM", "RMV")){
 
-        return false;
-    }
-
-    canSendToDaf(){
-        if(this.model.excelFileName && 
-           this.menuService.hasFunctionality('REM', 'SEND') &&
-          (this.model.invoiceStatus == 'SendPending' || this.model.invoiceStatus == 'Rejected')){
             return true;
         }
 
@@ -230,13 +198,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    canCancel(){
-        return this.model.id > 0 && this.menuService.hasFunctionality('REM', 'ANNUL') 
-                                 && (this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] 
-                                 || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]
-                                 || this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.Rejected])
-    }
-
     private getDateForFile(){
         var date = new Date();
 
@@ -248,28 +209,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         var ddChars = dd.split('');
 
         return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
-    }
-
-    confirm() {}
-
-    showConfirmDelete(){
-        this.confirm = this.delete;
-        this.confirmModal.show();
-    }
-
-    showConfirmReject(){
-        this.confirm = this.reject;
-        this.confirmModal.show();
-    }
-
-    showConfirmSendToDaf(){
-        this.confirm = this.sendToDaf;
-        this.confirmModal.show();
-    }
-
-    showConfirmAnnulment(){
-        this.confirm = this.annulment;
-        this.confirmModal.show();
     }
 
     updateStatus(event){

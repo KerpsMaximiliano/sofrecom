@@ -36,10 +36,6 @@ namespace Sofco.WebApi.Migrations
                 newSchema: "app");
 
             migrationBuilder.RenameTable(
-                name: "Customers",
-                newSchema: "app");
-
-            migrationBuilder.RenameTable(
                 name: "SolfacHistories",
                 newSchema: "app");
 
@@ -112,10 +108,6 @@ namespace Sofco.WebApi.Migrations
 
             migrationBuilder.RenameTable(
                 name: "RoleFunctionality",
-                schema: "app");
-
-            migrationBuilder.RenameTable(
-                name: "Customers",
                 schema: "app");
 
             migrationBuilder.RenameTable(

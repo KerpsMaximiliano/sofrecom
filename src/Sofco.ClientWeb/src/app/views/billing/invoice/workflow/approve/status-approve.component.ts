@@ -11,7 +11,7 @@ import { I18nService } from 'app/services/common/i18n.service';
 declare var $: any;
 
 @Component({
-  selector: 'status-approve',
+  selector: 'invoice-status-approve',
   templateUrl: './status-approve.component.html'
 })
 export class StatusApproveComponent implements OnDestroy  {
