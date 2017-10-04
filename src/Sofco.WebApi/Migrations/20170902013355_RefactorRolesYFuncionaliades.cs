@@ -62,7 +62,7 @@ namespace Sofco.WebApi.Migrations
                 column: "ModuleId",
                 principalTable: "Modules",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Solfacs_Currencies_CurrencyId",

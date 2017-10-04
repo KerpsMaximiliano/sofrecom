@@ -78,5 +78,11 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             return invoice.User.Email;
         }
+
+        public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        {
+            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber };
+            _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
+        }
     }
 }

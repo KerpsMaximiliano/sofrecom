@@ -13,13 +13,10 @@
     "NUnit3TestAdapter": "3.8.0",
     "dotnet-test-nunit": "3.4.0-beta-2"
   },
-
   "testRunner": "nunit",
-
   "runtimes": {
     "win8-x64": {}
   },
-
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
@@ -33,5 +30,8 @@
         "portable-net451+win8"
       ]
     }
+  },
+  "configurations": {
+    "azsof01wd": {}
   }
 }

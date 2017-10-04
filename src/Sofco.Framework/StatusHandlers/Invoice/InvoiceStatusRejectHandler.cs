@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Config;
+using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -8,6 +9,13 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusRejectHandler : IInvoiceStatusHandler
     {
+        private readonly IInvoiceRepository _invoiceRepository;
+
+        public InvoiceStatusRejectHandler(IInvoiceRepository invoiceRepository)
+        {
+            _invoiceRepository = invoiceRepository;
+        }
+
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimado, </br></br>" +
@@ -52,6 +60,12 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
             return invoice.User.Email;
+        }
+
+        public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        {
+            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Rejected };
+            _invoiceRepository.UpdateStatus(invoiceToModif);
         }
     }
 }

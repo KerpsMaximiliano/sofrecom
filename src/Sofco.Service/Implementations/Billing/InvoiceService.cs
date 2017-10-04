@@ -71,12 +71,17 @@ namespace Sofco.Service.Implementations.Billing
                     return response;
                 }
 
-                invoice.CreatedDate = DateTime.Now;
                 invoice.InvoiceStatus = InvoiceStatus.SendPending;
                 invoice.InvoiceNumber = "0000-00000000";
                 invoice.UserId = user.Id;
 
+                // Add History
+                invoice.Histories.Add(GetHistory(InvoiceStatus.None, invoice.InvoiceStatus, invoice.UserId, string.Empty));
+
+                // Insert Solfac
                 _invoiceRepository.Insert(invoice);
+
+                // Save
                 _invoiceRepository.Save();
 
                 response.Data = invoice;
@@ -208,16 +213,11 @@ namespace Sofco.Service.Implementations.Billing
                 }
 
                 // Update Status
-                if (status == InvoiceStatus.Approved)
-                {
-                    var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = status, InvoiceNumber = parameters.InvoiceNumber };
-                    _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
-                }
-                else
-                {
-                    var invoiceToModif = new Invoice { Id = invoiceId, InvoiceStatus = status };
-                    _invoiceRepository.UpdateStatus(invoiceToModif);
-                }
+                invoiceStatusHandler.SaveStatus(invoice, parameters);
+
+                // Add history
+                var history = GetHistory(invoiceId, invoice.InvoiceStatus, status, parameters.UserId, parameters.Comment);
+                _invoiceRepository.AddHistory(history);
 
                 // Save
                 _invoiceRepository.Save();
@@ -279,34 +279,6 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Invoice> Annulment(int invoiceId)
-        {
-            var response = new Response<Invoice>();
-
-            try
-            {
-                var exist = _invoiceRepository.Exist(invoiceId);
-
-                if (!exist)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                    return response;
-                }
-
-                var invoice = new Invoice { Id = invoiceId, InvoiceStatus = InvoiceStatus.Cancelled };
-                _invoiceRepository.UpdateStatus(invoice);
-                _invoiceRepository.Save();
-
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.Cancelled, MessageType.Success));
-            }
-            catch
-            {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
-            }
-
-            return response;
-        }
-
         public ICollection<Invoice> Search(InvoiceParams parameters, string userMail)
         {
             var isDirector = _userRepository.HasDirectorGroup(userMail);
@@ -359,6 +331,32 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        public ICollection<InvoiceHistory> GetHistories(int id)
+        {
+            return _invoiceRepository.GetHistories(id);
+        }
+
+        private InvoiceHistory GetHistory(int invoiceId, InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)
+        {
+            var history = GetHistory(statusFrom, statusTo, userId, comment);
+            history.InvoiceId = invoiceId;
+            return history;
+        }
+
+        private InvoiceHistory GetHistory(InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)
+        {
+            var history = new InvoiceHistory
+            {
+                StatusFrom = statusFrom,
+                StatusTo = statusTo,
+                UserId = userId,
+                Comment = comment,
+                CreatedDate = DateTime.Now
+            };
+
+            return history;
         }
     }
 }

@@ -196,5 +196,15 @@ namespace Sofco.DAL.Repositories.Billing
                         })
                         .ToList();
         }
+
+        public void AddHistory(InvoiceHistory history)
+        {
+            _context.InvoiceHistories.Add(history);
+        }
+
+        public ICollection<InvoiceHistory> GetHistories(int id)
+        {
+            return _context.InvoiceHistories.Where(x => x.InvoiceId == id).Include(x => x.User).ToList().AsReadOnly();
+        }
     }
 }

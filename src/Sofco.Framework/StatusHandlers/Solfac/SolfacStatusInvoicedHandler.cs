@@ -76,7 +76,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
-             solfacRepository.UpdateStatusAndInvoice(solfacToModif);
+            solfacRepository.UpdateStatusAndInvoice(solfacToModif);
             solfac.InvoiceDate = parameters.InvoiceDate;
         }
 

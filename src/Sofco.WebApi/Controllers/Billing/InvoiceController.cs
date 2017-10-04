@@ -210,17 +210,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return BadRequest();
         }
 
-        [HttpPut]
-        [Route("{invoiceId}/annulment")]
-        public IActionResult Annulment(int invoiceId)
-        {
-            var response = _invoiceService.Annulment(invoiceId);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -235,7 +224,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] InvoiceStatusChangeViewModel model)
         {
-            var response = _invoiceService.ChangeStatus(id, model.Status, _emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber });
+            var response = _invoiceService.ChangeStatus(id, model.Status, _emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber, UserId = model.UserId });
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -275,6 +264,16 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = _invoiceService.GetHistories(id);
+
+            var list = histories.Select(x => new InvoiceHistoryViewModel(x));
+
+            return Ok(list);
         }
 
         private IEnumerable<SelectListItem> GetStatuses()

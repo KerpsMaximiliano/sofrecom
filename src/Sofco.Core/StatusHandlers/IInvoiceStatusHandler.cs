@@ -12,5 +12,6 @@ namespace Sofco.Core.StatusHandlers
         string GetSubjectMail(Invoice invoice);
         string GetSuccessMessage();
         string GetRecipients(Invoice invoice, EmailConfig emailConfig);
+        void SaveStatus(Invoice invoice, InvoiceStatusParams parameters);
     }
 }

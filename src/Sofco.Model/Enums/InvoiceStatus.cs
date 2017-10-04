@@ -7,6 +7,7 @@
         Rejected,
         Approved,
         Related,
-        Cancelled
+        Cancelled,
+        None
     }
 }
