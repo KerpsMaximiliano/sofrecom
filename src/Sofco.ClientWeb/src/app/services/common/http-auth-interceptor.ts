@@ -95,7 +95,7 @@ export class InterceptorConfig {
   
     protected intercept(observable: Observable<Response>): Observable<Response> {
       return observable.catch((err, source) => {
-        if (err.status != 200) {
+        if (err.status == 401) {
           console.log("Unauthorised need to refresh token");
           let orig = this.origRequest;
           return this.refreshToken()
