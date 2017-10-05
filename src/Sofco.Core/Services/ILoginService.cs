@@ -8,5 +8,7 @@ namespace Sofco.Core.Services
         Result Login(UserLogin userLogin);
 
         Result Refresh(UserLoginRefresh userLoginRefresh);
+
+        Result GetUserFromAzureAD(string email, string token);
     }
 }

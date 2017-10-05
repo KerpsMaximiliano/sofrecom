@@ -52,5 +52,12 @@ namespace Sofco.Service
 
             return client.Post(uri, new FormUrlEncodedContent(pairs));
         }
+
+        public Result GetUserFromAzureAD(string email, string token)
+        {
+            var uri = $"https://graph.windows.net/{azureAdOptions.Tenant}/users/{email}?api-version=1.6";
+
+            return client.Get(uri, token);
+        }
     }
 }

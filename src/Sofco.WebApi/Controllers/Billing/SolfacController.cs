@@ -185,6 +185,32 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(response);
         }
 
+        [HttpPut]
+        [Route("{id}/bill")]
+        public IActionResult UpdateBill(int id, [FromBody] UpdateSolfacBill model)
+        {
+            var solfacStatusParams = model.CreateStatusParams();
+
+            var response = _solfacService.UpdateBill(id, solfacStatusParams);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        [Route("{id}/cash")]
+        public IActionResult UpdateCash(int id, [FromBody] UpdateSolfacCash model)
+        {
+            var solfacStatusParams = model.CreateStatusParams();
+
+            var response = _solfacService.UpdateCashedDate(id, solfacStatusParams);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
         private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
         {
             using (var client = new HttpClient())

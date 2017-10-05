@@ -11,15 +11,16 @@ import { DatepickerOptions } from 'ng2-datepicker';
 declare var $: any;
 
 @Component({
-  selector: 'status-bill',
-  templateUrl: './status-bill.component.html'
+  selector: 'update-solfac-bill',
+  templateUrl: './update-solfac-bill.component.html'
 })
-export class StatusBillComponent implements OnDestroy  {
+export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
 
-    @ViewChild('billModal') billModal;
-    public billModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+
+    @ViewChild('updateBillModal') updateBillModal;
+    public updateBillModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.solfac.includeInvoiceCode",
-        "billModal", 
+        "updateBillModal", 
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -28,14 +29,13 @@ export class StatusBillComponent implements OnDestroy  {
 
     @Input() solfacId: number;
     @Input() status: string;
+    @Input() invoiceCode: string;
+    @Input() invoiceDate: Date = new Date();
 
-    @Output() history: EventEmitter<any> = new EventEmitter();
     @Output() updateStatus: EventEmitter<any> = new EventEmitter();
+    @Output() history: EventEmitter<any> = new EventEmitter();
 
     subscrip: Subscription;
-
-    invoiceDate: Date = new Date();
-    invoiceCode: string;
 
     public options;
 
@@ -43,54 +43,63 @@ export class StatusBillComponent implements OnDestroy  {
         private messageService: MessageService,
         private menuService: MenuService,
         private errorHandlerService: ErrorHandlerService,
-        private router: Router) { 
+        private router: Router) {
 
             this.options = this.menuService.getDatePickerOptions();
-        }
+         }
+
+    ngOnInit(): void {
+        
+    }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
     }
 
-    canSendToBill(){
-        if(this.status == SolfacStatus[SolfacStatus.InvoicePending] && 
-        this.menuService.hasFunctionality("SOLFA", "BILL")){
+    openModal(){
+        $('#invoiceCode').val(this.invoiceCode);
+        this.updateBillModal.show();
+    }
+
+    canUpdateBill(){
+        if((this.status == SolfacStatus[SolfacStatus.Invoiced] || this.status == SolfacStatus[SolfacStatus.AmountCashed]) && 
+            this.menuService.hasFunctionality("SOLFA", "UPBIL")){
             return true;
         }
 
         return false;
     } 
  
-    sendToBill(){
+    updateBill(){
         this.invoiceCode = $('#invoiceCode').val();
 
         if(this.invoiceCode && this.invoiceCode != "" && this.invoiceCode.length == 13){
 
             var json = {
-                status: SolfacStatus.Invoiced,
                 invoiceCode: this.invoiceCode,
                 invoiceDate: this.invoiceDate
               }
 
-            this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
+            this.subscrip = this.solfacService.updateBill(this.solfacId, json).subscribe(
                 data => {
-                    this.billModal.hide();
+                    this.updateBillModal.hide();
                     if(data.messages) this.messageService.showMessages(data.messages);
                  
                     if(this.history.observers.length > 0){
                         this.history.emit();
                     }
 
-                    var toModif = {
-                        statusName: SolfacStatus[SolfacStatus.Invoiced],
-                        invoiceCode: this.invoiceCode,
-                        invoiceDate: this.invoiceDate
+                    if(this.updateStatus.observers.length > 0){
+                        var toModif = {
+                            invoiceCode: this.invoiceCode,
+                            invoiceDate: this.invoiceDate
+                        }
+        
+                        this.updateStatus.emit(toModif);
                     }
-
-                    this.updateStatus.emit(toModif);
                 },
                 error => {
-                    this.billModal.hide();
+                    this.updateBillModal.hide();
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{

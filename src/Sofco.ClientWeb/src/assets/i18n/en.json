@@ -310,7 +310,9 @@
         "areYouSureConfirmAdd": "Está seguro de dar de alta ",
         "areYouSureConfirmDelete": "Está seguro de dar de baja ",
         "clonar": "Clone",
-        "clean": "Clean"
+        "clean": "Clean",
+        "updateBill": "Update Bill",
+        "updateCash": "Update Cash"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

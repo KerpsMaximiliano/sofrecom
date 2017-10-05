@@ -53,5 +53,14 @@ namespace Sofco.Service.Http
 
             return GetResult(requestMessage);
         }
+
+        public Result<T> Get(string urlPath, string token)
+        {
+            var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
+
+            requestMessage.Headers.Add("Authorization", token);
+
+            return GetResult(requestMessage);
+        }
     }
 }

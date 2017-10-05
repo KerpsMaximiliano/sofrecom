@@ -450,5 +450,100 @@ namespace Sofco.Service.Implementations.Billing
                 }
             }
         }
+
+        public Response UpdateBill(int id, SolfacStatusParams parameters)
+        {
+            var response = new Response();
+
+            var solfac = _solfacRepository.GetByIdWithUser(id);
+
+            if (solfac == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                return response;
+            }
+
+            if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeRequired, MessageType.Error));
+            }
+
+            if (!parameters.InvoiceDate.HasValue)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateRequired, MessageType.Error));
+            }
+            else
+            {
+                if (parameters.InvoiceDate.Value.Date > DateTime.Today.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanToday, MessageType.Error));
+                }
+            }
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var solfacToModif = new Solfac { Id = solfac.Id, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
+                _solfacRepository.UpdateInvoice(solfacToModif);
+
+                var history = GetHistory(solfac.Id, solfac.Status, solfac.Status, parameters.UserId, string.Empty);
+                _solfacRepository.AddHistory(history);
+
+                _solfacRepository.Save();
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.BillUpdated, MessageType.Success));
+            }
+            catch (Exception ex)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response UpdateCashedDate(int id, SolfacStatusParams parameters)
+        {
+            var response = new Response();
+
+            var solfac = _solfacRepository.GetByIdWithUser(id);
+
+            if (solfac == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                return response;
+            }
+
+            if (!parameters.CashedDate.HasValue)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
+            }
+            else
+            {
+                if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
+                }
+            }
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var solfacToModif = new Solfac { Id = solfac.Id, CashedDate = parameters.CashedDate };
+                _solfacRepository.UpdateCash(solfacToModif);
+
+                var history = GetHistory(solfac.Id, solfac.Status, solfac.Status, parameters.UserId, string.Empty);
+                _solfacRepository.AddHistory(history);
+
+                _solfacRepository.Save();
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashUpdated, MessageType.Success));
+            }
+            catch (Exception ex)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
     }
 }

@@ -22,5 +22,7 @@ namespace Sofco.Core.Services.Billing
         ICollection<SolfacAttachment> GetFiles(int solfacId);
         Response<SolfacAttachment> GetFileById(int fileId);
         Response DeleteFile(int id);
+        Response UpdateBill(int id, SolfacStatusParams solfacStatusParams);
+        Response UpdateCashedDate(int id, SolfacStatusParams parameters);
     }
 }

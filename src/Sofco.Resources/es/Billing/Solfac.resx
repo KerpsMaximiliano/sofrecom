@@ -198,4 +198,10 @@
   <data name="InvoiceDateGreaterThanToday" xml:space="preserve">
     <value>Fecha de facturación no puede ser mayor a la fecha del día</value>
   </data>
+  <data name="BillUpdated" xml:space="preserve">
+    <value>Facturación actualizada correctamente</value>
+  </data>
+  <data name="CashUpdated" xml:space="preserve">
+    <value>Fecha de cobro actualizada correctamente</value>
+  </data>
 </root>

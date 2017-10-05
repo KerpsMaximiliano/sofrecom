@@ -36,19 +36,16 @@ export class StatusCashComponent implements OnDestroy  {
 
   cashedDate: Date = new Date();
 
-  public options: DatepickerOptions = {
-    minYear: 1970,
-    maxYear: 2030,
-    displayFormat: 'DD/MM/YYYY',
-    barTitleFormat: 'MMMM YYYY',
-    firstCalendarDay: 1
-  };
+  public options;
 
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router) { }
+    private router: Router) {
+
+        this.options = this.menuService.getDatePickerOptions();
+     }
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -74,13 +71,18 @@ export class StatusCashComponent implements OnDestroy  {
                 this.cashModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
 
-                var toModif = {
-                    statusName: SolfacStatus[SolfacStatus.AmountCashed],
-                    cashedDate: this.cashedDate
+                if(this.history.observers.length > 0){
+                    this.history.emit();
                 }
 
-                this.history.emit();
-                this.updateStatus.emit(toModif);
+                if(this.updateStatus.observers.length > 0){
+                    var toModif = {
+                        statusName: SolfacStatus[SolfacStatus.AmountCashed],
+                        cashedDate: this.cashedDate
+                    }
+    
+                    this.updateStatus.emit(toModif);
+                }
             },
             error => {
                 this.cashModal.hide();

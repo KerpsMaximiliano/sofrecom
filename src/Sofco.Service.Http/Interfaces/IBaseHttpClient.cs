@@ -6,5 +6,7 @@ namespace Sofco.Service.Http.Interfaces
     public interface IBaseHttpClient<T> where T : class
     {
         Result<T> Post(string urlPath, HttpContent content);
+
+        Result<T> Get(string urlPath, string token);
     }
 }

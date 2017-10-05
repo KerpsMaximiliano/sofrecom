@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
@@ -102,14 +103,13 @@ namespace Sofco.DAL.Repositories.Billing
 
         public void UpdateStatusAndCashed(Solfac solfac)
         {
-            _context.Entry(solfac).Property("CashedDate").IsModified = true;
+            UpdateCash(solfac);
             UpdateStatus(solfac);
         }
 
         public void UpdateStatusAndInvoice(Solfac solfac)
         {
-            _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
-            _context.Entry(solfac).Property("InvoiceDate").IsModified = true;
+            UpdateInvoice(solfac);
             UpdateStatus(solfac);
         }
 
@@ -156,6 +156,17 @@ namespace Sofco.DAL.Repositories.Billing
                 query = query.Where(x => x.Status == parameters.Status);
 
             return query;
+        }
+
+        public void UpdateInvoice(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
+            _context.Entry(solfac).Property("InvoiceDate").IsModified = true;
+        }
+
+        public void UpdateCash(Solfac solfac)
+        {
+            _context.Entry(solfac).Property("CashedDate").IsModified = true;
         }
     }
 }
