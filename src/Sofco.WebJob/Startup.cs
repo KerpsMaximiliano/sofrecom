@@ -62,7 +62,7 @@ namespace Sofco.WebJob
 
             app.UseMvc();
 
-            app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:username"], Configuration["JobSetting:password"]));
+            app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:PanelUsername"], Configuration["JobSetting:PanelPassword"]));
 
             app.UseHangfireDashboard(WebJobPath, new DashboardOptions()
             {
@@ -71,7 +71,7 @@ namespace Sofco.WebJob
 
             app.UseHangfireServer();
 
-            JobService.Init();
+            JobService.Init(Configuration["JobSetting:LocalTimeZoneName"]);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Sofco.WebJob.Jobs.Interfaces;
+using System;
 
 namespace Sofco.WebJob.Services
 {
@@ -7,9 +8,11 @@ namespace Sofco.WebJob.Services
     {
         private const string SolfacJobName = "SolfacDailyJob";
 
-        public static void Init()
+        public static void Init(string timeZoneName)
         {
-            RecurringJob.AddOrUpdate<ISolfacJob>(SolfacJobName, j => j.Execute(), Cron.Daily);
+            var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
+
+            RecurringJob.AddOrUpdate<ISolfacJob>(SolfacJobName, j => j.Execute(), Cron.Daily(8), localTimeZone);
         }
     }
 }
