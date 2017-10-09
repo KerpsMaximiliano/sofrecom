@@ -7,6 +7,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService } from 'app/services/common/message.service';
 import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'solfac-attachments',
@@ -39,6 +40,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
 
     constructor(private solfacService: SolfacService,
                 private messageService: MessageService,
+                private menuService: MenuService,
                 private errorHandlerService: ErrorHandlerService) {
     }
 
@@ -83,6 +85,10 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             FileSaver.saveAs(response, file.name);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    canUploadFiles(){
+        return this.menuService.hasFunctionality("SOLFA", "AFILE");
     }
 
     deleteFile(){

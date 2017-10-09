@@ -37,4 +37,38 @@ namespace Sofco.WebApi.Models.Billing
             return parameters;
         }
     }
+
+    public class UpdateSolfacBill
+    {
+        public string InvoiceCode { get; set; }
+        public DateTime? InvoiceDate { get; set; }
+        public int UserId { get; set; }
+
+        public SolfacStatusParams CreateStatusParams()
+        {
+            var parameters = new SolfacStatusParams();
+
+            parameters.UserId = UserId;
+            parameters.InvoiceCode = InvoiceCode;
+            parameters.InvoiceDate = InvoiceDate;
+
+            return parameters;
+        }
+    }
+
+    public class UpdateSolfacCash
+    {
+        public int UserId { get; set; }
+        public DateTime? CashedDate { get; set; }
+
+        public SolfacStatusParams CreateStatusParams()
+        {
+            var parameters = new SolfacStatusParams();
+
+            parameters.UserId = UserId;
+            parameters.CashedDate = CashedDate;
+
+            return parameters;
+        }
+    }
 }

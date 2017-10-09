@@ -102,7 +102,6 @@ namespace Sofco.WebApi
             services.AddTransient<ILoginService, LoginService>();
 
             // Repositories
-            services.AddTransient<IBaseRepository<Customer>, BaseRepository<Customer>>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IBaseRepository<Group>, BaseRepository<Group>>();
             services.AddTransient<IRoleRepository, RoleRepository>();

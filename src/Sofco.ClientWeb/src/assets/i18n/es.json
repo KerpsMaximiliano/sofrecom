@@ -311,7 +311,9 @@
         "areYouSureConfirmAdd": "Está seguro de dar de alta ",
         "areYouSureConfirmDelete": "Está seguro de dar de baja ",
         "clone": "Clonar",
-        "clean": "Limpiar"
+        "clean": "Limpiar",
+        "updateBill": "Actualizar Factura",
+        "updateCash": "Actualizar Cobro"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

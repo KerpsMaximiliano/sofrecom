@@ -32,7 +32,6 @@ namespace Sofco.DAL
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
 
         // Billing Mappings
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<Hito> Hitos { get; set; }
         public DbSet<Solfac> Solfacs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
@@ -52,7 +51,6 @@ namespace Sofco.DAL
 
             builder.HasDefaultSchema(AppSchemaName);
 
-            builder.MapCustomers();
             builder.MapRoles();
             builder.MapGroups();
             builder.MapModules();

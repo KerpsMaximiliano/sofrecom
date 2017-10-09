@@ -192,4 +192,16 @@
   <data name="ErrorSaveOnHitos" xml:space="preserve">
     <value>Ocurrio un error al actualizar el/los hitos en el CRM</value>
   </data>
+  <data name="CashedDateGreaterThanToday" xml:space="preserve">
+    <value>Fecha de pago no puede ser mayor a la fecha del día</value>
+  </data>
+  <data name="InvoiceDateGreaterThanToday" xml:space="preserve">
+    <value>Fecha de facturación no puede ser mayor a la fecha del día</value>
+  </data>
+  <data name="BillUpdated" xml:space="preserve">
+    <value>Facturación actualizada correctamente</value>
+  </data>
+  <data name="CashUpdated" xml:space="preserve">
+    <value>Fecha de cobro actualizada correctamente</value>
+  </data>
 </root>

@@ -54,6 +54,18 @@ export class SolfacService {
      return this.http.post(`${this.baseUrl}/solfacs/${id}/status`, json).map((res:Response) => res.json());
   }
 
+  updateBill(id, json){
+    json.userId = this.menuService.user.id;
+
+    return this.http.put(`${this.baseUrl}/solfacs/${id}/bill`, json).map((res:Response) => res.json());
+ }
+
+ updateCash(id, json){
+    json.userId = this.menuService.user.id;
+
+    return this.http.put(`${this.baseUrl}/solfacs/${id}/cash`, json).map((res:Response) => res.json());
+  }
+
   delete(id){
      return this.http.delete(`${this.baseUrl}/solfacs/${id}`).map((res:Response) => res.json());
   }

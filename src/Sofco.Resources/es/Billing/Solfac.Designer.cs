@@ -60,6 +60,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Facturación actualizada correctamente.
+        /// </summary>
+        public static string BillUpdated {
+            get {
+                return ResourceManager.GetString("BillUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Solfac anulada correctamente.
         /// </summary>
         public static string CancelledSucces {
@@ -78,11 +87,29 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de pago no puede ser mayor a la fecha del día.
+        /// </summary>
+        public static string CashedDateGreaterThanToday {
+            get {
+                return ResourceManager.GetString("CashedDateGreaterThanToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La fecha de cobro es requerida.
         /// </summary>
         public static string CashedDateRequired {
             get {
                 return ResourceManager.GetString("CashedDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de cobro actualizada correctamente.
+        /// </summary>
+        public static string CashUpdated {
+            get {
+                return ResourceManager.GetString("CashUpdated", resourceCulture);
             }
         }
         
@@ -164,6 +191,15 @@ namespace Sofco.Resources.es.Billing {
         public static string InvoiceCodeRequired {
             get {
                 return ResourceManager.GetString("InvoiceCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de facturación no puede ser mayor a la fecha del día.
+        /// </summary>
+        public static string InvoiceDateGreaterThanToday {
+            get {
+                return ResourceManager.GetString("InvoiceDateGreaterThanToday", resourceCulture);
             }
         }
         

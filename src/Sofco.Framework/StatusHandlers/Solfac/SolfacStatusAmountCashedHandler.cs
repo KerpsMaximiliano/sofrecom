@@ -37,7 +37,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
             }
-            
+            else
+            {
+                if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
+                }
+            }
+
             return response;
         }
 

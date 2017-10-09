@@ -267,21 +267,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Solfacs");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("Sofco.Model.Relationships.ModuleFunctionality", b =>
                 {
                     b.Property<int>("ModuleId");

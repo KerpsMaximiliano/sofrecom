@@ -104,17 +104,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    sendToDaf(){
-        this.service.changeStatus(this.model.id, InvoiceStatus.Sent, "", "").subscribe(data => {
-            this.confirmModal.hide();
-            
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            setTimeout(() => {
-                this.cancel();
-            }, 1500)
-        },
-        err => this.errorHandlerService.handleErrors(err));
+    sendCallback(event){
+        setTimeout(() => {
+            this.cancel();
+        }, 1500)
     }
 
     private configUploader(id){
@@ -130,15 +123,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.excelUploaded = true;
             this.messageService.succes(this.i18nService.translate("billing.invoice.excelAddedSucces"));
+            this.model.excelFileName = "uploaded";
         };
-    }
-
-    canSendInvoice(){
-        if(this.menuService.hasFunctionality('REM', 'SEND') && this.model.id > 0 && this.excelUploaded){
-            return true;
-        }
-
-        return false;
     }
 
     delete(){
@@ -150,6 +136,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             setTimeout(() => { this.cancel(); }, 1500)
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    canDelete(){
+        if(this.model.id > 0 && this.model.invoiceStatus == InvoiceStatus[InvoiceStatus.SendPending] && this.menuService.hasFunctionality("REM", "RMV")){
+            return true;
+        }
+
+        return false;
     }
 
     private getDateForFile(){
@@ -173,15 +167,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.selectedFile.nativeElement.value = '';
     }
 
-    confirm() {}
+    canUploadExcel(){
+        if(this.model.id > 0 && !this.excelUploaded && this.menuService.hasFunctionality("REM", "ADEXC")){
+            return true;
+        }
 
-    showConfirmDelete(){
-        this.confirm = this.delete;
-        this.confirmModal.show();
-    }
-
-    showConfirmSendToDaf(){
-        this.confirm = this.sendToDaf;
-        this.confirmModal.show();
+        return false;
     }
 }

@@ -42,6 +42,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateRequired, MessageType.Error));
             }
+            else
+            {
+                if (parameters.InvoiceDate.Value.Date > DateTime.Today.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanToday, MessageType.Error));
+                }
+            }
             
             return response;
         }
