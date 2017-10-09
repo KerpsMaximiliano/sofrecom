@@ -24,7 +24,6 @@ using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
 using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
-using Sofco.Service;
 using Sofco.Service.Http;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Implementations.Admin;
@@ -33,6 +32,7 @@ using Sofco.Service.Implementations.Common;
 using Sofco.Service.Settings;
 using Sofco.WebApi.Filters;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Sofco.Service.Implementations;
 
 namespace Sofco.WebApi
 {

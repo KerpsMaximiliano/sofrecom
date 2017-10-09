@@ -177,7 +177,7 @@ namespace Sofco.Service.Implementations.Billing
                 // Send Mail
                 HandleSendMail(emailConfig, solfacStatusHandler, solfac);
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
             }
@@ -212,7 +212,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.Deleted, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -255,7 +255,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.Billing
                 _solfacRepository.Save();
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.FileDeleted, MessageType.Success));
             }
-            catch (Exception e)
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
