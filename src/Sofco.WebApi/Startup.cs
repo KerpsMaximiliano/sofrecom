@@ -22,7 +22,6 @@ using Sofco.DAL.Repositories.Common;
 using Sofco.Framework.FileManager.Billing;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Http;
 using Sofco.Service.Http.Interfaces;

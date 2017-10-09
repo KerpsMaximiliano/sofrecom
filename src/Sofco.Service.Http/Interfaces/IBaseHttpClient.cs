@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Collections.Generic;
 using Sofco.Common.Domains;
 
 namespace Sofco.Service.Http.Interfaces
@@ -7,6 +8,8 @@ namespace Sofco.Service.Http.Interfaces
     {
         Result<T> Post(string urlPath, HttpContent content);
 
-        Result<T> Get(string urlPath, string token);
+        Result<T> Get(string urlPath, string token = null);
+
+        Result<List<T>> GetMany(string urlPath);
     }
 }

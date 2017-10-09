@@ -1,49 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
-using Sofco.Framework.Mail;
-using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
+using Sofco.Core.Mail;
 
 namespace Sofco.Service.Implementations.Billing
 {
     public class InvoiceService : IInvoiceService
     {
-        private readonly IInvoiceRepository _invoiceRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IInvoiceStatusFactory _invoiceStatusFactory;
+        private readonly IInvoiceRepository invoiceRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IInvoiceStatusFactory invoiceStatusFactory;
+        private readonly IMailSender mailSender;
 
         public InvoiceService(IInvoiceRepository invoiceRepository, 
             IUserRepository userRepository, 
-            IHostingEnvironment hostingEnvironment,
-            IInvoiceStatusFactory invoiceStatusFactory)
+            IInvoiceStatusFactory invoiceStatusFactory,
+            IMailSender mailSender)
         {
-            _invoiceRepository = invoiceRepository;
-            _userRepository = userRepository;
-            _hostingEnvironment = hostingEnvironment;
-            _invoiceStatusFactory = invoiceStatusFactory;
+            this.invoiceRepository = invoiceRepository;
+            this.userRepository = userRepository;
+            this.invoiceStatusFactory = invoiceStatusFactory;
+            this.mailSender = mailSender;
         }
 
         public IList<Invoice> GetByProject(string projectId)
         {
-            return _invoiceRepository.GetByProject(projectId);
+            return invoiceRepository.GetByProject(projectId);
         }
 
         public Response<Invoice> GetById(int id)
         {
             var response = new Response<Invoice>();
 
-            var invoce = _invoiceRepository.GetById(id);
+            var invoce = invoiceRepository.GetById(id);
 
             if (invoce == null)
             {
@@ -63,7 +60,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 var userName = identityName.Split('@')[0];
-                var user = _userRepository.GetSingle(x => x.UserName == userName);
+                var user = userRepository.GetSingle(x => x.UserName == userName);
 
                 if (user == null)
                 {
@@ -79,10 +76,10 @@ namespace Sofco.Service.Implementations.Billing
                 invoice.Histories.Add(GetHistory(InvoiceStatus.None, invoice.InvoiceStatus, invoice.UserId, string.Empty));
 
                 // Insert Solfac
-                _invoiceRepository.Insert(invoice);
+                invoiceRepository.Insert(invoice);
 
                 // Save
-                _invoiceRepository.Save();
+                invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceCreated, MessageType.Success));
@@ -111,8 +108,8 @@ namespace Sofco.Service.Implementations.Billing
                     ExcelFileCreatedDate = datetime
                 };
 
-                _invoiceRepository.UpdateExcel(invoiceToSave);
-                _invoiceRepository.Save();
+                invoiceRepository.UpdateExcel(invoiceToSave);
+                invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.ExcelUpload, MessageType.Success));
@@ -129,7 +126,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoce = _invoiceRepository.GetExcel(invoiceId);
+            var invoce = invoiceRepository.GetExcel(invoiceId);
 
             if (invoce == null)
             {
@@ -157,8 +154,8 @@ namespace Sofco.Service.Implementations.Billing
                     PdfFileCreatedDate = datetime
                 };
 
-                _invoiceRepository.UpdatePdf(invoiceToSave);
-                _invoiceRepository.Save();
+                invoiceRepository.UpdatePdf(invoiceToSave);
+                invoiceRepository.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.PdfUpload, MessageType.Success));
@@ -175,7 +172,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoce = _invoiceRepository.GetPdf(invoiceId);
+            var invoce = invoiceRepository.GetPdf(invoiceId);
 
             if (invoce == null)
             {
@@ -191,7 +188,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var invoice = _invoiceRepository.GetById(invoiceId);
+            var invoice = invoiceRepository.GetById(invoiceId);
 
             if (invoice == null)
             {
@@ -199,7 +196,7 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            var invoiceStatusHandler = _invoiceStatusFactory.GetInstance(status);
+            var invoiceStatusHandler = invoiceStatusFactory.GetInstance(status);
 
             try
             {
@@ -217,10 +214,10 @@ namespace Sofco.Service.Implementations.Billing
 
                 // Add history
                 var history = GetHistory(invoiceId, invoice.InvoiceStatus, status, parameters.UserId, parameters.Comment);
-                _invoiceRepository.AddHistory(history);
+                invoiceRepository.AddHistory(history);
 
                 // Save
-                _invoiceRepository.Save();
+                invoiceRepository.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
             catch
@@ -243,14 +240,14 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<Invoice> GetOptions(string projectId)
         {
-            return _invoiceRepository.GetOptions(projectId);
+            return invoiceRepository.GetOptions(projectId);
         }
 
         public Response Delete(int id)
         {
             var response = new Response();
 
-            var invoice = _invoiceRepository.GetById(id);
+            var invoice = invoiceRepository.GetById(id);
 
             if (invoice == null)
             {
@@ -266,8 +263,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                _invoiceRepository.Delete(invoice);
-                _invoiceRepository.Save();
+                invoiceRepository.Delete(invoice);
+                invoiceRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.Deleted, MessageType.Success));
             }
@@ -281,35 +278,32 @@ namespace Sofco.Service.Implementations.Billing
 
         public ICollection<Invoice> Search(InvoiceParams parameters, string userMail)
         {
-            var isDirector = _userRepository.HasDirectorGroup(userMail);
+            var isDirector = userRepository.HasDirectorGroup(userMail);
 
             if (isDirector)
             {
-                return _invoiceRepository.SearchByParams(parameters);
+                return invoiceRepository.SearchByParams(parameters);
             }
             else
             {
-                return _invoiceRepository.SearchByParamsAndUser(parameters, userMail);
+                return invoiceRepository.SearchByParamsAndUser(parameters, userMail);
             }
         }
 
         private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice)
         {
-            if (!_hostingEnvironment.IsStaging() && !_hostingEnvironment.IsProduction()) return;
-
             var subject = invoiceStatusHandler.GetSubjectMail(invoice);
             var body = invoiceStatusHandler.GetBodyMail(invoice, emailConfig.SiteUrl);
             var recipients = invoiceStatusHandler.GetRecipients(invoice, emailConfig);
 
-            MailSender.Send(recipients, emailConfig.EmailFrom, emailConfig.DisplyNameFrom,
-                subject, body, emailConfig.SmtpServer, emailConfig.SmtpPort, emailConfig.SmtpDomain);
+            mailSender.Send(recipients, subject, body);
         }
 
         public Response<Invoice> Clone(int id)
         {
             var response = new Response<Invoice>();
 
-            var invoice = _invoiceRepository.GetById(id);
+            var invoice = invoiceRepository.GetById(id);
 
             if(invoice == null)
             {
@@ -321,8 +315,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                _invoiceRepository.Insert(invoiceToClone);
-                _invoiceRepository.Save();
+                invoiceRepository.Insert(invoiceToClone);
+                invoiceRepository.Save();
                 response.Data = invoiceToClone;
             }
             catch (Exception)
@@ -335,7 +329,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public ICollection<InvoiceHistory> GetHistories(int id)
         {
-            return _invoiceRepository.GetHistories(id);
+            return invoiceRepository.GetHistories(id);
         }
 
         private InvoiceHistory GetHistory(int invoiceId, InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)

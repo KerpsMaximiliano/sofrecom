@@ -2,8 +2,10 @@
 {
     public class JobSetting
     {
-        public string Username { get; set; }
+        public string PanelUsername { get; set; }
 
-        public string Password { get; set; }
+        public string PanelPassword { get; set; }
+
+        public string LocalTimeZoneName { get; set; }
     }
 }
