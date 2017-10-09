@@ -11,6 +11,7 @@ using Sofco.WebJob.Services;
 using Sofco.WebJob.Filters;
 using Sofco.WebJob.Security;
 using Sofco.WebJob.Infrastructures;
+using Sofco.Core.Config;
 
 namespace Sofco.WebJob
 {
@@ -32,19 +33,21 @@ namespace Sofco.WebJob
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
             services.AddMvc();
 
             services.AddHangfire(x => x
                 .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection"))
             );
 
+            services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
+            services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
+
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterModule<DefaultModule>();
-            containerBuilder.RegisterModule(new DatabaseModule()
-            {
-                Configuration = Configuration
-            });
+            containerBuilder.RegisterModule(new DefaultModule(){ Configuration = Configuration });
+            containerBuilder.RegisterModule(new DatabaseModule(){ Configuration = Configuration });
 
             containerBuilder.Populate(services);
 
