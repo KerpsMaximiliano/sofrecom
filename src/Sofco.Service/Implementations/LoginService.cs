@@ -7,7 +7,7 @@ using Sofco.Model.Users;
 using Sofco.Service.Settings;
 using Sofco.Service.Http.Interfaces;
 
-namespace Sofco.Service
+namespace Sofco.Service.Implementations
 {
     public class LoginService : ILoginService
     {

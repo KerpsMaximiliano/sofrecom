@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Hangfire;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Sofco.WebJob.Services;
 using Sofco.WebJob.Filters;
 using Sofco.WebJob.Security;
+using Sofco.WebJob.Infrastructures;
 
 namespace Sofco.WebJob
 {
     public class Startup
     {
+        private const string WebJobPath = "/panel";
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -24,13 +30,29 @@ namespace Sofco.WebJob
 
         public IConfigurationRoot Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
             services.AddHangfire(x => x
                 .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection"))
             );
+
+            var containerBuilder = new ContainerBuilder();
+
+            containerBuilder.RegisterModule<DefaultModule>();
+            containerBuilder.RegisterModule(new DatabaseModule()
+            {
+                Configuration = Configuration
+            });
+
+            containerBuilder.Populate(services);
+
+            var container = containerBuilder.Build();
+
+            JobActivator.Current = new AutofacJobActivator(container);
+
+            return new AutofacServiceProvider(container);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -42,7 +64,7 @@ namespace Sofco.WebJob
 
             app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:username"], Configuration["JobSetting:password"]));
 
-            app.UseHangfireDashboard("/jobs", new DashboardOptions()
+            app.UseHangfireDashboard(WebJobPath, new DashboardOptions()
             {
                 Authorization = new[] { new CustomAuthorizeFilter() }
             });

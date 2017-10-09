@@ -1,15 +1,15 @@
 ﻿using Hangfire;
-using System;
+using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Services
 {
     public class JobService
     {
+        private const string SolfacJobName = "SolfacDailyJob";
+
         public static void Init()
         {
-            RecurringJob.AddOrUpdate(
-                () => Console.WriteLine("Recurring!"),
-                Cron.Daily);
+            RecurringJob.AddOrUpdate<ISolfacJob>(SolfacJobName, j => j.Execute(), Cron.Daily);
         }
     }
 }
