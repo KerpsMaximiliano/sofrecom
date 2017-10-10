@@ -1,21 +1,21 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Services.Common;
-using Sofco.WebApi.Models.Billing;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.IO;
+using System.Net.Http;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using System.Net.Http;
-using System.Text;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -23,24 +23,24 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class SolfacController : Controller
     {
-        private readonly IUtilsService _utilsService;
-        private readonly ISolfacService _solfacService;
-        private readonly EmailConfig _emailConfig;
-        private readonly CrmConfig _crmConfig;
+        private readonly IUtilsService utilsService;
+        private readonly ISolfacService solfacService;
+        private readonly EmailConfig emailConfig;
+        private readonly CrmConfig crmConfig;
 
         public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, IOptions<CrmConfig> crmOptions)
         {
-            _utilsService = utilsService;
-            _solfacService = solfacService;
-            _emailConfig = emailConfig.Value;
-            _crmConfig = crmOptions.Value;
+            this.utilsService = utilsService;
+            this.solfacService = solfacService;
+            this.emailConfig = emailConfig.Value;
+            crmConfig = crmOptions.Value;
         }
 
         [HttpPost]
         [Route("search")]
         public IActionResult Search([FromBody] SolfacParams parameters)
         {
-            var solfacs = _solfacService.Search(parameters, this.GetUserMail());
+            var solfacs = solfacService.Search(parameters, this.GetUserMail());
 
             if (!solfacs.Any())
             {
@@ -57,13 +57,13 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var response = _solfacService.GetById(id);
+            var response = solfacService.GetById(id);
 
             if (response.HasErrors()) return BadRequest(response);
 
             var model = new SolfacDetail(response.Data);
 
-            var provinces = _utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
+            var provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
 
             if (response.Data.Province1Id > 0)
                 model.ProvinceName1 = provinces.FirstOrDefault(x => x.Id == response.Data.Province1Id)?.Text;
@@ -80,7 +80,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("project/{projectId}")]
         public IActionResult Get(string projectId)
         {
-            var solfacs = _solfacService.GetByProject(projectId);
+            var solfacs = solfacService.GetByProject(projectId);
 
             var list = solfacs.Select(x => new SolfacSearchDetail(x));
 
@@ -93,13 +93,13 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var options = new SolfacOptions
             {
-                Currencies = _utilsService.GetCurrencies().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                DocumentTypes = _utilsService.GetDocumentTypes().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                ImputationNumbers = _utilsService.GetImputationNumbers().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
+                Currencies = utilsService.GetCurrencies().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
+                DocumentTypes = utilsService.GetDocumentTypes().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
+                ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
                 Provinces = new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Seleccione una opción" } }
             };
 
-            var provinces = _utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
+            var provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
 
             foreach (var province in provinces)
                 options.Provinces.Add(new SelectListItem { Value = province.Id.ToString(), Text = province.Text });
@@ -116,7 +116,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = _solfacService.Add(domain);
+            var response = solfacService.Add(domain);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -135,7 +135,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = _solfacService.Update(domain, model.Comments);
+            var response = solfacService.Update(domain, model.Comments);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -152,13 +152,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = _solfacService.Add(domain);
+            var response = solfacService.Add(domain);
 
             if (response.HasErrors()) return BadRequest(response);
 
             var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, SolfacStatus.PendingByManagementControl);
 
-            var handleStatus = _solfacService.ChangeStatus(response.Data, solfacStatusParams, _emailConfig);
+            var handleStatus = solfacService.ChangeStatus(response.Data, solfacStatusParams, emailConfig);
 
             if (handleStatus.HasErrors())
             {
@@ -175,7 +175,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var solfacStatusParams = model.CreateStatusParams();
 
-            var response = _solfacService.ChangeStatus(id, solfacStatusParams, _emailConfig);
+            var response = solfacService.ChangeStatus(id, solfacStatusParams, emailConfig);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -188,7 +188,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var solfacStatusParams = model.CreateStatusParams();
 
-            var response = _solfacService.UpdateBill(id, solfacStatusParams);
+            var response = solfacService.UpdateBill(id, solfacStatusParams);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -201,7 +201,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var solfacStatusParams = model.CreateStatusParams();
 
-            var response = _solfacService.UpdateCashedDate(id, solfacStatusParams);
+            var response = solfacService.UpdateCashedDate(id, solfacStatusParams);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -212,7 +212,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
                 HttpResponseMessage response;
 
                 foreach (var item in data.Hitos)
@@ -235,7 +235,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}")]
         public IActionResult Delete(int id)
         {
-            var response = _solfacService.Delete(id);
+            var response = solfacService.Delete(id);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -245,7 +245,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{id}/histories")]
         public IActionResult GetHistories(int id)
         {
-            var histories = _solfacService.GetHistories(id);
+            var histories = solfacService.GetHistories(id);
 
             var list = histories.Select(x => new SolfacHistoryViewModel(x));
 
@@ -269,7 +269,7 @@ namespace Sofco.WebApi.Controllers.Billing
                         fileAsArrayBytes = memoryStream.ToArray();
                     }
 
-                    var response = _solfacService.SaveFile(solfacId, fileAsArrayBytes, file.FileName);
+                    var response = solfacService.SaveFile(solfacId, fileAsArrayBytes, file.FileName);
 
                     if (response.HasErrors()) return BadRequest(response);
 
@@ -295,7 +295,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{solfacId}/files")]
         public IActionResult GetFiles(int solfacId)
         {
-            var files = _solfacService.GetFiles(solfacId);
+            var files = solfacService.GetFiles(solfacId);
 
             return Ok(files.Select(x => new SolfacAttachmentViewModel(x)));
         }
@@ -306,7 +306,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var response = _solfacService.GetFileById(fileId);
+                var response = solfacService.GetFileById(fileId);
 
                 if (response.HasErrors()) return BadRequest(response);
 
@@ -330,7 +330,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("file/{id}")]
         public IActionResult DeleteFile(int id)
         {
-            var response = _solfacService.DeleteFile(id);
+            var response = solfacService.DeleteFile(id);
 
             if (response.HasErrors()) return BadRequest(response);
 

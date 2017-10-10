@@ -1,46 +1,46 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/Frontend/dist
-/Frontend/tmp
-/Frontend/out-tsc
+dist
+tmp
+out-tsc
 
 # dependencies
-/Frontend/node_modules
-/Frontend/NODEJS/node_modules
+node_modules
+NODEJS/node_modules
 
 # IDEs and editors
-/Frontend/.idea
-/Frontend/.project
-/Frontend/.classpath
-/Frontend/.c9/
-/Frontend/*.launch
-/Frontend/.settings/
-/Frontend/*.sublime-workspace
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
 # IDE - VSCode
-/Frontend/.vscode/*
-/Frontend/!.vscode/settings.json
-/Frontend/!.vscode/tasks.json
-/Frontend/!.vscode/launch.json
-/Frontend/!.vscode/extensions.json
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # misc
-/Frontend/.sass-cache
-/Frontend/connect.lock
-/Frontend/coverage
-/Frontend/libpeerconnection.log
-/Frontendnpm-debug.log
-/Frontendtestem.log
-/Frontend/typings
+.sass-cache
+connect.lock
+coverage
+libpeerconnection.log
+npm-debug.log
+testem.log
+typings
 
 # e2e
-/Frontend/e2e/*.js
-/Frontend/e2e/*.map
+e2e/*.js
+e2e/*.map
 
 # System Files
-/Frontend.DS_Store
-/FrontendThumbs.db
+.DS_Store
+Thumbs.db
 
 # User-specific files
 *.suo

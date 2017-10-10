@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Sofco.Common.Domains;
 using Sofco.Service.Http.Interfaces;
 
@@ -27,22 +29,45 @@ namespace Sofco.Service.Http
             return request;
         }
 
-        private Result<T> GetResult(HttpRequestMessage requestMessage)
+        private Result<TResult> GetResult<TResult>(HttpRequestMessage requestMessage) where TResult : class
         {
-            var responseMessage = httpClient.SendAsync(requestMessage).Result;
+            var response = httpClient.SendAsync(requestMessage).Result;
 
-            var result = new Result<T>();
+            var result = new Result<TResult>();
 
-            if (!responseMessage.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                result.AddError(responseMessage.ReasonPhrase);
+                result.AddError(response.ReasonPhrase);
 
                 return result;
             }
 
-            result.ResultData = responseMessage.Content.ReadAsStringAsync().Result;
+            var resultData = GetResponseResult<TResult>(response);
 
-            return result;
+            return new Result<TResult>(resultData);
+        }
+
+        protected TResult GetResponseResult<TResult>(HttpResponseMessage response, JsonSerializerSettings jsonSerializerSettings = null)
+        {
+            var resultText = response.Content.ReadAsStringAsync().Result;
+
+            if (typeof(TResult) == typeof(string))
+            {
+                return (TResult)(object)resultText;
+            }
+
+            try
+            {
+                return jsonSerializerSettings == null ?
+                    JsonConvert.DeserializeObject<TResult>(resultText)
+                    : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
+            }
+            catch (JsonSerializationException ex)
+            {
+                // TODO: Implement logger
+                // logger.LogError($"{ex.Message} | Response: {resultText}");
+                throw;
+            }
         }
 
         public Result<T> Post(string urlPath, HttpContent content)
@@ -51,16 +76,26 @@ namespace Sofco.Service.Http
 
             requestMessage.Content = content;
 
-            return GetResult(requestMessage);
+            return GetResult<T>(requestMessage);
         }
 
-        public Result<T> Get(string urlPath, string token)
+        public Result<T> Get(string urlPath, string token = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
 
-            requestMessage.Headers.Add("Authorization", token);
+            if(!string.IsNullOrEmpty(token))
+            {
+                requestMessage.Headers.Add("Authorization", token);
+            }
 
-            return GetResult(requestMessage);
+            return GetResult<T>(requestMessage);
+        }
+
+        public Result<List<T>> GetMany(string urlPath)
+        {
+            var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
+
+            return GetResult<List<T>>(requestMessage);
         }
     }
 }

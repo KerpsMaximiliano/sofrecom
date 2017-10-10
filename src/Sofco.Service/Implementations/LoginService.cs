@@ -11,7 +11,7 @@ using Sofco.Model.AzureAd;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
 
-namespace Sofco.Service
+namespace Sofco.Service.Implementations
 {
     public class LoginService : ILoginService
     {

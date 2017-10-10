@@ -3,10 +3,10 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Model.Users;
-using Sofco.Service;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 using Sofco.Common.Domains;
+using Sofco.Service.Implementations;
 
 namespace Sofco.UnitTests.Services
 {
