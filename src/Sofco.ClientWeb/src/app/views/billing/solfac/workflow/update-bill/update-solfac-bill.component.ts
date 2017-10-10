@@ -57,7 +57,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
     }
 
     openModal(){
-        $('#invoiceCode').val(this.invoiceCode);
+        $('#updateInvoiceCode').val(this.invoiceCode);
         this.updateBillModal.show();
     }
 
@@ -71,7 +71,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
     } 
  
     updateBill(){
-        this.invoiceCode = $('#invoiceCode').val();
+        this.invoiceCode = $('#updateInvoiceCode').val();
 
         if(this.invoiceCode && this.invoiceCode != "" && this.invoiceCode.length == 13){
 

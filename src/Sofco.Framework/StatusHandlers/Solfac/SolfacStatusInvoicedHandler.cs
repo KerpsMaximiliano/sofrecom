@@ -8,11 +8,19 @@ using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
+using Sofco.Framework.ValidationHandlers.Billing;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusInvoicedHandler : ISolfacStatusHandler
     {
+        private readonly ISolfacRepository solfacRepository;
+
+        public SolfacStatusInvoicedHandler(ISolfacRepository solfacRepo)
+        {
+            solfacRepository = solfacRepo;
+        }
+
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
@@ -33,22 +41,8 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeRequired, MessageType.Error));
-            }
-
-            if (!parameters.InvoiceDate.HasValue)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateRequired, MessageType.Error));
-            }
-            else
-            {
-                if (parameters.InvoiceDate.Value.Date > DateTime.Today.Date)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanToday, MessageType.Error));
-                }
-            }
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response);
+            SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
             
             return response;
         }

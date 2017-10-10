@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Config;
 using Sofco.WebApi.Models.Billing;
-using Sofco.WebApi.Config;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
 {

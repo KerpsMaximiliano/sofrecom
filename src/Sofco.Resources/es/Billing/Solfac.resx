@@ -204,4 +204,7 @@
   <data name="CashUpdated" xml:space="preserve">
     <value>Fecha de cobro actualizada correctamente</value>
   </data>
+  <data name="InvoiceCodeAlreadyExist" xml:space="preserve">
+    <value>Número de factura ya existe</value>
+  </data>
 </root>

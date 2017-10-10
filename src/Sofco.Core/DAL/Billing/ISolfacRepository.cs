@@ -26,5 +26,6 @@ namespace Sofco.Core.DAL.Billing
         IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, string userMail);
         void UpdateInvoice(Solfac solfacToModif);
         void UpdateCash(Solfac solfacToModif);
+        bool InvoiceCodeExist(string invoiceCode);
     }
 }

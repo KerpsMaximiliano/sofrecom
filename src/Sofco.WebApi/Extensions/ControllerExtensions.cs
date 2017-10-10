@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
-namespace Sofco.WebApi.Config
+namespace Sofco.WebApi.Extensions
 {
     public static class ControllerExtensions
     {

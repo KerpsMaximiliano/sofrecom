@@ -43,6 +43,7 @@ import { InvoiceStatusRejectComponent } from 'app/views/billing/invoice/workflow
 import { InvoiceStatusAnnulmentComponent } from 'app/views/billing/invoice/workflow/annulment/status-annulment.component';
 import { UpdateSolfacBillComponent } from 'app/views/billing/solfac/workflow/update-bill/update-solfac-bill.component';
 import { UpdateSolfacCashComponent } from 'app/views/billing/solfac/workflow/update-cash/update-solfac-cash.component';
+import { WidgetModule } from 'app/components/widget/widget.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -52,7 +53,8 @@ import { UpdateSolfacCashComponent } from 'app/views/billing/solfac/workflow/upd
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, FileUploadModule],
+  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   

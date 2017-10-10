@@ -13,5 +13,17 @@
         public string Audience { get; set; }
 
         public string GrantType { get; set; }
+
+        public string ClientSecret { get; set; }
+
+        public string ClientCredentials { get; set; }
+
+        public string Scope { get; set; }
+
+        public string ClientSecretId { get; set; }
+
+        public string GraphUsersUrl { get; set; }
+
+        public string GraphTokenUrl { get; set; }
     }
 }

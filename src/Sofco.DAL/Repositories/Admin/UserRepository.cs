@@ -62,5 +62,10 @@ namespace Sofco.DAL.Repositories.Admin
                     .ThenInclude(s => s.Group)
               .SingleOrDefault(predicate);
         }
+
+        public bool ExistByMail(string mail)
+        {
+            return _context.Users.Any(x => x.Email == mail);
+        }
     }
 }

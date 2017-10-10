@@ -13,12 +13,9 @@ using Sofco.Core.Services.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.WebApi.Config;
+using Sofco.WebApi.Extensions;
 using System.Net.Http;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text;
-using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {

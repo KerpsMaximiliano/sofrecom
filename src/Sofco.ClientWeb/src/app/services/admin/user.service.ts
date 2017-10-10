@@ -23,6 +23,14 @@ export class UserService {
        return this.http.get(`${this.baseUrl}/users/email/${mail}`).map((res:Response) => res.json());
     }
 
+    search(mail: string) {
+        return this.http.get(`${this.baseUrl}/users/ad/${mail}`).map((res:Response) => res.json());
+    }
+
+    save(model){
+        return this.http.post(`${this.baseUrl}/users`, model).map((res:Response) => res.json());
+    }
+
     getOptions() {
        return this.http.get(`${this.baseUrl}/users/options`).map((res:Response) => res.json());
     }

@@ -12,8 +12,6 @@ using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Billing;
 using Sofco.Core.Config;
 using Sofco.Core.Services;
-using System.Security.Claims;
-using Microsoft.Extensions.Primitives;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -53,11 +51,6 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                //StringValues token;
-
-                //var headers = HttpContext.Request.Headers.TryGetValue("Authorization", out token);
-
-                //var sarasa = _loginService.GetUserFromAzureAD("jlarenze@tebrasofre.onmicrosoft.com", token);
 
                 IList<CustomerCrm> customers = await GetCustomers(userMail);
 
@@ -68,6 +61,8 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(e);
             }
         }
+
+
 
         [HttpGet("{customerId}")]
         public async Task<IActionResult> GetById(string customerId)

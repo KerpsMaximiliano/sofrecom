@@ -27,6 +27,7 @@ import { StarterViewComponent } from "app/views/appviews/home/starterview.compon
 import { LoginComponent } from "app/views/appviews/login/login.component";
 import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
 import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
+import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -50,6 +51,7 @@ export const ROUTES:Routes = [
 
       { path: "users", children: [
          { path: '', component: UsersComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "QUERY" } },
+         { path: 'add', component: UserAddComponent, canActivate: [AuthGuard] },
          { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "UPDAT" } }
       ]},
 

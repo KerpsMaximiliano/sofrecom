@@ -26,11 +26,17 @@ import { GroupService } from "app/services/admin/group.service";
 import { ModuleService } from "app/services/admin/module.service";
 import { RoleService } from "app/services/admin/role.service";
 import { UserService } from "app/services/admin/user.service";
+import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
+import { SpinnerModule } from 'app/components/spinner/spinner.module';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent],
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule],
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
+                 UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent],
+
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
+
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService],
+  
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent]
 })
 

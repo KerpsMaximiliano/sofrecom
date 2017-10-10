@@ -186,6 +186,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Número de factura ya existe.
+        /// </summary>
+        public static string InvoiceCodeAlreadyExist {
+            get {
+                return ResourceManager.GetString("InvoiceCodeAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a El número de factura es requerido.
         /// </summary>
         public static string InvoiceCodeRequired {

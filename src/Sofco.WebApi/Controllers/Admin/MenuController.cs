@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Admin;
-using Sofco.WebApi.Config;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
 {

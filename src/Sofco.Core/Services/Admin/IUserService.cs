@@ -1,5 +1,4 @@
-﻿using Sofco.Model.Models;
-using Sofco.Model.Utils;
+﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
 using Sofco.Model.Models.Admin;
 
@@ -15,5 +14,7 @@ namespace Sofco.Core.Services.Admin
         Response<User> ChangeUserGroups(int userId, List<int> groupsToAdd, List<int> groupsToRemove);
         Response<User> GetByMail(string mail);
         bool HasDirectorGroup(string userMail);
+        Response Add(User domain);
+        Response CheckIfExist(string mail);
     }
 }

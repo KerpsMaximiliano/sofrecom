@@ -129,6 +129,9 @@
   <data name="FileNotFound" xml:space="preserve">
     <value>Archivo no encontrado</value>
   </data>
+  <data name="GeneralError" xml:space="preserve">
+    <value>Ocurrio un error en el sistema. Consulte al administrador</value>
+  </data>
   <data name="SaveFileError" xml:space="preserve">
     <value>Ocurrio un error al guardar el archivo</value>
   </data>

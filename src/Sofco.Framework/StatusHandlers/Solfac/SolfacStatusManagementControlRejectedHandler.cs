@@ -8,6 +8,7 @@ using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
+using Sofco.Framework.ValidationHandlers.Billing;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -36,10 +37,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            if (string.IsNullOrWhiteSpace(parameters.Comment))
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CommentRequired, MessageType.Error));
-            }
+            SolfacValidationHelper.ValidateComments(parameters, response);
 
             if (!response.HasErrors())
             {

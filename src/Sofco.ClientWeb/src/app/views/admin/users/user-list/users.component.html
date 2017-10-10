@@ -21,6 +21,10 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>{{ 'ADMIN.USERS.MANAGEMENT' | translate }}</h5>
+
+                    <div class="ibox-tools" >
+                        <a [routerLink]="['add']" class="btn btn-primary btn-link"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+                    </div>
                 </div>
                 <div class="ibox-content">
                     <datatables #dt *ngIf="data != null" 
@@ -38,4 +42,3 @@
         </div>
     </div>
 </div>
-
