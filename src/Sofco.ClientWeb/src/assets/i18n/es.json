@@ -207,7 +207,8 @@
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
-                "totalAmount": "Importe Total"
+                "totalAmount": "Importe Total",
+                "withTax": "Con impuestos"
             },
             "impositiveInfo": {
                 "title": "Información Impositiva",

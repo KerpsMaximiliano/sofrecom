@@ -206,7 +206,8 @@
                 "total": "Total",
                 "amount": "Gross Amount",
                 "iva21": "I.V.A. 21%",
-                "totalAmount": "Total Ammount"
+                "totalAmount": "Total Ammount",
+                "withTax": "With taxes"
             },
             "impositiveInfo": {
                 "title": "Impositive information",

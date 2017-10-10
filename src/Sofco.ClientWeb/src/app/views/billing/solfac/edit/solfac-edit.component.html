@@ -151,48 +151,48 @@
             <!-- Detalle de hitos -->
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <div class="table-responsive">
-                            <table class="table invoice-table">
-                                <thead>
-                                <tr>
-                                    <th>{{'billing.solfac.milestone.detail' | translate }}</th>
-                                    <th>{{'billing.solfac.milestone.quantity' | translate }}</th>
-                                    <th>{{'billing.solfac.milestone.unitPrice' | translate }}</th>
-                                    <th>{{'billing.solfac.milestone.total' | translate }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let detail of model.hitos">
-                                        <td class="col-lg-7"><input type="text" class="form-control" [(ngModel)]="detail.description"></td>
-                                        <td class="col-lg-1">
-                                            <input type="text" class="form-control" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
-                                        </td>
-                                        <td class="col-lg-1">
-                                            <input type="text" class="form-control" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
-                                        </td>
-                                        <td class="col-lg-2">{{ detail.total | number: '1.2-2' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
 
-                        <table class="table invoice-total">
-                            <tbody>
-                            <tr>
-                                <td><strong>{{'billing.solfac.milestone.amount' | translate }} :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.amount | number: '1.2-2' }}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>{{'billing.solfac.milestone.iva21' | translate }} :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.iva21 | number: '1.2-2' }}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></td>
-                                <td>{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table invoice-table">
+                                    <thead>
+                                    <tr>
+                                        <th>{{'billing.solfac.milestone.detail' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                        <th>{{'billing.solfac.milestone.total' | translate }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let detail of model.hitos">
+                                            <td class="col-lg-7"><input type="text" class="form-control" [(ngModel)]="detail.description"></td>
+                                            <td class="col-lg-1">
+                                                <input type="text" class="form-control" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
+                                            </td>
+                                            <td class="col-lg-2">
+                                                <input type="text" class="form-control" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
+                                            </td>
+                                            <td class="col-lg-2">{{ detail.total | number: '1.2-2' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 col-sm-offset-8">
+                            <dl class="dl-horizontal">
+                                <dt><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></dt>
+                                <dd class="total-amount">{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</dd>
+
+                                <dt><strong>{{'billing.solfac.milestone.withTax' | translate }} </strong></dt>
+                                <dd>
+                                    <icheck [(checked)]="model.withTax"></icheck>
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
                 </div>
             </div>

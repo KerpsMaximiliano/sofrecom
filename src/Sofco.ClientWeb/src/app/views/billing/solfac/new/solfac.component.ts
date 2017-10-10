@@ -91,8 +91,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.project = project.nombre;
       this.model.projectId = project.id;
       this.model.documentType = 1;
-      this.model.amount = 0;
-      this.model.iva21 = 0;
       this.model.totalAmount = 0;
       this.model.imputationNumber1 = project.analytic;
       this.model.imputationNumber3 = 1;
@@ -152,13 +150,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     calculateDetail(detail: HitoDetail){
       if(detail.quantity > 0 && detail.unitPrice > 0){
-
-        if(this.model.documentType == 3 || this.model.documentType == 4){
-            detail.total = detail.quantity * (detail.unitPrice * 1.21);
-        }
-        else{
           detail.total = detail.quantity * detail.unitPrice;
-        }
       }
       else{
         detail.total = 0;
@@ -170,27 +162,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.calculateAmounts();
     }
 
-    changeDocumentType(){
-      this.model.hitos.forEach(detail => {
-        this.calculateTotal(detail);
-      });
-    }
-
     calculateAmounts(){
-      this.model.amount = 0;
-
+      this.model.totalAmount = 0;
+      
       this.model.hitos.forEach(detail => {
-        this.model.amount += detail.total;
+        this.model.totalAmount += detail.total;
       });
-
-      if(this.model.documentType == 1 || this.model.documentType == 2){
-        this.model.iva21 = this.model.amount * 0.21;
-      }
-      else{
-        this.model.iva21 = 0;
-      }
-
-      this.model.totalAmount = this.model.amount + this.model.iva21;
     }
 
     save(){

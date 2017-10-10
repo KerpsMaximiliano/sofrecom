@@ -88,6 +88,12 @@
                         </div>
                         <div class="col-lg-6">
                             <dl class="dl-horizontal">
+                                <dt>{{'billing.solfac.milestone.withTax' | translate }}</dt>
+                                <dd>
+                                    <span *ngIf="model.withTax" class="label label-primary">{{ 'ACTIONS.yes' | translate }}</span>
+                                    <span *ngIf="!model.withTax" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
+                                </dd>
+
                                 <dt>{{'billing.solfac.impositiveInfo.capital' | translate }}: </dt><dd>{{model.capitalPercentage}} %</dd>
                                 <dt>{{'billing.solfac.impositiveInfo.bsas' | translate }}: </dt><dd>{{model.buenosAiresPercentage}} %</dd>
                                 <dt *ngIf="model.otherProvince1Percentage > 0">{{model.provinceName1}}: </dt><dd *ngIf="model.otherProvince1Percentage > 0">{{model.otherProvince1Percentage}} %</dd>
@@ -122,14 +128,6 @@
         
                             <table class="table invoice-total">
                                 <tbody>
-                                    <tr>
-                                        <td><strong>{{'billing.solfac.milestone.amount' | translate }} :</strong></td>
-                                        <td>{{ currencySymbol }} {{ model.amount | number: '1.2-2' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>{{'billing.solfac.milestone.iva21' | translate }} :</strong></td>
-                                        <td>{{ currencySymbol }} {{ model.iva21 | number: '1.2-2' }}</td>
-                                    </tr>
                                     <tr>
                                         <td><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></td>
                                         <td>{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</td>
