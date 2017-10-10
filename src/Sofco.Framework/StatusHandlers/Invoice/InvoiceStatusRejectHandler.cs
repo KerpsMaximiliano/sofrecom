@@ -16,11 +16,13 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             _invoiceRepository = invoiceRepository;
         }
 
-        private const string MailBody = "<font size='3'>" +
+        private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimado, </br></br>" +
-                                                "El REMITO del asunto ha sido RECHAZADO por la DAF, por favor ingresar en el siguiente " +
-                                                "<a href='{0}' target='_blank'>link</a> para modificar el formulario y enviar nuevamente. </br></br>" +
+                                                "El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: </br>" +
+                                                "*" +
+                                                "</br>" +
+                                                "Por favor ingresar en el siguiente <a href='{0}' target='_blank'>link</a> para modificar el formulario y enviar nuevamente. </br></br>" +
                                                 "Muchas gracias." +
                                             "</span>" +
                                         "</font>";
@@ -35,6 +37,11 @@ namespace Sofco.Framework.StatusHandlers.Invoice
                 invoice.InvoiceStatus == InvoiceStatus.Related || invoice.InvoiceStatus == InvoiceStatus.SendPending)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotReject, MessageType.Error));
+            }
+
+            if (!response.HasErrors())
+            {
+                MailBody = MailBody.Replace("*", parameters.Comment);
             }
 
             return response;

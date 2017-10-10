@@ -32,6 +32,8 @@ using Sofco.Service.Settings;
 using Sofco.WebApi.Filters;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Sofco.Service.Implementations;
+using Sofco.Core.Mail;
+using Sofco.Framework.Mail;
 
 namespace Sofco.WebApi
 {
@@ -118,6 +120,9 @@ namespace Sofco.WebApi
 
             // File Manager
             services.AddTransient<IInvoiceFileManager, InvoiceFileManager>();
+
+            // Mail Sender
+            services.AddTransient<IMailSender, MailSender>();
 
             // Factories
             services.AddTransient<ISolfacStatusFactory, SolfacStatusFactory>();

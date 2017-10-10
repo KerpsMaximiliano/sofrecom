@@ -12,6 +12,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { InvoiceService } from 'app/services/billing/invoice.service';
 import { MenuService } from 'app/services/admin/menu.service';
+import { I18nService } from 'app/services/common/i18n.service';
 declare var $: any;
 
 @Component({
@@ -39,6 +40,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     public dateOptions;
 
     public loading:  boolean = false;
+    public filterByDates: boolean = true;
 
     constructor(
         private router: Router,
@@ -48,6 +50,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private menuService: MenuService,
         private serviceService: ServiceService,
+        private i18nService: I18nService,
         private projectService: ProjectService,
         private datatableService: DataTableService,
         private userService: UserService,
@@ -118,6 +121,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
+        if(this.dateTo < this.dateSince){
+            this.messageService.showError(this.i18nService.translate("dateToLessThanSince"));
+            return;
+        }
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
@@ -125,8 +133,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             userApplicantId: this.userApplicantId,
             invoiceNumber: $('#invoiceNumber').val(),
             status: this.status,
-            dateSince: this.dateSince,
-            dateTo: this.dateTo
+            dateSince: this.filterByDates ? this.dateSince : null,
+            dateTo: this.filterByDates ? this.dateTo : null
         }
 
         this.loading = true;
@@ -168,5 +176,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.status = "";
         this.dateSince= new Date();
         this.dateTo = new Date();
+
+        this.datatableService.destroy('#invoiceTable');
+        this.data = null;
     }
 }

@@ -336,5 +336,7 @@
     "noInfoAvailable": "No information available",
     "None": "None",
     "comments": "Comments",
-    "selectAnOption": "Select an option"
+    "selectAnOption": "Select an option",
+    "dateToLessThanSince": "Date to cannot be less than date since",
+    "filterByDates": "Filter by dates"
 }

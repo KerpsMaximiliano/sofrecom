@@ -87,6 +87,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor a la fecha de facturación.
+        /// </summary>
+        public static string CashedDateGreaterThanInvoiceDate {
+            get {
+                return ResourceManager.GetString("CashedDateGreaterThanInvoiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Fecha de pago no puede ser mayor a la fecha del día.
         /// </summary>
         public static string CashedDateGreaterThanToday {

@@ -41,7 +41,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response);
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
             
             return response;

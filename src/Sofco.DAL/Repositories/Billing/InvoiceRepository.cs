@@ -150,7 +150,8 @@ namespace Sofco.DAL.Repositories.Billing
 
         private static IQueryable<Invoice> ApplyFilters(InvoiceParams parameters, IQueryable<Invoice> query)
         {
-            query = query.Where(x => x.CreatedDate.Date >= parameters.DateSince.Date && x.CreatedDate.Date <= parameters.DateTo.Date);
+            if(parameters.DateSince.HasValue && parameters.DateTo.HasValue)
+                query = query.Where(x => x.CreatedDate.Date >= parameters.DateSince.GetValueOrDefault().Date && x.CreatedDate.Date <= parameters.DateTo.GetValueOrDefault().Date);
 
             if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
                 query = query.Where(x => x.CustomerId == parameters.CustomerId);

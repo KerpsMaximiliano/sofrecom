@@ -8,10 +8,12 @@ namespace Sofco.WebApi.Models.Billing
         public InvoiceHistoryViewModel(InvoiceHistory history)
         {
             CreatedDate = history.CreatedDate;
-            UserName = history.User.UserName;
             Comment = history.Comment;
             StatusFrom = history.StatusFrom.ToString();
             StatusTo = history.StatusTo.ToString();
+
+            if (history.User != null)
+                UserName = history.User.Name;
         }
 
         public DateTime CreatedDate { get; set; }

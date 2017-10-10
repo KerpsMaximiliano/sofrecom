@@ -10,7 +10,7 @@ namespace Sofco.Framework.ValidationHandlers.Billing
 {
     public static class SolfacValidationHelper
     {
-        public static void ValidateCasheDate(SolfacStatusParams parameters, Response response)
+        public static void ValidateCasheDate(SolfacStatusParams parameters, Response response, Solfac solfac)
         {
             if (!parameters.CashedDate.HasValue)
             {
@@ -18,6 +18,11 @@ namespace Sofco.Framework.ValidationHandlers.Billing
             }
             else
             {
+                if(parameters.CashedDate.Value.Date < solfac.InvoiceDate.Value.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanInvoiceDate, MessageType.Error));
+                }
+
                 if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
                 {
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
@@ -72,7 +77,7 @@ namespace Sofco.Framework.ValidationHandlers.Billing
             }
         }
 
-        public static void ValidateInvoiceCode(SolfacStatusParams parameters, ISolfacRepository solfacRepository, Response response)
+        public static void ValidateInvoiceCode(SolfacStatusParams parameters, ISolfacRepository solfacRepository, Response response, string invoiceCode)
         {
             if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
             {
@@ -80,7 +85,7 @@ namespace Sofco.Framework.ValidationHandlers.Billing
             }
             else
             {
-                if (solfacRepository.InvoiceCodeExist(parameters.InvoiceCode))
+                if (parameters.InvoiceCode != invoiceCode && solfacRepository.InvoiceCodeExist(parameters.InvoiceCode))
                 {
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeAlreadyExist, MessageType.Error));
                 }

@@ -13,6 +13,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { MenuService } from 'app/services/admin/menu.service';
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-solfacSearch',
@@ -39,6 +40,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     
     public dateOptions;
 
+    public filterByDates: boolean = true;
     public loading:  boolean = false;
 
     constructor(
@@ -49,6 +51,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
+        private i18nService: I18nService,
         private menuService: MenuService,
         private datatableService: DataTableService,
         private userService: UserService,
@@ -138,6 +141,11 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
+        if(this.dateTo < this.dateSince){
+            this.messageService.showError(this.i18nService.translate("dateToLessThanSince"));
+            return;
+        }
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
@@ -145,8 +153,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             userApplicantId: this.userApplicantId,
             analytic: this.analytic,
             status: this.status,
-            dateSince: this.dateSince,
-            dateTo: this.dateTo
+            dateSince: this.filterByDates ? this.dateSince : null,
+            dateTo: this.filterByDates ? this.dateTo : null
         }
 
         this.loading = true;
@@ -184,5 +192,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.status = "0";
         this.dateSince= new Date();
         this.dateTo = new Date();
+
+        this.datatableService.destroy('#solfacsTable');
+        this.data = null;
     }
 }

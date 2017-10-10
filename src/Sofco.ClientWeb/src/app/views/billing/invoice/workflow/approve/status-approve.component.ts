@@ -79,7 +79,6 @@ export class StatusApproveComponent implements OnDestroy  {
                 }
             },
             err => {
-                this.approveConfirmModal.hide();
                 this.errorHandlerService.handleErrors(err);
             });
         }

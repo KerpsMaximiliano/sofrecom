@@ -34,7 +34,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            SolfacValidationHelper.ValidateCasheDate(parameters, response);
+            SolfacValidationHelper.ValidateCasheDate(parameters, response, solfac);
 
             return response;
         }

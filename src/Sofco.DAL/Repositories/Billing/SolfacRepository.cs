@@ -135,7 +135,8 @@ namespace Sofco.DAL.Repositories.Billing
 
         private static IQueryable<Solfac> ApplyFilters(SolfacParams parameters, IQueryable<Solfac> query)
         {
-            query = query.Where(x => x.StartDate.Date >= parameters.DateSince.Date && x.StartDate.Date <= parameters.DateTo.Date);
+            if(parameters.DateSince.HasValue && parameters.DateTo.HasValue)
+                query = query.Where(x => x.StartDate.Date >= parameters.DateSince.GetValueOrDefault().Date && x.StartDate.Date <= parameters.DateTo.GetValueOrDefault().Date);
 
             if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
                 query = query.Where(x => x.CustomerId == parameters.CustomerId);

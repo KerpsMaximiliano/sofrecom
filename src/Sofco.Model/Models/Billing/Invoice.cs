@@ -65,7 +65,7 @@ namespace Sofco.Model.Models.Billing
             invoice.Province = this.Province;
             invoice.Zipcode = this.Zipcode;
             invoice.UserId = this.UserId;
-
+            invoice.InvoiceNumber = "0000-00000000";
             invoice.CreatedDate = DateTime.Now;
             invoice.InvoiceStatus = InvoiceStatus.SendPending;
 

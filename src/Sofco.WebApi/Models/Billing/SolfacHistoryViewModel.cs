@@ -8,10 +8,13 @@ namespace Sofco.WebApi.Models.Billing
         public SolfacHistoryViewModel(SolfacHistory history)
         {
             CreatedDate = history.CreatedDate;
-            UserName = history.User.UserName;
+
             Comment = history.Comment;
             SolfacStatusFrom = history.SolfacStatusFrom.ToString();
             SolfacStatusTo = history.SolfacStatusTo.ToString();
+
+            if(history.User != null)
+                UserName = history.User.Name;
         }
 
         public DateTime CreatedDate { get; set; }

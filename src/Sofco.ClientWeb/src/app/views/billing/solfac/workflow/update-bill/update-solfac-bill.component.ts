@@ -99,7 +99,6 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     }
                 },
                 error => {
-                    this.updateBillModal.hide();
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{

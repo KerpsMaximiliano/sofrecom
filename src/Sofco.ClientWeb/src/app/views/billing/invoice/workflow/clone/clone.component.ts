@@ -5,6 +5,7 @@ import { Subscription } from "rxjs/Subscription";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { InvoiceService } from 'app/services/billing/invoice.service';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'clone-invoice',
@@ -28,6 +29,7 @@ export class CloneInvoiceComponent implements OnDestroy  {
 
   constructor(private invoiceService: InvoiceService,
     private messageService: MessageService,
+    private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -36,12 +38,17 @@ export class CloneInvoiceComponent implements OnDestroy  {
     if(this.subscrip) this.subscrip.unsubscribe();
   }
 
+  canClone(){
+    return this.menuService.hasFunctionality("REM", "CLONE") && this.invoiceId > 0;
+  }
+
   clone(){
       this.subscrip = this.invoiceService.clone(this.invoiceId).subscribe(data => {
           this.cloneModal.hide();
           if(data.messages) this.messageService.showMessages(data.messages);
 
           setTimeout(() => { 
+            sessionStorage.setItem("exportInvoiceExcel", "true");
             this.router.navigate([`/billing/invoice/${data.data.id}/project/${data.data.projectId}`]); 
           }, 500)
       },

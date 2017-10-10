@@ -44,6 +44,10 @@ export class UserAddComponent implements OnDestroy {
         )
     }
 
+    back(){
+        this.router.navigate(['/admin/users']);
+    }
+
     search(){
         this.loading = true;
         this.userFound = false;

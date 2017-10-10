@@ -197,7 +197,11 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.solfacService.add(this.model).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
-          this.solfacId = data.data.id;
+
+          setTimeout(() => {
+            this.router.navigate([`/billing/solfac/${data.data.id}/edit`])
+          }, 1000);
+          
         },
         err => this.errorHandlerService.handleErrors(err));
     }

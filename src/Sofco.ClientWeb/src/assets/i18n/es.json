@@ -337,5 +337,7 @@
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
     "comments": "Comentarios",
-    "selectAnOption": "Seleccione una opción"
+    "selectAnOption": "Seleccione una opción",
+    "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
+    "filterByDates": "Filtrar por fechas"
 }  

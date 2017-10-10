@@ -125,7 +125,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<SolfacChangeStatusResponse>();
 
-            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(solfacId, _solfacRepository, response);
+            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(solfacId, solfacRepository, response);
 
             if (response.HasErrors()) return response;
 
@@ -185,7 +185,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = SolfacValidationHelper.ValidateIfExist(id, _solfacRepository, response);
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
 
             if (response.HasErrors()) return response;
 
@@ -412,11 +412,11 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(id, _solfacRepository, response);
+            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(id, solfacRepository, response);
 
             if (response.HasErrors()) return response;
 
-            SolfacValidationHelper.ValidateInvoiceCode(parameters, _solfacRepository, response);
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
 
             if (response.HasErrors()) return response;
@@ -444,11 +444,11 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = SolfacValidationHelper.ValidateIfExist(id, _solfacRepository, response);
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
 
             if (response.HasErrors()) return response;
 
-            SolfacValidationHelper.ValidateCasheDate(parameters, response);
+            SolfacValidationHelper.ValidateCasheDate(parameters, response, solfac);
 
             if (response.HasErrors()) return response;
 
