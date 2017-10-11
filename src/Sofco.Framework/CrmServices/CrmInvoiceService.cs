@@ -20,7 +20,7 @@ namespace Sofco.Framework.CrmServices
             crmConfig = crmOptions.Value;
         }
 
-        public Result<List<CrmHito>> Get(int daysToExpire)
+        public Result<List<CrmHito>> GetHitosToExpire(int daysToExpire)
         {
             var url = $"{crmConfig.Url}/api/InvoiceMilestone/GetMilestoneToExpire?daysToExpire={daysToExpire}&status=1,717620003";
 

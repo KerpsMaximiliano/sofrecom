@@ -6,6 +6,6 @@ namespace Sofco.Core.CrmServices
 {
     public interface ICrmInvoiceService
     {
-        Result<List<CrmHito>> Get(int daysToExpire);
+        Result<List<CrmHito>> GetHitosToExpire(int daysToExpire);
     }
 }

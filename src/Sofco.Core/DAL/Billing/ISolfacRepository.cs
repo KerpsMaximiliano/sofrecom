@@ -2,6 +2,7 @@
 using Sofco.Core.DAL.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
+using System;
 
 namespace Sofco.Core.DAL.Billing
 {
@@ -26,5 +27,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, string userMail);
         void UpdateInvoice(Solfac solfacToModif);
         void UpdateCash(Solfac solfacToModif);
+
+        IList<Hito> GetHitosByExternalIds(List<Guid> externalIds);
     }
 }

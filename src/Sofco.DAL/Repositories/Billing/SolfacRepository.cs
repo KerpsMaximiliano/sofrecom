@@ -168,5 +168,12 @@ namespace Sofco.DAL.Repositories.Billing
         {
             _context.Entry(solfac).Property("CashedDate").IsModified = true;
         }
+
+        public IList<Hito> GetHitosByExternalIds(List<Guid> externalIds)
+        {
+            var externalIdsText = externalIds.Select(s => s.ToString());
+
+            return _context.Hitos.Where(x => externalIdsText.Contains(x.ExternalHitoId)).ToList();
+        }
     }
 }
