@@ -1,5 +1,7 @@
 ﻿using Sofco.Common.Domains;
+using Sofco.Model.AzureAd;
 using Sofco.Model.Users;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services
 {
@@ -9,6 +11,6 @@ namespace Sofco.Core.Services
 
         Result Refresh(UserLoginRefresh userLoginRefresh);
 
-        Result GetUserFromAzureAD(string email, string token);
+        Response<AzureAdUserResponse> GetUserFromAzureAD(string email);
     }
 }

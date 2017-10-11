@@ -5,6 +5,8 @@ using Sofco.WebApi.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Core.Services;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -15,12 +17,14 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IFunctionalityService _functionalityService;
+        private readonly ILoginService loginService;
 
-        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService)
+        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService, ILoginService loginServ)
         {
             _userService = userService;
             _roleService = roleService;
             _functionalityService = functionalityService;
+            loginService = loginServ;
         }
 
         [HttpGet]
@@ -126,6 +130,40 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new UserModel(response.Data);
 
             return Ok(model);
+        }
+
+        [HttpGet("ad/{mail}")]
+        public IActionResult Exist(string mail)
+        {
+            var response = _userService.CheckIfExist(mail);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var azureResponse = loginService.GetUserFromAzureAD(mail);
+
+            if (azureResponse.HasErrors()) return BadRequest(azureResponse);
+
+            return Ok(azureResponse);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] UserModel model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors()) return BadRequest(errors);
+
+            var azureResponse = loginService.GetUserFromAzureAD(model.Email);
+
+            if (azureResponse.HasErrors()) return BadRequest(azureResponse);
+
+            var domain = model.CreateDomain();
+
+            var response = _userService.Add(domain);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
 
         [HttpPut]

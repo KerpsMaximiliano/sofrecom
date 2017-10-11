@@ -204,4 +204,10 @@
   <data name="CashUpdated" xml:space="preserve">
     <value>Fecha de cobro actualizada correctamente</value>
   </data>
+  <data name="InvoiceCodeAlreadyExist" xml:space="preserve">
+    <value>Número de factura ya existe</value>
+  </data>
+  <data name="CashedDateGreaterThanInvoiceDate" xml:space="preserve">
+    <value>La fecha de cobro no puede ser menor a la fecha de facturación</value>
+  </data>
 </root>

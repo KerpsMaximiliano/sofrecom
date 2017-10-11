@@ -25,8 +25,6 @@ namespace Sofco.WebApi.Models.Billing
             Project = domain.Project;
             ProjectId = domain.ProjectId;
             ImputationNumber1 = domain.ImputationNumber1;
-            Amount = domain.Amount;
-            Iva21 = domain.Iva21;
             TotalAmount = domain.TotalAmount;
             ParticularSteps = domain.ParticularSteps;
             TimeLimit = domain.TimeLimit;
@@ -45,6 +43,7 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceCode = domain.InvoiceCode;
             InvoiceDate = domain.InvoiceDate;
             CashedDate = domain.CashedDate;
+            WithTax = domain.WithTax;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -129,6 +128,7 @@ namespace Sofco.WebApi.Models.Billing
         public int Province3Id { get; set; }
 
         public string Comments { get; set; }
+        public bool WithTax { get; set; }
 
         public Model.Models.Billing.Solfac CreateDomain()
         {
@@ -145,8 +145,6 @@ namespace Sofco.WebApi.Models.Billing
             solfac.UserApplicantId = UserApplicantId;
             solfac.ImputationNumber1 = ImputationNumber1;
             solfac.ImputationNumber3Id = ImputationNumber3Id;
-            solfac.Amount = Amount;
-            solfac.Iva21 = Iva21;
             solfac.TotalAmount = TotalAmount;
             solfac.CurrencyId = CurrencyId;
             solfac.CapitalPercentage = CapitalPercentage;
@@ -164,6 +162,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.CustomerId = CustomerId;
             solfac.Analytic = ImputationNumber1;
             solfac.Service = ServiceName;
+            solfac.WithTax = WithTax;
 
             if (InvoiceId > 0)
                 solfac.InvoiceId = InvoiceId;

@@ -1,0 +1,68 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{ 'ADMIN.USERS.TITLE' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{ 'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{ 'ADMIN.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['../../']">{{ 'ADMIN.USERS.TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ 'ADMIN.USERS.ADD' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox float-e-margins">
+
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <label class="control-label">Mail del usuario</label>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="email" [disabled]="loading"> 
+                        <span class="input-group-btn"> 
+                            <button type="button" class="btn btn-primary" [disabled]="loading" (click)="search()">Buscar</button> 
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    
+                </div>
+            </div>
+
+            <div class="row margin-top-30">
+                <div class="col-lg-12">
+                    <div class="alert alert-success" *ngIf="userFound">
+                        <dl class="dl-horizontal">
+                            <dt></dt><dd><h3>Usuario encontrado en el Active Directory</h3></dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>Email: </dt><dd>{{ model.email }}</dd>
+                            <dt>Nombre: </dt><dd>{{model.name}}</dd>
+                            <dt>Usuario: </dt><dd>{{model.userName}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ibox-footer">
+            <button class="btn btn-success" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+            <button *ngIf="userFound" class="btn btn-primary" (click)="save()"> {{ 'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
+        </div>
+    </div>
+</div>

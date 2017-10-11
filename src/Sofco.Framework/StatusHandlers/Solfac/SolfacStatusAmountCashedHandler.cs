@@ -8,6 +8,7 @@ using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
+using Sofco.Framework.ValidationHandlers.Billing;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -33,17 +34,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            if (!parameters.CashedDate.HasValue)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
-            }
-            else
-            {
-                if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
-                }
-            }
+            SolfacValidationHelper.ValidateCasheDate(parameters, response, solfac);
 
             return response;
         }

@@ -11,6 +11,7 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { UserService } from "app/services/admin/user.service";
 import { I18nService } from 'app/services/common/i18n.service';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-users',

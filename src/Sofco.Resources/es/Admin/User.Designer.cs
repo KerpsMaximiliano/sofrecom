@@ -60,6 +60,15 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Usuario ya existente en el sistema.
+        /// </summary>
+        public static string AlreadyExist {
+            get {
+                return ResourceManager.GetString("AlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Usuario creado correctamente.
         /// </summary>
         public static string Created {

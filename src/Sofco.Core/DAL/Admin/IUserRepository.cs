@@ -14,5 +14,6 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetAllActivesReadOnly();
         bool HasDirectorGroup(string userMail);
         Group GetGroup(int solfacUserApplicantId);
+        bool ExistByMail(string mail);
     }
 }

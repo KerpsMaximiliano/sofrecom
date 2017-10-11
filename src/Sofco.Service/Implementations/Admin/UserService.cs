@@ -214,5 +214,36 @@ namespace Sofco.Service.Implementations.Admin
         {
             return _userRepository.HasDirectorGroup(userMail);
         }
+
+        public Response Add(User domain)
+        {
+            var response = new Response();
+
+            try
+            {
+                _userRepository.Insert(domain);
+                _userRepository.Save();
+
+                response.Messages.Add(new Message(Resources.es.Admin.User.Created, MessageType.Success));
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response CheckIfExist(string mail)
+        {
+            var response = new Response();
+
+            if (_userRepository.ExistByMail(mail))
+            {
+                response.Messages.Add(new Message(Resources.es.Admin.User.AlreadyExist, MessageType.Error));
+            }
+
+            return response;
+        }
     }
 }

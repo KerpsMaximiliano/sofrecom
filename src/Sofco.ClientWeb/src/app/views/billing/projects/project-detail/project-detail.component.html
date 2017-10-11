@@ -31,6 +31,21 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-3">
+            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [value]="project?.incomes"></widget-currency>
+        </div>
+        <div class="col-md-3">
+            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [value]="incomesPending"></widget-currency>
+        </div>
+        <div class="col-md-3">
+            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [value]="incomesBilled"></widget-currency>
+        </div>
+        <div class="col-md-3">
+            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [value]="incomesCashed"></widget-currency>
+        </div>
+    </div>
+
     <div class="ibox">
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
             <spinner></spinner>
@@ -44,22 +59,21 @@
             </div>
             
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <dl class="dl-vertical">
                         <dt><i class="fa fa-user"></i> {{'billing.project.grid.manager' | translate }}</dt> <dd> {{ project?.manager }} </dd>
                         <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.purchaseOrder' | translate }} </dt> <dd> {{ project?.purchaseOrder }} </dd>
                         <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.analytic' | translate }}</dt> <dd> {{ project?.analytic }} </dd>
-                        <dt><i class="fa fa-money"></i> {{'billing.project.detail.incomes' | translate }}</dt> <dd> {{ getCurrencySymbol(project?.currency) }} {{ project?.incomes | number: '1.2-2' }} </dd>
                     </dl>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <dl class="dl-vertical">
                         <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.serviceType' | translate }}</dt> <dd>{{ project?.serviceType }}</dd>
                         <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.solutionType' | translate }}</dt> <dd> {{ project?.solutionType }} </dd>
                         <dt><i class="fa fa-wrench"></i> {{'billing.project.detail.technology' | translate }}</dt> <dd> {{ project?.technologyType }} </dd>
                     </dl>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <dl class="dl-vertical">
                         <dt><i class="fa fa-calendar"></i> {{'billing.project.detail.startDate' | translate }} </dt> <dd>{{ project?.startDate | date:'dd/MM/yyyy' }}</dd>
                         <dt><i class="fa fa-calendar"></i> {{'billing.project.detail.endDate' | translate }} </dt> <dd> {{ project?.endDate | date:'dd/MM/yyyy' }} </dd>
@@ -157,7 +171,7 @@
                                                 <td>{{solfac.businessName}}</td>
                                                 <td>{{solfac.documentTypeName}}</td>
                                                 <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.amount | number: '1.2-2' }}</td>
+                                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
                                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                                             </tr>
                                         </tbody>

@@ -69,6 +69,7 @@ namespace Sofco.WebApi.Models.Billing
         public string Analytic { get; set; }
 
         public bool IsNew { get; set; }
+        public bool WithTax { get; set; }
 
         #endregion
 
@@ -86,8 +87,6 @@ namespace Sofco.WebApi.Models.Billing
             solfac.UserApplicantId = UserApplicantId.GetValueOrDefault();
             solfac.ImputationNumber1 = ImputationNumber1;
             solfac.ImputationNumber3Id = ImputationNumber3.GetValueOrDefault();
-            solfac.Amount = Amount;
-            solfac.Iva21 = Iva21;
             solfac.TotalAmount = TotalAmount;
             solfac.CurrencyId = CurrencyId.GetValueOrDefault();
             solfac.CapitalPercentage = CapitalPercentage.GetValueOrDefault();
@@ -105,6 +104,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.CustomerId = CustomerId;
             solfac.Analytic = Analytic;
             solfac.Service = Service;
+            solfac.WithTax = WithTax;
 
             if (InvoiceId > 0)
                 solfac.InvoiceId = InvoiceId;

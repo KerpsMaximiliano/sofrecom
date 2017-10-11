@@ -113,6 +113,9 @@
                 "analytic": "Analytic",
                 "purchaseOrder": "Purchase Order",
                 "incomes": "Estimated Incomes",
+                "incomesBilled": "Billed Incomes",
+                "incomesCashed": "Cashed Incomes",
+                "incomesPending": "Pending Incomes",
                 "startDate": "Start Date",
                 "endDate": "End Date",
                 "oportunity": "Oportunity",
@@ -203,7 +206,8 @@
                 "total": "Total",
                 "amount": "Gross Amount",
                 "iva21": "I.V.A. 21%",
-                "totalAmount": "Total Ammount"
+                "totalAmount": "Total Ammount",
+                "withTax": "With taxes"
             },
             "impositiveInfo": {
                 "title": "Impositive information",
@@ -333,5 +337,7 @@
     "noInfoAvailable": "No information available",
     "None": "None",
     "comments": "Comments",
-    "selectAnOption": "Select an option"
+    "selectAnOption": "Select an option",
+    "dateToLessThanSince": "Date to cannot be less than date since",
+    "filterByDates": "Filter by dates"
 }

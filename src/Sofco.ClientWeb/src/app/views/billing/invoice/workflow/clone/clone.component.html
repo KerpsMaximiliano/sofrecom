@@ -1,4 +1,4 @@
-<button class="btn btn-success btn-outline dim" *ngIf="invoiceId > 0" (click)="cloneModal.show()">
+<button class="btn btn-success btn-outline dim" *ngIf="canClone()" (click)="cloneModal.show()">
     <i class="fa fa-clone"></i> {{'ACTIONS.clone' | translate }} 
 </button>
 

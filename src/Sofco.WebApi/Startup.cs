@@ -122,6 +122,9 @@ namespace Sofco.WebApi
             // File Manager
             services.AddTransient<IInvoiceFileManager, InvoiceFileManager>();
 
+            // Mail Sender
+            services.AddTransient<IMailSender, MailSender>();
+
             // Factories
             services.AddTransient<ISolfacStatusFactory, SolfacStatusFactory>();
             services.AddTransient<IInvoiceStatusFactory, InvoiceStatusFactory>();

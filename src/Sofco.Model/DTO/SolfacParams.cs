@@ -11,7 +11,7 @@ namespace Sofco.Model.DTO
         public string Analytic { get; set; }
         public SolfacStatus Status { get; set; }
         public int UserApplicantId { get; set; }
-        public DateTime DateSince { get; set; }
-        public DateTime DateTo { get; set; }
+        public DateTime? DateSince { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Sofco.Model.DTO
         public string InvoiceNumber { get; set; }
         public InvoiceStatus? Status { get; set; }
         public int userApplicantId { get; set; }
-        public DateTime DateSince { get; set; }
-        public DateTime DateTo { get; set; }
+        public DateTime? DateSince { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }

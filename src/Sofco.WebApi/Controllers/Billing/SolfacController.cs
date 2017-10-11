@@ -14,7 +14,7 @@ using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.WebApi.Config;
+using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing

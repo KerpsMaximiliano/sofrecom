@@ -12,6 +12,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.DAL.Admin;
+using Sofco.Framework.ValidationHandlers.Billing;
 using Sofco.Core.Mail;
 
 namespace Sofco.Service.Implementations.Billing
@@ -124,13 +125,9 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<SolfacChangeStatusResponse>();
 
-            var solfac = solfacRepository.GetByIdWithUser(solfacId);
+            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(solfacId, solfacRepository, response);
 
-            if (solfac == null)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                return response;
-            }
+            if (response.HasErrors()) return response;
 
             return ChangeStatus(solfac, parameters, emailConfig);
         }
@@ -188,14 +185,9 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = solfacRepository.GetSingle(x => x.Id == id);
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
 
-            if (solfac == null)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
-                return response;
-            }
-
+            if (response.HasErrors()) return response;
 
             try
             {
@@ -342,42 +334,11 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Solfac>();
 
-            if (solfac.OtherProvince1Percentage > 0 && solfac.Province1Id == 0)
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
-
-            if (solfac.OtherProvince2Percentage > 0 && solfac.Province2Id == 0)
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
-
-            if (solfac.OtherProvince3Percentage > 0 && solfac.Province3Id == 0)
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
-
-            foreach (var hito in solfac.Hitos)
-            {
-                if (hito.Quantity <= 0)
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoQuantityRequired, MessageType.Error));
-
-                if (hito.UnitPrice <= 0)
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoUnitPriceRequired, MessageType.Error));
-            }
-
-            var totalPercentage = solfac.BuenosAiresPercentage + solfac.CapitalPercentage +
-                                  solfac.OtherProvince1Percentage + solfac.OtherProvince2Percentage +
-                                  solfac.OtherProvince3Percentage;
-
-            if (totalPercentage != 100)
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.TotalPercentageError, MessageType.Error));
-
-            if (solfac.CapitalPercentage < 0 || solfac.BuenosAiresPercentage < 0 ||
-                solfac.OtherProvince1Percentage < 0 || solfac.OtherProvince2Percentage < 0 ||
-                solfac.OtherProvince3Percentage < 0)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.PercentageLessThan0, MessageType.Error));
-            }
-
-            if (solfac.TimeLimit <= 0)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.TimeLimitLessThan0, MessageType.Error));
-            }
+            SolfacValidationHelper.ValidateProvincePercentage(solfac, response);
+            SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
+            SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
+            SolfacValidationHelper.ValidatePercentage(solfac, response);
+            SolfacValidationHelper.ValidateTimeLimit(solfac, response);
 
             return response;
         }
@@ -451,30 +412,12 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = solfacRepository.GetByIdWithUser(id);
+            var solfac = SolfacValidationHelper.ValidateIfExistAndGetWithUser(id, solfacRepository, response);
 
-            if (solfac == null)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                return response;
-            }
+            if (response.HasErrors()) return response;
 
-            if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceCodeRequired, MessageType.Error));
-            }
-
-            if (!parameters.InvoiceDate.HasValue)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateRequired, MessageType.Error));
-            }
-            else
-            {
-                if (parameters.InvoiceDate.Value.Date > DateTime.Today.Date)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanToday, MessageType.Error));
-                }
-            }
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
+            SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
 
             if (response.HasErrors()) return response;
 
@@ -501,25 +444,11 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var solfac = solfacRepository.GetByIdWithUser(id);
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
 
-            if (solfac == null)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
-                return response;
-            }
+            if (response.HasErrors()) return response;
 
-            if (!parameters.CashedDate.HasValue)
-            {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateRequired, MessageType.Error));
-            }
-            else
-            {
-                if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
-                }
-            }
+            SolfacValidationHelper.ValidateCasheDate(parameters, response, solfac);
 
             if (response.HasErrors()) return response;
 

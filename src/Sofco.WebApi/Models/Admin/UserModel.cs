@@ -1,15 +1,20 @@
 ﻿using Sofco.Model;
 using System.Collections.Generic;
-using Sofco.Model.Models;
 using Sofco.Model.Interfaces;
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Model.Models.Admin;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sofco.WebApi.Models.Admin
 {
     public class UserModel : BaseEntity, IAuditDates
     {
+        public UserModel()
+        {
+
+        }
+
         public UserModel(User user)
         {
             Id = user.Id;
@@ -23,14 +28,35 @@ namespace Sofco.WebApi.Models.Admin
             Groups = new List<GroupModel>();
         }
 
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string UserName { get; set; }
+
+        [Required]
         public string Email { get; set; }
+
         public bool Active { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
         public IList<GroupModel> Groups { get; set; }
+
+        internal User CreateDomain()
+        {
+            var user = new User();
+
+            user.Name = this.Name;
+            user.UserName = this.UserName;
+            user.Email = this.Email;
+            user.Active = true;
+            user.StartDate = DateTime.Now;
+
+            return user;
+        }
     }
 
     public class UserDetailModel : UserModel

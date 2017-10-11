@@ -19,10 +19,11 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             _invoiceRepository = invoiceRepository;
         }
 
-        private const string MailBody = "<font size='3'>" +
+        private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "Se ha cargado un REMITO que requiere revisión y generación (pdf). </br>" +
+                                                "*" +
                                                 "Para imprimirlo, utilice el documento anexado al registro. </br>" +
                                                 "Una vez generado el pdf, por favor importarlo en el siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
                                                 "Muchas gracias." +
@@ -46,6 +47,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
                 string.IsNullOrWhiteSpace(invoice.ExcelFileName))
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Invoice.NeedExcelToSend, MessageType.Error));
+            }
+
+            if (!response.HasErrors())
+            {
+                if (string.IsNullOrWhiteSpace(parameters.Comment))
+                    MailBody = MailBody.Replace("*", string.Empty);
+                else
+                    MailBody = MailBody.Replace("*", $"Comentarios: {parameters.Comment}. </br>");
+         
             }
 
             return response;

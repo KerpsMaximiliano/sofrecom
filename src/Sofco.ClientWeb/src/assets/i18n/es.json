@@ -113,6 +113,9 @@
                 "analytic": "Analítica",
                 "purchaseOrder": "Orden compra",
                 "incomes": "Ingresos Estimados",
+                "incomesBilled": "Ingresos Facturados",
+                "incomesCashed": "Ingresos Cobrados",
+                "incomesPending": "Ingresos Pendientes",
                 "startDate": "Fecha Inicio",
                 "endDate": "Fecha Fin",
                 "oportunity": "Oportunidad",
@@ -204,7 +207,8 @@
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
-                "totalAmount": "Importe Total"
+                "totalAmount": "Importe Total",
+                "withTax": "Con impuestos"
             },
             "impositiveInfo": {
                 "title": "Información Impositiva",
@@ -334,5 +338,7 @@
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
     "comments": "Comentarios",
-    "selectAnOption": "Seleccione una opción"
+    "selectAnOption": "Seleccione una opción",
+    "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
+    "filterByDates": "Filtrar por fechas"
 }  

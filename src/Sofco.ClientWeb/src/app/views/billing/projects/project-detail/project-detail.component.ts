@@ -30,6 +30,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     invoices: any[] = new Array();
     public loading:  boolean = true;
 
+    incomesBilled: number = 0;
+    incomesCashed: number = 0;
+    incomesPending: number = 0;
+
     @ViewChild('hito') hito;
 
     constructor(
@@ -101,6 +105,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.hitos = d;
 
             this.datatableService.init('#hitoTable', false);
+
+            this.calculateIncomes();
             //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -123,6 +129,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    calculateIncomes() {
+        this.hitos.forEach((item, index) => {
+            if(item.status == "Facturado") this.incomesBilled += item.ammount;
+            if(item.status == "Pagado") this.incomesCashed += item.ammount;
+            if(item.status != "Facturado" && item.status != "Pagado") this.incomesPending += item.ammount;
+        });
     }
 
     generateSolfac() {

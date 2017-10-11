@@ -18,8 +18,6 @@ namespace Sofco.WebApi.Models.Billing
                 Manager = domain.UserApplicant.Name;
 
             StartDate = domain.StartDate;
-            Amount = domain.Amount;
-            Iva21 = domain.Iva21;
             TotalAmount = domain.TotalAmount;
             StatusName = domain.Status.ToString();
             CurrencyId = domain.CurrencyId;

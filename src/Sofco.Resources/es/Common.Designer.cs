@@ -96,6 +96,15 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Ocurrio un error en el sistema. Consulte al administrador.
+        /// </summary>
+        public static string GeneralError {
+            get {
+                return ResourceManager.GetString("GeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Ocurrio un error al guardar el archivo.
         /// </summary>
         public static string SaveFileError {
