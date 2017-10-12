@@ -62,7 +62,7 @@ namespace Sofco.Service.Implementations.Jobs
             return resultList;
         }
 
-        private List<Email> GetEmailByHitos(List<CrmHito> hitos)
+        protected List<Email> GetEmailByHitos(List<CrmHito> hitos)
         {
             var groupedList = GroupByManager(hitos);
 
