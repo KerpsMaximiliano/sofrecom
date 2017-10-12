@@ -26,7 +26,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public Invoice GetById(int id)
         {
-            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User);
+            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User).Include(x => x.Solfac);
                 
             query = GetProperties(query);
 
@@ -123,7 +123,8 @@ namespace Sofco.DAL.Repositories.Billing
                 UserId = x.UserId,
                 User = x.User,
                 CustomerId = x.CustomerId,
-                ServiceId = x.ServiceId
+                ServiceId = x.ServiceId,
+                Solfac = x.Solfac
             });
         }
 

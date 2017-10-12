@@ -41,7 +41,10 @@
             "status": "Estado",
             "selectGroups": "Seleccione los grupos a ser asignados al usuario:",
             "deleteGroup": "¿Esta seguro que desea eliminar el grupo?",
-            "addGroup": "Asignar Grupos"
+            "addGroup": "Asignar Grupos",
+            "searchByMail": "Buscar por Email",
+            "searchBySurname": "Buscar por Apellido",
+            "userNotFoundInAd": "Usuario encontrado en el Active Directory"
         },
         "GROUPS": {
             "TITLE": "Grupos",
@@ -113,9 +116,9 @@
                 "analytic": "Analítica",
                 "purchaseOrder": "Orden compra",
                 "incomes": "Ingresos Estimados",
-                "incomesBilled": "Ingresos Facturados",
+                "incomesBilled": "Pend. a Cobrar",
                 "incomesCashed": "Ingresos Cobrados",
-                "incomesPending": "Ingresos Pendientes",
+                "incomesPending": "Pend. a Facturar",
                 "startDate": "Fecha Inicio",
                 "endDate": "Fecha Fin",
                 "oportunity": "Oportunidad",
@@ -267,7 +270,8 @@
             "createAndExport": "Crear y Exportar",
             "pdfAddedSucces": "PDF importado correctamente",
             "excelAddedSucces": "Excel importado correctamente",
-            "invoiceNumberRequired": "El número de remito es requerido"
+            "invoiceNumberRequired": "El número de remito es requerido",
+            "goToSolfac": "Ir a la Solicitud"
         }
     },
     "HOME": {

@@ -175,7 +175,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Warning));
             }
 
             return response;
@@ -417,7 +417,7 @@ namespace Sofco.Service.Implementations.Billing
             if (response.HasErrors()) return response;
 
             SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
-            SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
+            SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
 
             if (response.HasErrors()) return response;
 

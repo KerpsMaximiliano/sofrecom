@@ -1,11 +1,11 @@
 <div class="widget {{style}}">
     <div class="row">
         <div class="col-xs-4">
-            <i class="fa fa-usd fa-3x"></i>
+            <h2>{{symbol}}</h2>
         </div>
         <div class="col-xs-8 text-right">
             <span> {{ label | translate }} </span>
-            <span class="font-bold font-18"> {{ value | number: '1.2-2' }}</span>
+            <h3 class="font-bold">{{ value| number: '1.2-2' }}</h3>
         </div>
     </div>
 </div>

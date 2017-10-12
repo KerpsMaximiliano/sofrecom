@@ -23,6 +23,11 @@ namespace Sofco.Framework.ValidationHandlers.Billing
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanInvoiceDate, MessageType.Error));
                 }
 
+                if (parameters.CashedDate.Value.Date < solfac.StartDate.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateLessThanSolfacStartDate, MessageType.Error));
+                }
+
                 if (parameters.CashedDate.Value.Date > DateTime.Today.Date)
                 {
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashedDateGreaterThanToday, MessageType.Error));
@@ -54,7 +59,7 @@ namespace Sofco.Framework.ValidationHandlers.Billing
             return solfac;
         }
 
-        public static void ValidateInvoiceDate(SolfacStatusParams parameters, Response response)
+        public static void ValidateInvoiceDate(SolfacStatusParams parameters, Response response, Solfac solfac)
         {
             if (!parameters.InvoiceDate.HasValue)
             {
@@ -65,6 +70,16 @@ namespace Sofco.Framework.ValidationHandlers.Billing
                 if (parameters.InvoiceDate.Value.Date > DateTime.Today.Date)
                 {
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanToday, MessageType.Error));
+                }
+
+                if (parameters.InvoiceDate.Value.Date < solfac.StartDate.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateLessThanSolfacStartDate, MessageType.Error));
+                }
+
+                if (solfac.CashedDate.HasValue && solfac.CashedDate.Value.Date < parameters.InvoiceDate.Value.Date)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDateGreaterThanCashedDate, MessageType.Error));
                 }
             }
         }

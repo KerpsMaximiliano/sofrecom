@@ -245,5 +245,15 @@ namespace Sofco.Service.Implementations.Admin
 
             return response;
         }
+
+        public bool HasDafGroup(string userMail, int dafMail)
+        {
+            return _userRepository.HasDafGroup(userMail, dafMail);
+        }
+
+        public bool HasCdgGroup(string userMail, int cdgMail)
+        {
+            return _userRepository.HasDafGroup(userMail, cdgMail);
+        }
     }
 }

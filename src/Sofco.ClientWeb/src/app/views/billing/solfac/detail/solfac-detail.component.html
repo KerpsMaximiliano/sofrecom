@@ -51,10 +51,10 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <dl class="dl-horizontal">
-                                <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd>{{model.businessName}}</dd>
-                                <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd>{{model.clientName}}</dd>
-                                <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd>{{model.celPhone}}</dd>
-                                <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
+                                <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd><i class="fa fa-building"></i> {{model.businessName}}</dd>
+                                <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.clientName}}</dd>
+                                <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd><i class="fa fa-phone"></i> {{model.celPhone}}</dd>
+                                <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.userApplicantName}}</dd>
                                 
                                 <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
@@ -70,9 +70,13 @@
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate }}</span></dd>
                                 <dt>{{'billing.solfac.contractNumber' | translate }}: </dt><dd>{{model.contractNumber}}</dd>
-                                <dt>{{'billing.solfac.project' | translate }}: </dt><dd>{{model.project}}</dd>
-                                <dt *ngIf="model.invoiceDate">{{'billing.solfac.invoiceDate' | translate }}: </dt><dd *ngIf="model.invoiceDate">{{model.invoiceDate | date: 'dd/MM/yyyy' }}</dd>
-                                <dt *ngIf="model.cashedDate">{{'billing.solfac.cashedDate' | translate }}: </dt><dd *ngIf="model.cashedDate">{{model.cashedDate | date: 'dd/MM/yyyy' }}</dd>
+                                <dt>{{'billing.solfac.project' | translate }}: </dt><dd><i class="fa fa-building"></i> {{model.project}}</dd>
+                                
+                                <dt *ngIf="model.invoiceDate">{{'billing.solfac.invoiceDate' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceDate"><i class="fa fa-calendar"></i> {{model.invoiceDate | date: 'dd/MM/yyyy' }}</dd>
+
+                                <dt *ngIf="model.cashedDate">{{'billing.solfac.cashedDate' | translate }}: </dt>
+                                <dd *ngIf="model.cashedDate"><i class="fa fa-calendar"></i> {{model.cashedDate | date: 'dd/MM/yyyy' }}</dd>
                             </dl>
                         </div>
                     </div>

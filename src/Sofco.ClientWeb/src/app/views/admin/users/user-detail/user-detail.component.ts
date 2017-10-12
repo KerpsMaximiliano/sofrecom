@@ -8,6 +8,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
 import { UserService } from "app/services/admin/user.service";
 import { UserDetail } from "app/models/admin/userDetail";
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -50,6 +51,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         private service: UserService, 
         private activatedRoute: ActivatedRoute, 
         private router: Router,
+        private menuService: MenuService,
         private groupService: GroupService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService) { }
@@ -59,6 +61,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.id = params['id'];
             this.getDetails();
         });
+    }
+
+    canAddGroup(){
+        return this.menuService.hasFunctionality("USR", "ADGRP");
     }
  
     getDetails(){

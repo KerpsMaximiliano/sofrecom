@@ -113,7 +113,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.documentType' | translate }}</label>
-                                <select class="form-control m-b  input-sm" [(ngModel)]="model.documentType" (ngModelChange)="changeDocumentType()">
+                                <select class="form-control m-b  input-sm" [(ngModel)]="model.documentType">
                                     <option *ngFor="let docType of documentTypes" [value]="docType?.value">{{docType?.text}}</option>
                                 </select>
                             </div>

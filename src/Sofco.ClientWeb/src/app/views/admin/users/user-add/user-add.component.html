@@ -17,7 +17,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox float-e-margins">
 
@@ -25,21 +25,43 @@
             <spinner></spinner>
 
             <div class="row">
-                <div class="col-lg-2">
-                    <label class="control-label">Mail del usuario</label>
+                <div class="col-lg-1">
+                    <label class="control-label">{{ 'ADMIN.USERS.mail' | translate }}</label>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="input-group">
-                        <input type="text" class="form-control" [(ngModel)]="email" [disabled]="loading"> 
+                        <input type="text" class="form-control" [(ngModel)]="toSearch" [disabled]="loading"> 
                         <span class="input-group-btn"> 
-                            <button type="button" class="btn btn-primary" [disabled]="loading" (click)="search()">Buscar</button> 
+                            <button type="button" class="btn btn-primary" [disabled]="loading" (click)="searchByEmail()">{{ 'ADMIN.USERS.searchByMail' | translate }}</button>
+                            <button type="button" class="btn btn-success" [disabled]="loading" (click)="searchBySurname()">{{ 'ADMIN.USERS.searchBySurname' | translate }}</button> 
                         </span>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-2">
-                    
+            <div class="row margin-top-30" *ngIf="usersFound">
+                <div class="col-lg-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{{ 'ADMIN.USERS.mail' | translate }}</th>
+                                <th>{{ 'ADMIN.USERS.name' | translate }}</th>
+                                <th>{{ 'ADMIN.USERS.user' | translate }}</th>
+                                <th>{{ 'ADMIN.action' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of users; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{ user.userPrincipalName }}</td>
+                                <td>{{ user.displayName }}</td>
+                                <td>{{ user.userName }}</td>
+                                <td><button class="btn btn-primary btn-xs" (click)="select(user)">{{ 'ADMIN.add' | translate }}</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -47,13 +69,13 @@
                 <div class="col-lg-12">
                     <div class="alert alert-success" *ngIf="userFound">
                         <dl class="dl-horizontal">
-                            <dt></dt><dd><h3>Usuario encontrado en el Active Directory</h3></dd>
+                            <dt></dt><dd><h3>{{ 'ADMIN.USERS.userNotFoundInAd' | translate }}</h3></dd>
                         </dl>
 
                         <dl class="dl-horizontal">
-                            <dt>Email: </dt><dd>{{ model.email }}</dd>
-                            <dt>Nombre: </dt><dd>{{model.name}}</dd>
-                            <dt>Usuario: </dt><dd>{{model.userName}}</dd>
+                            <dt>{{ 'ADMIN.USERS.mail' | translate }}: </dt><dd>{{ model.userPrincipalName }}</dd>
+                            <dt>{{ 'ADMIN.USERS.name' | translate }}: </dt><dd>{{model.displayName}}</dd>
+                            <dt>{{ 'ADMIN.USERS.user' | translate }}: </dt><dd>{{model.userName}}</dd>
                         </dl>
                     </div>
                 </div>

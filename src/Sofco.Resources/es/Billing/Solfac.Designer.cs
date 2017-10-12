@@ -105,6 +105,24 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor que la fecha de facturación.
+        /// </summary>
+        public static string CashedDateLessThanSolfacInvoiceDate {
+            get {
+                return ResourceManager.GetString("CashedDateLessThanSolfacInvoiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor a la fecha de la creación de la solicitud.
+        /// </summary>
+        public static string CashedDateLessThanSolfacStartDate {
+            get {
+                return ResourceManager.GetString("CashedDateLessThanSolfacStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La fecha de cobro es requerida.
         /// </summary>
         public static string CashedDateRequired {
@@ -213,11 +231,29 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de facturación no puede ser mayor a la de fecha de cobro.
+        /// </summary>
+        public static string InvoiceDateGreaterThanCashedDate {
+            get {
+                return ResourceManager.GetString("InvoiceDateGreaterThanCashedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Fecha de facturación no puede ser mayor a la fecha del día.
         /// </summary>
         public static string InvoiceDateGreaterThanToday {
             get {
                 return ResourceManager.GetString("InvoiceDateGreaterThanToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La fecha de facturación no puede ser menor a la fecha de la creación de la solicitud.
+        /// </summary>
+        public static string InvoiceDateLessThanSolfacStartDate {
+            get {
+                return ResourceManager.GetString("InvoiceDateLessThanSolfacStartDate", resourceCulture);
             }
         }
         

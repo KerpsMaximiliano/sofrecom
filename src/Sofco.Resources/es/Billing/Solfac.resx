@@ -210,4 +210,16 @@
   <data name="CashedDateGreaterThanInvoiceDate" xml:space="preserve">
     <value>La fecha de cobro no puede ser menor a la fecha de facturación</value>
   </data>
+  <data name="InvoiceDateGreaterThanCashedDate" xml:space="preserve">
+    <value>Fecha de facturación no puede ser mayor a la de fecha de cobro</value>
+  </data>
+  <data name="CashedDateLessThanSolfacStartDate" xml:space="preserve">
+    <value>La fecha de cobro no puede ser menor a la fecha de la creación de la solicitud</value>
+  </data>
+  <data name="InvoiceDateLessThanSolfacStartDate" xml:space="preserve">
+    <value>La fecha de facturación no puede ser menor a la fecha de la creación de la solicitud</value>
+  </data>
+  <data name="CashedDateLessThanSolfacInvoiceDate" xml:space="preserve">
+    <value>La fecha de cobro no puede ser menor que la fecha de facturación</value>
+  </data>
 </root>

@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet("{projectId}/options")]
-        public IActionResult Get(string projectId)
+        public IActionResult GetOptions(string projectId)
         {
             var invoices = _invoiceService.GetOptions(projectId);
 
@@ -235,7 +235,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] InvoiceParams parameters)
         {
-            var invoices = _invoiceService.Search(parameters, this.GetUserMail());
+            var invoices = _invoiceService.Search(parameters, this.GetUserMail(), _emailConfig);
 
             if (!invoices.Any())
             {

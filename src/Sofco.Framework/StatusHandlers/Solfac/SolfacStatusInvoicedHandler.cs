@@ -42,7 +42,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             }
 
             SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
-            SolfacValidationHelper.ValidateInvoiceDate(parameters, response);
+            SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
             
             return response;
         }

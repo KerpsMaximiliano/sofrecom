@@ -78,7 +78,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> {{ 'ADMIN.GROUPS.TITLE' | translate }}
-                    <a class="pull-right" [hidden]="groupsToAdd.length == 0" (click)="modalGroups.show()"><i class="fa fa-plus icon-white" ></i></a>
+                    <a class="pull-right" *ngIf="canAddGroup()" [hidden]="groupsToAdd.length == 0" (click)="modalGroups.show()"><i class="fa fa-plus icon-white" ></i></a>
                 </div>
                 <div class="panel-body">
                     <div class="scroll">

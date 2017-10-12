@@ -13,10 +13,12 @@ import { Subscription } from 'rxjs';
 export class UserAddComponent implements OnDestroy {
 
 
-    public model: any = { email: "", name: "", userName: "" };
+    public model: any = { userPrincipalName: "", name: "", userName: "" };
     public loading: boolean = false;
     public userFound: boolean = false;
-    public email: string;
+    public usersFound: boolean = false;
+    public toSearch: string;
+    public users: any[] = new Array<any>();
 
     private searchSubscrip: Subscription;
     private saveSubscrip: Subscription;
@@ -32,7 +34,13 @@ export class UserAddComponent implements OnDestroy {
     }
 
     save() {
-        this.saveSubscrip = this.service.save(this.model).subscribe(
+        var json = {
+            email: this.model.userPrincipalName,
+            name: this.model.displayName,
+            userName: this.model.userName
+        }
+
+        this.saveSubscrip = this.service.save(json).subscribe(
             response => {
                 if(response.messages) this.messageService.showMessages(response.messages);
 
@@ -48,17 +56,40 @@ export class UserAddComponent implements OnDestroy {
         this.router.navigate(['/admin/users']);
     }
 
-    search(){
+    select(user){
+        this.model = user;
+        this.save();
+    }
+
+    searchBySurname(){
         this.loading = true;
+        this.usersFound = false;
         this.userFound = false;
 
-        this.searchSubscrip = this.service.search(this.email).subscribe(
+        this.searchSubscrip = this.service.searchBySurname(this.toSearch).subscribe(
+            response => {
+                this.loading = false;
+                this.users = response.value;         
+                this.usersFound = true;       
+            },
+            error => {
+                this.loading = false;
+                this.errorHandlerService.handleErrors(error)
+            }
+        )
+    }
+
+    searchByEmail(){
+        this.loading = true;
+        this.userFound = false;
+        this.usersFound = false;
+
+        this.searchSubscrip = this.service.searchByEmail(this.toSearch).subscribe(
             response => {
                 this.loading = false;
                 this.userFound = true;
-                this.model.name = response.data.displayName;
-                this.model.userName = response.data.userName;
-                this.model.email = response.data.email;
+
+                this.model = response.data;
             },
             error => {
                 this.loading = false;

@@ -57,7 +57,44 @@ namespace Sofco.Service.Implementations
             return client.Post(uri, new FormUrlEncodedContent(pairs));
         }
 
-        public Response<AzureAdUserResponse> GetUserFromAzureAD(string email)
+
+        public Response<AzureAdUserListResponse> GetUsersFromAzureADBySurname(string surname)
+        {
+            var response = new Response<AzureAdUserListResponse>();
+
+            var tokenResponse = GetGraphToken();
+
+            if (tokenResponse.HasErrors())
+            {
+                response.AddMessages(tokenResponse.Messages);
+                return response;
+            }
+
+            var graphUri = $"{azureAdOptions.GraphUsersUrl}?$filter=startswith(surname, '{surname}')";
+
+            var result = client.Get(graphUri, tokenResponse.Data.access_token);
+
+            if (result.HasErrors)
+            {
+                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+            }
+            else
+            {
+                var data = JsonConvert.DeserializeObject<AzureAdUserListResponse>(result.ResultData.ToString());
+                response.Data = new AzureAdUserListResponse();
+
+                foreach (var item in data.Value)
+                {
+                    item.UserPrincipalName = item.UserPrincipalName.Replace("@tebrasofre.onmicrosoft.com", "@sofrecom.com.ar");
+                }
+
+                response.Data = data;
+            }
+
+            return response;
+        }
+
+        public Response<AzureAdUserResponse> GetUserFromAzureADByEmail(string email)
         {
             var response = new Response<AzureAdUserResponse>();
 
@@ -78,7 +115,7 @@ namespace Sofco.Service.Implementations
                 mail = $"{username}@tebrasofre.onmicrosoft.com";
             }
 
-            var graphUri = azureAdOptions.GraphUsersUrl + mail;
+            var graphUri = azureAdOptions.GraphUsersUrl + "/" + mail;
 
             var result = client.Get(graphUri, tokenResponse.Data.access_token);
 
@@ -89,8 +126,7 @@ namespace Sofco.Service.Implementations
             else
             {
                 response.Data = JsonConvert.DeserializeObject<AzureAdUserResponse>(result.ResultData.ToString());
-                response.Data.Email = email;
-                response.Data.UserName = username;
+                response.Data.UserPrincipalName = response.Data.UserPrincipalName.Replace("@tebrasofre.onmicrosoft.com", "@sofrecom.com.ar");
             }
 
             return response;

@@ -34,6 +34,11 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             ServiceId = invoice.ServiceId;
             CustomerId = invoice.CustomerId;
+
+            if(invoice.Solfac != null)
+            {
+                SolfacId = invoice.Solfac.Id;
+            }
         }
 
         public int Id { get; set; }
@@ -59,6 +64,8 @@ namespace Sofco.WebApi.Models.Billing
         public string ExcelFileCreatedDate { get; set; }
         public string PdfFileCreatedDate { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public int? SolfacId { get; set; }
 
         public Invoice CreateDomain()
         {

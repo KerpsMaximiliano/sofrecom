@@ -41,6 +41,7 @@ namespace Sofco.Model.Models.Billing
         public User User { get; set; }
 
         public Solfac Solfac { get; set; }
+
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
 
@@ -68,6 +69,10 @@ namespace Sofco.Model.Models.Billing
             invoice.InvoiceNumber = "0000-00000000";
             invoice.CreatedDate = DateTime.Now;
             invoice.InvoiceStatus = InvoiceStatus.SendPending;
+
+            invoice.ExcelFile = this.ExcelFile;
+            invoice.ExcelFileName = this.ExcelFileName;
+            invoice.ExcelFileCreatedDate = this.ExcelFileCreatedDate;
 
             return invoice;
         }
