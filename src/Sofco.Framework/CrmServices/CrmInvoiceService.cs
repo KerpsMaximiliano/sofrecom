@@ -22,7 +22,7 @@ namespace Sofco.Framework.CrmServices
 
         public Result<List<CrmHito>> GetHitosToExpire(int daysToExpire)
         {
-            var url = $"{crmConfig.Url}/api/InvoiceMilestone/GetMilestoneToExpire?daysToExpire={daysToExpire}&status=1";
+            var url = $"{crmConfig.Url}/api/InvoiceMilestone/GetMilestoneToExpire?daysToExpire={daysToExpire}&status=1,717620003";
 
             return client.GetMany(url);
         }
