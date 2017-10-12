@@ -15,5 +15,11 @@ namespace Sofco.Domain.Crm
         public string ManagerMail { get; set; }
 
         public string ProjectName { get; set; }
+
+        public Guid? ProjectId { get; set; }
+
+        public Guid? CustomerId { get; set; }
+
+        public Guid? ServiceId { get; set; }
     }
 }
