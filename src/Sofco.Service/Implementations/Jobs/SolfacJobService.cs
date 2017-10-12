@@ -110,12 +110,18 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach(var item in hitos)
             {
-                content.AppendLine($"<li>{item.Name} - {item.ProjectName} - {item.ScheduledDate.ToString(DateFormat)}");
+                var link = $"{emailConfig.SiteUrl}/billing/"+
+                    $"customers/{item.CustomerId}"+
+                    $"/services/{item.ServiceId}"+
+                    $"/projects/{item.ProjectId}";
+
+                content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.ProjectName} - {item.ScheduledDate.ToString(DateFormat)}</a>");
             }
 
             var body = template.Replace("{content}", $"<ul>{content.ToString()}</ul>");
 
             body = body.Replace("{siteUrl}", emailConfig.SiteUrl);
+
 
             return body;
         }
