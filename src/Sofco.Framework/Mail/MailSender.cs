@@ -90,8 +90,6 @@ namespace Sofco.Framework.Mail
                 return;
             }
 
-            if (!environment.IsStaging() && !environment.IsProduction()) return;
-
             using (var client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = (s, c, h, e) => true;

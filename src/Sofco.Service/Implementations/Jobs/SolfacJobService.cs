@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Microsoft.Extensions.Options;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
@@ -8,8 +10,6 @@ using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Resources;
-using System.Text;
-using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 
 namespace Sofco.Service.Implementations.Jobs

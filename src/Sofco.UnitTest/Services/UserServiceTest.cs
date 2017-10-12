@@ -8,7 +8,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 
-namespace Sofco.UnitTests.Services
+namespace Sofco.UnitTest.Services
 {
     [TestFixture]
     public class UserServiceTest

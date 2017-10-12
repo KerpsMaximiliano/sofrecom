@@ -54,6 +54,7 @@
       "wwwroot",
       "**/*.cshtml",
       "appsettings.json",
+      "appsettings.azsof01wd.json",
       "web.config"
     ]
   },
