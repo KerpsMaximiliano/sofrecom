@@ -14,7 +14,7 @@ namespace Sofco.WebJob.Jobs
 
         public void Execute()
         {
-            var result = jobService.Get();
+            jobService.SendHitosNotfications();
         }
     }
 }

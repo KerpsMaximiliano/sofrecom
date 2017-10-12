@@ -174,5 +174,12 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return _context.Solfacs.Any(x => x.InvoiceCode == invoiceCode);
         }
+
+        public IList<Hito> GetHitosByExternalIds(List<Guid> externalIds)
+        {
+            var externalIdsText = externalIds.Select(s => s.ToString());
+
+            return _context.Hitos.Where(x => externalIdsText.Contains(x.ExternalHitoId)).ToList();
+        }
     }
 }

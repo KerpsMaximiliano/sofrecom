@@ -8,7 +8,7 @@ using Sofco.Service.Settings;
 using Sofco.Common.Domains;
 using Sofco.Service.Implementations;
 
-namespace Sofco.UnitTests.Services
+namespace Sofco.UnitTest.Services
 {
     [TestFixture]
     public class LoginServiceTest

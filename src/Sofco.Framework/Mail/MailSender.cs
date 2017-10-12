@@ -1,10 +1,12 @@
-﻿using MailKit.Net.Smtp;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
+using MailKit.Net.Smtp;
 using MimeKit;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Framework.Helpers;
+using Sofco.Model;
 
 namespace Sofco.Framework.Mail
 {
@@ -29,16 +31,16 @@ namespace Sofco.Framework.Mail
             smtpPort = emailConfig.SmtpPort;
             smtpDomain = emailConfig.SmtpDomain;
             mailDevFolder = emailConfig.MailDevFolder;
-    }
+        }
 
-    /// <summary>
-    /// Envía emails a los destinatarios enviados como parametro
-    /// </summary>
-    /// <param name="recipients">Lista de destinatarios separados por ';'</param>
-    /// <param name="subject">Asunto del mail</param>
-    /// <param name="body">cuerpo del mail</param>
-    public void Send(string recipients, string subject, string body)
-    {
+        /// <summary>
+        /// Envía emails a los destinatarios enviados como parametro
+        /// </summary>
+        /// <param name="recipients">Lista de destinatarios separados por ';'</param>
+        /// <param name="subject">Asunto del mail</param>
+        /// <param name="body">cuerpo del mail</param>
+        public void Send(string recipients, string subject, string body)
+        {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(fromDisplayName, fromEmail));
             AddRecipients(message, recipients);
@@ -48,13 +50,45 @@ namespace Sofco.Framework.Mail
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            if(environment.IsDevelopment())
+            SendMessages(new List<MimeMessage> { message });
+        }
+
+        private void AddRecipients(MimeMessage message, string recipients)
+        {
+            string[] recipientsMails = recipients.Split(';');
+            foreach(var email in recipientsMails)
             {
-                message.WriteTo(FileHelper.GenerateMailFileName(mailDevFolder));
+                message.To.Add(new MailboxAddress(email, email));
+            }
+        }
+
+        public void Send(List<Email> emails)
+        {
+            var messages = new List<MimeMessage>();
+            foreach(var email in emails)
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(fromDisplayName, fromEmail));
+                AddRecipients(message, email.Recipient);
+                message.Subject = email.Subject;
+                var bodyBuilder = new BodyBuilder { HtmlBody = email.Body };
+                message.Body = bodyBuilder.ToMessageBody();
+                messages.Add(message);
+            }
+            SendMessages(messages);
+        }
+
+        private void SendMessages(List<MimeMessage> messages)
+        {
+            if (environment.IsDevelopment())
+            {
+                foreach(var message in messages)
+                {
+                    message.WriteTo(FileHelper.GenerateMailFileName(mailDevFolder));
+                    System.Threading.Thread.Sleep(500);
+                }
                 return;
             }
-
-            if (!environment.IsStaging() && !environment.IsProduction()) return;
 
             using (var client = new SmtpClient())
             {
@@ -64,17 +98,12 @@ namespace Sofco.Framework.Mail
                 client.LocalDomain = smtpDomain;
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                client.Send(message);
-                client.Disconnect(true);
-            }
-        }
+                foreach (var message in messages)
+                {
+                    client.Send(message);
+                }
 
-        private void AddRecipients(MimeMessage message, string recipients)
-        {
-            string[] recipientsMails = recipients.Split(';');
-            foreach(var email in recipientsMails)
-            {
-                message.To.Add(new MailboxAddress(email, email));
+                client.Disconnect(true);
             }
         }
     }

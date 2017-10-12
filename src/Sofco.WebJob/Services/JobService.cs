@@ -1,12 +1,12 @@
-﻿using Hangfire;
+﻿using System;
+using Hangfire;
 using Sofco.WebJob.Jobs.Interfaces;
-using System;
 
 namespace Sofco.WebJob.Services
 {
     public class JobService
     {
-        private const string SolfacJobName = "SolfacDailyJob";
+        private const string SolfacJobName = "HitosSinSolfacDailyJob";
 
         public static void Init(string timeZoneName)
         {

@@ -101,6 +101,7 @@ namespace Sofco.WebApi
             services.AddTransient<ISolfacService, SolfacService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<IMailSender, MailSender>();
 
             // Repositories
             services.AddTransient<IGroupRepository, GroupRepository>();
