@@ -27,7 +27,7 @@
             <button *ngIf="model.id > 0" class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-pencil"></i> {{'billing.invoice.draft' | translate }} </button>
 
             <div class="btn-right">
-                <button (click)="confirm.show()" class="btn btn-danger btn-outline dim" *ngIf="canDelete()" >{{'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
+                <button (click)="confirmModal.show()" class="btn btn-danger btn-outline dim" *ngIf="canDelete()" >{{'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
 
                 <invoice-status-sendToDaf [invoiceId]="model.id" [excelFileName]="model.excelFileName" [status]="model.invoiceStatus" (callback)="sendCallback($event)"></invoice-status-sendToDaf>
             </div>

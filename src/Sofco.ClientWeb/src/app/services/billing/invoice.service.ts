@@ -39,7 +39,7 @@ export class InvoiceService {
   getOptions(projectId){
      return this.http.get(`${this.baseUrl}/invoices/${projectId}/options`).map((res:Response) => res.json());
   }
-  
+
   changeStatus(id, status, comment, invoiceNumber){
     var body = {
       userId: this.menuService.user.id,

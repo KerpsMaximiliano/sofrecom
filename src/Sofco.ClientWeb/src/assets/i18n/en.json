@@ -198,6 +198,7 @@
             "cashedDate": "Cash Date",
             "dateSince": "Date since",
             "dateTo": "Date to",
+            "invoicesRelated": "Invoices Related",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"

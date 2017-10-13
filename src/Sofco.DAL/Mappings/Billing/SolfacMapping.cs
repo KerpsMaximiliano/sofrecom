@@ -26,6 +26,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Histories).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Attachments).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
+            builder.Entity<Solfac>().HasMany(x => x.Invoices).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
 
             builder.Entity<SolfacAttachment>().Property(_ => _.Name).HasMaxLength(200);
         }

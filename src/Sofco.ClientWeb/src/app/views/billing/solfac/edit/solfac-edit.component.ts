@@ -16,6 +16,8 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
 
+declare var $:any;
+
 @Component({
   selector: 'app-solfac-edit',
   templateUrl: './solfac-edit.component.html',
@@ -28,12 +30,13 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public documentTypes: Option[] = new Array<Option>();
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
-    public invoices: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
 
     public solfacId: number;
+    public invoices: any[] = new Array<any>();
+    public invoicesRelated: any[] = new Array<any>();
 
     public updateComments: string;
  
@@ -72,6 +75,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.solfacId = params['solfacId'];
         this.getSolfac(this.solfacId);
+        this.getInvoices();
       });
     }
 
@@ -118,6 +122,13 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     getInvoicesOptions(projectId){
       this.getInvoiceOptionsSubs = this.invoiceService.getOptions(projectId).subscribe(data => {
         this.invoices = data;
+      },
+      err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getInvoices(){
+      this.getInvoiceOptionsSubs = this.solfacService.getInvoices(this.solfacId).subscribe(data => {
+        this.invoicesRelated = data;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
@@ -209,10 +220,33 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.updateModal.show();
     }
 
-    exportPdf(){
-      this.invoiceService.getPdf(this.model.invoiceId).subscribe(file => {
-          FileSaver.saveAs(file, this.model.pdfFileName);
+    exportPdf(invoice){
+      this.invoiceService.getPdf(invoice.id).subscribe(file => {
+          FileSaver.saveAs(file, invoice.pdfFileName);
       },
       err => this.errorHandlerService.handleErrors(err));
-  }
+    } 
+
+    deleteInvoiceOfSolfac(invoiceId, index){
+      this.solfacService.deleteInvoiceOfSolfac(this.solfacId, invoiceId).subscribe(data => {
+        if(data.messages) this.messageService.showMessages(data.messages);
+        this.invoicesRelated.splice(index, 1);
+      },
+      err => this.errorHandlerService.handleErrors(err));
+    }
+
+    addInvoice(){
+      var invoices = <any>$('#invoices').val();
+
+      if(invoices && invoices.length == 0) return;
+
+      this.solfacService.addInvoices(this.solfacId, invoices).subscribe(data => {
+        if(data.messages) this.messageService.showMessages(data.messages);
+        
+        setTimeout(function() {
+          window.location.reload();
+        }, 1000);
+      },
+      err => this.errorHandlerService.handleErrors(err));
+    }
 }

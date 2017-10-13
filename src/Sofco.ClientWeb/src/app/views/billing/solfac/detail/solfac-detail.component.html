@@ -41,6 +41,7 @@
             <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-4"> <i class="fa fa-file"></i> {{ 'billing.solfac.invoicesRelated' | translate }} </a></li>
         </ul>
         <div class="tab-content">
  
@@ -58,12 +59,6 @@
                                 
                                 <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
-
-                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.invoiceNumber' | translate }}: </dt>
-                                <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
-        
-                                <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.pdf' | translate }}: </dt>
-                                <dd *ngIf="model.invoiceId > 0"><a (click)="exportPdf()">{{model.pdfFileName}}</a></dd>
                             </dl>
                         </div>
                         <div class="col-lg-6">
@@ -168,6 +163,28 @@
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body">
                     <solfac-attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
+                </div>
+            </div>
+
+            <!-- Invoices -->
+            <div id="tab-4" class="tab-pane">
+                <div class="panel-body">
+                    <div class="row attachments-scroll">
+                        <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">
+                            <div class="file-box">
+                                <div class="file">
+                                    <a (click)="exportPdf(invoice)">
+                                        <div class="icon"><i class="fa fa-file"></i></div>
+                                        <div class="file-name">
+                                            {{ invoice.invoiceNumber }}
+                                            <br>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

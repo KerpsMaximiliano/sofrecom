@@ -40,6 +40,7 @@ namespace Sofco.Model.Models.Billing
         public int UserId { get; set; }
         public User User { get; set; }
 
+        public int? SolfacId { get; set; }
         public Solfac Solfac { get; set; }
 
         public string CustomerId { get; set; }

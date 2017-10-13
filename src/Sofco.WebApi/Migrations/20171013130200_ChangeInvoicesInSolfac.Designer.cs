@@ -9,9 +9,10 @@ using Sofco.Model.Enums;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20171013130200_ChangeInvoicesInSolfac")]
+    partial class ChangeInvoicesInSolfac
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -337,8 +338,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(50);
 
                     b.Property<DateTime?>("InvoiceDate");
-
-                    b.Property<bool>("InvoiceRequired");
 
                     b.Property<int>("ModifiedByUserId");
 

@@ -70,12 +70,24 @@ export class SolfacService {
      return this.http.delete(`${this.baseUrl}/solfacs/${id}`).map((res:Response) => res.json());
   }
 
+  deleteInvoiceOfSolfac(id, invoiceId){
+    return this.http.delete(`${this.baseUrl}/solfacs/${id}/invoice/${invoiceId}`).map((res:Response) => res.json());
+  }
+
   deleteFile(id){
     return this.http.delete(`${this.baseUrl}/solfacs/file/${id}`).map((res:Response) => res.json());
- }
+  }
+
+  getInvoices(id) {
+    return this.http.get(`${this.baseUrl}/solfacs/${id}/invoices`).map((res:Response) => res.json());
+  }
 
   getUrlForImportFile(id){
     return `${this.baseUrl}/solfacs/${id}/file`;
+  }
+
+  addInvoices(id, invoices){
+    return this.http.post(`${this.baseUrl}/solfacs/${id}/invoices`, invoices).map((res:Response) => res.json());
   }
 
   getFile(id){

@@ -25,11 +25,7 @@
             <spinner></spinner>
 
             <div class="row">
-                <div class="col-lg-1">
-                    <label class="control-label">{{ 'ADMIN.USERS.mail' | translate }}</label>
-                </div>
-
-                <div class="col-lg-7">
+                <div class="col-lg-12">
                     <div class="input-group">
                         <input type="text" class="form-control" [(ngModel)]="toSearch" [disabled]="loading"> 
                         <span class="input-group-btn"> 
@@ -58,7 +54,7 @@
                                 <td>{{ user.userPrincipalName }}</td>
                                 <td>{{ user.displayName }}</td>
                                 <td>{{ user.userName }}</td>
-                                <td><button class="btn btn-primary btn-xs" (click)="select(user)">{{ 'ADMIN.add' | translate }}</button></td>
+                                <td><button class="btn btn-primary btn-xs" (click)="select(user)">{{ 'ACTIONS.ADD' | translate }}</button></td>
                             </tr>
                         </tbody>
                     </table>

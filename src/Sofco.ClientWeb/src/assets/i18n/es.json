@@ -199,6 +199,7 @@
             "cashedDate": "Fecha Cobro",
             "dateSince": "Fecha desde",
             "dateTo": "Fecha hasta",
+            "invoicesRelated": "Remitos Asociados",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"

@@ -1,5 +1,5 @@
 {
-  "name": "inspinia",
+  "name": "sofcoar",
   "version": "2.7.1",
   "scripts": {
     "ng": "ng",
@@ -56,6 +56,7 @@
     "pdfmake": "^0.1.32",
     "peity": "^3.2.1",
     "rxjs": "^5.1.0",
+    "select2": "^4.0.4",
     "summernote": "^0.8.7",
     "toastr-ng2": "^4.1.1",
     "web-animations-js": "^2.3.1",

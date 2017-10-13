@@ -15,6 +15,8 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
 
+declare var $:any;
+
 @Component({
   selector: 'app-solfac',
   templateUrl: './solfac.component.html',
@@ -171,6 +173,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     save(){
+      this.model.invoicesId = <any>$('#invoices').val();
+
       this.solfacService.add(this.model).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);
@@ -188,6 +192,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     send(){
+      this.model.invoicesId = <any>$('#invoices').val();
+
       this.solfacService.send(this.model).subscribe(
         data => {
           if(data.messages) this.messageService.showMessages(data.messages);

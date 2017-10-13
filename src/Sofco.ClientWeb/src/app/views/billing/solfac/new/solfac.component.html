@@ -63,14 +63,14 @@
 
                     <!-- Plazo -->
                     <div class="row">
-                        <div class="col-lg-2 col-md-4 col-sm-4">
+                        <div class="col-lg-3 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
                                 <input type="number" min="0" class="form-control input-sm" [(ngModel)]="model.timeLimit">
                             </div>
                         </div>
 
-                        <div class="col-lg-2 col-md-4 col-sm-4">
+                        <div class="col-lg-3 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.currency' | translate }}</label>
                                 <select class="form-control input-sm" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
@@ -79,10 +79,10 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-2" *ngIf="model.remito">
+                        <div class="col-lg-6 col-md-6 col-sm-4" *ngIf="model.remito">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.invoice' | translate }}</label>
-                                <select class="form-control m-b input-sm" [(ngModel)]="model.invoiceId">
+                                <select id="invoices" select2 multiple class="form-control m-b input-sm">
                                     <option *ngFor="let invoice of invoices" [value]="invoice?.value">{{invoice?.text}}</option>
                                 </select>
                             </div>
@@ -91,7 +91,7 @@
 
                     <!-- Numero de imputacion-->
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="col-lg-6 col-md-6 col-sm-8">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.imputationNumber' | translate }}</label>
                                 <div class="row">
@@ -110,10 +110,10 @@
 
                     <!-- Tipo de documento -->
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-lg-6 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.documentType' | translate }}</label>
-                                <select class="form-control m-b  input-sm" [(ngModel)]="model.documentType">
+                                <select class="form-control m-b input-sm" [(ngModel)]="model.documentType">
                                     <option *ngFor="let docType of documentTypes" [value]="docType?.value">{{docType?.text}}</option>
                                 </select>
                             </div>
@@ -122,7 +122,7 @@
 
                     <!-- Numero de contrato -->
                     <div class="row">
-                        <div class="col-lg-4 col-md-5 col-sm-5">
+                        <div class="col-lg-6 col-md-5 col-sm-5">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.contractNumber' | translate }}</label>
                                 <input type="text" class="form-control input-sm" [(ngModel)]="model.contractNumber">
@@ -205,7 +205,7 @@
                         </div>
 
                         <div class="col-lg-3 col-md-4 col-sm-4 col-lg-offset-3">
-                            <label class="control-label">{{'billing.solfac.impositiveInfo.otherProvince' | translate }}:  </label>
+                            <label class="control-label">{{'billing.solfac.impositiveInfo.otherProvince' | translate }}: </label>
                             <div class="input-group m-b">
                                 <input type="number" class="form-control" min="0" [(ngModel)]="model.otherProvince1Percentage"> 
                                 <span class="input-group-addon">%</span>

@@ -29,6 +29,8 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
 
+    public invoicesRelated: any[] = new Array<any>();
+
     constructor(private solfacService: SolfacService,
                 private activatedRoute: ActivatedRoute,
                 private invoiceService: InvoiceService,
@@ -41,6 +43,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.solfacId = params['solfacId'];
             this.getSolfac();
+            this.getInvoices();
         });
     }
 
@@ -77,9 +80,16 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
       this.router.navigate([`/billing/solfac/search`]);
     }
 
-    exportPdf(){
-        this.invoiceService.getPdf(this.model.invoiceId).subscribe(file => {
-            FileSaver.saveAs(file, this.model.pdfFileName);
+    exportPdf(invoice){
+        this.invoiceService.getPdf(invoice.id).subscribe(file => {
+            FileSaver.saveAs(file, invoice.pdfFileName);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    } 
+
+    getInvoices(){
+        this.solfacService.getInvoices(this.solfacId).subscribe(data => {
+            this.invoicesRelated = data;
         },
         err => this.errorHandlerService.handleErrors(err));
     }

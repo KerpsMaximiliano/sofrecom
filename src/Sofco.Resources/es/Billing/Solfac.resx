@@ -222,4 +222,10 @@
   <data name="CashedDateLessThanSolfacInvoiceDate" xml:space="preserve">
     <value>La fecha de cobro no puede ser menor que la fecha de facturación</value>
   </data>
+  <data name="InvoiceDeleted" xml:space="preserve">
+    <value>Remito removido correctamente</value>
+  </data>
+  <data name="InvoicesAdded" xml:space="preserve">
+    <value>Remito/s asociados correctamente</value>
+  </data>
 </root>

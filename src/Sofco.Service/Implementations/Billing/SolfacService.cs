@@ -41,7 +41,7 @@ namespace Sofco.Service.Implementations.Billing
             this.mailSender = mailSender;
         }
 
-        public Response<Solfac> Add(Solfac solfac)
+        public Response<Solfac> Add(Solfac solfac, IList<int> invoicesId)
         {
             var response = Validate(solfac);
 
@@ -58,14 +58,18 @@ namespace Sofco.Service.Implementations.Billing
                 // Insert Solfac
                 solfacRepository.Insert(solfac);
 
+                // Save
+                solfacRepository.Save();
+
                 // Update Invoice Status to Related
-                if (solfac.InvoiceId.HasValue && solfac.InvoiceId.Value > 0)
+                foreach (var invoiceId in invoicesId)
                 {
-                    var invoiceToModif = new Invoice { Id = solfac.InvoiceId.Value, InvoiceStatus = InvoiceStatus.Related };
+                    var invoiceToModif = new Invoice { Id = invoiceId, SolfacId = solfac.Id, InvoiceStatus = InvoiceStatus.Related };
+                    invoiceRepository.UpdateSolfacId(invoiceToModif);
                     invoiceRepository.UpdateStatus(invoiceToModif);
                 }
 
-                // Save
+                // Save Invoices related
                 solfacRepository.Save();
 
                 response.Data = solfac;
@@ -191,11 +195,14 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                if (solfac.InvoiceId.HasValue)
+                var invoices = invoiceRepository.GetBySolfac(id);
+
+                foreach (var invoice in invoices)
                 {
-                    var invoice = invoiceRepository.GetSingle(x => x.Id == solfac.InvoiceId);
                     invoice.InvoiceStatus = InvoiceStatus.Approved;
+                    invoice.SolfacId = null;
                     invoiceRepository.UpdateStatus(invoice);
+                    invoiceRepository.UpdateSolfacId(invoice);
                 }
 
                 solfacRepository.Delete(solfac);
@@ -224,6 +231,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
+                //solfac.Invoices = invoiceRepository.GetBySolfac(solfac.Id);
+
                 solfac.UpdatedDate = DateTime.Now;
 
                 // Add History
@@ -232,16 +241,10 @@ namespace Sofco.Service.Implementations.Billing
                 // Insert Solfac
                 solfacRepository.Update(solfac);
 
-                // Update Invoice Status to Related
-                if (solfac.InvoiceId.HasValue && solfac.InvoiceId.Value > 0)
-                {
-                    var invoiceToModif = new Invoice { Id = solfac.InvoiceId.Value, InvoiceStatus = InvoiceStatus.Related };
-                    invoiceRepository.UpdateStatus(invoiceToModif);
-                }
-
                 // Save changes
                 solfacRepository.Save();
 
+                // Update hitos in CRM
                 UpdateHitos(solfac.Hitos, response);
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
@@ -336,7 +339,6 @@ namespace Sofco.Service.Implementations.Billing
 
             SolfacValidationHelper.ValidateProvincePercentage(solfac, response);
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
-            SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
 
@@ -373,7 +375,7 @@ namespace Sofco.Service.Implementations.Billing
             return history;
         }
 
-        private async void UpdateHitos(IList<Hito> hitos, Response response)
+        private async void UpdateHitos(ICollection<Hito> hitos, Response response)
         {
             using (var client = new HttpClient())
             {
@@ -464,6 +466,94 @@ namespace Sofco.Service.Implementations.Billing
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashUpdated, MessageType.Success));
             }
             catch (Exception ex)
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response DeleteInvoice(int id, int invoiceId)
+        {
+            var response = new Response();
+
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var invoice = invoiceRepository.GetSingle(x => x.Id == invoiceId);
+
+                if(invoice != null)
+                {
+                    invoice.InvoiceStatus = InvoiceStatus.Approved;
+                    invoice.SolfacId = null;
+                    invoiceRepository.UpdateStatus(invoice);
+                    invoiceRepository.UpdateSolfacId(invoice);
+
+                    invoiceRepository.Save();
+
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDeleted, MessageType.Success));
+                }
+                else
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                }
+            }
+            catch
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response<ICollection<Invoice>> GetInvoices(int id)
+        {
+            var response = new Response<ICollection<Invoice>>();
+
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
+
+            if (response.HasErrors()) return response;
+
+            response.Data = invoiceRepository.GetBySolfac(id);
+
+            return response;
+        }
+
+        public Response AddInvoices(int id, IList<int> invoices)
+        {
+            var response = new Response();
+
+            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                foreach (var invoiceToAdd in invoices)
+                {
+                    var invoice = invoiceRepository.GetSingle(x => x.Id == invoiceToAdd);
+
+                    if (invoice != null)
+                    {
+                        invoice.InvoiceStatus = InvoiceStatus.Related;
+                        invoice.SolfacId = id;
+                        invoiceRepository.UpdateStatus(invoice);
+                        invoiceRepository.UpdateSolfacId(invoice);
+                    }
+                    else
+                    {
+                        response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Warning));
+                    }
+                }
+
+                invoiceRepository.Save();
+
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoicesAdded, MessageType.Success));
+            }
+            catch
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }

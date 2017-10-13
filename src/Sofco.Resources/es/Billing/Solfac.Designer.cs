@@ -267,6 +267,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Remito removido correctamente.
+        /// </summary>
+        public static string InvoiceDeleted {
+            get {
+                return ResourceManager.GetString("InvoiceDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a La Solfac ha sido facturada correctamente.
         /// </summary>
         public static string InvoicedSuccess {
@@ -281,6 +290,15 @@ namespace Sofco.Resources.es.Billing {
         public static string InvoicePendingSuccess {
             get {
                 return ResourceManager.GetString("InvoicePendingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Remito/s asociados correctamente.
+        /// </summary>
+        public static string InvoicesAdded {
+            get {
+                return ResourceManager.GetString("InvoicesAdded", resourceCulture);
             }
         }
         

@@ -119,7 +119,7 @@ namespace Sofco.Framework.ValidationHandlers.Billing
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.ProvinceRequired, MessageType.Error));
         }
 
-        public static void ValidateHitos(IList<Hito> hitos, Response response)
+        public static void ValidateHitos(ICollection<Hito> hitos, Response response)
         {
             foreach (var hito in hitos)
             {
