@@ -44,6 +44,7 @@ import { InvoiceStatusAnnulmentComponent } from 'app/views/billing/invoice/workf
 import { UpdateSolfacBillComponent } from 'app/views/billing/solfac/workflow/update-bill/update-solfac-bill.component';
 import { UpdateSolfacCashComponent } from 'app/views/billing/solfac/workflow/update-cash/update-solfac-cash.component';
 import { WidgetModule } from 'app/components/widget/widget.module';
+import { Select2Module } from 'app/components/select2/select2';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -54,7 +55,7 @@ import { WidgetModule } from 'app/components/widget/widget.module';
                  UpdateSolfacCashComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule],
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   

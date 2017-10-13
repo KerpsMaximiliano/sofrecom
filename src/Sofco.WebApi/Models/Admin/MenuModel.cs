@@ -19,5 +19,7 @@ namespace Sofco.WebApi.Models.Admin
 
         public ICollection<MenuModel> Menus { get; set; }
         public bool IsDirector { get; set; }
+        public bool IsDaf { get; set; }
+        public bool IsCdg { get; set; }
     }
 }

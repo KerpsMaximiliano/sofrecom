@@ -11,6 +11,8 @@ namespace Sofco.Core.Services
 
         Result Refresh(UserLoginRefresh userLoginRefresh);
 
-        Response<AzureAdUserResponse> GetUserFromAzureAD(string email);
+        Response<AzureAdUserResponse> GetUserFromAzureADByEmail(string email);
+
+        Response<AzureAdUserListResponse> GetUsersFromAzureADBySurname(string surname);
     }
 }

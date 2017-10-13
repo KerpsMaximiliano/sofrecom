@@ -44,6 +44,7 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceDate = domain.InvoiceDate;
             CashedDate = domain.CashedDate;
             WithTax = domain.WithTax;
+            InvoiceRequired = domain.InvoiceRequired;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -64,13 +65,6 @@ namespace Sofco.WebApi.Models.Billing
             if(domain.Currency != null)
                 CurrencyName = domain.Currency.Text;
 
-            if (domain.Invoice != null)
-            {
-                InvoiceId = domain.Invoice.Id;
-                InvoiceNumber = domain.Invoice.InvoiceNumber;
-                PdfFileName = domain.Invoice.PdfFileName;
-            }
-
             Hitos = new List<HitoViewModel>();
 
             foreach (var hito in domain.Hitos){
@@ -85,9 +79,6 @@ namespace Sofco.WebApi.Models.Billing
         public int DocumentTypeId { get; set; }
         public int ImputationNumber3Id { get; set; }
         public int Id { get; set; }
-        public string PdfFileName { get; set; }
-        public string InvoiceNumber { get; set; }
-        public int InvoiceId { get; set; }
         public string ClientName { get; set; }
         public string BusinessName { get; set; }
         public string CelPhone { get; set; }
@@ -129,6 +120,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public string Comments { get; set; }
         public bool WithTax { get; set; }
+        public bool InvoiceRequired { get; set; }
 
         public Model.Models.Billing.Solfac CreateDomain()
         {
@@ -163,9 +155,6 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Analytic = ImputationNumber1;
             solfac.Service = ServiceName;
             solfac.WithTax = WithTax;
-
-            if (InvoiceId > 0)
-                solfac.InvoiceId = InvoiceId;
 
             foreach (var hitoViewModel in Hitos)
                 solfac.Hitos.Add(hitoViewModel.CreateDomain());

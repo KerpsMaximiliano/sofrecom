@@ -23,8 +23,12 @@ export class UserService {
        return this.http.get(`${this.baseUrl}/users/email/${mail}`).map((res:Response) => res.json());
     }
 
-    search(mail: string) {
-        return this.http.get(`${this.baseUrl}/users/ad/${mail}`).map((res:Response) => res.json());
+    searchByEmail(mail: string) {
+        return this.http.get(`${this.baseUrl}/users/ad/email/${mail}`).map((res:Response) => res.json());
+    }
+
+    searchBySurname(surname: string) {
+        return this.http.get(`${this.baseUrl}/users/ad/surname/${surname}`).map((res:Response) => res.json());
     }
 
     save(model){

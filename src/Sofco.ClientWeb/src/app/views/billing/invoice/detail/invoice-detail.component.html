@@ -25,6 +25,7 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+            <button *ngIf="model.solfacId > 0" class="btn btn-success btn-outline dim" (click)="goToSolfac()"><i class="fa fa-arrow-left"></i> {{'billing.invoice.goToSolfac' | translate }} </button>
             <clone-invoice [invoiceId]="model.id"></clone-invoice>
 
             <div class="btn-right">

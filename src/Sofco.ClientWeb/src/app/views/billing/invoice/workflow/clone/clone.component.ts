@@ -48,7 +48,6 @@ export class CloneInvoiceComponent implements OnDestroy  {
           if(data.messages) this.messageService.showMessages(data.messages);
 
           setTimeout(() => { 
-            sessionStorage.setItem("exportInvoiceExcel", "true");
             this.router.navigate([`/billing/invoice/${data.data.id}/project/${data.data.projectId}`]); 
           }, 500)
       },

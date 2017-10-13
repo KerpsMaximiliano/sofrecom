@@ -11,6 +11,7 @@ namespace Sofco.WebApi.Models.Billing
         public SolfacViewModel()
         {
             Hitos = new List<HitoViewModel>();
+            InvoicesId = new List<int>();
         }
 
         #region properties
@@ -61,7 +62,7 @@ namespace Sofco.WebApi.Models.Billing
         public int ModifiedByUserId { get; set; }
         public DateTime UpdatedDate { get; set; }
 
-        public int InvoiceId { get; set; }
+        public IList<int> InvoicesId { get; set; }
 
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
@@ -70,6 +71,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public bool IsNew { get; set; }
         public bool WithTax { get; set; }
+        public bool Remito { get; set; }
 
         #endregion
 
@@ -105,9 +107,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Analytic = Analytic;
             solfac.Service = Service;
             solfac.WithTax = WithTax;
-
-            if (InvoiceId > 0)
-                solfac.InvoiceId = InvoiceId;
+            solfac.InvoiceRequired = Remito;
 
             foreach (var hitoViewModel in Hitos)
                 solfac.Hitos.Add(hitoViewModel.CreateDomain());
