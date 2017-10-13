@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.DAL.Repositories.Admin
@@ -70,14 +69,14 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool HasDafGroup(string userMail, int dafMailId)
         {
-            return _context.Users
+            return context.Users
                 .Include(x => x.UserGroups)
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.GroupId == dafMailId));
         }
 
         public bool HasCdgGroup(string userMail, int cdgMailId)
         {
-            return _context.Users
+            return context.Users
                  .Include(x => x.UserGroups)
                  .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.GroupId == cdgMailId));
         }

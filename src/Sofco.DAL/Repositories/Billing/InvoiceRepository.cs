@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
@@ -211,12 +210,12 @@ namespace Sofco.DAL.Repositories.Billing
 
         public void UpdateSolfacId(Invoice invoiceToModif)
         {
-            _context.Entry(invoiceToModif).Property("SolfacId").IsModified = true;
+            context.Entry(invoiceToModif).Property("SolfacId").IsModified = true;
         }
 
         public ICollection<Invoice> GetBySolfac(int id)
         {
-            return _context.Invoices.Where(x => x.SolfacId == id).Select(x => new Invoice
+            return context.Invoices.Where(x => x.SolfacId == id).Select(x => new Invoice
             {
                 Id = x.Id,
                 InvoiceNumber = x.InvoiceNumber,
