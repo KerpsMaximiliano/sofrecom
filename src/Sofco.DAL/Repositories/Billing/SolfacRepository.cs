@@ -18,29 +18,29 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Solfac> GetAllWithDocuments()
         {
-            return _context.Solfacs.Include(x => x.DocumentType).ToList();
+            return context.Solfacs.Include(x => x.DocumentType).ToList();
         }
 
         public IList<Hito> GetHitosByProject(string projectId)
         {
-            return _context.Hitos.Where(x => x.ExternalProjectId.Equals(projectId)).ToList();
+            return context.Hitos.Where(x => x.ExternalProjectId.Equals(projectId)).ToList();
         }
 
         public IList<Solfac> GetByProject(string projectId)
         {
-            return _context.Solfacs.Where(x => x.ProjectId == projectId).Include(x => x.DocumentType).ToList();
+            return context.Solfacs.Where(x => x.ProjectId == projectId).Include(x => x.DocumentType).ToList();
         }
 
         public Solfac GetByIdWithUser(int id)
         {
-            return _context.Solfacs
+            return context.Solfacs
                 .Include(x => x.UserApplicant)
                 .SingleOrDefault(x => x.Id == id);
         }
 
         public ICollection<string> GetHitosIdsBySolfacId(int solfacId)
         {
-            return _context.Hitos
+            return context.Hitos
                 .Where(x => x.SolfacId == solfacId)
                 .Select(x => x.ExternalHitoId)
                 .ToList();
@@ -48,7 +48,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public Solfac GetById(int id)
         {
-            return _context.Solfacs
+            return context.Solfacs
                 .Include(x => x.DocumentType)
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
@@ -60,22 +60,22 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<SolfacHistory> GetHistories(int solfacId)
         {
-            return _context.SolfacHistories.Where(x => x.SolfacId == solfacId).Include(x => x.User).ToList().AsReadOnly();
+            return context.SolfacHistories.Where(x => x.SolfacId == solfacId).Include(x => x.User).ToList().AsReadOnly();
         }
 
         public void AddHistory(SolfacHistory history)
         {
-            _context.SolfacHistories.Add(history);
+            context.SolfacHistories.Add(history);
         }
 
         public void SaveAttachment(SolfacAttachment attachment)
         {
-            _context.SolfacAttachments.Add(attachment);
+            context.SolfacAttachments.Add(attachment);
         }
 
         public ICollection<SolfacAttachment> GetFiles(int solfacId)
         {
-            return _context.SolfacAttachments
+            return context.SolfacAttachments
                 .Where(x => x.SolfacId == solfacId)
                 .Select(x => new SolfacAttachment
                 {
@@ -88,17 +88,17 @@ namespace Sofco.DAL.Repositories.Billing
 
         public SolfacAttachment GetFileById(int fileId)
         {
-            return _context.SolfacAttachments.SingleOrDefault(x => x.Id == fileId);
+            return context.SolfacAttachments.SingleOrDefault(x => x.Id == fileId);
         }
 
         public void DeleteFile(SolfacAttachment file)
         {
-            _context.SolfacAttachments.Remove(file);
+            context.SolfacAttachments.Remove(file);
         }
 
         public void UpdateStatus(Solfac solfac)
         {
-            _context.Entry(solfac).Property("Status").IsModified = true;
+            context.Entry(solfac).Property("Status").IsModified = true;
         }
 
         public void UpdateStatusAndCashed(Solfac solfac)
@@ -115,7 +115,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Solfac> SearchByParamsAndUser(SolfacParams parameters, string userMail)
         {
-            IQueryable<Solfac> query = _context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
+            IQueryable<Solfac> query = context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
 
             query = query.Where(x => x.UserApplicant.Email == userMail);
 
@@ -126,7 +126,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Solfac> SearchByParams(SolfacParams parameters)
         {
-            IQueryable<Solfac> query = _context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
+            IQueryable<Solfac> query = context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
 
             query = ApplyFilters(parameters, query);
 
@@ -161,25 +161,25 @@ namespace Sofco.DAL.Repositories.Billing
 
         public void UpdateInvoice(Solfac solfac)
         {
-            _context.Entry(solfac).Property("InvoiceCode").IsModified = true;
-            _context.Entry(solfac).Property("InvoiceDate").IsModified = true;
+            context.Entry(solfac).Property("InvoiceCode").IsModified = true;
+            context.Entry(solfac).Property("InvoiceDate").IsModified = true;
         }
 
         public void UpdateCash(Solfac solfac)
         {
-            _context.Entry(solfac).Property("CashedDate").IsModified = true;
+            context.Entry(solfac).Property("CashedDate").IsModified = true;
         }
 
         public bool InvoiceCodeExist(string invoiceCode)
         {
-            return _context.Solfacs.Any(x => x.InvoiceCode == invoiceCode);
+            return context.Solfacs.Any(x => x.InvoiceCode == invoiceCode);
         }
 
         public IList<Hito> GetHitosByExternalIds(List<Guid> externalIds)
         {
             var externalIdsText = externalIds.Select(s => s.ToString());
 
-            return _context.Hitos.Where(x => externalIdsText.Contains(x.ExternalHitoId)).ToList();
+            return context.Hitos.Where(x => externalIdsText.Contains(x.ExternalHitoId)).ToList();
         }
     }
 }

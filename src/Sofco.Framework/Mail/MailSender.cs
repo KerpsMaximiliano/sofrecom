@@ -80,7 +80,7 @@ namespace Sofco.Framework.Mail
 
         private void SendMessages(List<MimeMessage> messages)
         {
-            if (environment.IsDevelopment())
+            if (environment.IsDevelopment() || environment.IsEnvironment("localhost"))
             {
                 foreach(var message in messages)
                 {

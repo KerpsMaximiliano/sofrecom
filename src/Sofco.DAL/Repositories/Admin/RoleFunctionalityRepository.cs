@@ -17,12 +17,12 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistById(int roleId, int functionalityId)
         {
-            return _context.RoleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId);
+            return context.RoleFunctionality.Any(x => x.RoleId == roleId && x.FunctionalityId == functionalityId);
         }
 
         public IList<Functionality> GetFunctionalitiesByRoles(IEnumerable<int> roleIds)
         {
-            return _context.RoleFunctionality
+            return context.RoleFunctionality
                     .Include(x => x.Functionality)
                     .Where(x => roleIds.Contains(x.RoleId) && x.Role != null)
                     .Select(x => x.Functionality)

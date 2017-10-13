@@ -1,24 +1,23 @@
 ﻿using Sofco.Core.Services.Reports;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Sofco.Model.Models.Billing;
-using Sofco.Core.DAL.Billing;
+using Sofco.Common.Domains;
+using Sofco.Core.DAL.Report;
+using Sofco.Model.Models.Report;
 
 namespace Sofco.Service.Implementations.Reports
 {
     public class SolfacReportService : ISolfacReportService
     {
-        private readonly ISolfacRepository solfacRepository;
+        private readonly ISolfacReportRepository solfacReportRepository;
 
-        public SolfacReportService(ISolfacRepository solfacRepository)
+        public SolfacReportService(ISolfacReportRepository solfacReportRepository)
         {
-            this.solfacRepository = solfacRepository;
+            this.solfacReportRepository = solfacReportRepository;
         }
-        public List<Solfac> Get(DateTime dateSince, DateTime dateTo)
+        public Result<List<SolfacReport>> Get(DateTime dateSince, DateTime dateTo)
         {
-            throw new NotImplementedException();
+            return new Result<List<SolfacReport>>(solfacReportRepository.Get());
         }
     }
 }

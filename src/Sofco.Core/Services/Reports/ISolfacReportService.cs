@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Models.Billing;
+using Sofco.Common.Domains;
+using Sofco.Model.Models.Report;
 
 namespace Sofco.Core.Services.Reports
 {
     public interface ISolfacReportService
     {
-        List<Solfac> Get(DateTime dateSince, DateTime dateTo);
+        Result<List<SolfacReport>> Get(DateTime dateSince, DateTime dateTo);
     }
 }

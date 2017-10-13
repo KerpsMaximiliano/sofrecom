@@ -18,7 +18,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistById(int id)
         {
-            return _context.Set<User>().Any(x => x.Id == id);
+            return context.Set<User>().Any(x => x.Id == id);
         }
 
         /// <summary>
@@ -26,19 +26,19 @@ namespace Sofco.DAL.Repositories.Admin
         /// </summary>
         public IList<User> GetAllActivesReadOnly()
         {
-            return _context.Set<User>().Where(x => x.Active).ToList().AsReadOnly();
+            return context.Set<User>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public bool HasDirectorGroup(string userMail)
         {
-            return _context.Users
+            return context.Users
                 .Include(x => x.UserGroups)
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Description.Equals("Directores")));
         }
 
         public Group GetGroup(int userId)
         {
-            return _context.UserGroup
+            return context.UserGroup
                 .Where(x => x.UserId == userId)
                 .Include(x => x.User)
                 .Include(x => x.Group)
@@ -48,7 +48,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public IList<User> GetAllFullReadOnly()
         {
-            return _context.Set<User>()
+            return context.Set<User>()
                 .Include(x => x.UserGroups)
                     .ThenInclude(s => s.Group)
                 .ToList()
@@ -57,7 +57,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public User GetSingleWithUserGroup(Expression<Func<User, bool>> predicate)
         {
-            return _context.Set<User>()
+            return context.Set<User>()
               .Include(x => x.UserGroups)
                     .ThenInclude(s => s.Group)
               .SingleOrDefault(predicate);
@@ -65,7 +65,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistByMail(string mail)
         {
-            return _context.Users.Any(x => x.Email == mail);
+            return context.Users.Any(x => x.Email == mail);
         }
     }
 }

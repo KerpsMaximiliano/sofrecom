@@ -16,22 +16,22 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistById(int id)
         {
-            return _context.Set<Functionality>().Any(x => x.Id == id);
+            return context.Set<Functionality>().Any(x => x.Id == id);
         }
 
         public IList<Functionality> GetAllActivesReadOnly()
         {
-            return _context.Set<Functionality>().Where(x => x.Active).ToList().AsReadOnly();
+            return context.Set<Functionality>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public IList<Functionality> GetFuntionalitiesByModule(IEnumerable<int> modules)
         {
-            return _context.Functionalities.Where(x => modules.Contains(x.ModuleId)).ToList();
+            return context.Functionalities.Where(x => modules.Contains(x.ModuleId)).ToList();
         }
 
         public IList<RoleFunctionality> GetFuntionalitiesByRole(IEnumerable<int> roles)
         {
-            return _context.RoleFunctionality
+            return context.RoleFunctionality
                 .Where(x => roles.Contains(x.RoleId))
                 .Include(x => x.Functionality)
                 .ThenInclude(x => x.Module)
