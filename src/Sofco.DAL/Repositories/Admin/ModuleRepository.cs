@@ -17,7 +17,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistById(int id)
         {
-            return _context.Set<Module>().Any(x => x.Id == id);
+            return context.Set<Module>().Any(x => x.Id == id);
         }
 
         /// <summary>
@@ -25,17 +25,17 @@ namespace Sofco.DAL.Repositories.Admin
         /// </summary>
         public IList<Module> GetAllActivesReadOnly()
         {
-            return _context.Set<Module>().Where(x => x.Active).ToList().AsReadOnly();
+            return context.Set<Module>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public IList<Module> GetAllWithFunctionalitiesReadOnly()
         {
-            return _context.Modules.Include(x => x.Functionalities).ToList().AsReadOnly();
+            return context.Modules.Include(x => x.Functionalities).ToList().AsReadOnly();
         }
 
         public Module GetSingleWithFunctionalities(Expression<Func<Module, bool>> predicate)
         {
-            return _context.Set<Module>()
+            return context.Set<Module>()
                 .Include(x => x.Functionalities)
                 .SingleOrDefault(predicate);
         }

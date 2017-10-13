@@ -28,6 +28,7 @@ import { LoginComponent } from "app/views/appviews/login/login.component";
 import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
 import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
 import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
+import { SolfacReportComponent } from './views/report/solfac/solfac.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -93,6 +94,18 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
+
+  {
+    path: 'reports', component: BasicLayoutComponent,
+    children: [
+      { 
+        path: 'solfacs', children:[
+          { path:"", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
+        ]
+      }
+    ]
+  },
+      
   {
     path: '', component: BasicLayoutComponent,
     children: [

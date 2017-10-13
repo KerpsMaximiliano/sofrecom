@@ -16,7 +16,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool ExistById(int id)
         {
-            return _context.Roles.Any(x => x.Id == id);
+            return context.Roles.Any(x => x.Id == id);
         }
 
         /// <summary>
@@ -24,12 +24,12 @@ namespace Sofco.DAL.Repositories.Admin
         /// </summary>
         public IList<Role> GetAllActivesReadOnly()
         {
-            return _context.Set<Role>().Where(x => x.Active).ToList().AsReadOnly();
+            return context.Set<Role>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public Role GetDetail(int id)
         {
-            return _context.Set<Role>()
+            return context.Set<Role>()
                     .Include(x => x.Groups)
                     .Include(x => x.RoleFunctionality)
                         .ThenInclude(x => x.Functionality)
@@ -39,7 +39,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
         {
-            return _context.Groups
+            return context.Groups
                     .Include(x => x.Role)
                     .Where(x => groupIds.Contains(x.Id) && x.Role != null)
                     .Select(x => x.Role)

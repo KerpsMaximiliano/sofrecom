@@ -12,8 +12,8 @@ namespace Sofco.DAL.Repositories.Common
     {
         #region Fields
 
-        protected readonly SofcoContext _context;
-        protected IDbContextTransaction _contextTransaction;
+        protected readonly SofcoContext context;
+        protected IDbContextTransaction contextTransaction;
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace Sofco.DAL.Repositories.Common
 
         public BaseRepository(SofcoContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public IList<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return context.Set<T>().ToList();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public virtual IList<T> GetAllReadOnly()
         {
-            return _context.Set<T>().ToList().AsReadOnly();
+            return context.Set<T>().ToList().AsReadOnly();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Sofco.DAL.Repositories.Common
         /// <returns></returns>
         public T GetSingle(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().SingleOrDefault(predicate);
+            return context.Set<T>().SingleOrDefault(predicate);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Insert(T entity)
         {
-            _context.Set<T>().Add(entity);
+            context.Set<T>().Add(entity);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Insert(IList<T> entities)
         {
-            _context.Set<T>().AddRange(entities);
+            context.Set<T>().AddRange(entities);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Update(T entity)
         {
-            _context.Set<T>().Update(entity);
+            context.Set<T>().Update(entity);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Update(IList<T> entities)
         {
-            _context.Set<T>().UpdateRange(entities);
+            context.Set<T>().UpdateRange(entities);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Sofco.DAL.Repositories.Common
             ILogicalDelete logicalDelete = entity as ILogicalDelete;
             if (logicalDelete == null)
             {
-                _context.Set<T>().Remove(entity);
+                context.Set<T>().Remove(entity);
             }
             else
             {
@@ -116,7 +116,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public IList<T> Where(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().Where(predicate).ToList();
+            return context.Set<T>().Where(predicate).ToList();
         }
 
         /// <summary>
@@ -124,26 +124,26 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Save()
         {
-            _context.SaveChanges();
+            context.SaveChanges();
         }
 
         public void BeginTransaction()
         {
-            _contextTransaction = _context.Database.BeginTransaction();
+            contextTransaction = context.Database.BeginTransaction();
         }
 
         public void Rollback()
         {
-            if (_contextTransaction != null)
-                _contextTransaction.Rollback();
+            if (contextTransaction != null)
+                contextTransaction.Rollback();
         }
 
         public void Commit(string nombreUsuario)
         {
             Save();
-            if (_contextTransaction != null)
+            if (contextTransaction != null)
             {
-                _contextTransaction.Commit();
+                contextTransaction.Commit();
             }
         }
 

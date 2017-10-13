@@ -345,5 +345,13 @@
     "comments": "Comentarios",
     "selectAnOption": "Seleccione una opción",
     "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
-    "filterByDates": "Filtrar por fechas"
+    "filterByDates": "Filtrar por fechas",
+    "report":{
+        "title": "Reporte",
+        "solfacs": {
+            "title": "Solfac"
+        },
+        "dateSince": "Desde",
+        "dateTo": "Hasta"
+    }
 }  

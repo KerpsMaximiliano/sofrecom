@@ -1,8 +1,8 @@
 ﻿using System;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Sofco.Model.Enums;
+using Sofco.Model.Utils;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Model.Models.Billing

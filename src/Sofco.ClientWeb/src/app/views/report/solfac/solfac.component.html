@@ -1,0 +1,38 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'report.solfacs.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'report.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'report.solfacs.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'report.dateSince' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'report.dateTo' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

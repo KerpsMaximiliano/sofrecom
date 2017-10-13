@@ -17,12 +17,12 @@ namespace Sofco.DAL.Repositories.Admin
 
         public bool DescriptionExist(string description, int id)
         {
-            return _context.Groups.Any(x => x.Description == description && x.Id != id);
+            return context.Groups.Any(x => x.Description == description && x.Id != id);
         }
 
         public bool ExistById(int id)
         {
-            return _context.Set<Group>().Any(x => x.Id == id);
+            return context.Set<Group>().Any(x => x.Id == id);
         }
 
         /// <summary>
@@ -30,12 +30,12 @@ namespace Sofco.DAL.Repositories.Admin
         /// </summary>
         public IList<Group> GetAllActivesReadOnly()
         {
-            return _context.Set<Group>().Where(x => x.Active).ToList().AsReadOnly();
+            return context.Set<Group>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public IList<Group> GetAllFullReadOnly()
         {
-            return _context.Set<Group>()
+            return context.Set<Group>()
                 .Include(x => x.Role)
                 .Include(x => x.UserGroups)
                     .ThenInclude(s => s.User)
@@ -44,7 +44,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public Group GetSingleFull(Expression<Func<Group, bool>> predicate)
         {
-            return _context.Set<Group>()
+            return context.Set<Group>()
                 .Include(x => x.Role)
                 .Include(x => x.UserGroups)
                    .ThenInclude(s => s.User)
@@ -53,14 +53,14 @@ namespace Sofco.DAL.Repositories.Admin
 
         public Group GetSingleWithRole(Expression<Func<Group, bool>> predicate)
         {
-            return _context.Set<Group>()
+            return context.Set<Group>()
                 .Include(x => x.Role)
                 .SingleOrDefault(predicate);
         }
 
         public Group GetSingleWithUser(Expression<Func<Group, bool>> predicate)
         {
-            return _context.Set<Group>()
+            return context.Set<Group>()
               .Include(x => x.UserGroups)
                     .ThenInclude(s => s.User)
               .SingleOrDefault(predicate);

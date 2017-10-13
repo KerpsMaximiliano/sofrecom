@@ -45,6 +45,11 @@ namespace Sofco.UnitTest.Services.Jobs
                 SiteUrl = "sofcoar.com.ar"
             });
 
+            solfacOptionsMock.SetupGet(s => s.Value).Returns(new SolfacJobSetting
+            {
+                DaysToExpire = 5
+            });
+
             sut = new SolfacJobServiceTesteable(solfacRepositoryMock.Object,
                 crmInvoiceServiceMock.Object,
                 mailSenderMock.Object,
