@@ -33,16 +33,16 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [value]="project?.incomes"></widget-currency>
+            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [value]="project?.incomes" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
         </div>
         <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [value]="incomesPending"></widget-currency>
+            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [value]="incomesPending" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
         </div>
         <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [value]="incomesBilled"></widget-currency>
+            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [value]="incomesBilled" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
         </div>
         <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [value]="incomesCashed"></widget-currency>
+            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [value]="incomesCashed" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
         </div>
     </div>
 

@@ -67,5 +67,19 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return _context.Users.Any(x => x.Email == mail);
         }
+
+        public bool HasDafGroup(string userMail, int dafMailId)
+        {
+            return _context.Users
+                .Include(x => x.UserGroups)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.GroupId == dafMailId));
+        }
+
+        public bool HasCdgGroup(string userMail, int cdgMailId)
+        {
+            return _context.Users
+                 .Include(x => x.UserGroups)
+                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.GroupId == cdgMailId));
+        }
     }
 }

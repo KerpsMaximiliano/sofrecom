@@ -116,7 +116,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.Add(domain);
+            var response = solfacService.Add(domain, model.InvoicesId);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -152,7 +152,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.Add(domain);
+            var response = solfacService.Add(domain, model.InvoicesId);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -236,6 +236,17 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult Delete(int id)
         {
             var response = solfacService.Delete(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}/invoice/{invoiceId}")]
+        public IActionResult DeleteInvoiceOfSolfac(int id, int invoiceId)
+        {
+            var response = solfacService.DeleteInvoice(id, invoiceId);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -331,6 +342,28 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult DeleteFile(int id)
         {
             var response = solfacService.DeleteFile(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("{id}/invoices")]
+        public IActionResult GetInvoices(int id)
+        {
+            var response = solfacService.GetInvoices(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response.Data);
+        }
+
+        [HttpPost]
+        [Route("{id}/invoices")]
+        public IActionResult AddInvoices(int id, [FromBody] IList<int> invoices)
+        {
+            var response = solfacService.AddInvoices(id, invoices);
 
             if (response.HasErrors()) return BadRequest(response);
 

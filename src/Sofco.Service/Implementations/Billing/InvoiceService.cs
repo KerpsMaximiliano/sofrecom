@@ -276,11 +276,13 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public ICollection<Invoice> Search(InvoiceParams parameters, string userMail)
+        public ICollection<Invoice> Search(InvoiceParams parameters, string userMail, EmailConfig emailConfig)
         {
             var isDirector = userRepository.HasDirectorGroup(userMail);
+            var isDaf = userRepository.HasDafGroup(userMail, emailConfig.DafMail);
+            var isCdg = userRepository.HasCdgGroup(userMail, emailConfig.CdgMail);
 
-            if (isDirector)
+            if (isDirector || isDaf || isCdg)
             {
                 return invoiceRepository.SearchByParams(parameters);
             }
@@ -303,7 +305,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoice = invoiceRepository.GetById(id);
+            var invoice = invoiceRepository.GetSingle(x => x.Id == id);
 
             if(invoice == null)
             {

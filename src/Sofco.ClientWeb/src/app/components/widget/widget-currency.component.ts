@@ -9,4 +9,5 @@ export class WidgetCurrencyComponent {
     @Input() style;
     @Input() label;
     @Input() value;
+    @Input() symbol;
 }

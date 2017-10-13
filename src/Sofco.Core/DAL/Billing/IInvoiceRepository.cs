@@ -22,5 +22,7 @@ namespace Sofco.Core.DAL.Billing
         ICollection<Invoice> SearchByParamsAndUser(InvoiceParams parameters, string userMail);
         void AddHistory(InvoiceHistory history);
         ICollection<InvoiceHistory> GetHistories(int id);
+        void UpdateSolfacId(Invoice invoiceToModif);
+        ICollection<Invoice> GetBySolfac(int id);
     }
 }

@@ -8,7 +8,7 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ISolfacService
     {
-        Response<Solfac> Add(Solfac solfac);
+        Response<Solfac> Add(Solfac solfac, IList<int> invoicesId);
         IList<Solfac> Search(SolfacParams parameter, string userMail);
         IList<Hito> GetHitosByProject(string projectId);
         IList<Solfac> GetByProject(string projectId);
@@ -24,5 +24,8 @@ namespace Sofco.Core.Services.Billing
         Response DeleteFile(int id);
         Response UpdateBill(int id, SolfacStatusParams solfacStatusParams);
         Response UpdateCashedDate(int id, SolfacStatusParams parameters);
+        Response DeleteInvoice(int id, int invoiceId);
+        Response<ICollection<Invoice>> GetInvoices(int id);
+        Response AddInvoices(int id, IList<int> invoices);
     }
 }

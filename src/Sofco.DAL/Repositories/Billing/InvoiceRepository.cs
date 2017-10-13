@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
@@ -26,7 +27,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public Invoice GetById(int id)
         {
-            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User);
+            IQueryable<Invoice> query = _context.Invoices.Include(x => x.User).Include(x => x.Solfac);
                 
             query = GetProperties(query);
 
@@ -123,7 +124,8 @@ namespace Sofco.DAL.Repositories.Billing
                 UserId = x.UserId,
                 User = x.User,
                 CustomerId = x.CustomerId,
-                ServiceId = x.ServiceId
+                ServiceId = x.ServiceId,
+                Solfac = x.Solfac
             });
         }
 
@@ -205,6 +207,24 @@ namespace Sofco.DAL.Repositories.Billing
         public ICollection<InvoiceHistory> GetHistories(int id)
         {
             return _context.InvoiceHistories.Where(x => x.InvoiceId == id).Include(x => x.User).ToList().AsReadOnly();
+        }
+
+        public void UpdateSolfacId(Invoice invoiceToModif)
+        {
+            _context.Entry(invoiceToModif).Property("SolfacId").IsModified = true;
+        }
+
+        public ICollection<Invoice> GetBySolfac(int id)
+        {
+            return _context.Invoices.Where(x => x.SolfacId == id).Select(x => new Invoice
+            {
+                Id = x.Id,
+                InvoiceNumber = x.InvoiceNumber,
+                InvoiceStatus = x.InvoiceStatus,
+                PdfFileName = x.PdfFileName,
+                PdfFileCreatedDate = x.PdfFileCreatedDate,
+                SolfacId = x.SolfacId
+            }).ToList();
         }
     }
 }

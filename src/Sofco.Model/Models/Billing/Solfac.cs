@@ -14,6 +14,7 @@ namespace Sofco.Model.Models.Billing
             Hitos = new Collection<Hito>();
             Histories = new Collection<SolfacHistory>();
             StartDate = DateTime.Now;
+            Invoices = new Collection<Invoice>();
         }
         
         public string BusinessName { get; set; }
@@ -37,14 +38,11 @@ namespace Sofco.Model.Models.Billing
         public short TimeLimit { get; set; }
         public string Analytic { get; set; }
 
-        public IList<Hito> Hitos { get; set; }
+        public ICollection<Hito> Hitos { get; set; }
         public ICollection<SolfacHistory> Histories { get; set; }
 
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
-
-        public int? InvoiceId { get; set; }
-        public Invoice Invoice { get; set; }
 
         public int DocumentTypeId { get; set; }
         public DocumentType DocumentType { get; set; }
@@ -71,6 +69,9 @@ namespace Sofco.Model.Models.Billing
         public string ServiceId { get; set; }
         public string Service { get; set; }
 
-        public List<SolfacAttachment> Attachments { get; set; }
+        public ICollection<Invoice> Invoices { get; set; }
+        public ICollection<SolfacAttachment> Attachments { get; set; }
+
+        public bool InvoiceRequired { get; set; }
     }
 }

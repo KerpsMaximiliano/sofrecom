@@ -41,7 +41,10 @@
             "status": "Status",
             "selectGroups": "Select the groups to be assigned to the user:",
             "deleteGroup": "¿Are you sure you want to delete the group?",
-            "addGroup": "Groups Assignment"
+            "addGroup": "Groups Assignment",
+            "searchByMail": "Search by Mail",
+            "searchBySurname": "Search by Surname",
+            "userNotFoundInAd": "User found in Active Directory"
         },
         "GROUPS": {
             "TITLE": "Groups",
@@ -113,9 +116,9 @@
                 "analytic": "Analytic",
                 "purchaseOrder": "Purchase Order",
                 "incomes": "Estimated Incomes",
-                "incomesBilled": "Billed Incomes",
+                "incomesBilled": "Pending to Cash",
                 "incomesCashed": "Cashed Incomes",
-                "incomesPending": "Pending Incomes",
+                "incomesPending": "Pending to Bill",
                 "startDate": "Start Date",
                 "endDate": "End Date",
                 "oportunity": "Oportunity",
@@ -195,6 +198,7 @@
             "cashedDate": "Cash Date",
             "dateSince": "Date since",
             "dateTo": "Date to",
+            "invoicesRelated": "Invoices Related",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -266,7 +270,8 @@
             "createAndExport": "Create and Export",
             "pdfAddedSucces": "PDF has successfully been imported",
             "excelAddedSucces": "Excel has successfully been imported",
-            "invoiceNumberRequired": "The invoice number is required"
+            "invoiceNumberRequired": "The invoice number is required",
+            "goToSolfac": "Go to Invoice Request"
         }
     },
     "HOME": {

@@ -54,7 +54,6 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.UserApplicant)
                 .Include(x => x.ImputationNumber)
                 .Include(x => x.Hitos)
-                .Include(x => x.Invoice)
                 .SingleOrDefault(x => x.Id == id);
         }
 

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Models.Admin;
 using Sofco.WebApi.Extensions;
+using Sofco.Core.Config;
+using Microsoft.Extensions.Options;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -12,11 +14,13 @@ namespace Sofco.WebApi.Controllers.Admin
     {
         private readonly IMenuService _menuService;
         private readonly IUserService _userService;
+        private readonly EmailConfig _emailConfig;
 
-        public MenuController(IMenuService menuService, IUserService userService)
+        public MenuController(IMenuService menuService, IUserService userService, IOptions<EmailConfig> emailConfig)
         {
             _menuService = menuService;
             _userService = userService;
+            _emailConfig = emailConfig.Value;
         }
 
         [HttpGet("{userName}")]
@@ -42,6 +46,8 @@ namespace Sofco.WebApi.Controllers.Admin
             }
 
             response.IsDirector = _userService.HasDirectorGroup(this.GetUserMail());
+            response.IsDaf = _userService.HasDafGroup(this.GetUserMail(), _emailConfig.DafMail);
+            response.IsCdg = _userService.HasCdgGroup(this.GetUserMail(), _emailConfig.CdgMail);
 
             return Ok(response);
         }

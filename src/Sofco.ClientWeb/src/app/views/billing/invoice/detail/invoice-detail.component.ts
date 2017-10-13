@@ -72,25 +72,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 sessionStorage.setItem("customerName", this.model.accountName);
             },
             err => this.errorHandlerService.handleErrors(err));
-
-            var exportInvoiceExcel = sessionStorage.getItem("exportInvoiceExcel");
-            if(exportInvoiceExcel && exportInvoiceExcel == "true"){
-                this.exportToExcelTemplate();
-                sessionStorage.removeItem("exportInvoiceExcel");
-            }
         });
     }
 
     ngOnDestroy() {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getSubscrip) this.paramsSubscrip.unsubscribe();
-    }
-
-    exportToExcelTemplate(){
-        this.service.export(this.model).subscribe(file => {
-            FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
-        },
-        err => this.errorHandlerService.handleErrors(err));
     }
 
     configUploader(){
@@ -229,5 +216,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(event.invoiceNumber) this.model.invoiceNumber = event.invoiceNumber;
 
         if(event.reloadUploader && event.reloadUploader == true) this.configUploader();
+    }
+
+    goToSolfac(){
+        this.router.navigate(['/billing/solfac/' + this.model.solfacId])
     }
 } 

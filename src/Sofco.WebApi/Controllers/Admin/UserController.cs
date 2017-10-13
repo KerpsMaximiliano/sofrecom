@@ -132,18 +132,28 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model);
         }
 
-        [HttpGet("ad/{mail}")]
-        public IActionResult Exist(string mail)
+        [HttpGet("ad/email/{mail}")]
+        public IActionResult AdGetByEmail(string mail)
         {
             var response = _userService.CheckIfExist(mail);
 
             if (response.HasErrors()) return BadRequest(response);
 
-            var azureResponse = loginService.GetUserFromAzureAD(mail);
+            var azureResponse = loginService.GetUserFromAzureADByEmail(mail);
 
             if (azureResponse.HasErrors()) return BadRequest(azureResponse);
 
             return Ok(azureResponse);
+        }
+
+        [HttpGet("ad/surname/{surname}")]
+        public IActionResult AdGetBySurname(string surname)
+        {
+            var azureResponse = loginService.GetUsersFromAzureADBySurname(surname);
+
+            if (azureResponse.HasErrors()) return BadRequest(azureResponse);
+
+            return Ok(azureResponse.Data);
         }
 
         [HttpPost]
@@ -153,9 +163,13 @@ namespace Sofco.WebApi.Controllers.Admin
 
             if (errors.HasErrors()) return BadRequest(errors);
 
-            var azureResponse = loginService.GetUserFromAzureAD(model.Email);
+            var azureResponse = loginService.GetUserFromAzureADByEmail(model.Email);
 
             if (azureResponse.HasErrors()) return BadRequest(azureResponse);
+
+            var userAlreadyExistResponse = _userService.CheckIfExist(model.Email);
+
+            if (userAlreadyExistResponse.HasErrors()) return BadRequest(userAlreadyExistResponse);
 
             var domain = model.CreateDomain();
 

@@ -20,6 +20,7 @@ export class Invoice {
     public invoiceNumber: string;
     public serviceId: string;
     public customerId: string;
+    public solfacId: number;
 
     constructor(){}
 }

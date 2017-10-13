@@ -12,6 +12,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from 'app/services/common/i18n.service';
+import { CustomerService } from 'app/services/billing/customer.service';
 declare var $: any;
 
 @Component({
@@ -46,6 +47,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
                 public menuService: MenuService,
+                private customerService: CustomerService,
                 private i18nService: I18nService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService) {}
@@ -58,20 +60,38 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.project = JSON.parse(sessionStorage.getItem("projectDetail"));
         this.customer = JSON.parse(sessionStorage.getItem("customer"));
 
-        this.model.accountName = this.customer.nombre;
-        this.model.address = this.customer.address;
-        this.model.zipcode = this.customer.postalCode;
-        this.model.city = this.customer.city;
-        this.model.province = this.customer.province;
-        this.model.country = this.customer.country;
-        this.model.cuit = this.customer.cuit;
+        if(this.customer){
+            this.model.customerId = this.customer.id;
+            this.model.accountName = this.customer.nombre;
+            this.model.address = this.customer.address;
+            this.model.zipcode = this.customer.postalCode;
+            this.model.city = this.customer.city;
+            this.model.province = this.customer.province;
+            this.model.country = this.customer.country;
+            this.model.cuit = this.customer.cuit;
+        }
+        else{
+            this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
+                this.model.customerId = data.id;
+                this.model.accountName = data.nombre;
+                this.model.address = data.address;
+                this.model.zipcode = data.postalCode;
+                this.model.city = data.city;
+                this.model.province = data.province;
+                this.model.country = data.country;
+                this.model.cuit = data.cuit;
+
+                sessionStorage.setItem("customer", JSON.stringify(data));
+              },
+              err => this.errorHandlerService.handleErrors(err));
+        }
+
         this.model.project = this.project.nombre;
         this.model.projectId = this.projectId;
         this.model.analytic = this.project.analytic;
         this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.SendPending];
         this.model.service = sessionStorage.getItem("serviceName");
         this.model.serviceId = sessionStorage.getItem("serviceId");
-        this.model.customerId = this.customer.id;
     }
 
     ngOnDestroy() {

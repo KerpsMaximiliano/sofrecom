@@ -18,7 +18,7 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> GetPdf(int invoiceId);
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
-        ICollection<Invoice> Search(InvoiceParams parameters, string userMail);
+        ICollection<Invoice> Search(InvoiceParams parameters, string userMail, EmailConfig emailConfig);
         Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters);
         Response<Invoice> Clone(int id);
         ICollection<InvoiceHistory> GetHistories(int id);

@@ -137,7 +137,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     showUserApplicantFilter(){
-        return this.menuService.userIsDirector;
+        return this.menuService.userIsDirector || this.menuService.userIsDaf || this.menuService.userIsCdg;
     }
 
     search(){
