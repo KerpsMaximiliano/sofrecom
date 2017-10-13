@@ -16,7 +16,7 @@ namespace Sofco.Service.Implementations.Jobs
 {
     public class SolfacJobService : ISolfacJobService
     {
-        const int DaysToExpire = 5;
+        const int DaysToExpire = 30;
         const string DateFormat = "dd/MM/yyyy";
         const string Subject = "HITOS sin Solfac";
 

@@ -1,4 +1,5 @@
 import { BillingModule } from './views/billing/billing.module';
+import { ReportModule } from './views/report/report.module';
 import { AuthGuard } from './guards/auth.guard';
 import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -59,7 +60,8 @@ export function HttpLoaderFactory(http: Http) {
         useFactory: HttpLoaderFactory,
         deps: [Http]
       }
-    })
+    }),
+    ReportModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

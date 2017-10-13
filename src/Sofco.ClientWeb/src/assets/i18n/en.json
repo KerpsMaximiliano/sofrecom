@@ -339,5 +339,13 @@
     "comments": "Comments",
     "selectAnOption": "Select an option",
     "dateToLessThanSince": "Date to cannot be less than date since",
-    "filterByDates": "Filter by dates"
+    "filterByDates": "Filter by dates",
+    "report":{
+        "title": "Report",
+        "solfacs": {
+            "title": "Solfac"
+        },
+        "dateSince": "Date since",
+        "dateTo": "Date to"
+    }
 }

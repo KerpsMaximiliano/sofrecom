@@ -71,7 +71,14 @@ export class MenuService {
 
        return false;
     }
-    
+
+    hasReportMenu(){
+        if(this.hasModule("REPOR")){
+             return true;
+        }
+         return false;
+     }
+ 
     getDatePickerOptions(){
         var options: DatepickerOptions = {
             minYear: 1970,
