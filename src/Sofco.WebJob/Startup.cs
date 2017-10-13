@@ -12,6 +12,7 @@ using Sofco.WebJob.Filters;
 using Sofco.WebJob.Security;
 using Sofco.WebJob.Infrastructures;
 using Sofco.Core.Config;
+using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.WebJob
 {
@@ -43,6 +44,7 @@ namespace Sofco.WebJob
 
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
+            services.Configure<SolfacJobSetting>(Configuration.GetSection("SolfacJob"));
 
             var containerBuilder = new ContainerBuilder();
 

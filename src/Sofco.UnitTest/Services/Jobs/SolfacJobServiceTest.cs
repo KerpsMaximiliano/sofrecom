@@ -12,6 +12,7 @@ using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Model.Models.Billing;
 using Sofco.Service.Implementations.Jobs;
+using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.UnitTest.Services.Jobs
 {
@@ -28,6 +29,7 @@ namespace Sofco.UnitTest.Services.Jobs
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<IMailSender> mailSenderMock;
         private Mock<IOptions<EmailConfig>> emailOptionsMock;
+        private Mock<IOptions<SolfacJobSetting>> solfacOptionsMock;
 
         [SetUp]
         public void Setup()
@@ -36,6 +38,7 @@ namespace Sofco.UnitTest.Services.Jobs
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             mailSenderMock = new Mock<IMailSender>();
             emailOptionsMock = new Mock<IOptions<EmailConfig>>();
+            solfacOptionsMock = new Mock<IOptions<SolfacJobSetting>>();
 
             emailOptionsMock.SetupGet(s => s.Value).Returns(new EmailConfig
             {
@@ -45,7 +48,8 @@ namespace Sofco.UnitTest.Services.Jobs
             sut = new SolfacJobServiceTesteable(solfacRepositoryMock.Object,
                 crmInvoiceServiceMock.Object,
                 mailSenderMock.Object,
-                emailOptionsMock.Object);
+                emailOptionsMock.Object,
+                solfacOptionsMock.Object);
         }
 
         [Test]
@@ -87,8 +91,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
     internal class SolfacJobServiceTesteable : SolfacJobService
     {
-        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, ICrmInvoiceService crmInvoiceService, IMailSender mailSender, IOptions<EmailConfig> emailConfigOptions) 
-            : base(solfacRepository, crmInvoiceService, mailSender, emailConfigOptions)
+        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, ICrmInvoiceService crmInvoiceService, IMailSender mailSender, IOptions<EmailConfig> emailConfigOptions, IOptions<SolfacJobSetting> solfacJobOptions) 
+            : base(solfacRepository, crmInvoiceService, mailSender, emailConfigOptions, solfacJobOptions)
         {
         }
 
