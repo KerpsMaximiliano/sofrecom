@@ -11,29 +11,35 @@ using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Resources;
 using Sofco.Core.Config;
+using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs
 {
     public class SolfacJobService : ISolfacJobService
     {
-        const int DaysToExpire = 30;
         const string DateFormat = "dd/MM/yyyy";
         const string Subject = "HITOS sin Solfac";
+
+        private int DaysToExpire = 5;
 
         private readonly ISolfacRepository solfacRepository;
         private readonly ICrmInvoiceService crmInvoiceService;
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
+        private readonly SolfacJobSetting solfacJobSetting;
 
         public SolfacJobService(ISolfacRepository solfacRepository,
             ICrmInvoiceService crmInvoiceService,
             IMailSender mailSender,
-            IOptions<EmailConfig> emailConfigOptions)
+            IOptions<EmailConfig> emailConfigOptions,
+            IOptions<SolfacJobSetting> solfacJobOptions)
         {
             this.solfacRepository = solfacRepository;
             this.crmInvoiceService = crmInvoiceService;
             this.mailSender = mailSender;
             emailConfig = emailConfigOptions.Value;
+            solfacJobSetting = solfacJobOptions.Value;
+            DaysToExpire = solfacJobSetting.DaysToExpire;
         }
 
         public void SendHitosNotfications()
