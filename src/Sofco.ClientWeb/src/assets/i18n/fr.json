@@ -258,7 +258,8 @@
          "goToProject": "Aller au Projet",
          "goToSearch": "Aller à Recherches",
          "confirmTitle": "Confirmer action",
-         "confirmBody": "¿Etes-vous sûr de vouloir confirmer l’action?"
+         "confirmBody": "¿Etes-vous sûr de vouloir confirmer l’action?",
+         "applyChanges": "Appliquer"
      },
      "SendPending": "En Attente d’être Envoyer",
      "PendingByManagementControl": "E.A. de Révision de Control Gestion",
@@ -283,10 +284,15 @@
      "report":{
         "title": "Rapport",
         "solfacs": {
-            "title": "Solfac"
+            "title": "Solfac",
+            "projectName": "Project",
+            "businessName": "Business",
+            "clientName": "clientName",
+            "invoiceCode": "invoiceCode",
+            "invoiceDate": "invoiceDate",
+            "amount": "Montant"
         },
-        "dateSince": "Début",
-        "dateTo": "Fin"
+        "dateRange": "Début - fin"
     }
 }
  

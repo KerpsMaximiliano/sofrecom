@@ -13,16 +13,26 @@ namespace Sofco.DAL.Repositories.Report
         {
         }
 
-        public List<SolfacReport> Get()
+        public List<SolfacReport> Get(SolfacReportParams parameters)
         {
+            var dateSince = parameters.DateSince;
+            var dateTo = parameters.DateTo;
+
             return context.Solfacs
-                .Where(s => s.Id > 0)
+                .Where(s => 
+                s.InvoiceDate >= dateSince
+                && s.InvoiceDate <= dateTo)
                 .Select(x => new SolfacReport
                 {
                     Id = x.Id,
-                    Name = x.ClientName,
+                    ProjectId = x.ProjectId,
+                    ProjectName = x.Project,
+                    BusinessName = x.BusinessName,
+                    ClientName = x.ClientName,
+                    InvoiceCode = x.InvoiceCode,
+                    InvoiceDate = x.InvoiceDate.Value,
                     Amount = x.TotalAmount
-                }).ToList();
+                }).OrderBy(x => x.InvoiceDate).ToList();
         }
     }
 }

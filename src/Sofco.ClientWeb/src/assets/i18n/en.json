@@ -321,7 +321,8 @@
         "clonar": "Clone",
         "clean": "Clean",
         "updateBill": "Update Bill",
-        "updateCash": "Update Cash"
+        "updateCash": "Update Cash",
+        "applyChanges": "Apply changes"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
@@ -348,9 +349,14 @@
     "report":{
         "title": "Report",
         "solfacs": {
-            "title": "Solfac"
+            "title": "Solfac",
+            "projectName": "Project",
+            "businessName": "Business",
+            "clientName": "clientName",
+            "invoiceCode": "invoiceCode",
+            "invoiceDate": "invoiceDate",
+            "amount": "Amount"
         },
-        "dateSince": "Date since",
-        "dateTo": "Date to"
+        "dateRange": "Since - to"
     }
 }
