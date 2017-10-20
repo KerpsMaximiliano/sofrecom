@@ -1,0 +1,13 @@
+
+<div class="input-group" daterangepicker 
+    [options]="{startDate:start, endDate:end }" 
+    (selected)="selectedDate($event)" >
+
+    <span class="form-control uneditable-input"  name="daterange" >
+        {{ start | date:'MM/yyyy' }} - {{ end | date:'MM/yyyy' }}
+    </span>
+    <span class="input-group-btn">
+        <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+    </span>
+
+</div>

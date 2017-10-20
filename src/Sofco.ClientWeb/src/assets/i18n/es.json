@@ -322,7 +322,8 @@
         "clone": "Clonar",
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",
-        "updateCash": "Actualizar Cobro"
+        "updateCash": "Actualizar Cobro",
+        "applyChanges": "Aplicar cambios"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -349,9 +350,14 @@
     "report":{
         "title": "Reporte",
         "solfacs": {
-            "title": "Solfac"
+            "title": "Solfac",
+            "projectName": "Project",
+            "businessName": "Business",
+            "clientName": "clientName",
+            "invoiceCode": "invoiceCode",
+            "invoiceDate": "invoiceDate",
+            "amount": "Importe"
         },
-        "dateSince": "Desde",
-        "dateTo": "Hasta"
+        "dateRange": "Desde - hasta"
     }
 }  
