@@ -74,6 +74,7 @@
       "wwwroot",
       "**/*.cshtml",
       "appsettings.json",
+      "appsettings.*.json",
       "web.config"
     ]
   },
@@ -81,6 +82,7 @@
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
   "configurations": {
-    "azsof01wd": {}
+    "azsof01wd": {},
+    "azsof01wt": {}
   }
 }

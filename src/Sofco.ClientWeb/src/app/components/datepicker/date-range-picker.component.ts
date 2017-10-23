@@ -24,7 +24,7 @@ export class DateRangePickerComponent {
         };
     }
 
-    private selectedDate(value: any) {
+    public selectedDate(value: any) {
         this.start = value.start;
         this.end = value.end;
     }
