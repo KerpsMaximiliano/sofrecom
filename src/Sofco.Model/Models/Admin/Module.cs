@@ -9,8 +9,6 @@ namespace Sofco.Model.Models.Admin
         public bool Active { get; set; }
         public string Code { get; set; }
 
-        public Menu Menu { get; set; }
-
         public IList<Functionality> Functionalities { get; set; }
     }
 }

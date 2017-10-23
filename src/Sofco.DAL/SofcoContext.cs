@@ -23,7 +23,6 @@ namespace Sofco.DAL
         public DbSet<Group> Groups { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Menu> Menus { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
@@ -54,7 +53,6 @@ namespace Sofco.DAL
             builder.MapRoles();
             builder.MapGroups();
             builder.MapModules();
-            builder.MapMenus();
             builder.MapUsers();
             builder.MapUserGroups();
             builder.MapFunctionalities();
