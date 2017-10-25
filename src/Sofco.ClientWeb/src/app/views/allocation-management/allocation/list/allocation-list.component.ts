@@ -7,7 +7,7 @@ import { MessageService } from "app/services/common/message.service";
 import { I18nService } from "app/services/common/i18n.service";
 
 declare var google: any;
-declare var self;
+declare var self: any;
 
 @Component({
     selector: 'allocation-list',
@@ -17,6 +17,9 @@ export class AllocationListComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
     getAllSubscrip: Subscription;
+    analyticStartDate: Date;
+    analyticEndDate: Date;
+    showTimeLine: boolean = false;
 
     constructor(private allocationService: AllocationService,
                 private dataTableService: DataTableService,
@@ -27,15 +30,6 @@ export class AllocationListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void { 
         self = this;
-        this.model = [ 
-            { analyticTitle: "Titulo 1", percentage: "100", analyticName: "Analitica 1", startDate: new Date(2017, 10, 1), endDate: new Date(2017, 10, 30) },
-            { analyticTitle: "Titulo 2", percentage: "100", analyticName: "Analitica 2", startDate: new Date(2017, 8, 1), endDate: new Date(2017, 10, 30) },
-            { analyticTitle: "Titulo 1", percentage: "100", analyticName: "Analitica 1", startDate: new Date(2017, 8, 1), endDate: new Date(2017, 9, 30) },
-            { analyticTitle: "Titulo 3", percentage: "100", analyticName: "Analitica 3", startDate: new Date(2017, 5, 1), endDate: new Date(2017, 11, 31) }
-        ]
-
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(this.drawChart);
     }
 
     ngOnDestroy(): void {
@@ -43,22 +37,32 @@ export class AllocationListComponent implements OnInit, OnDestroy {
     }
 
     getAllocations(employeeId, startDate, endDate){
-        //this.dataTableService.destroy('#allocationsTable');
+        this.analyticStartDate = startDate;
+        this.analyticEndDate = endDate;
+        this.showTimeLine = false;
 
         this.getAllSubscrip = this.allocationService.getAll(employeeId, startDate, endDate).subscribe(data => {
 
             if(data && data.length > 0){
                 this.model = data;
-                //this.dataTableService.init('#allocationsTable', false);
 
-                google.charts.load("current", {packages:["timeline"]});
-                google.charts.setOnLoadCallback(this.drawChart);
+                this.configChart();
             }
             else{
+                this.configChart();
                 this.messageService.succes(this.i18nService.translate('allocationManagement.allocation.emptyMessage'));
             }
         },
         error => this.errorHandlerService.handleErrors(error));
+    }
+
+    configChart(){
+        this.showTimeLine = true;
+
+        setTimeout(() => {
+            google.charts.load("current", {packages:["timeline"]});
+            google.charts.setOnLoadCallback(this.drawChart);
+        }, 500);
     }
 
     drawChart() {
@@ -74,9 +78,17 @@ export class AllocationListComponent implements OnInit, OnDestroy {
         var rows = [];
 
         self.model.forEach(function(item, index){
-            var row = [ item.analyticTitle, `${item.percentage}%`, getTooltipHtml(item.analyticName, item.percentage, item.startDate, item.endDate), item.startDate, item.endDate ] 
+            var startDate = new Date(item.startDate);
+            var endDate = new Date(item.endDate);
+
+            var row = [ item.analyticTitle, `${item.percentage}%`, getTooltipHtml(item.analyticName, item.percentage, startDate, endDate), startDate, endDate ] 
             rows.push(row);
         });
+
+        rows.push([ self.i18nService.translate("allocationManagement.allocation.analyticLife"), self.i18nService.translate("allocationManagement.allocation.analyticCicleLife"), 
+                    getTooltipHtml(self.i18nService.translate("allocationManagement.allocation.analyticLife"), self.i18nService.translate("allocationManagement.allocation.analyticCicleLife"), 
+                    new Date(self.analyticStartDate), new Date(self.analyticEndDate)), 
+                    new Date(self.analyticStartDate), new Date(self.analyticEndDate)])
 
         dataTable.addRows(rows);
     

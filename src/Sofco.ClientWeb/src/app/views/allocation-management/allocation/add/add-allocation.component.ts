@@ -48,22 +48,22 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         var analytic = JSON.parse(sessionStorage.getItem("analytic"));
 
-        // if(analytic){
-        //     this.analytic = analytic;
-        //     sessionStorage.removeItem("analytic");
-        // }
-        // else{
-        //     this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+        if(analytic){
+            this.analytic = analytic;
+            sessionStorage.removeItem("analytic");
+        }
+        else{
+            this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
 
-        //         this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
-        //             this.analytic = data;
-        //         },
-        //         error => this.errorHandlerService.handleErrors(error));
+                this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
+                    this.analytic = data;
+                },
+                error => this.errorHandlerService.handleErrors(error));
 
-        //     });
-        // }
+            });
+        }
 
-        // this.getAllocationResources();
+        this.getAllocationResources();
     }
 
     ngOnDestroy(): void {

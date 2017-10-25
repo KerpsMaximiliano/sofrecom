@@ -298,7 +298,9 @@
             "startDate": "Fecha Inicio",
             "endDate": "Fecha Fin",
             "forbidden": "No tiene los permisos suficientes para asignar recursos",
-            "emptyMessage": "No se encontraron analíticas relacionadas para el recurso en las fechas de la analítica seleccionada.",
+            "emptyMessage": "No se encontraron analíticas relacionadas para el recurso en las fechas de la analítica seleccionada.", 
+            "analyticLife": "Vida Analitica",
+            "analyticCicleLife": "Ciclo de vida de la analítica",
             "grid": {
                 "title": "Título",
                 "name": "Nombre",

@@ -298,6 +298,8 @@
             "endDate": "End Date",
             "forbidden": "You do not have sufficient permissions to allocate resources",
             "emptyMessage": "No related analytics were found for the resource on the dates of the selected analytics.",
+            "analyticLife": "Analytic Life",
+            "analyticCicleLife": "Analytic´s Cicle Life",
             "grid": {
                 "title": "Title",
                 "name": "Name",
