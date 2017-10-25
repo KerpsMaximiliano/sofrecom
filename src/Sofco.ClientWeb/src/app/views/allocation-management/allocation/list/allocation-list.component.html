@@ -1,0 +1,36 @@
+<!-- <div class="ibox float-e-margins" *ngIf="model && model.length > 0"> -->
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h3> {{ 'allocationManagement.allocation.analyticsAssigned' | translate }} </h3>
+    </div>
+    <div class="ibox-content">
+
+        <div style="padding: 5px">
+            <div id="example" style="height: 200px"></div>
+        </div>
+     
+
+        <!-- <table class="table table-striped dataTable" role="grid" id="allocationsTable">
+            <thead>
+                <tr>
+                    <th>{{ 'allocationManagement.allocation.grid.title' | translate }}</th>
+                    <th>{{ 'allocationManagement.allocation.grid.name' | translate }}</th>
+                    <th>{{ 'allocationManagement.allocation.grid.client' | translate }}</th>
+                    <th>{{ 'allocationManagement.allocation.grid.since' | translate }}</th>
+                    <th>{{ 'allocationManagement.allocation.grid.to' | translate }}</th>
+                    <th class="text-center">{{ 'allocationManagement.allocation.grid.percentage' | translate }}</th>
+                </tr> 
+            </thead>
+            <tbody> 
+                <tr *ngFor="let allocation of model">
+                    <td>{{allocation.analyticTitle}}</td>
+                    <td>{{allocation.analyticName}}</td>
+                    <td>{{allocation.clientName}}</td>
+                    <td><i class="fa fa-calendar"></i>  {{allocation.startDate | date: 'dd/MM/yyyy'}}</td>
+                    <td><i class="fa fa-calendar"></i>  {{allocation.endDate | date: 'dd/MM/yyyy'}}</td>
+                    <td class="text-center">{{allocation.percentage }} %</td>
+                </tr>
+            </tbody>
+        </table>        -->
+    </div>
+</div>

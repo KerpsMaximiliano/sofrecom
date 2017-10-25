@@ -33,6 +33,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { I18nService } from 'app/services/common/i18n.service';
 
 import { HttpAuth } from "app/services/common/http-auth";
+import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -61,7 +62,8 @@ export function HttpLoaderFactory(http: Http) {
         deps: [Http]
       }
     }),
-    ReportModule
+    ReportModule,
+    AllocationManagementModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

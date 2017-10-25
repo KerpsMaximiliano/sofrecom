@@ -22,6 +22,22 @@ namespace Sofco.DAL.Mappings.Utils
             // Primary Key
             builder.Entity<Currency>().HasKey(_ => _.Id);
             builder.Entity<Currency>().Property(_ => _.Text).HasMaxLength(15);
+
+            // Primary Key
+            builder.Entity<Solution>().HasKey(_ => _.Id);
+            builder.Entity<Solution>().Property(_ => _.Text).HasMaxLength(30);
+
+            // Primary Key
+            builder.Entity<Technology>().HasKey(_ => _.Id);
+            builder.Entity<Technology>().Property(_ => _.Text).HasMaxLength(30);
+
+            // Primary Key
+            builder.Entity<ClientGroup>().HasKey(_ => _.Id);
+            builder.Entity<ClientGroup>().Property(_ => _.Text).HasMaxLength(30);
+
+            // Primary Key
+            builder.Entity<Product>().HasKey(_ => _.Id);
+            builder.Entity<Product>().Property(_ => _.Text).HasMaxLength(30);
         }
     }
 }

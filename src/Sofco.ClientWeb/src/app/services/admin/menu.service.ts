@@ -76,6 +76,14 @@ export class MenuService {
        return false;
     }
 
+    hasAllocationManagementMenu(){
+        if(this.hasModule("ALLOC")){
+            return true;
+       }
+
+       return false;
+    }
+
     hasReportMenu(){
         if(this.hasModule("REPOR")){
              return true;

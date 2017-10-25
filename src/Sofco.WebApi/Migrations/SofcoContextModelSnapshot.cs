@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Sofco.DAL;
 using Sofco.Model.Enums;
+using Sofco.Model.Enums.TimeManagement;
 
 namespace Sofco.WebApi.Migrations
 {
@@ -70,30 +71,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(5);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(200);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Menus");
-                });
-
             modelBuilder.Entity("Sofco.Model.Models.Admin.Module", b =>
                 {
                     b.Property<int>("Id")
@@ -109,11 +86,7 @@ namespace Sofco.WebApi.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int?>("MenuId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
 
                     b.ToTable("Modules");
                 });
@@ -440,6 +413,156 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SolfacHistories");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.Allocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalyticId");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<decimal>("Percentage");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Allocations");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.Analytic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ActivityId");
+
+                    b.Property<string>("AmountEarned")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("AmountProject")
+                        .HasMaxLength(500);
+
+                    b.Property<bool>("BugsAccess");
+
+                    b.Property<string>("ClientExternalId")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("ClientExternalName")
+                        .HasMaxLength(150);
+
+                    b.Property<int?>("ClientGroupId");
+
+                    b.Property<string>("ClientProjectTfs")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("CommercialManager")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("ContractNumber")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int?>("CurrencyId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("DirectorId");
+
+                    b.Property<DateTime>("EndDateContract");
+
+                    b.Property<bool?>("EvalProp");
+
+                    b.Property<int?>("ManagerId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200);
+
+                    b.Property<int?>("ProductId");
+
+                    b.Property<string>("Proposal")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("PurchaseOrder");
+
+                    b.Property<string>("Service")
+                        .HasMaxLength(50);
+
+                    b.Property<bool?>("SoftwareLaw");
+
+                    b.Property<int?>("SolutionId");
+
+                    b.Property<DateTime>("StartDateContract");
+
+                    b.Property<int>("Status");
+
+                    b.Property<int?>("TechnologyId");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("UsersQv")
+                        .HasMaxLength(500);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("ClientGroupId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("TechnologyId");
+
+                    b.ToTable("Analytics");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("BillingPercentage");
+
+                    b.Property<DateTime?>("Birthday");
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Profile")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Seniority")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("Technology")
+                        .HasMaxLength(300);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
                 {
                     b.Property<int>("RoleId");
@@ -464,6 +587,19 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("UserGroup");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.ClientGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientGroups");
                 });
 
             modelBuilder.Entity("Sofco.Model.Utils.Currency", b =>
@@ -505,6 +641,19 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ImputationNumbers");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Utils.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("Sofco.Model.Utils.Province", b =>
                 {
                     b.Property<int>("Id")
@@ -516,6 +665,32 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.Solution", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Solutions");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.Technology", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Technologies");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
@@ -531,13 +706,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
                         .WithMany("Groups")
                         .HasForeignKey("RoleId");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Module", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Admin.Menu", "Menu")
-                        .WithMany("Modules")
-                        .HasForeignKey("MenuId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Hito", b =>
@@ -615,6 +783,46 @@ namespace Sofco.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.Allocation", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.TimeManagement.Analytic", "Analytic")
+                        .WithMany("Allocations")
+                        .HasForeignKey("AnalyticId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.TimeManagement.Employee", "Employee")
+                        .WithMany("Allocations")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.Analytic", b =>
+                {
+                    b.HasOne("Sofco.Model.Utils.ImputationNumber", "Activity")
+                        .WithMany("Analytics")
+                        .HasForeignKey("ActivityId");
+
+                    b.HasOne("Sofco.Model.Utils.ClientGroup", "ClientGroup")
+                        .WithMany("Analytics")
+                        .HasForeignKey("ClientGroupId");
+
+                    b.HasOne("Sofco.Model.Utils.Currency", "Currency")
+                        .WithMany("Analytics")
+                        .HasForeignKey("CurrencyId");
+
+                    b.HasOne("Sofco.Model.Utils.Product", "Product")
+                        .WithMany("Analytics")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Sofco.Model.Utils.Solution", "Solution")
+                        .WithMany("Analytics")
+                        .HasForeignKey("SolutionId");
+
+                    b.HasOne("Sofco.Model.Utils.Technology", "Technology")
+                        .WithMany("Analytics")
+                        .HasForeignKey("TechnologyId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>

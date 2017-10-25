@@ -285,6 +285,40 @@
         "forbidden": "Unauthorized access",
         "forbiddenMessage": "Sorry, you do not have access to the requested page. Please return to the home page."
     },
+    "allocationManagement": {
+        "title": "Allocation Management",
+        "submenu": "Assignments",
+        "allocation": {
+            "analyticsAssigned": "Analytics Assigned",
+            "title": "Allocation Management",
+            "allocations": "Allocations",
+            "resources": "Resources",
+            "percentage": "Percentage",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "forbidden": "You do not have sufficient permissions to allocate resources",
+            "emptyMessage": "No related analytics were found for the resource on the dates of the selected analytics.",
+            "grid": {
+                "title": "Title",
+                "name": "Name",
+                "client": "Client",
+                "since": "Since",
+                "to": "To",
+                "percentage": "Percentage"
+            }
+        },
+        "analytics": {
+            "listTitle": "Analytics´s List",
+            "title": "Analytics",
+            "list": "List",
+            "grid": {
+                "title": "Title",
+                "name": "Name",
+                "client": "Cliet",
+                "commercialManager": "Commercial Manager"
+            }
+        }
+    },
     "ACTIONS":{
         "ADD": "Add",
         "EDIT": "Edit",
@@ -321,7 +355,8 @@
         "clonar": "Clone",
         "clean": "Clean",
         "updateBill": "Update Bill",
-        "updateCash": "Update Cash"
+        "updateCash": "Update Cash",
+        "assign": "Assign"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
