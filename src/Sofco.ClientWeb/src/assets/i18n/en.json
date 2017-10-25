@@ -358,7 +358,7 @@
         "clean": "Clean",
         "updateBill": "Update Bill",
         "updateCash": "Update Cash",
-        "assign": "Assign"
+        "assign": "Assign",
         "applyChanges": "Apply changes"
     },
     "SendPending": "Send Pending",

@@ -51,17 +51,11 @@
                                 <label class="control-label"> {{ 'allocationManagement.allocation.percentage' | translate }} </label>
                                 <input class="form-control" type="number" min="0" max="100" [(ngModel)]="allocationToSearch.percentage">
                             </div>
-                        </div>
-                        <div class="col-md-4">
+                        </div> 
+                        <div class="col-md-8">
                             <div class="form-group">
-                                <label class="control-label"> {{ 'allocationManagement.allocation.startDate' | translate }} </label>
-                                <ng-datepicker [(ngModel)]="allocationToSearch.dateSince" [options]="dateOptions"></ng-datepicker>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label"> {{ 'allocationManagement.allocation.endDate' | translate }} </label>
-                                <ng-datepicker [(ngModel)]="allocationToSearch.dateTo" [options]="dateOptions"></ng-datepicker>
+                                <label class="control-label"> {{'report.dateRange' | translate }} </label>
+                                <date-range-picker [datePickerOptionRange]="datePickerOptionRange" #dateRangePicker></date-range-picker>
                             </div>
                         </div>
                         <div class="col-md-2">

@@ -19,7 +19,7 @@ declare var jQuery:any;
     selector: 'app-solfac-report',
     templateUrl: './solfac.component.html'
 })
-
+ 
 export class SolfacReportComponent implements OnInit, OnDestroy {
     @ViewChild('chart') chart:SolfacChartComponent;
     @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;

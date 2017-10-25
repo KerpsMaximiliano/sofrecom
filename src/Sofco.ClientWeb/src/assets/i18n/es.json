@@ -359,7 +359,7 @@
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",
         "updateCash": "Actualizar Cobro",
-        "assign": "Asignar"
+        "assign": "Asignar",
         "applyChanges": "Aplicar cambios"
     },
     "SendPending": "Borrador",

@@ -14,7 +14,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -22,7 +22,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'report.dateRange' | translate }}</label>
-                        <date-range-picker #dateRangePicker></date-range-picker>
+                        <date-range-picker [datePickerOptionRange]="previous" #dateRangePicker></date-range-picker>
                     </div>
                 </div>
                 <div class="form-group text-right" style="margin-top:30px">

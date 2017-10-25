@@ -8,6 +8,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { AllocationSearch } from "app/models/allocation-management/allocationSearch";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { MessageService } from "app/services/common/message.service";
+import { DateRangePickerComponent } from "app/components/datepicker/date-range-picker.component";
 
 declare var $:any;
 
@@ -29,9 +30,10 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
     showPanelAllocation: boolean = false;
 
-    @ViewChild('allocationList') allocationList: any;
+    public datePickerOptionRange: string = "next";
 
-    public dateOptions;
+    @ViewChild('allocationList') allocationList: any;
+    @ViewChild('dateRangePicker') dateRangePicker: DateRangePickerComponent;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -41,8 +43,6 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
     }
 
     ngOnInit(): void {
@@ -98,8 +98,8 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
             employeeId: employeeId,
             billingPercentage: employee ? employee.billingPercentage : 0,
             percentage: this.allocationToSearch.percentage,
-            dateSince: this.allocationToSearch.dateSince,
-            dateTo: this.allocationToSearch.dateTo
+            dateSince: this.dateRangePicker.start.toDate(),
+            dateTo: this.dateRangePicker.end.toDate()
         }
 
         this.addSubscrip = this.allocationService.add(json).subscribe(data => {
