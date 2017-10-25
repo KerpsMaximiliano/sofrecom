@@ -300,6 +300,7 @@
             "emptyMessage": "No related analytics were found for the resource on the dates of the selected analytics.",
             "analyticLife": "Analytic Life",
             "analyticCicleLife": "Analytic´s Cicle Life",
+            "analytic": "Analytic",
             "grid": {
                 "title": "Title",
                 "name": "Name",

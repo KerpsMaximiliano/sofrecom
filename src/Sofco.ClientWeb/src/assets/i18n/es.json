@@ -291,6 +291,7 @@
         "submenu": "Asignaciones",
         "allocation": {
             "analyticsAssigned": "Analíticas asignadas",
+            "analytic": "Analítica",
             "title": "Asignación de recursos",
             "allocations": "Asignaciones",
             "resources": "Recursos",

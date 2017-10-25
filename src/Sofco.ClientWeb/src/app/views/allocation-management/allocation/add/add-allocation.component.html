@@ -41,9 +41,12 @@
                 </div>
             </div>
         </div>
-
+ 
         <div class="col-sm-7" *ngIf="showPanelAllocation">
             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>{{ 'allocationManagement.allocation.analytic' | translate }}: {{ analytic?.title }} - {{ analytic?.name }}</h4>
+                </div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-md-2">

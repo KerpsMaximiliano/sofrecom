@@ -113,7 +113,7 @@ export class AllocationListComponent implements OnInit, OnDestroy {
                             <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${startDate.toLocaleDateString()}</span>
                         </li>
                         <li class="google-visualization-tooltip-action" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha Inicio:</span>
+                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha Fin:</span>
                             <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${endDate.toLocaleDateString()}</span>
                         </li>
                         <li class="google-visualization-tooltip-action" style="">

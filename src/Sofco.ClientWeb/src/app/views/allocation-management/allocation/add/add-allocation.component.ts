@@ -93,13 +93,19 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
         var employee = this.resources.find(x => x.id == employeeId);
 
+        var startDateArray = this.dateRangePicker.start.toArray();
+        var startDate = new Date(startDateArray[0], startDateArray[1], startDateArray[2]);
+
+        var endDateArray = this.dateRangePicker.end.toArray();
+        var endDate = new Date(endDateArray[0], endDateArray[1], endDateArray[2]);
+
         var json = {
             analyticId: this.analytic.id,
             employeeId: employeeId,
             billingPercentage: employee ? employee.billingPercentage : 0,
             percentage: this.allocationToSearch.percentage,
-            dateSince: this.dateRangePicker.start.toDate(),
-            dateTo: this.dateRangePicker.end.toDate()
+            dateSince: startDate,
+            dateTo: endDate
         }
 
         this.addSubscrip = this.allocationService.add(json).subscribe(data => {
