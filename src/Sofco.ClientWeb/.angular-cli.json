@@ -44,13 +44,15 @@
         "../node_modules/datatables.net-buttons/js/buttons.colVis.js",
         "../node_modules/datatables.net-buttons-bs/js/buttons.bootstrap.js",
         "../node_modules/jszip/dist/jszip.min.js",
-        "../node_modules/datatables.net-buttons/js/buttons.html5.js"
+        "../node_modules/datatables.net-buttons/js/buttons.html5.js",
+        "../node_modules/moment/min/moment.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts",
-        "azsof01wd": "environments/environment.azsof01wd.ts"
+        "azsof01wd": "environments/environment.azsof01wd.ts",
+        "azsof01wt": "environments/environment.azsof01wt.ts"
       }
     }
   ],

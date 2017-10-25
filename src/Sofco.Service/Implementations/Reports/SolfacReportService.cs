@@ -1,8 +1,7 @@
-﻿using Sofco.Core.Services.Reports;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.Services.Reports;
 using Sofco.Model.Models.Report;
 
 namespace Sofco.Service.Implementations.Reports
@@ -15,9 +14,9 @@ namespace Sofco.Service.Implementations.Reports
         {
             this.solfacReportRepository = solfacReportRepository;
         }
-        public Result<List<SolfacReport>> Get(DateTime dateSince, DateTime dateTo)
+        public Result<List<SolfacReport>> Get(SolfacReportParams parameters)
         {
-            return new Result<List<SolfacReport>>(solfacReportRepository.Get());
+            return new Result<List<SolfacReport>>(solfacReportRepository.Get(parameters));
         }
     }
 }

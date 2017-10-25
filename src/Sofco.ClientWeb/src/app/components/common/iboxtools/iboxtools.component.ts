@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 declare var jQuery:any;
 
 @Component({
@@ -19,7 +20,6 @@ export class IboxtoolsComponent {
       ibox.resize();
       ibox.find('[id^=map-]').resize();
     }, 50);
-
   }
 
   public close(e):void {
@@ -27,6 +27,4 @@ export class IboxtoolsComponent {
     let content = jQuery(e.target).closest('div.ibox');
     content.remove();
   }
-
-
 }

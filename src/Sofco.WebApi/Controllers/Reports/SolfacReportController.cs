@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Reports;
 using Sofco.WebApi.Extensions;
+using Sofco.Model.Models.Report;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -17,10 +17,10 @@ namespace Sofco.WebApi.Controllers.Billing
             this.solfacReportService = solfacReportService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        public IActionResult Get([FromBody] SolfacReportParams parameters)
         {
-            var result = solfacReportService.Get(DateTime.Now, DateTime.Now.AddDays(30));
+            var result = solfacReportService.Get(parameters);
 
             return result.CreateResponse(this);
         }

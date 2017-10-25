@@ -7,6 +7,6 @@ namespace Sofco.Core.DAL.Report
 {
     public interface ISolfacReportRepository : IBaseRepository<Solfac>
     {
-        List<SolfacReport> Get();
+        List<SolfacReport> Get(SolfacReportParams parameters);
     }
 }
