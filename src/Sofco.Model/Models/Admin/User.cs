@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
+using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.Model.Models.Admin
 {
@@ -18,5 +19,6 @@ namespace Sofco.Model.Models.Admin
         public IList<UserGroup> UserGroups { get; set; }
         public IList<Solfac> Solfacs { get; set; }
         public IList<Invoice> Invoices { get; set; }
+        //public virtual ICollection<Analytic> Analytics { get; set; } 
     }
 }

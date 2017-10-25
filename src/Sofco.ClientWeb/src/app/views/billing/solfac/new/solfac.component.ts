@@ -42,6 +42,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
 
+    public test;
+
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -210,6 +212,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setCurrencySymbol(currencyId){
+      console.log(this.test);
+
       switch(currencyId){
         case "1": { this.currencySymbol = "$"; break; }
         case "2": { this.currencySymbol = "U$D"; break; }

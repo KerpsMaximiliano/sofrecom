@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models;
 using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Utils;
@@ -7,6 +6,8 @@ using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
+using Sofco.Model.Models.TimeManagement;
+using Sofco.DAL.Mappings.TimeManagement;
 
 namespace Sofco.DAL
 {
@@ -38,11 +39,20 @@ namespace Sofco.DAL
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
 
+        // Time Management Mappings
+        public DbSet<Analytic> Analytics { get; set; }
+        public DbSet<Allocation> Allocations { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<ImputationNumber> ImputationNumbers { get; set; }
+        public DbSet<Technology> Technologies { get; set; }
+        public DbSet<Solution> Solutions { get; set; }
+        public DbSet<ClientGroup> ClientGroups { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -60,6 +70,9 @@ namespace Sofco.DAL
             builder.MapUtils();
             builder.MapRoleFunctionality();
             builder.MapInvoice();
+            builder.MapAnalytic();
+            builder.MapAllocation();
+            builder.MapEmployee();
         }
     }
 }

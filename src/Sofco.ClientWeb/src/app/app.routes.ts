@@ -29,6 +29,8 @@ import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.c
 import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
 import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
 import { SolfacReportComponent } from './views/report/solfac/solfac.component';
+import { AnalyticSearchComponent } from 'app/views/allocation-management/analytics/search/analytic-search.component';
+import { AddAllocationComponent } from 'app/views/allocation-management/allocation/add/add-allocation.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -91,6 +93,17 @@ export const ROUTES:Routes = [
         { path: "new/project/:projectId", component: InvoiceComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "ALTA" } },
         { path: ":id/project/:projectId", component: InvoiceDetailComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } },
         { path: "search", component: InvoiceSearchComponent, canActivate: [AuthGuard], data: { module: "REM", functionality: "QUERY" } },
+      ]},
+    ]
+  },
+
+  {
+    path: 'allocationManagement', component: BasicLayoutComponent,
+    children: [
+      { path:"analytics", 
+      children: [
+        { path:"", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
+        { path:":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
     ]
   },

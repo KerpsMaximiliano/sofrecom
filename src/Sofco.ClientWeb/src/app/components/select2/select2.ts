@@ -19,6 +19,11 @@ export class Select2Directive implements OnInit {
 
     ngOnInit(): void {
        jQuery(this.element.nativeElement).select2();
+
+       jQuery('span.select2-container').attr('style', function(i, style)
+       {
+           return style && style.replace(/width[^;]+;?/g, '');
+       });
     }
 }
 

@@ -286,6 +286,40 @@
         "forbidden": "Acceso no Autorizado",
         "forbiddenMessage": "Lo sentimos, usted no tiene acceso a la página solicitada. Por favor vuelva a la página de inicio."
     },
+    "allocationManagement": {
+        "title": "Gestión de Recursos",
+        "submenu": "Asignaciones",
+        "allocation": {
+            "analyticsAssigned": "Analíticas asignadas",
+            "title": "Asignación de recursos",
+            "allocations": "Asignaciones",
+            "resources": "Recursos",
+            "percentage": "Porcentaje",
+            "startDate": "Fecha Inicio",
+            "endDate": "Fecha Fin",
+            "forbidden": "No tiene los permisos suficientes para asignar recursos",
+            "emptyMessage": "No se encontraron analíticas relacionadas para el recurso en las fechas de la analítica seleccionada.",
+            "grid": {
+                "title": "Título",
+                "name": "Nombre",
+                "client": "Cliente",
+                "since": "Desde",
+                "to": "Hasta",
+                "percentage": "Porcentaje"
+            }
+        },
+        "analytics": {
+            "listTitle": "Listado de Analiticas",
+            "title": "Analiticas",
+            "list": "Listado",
+            "grid": {
+                "title": "Título",
+                "name": "Nombre",
+                "client": "Cliente",
+                "commercialManager": "Manager Comercial"
+            }
+        }
+    },
     "ACTIONS":{
         "ADD": "Agregar",
         "EDIT": "Editar",
@@ -323,7 +357,8 @@
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",
         "updateCash": "Actualizar Cobro",
-        "applyChanges": "Aplicar cambios"
+        "applyChanges": "Aplicar cambios",
+        "assign": "Asignar"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
