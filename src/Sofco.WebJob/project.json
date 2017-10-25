@@ -27,6 +27,7 @@
     },
     "Sofco.Common": "1.0.0-*",
     "Sofco.Core": "1.0.0-*",
+    "Sofco.Repository.Rh": "1.0.0-*",
     "Sofco.Service": "1.0.0-*"
   },
   "tools": {
