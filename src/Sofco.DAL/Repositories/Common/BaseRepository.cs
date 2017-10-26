@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Interfaces;
+using Sofco.Common.Domains;
 
 namespace Sofco.DAL.Repositories.Common
 {
@@ -59,6 +59,12 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Insert(T entity)
         {
+            var entityDate = entity as IEntityDate;
+            if (entityDate != null)
+            {
+                entityDate.Created = DateTime.UtcNow;
+            }
+
             context.Set<T>().Add(entity);
         }
 
@@ -67,6 +73,15 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Insert(IList<T> entities)
         {
+            foreach(var item in entities)
+            {
+                var entityDate = item as IEntityDate;
+                if (entityDate != null)
+                {
+                    entityDate.Created = DateTime.UtcNow;
+                }
+            }
+
             context.Set<T>().AddRange(entities);
         }
 
@@ -75,6 +90,12 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Update(T entity)
         {
+            var entityDate = entity as IEntityDate;
+            if (entityDate != null)
+            {
+                entityDate.Modified = DateTime.UtcNow;
+            }
+
             context.Set<T>().Update(entity);
         }
 

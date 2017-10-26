@@ -13,6 +13,7 @@ using Sofco.WebJob.Security;
 using Sofco.WebJob.Infrastructures;
 using Sofco.Core.Config;
 using Sofco.Service.Settings.Jobs;
+using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.WebJob
 {
@@ -45,11 +46,13 @@ namespace Sofco.WebJob
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
             services.Configure<SolfacJobSetting>(Configuration.GetSection("SolfacJob"));
+            services.Configure<RhSetting>(Configuration.GetSection("RhSetting"));
 
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterModule(new DefaultModule(){ Configuration = Configuration });
-            containerBuilder.RegisterModule(new DatabaseModule(){ Configuration = Configuration });
+            containerBuilder.RegisterModule(new DatabaseModule() { Configuration = Configuration });
+            containerBuilder.RegisterModule(new AutoMapperModule());
 
             containerBuilder.Populate(services);
 

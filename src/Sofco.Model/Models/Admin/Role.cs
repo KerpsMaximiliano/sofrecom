@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Common.Domains;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Relationships;
 
@@ -14,7 +15,9 @@ namespace Sofco.Model.Models.Admin
         public IList<RoleFunctionality> RoleFunctionality { get; set; }
 
         public bool Active { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
         public void ApplyTo(Role role)

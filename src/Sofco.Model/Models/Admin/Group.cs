@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Relationships;
+using Sofco.Common.Domains;
 
 namespace Sofco.Model.Models.Admin
 {

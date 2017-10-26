@@ -1,7 +1,7 @@
-﻿using Sofco.Core.DAL.AllocationManagement;
+﻿using System.Linq;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.TimeManagement;
-using System.Linq;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
