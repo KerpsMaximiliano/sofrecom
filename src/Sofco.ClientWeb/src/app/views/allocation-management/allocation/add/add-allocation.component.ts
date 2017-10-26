@@ -8,6 +8,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { AllocationSearch } from "app/models/allocation-management/allocationSearch";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { MessageService } from "app/services/common/message.service";
+import { DateRangePickerComponent } from "app/components/datepicker/date-range-picker.component";
 
 declare var $:any;
 
@@ -29,9 +30,10 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
     showPanelAllocation: boolean = false;
 
-    @ViewChild('allocationList') allocationList: any;
+    public datePickerOptionRange: string = "next";
 
-    public dateOptions;
+    @ViewChild('allocationList') allocationList: any;
+    @ViewChild('dateRangePicker') dateRangePicker: DateRangePickerComponent;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -41,29 +43,27 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
     }
 
     ngOnInit(): void {
         var analytic = JSON.parse(sessionStorage.getItem("analytic"));
 
-        // if(analytic){
-        //     this.analytic = analytic;
-        //     sessionStorage.removeItem("analytic");
-        // }
-        // else{
-        //     this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+        if(analytic){
+            this.analytic = analytic;
+            sessionStorage.removeItem("analytic");
+        }
+        else{
+            this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
 
-        //         this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
-        //             this.analytic = data;
-        //         },
-        //         error => this.errorHandlerService.handleErrors(error));
+                this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
+                    this.analytic = data;
+                },
+                error => this.errorHandlerService.handleErrors(error));
 
-        //     });
-        // }
+            });
+        }
 
-        // this.getAllocationResources();
+        this.getAllocationResources();
     }
 
     ngOnDestroy(): void {
@@ -93,13 +93,19 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
         var employee = this.resources.find(x => x.id == employeeId);
 
+        var startDateArray = this.dateRangePicker.start.toArray();
+        var startDate = new Date(startDateArray[0], startDateArray[1], startDateArray[2]);
+
+        var endDateArray = this.dateRangePicker.end.toArray();
+        var endDate = new Date(endDateArray[0], endDateArray[1], endDateArray[2]);
+
         var json = {
             analyticId: this.analytic.id,
             employeeId: employeeId,
             billingPercentage: employee ? employee.billingPercentage : 0,
             percentage: this.allocationToSearch.percentage,
-            dateSince: this.allocationToSearch.dateSince,
-            dateTo: this.allocationToSearch.dateTo
+            dateSince: startDate,
+            dateTo: endDate
         }
 
         this.addSubscrip = this.allocationService.add(json).subscribe(data => {

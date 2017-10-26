@@ -15,6 +15,7 @@ import { AddAllocationComponent } from 'app/views/allocation-management/allocati
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { AllocationListComponent } from 'app/views/allocation-management/allocation/list/allocation-list.component';
+import { DateRangePickerModule } from 'app/components/datepicker/date-range.picker.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AllocationListComponent } from 'app/views/allocation-management/allocat
     SpinnerModule,
     TranslateModule,
     Select2Module,
-    NgDatepickerModule
+    NgDatepickerModule,
+    DateRangePickerModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService ],
   exports: [],
