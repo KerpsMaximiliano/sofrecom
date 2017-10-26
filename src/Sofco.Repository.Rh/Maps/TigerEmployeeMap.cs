@@ -7,9 +7,11 @@ namespace Sofco.Repository.Rh.Maps
 {
     public class TigerEmployeeMap : EntityMappingConfiguration<TigerEmployee>
     {
+        const string TableName = "Recursos";
+
         public override void Map(EntityTypeBuilder<TigerEmployee> builder)
         {
-            builder.ToTable("Recursos");
+            builder.ToTable(TableName);
 
             builder.HasKey(s => s.Legaj);
         }

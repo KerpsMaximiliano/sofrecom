@@ -7,9 +7,11 @@ namespace Sofco.Repository.Rh.Maps
 {
     public class RhproEmployeeLicenseMap : EntityMappingConfiguration<RhproEmployeeLicense>
     {
+        const string TableName = "emp_lic";
+
         public override void Map(EntityTypeBuilder<RhproEmployeeLicense> builder)
         {
-            builder.ToTable("emp_lic");
+            builder.ToTable(TableName);
 
             builder.HasKey(s => s.Empleado);
         }

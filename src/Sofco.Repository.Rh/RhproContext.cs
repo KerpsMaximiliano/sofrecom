@@ -1,23 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Repository.Rh.Extensions;
-using System.Reflection;
+using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Repository.Rh
 {
     public class RhproContext : DbContext
     {
-        public const string AppSchemaName = "rhpro";
+        private readonly RhSetting setting;
 
-        public RhproContext(DbContextOptions<RhproContext> options) 
+        public RhproContext(DbContextOptions<RhproContext> options, RhSetting rhSetting) 
             : base(options)
         {
+            setting = rhSetting;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema(AppSchemaName);
+            builder.HasDefaultSchema(setting.RhproSchema);
 
             builder.AddEntityConfigurationsFromAssembly(GetType().GetTypeInfo().Assembly);
         }

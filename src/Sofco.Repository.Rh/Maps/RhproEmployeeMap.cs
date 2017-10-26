@@ -7,9 +7,11 @@ namespace Sofco.Repository.Rh.Maps
 {
     public class RhproEmployeeMap : EntityMappingConfiguration<RhproEmployee>
     {
+        const string TableName = "empleado";
+
         public override void Map(EntityTypeBuilder<RhproEmployee> builder)
         {
-            builder.ToTable("empleado");
+            builder.ToTable(TableName);
 
             builder.HasKey(s => s.Empleg);
         }

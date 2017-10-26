@@ -19,7 +19,7 @@ namespace Sofco.WebApi.Infrastructures
         private const string RepositoryAssemblyEndName = "Repository";
         private const string ServiceAssemblyEndName = "Service";
 
-        public IConfigurationRoot Configuration { set; get; }
+        public IConfigurationRoot Configuration { get; set; }
 
         protected override void Load(ContainerBuilder builder)
         {

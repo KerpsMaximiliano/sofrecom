@@ -7,9 +7,11 @@ namespace Sofco.Repository.Rh.Maps
 {
     public class RhpropLicenseTypeMap : EntityMappingConfiguration<RhproLicenseType>
     {
+        const string TableName = "tipdia";
+
         public override void Map(EntityTypeBuilder<RhproLicenseType> builder)
         {
-            builder.ToTable("tipdia");
+            builder.ToTable(TableName);
 
             builder.HasKey(s => s.Tdnro);
         }
