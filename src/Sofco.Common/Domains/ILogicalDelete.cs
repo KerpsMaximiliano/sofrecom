@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Interfaces
+﻿namespace Sofco.Common.Domains
 {
     public interface ILogicalDelete
     {

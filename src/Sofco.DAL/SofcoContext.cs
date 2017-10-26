@@ -43,6 +43,8 @@ namespace Sofco.DAL
         public DbSet<Analytic> Analytics { get; set; }
         public DbSet<Allocation> Allocations { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<LicenseType> LicenseTypes { get; set; }
+        public DbSet<EmployeeLicense> EmployeeLicenses { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -73,6 +75,8 @@ namespace Sofco.DAL
             builder.MapAnalytic();
             builder.MapAllocation();
             builder.MapEmployee();
+            builder.MapLicenseType();
+            builder.MapEmployeeLicense();
         }
     }
 }

@@ -2,6 +2,7 @@
   "dependencies": {
     "Autofac": "4.6.1",
     "Autofac.Extensions.DependencyInjection": "4.2.0",
+    "AutoMapper": "6.1.1",
     "Hangfire": "1.6.17",
     "Hangfire.Autofac": "2.3.1",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",

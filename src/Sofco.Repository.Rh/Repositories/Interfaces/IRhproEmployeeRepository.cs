@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Rh.Rhpro;
 
 namespace Sofco.Repository.Rh.Repositories.Interfaces
@@ -7,7 +8,7 @@ namespace Sofco.Repository.Rh.Repositories.Interfaces
     {
         IList<RhproEmployee> GetAll();
 
-        IList<RhproEmployeeLicense> GetLicenses();
+        IList<RhproEmployeeLicense> GetEmployeeLicensesWithStartDate(DateTime startDate);
 
         IList<RhproLicenseType> GetLicenseTypes();
     }

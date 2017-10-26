@@ -1,6 +1,7 @@
 {
   "version": "1.0.0-*",
   "dependencies": {
+    "AutoMapper": "6.1.1",
     "NETStandard.Library": "1.6.1",
     "Sofco.Core": "1.0.0-*",
     "Sofco.DAL": "1.0.0-*",

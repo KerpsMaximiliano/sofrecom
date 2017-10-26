@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Domain.Rh.Rhpro;
+using System;
 
 namespace Sofco.Repository.Rh.Repositories
 {
@@ -30,14 +31,16 @@ namespace Sofco.Repository.Rh.Repositories
             return rhproEmployeeSet.ToList();
         }
 
-        public IList<RhproEmployeeLicense> GetLicenses()
-        {
-            return rhproEmployeeLicenseSet.ToList();
-        }
-
         public IList<RhproLicenseType> GetLicenseTypes()
         {
             return rhproLicenseTypeSet.ToList();
+        }
+
+        public IList<RhproEmployeeLicense> GetEmployeeLicensesWithStartDate(DateTime startDate)
+        {
+            return rhproEmployeeLicenseSet
+                .Where(s => s.Elfechadesde >= startDate)
+                .ToList();
         }
     }
 }

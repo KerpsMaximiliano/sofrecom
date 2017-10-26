@@ -8,6 +8,7 @@
       "type": "build"
     },
     "NETStandard.Library": "1.6.1",
+"Sofco.Common.Repository": "1.0.0-*",
     "Sofco.Core": "1.0.0-*",
     "Sofco.Model": "1.0.0-*",
     "System.Reflection.TypeExtensions": "4.3.0"

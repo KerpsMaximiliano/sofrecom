@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20171026141207_UpdatedEmployee")]
+    partial class UpdatedEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -565,48 +566,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.EmployeeLicense", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<string>("EmployeeNumber")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<int>("LicenseTypeNumber");
-
-                    b.Property<DateTime?>("Modified");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeLicenses");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.TimeManagement.LicenseType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(300);
-
-                    b.Property<int>("LicenseTypeNumber");
-
-                    b.Property<DateTime?>("Modified");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LicenseTypes");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
