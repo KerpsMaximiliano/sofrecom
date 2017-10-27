@@ -29,7 +29,7 @@ namespace Sofco.UnitTest.Services.Jobs
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<IMailSender> mailSenderMock;
         private Mock<IOptions<EmailConfig>> emailOptionsMock;
-        private Mock<IOptions<SolfacJobSetting>> solfacOptionsMock;
+        private Mock<IOptions<JobSetting>> jobOptionsMock;
 
         [SetUp]
         public void Setup()
@@ -38,23 +38,23 @@ namespace Sofco.UnitTest.Services.Jobs
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             mailSenderMock = new Mock<IMailSender>();
             emailOptionsMock = new Mock<IOptions<EmailConfig>>();
-            solfacOptionsMock = new Mock<IOptions<SolfacJobSetting>>();
+            jobOptionsMock = new Mock<IOptions<JobSetting>>();
 
             emailOptionsMock.SetupGet(s => s.Value).Returns(new EmailConfig
             {
                 SiteUrl = "sofcoar.com.ar"
             });
 
-            solfacOptionsMock.SetupGet(s => s.Value).Returns(new SolfacJobSetting
+            jobOptionsMock.SetupGet(s => s.Value).Returns(new JobSetting
             {
-                DaysToExpire = 5
+                SolfacJob = new SolfacJobSetting { DaysToExpire = 5 }
             });
 
             sut = new SolfacJobServiceTesteable(solfacRepositoryMock.Object,
                 crmInvoiceServiceMock.Object,
                 mailSenderMock.Object,
                 emailOptionsMock.Object,
-                solfacOptionsMock.Object);
+                jobOptionsMock.Object);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             mailSenderMock.Setup(s => s.Send(It.IsAny<List<Email>>()));
 
-            sut.SendHitosNotfications();
+            sut.SendHitosNotifications();
 
             crmInvoiceServiceMock.Verify(s => s.GetHitosToExpire(It.IsAny<int>()), Times.Once);
 
@@ -96,8 +96,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
     internal class SolfacJobServiceTesteable : SolfacJobService
     {
-        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, ICrmInvoiceService crmInvoiceService, IMailSender mailSender, IOptions<EmailConfig> emailConfigOptions, IOptions<SolfacJobSetting> solfacJobOptions) 
-            : base(solfacRepository, crmInvoiceService, mailSender, emailConfigOptions, solfacJobOptions)
+        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, ICrmInvoiceService crmInvoiceService, IMailSender mailSender, IOptions<EmailConfig> emailConfigOptions, IOptions<JobSetting> jobOptions) 
+            : base(solfacRepository, crmInvoiceService, mailSender, emailConfigOptions, jobOptions)
         {
         }
 
