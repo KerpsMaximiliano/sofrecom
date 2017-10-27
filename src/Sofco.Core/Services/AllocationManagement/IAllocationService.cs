@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         Response<Allocation> Add(AllocationAsignmentParams parameters);
         ICollection<Allocation> GetAllocations(int employeeId, DateTime startDate, DateTime endDate);
+        AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

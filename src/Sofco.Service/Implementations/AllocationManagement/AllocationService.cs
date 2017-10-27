@@ -7,6 +7,8 @@ using Sofco.Model.Models.TimeManagement;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
+using Sofco.Framework.Helpers;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -61,6 +63,58 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public ICollection<Allocation> GetAllocations(int employeeId, DateTime startDate, DateTime endDate)
         {
             return allocationRepository.GetAllocationsForAnalyticDates(employeeId, startDate, endDate);
+        }
+
+        public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            var allocations = allocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+
+            var allocationResponse = new AllocationResponse();
+
+            //Build Header
+            for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+            {
+                allocationResponse.MonthsHeader.Add(DatesHelper.GetDateShortDescription(date));
+            }
+
+            var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
+
+            foreach (var analyticId in analyticsIds)
+            {
+                var allocationDto = new AllocationDto();
+                allocationDto.EmployeeId = employeeId;
+
+                var allocation = allocations.Where(x => x.AnalyticId == analyticId);
+
+                if (allocation.Any())
+                {
+                    var first = allocation.FirstOrDefault();
+
+                    allocationDto.AnalyticId = analyticId;
+                    allocationDto.AnalyticTitle = first.Analytic.Title;
+                }
+                else
+                {
+                    allocationDto.AnalyticId = 0;
+                    allocationDto.AnalyticTitle = string.Empty;
+                }
+
+                for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+                {
+                    var allocationMonth = allocation.SingleOrDefault(x => x.StartDate.Date == date.Date);
+
+                    var allocationMonthDto = new AllocationMonthDto();
+                    allocationMonthDto.AllocationId = allocationMonth == null ? 0 : allocationMonth.Id;
+                    allocationMonthDto.Date = date;
+                    allocationMonthDto.Percentage = allocationMonth == null ? 0 : allocationMonth.Percentage;
+
+                    allocationDto.Months.Add(allocationMonthDto);
+                }
+
+                allocationResponse.Allocations.Add(allocationDto);
+            }
+
+            return allocationResponse;
         }
 
         private void SaveAllocation(AllocationAsignmentParams parameters, Response response)

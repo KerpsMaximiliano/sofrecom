@@ -14,6 +14,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
         }
 
+        public ICollection<Allocation> GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && ((x.StartDate >= startDate && x.StartDate <= endDate)))
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .OrderBy(x => x.AnalyticId).ThenBy(x => x.StartDate)
+                .ToList();
+        }
+
         public ICollection<Allocation> GetAllocationsForAnalyticDates(int employeeId, DateTime dateSince, DateTime dateTo)
         {
             return context.Allocations

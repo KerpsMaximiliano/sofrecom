@@ -23,5 +23,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Employees.ToList().AsReadOnly();
         }
+
+        public Employee GetById(int id)
+        {
+            return context.Employees.SingleOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -1,0 +1,89 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2><i class="fa fa-user text-green"></i> {{ resource?.name }}</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+                </li>
+                <li>
+                    <a> Recursos </a>
+                </li>
+                <li class="active">
+                    <strong> Asignación de analíticas  </strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+                            <select select2 class="form-control" id="analyticId">
+                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <a class="btn btn-primary pointer" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
+                        <a class="btn btn-success" [routerLink]="['/allocationManagement/analytics']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="control-label"> {{'report.dateRange' | translate }} </label>
+                        <date-range-picker [datePickerOptionRange]="datePickerOptionRange" #dateRangePicker></date-range-picker>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <a class="btn btn-primary pointer"> {{ 'ACTIONS.applyChanges' | translate }} </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="model && model.allocations.length > 0">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="table-responsive" >
+                            <table class="table table-striped dataTable" role="grid">
+                                <thead>
+                                    <tr>
+                                        <th class="headcol">Analítica</th>
+                                        <th *ngFor="let month of model.monthsHeader">{{ month }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let allocation of model.allocations">
+                                        <td class="analytic-column headcol"> {{ allocation.analyticTitle }}</td>
+
+                                        <td *ngFor="let month of allocation.months; let monthIndex = index">
+                                            <input type="number" min="0" max="100" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateTotal($event, monthIndex)">
+                                        </td>
+
+                                        <td><button class="btn btn-primary btn-sm" type="button">Confirmar</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td> <strong>Totales</strong> </td>
+                                        <td *ngFor="let total of totals" class="text-center"> 
+                                            <label class="label"  [ngClass]="(total > 100) ? 'label-default' : (total == 100) ? 'label-primary': (total > 49) ? 'label-warning' : 'label-danger'">{{ total }} %</label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    

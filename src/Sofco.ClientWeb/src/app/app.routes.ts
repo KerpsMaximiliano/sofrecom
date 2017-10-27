@@ -31,6 +31,7 @@ import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.compon
 import { SolfacReportComponent } from './views/report/solfac/solfac.component';
 import { AnalyticSearchComponent } from 'app/views/allocation-management/analytics/search/analytic-search.component';
 import { AddAllocationComponent } from 'app/views/allocation-management/allocation/add/add-allocation.component';
+import { AddAllocationByResourceComponent } from 'app/views/allocation-management/allocation/add-by-resource/add-by-resource.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -105,6 +106,11 @@ export const ROUTES:Routes = [
         { path:"", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path:":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
+      {
+        path: "resources", 
+        children: [
+          { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard] },
+        ]}
     ]
   },
 

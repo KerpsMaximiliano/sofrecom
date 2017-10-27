@@ -36,5 +36,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return Ok(model.Select(x => new AllocationModel(x)));
         }
+
+        [HttpGet("analytics/{employeeId}/{startDate}/{endDate}")]
+        public IActionResult GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+
+            return Ok(model);
+        }
     }
 }

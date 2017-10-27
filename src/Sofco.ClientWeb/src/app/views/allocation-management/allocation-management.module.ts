@@ -16,10 +16,12 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { AllocationListComponent } from 'app/views/allocation-management/allocation/list/allocation-list.component';
 import { DateRangePickerModule } from 'app/components/datepicker/date-range.picker.module';
+import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
+import { AddAllocationByResourceComponent } from 'app/views/allocation-management/allocation/add-by-resource/add-by-resource.component';
 
 @NgModule({
   declarations: [
-    AnalyticSearchComponent, AddAllocationComponent, AllocationListComponent
+    AnalyticSearchComponent, AddAllocationComponent, AllocationListComponent, AddAllocationByResourceComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { DateRangePickerModule } from 'app/components/datepicker/date-range.pick
     TranslateModule,
     Select2Module,
     NgDatepickerModule,
-    DateRangePickerModule
+    DateRangePickerModule,
+    IboxtoolsModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService ],
   exports: [],

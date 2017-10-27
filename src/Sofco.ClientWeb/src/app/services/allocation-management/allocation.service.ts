@@ -16,6 +16,10 @@ export class AllocationService {
     return this.http.get(`${this.baseUrl}/allocations/${employeeId}/${startDate}/${endDate}`).map((res:Response) => res.json());
   }
 
+  getAllocations(employeeId, startDate, endDate) {
+    return this.http.get(`${this.baseUrl}/allocations/analytics/${employeeId}/${startDate}/${endDate}`).map((res:Response) => res.json());
+  }
+
   add(model){
     return this.http.post(`${this.baseUrl}/allocations`, model).map((res:Response) => res.json());
   }

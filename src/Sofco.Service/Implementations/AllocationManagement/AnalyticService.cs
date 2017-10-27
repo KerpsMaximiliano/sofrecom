@@ -6,7 +6,7 @@ using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
-{
+{ 
     public class AnalyticService : IAnalyticService
     {
         private readonly IAnalyticRepository analyticRepository;
