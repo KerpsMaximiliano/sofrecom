@@ -12,6 +12,8 @@ namespace Sofco.Framework.Mail
 {
     public class MailSender : IMailSender
     {
+        const char MailDelimiter = ';';
+
         private readonly IHostingEnvironment environment;
         private readonly EmailConfig emailConfig;
         private readonly string fromEmail;
@@ -55,7 +57,7 @@ namespace Sofco.Framework.Mail
 
         private void AddRecipients(MimeMessage message, string recipients)
         {
-            string[] recipientsMails = recipients.Split(';');
+            string[] recipientsMails = recipients.Split(MailDelimiter);
             foreach(var email in recipientsMails)
             {
                 message.To.Add(new MailboxAddress(email, email));

@@ -52,9 +52,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             if (!employeeEnds.Any()) return;
 
-            var email = GetEmail(employeeEnds);
-
-            mailSender.Send(email);
+            mailSender.Send(GetEmail(employeeEnds));
         }
 
         private Email GetEmail(List<Employee> employeeEnds)
