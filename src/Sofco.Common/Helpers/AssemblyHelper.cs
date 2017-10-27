@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyModel;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.DependencyModel;
 
 namespace Sofco.Common.Helpers
 {
@@ -26,6 +27,26 @@ namespace Sofco.Common.Helpers
         {
             return library.Name == (assemblyName)
                 || library.Dependencies.Any(d => d.Name.StartsWith(assemblyName));
+        }
+
+        public static IEnumerable<Type> GetMappingTypes(Assembly assembly, Type mappingInterface)
+        {
+            return assembly
+                .GetTypes()
+                .Where(x =>
+                    !x.GetTypeInfo().IsAbstract 
+                    && x.GetInterfaces()
+                    .Any(y => y.GetTypeInfo().IsGenericType 
+                    && y.GetGenericTypeDefinition() == mappingInterface));
+        }
+
+        public static List<Type> GetTypesByType(Type assemblyOriginType, Type type)
+        {
+            return assemblyOriginType.GetTypeInfo()
+                .Assembly
+                .GetTypes()
+                .Where(x => type.IsAssignableFrom(x))
+                .ToList();
         }
     }
 }

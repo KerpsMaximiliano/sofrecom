@@ -39,8 +39,7 @@ namespace Sofco.WebApi
                        Configuration.GetConnectionString("DefaultConnection"),
                        b => b
                        .MigrationsAssembly("Sofco.WebApi")
-                       .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName))
-                    );
+                       .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
 
             services.AddMvc().AddJsonOptions(options =>
             {

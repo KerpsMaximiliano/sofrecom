@@ -1,11 +1,13 @@
 {
   "version": "1.0.0-*",
   "dependencies": {
+    "AutoMapper": "6.1.1",
     "NETStandard.Library": "1.6.1",
     "Sofco.Core": "1.0.0-*",
     "Sofco.DAL": "1.0.0-*",
     "Sofco.Framework": "1.0.0-*",
     "Sofco.Model": "1.0.0-*",
+    "Sofco.Repository.Rh": "1.0.0-*",
     "Sofco.Resources": "1.0.0-*",
     "Sofco.Service.Http": "1.0.0-*"
   },

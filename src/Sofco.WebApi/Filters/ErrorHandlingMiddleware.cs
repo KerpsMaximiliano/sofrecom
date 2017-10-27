@@ -32,14 +32,14 @@ namespace Sofco.WebApi.Filters
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
 
-            if (exception is KeyNotFoundException) code = HttpStatusCode.NotFound;
+            if (exception is KeyNotFoundException)
+                code = HttpStatusCode.NotFound;
 
             var result = JsonConvert.SerializeObject(new
                 {
                     success = false,
                     error = new { exception.Message, exception.StackTrace }
-                }
-            );
+                });
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;

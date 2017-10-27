@@ -2,6 +2,6 @@
 {
     public interface ISolfacJobService
     {
-        void SendHitosNotfications();
+        void SendHitosNotifications();
     }
 }

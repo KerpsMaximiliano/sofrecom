@@ -26,23 +26,21 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmInvoiceService crmInvoiceService;
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
-        private readonly SolfacJobSetting solfacJobSetting;
 
         public SolfacJobService(ISolfacRepository solfacRepository,
             ICrmInvoiceService crmInvoiceService,
             IMailSender mailSender,
             IOptions<EmailConfig> emailConfigOptions,
-            IOptions<SolfacJobSetting> solfacJobOptions)
+            IOptions<JobSetting> setting)
         {
             this.solfacRepository = solfacRepository;
             this.crmInvoiceService = crmInvoiceService;
             this.mailSender = mailSender;
             emailConfig = emailConfigOptions.Value;
-            solfacJobSetting = solfacJobOptions.Value;
-            DaysToExpire = solfacJobSetting.DaysToExpire;
+            DaysToExpire = setting.Value.SolfacJob.DaysToExpire;
         }
 
-        public void SendHitosNotfications()
+        public void SendHitosNotifications()
         {
             var hitos = GetHitosWithoutSolfac();
 
