@@ -45,8 +45,8 @@ namespace Sofco.WebJob
 
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
-            services.Configure<SolfacJobSetting>(Configuration.GetSection("SolfacJob"));
             services.Configure<RhSetting>(Configuration.GetSection("RhSetting"));
+            services.Configure<JobSetting>(Configuration.GetSection("JobSetting"));
 
             var containerBuilder = new ContainerBuilder();
 

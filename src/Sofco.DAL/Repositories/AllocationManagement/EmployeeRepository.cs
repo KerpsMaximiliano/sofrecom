@@ -66,12 +66,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             Update(storedData);
         }
 
-        public List<Employee> GetByEndDate(DateTime today)
+        public List<Employee> GetByEndDate(DateTime date)
         {
             return context.Employees
                 .Where(s =>
                 s.EndDate != null
-                && s.EndDate.Value.Date == today.Date)
+                && s.EndDate.Value.Date >= date)
                 .ToList();
         }
     }

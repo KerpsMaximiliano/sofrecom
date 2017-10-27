@@ -50,7 +50,7 @@ namespace Sofco.Framework.Mail
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            SendMessages(new List<MimeMessage> { message });
+            SendMessage(message);
         }
 
         private void AddRecipients(MimeMessage message, string recipients)
@@ -76,6 +76,23 @@ namespace Sofco.Framework.Mail
                 messages.Add(message);
             }
             SendMessages(messages);
+        }
+
+        public void Send(Email email)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(fromDisplayName, fromEmail));
+            AddRecipients(message, email.Recipient);
+            message.Subject = email.Subject;
+            var bodyBuilder = new BodyBuilder { HtmlBody = email.Body };
+            message.Body = bodyBuilder.ToMessageBody();
+
+            SendMessage(message);
+        }
+
+        private void SendMessage(MimeMessage message)
+        {
+            SendMessages(new List<MimeMessage> { message });
         }
 
         private void SendMessages(List<MimeMessage> messages)
