@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -9,6 +10,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         bool Exist(int employeeId);
 
-        List<Employee> Save(List<Employee> employees);
+        void Save(List<Employee> employees);
+
+        List<Employee> GetByEndDate(DateTime today);
     }
 }

@@ -71,7 +71,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             mailSenderMock.Setup(s => s.Send(It.IsAny<List<Email>>()));
 
-            sut.SendHitosNotfications();
+            sut.SendHitosNotifications();
 
             crmInvoiceServiceMock.Verify(s => s.GetHitosToExpire(It.IsAny<int>()), Times.Once);
 

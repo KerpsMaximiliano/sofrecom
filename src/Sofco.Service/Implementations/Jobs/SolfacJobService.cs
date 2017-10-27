@@ -42,7 +42,7 @@ namespace Sofco.Service.Implementations.Jobs
             DaysToExpire = solfacJobSetting.DaysToExpire;
         }
 
-        public void SendHitosNotfications()
+        public void SendHitosNotifications()
         {
             var hitos = GetHitosWithoutSolfac();
 

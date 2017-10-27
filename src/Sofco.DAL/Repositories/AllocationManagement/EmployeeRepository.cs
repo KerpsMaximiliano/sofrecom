@@ -3,6 +3,7 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Model.Models.TimeManagement;
 using Sofco.DAL.Repositories.Common;
+using System;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -29,7 +30,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public List<Employee> Save(List<Employee> employees)
+        public void Save(List<Employee> employees)
         {
             var storedItems = getByEmployeeNumbers(employees.Select(s => s.EmployeeNumber).ToArray());
 
@@ -50,8 +51,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
 
             context.SaveChanges();
-
-            return employees;
         }
 
         private void Update(Employee storedData, Employee data)
@@ -65,6 +64,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.Seniority = storedData.Seniority;
 
             Update(storedData);
+        }
+
+        public List<Employee> GetByEndDate(DateTime today)
+        {
+            return context.Employees
+                .Where(s =>
+                s.EndDate != null
+                && s.EndDate.Value.Date == today.Date)
+                .ToList();
         }
     }
 }
