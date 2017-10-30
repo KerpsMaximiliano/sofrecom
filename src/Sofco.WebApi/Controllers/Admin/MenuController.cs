@@ -46,8 +46,8 @@ namespace Sofco.WebApi.Controllers.Admin
             }
 
             response.IsDirector = _userService.HasDirectorGroup(this.GetUserMail());
-            response.IsDaf = _userService.HasDafGroup(this.GetUserMail(), _emailConfig.DafMail);
-            response.IsCdg = _userService.HasCdgGroup(this.GetUserMail(), _emailConfig.CdgMail);
+            response.IsDaf = _userService.HasDafGroup(this.GetUserMail(), _emailConfig.DafCode);
+            response.IsCdg = _userService.HasCdgGroup(this.GetUserMail(), _emailConfig.CdgCode);
 
             return Ok(response);
         }

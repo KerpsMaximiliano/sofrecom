@@ -80,8 +80,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
-            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
-            return group.Email;
+            return _groupRepository.GetEmail(emailConfig.DafCode);
         }
 
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)

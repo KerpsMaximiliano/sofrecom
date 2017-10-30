@@ -21,5 +21,7 @@ namespace Sofco.Model.Models.Admin
         public DateTime? EndDate { get; set; }
 
         public string Email { get; set; }
+
+        public string Code { get; set; }
     }
 }

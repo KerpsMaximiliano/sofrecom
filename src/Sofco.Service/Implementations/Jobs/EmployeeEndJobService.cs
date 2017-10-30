@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
-using Sofco.Core.DAL.AllocationManagement;
-using Sofco.Core.Services.Jobs;
-using Sofco.Service.Settings.Jobs;
-using Sofco.Model.Models.TimeManagement;
-using Sofco.Resources;
 using Sofco.Core.Config;
+using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Mail;
+using Sofco.Core.Services.Jobs;
 using Sofco.Model;
+using Sofco.Model.Models.TimeManagement;
+using Sofco.Service.Settings.Jobs;
+using Sofco.Resources;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -22,6 +23,8 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly IEmployeeRepository employeeRepository;
 
+        private readonly IGroupRepository groupRepository;
+
         private readonly IMailSender mailSender;
 
         private readonly JobSetting setting;
@@ -29,11 +32,14 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly EmailConfig emailConfig;
 
         public EmployeeEndJobService(IEmployeeRepository employeeRepository,
+            IGroupRepository groupRepository,
             IMailSender mailSender,
             IOptions<JobSetting> jobSettingOptions,
             IOptions<EmailConfig> emailConfigOptions)
         {
             this.employeeRepository = employeeRepository;
+
+            this.groupRepository = groupRepository;
 
             this.mailSender = mailSender;
 
@@ -57,10 +63,12 @@ namespace Sofco.Service.Implementations.Jobs
 
         private Email GetEmail(List<Employee> employeeEnds)
         {
+            var mailTos = groupRepository.GetEmail(emailConfig.PmoCode);
+
             var result = new Email
                 {
                     Subject = Subject,
-                    Recipient = setting.EmployeeEndJob.MailTo,
+                    Recipient = mailTos,
                     Body = BuildBody(employeeEnds)
                 };
 

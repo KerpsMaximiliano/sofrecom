@@ -30,6 +30,7 @@ namespace Sofco.WebApi.Extensions
         public static string GetUserMail(this Controller controller)
         {
             var username = controller.User.Identity.Name.Split('@');
+
             var mail = $"{username[0]}@sofrecom.com.ar";
 
             return mail;

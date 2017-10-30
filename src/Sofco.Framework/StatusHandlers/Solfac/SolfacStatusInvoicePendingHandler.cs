@@ -61,8 +61,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            var group = _groupRepository.GetSingle(x => x.Id == emailConfig.DafMail);
-            return group.Email;
+            return _groupRepository.GetEmail(emailConfig.DafCode);
         }
 
         public string GetSuccessMessage()

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Models;
 using Sofco.Model.Utils;
-using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.Model.Enums;
-using Sofco.Model.Relationships;
 using Sofco.Core.Services.Admin;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Admin
 {
@@ -246,14 +244,14 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public bool HasDafGroup(string userMail, int dafMail)
+        public bool HasDafGroup(string userMail, string dafCode)
         {
-            return _userRepository.HasDafGroup(userMail, dafMail);
+            return _userRepository.HasDafGroup(userMail, dafCode);
         }
 
-        public bool HasCdgGroup(string userMail, int cdgMail)
+        public bool HasCdgGroup(string userMail, string cdgCode)
         {
-            return _userRepository.HasDafGroup(userMail, cdgMail);
+            return _userRepository.HasDafGroup(userMail, cdgCode);
         }
     }
 }
