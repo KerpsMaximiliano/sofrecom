@@ -59,7 +59,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var model = new SolfacDetail(response.Data);
 

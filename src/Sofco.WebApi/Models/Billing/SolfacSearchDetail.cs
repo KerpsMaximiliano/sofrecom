@@ -27,17 +27,29 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public int Id { get; set; }
+
         public string Project { get; set; }
+
         public string BusinessName { get; set; }
+
         public string DocumentTypeName { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? InvoiceDate { get; set; }
+
         public decimal Amount { get; set; }
+
         public decimal Iva21 { get; set; }
+
         public decimal TotalAmount { get; set; }
+
         public string StatusName { get; set; }
+
         public int CurrencyId { get; set; }
+
         public string Manager { get; set; }
+
         public string InvoiceCode { get; set; }
     }
 
