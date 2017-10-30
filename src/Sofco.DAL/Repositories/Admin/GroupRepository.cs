@@ -65,5 +65,13 @@ namespace Sofco.DAL.Repositories.Admin
                     .ThenInclude(s => s.User)
               .SingleOrDefault(predicate);
         }
+
+        public string GetEmail(string code)
+        {
+            return context.Groups
+                .Where(s => s.Code == code)
+                .Select(s => s.Email)
+                .FirstOrDefault();
+        }
     }
 }

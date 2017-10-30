@@ -14,9 +14,11 @@
 
         public string SiteUrl { get; set; }
 
-        public int DafMail { get; set; }
+        public string DafCode { get; set; }
 
-        public int CdgMail { get; set; }
+        public string CdgCode { get; set; }
+
+        public string PmoCode { get; set; }
 
         public string MailDevFolder { get; set; }
     }

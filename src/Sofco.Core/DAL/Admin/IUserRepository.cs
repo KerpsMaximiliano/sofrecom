@@ -15,7 +15,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasDirectorGroup(string userMail);
         Group GetGroup(int solfacUserApplicantId);
         bool ExistByMail(string mail);
-        bool HasDafGroup(string userMail, int dafMailId);
-        bool HasCdgGroup(string userMail, int cdgMailId);
+        bool HasDafGroup(string userMail, string dafCode);
+        bool HasCdgGroup(string userMail, string cdgCode);
     }
 }

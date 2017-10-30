@@ -279,8 +279,8 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<Invoice> Search(InvoiceParams parameters, string userMail, EmailConfig emailConfig)
         {
             var isDirector = userRepository.HasDirectorGroup(userMail);
-            var isDaf = userRepository.HasDafGroup(userMail, emailConfig.DafMail);
-            var isCdg = userRepository.HasCdgGroup(userMail, emailConfig.CdgMail);
+            var isDaf = userRepository.HasDafGroup(userMail, emailConfig.DafCode);
+            var isCdg = userRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
 
             if (isDirector || isDaf || isCdg)
             {

@@ -16,7 +16,7 @@ namespace Sofco.Core.Services.Admin
         bool HasDirectorGroup(string userMail);
         Response Add(User domain);
         Response CheckIfExist(string mail);
-        bool HasDafGroup(string v, int dafMail);
-        bool HasCdgGroup(string v, int cdgMail);
+        bool HasDafGroup(string v, string dafCode);
+        bool HasCdgGroup(string v, string cdgCode);
     }
 }
