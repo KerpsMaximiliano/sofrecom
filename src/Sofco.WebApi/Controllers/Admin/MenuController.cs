@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models.Admin;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {

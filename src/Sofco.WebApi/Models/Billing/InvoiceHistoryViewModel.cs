@@ -17,9 +17,13 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public DateTime CreatedDate { get; set; }
+
         public string UserName { get; set; }
+
         public string Comment { get; set; }
+
         public string StatusFrom { get; set; }
+
         public string StatusTo { get; set; }
     }
 }
