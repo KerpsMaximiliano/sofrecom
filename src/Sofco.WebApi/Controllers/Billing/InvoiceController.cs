@@ -12,8 +12,8 @@ using Sofco.Core.Services.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.WebApi.Models.Billing;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -21,23 +21,24 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class InvoiceController : Controller
     {
-        private readonly IInvoiceService _invoiceService;
-        private readonly IInvoiceFileManager _invoiceFileManager;
-        private readonly EmailConfig _emailConfig;
+        private readonly IInvoiceService invoiceService;
+        private readonly IInvoiceFileManager invoiceFileManager;
+        private readonly EmailConfig emailConfig;
 
         public InvoiceController(IInvoiceService invoiceService, IInvoiceFileManager invoiceFileManager, IOptions<EmailConfig> emailConfig)
         {
-            _invoiceService = invoiceService;
-            _invoiceFileManager = invoiceFileManager;
-            _emailConfig = emailConfig.Value;
+            this.invoiceService = invoiceService;
+            this.invoiceFileManager = invoiceFileManager;
+            this.emailConfig = emailConfig.Value;
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var response = _invoiceService.GetById(id);
+            var response = invoiceService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var model = new InvoiceViewModel(response.Data);
 
@@ -47,9 +48,9 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{projectId}/options")]
         public IActionResult GetOptions(string projectId)
         {
-            var invoices = _invoiceService.GetOptions(projectId);
+            var invoices = invoiceService.GetOptions(projectId);
 
-            var list = invoices.Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.InvoiceNumber});
+            var list = invoices.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.InvoiceNumber });
 
             return Ok(list);
         }
@@ -59,9 +60,10 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var domain = model.CreateDomain();
 
-            var response = _invoiceService.Add(domain, User.Identity.Name);
+            var response = invoiceService.Add(domain, User.Identity.Name);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -69,7 +71,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("project/{projectId}")]
         public IActionResult GetInvoices(string projectId)
         {
-            var invoices = _invoiceService.GetByProject(projectId);
+            var invoices = invoiceService.GetByProject(projectId);
 
             var model = invoices.Select(x => new InvoiceRowDetailViewModel(x));
 
@@ -82,7 +84,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var excel = _invoiceFileManager.CreateInvoiceExcel(model.CreateDomain());
+                var excel = invoiceFileManager.CreateInvoiceExcel(model.CreateDomain());
 
                 var fileName = string.Concat("remito_", DateTime.Now.ToString("d"));
 
@@ -101,9 +103,10 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var response = _invoiceService.GetExcel(invoiceId);
+                var response = invoiceService.GetExcel(invoiceId);
 
-                if (response.HasErrors()) return BadRequest(response);
+                if (response.HasErrors())
+                    return BadRequest(response);
 
                 return File(response.Data.ExcelFile, "application/octet-stream", response.Data.ExcelFileName);
             }
@@ -120,9 +123,10 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var response = _invoiceService.GetPdf(invoiceId);
+                var response = invoiceService.GetPdf(invoiceId);
 
-                if (response.HasErrors()) return BadRequest(response);
+                if (response.HasErrors())
+                    return BadRequest(response);
 
                 return File(response.Data.PdfFile, "application/octet-stream", response.Data.PdfFileName);
             }
@@ -142,9 +146,10 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 try
                 {
-                    var response = _invoiceService.GetById(invoiceId);
+                    var response = invoiceService.GetById(invoiceId);
 
-                    if (response.HasErrors()) return BadRequest(response);
+                    if (response.HasErrors())
+                        return BadRequest(response);
 
                     var file = Request.Form.Files.First();
 
@@ -154,9 +159,10 @@ namespace Sofco.WebApi.Controllers.Billing
                         response.Data.ExcelFile = memoryStream.ToArray();
                     }
 
-                    response = _invoiceService.SaveExcel(response.Data);
+                    response = invoiceService.SaveExcel(response.Data);
 
-                    if (response.HasErrors()) return BadRequest(response);
+                    if (response.HasErrors())
+                        return BadRequest(response);
 
                     return Ok(response);
 
@@ -180,9 +186,10 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 try
                 {
-                    var response = _invoiceService.GetById(invoiceId);
+                    var response = invoiceService.GetById(invoiceId);
 
-                    if (response.HasErrors()) return BadRequest(response);
+                    if (response.HasErrors())
+                        return BadRequest(response);
 
                     var file = Request.Form.Files.First();
 
@@ -192,9 +199,10 @@ namespace Sofco.WebApi.Controllers.Billing
                         response.Data.PdfFile = memoryStream.ToArray();
                     }
 
-                    response = _invoiceService.SavePdf(response.Data);
+                    response = invoiceService.SavePdf(response.Data);
 
-                    if (response.HasErrors()) return BadRequest(response);
+                    if (response.HasErrors())
+                        return BadRequest(response);
 
                     return Ok(response);
 
@@ -213,9 +221,10 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var response = _invoiceService.Delete(id);
+            var response = invoiceService.Delete(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -224,9 +233,10 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] InvoiceStatusChangeViewModel model)
         {
-            var response = _invoiceService.ChangeStatus(id, model.Status, _emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber, UserId = model.UserId });
+            var response = invoiceService.ChangeStatus(id, model.Status, emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber, UserId = model.UserId });
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -235,7 +245,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] InvoiceParams parameters)
         {
-            var invoices = _invoiceService.Search(parameters, this.GetUserMail(), _emailConfig);
+            var invoices = invoiceService.Search(parameters, this.GetUserMail(), emailConfig);
 
             if (!invoices.Any())
             {
@@ -259,9 +269,10 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/clone")]
         public IActionResult Clone(int id)
         {
-            var response = _invoiceService.Clone(id);
+            var response = invoiceService.Clone(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -269,7 +280,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{id}/histories")]
         public IActionResult GetHistories(int id)
         {
-            var histories = _invoiceService.GetHistories(id);
+            var histories = invoiceService.GetHistories(id);
 
             var list = histories.Select(x => new InvoiceHistoryViewModel(x));
 

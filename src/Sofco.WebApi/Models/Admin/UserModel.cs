@@ -1,10 +1,10 @@
-﻿using Sofco.Model;
+﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Interfaces;
-using System;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Sofco.Model.Models.Admin;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Model;
+using Sofco.Model.Interfaces;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
 {
@@ -12,7 +12,6 @@ namespace Sofco.WebApi.Models.Admin
     {
         public UserModel()
         {
-
         }
 
         public UserModel(User user)
@@ -69,7 +68,9 @@ namespace Sofco.WebApi.Models.Admin
         }
 
         public new IList<SelectListItem> Groups { get; set; }
+
         public IList<SelectListItem> Roles { get; set; }
+
         public IList<ModuleModelDetail> Modules { get; set; }
     }
 }

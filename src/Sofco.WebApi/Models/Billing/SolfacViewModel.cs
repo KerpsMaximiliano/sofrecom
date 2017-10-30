@@ -14,8 +14,6 @@ namespace Sofco.WebApi.Models.Billing
             InvoicesId = new List<int>();
         }
 
-        #region properties
-
         public int Id { get; set; }
 
         public string ClientName { get; set; }
@@ -101,8 +99,6 @@ namespace Sofco.WebApi.Models.Billing
         public bool WithTax { get; set; }
 
         public bool Remito { get; set; }
-
-        #endregion
 
         public Solfac CreateDomain()
         {

@@ -14,13 +14,13 @@ namespace Sofco.WebApi.Controllers.Admin
     [Authorize]
     public class RoleController : Controller
     {
-        private readonly IRoleService _roleService;
-        private readonly IGroupService _groupService;
+        private readonly IRoleService roleService;
+        private readonly IGroupService groupService;
 
         public RoleController(IRoleService roleService, IGroupService groupService)
         {
-            _roleService = roleService;
-            _groupService = groupService;
+            this.roleService = roleService;
+            this.groupService = groupService;
         }
 
         // GET: api/role/options
@@ -28,7 +28,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult Getoptions()
         {
-            var roles = _roleService.GetAllReadOnly(true);
+            var roles = roleService.GetAllReadOnly(true);
             var model = new List<SelectListItem>();
 
             foreach (var rol in roles)
@@ -41,7 +41,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var roles = _roleService.GetAllReadOnly(false);
+            var roles = roleService.GetAllReadOnly(false);
             var model = new List<RoleModel>();
 
             foreach (var rol in roles)
@@ -55,16 +55,19 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{id}/detail")]
         public IActionResult Detail(int id)
         {
-            var response = _roleService.GetDetail(id);
+            var response = roleService.GetDetail(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var roleModel = new RoleModel(response.Data);
 
             foreach (var group in response.Data.Groups)
             {
-                if(group.Active)
+                if (group.Active)
+                {
                     roleModel.Groups.Add(new GroupModel(group));
+                }
             }
 
             var modules = response.Data.RoleFunctionality.Select(x => x.Functionality.Module).Distinct().ToList();
@@ -92,9 +95,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var response = _roleService.GetById(id);
+            var response = roleService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var roleModel = new RoleModel(response.Data);
 
@@ -107,15 +111,17 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
             var role = new Role();
 
             model.ApplyTo(role);
 
-            var response = _roleService.Insert(role);
+            var response = roleService.Insert(role);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -126,17 +132,20 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
-            var roleReponse = _roleService.GetById(model.Id);
+            var roleReponse = roleService.GetById(model.Id);
 
-            if (roleReponse.HasErrors()) return BadRequest(roleReponse);
+            if (roleReponse.HasErrors())
+                return BadRequest(roleReponse);
 
             model.ApplyTo(roleReponse.Data);
 
-            var response = _roleService.Update(roleReponse.Data);
+            var response = roleService.Update(roleReponse.Data);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -144,9 +153,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpPost("{roleId}/group/{groupId}")]
         public IActionResult AddGroup(int roleId, int groupId)
         {
-            var response = _groupService.AddRole(roleId, groupId);
+            var response = groupService.AddRole(roleId, groupId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -154,9 +164,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpDelete("{roleId}/group/{groupId}")]
         public IActionResult RemoveGroup(int roleId, int groupId)
         {
-            var response = _groupService.RemoveRole(roleId, groupId);
+            var response = groupService.RemoveRole(roleId, groupId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -165,9 +176,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{id}/active/{active}")]
         public IActionResult Active(int id, bool active)
         {
-            var response = _roleService.Active(id, active);
+            var response = roleService.Active(id, active);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -176,9 +188,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{roleId}/functionalities")]
         public IActionResult AddFunctionalities(int roleId, [FromBody]List<int> functionalities)
         {
-            var response = _roleService.AddFunctionalities(roleId, functionalities);
+            var response = roleService.AddFunctionalities(roleId, functionalities);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -187,9 +200,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{roleId}/functionalities")]
         public IActionResult RemoveFunctionalities(int roleId, [FromBody]List<int> functionalities)
         {
-            var response = _roleService.RemoveFunctionalities(roleId, functionalities);
+            var response = roleService.RemoveFunctionalities(roleId, functionalities);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -198,9 +212,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{roleId}/functionalities/{functionalityId}")]
         public IActionResult AddFunctionality(int roleId, int functionalityId)
         {
-            var response = _roleService.AddFunctionality(roleId, functionalityId);
+            var response = roleService.AddFunctionality(roleId, functionalityId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -209,9 +224,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{roleId}/functionalities/{functionalityId}")]
         public IActionResult DeleteFunctionality(int roleId, int functionalityId)
         {
-            var response = _roleService.DeleteFunctionality(roleId, functionalityId);
+            var response = roleService.DeleteFunctionality(roleId, functionalityId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

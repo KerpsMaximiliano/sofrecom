@@ -1,8 +1,7 @@
-﻿using Sofco.Model;
-using Sofco.Model.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Model;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
@@ -11,7 +10,6 @@ namespace Sofco.WebApi.Models.Admin
     {
         public ModuleModel()
         {
-
         }
 
         public ModuleModel(Module module)
@@ -31,7 +29,9 @@ namespace Sofco.WebApi.Models.Admin
         [Required]
         [MaxLength(5)]
         public string Code { get; set; }
+
         public bool Active { get; set; }
+
         public IList<FunctionalityModel> Functionalities { get; set; }
 
         public void ApplyTo(Module data)
@@ -51,7 +51,9 @@ namespace Sofco.WebApi.Models.Admin
         }
 
         public string Code { get; set; }
+
         public string Description { get; set; }
+
         public IList<SelectListItem> Functionalities { get; set; }
     }
 }

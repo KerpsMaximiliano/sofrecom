@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Reports;
-using Sofco.WebApi.Extensions;
 using Sofco.Model.Models.Report;
+using Sofco.WebApi.Extensions;
 
-namespace Sofco.WebApi.Controllers.Billing
+namespace Sofco.WebApi.Controllers.Reports
 {
     [Route("api/reports/solfacs")]
     [Authorize]

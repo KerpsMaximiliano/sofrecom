@@ -71,13 +71,21 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public int Id { get; set; }
+
         public string InvoiceNumber { get; set; }
+
         public string AccountName { get; set; }
+
         public string Service { get; set; }
+
         public string Project { get; set; }
+
         public string ProjectId { get; set; }
+
         public string User { get; set; }
+
         public DateTime CreatedDate { get; set; }
+
         public string StatusName { get; set; }
     }
 }

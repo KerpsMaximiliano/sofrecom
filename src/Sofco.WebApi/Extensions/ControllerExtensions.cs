@@ -37,6 +37,3 @@ namespace Sofco.WebApi.Extensions
         }
     }
 }
-
-
-
