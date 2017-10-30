@@ -1,8 +1,8 @@
-﻿using Sofco.Model;
-using Sofco.Model.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Sofco.Model;
+using Sofco.Model.Interfaces;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
@@ -11,7 +11,6 @@ namespace Sofco.WebApi.Models.Admin
     {
         public GroupModel()
         {
-
         }
 
         public GroupModel(Group group)
@@ -34,10 +33,13 @@ namespace Sofco.WebApi.Models.Admin
         public string Email { get; set; }
 
         public bool Active { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
         public RoleModel Role { get; set; }
+
         public int RoleId { get; set; }
 
         public List<UserModel> Users { get; set; }

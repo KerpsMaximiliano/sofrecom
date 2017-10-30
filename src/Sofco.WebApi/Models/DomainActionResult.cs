@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sofco.Common.Domains;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Sofco.Common.Domains;
 
 namespace Sofco.WebApi.Models
 {
@@ -20,6 +20,8 @@ namespace Sofco.WebApi.Models
         internal readonly HttpContext Context;
 
         public Result Result { get; set; }
+
+        internal Func<HttpRequestMessage, HttpStatusCode, object, HttpResponseMessage> CreateResponse { get; set; }
 
         protected DomainActionResult(HttpContext context)
         {
@@ -40,8 +42,6 @@ namespace Sofco.WebApi.Models
                 ? (int)HttpStatusCode.BadRequest // Http422UnprocessableEntity
                 : (int)HttpStatusCode.OK;
         }
-
-        internal Func<HttpRequestMessage, HttpStatusCode, object, HttpResponseMessage> CreateResponse { get; set; }
 
         private object GetContentsFromResult()
         {

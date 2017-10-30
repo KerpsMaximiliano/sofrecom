@@ -6,9 +6,9 @@ namespace Sofco.WebApi.Models.Admin
     {
         public RolesModel()
         {
-            roles = new List<int>();
+            Roles = new List<int>();
         }
 
-        public List<int> roles { get; set; }
+        public List<int> Roles { get; set; }
     }
 }

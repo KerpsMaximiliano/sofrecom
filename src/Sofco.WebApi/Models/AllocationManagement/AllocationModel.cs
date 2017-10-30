@@ -1,5 +1,5 @@
-﻿using Sofco.Model.Models.TimeManagement;
-using System;
+﻿using System;
+using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
 {
@@ -13,21 +13,27 @@ namespace Sofco.WebApi.Models.AllocationManagement
             EndDate = allocation.EndDate;
             Percentage = allocation.Percentage;
 
-            if(allocation.Analytic != null)
-            {
-                AnalyticTitle = allocation.Analytic.Title;
-                AnalyticName = allocation.Analytic.Name;
-                ClientName = allocation.Analytic.ClientExternalName;
-            }
+            if (allocation.Analytic == null) return;
+
+            AnalyticTitle = allocation.Analytic.Title;
+            AnalyticName = allocation.Analytic.Name;
+            ClientName = allocation.Analytic.ClientExternalName;
         }
 
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
+
         public decimal Percentage { get; set; }
+
         public int AnalyticId { get; set; }
+
         public int EmployeeId { get; set; }
+
         public string AnalyticTitle { get; set; }
+
         public string AnalyticName { get; set; }
+
         public string ClientName { get; set; }
     }
 }

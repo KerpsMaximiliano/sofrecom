@@ -52,7 +52,8 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var response = functionalityService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var model = new FunctionalityModel(response.Data);
 
@@ -65,7 +66,8 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var response = functionalityService.Active(id, active);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

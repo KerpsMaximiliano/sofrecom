@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Enums;
+﻿using System;
 using Sofco.Model.DTO;
-using System;
+using Sofco.Model.Enums;
 
 namespace Sofco.WebApi.Models.Billing
 {

@@ -11,6 +11,7 @@ namespace Sofco.WebApi.Models.Admin
         }
 
         public List<int> FunctionalitiesToAdd { get; set; }
+
         public List<int> FunctionalitiesToRemove { get; set; }
     }
 }

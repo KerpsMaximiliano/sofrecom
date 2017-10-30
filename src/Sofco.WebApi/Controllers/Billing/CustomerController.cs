@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models.Billing;
 using Sofco.Core.Config;
 using Sofco.Core.Services;
+using Sofco.Core.Services.Admin;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -19,15 +19,15 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class CustomerController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly CrmConfig _crmConfig;
-        private readonly ILoginService _loginService;
+        private readonly IUserService userService;
+        private readonly CrmConfig crmConfig;
+        private readonly ILoginService loginService;
 
         public CustomerController(IUserService userService, IOptions<CrmConfig> crmOptions, ILoginService loginService)
         {
-            _userService = userService;
-            _crmConfig = crmOptions.Value;
-            _loginService = loginService;
+            this.userService = userService;
+            crmConfig = crmOptions.Value;
+            this.loginService = loginService;
         }
 
         [HttpGet("{userMail}/options")]
@@ -35,8 +35,9 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                IList<CustomerCrm> customers = await GetCustomers(userMail);
-                var model = customers.Select(x => new SelectListItem {Value = x.Id, Text = x.Nombre});
+                var customers = await GetCustomers(userMail);
+
+                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
 
                 return Ok(model);
             }
@@ -61,8 +62,6 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(e);
             }
         }
-
-
 
         [HttpGet("{customerId}")]
         public async Task<IActionResult> GetById(string customerId)
@@ -91,7 +90,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
                 var response = await client.GetAsync($"/api/account/{customerId}");
                 response.EnsureSuccessStatusCode();
 
@@ -106,9 +105,9 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
 
-                var hasDirectorGroup = this._userService.HasDirectorGroup(userMail);
+                var hasDirectorGroup = this.userService.HasDirectorGroup(userMail);
 
                 HttpResponseMessage response;
                  

@@ -52,11 +52,14 @@ namespace Sofco.WebApi.Models.Billing
                 ImputationNumber3Id = domain.ImputationNumber.Id;
             }
 
-            if (domain.UserApplicant != null) UserApplicantName = domain.UserApplicant.Name;
+            if (domain.UserApplicant != null)
+                UserApplicantName = domain.UserApplicant.Name;
 
-            if (domain.DocumentType != null) DocumentType = domain.DocumentType.Text;
+            if (domain.DocumentType != null)
+                DocumentType = domain.DocumentType.Text;
 
-            if (domain.Currency != null) CurrencyName = domain.Currency.Text;
+            if (domain.Currency != null)
+                CurrencyName = domain.Currency.Text;
 
             Hitos = new List<HitoViewModel>();
 
