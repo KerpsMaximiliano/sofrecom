@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    urlApi:  "http://azsof01wd:8081/api"
+    urlApi:  "http://azsof01wd:91/api"
   };
   
