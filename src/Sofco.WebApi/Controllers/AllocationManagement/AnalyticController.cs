@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Models.AllocationManagement;
 using System.Linq;
+using Sofco.Model.Utils;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -31,6 +33,20 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(new AnalyticSearchViewModel(response.Data));
+        }
+
+        [HttpGet("{id}/resources")]
+        public IActionResult GetResources(int id)
+        {
+            var responseResources = analyticService.GetResources(id);
+
+            var model = responseResources.Data.Select(x => new ResourceForAnalyticsModel(x));
+
+            var response = new Response<IEnumerable<ResourceForAnalyticsModel>> { Data = model };
+
+            response.AddMessages(responseResources.Messages);
+
+            return Ok(response);
         }
     }
 }

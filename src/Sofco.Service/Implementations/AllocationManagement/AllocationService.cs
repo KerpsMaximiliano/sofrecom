@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
-    public class AllocationService : IAllocationService
+    public class AllocationService : IAllocationService 
     {
         private readonly IAllocationRepository allocationRepository;
         private readonly IAnalyticRepository analyticRepository;
@@ -25,44 +25,36 @@ namespace Sofco.Service.Implementations.AllocationManagement
             employeeRepository = employeeRepo;
         }
 
-        public Response<Allocation> Add(AllocationAsignmentParams parameters)
+        public Response<Allocation> Add(AllocationDto allocation)
         {
             var response = new Response<Allocation>();
 
-            var analytic = AnalyticValidationHelper.Find(response, analyticRepository, parameters.AnalyticId);
-            AllocationValidationHelper.ValidateDates(response, parameters.DateSince, parameters.DateTo);
+            AnalyticValidationHelper.Exist(response, analyticRepository, allocation.AnalyticId);
+            EmployeeValidationHelper.Exist(response, employeeRepository, allocation.EmployeeId);
+            AllocationValidationHelper.ValidatePercentage(response, allocation);
+            AllocationValidationHelper.ValidateReleaseDate(response, allocation);
 
             if (response.HasErrors()) return response;
 
-            EmployeeValidationHelper.Exist(response, employeeRepository, parameters.EmployeeId);
-            AllocationValidationHelper.ValidateAnalyticDates(analytic, response, parameters);
-            AllocationValidationHelper.ValidatePercentage(response, parameters.Percentage);
+            var firstMonth = allocation.Months.FirstOrDefault();
+            var lastMonth = allocation.Months[allocation.Months.Count - 1];
 
-            if (response.HasErrors()) return response; 
-
-            var allocationsBetweenDays = allocationRepository.GetBetweenDaysByEmployeeId(parameters.EmployeeId, parameters.DateSince.Value, parameters.DateTo.Value);
+            var allocationsBetweenDays = allocationRepository.GetAllocationsBetweenDays(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 
             if(allocationsBetweenDays.Count > 0)
             {
-                AllocationValidationHelper.ValidatePercentageRange(response, allocationsBetweenDays, parameters);
+                AllocationValidationHelper.ValidatePercentageRange(response, allocationsBetweenDays, allocation);
 
                 if (response.HasErrors()) return response;
 
-                SaveAllocation(parameters, response);
+                SaveAllocation(allocation, response);
             }
             else
             {
-                if (response.HasErrors()) return response;
-
-                SaveAllocation(parameters, response);
+                SaveAllocation(allocation, response);
             }
 
             return response;
-        }
-
-        public ICollection<Allocation> GetAllocations(int employeeId, DateTime startDate, DateTime endDate)
-        {
-            return allocationRepository.GetAllocationsForAnalyticDates(employeeId, startDate, endDate);
         }
 
         public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
@@ -74,7 +66,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
             //Build Header
             for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
             {
-                allocationResponse.MonthsHeader.Add(DatesHelper.GetDateShortDescription(date));
+                var monthHeader = new MonthHeader();
+                monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                monthHeader.Month = date.Month;
+                monthHeader.Year = date.Year;
+
+                allocationResponse.MonthsHeader.Add(monthHeader);
             }
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
@@ -117,24 +114,42 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return allocationResponse;
         }
 
-        private void SaveAllocation(AllocationAsignmentParams parameters, Response response)
+        private void SaveAllocation(AllocationDto allocationDto, Response response)
         {
-            var allocation = new Allocation();
-
             try
             {
-                allocation.AnalyticId = parameters.AnalyticId;
-                allocation.StartDate = parameters.DateSince.Value;
-                allocation.EndDate = parameters.DateTo.Value;
-                allocation.Percentage = parameters.Percentage.Value;
-                allocation.EmployeeId = parameters.EmployeeId;
+                foreach (var month in allocationDto.Months)
+                {
+                    var allocation = new Allocation();
 
-                allocationRepository.Insert(allocation);
+                    if (month.AllocationId > 0)
+                    {
+                        if (month.Updated)
+                        {
+                            allocation.Id = month.AllocationId;
+                            allocation.Percentage = month.Percentage;
+                            allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+
+                            allocationRepository.UpdatePercentage(allocation);
+                        }
+                    }
+                    else
+                    {
+                        allocation.AnalyticId = allocationDto.AnalyticId;
+                        allocation.StartDate = month.Date.Date;
+                        allocation.Percentage = month.Percentage;
+                        allocation.EmployeeId = allocationDto.EmployeeId;
+                        allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+
+                        allocationRepository.Insert(allocation);
+                    }
+                }
+
                 allocationRepository.Save();
 
                 response.Messages.Add(new Message(Resources.es.AllocationManagement.Allocation.Added, MessageType.Success));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }

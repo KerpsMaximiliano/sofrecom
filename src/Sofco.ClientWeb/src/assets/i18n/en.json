@@ -167,6 +167,7 @@
             "add": "Add Invoice Request",
             "solfacs": "Invoice Requests",
             "search": "Search",
+            "searchTitle": "Search invoice requests",
             "list": "List of Invoice Requests",
             "detail": "Invoice Request Detail",
             "contractInfo": "Contract Detail",
@@ -287,9 +288,9 @@
     },
     "allocationManagement": {
         "title": "Allocation Management",
-        "submenu": "Assignments",
         "allocation": {
             "analyticsAssigned": "Analytics Assigned",
+            "analytic": "Analítica",
             "title": "Allocation Management",
             "allocations": "Allocations",
             "resources": "Resources",
@@ -300,7 +301,6 @@
             "emptyMessage": "No related analytics were found for the resource on the dates of the selected analytics.",
             "analyticLife": "Analytic Life",
             "analyticCicleLife": "Analytic´s Cicle Life",
-            "analytic": "Analytic",
             "grid": {
                 "title": "Title",
                 "name": "Name",
@@ -308,6 +308,17 @@
                 "since": "Since",
                 "to": "To",
                 "percentage": "Percentage"
+            }
+        },
+        "resources": {
+            "listTitle": "Resources´s List",
+            "title": "Resources",
+            "list": "List",
+            "grid": {
+                "name": "Name",
+                "senority": "Senority",
+                "profile": "Profile",
+                "billeable": "Billeable (%)"
             }
         },
         "analytics": {

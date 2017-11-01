@@ -16,6 +16,8 @@ namespace Sofco.Model.DTO
 
         public int EmployeeId { get; set; }
 
+        public DateTime? ReleaseDate { get; set; }
+
         public IList<AllocationMonthDto> Months { get; set; }
     }
 
@@ -26,18 +28,27 @@ namespace Sofco.Model.DTO
         public DateTime Date { get; set; }
 
         public decimal Percentage { get; set; }
+
+        public bool Updated { get; set; }
     }
 
     public class AllocationResponse
     {
         public AllocationResponse()
         {
-            this.MonthsHeader = new List<string>();
+            this.MonthsHeader = new List<MonthHeader>();
             this.Allocations = new List<AllocationDto>();
         }
 
         public IList<AllocationDto> Allocations { get; set; }
 
-        public IList<string> MonthsHeader { get; set; }
+        public IList<MonthHeader> MonthsHeader { get; set; }
+    }
+
+    public class MonthHeader
+    {
+        public string Display { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
     }
 }

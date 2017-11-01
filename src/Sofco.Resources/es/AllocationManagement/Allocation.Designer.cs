@@ -132,6 +132,15 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a Fecha de liberación es requerida..
+        /// </summary>
+        public static string ReleaseDateIsRequired {
+            get {
+                return ResourceManager.GetString("ReleaseDateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a Porcentaje ingresado es incorrecto.
         /// </summary>
         public static string WrongPercentage {

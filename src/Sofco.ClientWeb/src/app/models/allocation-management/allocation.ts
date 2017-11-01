@@ -1,6 +1,6 @@
 export class AllocationModel {
     public allocations: Allocation[];
-    public monthsHeader: string[];
+    public monthsHeader: MonthHeader[];
 }
 
 export class Allocation {
@@ -14,4 +14,11 @@ export class AllocationMonth {
     public allocationId: number;
     public date: Date;
     public percentage: number;
+    public updated: boolean;
+}
+
+export class MonthHeader {
+    public display: string;
+    public month: number;
+    public year: number;
 }

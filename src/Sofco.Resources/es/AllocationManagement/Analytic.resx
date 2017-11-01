@@ -120,4 +120,7 @@
   <data name="NotFound" xml:space="preserve">
     <value>Analitica no encontrada</value>
   </data>
+  <data name="ResourcesNotFound" xml:space="preserve">
+    <value>La analítica seleccionada no contiene recursos asignados.</value>
+  </data>
 </root>

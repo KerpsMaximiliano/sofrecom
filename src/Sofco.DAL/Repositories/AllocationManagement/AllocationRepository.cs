@@ -24,24 +24,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public ICollection<Allocation> GetAllocationsForAnalyticDates(int employeeId, DateTime dateSince, DateTime dateTo)
+        public void UpdatePercentage(Allocation allocation)
         {
-            return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && ((x.StartDate >= dateSince && x.StartDate <= dateTo) || (x.EndDate >= dateSince && x.EndDate <= dateTo)))
-                .Include(x => x.Analytic)
-                .Include(x => x.Employee)
-                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
-                .ToList();
-        }
-
-        public ICollection<Allocation> GetBetweenDaysByEmployeeId(int employeeId, DateTime startDate, DateTime endDate)
-        {
-            return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && ((startDate >= x.StartDate && startDate <= x.EndDate) || (endDate >= x.StartDate && endDate <= x.EndDate)))
-                .Include(x => x.Analytic)
-                .Include(x => x.Employee)
-                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
-                .ToList();
+            context.Entry(allocation).Property("Percentage").IsModified = true;
         }
     }
 }

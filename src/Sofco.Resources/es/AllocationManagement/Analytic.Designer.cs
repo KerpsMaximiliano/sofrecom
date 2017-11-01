@@ -67,5 +67,14 @@ namespace Sofco.Resources.es.AllocationManagement {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a La analítica seleccionada no contiene recursos asignados..
+        /// </summary>
+        public static string ResourcesNotFound {
+            get {
+                return ResourceManager.GetString("ResourcesNotFound", resourceCulture);
+            }
+        }
     }
 }

@@ -5,23 +5,22 @@ import { AllocationService } from "app/services/allocation-management/allocation
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { I18nService } from "app/services/common/i18n.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 
 declare var google: any;
 declare var self: any;
 
 @Component({
-    selector: 'allocation-list',
-    templateUrl: './allocation-list.component.html'
+    selector: 'resource-timeline',
+    templateUrl: './resource-timeline.component.html'
 })
-export class AllocationListComponent implements OnInit, OnDestroy {
+export class ResourceTimelineComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
     getAllSubscrip: Subscription;
-    analyticStartDate: Date;
-    analyticEndDate: Date;
     showTimeLine: boolean = false;
 
-    constructor(private allocationService: AllocationService,
+    constructor(private analyticService: AnalyticService,
                 private dataTableService: DataTableService,
                 private messageService: MessageService,
                 private i18nService: I18nService,
@@ -36,21 +35,15 @@ export class AllocationListComponent implements OnInit, OnDestroy {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
 
-    getAllocations(employeeId, startDate, endDate){
-        this.analyticStartDate = startDate;
-        this.analyticEndDate = endDate;
+    getAllocations(analyticId){
         this.showTimeLine = false;
 
-        this.getAllSubscrip = this.allocationService.getAll(employeeId, startDate, endDate).subscribe(data => {
+        this.getAllSubscrip = this.analyticService.getResources(analyticId).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
 
-            if(data && data.length > 0){
-                this.model = data;
-
+            if(data.data && data.data.length > 0){
+                this.model = data.data;
                 this.configChart();
-            }
-            else{
-                this.configChart();
-                this.messageService.succes(this.i18nService.translate('allocationManagement.allocation.emptyMessage'));
             }
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -80,15 +73,11 @@ export class AllocationListComponent implements OnInit, OnDestroy {
         self.model.forEach(function(item, index){
             var startDate = new Date(item.startDate);
             var endDate = new Date(item.endDate);
+            var releaseDate = new Date(item.releaseDate);
 
-            var row = [ item.analyticTitle, `${item.percentage}%`, getTooltipHtml(item.analyticName, item.percentage, startDate, endDate), startDate, endDate ] 
+            var row = [ item.resource, `${item.percentage}%`, getTooltipHtml(item.resource, item.percentage, startDate, endDate, releaseDate), startDate, endDate ] 
             rows.push(row);
         });
-
-        rows.push([ self.i18nService.translate("allocationManagement.allocation.analyticLife"), self.i18nService.translate("allocationManagement.allocation.analyticCicleLife"), 
-                    getTooltipHtml(self.i18nService.translate("allocationManagement.allocation.analyticLife"), self.i18nService.translate("allocationManagement.allocation.analyticCicleLife"), 
-                    new Date(self.analyticStartDate), new Date(self.analyticEndDate)), 
-                    new Date(self.analyticStartDate), new Date(self.analyticEndDate)])
 
         dataTable.addRows(rows);
     
@@ -98,12 +87,12 @@ export class AllocationListComponent implements OnInit, OnDestroy {
     
         chart.draw(dataTable, options);
         
-        function getTooltipHtml(analytic, percentage, startDate, endDate){
+        function getTooltipHtml(resource, percentage, startDate, endDate, releaseDate){
             return `
-                <div class="google-visualization-tooltip" style="width: 240px; height: 157px">
+                <div class="google-visualization-tooltip" style="width: 250px; height: 200px">
                     <ul class="google-visualization-tooltip-item-list" style="">
                         <li class="google-visualization-tooltip-item" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">${analytic}</span>
+                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">${resource}</span>
                         </li>
                     </ul>
                     <div class="google-visualization-tooltip-separator" style=""></div>
@@ -119,6 +108,10 @@ export class AllocationListComponent implements OnInit, OnDestroy {
                         <li class="google-visualization-tooltip-action" style="">
                             <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Porcentaje:</span>
                             <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${percentage}%</span>
+                        </li>
+                        <li class="google-visualization-tooltip-action" style="">
+                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha de Liberación:</span>
+                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${releaseDate.toLocaleDateString()}</span>
                         </li>
                     </ul>
             </div>`;

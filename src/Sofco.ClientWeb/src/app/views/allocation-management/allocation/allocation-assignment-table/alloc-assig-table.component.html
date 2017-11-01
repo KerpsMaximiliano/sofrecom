@@ -1,0 +1,46 @@
+<div class="row" *ngIf="model && model.allocations.length > 0">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="table-responsive" >
+                    <table class="table table-striped dataTable" role="grid">
+                        <thead>
+                            <tr>
+                                <th class="headcol"> {{ 'allocationManagement.allocation.analytic' }} </th>
+                                <th *ngFor="let month of model.monthsHeader">{{ month.display }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let allocation of model.allocations">
+                                <td class="analytic-column headcol"> {{ allocation.analyticTitle }}</td>
+
+                                <td *ngFor="let month of allocation.months; let monthIndex = index">
+                                    <input type="number" min="0" max="100" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateMonth($event, monthIndex, month)">
+                                </td>
+
+                                <td><button class="btn btn-primary btn-sm" type="button" (click)="confirm(allocation)"> {{ 'ACTIONS.confirm' | translate }} </button></td>
+                            </tr>
+                            <tr>
+                                <td> <strong> {{ 'allocationManagement.allocation.totals' }} </strong> </td>
+
+                                <td *ngFor="let total of totals" class="text-center"> 
+                                    <label class="label"  [ngClass]="(total > 100) ? 'label-default' : (total == 100) ? 'label-primary': (total > 49) ? 'label-warning' : 'label-danger'">{{ total }} %</label>
+                                </td>
+                                
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()">
+    <div class="form-group">
+        <label class="control-label"> {{ 'allocationManagement.allocation.releaseDate' }} </label>
+        <ng-datepicker [(ngModel)]="releaseDate" [options]="options"></ng-datepicker>
+    </div>
+</ng2-modal> 

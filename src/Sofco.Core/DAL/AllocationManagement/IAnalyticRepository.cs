@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL.Common;
+﻿using System.Collections.Generic;
+using Sofco.Core.DAL.Common;
 using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -6,5 +7,6 @@ namespace Sofco.Core.DAL.AllocationManagement
     public interface IAnalyticRepository : IBaseRepository<Analytic>
     {
         bool Exist(int id);
+        IList<Allocation> GetResources(int id);
     }
 }

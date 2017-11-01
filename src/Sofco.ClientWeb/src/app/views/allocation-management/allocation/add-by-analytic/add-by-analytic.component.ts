@@ -13,8 +13,8 @@ import { DateRangePickerComponent } from "app/components/datepicker/date-range-p
 declare var $:any;
 
 @Component({
-    selector: 'add-allocation',
-    templateUrl: './add-allocation.component.html'
+    selector: 'add-by-analytic',
+    templateUrl: './add-by-analytic.component.html'
 })
 
 export class AddAllocationComponent implements OnInit, OnDestroy {
@@ -28,12 +28,10 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     getAllocationResourcesSubscrip: Subscription;
     addSubscrip: Subscription;
 
-    showPanelAllocation: boolean = false;
+    @ViewChild('resourceTimeline') resourceTimeline: any;
+    @ViewChild('allocations') allocations: any;
 
-    public datePickerOptionRange: string = "next";
-
-    @ViewChild('allocationList') allocationList: any;
-    @ViewChild('dateRangePicker') dateRangePicker: DateRangePickerComponent;
+    public resourceId: number = 0;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -51,12 +49,15 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
         if(analytic){
             this.analytic = analytic;
             sessionStorage.removeItem("analytic");
+            this.getTimeline(this.analytic.id);
         }
         else{
             this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
 
                 this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
                     this.analytic = data;
+
+                    this.getTimeline(params['id']);
                 },
                 error => this.errorHandlerService.handleErrors(error));
 
@@ -80,39 +81,15 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
         error => this.errorHandlerService.handleErrors(error));
     }
 
-    search(){
-        var employeeId = $('#employeeId').val();
-
-        this.showPanelAllocation = true;
-        this.allocationList.model = new Array<any>();
-        this.allocationList.getAllocations(employeeId, this.analytic.startDate, this.analytic.endDate);
+    getTimeline(analyticId){
+        this.resourceTimeline.model = new Array<any>();
+        this.resourceTimeline.getAllocations(analyticId);
     }
 
-    assign(){
+    search(){
         var employeeId = $('#employeeId').val();
+        this.resourceId = employeeId;
 
-        var employee = this.resources.find(x => x.id == employeeId);
-
-        var startDateArray = this.dateRangePicker.start.toArray();
-        var startDate = new Date(startDateArray[0], startDateArray[1], startDateArray[2]);
-
-        var endDateArray = this.dateRangePicker.end.toArray();
-        var endDate = new Date(endDateArray[0], endDateArray[1], endDateArray[2]);
-
-        var json = {
-            analyticId: this.analytic.id,
-            employeeId: employeeId,
-            billingPercentage: employee ? employee.billingPercentage : 0,
-            percentage: this.allocationToSearch.percentage,
-            dateSince: startDate,
-            dateTo: endDate
-        }
-
-        this.addSubscrip = this.allocationService.add(json).subscribe(data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            this.allocationList.getAllocations(employeeId, this.analytic.startDate, this.analytic.endDate);
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        this.allocations.getAllocations(employeeId);
     }
 }

@@ -8,5 +8,6 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         ICollection<Analytic> GetAll();
         Response<Analytic> GetById(int id);
+        Response<IList<Allocation>> GetResources(int id);
     }
 }

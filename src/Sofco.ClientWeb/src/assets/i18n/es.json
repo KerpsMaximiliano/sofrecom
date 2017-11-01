@@ -288,11 +288,12 @@
     },
     "allocationManagement": {
         "title": "Gestión de Recursos",
-        "submenu": "Asignaciones",
         "allocation": {
-            "analyticsAssigned": "Analíticas asignadas",
+            "analyticsAssigned": "Analíticas Asignadas",
+            "resourcesAssigned": "Recursos Asignados",
             "analytic": "Analítica",
-            "title": "Asignación de recursos",
+            "assignResources": "Asignación de recursos",
+            "assignAnalytic": "Asignación de analíticas",
             "allocations": "Asignaciones",
             "resources": "Recursos",
             "percentage": "Porcentaje",
@@ -302,6 +303,8 @@
             "emptyMessage": "No se encontraron analíticas relacionadas para el recurso en las fechas de la analítica seleccionada.", 
             "analyticLife": "Vida Analitica",
             "analyticCicleLife": "Ciclo de vida de la analítica",
+            "totals": "Totales",
+            "releaseDate": "Fecha de Liberación",
             "grid": {
                 "title": "Título",
                 "name": "Nombre",
@@ -309,6 +312,17 @@
                 "since": "Desde",
                 "to": "Hasta",
                 "percentage": "Porcentaje"
+            }
+        },
+        "resources": {
+            "listTitle": "Listado de Recursos",
+            "title": "Recursos",
+            "list": "Listado",
+            "grid": {
+                "name": "Nombre",
+                "senority": "Senority",
+                "profile": "Perfil",
+                "billeable": "Facturable (%)"
             }
         },
         "analytics": {
@@ -361,7 +375,8 @@
         "updateBill": "Actualizar Factura",
         "updateCash": "Actualizar Cobro",
         "assign": "Asignar",
-        "applyChanges": "Aplicar cambios"
+        "applyChanges": "Aplicar cambios",
+        "confirm": "Confirmar"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

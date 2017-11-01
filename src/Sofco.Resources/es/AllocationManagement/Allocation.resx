@@ -141,6 +141,9 @@
   <data name="DateToRequired" xml:space="preserve">
     <value>Fecha hasta es requerida</value>
   </data>
+  <data name="ReleaseDateIsRequired" xml:space="preserve">
+    <value>Fecha de liberación es requerida.</value>
+  </data>
   <data name="WrongPercentage" xml:space="preserve">
     <value>Porcentaje ingresado es incorrecto</value>
   </data>

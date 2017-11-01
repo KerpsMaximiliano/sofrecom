@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
-using Sofco.WebApi.Models.AllocationManagement;
 using System;
-using System.Linq;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -20,27 +18,19 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         } 
 
         [HttpPost]
-        public IActionResult Post([FromBody] AllocationAsignmentParams parameters)
+        public IActionResult Post([FromBody] AllocationDto allocation)
         {
-            var response = allocationService.Add(parameters);
+            var response = allocationService.Add(allocation);
 
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
         }
 
-        [HttpGet("{employeeId}/{startDate}/{endDate}")]
-        public IActionResult GetAllocations(int employeeId, DateTime startDate, DateTime endDate)
-        {
-            var model = allocationService.GetAllocations(employeeId, startDate, endDate);
-
-            return Ok(model.Select(x => new AllocationModel(x)));
-        }
-
         [HttpGet("analytics/{employeeId}/{startDate}/{endDate}")]
         public IActionResult GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
-            var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+            var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate.Date, endDate.Date);
 
             return Ok(model);
         }
