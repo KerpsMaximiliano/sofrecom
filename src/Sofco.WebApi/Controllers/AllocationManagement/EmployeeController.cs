@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Models.AllocationManagement;
-using System.Linq;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {

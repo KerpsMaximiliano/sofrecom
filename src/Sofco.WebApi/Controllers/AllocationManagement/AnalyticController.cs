@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Models.AllocationManagement;
-using System.Linq;
 using Sofco.Model.Utils;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -14,7 +14,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     {
         private readonly IAnalyticService analyticService;
 
-        public AnalyticController(IAnalyticService analyticServ) {
+        public AnalyticController(IAnalyticService analyticServ)
+        {
             analyticService = analyticServ;
         }
 
@@ -22,6 +23,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Get()
         {
             var model = analyticService.GetAll().Select(x => new AnalyticSearchViewModel(x));
+
             return Ok(model);
         }
 
@@ -30,7 +32,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = analyticService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new AnalyticSearchViewModel(response.Data));
         }

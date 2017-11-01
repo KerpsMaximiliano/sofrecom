@@ -1,5 +1,5 @@
-﻿using Sofco.Model.Models.TimeManagement;
-using System;
+﻿using System;
+using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
 {
@@ -17,11 +17,17 @@ namespace Sofco.WebApi.Models.AllocationManagement
         }
 
         public int Id { get; private set; }
+
         public string Name { get; private set; }
+
         public string Title { get; private set; }
+
         public string ClientExternalName { get; private set; }
+
         public string CommercialManager { get; private set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
     }
 }

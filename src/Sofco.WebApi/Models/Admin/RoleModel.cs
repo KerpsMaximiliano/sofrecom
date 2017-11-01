@@ -1,9 +1,8 @@
-﻿using Sofco.Model;
-using Sofco.Model.Interfaces;
-using Sofco.Model.Models;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.ComponentModel.DataAnnotations;
+using Sofco.Model;
+using Sofco.Model.Interfaces;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Models.Admin
@@ -12,9 +11,8 @@ namespace Sofco.WebApi.Models.Admin
     {
         public RoleModel()
         {
-
         }
-           
+
         public RoleModel(Role rol)
         {
             Id = rol.Id;
@@ -32,10 +30,13 @@ namespace Sofco.WebApi.Models.Admin
         public string Description { get; set; }
 
         public bool Active { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
         public IList<GroupModel> Groups { get; set; }
+
         public IList<ModuleModel> Modules { get; set; }
 
         public void ApplyTo(Role rol)

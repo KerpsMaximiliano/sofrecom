@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Admin;
+using Sofco.Model.Models.Admin;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.Admin;
-using Sofco.Model.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -14,18 +14,18 @@ namespace Sofco.WebApi.Controllers.Admin
     [Authorize]
     public class GroupController : Controller
     {
-        private readonly IGroupService _groupService;
+        private readonly IGroupService groupService;
 
         public GroupController(IGroupService groupsService)
         {
-            _groupService = groupsService;
+            groupService = groupsService;
         }
 
         // GET: api/group
         [HttpGet]
         public IActionResult Get()
         {
-            var groups = _groupService.GetAllReadOnly(false);
+            var groups = groupService.GetAllReadOnly(false);
             var model = new List<GroupModel>();
 
             foreach (var group in groups)
@@ -39,7 +39,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var groups = _groupService.GetAllReadOnly(true);
+            var groups = groupService.GetAllReadOnly(true);
             var model = new List<SelectListItem>();
 
             foreach (var group in groups)
@@ -52,9 +52,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var response = _groupService.GetById(id);
+            var response = groupService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var groupModel = new GroupModel(response.Data);
 
@@ -73,7 +74,8 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
             var group = new Group();
             group.Role = new Role();
@@ -81,9 +83,10 @@ namespace Sofco.WebApi.Controllers.Admin
             model.ApplyTo(group);
             group.Role.Id = model.RoleId;
 
-            var response = _groupService.Insert(group);
+            var response = groupService.Insert(group);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -94,18 +97,21 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
-            var groupReponse = _groupService.GetById(model.Id);
+            var groupReponse = groupService.GetById(model.Id);
 
-            if (groupReponse.HasErrors()) return BadRequest(groupReponse);
+            if (groupReponse.HasErrors())
+                return BadRequest(groupReponse);
 
             model.ApplyTo(groupReponse.Data);
             var roleId = model.Role != null ? model.Role.Id : 0;
 
-            var response = _groupService.Update(groupReponse.Data, roleId);
+            var response = groupService.Update(groupReponse.Data, roleId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -114,9 +120,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{id}/active/{active}")]
         public IActionResult Active(int id, bool active)
         {
-            var response = _groupService.Active(id, active);
+            var response = groupService.Active(id, active);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

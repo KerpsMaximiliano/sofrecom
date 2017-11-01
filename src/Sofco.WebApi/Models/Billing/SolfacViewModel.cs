@@ -14,66 +14,91 @@ namespace Sofco.WebApi.Models.Billing
             InvoicesId = new List<int>();
         }
 
-        #region properties
-
         public int Id { get; set; }
+
         public string ClientName { get; set; }
+
         public string BusinessName { get; set; }
+
         public string CelPhone { get; set; }
+
         public SolfacStatus StatusId { get; set; }
+
         public string StatusName { get; set; }
+
         public string ContractNumber { get; set; }
+
         public string Project { get; set; }
+
         public string ProjectId { get; set; }
 
         [Required(ErrorMessage = "El tipo de documento es requerido")]
         public int? DocumentType { get; set; }
+
         [Required(ErrorMessage = "El solicitante es requerido")]
         public int? UserApplicantId { get; set; }
 
         public string ImputationNumber1 { get; set; }
+
         public string ImputationNumber2 { get; set; }
 
         [Required(ErrorMessage = "El número de imputacion es requerido")]
         public int? ImputationNumber3 { get; set; }
 
         public decimal Amount { get; set; }
+
         public decimal Iva21 { get; set; }
+
         public decimal TotalAmount { get; set; }
 
         [Required(ErrorMessage = "La moneda es requerida")]
         public int? CurrencyId { get; set; }
 
         public decimal? CapitalPercentage { get; set; }
+
         public decimal? BuenosAiresPercentage { get; set; }
+
         public decimal? OtherProvince1Percentage { get; set; }
+
         public decimal? OtherProvince2Percentage { get; set; }
+
         public decimal? OtherProvince3Percentage { get; set; }
+
         public int Province1Id { get; set; }
+
         public int Province2Id { get; set; }
+
         public int Province3Id { get; set; }
+
         public string AttachedParts { get; set; }
+
         public string ParticularSteps { get; set; }
+
         public short TimeLimit { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
 
         public DateTime StartDate { get; set; }
+
         public int ModifiedByUserId { get; set; }
+
         public DateTime UpdatedDate { get; set; }
 
         public IList<int> InvoicesId { get; set; }
 
         public string CustomerId { get; set; }
+
         public string ServiceId { get; set; }
+
         public string Service { get; set; }
+
         public string Analytic { get; set; }
 
         public bool IsNew { get; set; }
-        public bool WithTax { get; set; }
-        public bool Remito { get; set; }
 
-        #endregion
+        public bool WithTax { get; set; }
+
+        public bool Remito { get; set; }
 
         public Solfac CreateDomain()
         {
@@ -114,6 +139,5 @@ namespace Sofco.WebApi.Models.Billing
 
             return solfac;
         }
-
     }
 }

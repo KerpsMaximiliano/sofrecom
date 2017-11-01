@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models.Admin;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -12,21 +12,21 @@ namespace Sofco.WebApi.Controllers.Admin
     [Authorize]
     public class MenuController : Controller
     {
-        private readonly IMenuService _menuService;
-        private readonly IUserService _userService;
-        private readonly EmailConfig _emailConfig;
+        private readonly IMenuService menuService;
+        private readonly IUserService userService;
+        private readonly EmailConfig emailConfig;
 
         public MenuController(IMenuService menuService, IUserService userService, IOptions<EmailConfig> emailConfig)
         {
-            _menuService = menuService;
-            _userService = userService;
-            _emailConfig = emailConfig.Value;
+            this.menuService = menuService;
+            this.userService = userService;
+            this.emailConfig = emailConfig.Value;
         }
 
         [HttpGet("{userName}")]
         public IActionResult Get(string userName)
         {
-            var roleFunctionalities = _menuService.GetFunctionalitiesByUserName(userName);
+            var roleFunctionalities = menuService.GetFunctionalitiesByUserName(userName);
 
             var response = new MenuResponse();
 
@@ -45,9 +45,9 @@ namespace Sofco.WebApi.Controllers.Admin
                 }
             }
 
-            response.IsDirector = _userService.HasDirectorGroup(this.GetUserMail());
-            response.IsDaf = _userService.HasDafGroup(this.GetUserMail(), _emailConfig.DafMail);
-            response.IsCdg = _userService.HasCdgGroup(this.GetUserMail(), _emailConfig.CdgMail);
+            response.IsDirector = userService.HasDirectorGroup(this.GetUserMail());
+            response.IsDaf = userService.HasDafGroup(this.GetUserMail(), emailConfig.DafCode);
+            response.IsCdg = userService.HasCdgGroup(this.GetUserMail(), emailConfig.CdgCode);
 
             return Ok(response);
         }

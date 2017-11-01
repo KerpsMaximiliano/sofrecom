@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Sofco.Core.Config;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.Core.Config;
-using Sofco.WebApi.Models.Billing;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -22,15 +22,15 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class ProjectController : Controller
     {
-        private readonly ISolfacService _solfacService;
-        private readonly CrmConfig _crmConfig;
-        private readonly IUserService _userService;
+        private readonly ISolfacService solfacService;
+        private readonly CrmConfig crmConfig;
+        private readonly IUserService userService;
 
         public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService)
         {
-            _solfacService = solfacService;
-            _crmConfig = crmOptions.Value;
-            _userService = userService;
+            this.solfacService = solfacService;
+            crmConfig = crmOptions.Value;
+            this.userService = userService;
         }
 
         [HttpGet("{serviceId}/options")]
@@ -89,11 +89,11 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ProjectCrm>> GetProjects(string serviceId)
         {
-            var hasDirectorGroup = this._userService.HasDirectorGroup(this.GetUserMail());
+            var hasDirectorGroup = this.userService.HasDirectorGroup(this.GetUserMail());
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
 
                 HttpResponseMessage response;
 
@@ -105,7 +105,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 {
                     response = await client.GetAsync($"/api/project?idService={serviceId}&idManager={this.GetUserMail()}");
                 }
-               
+
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();
@@ -119,7 +119,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
                 var response = await client.GetAsync($"/api/project/{projectId}");
                 response.EnsureSuccessStatusCode();
 
@@ -134,13 +134,13 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{projectId}/hitos")]
         public async Task<IActionResult> GetHitos(string projectId)
         {
-            var hitos = _solfacService.GetHitosByProject(projectId);
+            var hitos = solfacService.GetHitosByProject(projectId);
 
             using (var client = new HttpClient())
             {
                 try
                 {
-                    client.BaseAddress = new Uri(_crmConfig.Url);
+                    client.BaseAddress = new Uri(crmConfig.Url);
                     var response = await client.GetAsync($"/api/InvoiceMilestone?idProject={projectId}");
                     response.EnsureSuccessStatusCode();
 
@@ -162,14 +162,13 @@ namespace Sofco.WebApi.Controllers.Billing
                             hitoCrm.Billed = true;
                         }
 
-                        if(hitoCrm.Status.Equals("A ser facturado"))
+                        if (hitoCrm.Status.Equals("A ser facturado"))
                         {
                             hitoCrm.Status = HitoStatus.ToBeBilled.ToString();
                         }
                     }
 
                     return Ok(hitosCRM);
-
                 }
                 catch
                 {

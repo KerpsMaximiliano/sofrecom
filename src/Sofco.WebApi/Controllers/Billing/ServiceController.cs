@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Core.Services.Admin;
 using Sofco.Core.Config;
-using Sofco.WebApi.Models.Billing;
+using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -19,13 +19,13 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class ServiceController : Controller
     {
-        private readonly CrmConfig _crmConfig;
-        private readonly IUserService _userService;
+        private readonly CrmConfig crmConfig;
+        private readonly IUserService userService;
 
         public ServiceController(IOptions<CrmConfig> crmOptions, IUserService userService)
         {
-            _crmConfig = crmOptions.Value;
-            _userService = userService;
+            crmConfig = crmOptions.Value;
+            this.userService = userService;
         }
 
         [HttpGet("{customerId}/options")]
@@ -61,11 +61,11 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private async Task<IList<ServiceCrm>> GetServices(string customerId)
         {
-            var hasDirectorGroup = this._userService.HasDirectorGroup(this.GetUserMail());
+            var hasDirectorGroup = this.userService.HasDirectorGroup(this.GetUserMail());
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(_crmConfig.Url);
+                client.BaseAddress = new Uri(crmConfig.Url);
 
                 HttpResponseMessage response;
 

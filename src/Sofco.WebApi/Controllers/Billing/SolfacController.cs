@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -59,7 +59,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var model = new SolfacDetail(response.Data);
 
@@ -112,15 +113,18 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
             var domain = model.CreateDomain();
 
             var response = solfacService.Add(domain, model.InvoicesId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var solfacChangeStatusResponse = new SolfacChangeStatusResponse { HitoStatus = HitoStatus.Pending, Hitos = response.Data.Hitos.Select(x => x.ExternalHitoId).ToList() };
+
             ChangeHitoStatus(solfacChangeStatusResponse);
 
             return Ok(response);
@@ -131,13 +135,15 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
             var domain = model.CreateDomain();
 
             var response = solfacService.Update(domain, model.Comments);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -148,13 +154,15 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
             var domain = model.CreateDomain();
 
             var response = solfacService.Add(domain, model.InvoicesId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var solfacStatusParams = new SolfacStatusParams(response.Data.UserApplicantId, SolfacStatus.PendingByManagementControl);
 
@@ -177,7 +185,8 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.ChangeStatus(id, solfacStatusParams, emailConfig);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -190,7 +199,8 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateBill(id, solfacStatusParams);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -203,7 +213,8 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateCashedDate(id, solfacStatusParams);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -237,7 +248,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.Delete(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -248,7 +260,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteInvoice(id, invoiceId);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -282,7 +295,8 @@ namespace Sofco.WebApi.Controllers.Billing
 
                     var response = solfacService.SaveFile(solfacId, fileAsArrayBytes, file.FileName);
 
-                    if (response.HasErrors()) return BadRequest(response);
+                    if (response.HasErrors())
+                        return BadRequest(response);
 
                     var responseFile = new Response<SolfacAttachmentViewModel>();
                     responseFile.Messages = response.Messages;
@@ -319,7 +333,8 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var response = solfacService.GetFileById(fileId);
 
-                if (response.HasErrors()) return BadRequest(response);
+                if (response.HasErrors())
+                    return BadRequest(response);
 
                 return File(response.Data.File, "application/octet-stream", response.Data.Name);
             }
@@ -343,7 +358,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteFile(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -354,7 +370,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.GetInvoices(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response.Data);
         }
@@ -365,7 +382,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.AddInvoices(id, invoices);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

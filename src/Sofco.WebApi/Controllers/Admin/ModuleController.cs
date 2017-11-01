@@ -13,20 +13,20 @@ namespace Sofco.WebApi.Controllers.Admin
     [Authorize]
     public class ModuleController : Controller
     {
-        private readonly IModuleService _moduleService;
-        private readonly IFunctionalityService _functionalityService;
+        private readonly IModuleService moduleService;
+        private readonly IFunctionalityService functionalityService;
 
         public ModuleController(IModuleService moduleService, IFunctionalityService functionalityService)
         {
-            _functionalityService = functionalityService;
-            _moduleService = moduleService;
+            this.functionalityService = functionalityService;
+            this.moduleService = moduleService;
         }
 
         // GET: api/module
         [HttpGet]
         public IActionResult Get()
         {
-            var modules = _moduleService.GetAllReadOnly(false);
+            var modules = moduleService.GetAllReadOnly(false);
             var model = new List<ModuleModel>();
 
             foreach (var module in modules)
@@ -40,7 +40,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("options")]
         public IActionResult GetOptions()
         {
-            var modules = _moduleService.GetAllReadOnly(true);
+            var modules = moduleService.GetAllReadOnly(true);
             var model = new List<SelectListItem>();
 
             foreach (var module in modules)
@@ -53,20 +53,20 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("modulesAndFunctionalities")]
         public IActionResult GetOptionsWithFunctionalities()
         {
-            var modules = _moduleService.GetAllWithFunctionalitiesReadOnly();
+            var modules = moduleService.GetAllWithFunctionalitiesReadOnly();
             var model = new List<ModuleModel>();
 
             foreach (var module in modules)
             {
                 var moduleToAdd = new ModuleModel(module);
 
-                foreach (var funct in module.Functionalities) {
+                foreach (var funct in module.Functionalities)
+                {
                     moduleToAdd.Functionalities.Add(new FunctionalityModel(funct));
                 }
 
                 model.Add(moduleToAdd);
             }
-               
 
             return Ok(model);
         }
@@ -75,9 +75,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var response = _moduleService.GetById(id);
+            var response = moduleService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var model = new ModuleModel(response.Data);
 
@@ -93,9 +94,10 @@ namespace Sofco.WebApi.Controllers.Admin
         [Route("{id}/active/{active}")]
         public IActionResult Active(int id, bool active)
         {
-            var response = _moduleService.Active(id, active);
+            var response = moduleService.Active(id, active);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -105,17 +107,20 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var errors = this.GetErrors();
 
-            if (errors.HasErrors()) return BadRequest(errors);
+            if (errors.HasErrors())
+                return BadRequest(errors);
 
-            var moduleResponse = _moduleService.GetById(model.Id);
+            var moduleResponse = moduleService.GetById(model.Id);
 
-            if (moduleResponse.HasErrors()) return BadRequest(moduleResponse);
+            if (moduleResponse.HasErrors())
+                return BadRequest(moduleResponse);
 
             model.ApplyTo(moduleResponse.Data);
 
-            var response = _moduleService.Update(moduleResponse.Data);
+            var response = moduleService.Update(moduleResponse.Data);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -123,7 +128,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("{id}/functionalities")]
         public IActionResult GetFunctionalities(int id)
         {
-            var response = _functionalityService.GetFunctionalitiesByModule(id);
+            var response = functionalityService.GetFunctionalitiesByModule(id);
 
             var model = new List<FunctionalityModel>();
 

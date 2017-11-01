@@ -1,5 +1,4 @@
 ﻿using System;
-using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Models.Billing
@@ -8,7 +7,6 @@ namespace Sofco.WebApi.Models.Billing
     {
         public InvoiceViewModel()
         {
-            
         }
 
         public InvoiceViewModel(Invoice invoice)
@@ -35,34 +33,52 @@ namespace Sofco.WebApi.Models.Billing
             ServiceId = invoice.ServiceId;
             CustomerId = invoice.CustomerId;
 
-            if(invoice.Solfac != null)
+            if (invoice.Solfac != null)
             {
                 SolfacId = invoice.Solfac.Id;
             }
         }
 
         public int Id { get; set; }
+
         public string AccountName { get; set; }
+
         public string Address { get; set; }
+
         public string Zipcode { get; set; }
+
         public string City { get; set; }
+
         public string Province { get; set; }
+
         public string Country { get; set; }
+
         public string Cuit { get; set; }
+
         public string Service { get; set; }
+
         public string Project { get; set; }
+
         public string ProjectId { get; set; }
+
         public string ServiceId { get; set; }
+
         public string CustomerId { get; set; }
+
         public string Analytic { get; set; }
 
         public string ExcelFileName { get; set; }
+
         public string PdfFileName { get; set; }
+
         public string InvoiceNumber { get; set; }
 
         public string InvoiceStatus { get; set; }
+
         public string ExcelFileCreatedDate { get; set; }
+
         public string PdfFileCreatedDate { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public int? SolfacId { get; set; }
@@ -92,7 +108,7 @@ namespace Sofco.WebApi.Models.Billing
     public class InvoiceDetailViewModel
     {
         public string Description { get; set; }
+
         public int Quantity { get; set; }
     }
 }
-
