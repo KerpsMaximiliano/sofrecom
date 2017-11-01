@@ -6,7 +6,7 @@
                     <table class="table table-striped dataTable" role="grid">
                         <thead>
                             <tr>
-                                <th class="headcol"> {{ 'allocationManagement.allocation.analytic' }} </th>
+                                <th class="headcol"> {{ 'allocationManagement.allocation.analytic' | translate  }} </th>
                                 <th *ngFor="let month of model.monthsHeader">{{ month.display }}</th>
                                 <th></th>
                             </tr>
@@ -22,7 +22,7 @@
                                 <td><button class="btn btn-primary btn-sm" type="button" (click)="confirm(allocation)"> {{ 'ACTIONS.confirm' | translate }} </button></td>
                             </tr>
                             <tr>
-                                <td> <strong> {{ 'allocationManagement.allocation.totals' }} </strong> </td>
+                                <td> <strong> {{ 'allocationManagement.allocation.totals' | translate  }} </strong> </td>
 
                                 <td *ngFor="let total of totals" class="text-center"> 
                                     <label class="label"  [ngClass]="(total > 100) ? 'label-default' : (total == 100) ? 'label-primary': (total > 49) ? 'label-warning' : 'label-danger'">{{ total }} %</label>
@@ -40,7 +40,7 @@
 
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()">
     <div class="form-group">
-        <label class="control-label"> {{ 'allocationManagement.allocation.releaseDate' }} </label>
+        <label class="control-label"> {{ 'allocationManagement.allocation.releaseDate' | translate  }} </label>
         <ng-datepicker [(ngModel)]="releaseDate" [options]="options"></ng-datepicker>
     </div>
 </ng2-modal> 
