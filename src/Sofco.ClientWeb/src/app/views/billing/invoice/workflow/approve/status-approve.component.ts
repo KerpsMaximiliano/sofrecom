@@ -7,7 +7,6 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { InvoiceService } from 'app/services/billing/invoice.service';
 import { InvoiceStatus } from 'app/models/enums/invoiceStatus';
-import { I18nService } from 'app/services/common/i18n.service';
 declare var $: any;
 
 @Component({
@@ -39,7 +38,6 @@ export class StatusApproveComponent implements OnDestroy  {
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService,
         private router: Router) { }
 
@@ -83,7 +81,7 @@ export class StatusApproveComponent implements OnDestroy  {
             });
         }
         else{
-            this.messageService.showError(this.i18nService.translate("billing.invoice.invoiceNumberRequired"));
+            this.messageService.showError("billing.invoice.invoiceNumberRequired");
         }
     }
 }

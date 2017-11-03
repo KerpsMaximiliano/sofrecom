@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Created" xml:space="preserve">
-    <value>Funcionalidad creado correctamente</value>
+    <value>admin/functionality.created</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Funcionalidad inhabilitada correctamente</value>
+    <value>admin/functionality.disabled</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Funcionalidad habilitada correctamente</value>
+    <value>admin/functionality.enabled</value>
   </data>
   <data name="ModuleFunctionalityAlreadyCreated" xml:space="preserve">
-    <value>Funcionalidad ya asociada al modulo</value>
+    <value>admin/functionality.moduleFunctionalityAlreadyCreated</value>
   </data>
   <data name="ModuleFunctionalityAlreadyRemoved" xml:space="preserve">
-    <value>Funcionalidad no asociada al modulo</value>
+    <value>admin/functionality.moduleFunctionalityAlreadyRemoved</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Funcionalidad no encontrada</value>
+    <value>admin/functionality.notFound</value>
   </data>
 </root>

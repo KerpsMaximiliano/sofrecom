@@ -64,7 +64,7 @@ namespace Sofco.UnitTest.Services
             var messageActual = responseActual.Messages.FirstOrDefault();
 
             Assert.IsNotNull(messageActual);
-            Assert.AreEqual(active ? Resources.es.Admin.User.Enabled : Resources.es.Admin.User.Disabled, messageActual.Description);
+            Assert.AreEqual(active ? Resources.es.Admin.User.Enabled : Resources.es.Admin.User.Disabled, messageActual.Folder);
             Assert.AreEqual(MessageType.Success, messageActual.Type);
 
             userRepositoryMock.Verify(s => s.GetSingle(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
@@ -83,7 +83,7 @@ namespace Sofco.UnitTest.Services
             var messageActual = responseActual.Messages.FirstOrDefault();
 
             Assert.IsNotNull(messageActual);
-            Assert.AreEqual(Resources.es.Admin.User.NotFound, messageActual.Description);
+            Assert.AreEqual(Resources.es.Admin.User.NotFound, messageActual.Folder);
             Assert.AreEqual(MessageType.Error, messageActual.Type);
 
             userRepositoryMock.Verify(s => s.GetSingle(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);

@@ -20,7 +20,9 @@ namespace Sofco.WebApi.Controllers
         {
             var result = service.Login(userLogin);
 
-            return result.CreateResponse(this);
+            if (result.HasErrors()) return BadRequest(result);
+
+            return Ok(result);
         }
 
         [HttpPost]

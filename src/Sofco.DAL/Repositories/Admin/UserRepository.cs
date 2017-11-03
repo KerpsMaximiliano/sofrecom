@@ -82,5 +82,10 @@ namespace Sofco.DAL.Repositories.Admin
                     .ThenInclude(x => x.Group)
                  .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == cdgCode));
         }
+
+        public bool IsActive(string userMail)
+        {
+            return context.Users.Any(x => x.Email == userMail && x.Active);
+        }
     }
 }

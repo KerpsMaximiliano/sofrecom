@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad creado correctamente.
+        ///    Busca una cadena localizada similar a admin/functionality.created.
         /// </summary>
         public static string Created {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad inhabilitada correctamente.
+        ///    Busca una cadena localizada similar a admin/functionality.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad habilitada correctamente.
+        ///    Busca una cadena localizada similar a admin/functionality.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad ya asociada al modulo.
+        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyCreated.
         /// </summary>
         public static string ModuleFunctionalityAlreadyCreated {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad no asociada al modulo.
+        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyRemoved.
         /// </summary>
         public static string ModuleFunctionalityAlreadyRemoved {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidad no encontrada.
+        ///    Busca una cadena localizada similar a admin/functionality.notFound.
         /// </summary>
         public static string NotFound {
             get {

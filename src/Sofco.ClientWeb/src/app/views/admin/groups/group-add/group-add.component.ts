@@ -29,15 +29,13 @@ export class GroupAddComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form){
-    if(!form.invalid){
-      this.group.active = true;
-      this.service.add(this.group).subscribe(
-        data => {
-          if(data.messages) this.messageService.showMessages(data.messages);
-          this.router.navigate(["/admin/groups"]);
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
+    this.group.active = true;
+    this.service.add(this.group).subscribe(
+      data => {
+        if(data.messages) this.messageService.showMessages(data.messages);
+        this.router.navigate(["/admin/groups"]);
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 
   ngOnDestroy(){

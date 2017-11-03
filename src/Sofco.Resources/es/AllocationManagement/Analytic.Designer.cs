@@ -60,11 +60,20 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Analitica no encontrada.
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.resourcesNotFound.
+        /// </summary>
+        public static string ResourcesNotFound {
+            get {
+                return ResourceManager.GetString("ResourcesNotFound", resourceCulture);
             }
         }
     }

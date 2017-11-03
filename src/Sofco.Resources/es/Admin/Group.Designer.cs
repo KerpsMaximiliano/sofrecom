@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo creado exitosamente.
+        ///    Busca una cadena localizada similar a admin/group.created.
         /// </summary>
         public static string Created {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo eliminado correctamente.
+        ///    Busca una cadena localizada similar a admin/group.deleted.
         /// </summary>
         public static string Deleted {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La descripción ya existe.
+        ///    Busca una cadena localizada similar a admin/group.descriptionAlreadyExist.
         /// </summary>
         public static string DescriptionAlreadyExist {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo deshabilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/group.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo habilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/group.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo no encontrado.
+        ///    Busca una cadena localizada similar a admin/group.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol asignado al grupo correctamente.
+        ///    Busca una cadena localizada similar a admin/group.roleAssigned.
         /// </summary>
         public static string RoleAssigned {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol removido al grupo correctamente.
+        ///    Busca una cadena localizada similar a admin/group.roleRemoved.
         /// </summary>
         public static string RoleRemoved {
             get {
@@ -132,7 +132,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo modificado correctamente.
+        ///    Busca una cadena localizada similar a admin/group.updated.
         /// </summary>
         public static string Updated {
             get {

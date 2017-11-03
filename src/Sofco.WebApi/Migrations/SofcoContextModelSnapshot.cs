@@ -425,9 +425,9 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("EmployeeId");
 
-                    b.Property<DateTime>("EndDate");
-
                     b.Property<decimal>("Percentage");
+
+                    b.Property<DateTime>("ReleaseDate");
 
                     b.Property<DateTime>("StartDate");
 

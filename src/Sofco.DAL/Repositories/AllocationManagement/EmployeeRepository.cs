@@ -74,5 +74,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 && s.EndDate.Value.Date >= date)
                 .ToList();
         }
+
+        public Employee GetById(int id)
+        {
+            return context.Employees.SingleOrDefault(x => x.Id == id);
+        }
     }
 }

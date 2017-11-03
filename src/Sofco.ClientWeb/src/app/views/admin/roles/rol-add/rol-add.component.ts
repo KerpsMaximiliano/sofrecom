@@ -29,7 +29,6 @@ export class RolAddComponent implements OnInit {
         this.rol.active = true;
         this.service.add(this.rol).subscribe(
           data => {
-            console.log(data);
             if(data.messages) this.messageService.showMessages(data.messages);
             this.router.navigate(["/admin/roles"]);
           },

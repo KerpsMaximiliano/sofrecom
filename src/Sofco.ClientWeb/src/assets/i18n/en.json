@@ -167,10 +167,11 @@
             "add": "Add Invoice Request",
             "solfacs": "Invoice Requests",
             "search": "Search",
+            "searchTitle": "Search invoice requests",
             "list": "List of Invoice Requests",
             "detail": "Invoice Request Detail",
             "contractInfo": "Contract Detail",
-            "status": "Status",
+            "status": "Status", 
             "businessName":"Business Name",
             "project": "Project",
             "clientName": "Client Name",
@@ -187,6 +188,7 @@
             "invoiceNumber": "Invoice Number",
             "invoiceCode": "Bill Number",
             "includeInvoiceCode": "Include bill number before invoicing",
+            "rejectCommentRequired": "Reject comment is required",
             "pdf": "PDF",
             "days": "Days",
             "movements": "Movements",
@@ -287,10 +289,12 @@
     },
     "allocationManagement": {
         "title": "Allocation Management",
-        "submenu": "Assignments",
         "allocation": {
             "analyticsAssigned": "Analytics Assigned",
-            "title": "Allocation Management",
+            "resourcesAssigned": "Resources Assigned",
+            "analytic": "Analytic",
+            "assignResources": "Resource Assignment",
+            "assignAnalytic": "Analytics Assignment",
             "allocations": "Allocations",
             "resources": "Resources",
             "percentage": "Percentage",
@@ -300,7 +304,11 @@
             "emptyMessage": "No related analytics were found for the resource on the dates of the selected analytics.",
             "analyticLife": "Analytic Life",
             "analyticCicleLife": "Analytic´s Cicle Life",
-            "analytic": "Analytic",
+            "totals": "Totals",
+            "releaseDate": "Release Date",
+            "wrongMonthQuantity": "Months to show is required",
+            "monthQuantity": "Months to show",
+            "releaseDateShortDesc": "Release",
             "grid": {
                 "title": "Title",
                 "name": "Name",
@@ -308,6 +316,17 @@
                 "since": "Since",
                 "to": "To",
                 "percentage": "Percentage"
+            }
+        },
+        "resources": {
+            "listTitle": "Resources´s List",
+            "title": "Resources",
+            "list": "List",
+            "grid": {
+                "name": "Name",
+                "senority": "Senority",
+                "profile": "Profile",
+                "billeable": "Billeable (%)"
             }
         },
         "analytics": {
@@ -360,7 +379,8 @@
         "updateBill": "Update Bill",
         "updateCash": "Update Cash",
         "applyChanges": "Apply changes",
-        "assign": "Assign"
+        "assign": "Assign",
+        "confirm": "Confirm"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

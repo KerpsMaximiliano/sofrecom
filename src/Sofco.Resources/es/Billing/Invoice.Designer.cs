@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito aprobado exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.approved.
         /// </summary>
         public static string Approved {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito anulado exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.cancelled.
         /// </summary>
         public static string Cancelled {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se puede aprobar el remito en el estado actual.
+        ///    Busca una cadena localizada similar a billing/invoice.cannotApprove.
         /// </summary>
         public static string CannotApprove {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solo se pueden eliminar los remitos que esten pendientes de envío.
+        ///    Busca una cadena localizada similar a billing/invoice.cannotDelete.
         /// </summary>
         public static string CannotDelete {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se puede rechazar el remito en el estado actual.
+        ///    Busca una cadena localizada similar a billing/invoice.cannotReject.
         /// </summary>
         public static string CannotReject {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se puede enviar a la DAF en el estado actual del remito.
+        ///    Busca una cadena localizada similar a billing/invoice.cannotSendToDaf.
         /// </summary>
         public static string CannotSendToDaf {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito eliminado exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.deleted.
         /// </summary>
         public static string Deleted {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La descripción del detalle es requerida.
+        ///    Busca una cadena localizada similar a billing/invoice.descriptionRequired.
         /// </summary>
         public static string DescriptionRequired {
             get {
@@ -132,7 +132,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Debe incluir al menos un detalle.
+        ///    Busca una cadena localizada similar a billing/invoice.detailsRequired.
         /// </summary>
         public static string DetailsRequired {
             get {
@@ -141,7 +141,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Excel guardo exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.excelUpload.
         /// </summary>
         public static string ExcelUpload {
             get {
@@ -150,7 +150,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito generado exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.invoiceCreated.
         /// </summary>
         public static string InvoiceCreated {
             get {
@@ -159,7 +159,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Número del remito ya existe.
+        ///    Busca una cadena localizada similar a billing/invoice.invoiceNumerAlreadyExist.
         /// </summary>
         public static string InvoiceNumerAlreadyExist {
             get {
@@ -168,7 +168,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Número de remito es requerido.
+        ///    Busca una cadena localizada similar a billing/invoice.invoiceNumerRequired.
         /// </summary>
         public static string InvoiceNumerRequired {
             get {
@@ -177,7 +177,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Se necesita adjuntar el remito en formato excel antes de ser enviado a la DAF.
+        ///    Busca una cadena localizada similar a billing/invoice.needExcelToSend.
         /// </summary>
         public static string NeedExcelToSend {
             get {
@@ -186,7 +186,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Se necesita adjuntar el remito en formato pdf antes de ser aprobado.
+        ///    Busca una cadena localizada similar a billing/invoice.needPdfToApprove.
         /// </summary>
         public static string NeedPdfToApprove {
             get {
@@ -195,7 +195,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito no encontrado.
+        ///    Busca una cadena localizada similar a billing/invoice.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -204,7 +204,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se han encontrado remitos con los parametros de busqueda seleccionados..
+        ///    Busca una cadena localizada similar a billing/invoice.notFounds.
         /// </summary>
         public static string NotFounds {
             get {
@@ -213,7 +213,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a PDF guardo exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.pdfUpload.
         /// </summary>
         public static string PdfUpload {
             get {
@@ -222,7 +222,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La cantidad del detalle es requerida.
+        ///    Busca una cadena localizada similar a billing/invoice.quantityRequired.
         /// </summary>
         public static string QuantityRequired {
             get {
@@ -231,7 +231,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito rechazado exitosamente.
+        ///    Busca una cadena localizada similar a billing/invoice.reject.
         /// </summary>
         public static string Reject {
             get {
@@ -240,7 +240,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito enviado correctamente a la DAF.
+        ///    Busca una cadena localizada similar a billing/invoice.sentToDaf.
         /// </summary>
         public static string SentToDaf {
             get {

@@ -24,9 +24,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>{{'ADMIN.module.edit' | translate }}</h5>
-                    <div class="ibox-tools" >
-                        <a [routerLink]="['/admin/entities']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
-                    </div>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
@@ -54,11 +51,9 @@
 
                         <div>&nbsp;</div>
 
-                        <!--ACEPTAR-->
-                        <div class="form-group">
-                            <div class="col-xs-offset-2 col-xs-2">
-                                <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>{{'ACTIONS.ACCEPT' | translate }}</strong></button>
-                            </div>
+                        <div class="col-xs-offset-2">
+                            <button class="btn btn-primary" type="submit"><strong>{{'ACTIONS.ACCEPT' | translate }}</strong></button>
+                            <a [routerLink]="['/admin/entities']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                         </div>
                     </form>
                 </div>

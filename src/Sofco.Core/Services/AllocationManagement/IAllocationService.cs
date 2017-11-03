@@ -8,7 +8,7 @@ namespace Sofco.Core.Services.AllocationManagement
 {
     public interface IAllocationService
     {
-        Response<Allocation> Add(AllocationAsignmentParams parameters);
-        ICollection<Allocation> GetAllocations(int employeeId, DateTime startDate, DateTime endDate);
+        Response<Allocation> Add(AllocationDto allocation);
+        AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

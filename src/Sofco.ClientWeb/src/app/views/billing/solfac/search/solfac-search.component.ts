@@ -13,7 +13,6 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { MenuService } from 'app/services/admin/menu.service';
-import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'app-solfacSearch',
@@ -51,7 +50,6 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
-        private i18nService: I18nService,
         private menuService: MenuService,
         private datatableService: DataTableService,
         private userService: UserService,
@@ -142,7 +140,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     search(){
         if(this.dateTo < this.dateSince){
-            this.messageService.showError(this.i18nService.translate("dateToLessThanSince"));
+            this.messageService.showError("dateToLessThanSince");
             return;
         }
 

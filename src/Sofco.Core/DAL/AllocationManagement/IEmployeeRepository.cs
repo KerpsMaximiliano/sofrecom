@@ -9,6 +9,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetAll();
 
         bool Exist(int employeeId);
+        Employee GetById(int id);
 
         void Save(List<Employee> employees);
 

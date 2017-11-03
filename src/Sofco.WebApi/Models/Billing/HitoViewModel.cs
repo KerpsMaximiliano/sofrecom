@@ -25,14 +25,14 @@ namespace Sofco.WebApi.Models.Billing
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "billing/solfac.hitoDescriptionRequired")]
         public string Description { get; set; }
 
-        [Required]
-        public short Quantity { get; set; }
+        [Required(ErrorMessage = "billing/solfac.hitoQuantity")]
+        public short? Quantity { get; set; }
 
-        [Required]
-        public decimal UnitPrice { get; set; }
+        [Required(ErrorMessage = "billing/solfac.hitoUnitPriceRequired")]
+        public decimal? UnitPrice { get; set; }
 
         public decimal Total { get; set; }
 
@@ -54,8 +54,8 @@ namespace Sofco.WebApi.Models.Billing
 
             hito.Id = Id;
             hito.Description = Description;
-            hito.Quantity = Quantity;
-            hito.UnitPrice = UnitPrice;
+            hito.Quantity = Quantity.GetValueOrDefault();
+            hito.UnitPrice = UnitPrice.GetValueOrDefault();
             hito.Total = Total;
             hito.ExternalProjectId = ExternalProjectId;
             hito.ExternalHitoId = ExternalHitoId;

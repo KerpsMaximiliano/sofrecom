@@ -8,7 +8,10 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { AuthenticationService } from "app/services/common/authentication.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { UserService } from "app/services/admin/user.service";
-import { I18nService } from 'app/services/common/i18n.service';
+
+declare var require: any;
+
+var CryptoJS = require("crypto-js");
 
 @Component({
   selector: 'login',
@@ -30,10 +33,9 @@ export class LoginComponent implements OnInit {
         private menuService: MenuService,
         private messageService: MessageService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService,
-        private i18nservice: I18nService) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
-    ngOnInit() {
+    ngOnInit() { 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
@@ -45,10 +47,7 @@ export class LoginComponent implements OnInit {
             data => {
                 this.onLoginSucces(data);
             },
-            error => {
-                var err = new Message(this.i18nservice.translate("HOME.loginFailed"), 1);
-                this.messageService.showMessages([err]);
-        });
+            error => this.errorHandlerService.handleErrors(error));
     }
 
     onLoginSucces(data){

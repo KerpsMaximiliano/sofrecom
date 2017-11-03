@@ -1,0 +1,15 @@
+{
+    "created": "Role successfully created",
+    "deleted": "Role successfully removed",
+    "descriptionRequired": "The description field is required",
+    "disabled": "Role disabled successfully",
+    "enabled": "Role enabled successfully",
+    "modulesUpdated": "Role modules updated",
+    "notFound": "Role not found",
+    "roleFunctionalitiesUpdated": "Role functionalities updated successfully",
+    "roleMenusUpdated": "Change of updated menus successfully",
+    "roleModuleAlreadyCreated": "Module already associated with the role",
+    "roleModuleAlreadyRemoved": "Module not associated with the role",
+    "updated": "Role modified successfully",
+    "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
+}

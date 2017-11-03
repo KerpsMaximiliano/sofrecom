@@ -5,7 +5,6 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 import { DateRangePickerComponent } from 'app/components/datepicker/date-range-picker.component'
 
-import { I18nService } from 'app/services/common/i18n.service';
 import { ReportHelper } from "app/views/report/common/report-helper"
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -33,7 +32,6 @@ export class SolfacReportComponent implements OnInit, OnDestroy {
     constructor (
         private router: Router,
         private menuService: MenuService,
-        private i18nService: I18nService,
         private service: SolfacReportService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) 

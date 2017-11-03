@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2><i class="fa fa-user text-green"></i> {{ resource?.name }}</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+                </li>
+                <li>
+                    {{'allocationManagement.title' | translate }}
+                </li>
+                <li>
+                    <a [routerLink]="['/allocationManagement/resources']"> {{ 'allocationManagement.resources.title' | translate }} </a>
+                </li>
+                <li class="active">
+                    <strong> {{ 'allocationManagement.allocation.assignAnalytic' | translate }} </strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+                            <select select2 class="form-control" id="analyticId">
+                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <a class="btn btn-primary pointer" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
+                        <a class="btn btn-success" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
+                            <input type="number" min="1" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <a class="btn btn-primary pointer btn-block" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search" ></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 
+    </div>
+    

@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Approved" xml:space="preserve">
-    <value>Remito aprobado exitosamente</value>
+    <value>billing/invoice.approved</value>
   </data>
   <data name="Cancelled" xml:space="preserve">
-    <value>Remito anulado exitosamente</value>
+    <value>billing/invoice.cancelled</value>
   </data>
   <data name="CannotApprove" xml:space="preserve">
-    <value>No se puede aprobar el remito en el estado actual</value>
+    <value>billing/invoice.cannotApprove</value>
   </data>
   <data name="CannotDelete" xml:space="preserve">
-    <value>Solo se pueden eliminar los remitos que esten pendientes de envío</value>
+    <value>billing/invoice.cannotDelete</value>
   </data>
   <data name="CannotReject" xml:space="preserve">
-    <value>No se puede rechazar el remito en el estado actual</value>
+    <value>billing/invoice.cannotReject</value>
   </data>
   <data name="CannotSendToDaf" xml:space="preserve">
-    <value>No se puede enviar a la DAF en el estado actual del remito</value>
+    <value>billing/invoice.cannotSendToDaf</value>
   </data>
   <data name="Deleted" xml:space="preserve">
-    <value>Remito eliminado exitosamente</value>
+    <value>billing/invoice.deleted</value>
   </data>
   <data name="DescriptionRequired" xml:space="preserve">
-    <value>La descripción del detalle es requerida</value>
+    <value>billing/invoice.descriptionRequired</value>
   </data>
   <data name="DetailsRequired" xml:space="preserve">
-    <value>Debe incluir al menos un detalle</value>
+    <value>billing/invoice.detailsRequired</value>
   </data>
   <data name="ExcelUpload" xml:space="preserve">
-    <value>Excel guardo exitosamente</value>
+    <value>billing/invoice.excelUpload</value>
   </data>
   <data name="InvoiceCreated" xml:space="preserve">
-    <value>Remito generado exitosamente</value>
+    <value>billing/invoice.invoiceCreated</value>
   </data>
   <data name="InvoiceNumerAlreadyExist" xml:space="preserve">
-    <value>Número del remito ya existe</value>
+    <value>billing/invoice.invoiceNumerAlreadyExist</value>
   </data>
   <data name="InvoiceNumerRequired" xml:space="preserve">
-    <value>Número de remito es requerido</value>
+    <value>billing/invoice.invoiceNumerRequired</value>
   </data>
   <data name="NeedExcelToSend" xml:space="preserve">
-    <value>Se necesita adjuntar el remito en formato excel antes de ser enviado a la DAF</value>
+    <value>billing/invoice.needExcelToSend</value>
   </data>
   <data name="NeedPdfToApprove" xml:space="preserve">
-    <value>Se necesita adjuntar el remito en formato pdf antes de ser aprobado</value>
+    <value>billing/invoice.needPdfToApprove</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Remito no encontrado</value>
+    <value>billing/invoice.notFound</value>
   </data>
   <data name="NotFounds" xml:space="preserve">
-    <value>No se han encontrado remitos con los parametros de busqueda seleccionados.</value>
+    <value>billing/invoice.notFounds</value>
   </data>
   <data name="PdfUpload" xml:space="preserve">
-    <value>PDF guardo exitosamente</value>
+    <value>billing/invoice.pdfUpload</value>
   </data>
   <data name="QuantityRequired" xml:space="preserve">
-    <value>La cantidad del detalle es requerida</value>
+    <value>billing/invoice.quantityRequired</value>
   </data>
   <data name="Reject" xml:space="preserve">
-    <value>Remito rechazado exitosamente</value>
+    <value>billing/invoice.reject</value>
   </data>
   <data name="SentToDaf" xml:space="preserve">
-    <value>Remito enviado correctamente a la DAF</value>
+    <value>billing/invoice.sentToDaf</value>
   </data>
 </root>

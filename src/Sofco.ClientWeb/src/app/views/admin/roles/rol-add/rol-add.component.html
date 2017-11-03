@@ -27,7 +27,7 @@
                     <h5>{{ 'ADMIN.ROLES.ADD' | translate }}</h5>
 
                     <div class="ibox-tools" >
-                        <a [routerLink]="['/admin/roles']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                        
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -47,10 +47,9 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <button class="btn btn-sm btn-white" type="submit" >{{ 'ACTIONS.ACCEPT' | translate }}</button>
-                            </div>
+                        <div class="col-lg-offset-2">
+                            <button class="btn btn-primary" type="submit" >{{ 'ACTIONS.ACCEPT' | translate }}</button>
+                            <a [routerLink]="['/admin/roles']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.TimeManagement;
@@ -14,6 +16,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public bool Exist(int id)
         {
             return context.Analytics.Any(x => x.Id == id);
+        }
+
+        public IList<Allocation> GetResources(int id)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).ToList().AsReadOnly();
         }
     }
 }

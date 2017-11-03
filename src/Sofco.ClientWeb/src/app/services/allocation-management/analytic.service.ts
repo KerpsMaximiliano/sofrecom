@@ -19,4 +19,8 @@ export class AnalyticService {
   getById(id) {
     return this.http.get(`${this.baseUrl}/analytics/${id}`).map((res:Response) => res.json());
   }
+
+  getResources(id) {
+    return this.http.get(`${this.baseUrl}/analytics/${id}/resources`).map((res:Response) => res.json());
+  }
 }

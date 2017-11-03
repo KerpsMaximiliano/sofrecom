@@ -7,7 +7,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 {
     public interface IAllocationRepository : IBaseRepository<Allocation>
     {
-        ICollection<Allocation> GetAllocationsForAnalyticDates(int employeeId, DateTime dateSince, DateTime dateTo);
-        ICollection<Allocation> GetBetweenDaysByEmployeeId(int employeeId, DateTime startDate, DateTime endDate);
+        ICollection<Allocation> GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
+        void UpdatePercentage(Allocation allocation);
+        void UpdateReleaseDate(Allocation allocation);
     }
 }

@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Cliente no encontrado.
+        ///    Busca una cadena localizada similar a billing/customer.notFound.
         /// </summary>
         public static string NotFound {
             get {

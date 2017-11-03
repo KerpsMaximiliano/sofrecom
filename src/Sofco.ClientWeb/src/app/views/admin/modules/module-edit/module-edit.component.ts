@@ -126,13 +126,13 @@ export class ModuleEditComponent implements OnInit, OnDestroy {
         this.confirm = this.deactivate;
         this.confirmModalConfig.acceptButtonText = "ACTIONS.disable";
         this.confirmModalConfig.title = "ACTIONS.confirmDelete";
-        this.modalMessage = this.i18nService.translate("ACTIONS.areYouSureConfirmDelete") + obj.description + "?";
+        this.modalMessage = this.i18nService.translateByKey("ACTIONS.areYouSureConfirmDelete") + obj.description + "?";
         this.confirmModal.show();
       } else {
         this.confirm = this.activate;
         this.confirmModalConfig.acceptButtonText = "ACTIONS.enable"
         this.confirmModalConfig.title = "ACTIONS.confirmAdd";
-        this.modalMessage = this.i18nService.translate("ACTIONS.areYouSureConfirmAdd") + obj.description + "?";
+        this.modalMessage = this.i18nService.translateByKey("ACTIONS.areYouSureConfirmAdd") + obj.description + "?";
         this.confirmModal.show();
       }
   }

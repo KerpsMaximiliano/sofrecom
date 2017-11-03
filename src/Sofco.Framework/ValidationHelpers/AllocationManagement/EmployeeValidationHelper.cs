@@ -16,5 +16,17 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.Messages.Add(new Message(Resources.es.AllocationManagement.Employee.NotFound, MessageType.Error));
             }
         }
+
+        public static Employee Find(Response response, IEmployeeRepository employeeRepository, int id)
+        {
+            var employee = employeeRepository.GetById(id);
+
+            if (employee == null)
+            {
+                response.Messages.Add(new Message(Resources.es.AllocationManagement.Employee.NotFound, MessageType.Error));
+            }
+
+            return employee;
+        }
     }
 }

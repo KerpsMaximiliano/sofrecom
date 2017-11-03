@@ -6,8 +6,6 @@ namespace Sofco.Model.Models.TimeManagement
     {
         public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
-
         public decimal Percentage { get; set; }
 
         public int AnalyticId { get; set; }
@@ -15,5 +13,7 @@ namespace Sofco.Model.Models.TimeManagement
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
     }
 }

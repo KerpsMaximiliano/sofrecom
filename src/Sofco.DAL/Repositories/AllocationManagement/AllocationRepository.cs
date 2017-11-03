@@ -14,24 +14,24 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
         }
 
-        public ICollection<Allocation> GetAllocationsForAnalyticDates(int employeeId, DateTime dateSince, DateTime dateTo)
+        public ICollection<Allocation> GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && ((x.StartDate >= dateSince && x.StartDate <= dateTo) || (x.EndDate >= dateSince && x.EndDate <= dateTo)))
+                .Where(x => x.EmployeeId == employeeId && ((x.StartDate >= startDate && x.StartDate <= endDate)))
                 .Include(x => x.Analytic)
                 .Include(x => x.Employee)
-                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
+                .OrderBy(x => x.AnalyticId).ThenBy(x => x.StartDate)
                 .ToList();
         }
 
-        public ICollection<Allocation> GetBetweenDaysByEmployeeId(int employeeId, DateTime startDate, DateTime endDate)
+        public void UpdateReleaseDate(Allocation allocation)
         {
-            return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && ((startDate >= x.StartDate && startDate <= x.EndDate) || (endDate >= x.StartDate && endDate <= x.EndDate)))
-                .Include(x => x.Analytic)
-                .Include(x => x.Employee)
-                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
-                .ToList();
+            context.Entry(allocation).Property("ReleaseDate").IsModified = true;
+        }
+
+        public void UpdatePercentage(Allocation allocation)
+        {
+            context.Entry(allocation).Property("Percentage").IsModified = true;
         }
     }
 }

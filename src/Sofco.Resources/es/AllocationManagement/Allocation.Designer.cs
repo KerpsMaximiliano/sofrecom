@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Recurso asignado a la analitica correctamente..
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.added.
         /// </summary>
         public static string Added {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Se supero el porcentaje que puede ser asignado el recurso.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.billingPercentageExceeded.
         /// </summary>
         public static string BillingPercentageExceeded {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No puede ser asignado el recurso a la analitica. Entra en conflicto con otras analiticas.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.cannotBeAssign.
         /// </summary>
         public static string CannotBeAssign {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de inicio fuera del rango de la analitica.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceOutOfRange.
         /// </summary>
         public static string DateSinceOutOfRange {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha desde es requerida.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceRequired.
         /// </summary>
         public static string DateSinceRequired {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de fin no puede ser menor a la fecha de inicio.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToLessThanDateSince.
         /// </summary>
         public static string DateToLessThanDateSince {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de fin fuera del rango de la analitica.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToOutOfRange.
         /// </summary>
         public static string DateToOutOfRange {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha hasta es requerida.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToRequired.
         /// </summary>
         public static string DateToRequired {
             get {
@@ -132,7 +132,16 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Porcentaje ingresado es incorrecto.
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.releaseDateIsRequired.
+        /// </summary>
+        public static string ReleaseDateIsRequired {
+            get {
+                return ResourceManager.GetString("ReleaseDateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a allocationManagement/allocation.wrongPercentage.
         /// </summary>
         public static string WrongPercentage {
             get {

@@ -118,42 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Created" xml:space="preserve">
-    <value>Rol creado exitosamente</value>
+    <value>admin/role.created</value>
   </data>
   <data name="Deleted" xml:space="preserve">
-    <value>Rol eliminado correctamente</value>
+    <value>admin/role.deleted</value>
   </data>
   <data name="DescriptionMaxLengthError" xml:space="preserve">
-    <value>El campo descripción debe tener un maximo de {0} caracteres</value>
+    <value>admin/role.descriptionMaxLengthError</value>
   </data>
   <data name="DescriptionRequired" xml:space="preserve">
-    <value>El campo descripción es requerido</value>
+    <value>admin/role.descriptionRequired</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Rol deshabilitado correctamente</value>
+    <value>admin/role.disabled</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Rol habilitado correctamente</value>
+    <value>admin/role.enabled</value>
   </data>
   <data name="ModulesUpdated" xml:space="preserve">
-    <value>Modulos del rol actualizados</value>
+    <value>admin/role.modulesUpdated</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Rol no encontrado</value>
+    <value>admin/role.notFound</value>
   </data>
   <data name="RoleFunctionalitiesUpdated" xml:space="preserve">
-    <value>Funcionalidades del rol actualizadas correctamente</value>
+    <value>admin/role.roleFunctionalitiesUpdated</value>
   </data>
   <data name="RoleMenusUpdated" xml:space="preserve">
-    <value>Cambio de menus actualizados correctamente</value>
+    <value>admin/role.roleMenusUpdated</value>
   </data>
   <data name="RoleModuleAlreadyCreated" xml:space="preserve">
-    <value>Modulo ya asociado al rol</value>
+    <value>admin/role.roleModuleAlreadyCreated</value>
   </data>
   <data name="RoleModuleAlreadyRemoved" xml:space="preserve">
-    <value>Modulo no asociado al rol</value>
+    <value>admin/role.roleModuleAlreadyRemoved</value>
   </data>
   <data name="Updated" xml:space="preserve">
-    <value>Rol modificado correctamente</value>
+    <value>admin/role.updated</value>
   </data>
 </root>

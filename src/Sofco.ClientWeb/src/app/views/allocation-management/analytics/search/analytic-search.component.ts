@@ -6,7 +6,6 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
-import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'analytic-search',
@@ -16,14 +15,17 @@ import { I18nService } from "app/services/common/i18n.service";
 export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
+    public resources: any[] = new Array<any>();
     public loading:  boolean = true;
+    public loadingResources: boolean = true;
+    public resource: any;
 
     getAllSubscrip: Subscription;
+    getAllEmployeesSubscrip: Subscription;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
                 private menuService: MenuService,
-                private i18nService: I18nService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
@@ -48,7 +50,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.router.navigate([`/allocationManagement/analytics/${analytic.id}/allocations`]);
         }
         else{
-            this.messageService.showError(this.i18nService.translate("allocationManagement.allocation.forbidden"));
+            this.messageService.showError("allocationManagement.allocation.forbidden");
         }
     }
 }
