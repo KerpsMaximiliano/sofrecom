@@ -6,6 +6,7 @@ using Sofco.Model.Users;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 using Sofco.Common.Domains;
+using Sofco.Core.DAL.Admin;
 using Sofco.Service.Implementations;
 
 namespace Sofco.UnitTest.Services
@@ -18,6 +19,8 @@ namespace Sofco.UnitTest.Services
         private Mock<IBaseHttpClient<string>> clientMock;
 
         private Mock<IOptions<AzureAdConfig>> azureAdOptionsMock;
+
+        private Mock<IUserRepository> userRepository;
 
         private LoginService sut;
 
@@ -40,7 +43,7 @@ namespace Sofco.UnitTest.Services
             azureAdOptionsMock = new Mock<IOptions<AzureAdConfig>>();
             azureAdOptionsMock.SetupGet<AzureAdConfig>(s => s.Value).Returns(azureConfig);
 
-            sut = new LoginService(azureAdOptionsMock.Object, clientMock.Object);
+            sut = new LoginService(azureAdOptionsMock.Object, clientMock.Object, userRepository.Object);
         }
 
         [Test]
@@ -55,7 +58,7 @@ namespace Sofco.UnitTest.Services
             var actualLogin = sut.Login(userLogin);
 
             Assert.NotNull(actualLogin);
-            Assert.AreEqual(LoginResult, actualLogin.ResultData);
+            Assert.AreEqual(LoginResult, actualLogin.Data);
 
             clientMock.Verify(s => s.Post(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()), Times.Once);
         }
