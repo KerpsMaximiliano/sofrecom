@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Added" xml:space="preserve">
-    <value>Recurso asignado a la analitica correctamente.</value>
+    <value>allocationManagement/allocation.added</value>
   </data>
   <data name="BillingPercentageExceeded" xml:space="preserve">
-    <value>Se supero el porcentaje que puede ser asignado el recurso</value>
+    <value>allocationManagement/allocation.billingPercentageExceeded</value>
   </data>
   <data name="CannotBeAssign" xml:space="preserve">
-    <value>No puede ser asignado el recurso a la analitica. Entra en conflicto con otras analiticas</value>
+    <value>allocationManagement/allocation.cannotBeAssign</value>
   </data>
   <data name="DateSinceOutOfRange" xml:space="preserve">
-    <value>Fecha de inicio fuera del rango de la analitica</value>
+    <value>allocationManagement/allocation.dateSinceOutOfRange</value>
   </data>
   <data name="DateSinceRequired" xml:space="preserve">
-    <value>Fecha desde es requerida</value>
+    <value>allocationManagement/allocation.dateSinceRequired</value>
   </data>
   <data name="DateToLessThanDateSince" xml:space="preserve">
-    <value>Fecha de fin no puede ser menor a la fecha de inicio</value>
+    <value>allocationManagement/allocation.dateToLessThanDateSince</value>
   </data>
   <data name="DateToOutOfRange" xml:space="preserve">
-    <value>Fecha de fin fuera del rango de la analitica</value>
+    <value>allocationManagement/allocation.dateToOutOfRange</value>
   </data>
   <data name="DateToRequired" xml:space="preserve">
-    <value>Fecha hasta es requerida</value>
+    <value>allocationManagement/allocation.dateToRequired</value>
   </data>
   <data name="ReleaseDateIsRequired" xml:space="preserve">
-    <value>Fecha de liberación es requerida.</value>
+    <value>allocationManagement/allocation.releaseDateIsRequired</value>
   </data>
   <data name="WrongPercentage" xml:space="preserve">
-    <value>Porcentaje ingresado es incorrecto</value>
+    <value>allocationManagement/allocation.wrongPercentage</value>
   </data>
 </root>

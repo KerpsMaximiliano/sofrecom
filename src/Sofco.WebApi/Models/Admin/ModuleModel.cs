@@ -17,18 +17,13 @@ namespace Sofco.WebApi.Models.Admin
             Id = module.Id;
             Description = module.Description;
             Active = module.Active;
-            Code = module.Code;
 
             Functionalities = new List<FunctionalityModel>();
         }
 
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "admin/module.descriptionRequired")]
+        [MaxLength(50, ErrorMessage = "admin/module.wrongDescriptionLength")]
         public string Description { get; set; }
-
-        [Required]
-        [MaxLength(5)]
-        public string Code { get; set; }
 
         public bool Active { get; set; }
 

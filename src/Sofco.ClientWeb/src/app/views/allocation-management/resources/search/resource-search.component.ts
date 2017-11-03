@@ -5,7 +5,6 @@ import { Router } from "@angular/router";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
-import { I18nService } from "app/services/common/i18n.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 
 @Component({
@@ -26,7 +25,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private menuService: MenuService,
-                private i18nService: I18nService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
                 private dataTableService: DataTableService,

@@ -32,17 +32,17 @@ namespace Sofco.WebApi.Models.Billing
 
         public string ProjectId { get; set; }
 
-        [Required(ErrorMessage = "El tipo de documento es requerido")]
+        [Required(ErrorMessage = "billing/solfac.documentTypeRequired")]
         public int? DocumentType { get; set; }
 
-        [Required(ErrorMessage = "El solicitante es requerido")]
+        [Required(ErrorMessage = "billing/solfac.userApplicantIdRequired")]
         public int? UserApplicantId { get; set; }
 
         public string ImputationNumber1 { get; set; }
 
         public string ImputationNumber2 { get; set; }
 
-        [Required(ErrorMessage = "El número de imputacion es requerido")]
+        [Required(ErrorMessage = "billing/solfac.imputationNumber3Required")]
         public int? ImputationNumber3 { get; set; }
 
         public decimal Amount { get; set; }
@@ -51,7 +51,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public decimal TotalAmount { get; set; }
 
-        [Required(ErrorMessage = "La moneda es requerida")]
+        [Required(ErrorMessage = "billing/solfac.currencyRequired")]
         public int? CurrencyId { get; set; }
 
         public decimal? CapitalPercentage { get; set; }

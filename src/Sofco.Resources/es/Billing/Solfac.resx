@@ -118,114 +118,114 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CannotChangeStatus" xml:space="preserve">
-    <value>No se puede cambiar el estado</value>
+    <value>billing/solfac.cannotChangeStatus</value>
   </data>
   <data name="HitoQuantityRequired" xml:space="preserve">
-    <value>Cantidad no puede ser menor o igual a 0</value>
+    <value>billing/solfac.hitoQuantityRequired</value>
   </data>
   <data name="HitoUnitPriceRequired" xml:space="preserve">
-    <value>Precio Unitario no puede ser menor o igual a 0</value>
+    <value>billing/solfac.hitoUnitPriceRequired</value>
   </data>
   <data name="InvoicedSuccess" xml:space="preserve">
-    <value>La Solfac ha sido facturada correctamente</value>
+    <value>billing/solfac.invoicedSuccess</value>
   </data>
   <data name="InvoicePendingSuccess" xml:space="preserve">
-    <value>La Solfac se ha enviado a la DAF correctamente</value>
+    <value>billing/solfac.invoicePendingSuccess</value>
   </data>
   <data name="ManagementControlRejectedSuccess" xml:space="preserve">
-    <value>La Solfac ha sido rechazada correctamente</value>
+    <value>billing/solfac.managementControlRejectedSuccess</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Solicitud no encontrada</value>
+    <value>billing/solfac.notFound</value>
   </data>
   <data name="NotFounds" xml:space="preserve">
-    <value>No se han encontrado solicitudes con los parametros de busqueda seleccionados.</value>
+    <value>billing/solfac.notFounds</value>
   </data>
   <data name="PendingByManagementControlSuccess" xml:space="preserve">
-    <value>La Solfac se ha enviado correctamente a Control de Gestión</value>
+    <value>billing/solfac.pendingByManagementControlSuccess</value>
   </data>
   <data name="PercentageLessThan0" xml:space="preserve">
-    <value>Los porcetanjes no pueden ser menor a 0</value>
+    <value>billing/solfac.percentageLessThan0</value>
   </data>
   <data name="ProvinceRequired" xml:space="preserve">
-    <value>La provincia es requerida si se incluye un porcentaje </value>
+    <value>billing/solfac.provinceRequired</value>
   </data>
   <data name="SolfacCreated" xml:space="preserve">
-    <value>Solicitud de facturación creada correctamente</value>
+    <value>billing/solfac.solfacCreated</value>
   </data>
   <data name="TimeLimitLessThan0" xml:space="preserve">
-    <value>El plazo no puede ser menor a 0</value>
+    <value>billing/solfac.timeLimitLessThan0</value>
   </data>
   <data name="TotalPercentageError" xml:space="preserve">
-    <value>La suma de porcentajes no puede ser distinta a 100%</value>
+    <value>billing/solfac.totalPercentageError</value>
   </data>
   <data name="CancelledSucces" xml:space="preserve">
-    <value>Solfac anulada correctamente</value>
+    <value>billing/solfac.cancelledSucces</value>
   </data>
   <data name="Deleted" xml:space="preserve">
-    <value>Solfac eliminada correctamente</value>
+    <value>billing/solfac.deleted</value>
   </data>
   <data name="CommentRequired" xml:space="preserve">
-    <value>Se debe agregar un motivo de rechazo</value>
+    <value>billing/solfac.commentRequired</value>
   </data>
   <data name="SolfacUpdated" xml:space="preserve">
-    <value>Solicitud de facturación actualizada correctamente</value>
+    <value>billing/solfac.solfacUpdated</value>
   </data>
   <data name="InfoUpdate" xml:space="preserve">
-    <value>Actualización de datos</value>
+    <value>billing/solfac.infoUpdate</value>
   </data>
   <data name="FileAdded" xml:space="preserve">
-    <value>Archivo importado correctamente</value>
+    <value>billing/solfac.fileAdded</value>
   </data>
   <data name="FileDeleted" xml:space="preserve">
-    <value>Archivo eliminado correctamente</value>
+    <value>billing/solfac.fileDeleted</value>
   </data>
   <data name="InvoiceCodeRequired" xml:space="preserve">
-    <value>El número de factura es requerido</value>
+    <value>billing/solfac.invoiceCodeRequired</value>
   </data>
   <data name="InvoiceDateRequired" xml:space="preserve">
-    <value>Fecha de facturación es requerida</value>
+    <value>billing/solfac.invoiceDateRequired</value>
   </data>
   <data name="CashedDateRequired" xml:space="preserve">
-    <value>La fecha de cobro es requerida</value>
+    <value>billing/solfac.cashedDateRequired</value>
   </data>
   <data name="ErrorSaveOnHitos" xml:space="preserve">
-    <value>Ocurrio un error al actualizar el/los hitos en el CRM</value>
+    <value>billing/solfac.errorSaveOnHitos</value>
   </data>
   <data name="CashedDateGreaterThanToday" xml:space="preserve">
-    <value>Fecha de pago no puede ser mayor a la fecha del día</value>
+    <value>billing/solfac.cashedDateGreaterThanToday</value>
   </data>
   <data name="InvoiceDateGreaterThanToday" xml:space="preserve">
-    <value>Fecha de facturación no puede ser mayor a la fecha del día</value>
+    <value>billing/solfac.invoiceDateGreaterThanToday</value>
   </data>
   <data name="BillUpdated" xml:space="preserve">
-    <value>Facturación actualizada correctamente</value>
+    <value>billing/solfac.billUpdated</value>
   </data>
   <data name="CashUpdated" xml:space="preserve">
-    <value>Fecha de cobro actualizada correctamente</value>
+    <value>billing/solfac.cashUpdated</value>
   </data>
   <data name="InvoiceCodeAlreadyExist" xml:space="preserve">
-    <value>Número de factura ya existe</value>
+    <value>billing/solfac.invoiceCodeAlreadyExist</value>
   </data>
   <data name="CashedDateGreaterThanInvoiceDate" xml:space="preserve">
-    <value>La fecha de cobro no puede ser menor a la fecha de facturación</value>
+    <value>billing/solfac.cashedDateGreaterThanInvoiceDate</value>
   </data>
   <data name="InvoiceDateGreaterThanCashedDate" xml:space="preserve">
-    <value>Fecha de facturación no puede ser mayor a la de fecha de cobro</value>
+    <value>billing/solfac.invoiceDateGreaterThanCashedDate</value>
   </data>
   <data name="CashedDateLessThanSolfacStartDate" xml:space="preserve">
-    <value>La fecha de cobro no puede ser menor a la fecha de la creación de la solicitud</value>
+    <value>billing/solfac.cashedDateLessThanSolfacStartDate</value>
   </data>
   <data name="InvoiceDateLessThanSolfacStartDate" xml:space="preserve">
-    <value>La fecha de facturación no puede ser menor a la fecha de la creación de la solicitud</value>
+    <value>billing/solfac.invoiceDateLessThanSolfacStartDate</value>
   </data>
   <data name="CashedDateLessThanSolfacInvoiceDate" xml:space="preserve">
-    <value>La fecha de cobro no puede ser menor que la fecha de facturación</value>
+    <value>billing/solfac.cashedDateLessThanSolfacInvoiceDate</value>
   </data>
   <data name="InvoiceDeleted" xml:space="preserve">
-    <value>Remito removido correctamente</value>
+    <value>billing/solfac.invoiceDeleted</value>
   </data>
   <data name="InvoicesAdded" xml:space="preserve">
-    <value>Remito/s asociados correctamente</value>
+    <value>billing/solfac.invoicesAdded</value>
   </data>
 </root>

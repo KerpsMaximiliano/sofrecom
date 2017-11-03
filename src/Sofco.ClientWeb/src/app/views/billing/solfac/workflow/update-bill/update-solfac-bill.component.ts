@@ -102,7 +102,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{
-            this.messageService.showError("El número de factura es requerido");
+            this.messageService.showError("billing.solfac.includeInvoiceCode");
         }
     }
 }

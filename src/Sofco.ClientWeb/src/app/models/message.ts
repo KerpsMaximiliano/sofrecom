@@ -1,6 +1,7 @@
 export class Message {
     constructor(
-        public description: string,
+        public folder: string,
+        public code: string,
         public type: number
     ){}
 }

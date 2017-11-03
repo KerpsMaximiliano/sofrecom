@@ -6,28 +6,36 @@
                     <table class="table table-striped dataTable" role="grid">
                         <thead>
                             <tr>
-                                <th class="headcol"> {{ 'allocationManagement.allocation.analytic' | translate  }} </th>
+                                <th class="analytic-column headcol"> {{ 'allocationManagement.allocation.analytic' | translate  }}</th>
                                 <th *ngFor="let month of model.monthsHeader">{{ month.display }}</th>
-                                <th></th>
+                                <th class="analytic-column">{{ 'allocationManagement.allocation.releaseDateShortDesc' | translate }}</th>
+                                <th class="buttons-column"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let allocation of model.allocations">
-                                <td class="analytic-column headcol"> {{ allocation.analyticTitle }}</td>
+                                <td class="analytic-column headcol">{{ allocation.analyticTitle }}</td>
 
                                 <td *ngFor="let month of allocation.months; let monthIndex = index">
-                                    <input type="number" min="0" max="100" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateMonth($event, monthIndex, month)">
+                                    <input type="number" min="0" max="100" [disabled]="!allocation.edit" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateMonth($event, monthIndex, month)">
                                 </td>
 
-                                <td><button class="btn btn-primary btn-sm" type="button" (click)="confirm(allocation)"> {{ 'ACTIONS.confirm' | translate }} </button></td>
+                                <td class="analytic-column"> <i *ngIf="allocation.releaseDate" class="fa fa-calendar"></i> {{ allocation.releaseDate | date: "dd/MM/yyyy" }}</td>
+
+                                <td class="buttons-column">
+                                    <button class="btn btn-primary btn-sm" type="button" [disabled]="isEditingAnyRow" (click)="edit(allocation)" *ngIf="!allocation.edit"> {{ 'ACTIONS.EDIT' | translate }} </button>
+                                    <button class="btn btn-primary btn-sm" type="button" (click)="confirm(allocation)" *ngIf="allocation.edit"> {{ 'ACTIONS.confirm' | translate }} </button>
+                                    <button class="btn btn-danger btn-sm" type="button" (click)="cancel(allocation)" *ngIf="allocation.edit"> {{ 'ACTIONS.cancel' | translate }} </button>
+                                </td>
                             </tr>
                             <tr>
                                 <td> <strong> {{ 'allocationManagement.allocation.totals' | translate  }} </strong> </td>
 
                                 <td *ngFor="let total of totals" class="text-center"> 
-                                    <label class="label"  [ngClass]="(total > 100) ? 'label-default' : (total == 100) ? 'label-primary': (total > 49) ? 'label-warning' : 'label-danger'">{{ total }} %</label>
+                                    <label class="label" [ngClass]="(total > 100) ? 'label-default' : (total == 100) ? 'label-primary': (total > 49) ? 'label-warning' : 'label-danger'">{{ total }} %</label>
                                 </td>
-                                
+
+                                <td></td>
                                 <td></td>
                             </tr>
                         </tbody>

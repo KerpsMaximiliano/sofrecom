@@ -9,5 +9,6 @@ namespace Sofco.Core.DAL.AllocationManagement
     {
         ICollection<Allocation> GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
         void UpdatePercentage(Allocation allocation);
+        void UpdateReleaseDate(Allocation allocation);
     }
 }

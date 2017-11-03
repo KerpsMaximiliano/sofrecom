@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         "fa-compress",     //other1Icon
         "fa-check",      //other2Icon
         "fa-cogs",        //other3Icon
-        { title: this.i18nService.translate("ADMIN.USERS.TITLE"), columns: [0, 1, 3, 4]},
+        { title: this.i18nService.translateByKey("ADMIN.USERS.TITLE"), columns: [0, 1, 3, 4]},
         0,     //orderByColumn
         "asc"
     ); 

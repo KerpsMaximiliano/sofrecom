@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> {{ analytic?.name }} </h2>
+        <h2> {{ analytic?.title }} - {{ analytic?.name }} </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -17,7 +17,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="row">
@@ -27,16 +27,22 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                                 <select select2 class="form-control" id="employeeId">
                                     <option *ngFor="let resource of resources" [value]="resource?.id">{{resource?.name}}</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
+                                <input type="number" class="form-control input-sm" [(ngModel)]="monthQuantity">
                             </div>
                         </div>
                     </div>
@@ -49,5 +55,5 @@
         </div>
     </div>
 
-    <allocation-assignment-table [resourceId]="resourceId" [analytic]="analytic" #allocations></allocation-assignment-table> 
+    <allocation-assignment-table [resourceId]="resourceId" [analytic]="analytic" [monthQuantity]="monthQuantity" #allocations (reloadTimeline)="getTimeline(analytic.id)"></allocation-assignment-table> 
 </div>

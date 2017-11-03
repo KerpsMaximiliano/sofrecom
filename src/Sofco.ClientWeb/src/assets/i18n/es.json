@@ -44,7 +44,7 @@
             "addGroup": "Asignar Grupos",
             "searchByMail": "Buscar por Email",
             "searchBySurname": "Buscar por Apellido",
-            "userNotFoundInAd": "Usuario encontrado en el Active Directory"
+            "userNotFoundInAd": "Usuario/s encontrado/s en el Active Directory"
         },
         "GROUPS": {
             "TITLE": "Grupos",
@@ -188,6 +188,7 @@
             "invoiceNumber": "Número de remito",
             "invoiceCode": "Número de factura",
             "includeInvoiceCode": "Incluya número de factura antes de facturar",
+            "rejectCommentRequired": "Se debe agregar un motivo de rechazo",
             "pdf": "PDF",
             "days": "Días",
             "movements": "Movimientos",
@@ -305,6 +306,9 @@
             "analyticCicleLife": "Ciclo de vida de la analítica",
             "totals": "Totales",
             "releaseDate": "Fecha de Liberación",
+            "wrongMonthQuantity": "Meses a mostrar es requerido",
+            "monthQuantity": "Meses a mostrar",
+            "releaseDateShortDesc": "F. Liberación",
             "grid": {
                 "title": "Título",
                 "name": "Nombre",

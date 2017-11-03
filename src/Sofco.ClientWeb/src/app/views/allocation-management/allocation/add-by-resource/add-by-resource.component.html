@@ -21,6 +21,7 @@
     <div class="wrapper wrapper-content animated fadeInRight">
 
         <div class="row">
+
             <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
@@ -37,8 +38,23 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
+                            <input type="number" min="1" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <a class="btn btn-primary pointer btn-block" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search" ></i></a>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <allocation-assignment-table [resourceId]="resourceId" #allocations></allocation-assignment-table> 
+        <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 
     </div>
     

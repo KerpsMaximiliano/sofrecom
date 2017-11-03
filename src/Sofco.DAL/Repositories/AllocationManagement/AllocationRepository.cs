@@ -24,6 +24,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public void UpdateReleaseDate(Allocation allocation)
+        {
+            context.Entry(allocation).Property("ReleaseDate").IsModified = true;
+        }
+
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;

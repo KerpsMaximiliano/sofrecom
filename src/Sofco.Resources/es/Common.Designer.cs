@@ -60,7 +60,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Ocurrio un error al guardar.
+        ///    Busca una cadena localizada similar a common.errorSave.
         /// </summary>
         public static string ErrorSave {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Error al enviar el mail.
+        ///    Busca una cadena localizada similar a common.errorSendMail.
         /// </summary>
         public static string ErrorSendMail {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Ocurrio un error al exportar el archivo.
+        ///    Busca una cadena localizada similar a common.exportFileError.
         /// </summary>
         public static string ExportFileError {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Archivo no encontrado.
+        ///    Busca una cadena localizada similar a common.fileNotFound.
         /// </summary>
         public static string FileNotFound {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Ocurrio un error en el sistema. Consulte al administrador.
+        ///    Busca una cadena localizada similar a common.generalError.
         /// </summary>
         public static string GeneralError {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Ocurrio un error al guardar el archivo.
+        ///    Busca una cadena localizada similar a common.saveFileError.
         /// </summary>
         public static string SaveFileError {
             get {

@@ -19,6 +19,8 @@ namespace Sofco.Model.DTO
         public DateTime? ReleaseDate { get; set; }
 
         public IList<AllocationMonthDto> Months { get; set; }
+
+        public int Id { get; set; }
     }
 
     public class AllocationMonthDto
@@ -30,6 +32,8 @@ namespace Sofco.Model.DTO
         public decimal Percentage { get; set; }
 
         public bool Updated { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
     }
 
     public class AllocationResponse

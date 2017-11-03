@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Recurso no encontrado.
+        ///    Busca una cadena localizada similar a allocationManagement/employee.notFound.
         /// </summary>
         public static string NotFound {
             get {

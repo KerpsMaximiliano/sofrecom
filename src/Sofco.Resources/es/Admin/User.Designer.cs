@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario ya existente en el sistema.
+        ///    Busca una cadena localizada similar a admin/user.alreadyExist.
         /// </summary>
         public static string AlreadyExist {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario creado correctamente.
+        ///    Busca una cadena localizada similar a admin/user.created.
         /// </summary>
         public static string Created {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario inhabilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/user.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario habilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/user.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo asignado correctamente.
+        ///    Busca una cadena localizada similar a admin/user.groupAssigned.
         /// </summary>
         public static string GroupAssigned {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupo removido correctamente.
+        ///    Busca una cadena localizada similar a admin/user.groupRemoved.
         /// </summary>
         public static string GroupRemoved {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario o Contraseña incorrectas.
+        ///    Busca una cadena localizada similar a admin/user.loginFailed.
         /// </summary>
         public static string LoginFailed {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Usuario no encontrado.
+        ///    Busca una cadena localizada similar a admin/user.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -132,11 +132,20 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Grupos del usuario actualizados correctamente.
+        ///    Busca una cadena localizada similar a admin/user.userGroupsUpdated.
         /// </summary>
         public static string UserGroupsUpdated {
             get {
                 return ResourceManager.GetString("UserGroupsUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/user.userInactive.
+        /// </summary>
+        public static string UserInactive {
+            get {
+                return ResourceManager.GetString("UserInactive", resourceCulture);
             }
         }
     }

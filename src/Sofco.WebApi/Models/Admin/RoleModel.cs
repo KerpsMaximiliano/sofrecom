@@ -25,8 +25,8 @@ namespace Sofco.WebApi.Models.Admin
             Modules = new List<ModuleModel>();
         }
 
-        [Required(ErrorMessage = "El campo descripción es requerido")]
-        [MaxLength(50, ErrorMessage = "El campo descripción debe tener un maximo de 50 caracteres")]
+        [Required(ErrorMessage = "admin/role.descriptionRequired")]
+        [MaxLength(50, ErrorMessage = "admin/role.wrongDescriptionLength")]
         public string Description { get; set; }
 
         public bool Active { get; set; }

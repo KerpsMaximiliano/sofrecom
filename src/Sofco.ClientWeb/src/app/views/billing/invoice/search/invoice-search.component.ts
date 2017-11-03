@@ -122,7 +122,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
     search(){
         if(this.dateTo < this.dateSince){
-            this.messageService.showError(this.i18nService.translate("dateToLessThanSince"));
+            this.messageService.showError("dateToLessThanSince");
             return;
         }
 

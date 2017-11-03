@@ -51,7 +51,7 @@ export class UserAddComponent implements OnDestroy {
             error => this.errorHandlerService.handleErrors(error)
         )
     }
-
+ 
     back(){
         this.router.navigate(['/admin/users']);
     }
@@ -69,8 +69,14 @@ export class UserAddComponent implements OnDestroy {
         this.searchSubscrip = this.service.searchBySurname(this.toSearch).subscribe(
             response => {
                 this.loading = false;
-                this.users = response.value;         
-                this.usersFound = true;       
+                this.users = response.value; 
+                
+                if(this.users.length > 0){
+                    this.usersFound = true;    
+                }
+                else{
+                    this.messageService.showError("ADMIN.USERS.userNotFoundInAd");
+                }
             },
             error => {
                 this.loading = false;

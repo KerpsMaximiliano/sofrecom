@@ -14,7 +14,6 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import * as FileSaver from "file-saver";
-import { I18nService } from 'app/services/common/i18n.service';
 
 declare var $:any;
 
@@ -64,7 +63,6 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private menuService: MenuService,
                 private invoiceService: InvoiceService,
-                private i18nService: I18nService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
 
@@ -101,7 +99,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('serviceName', this.model.serviceName);
         }
         else{
-            this.messageService.showError(this.i18nService.translate("billing.solfac.cannotUpdateSolfac"));
+            this.messageService.showError("billing.solfac.cannotUpdateSolfac");
             this.router.navigate([`/billing/customers/${d.customerId}/services/${d.serviceId}/projects/${d.projectId}`]);
         }
       },

@@ -38,7 +38,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
       "fa-eye",     //other1Icon
       "fa-check",      //other2Icon
       "fa-cogs",        //other3Icon
-      { title: this.i18nService.translate("ADMIN.FUNCTIONALITIES.TITLE"), columns: [0]},
+      { title: this.i18nService.translateByKey("ADMIN.FUNCTIONALITIES.TITLE"), columns: [0]},
       0,     //orderByColumn
       "asc"
       ); 

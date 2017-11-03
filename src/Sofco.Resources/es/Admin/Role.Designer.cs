@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol creado exitosamente.
+        ///    Busca una cadena localizada similar a admin/role.created.
         /// </summary>
         public static string Created {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol eliminado correctamente.
+        ///    Busca una cadena localizada similar a admin/role.deleted.
         /// </summary>
         public static string Deleted {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a El campo descripción debe tener un maximo de {0} caracteres.
+        ///    Busca una cadena localizada similar a admin/role.descriptionMaxLengthError.
         /// </summary>
         public static string DescriptionMaxLengthError {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a El campo descripción es requerido.
+        ///    Busca una cadena localizada similar a admin/role.descriptionRequired.
         /// </summary>
         public static string DescriptionRequired {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol deshabilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/role.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol habilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/role.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulos del rol actualizados.
+        ///    Busca una cadena localizada similar a admin/role.modulesUpdated.
         /// </summary>
         public static string ModulesUpdated {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol no encontrado.
+        ///    Busca una cadena localizada similar a admin/role.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -132,7 +132,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidades del rol actualizadas correctamente.
+        ///    Busca una cadena localizada similar a admin/role.roleFunctionalitiesUpdated.
         /// </summary>
         public static string RoleFunctionalitiesUpdated {
             get {
@@ -141,7 +141,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Cambio de menus actualizados correctamente.
+        ///    Busca una cadena localizada similar a admin/role.roleMenusUpdated.
         /// </summary>
         public static string RoleMenusUpdated {
             get {
@@ -150,7 +150,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo ya asociado al rol.
+        ///    Busca una cadena localizada similar a admin/role.roleModuleAlreadyCreated.
         /// </summary>
         public static string RoleModuleAlreadyCreated {
             get {
@@ -159,7 +159,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo no asociado al rol.
+        ///    Busca una cadena localizada similar a admin/role.roleModuleAlreadyRemoved.
         /// </summary>
         public static string RoleModuleAlreadyRemoved {
             get {
@@ -168,7 +168,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Rol modificado correctamente.
+        ///    Busca una cadena localizada similar a admin/role.updated.
         /// </summary>
         public static string Updated {
             get {

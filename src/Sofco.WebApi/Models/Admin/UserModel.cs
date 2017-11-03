@@ -27,13 +27,13 @@ namespace Sofco.WebApi.Models.Admin
             Groups = new List<GroupModel>();
         }
 
-        [Required]
+        [Required(ErrorMessage = "admin/user.nameRequired")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "admin/user.usernameRequired")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "admin/user.emailRequired")]
         public string Email { get; set; }
 
         public bool Active { get; set; }

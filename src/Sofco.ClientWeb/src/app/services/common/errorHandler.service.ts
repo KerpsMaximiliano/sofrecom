@@ -30,7 +30,7 @@ export class ErrorHandlerService {
     }
 
     private handle500(){
-        var err = new Message("Ocurrio un error inesperado en el sistema. Consulte con el administrador", 1);
+        var err = new Message("common", "generalError", 1);
         this.messageService.showMessages([err]);
     }
 }

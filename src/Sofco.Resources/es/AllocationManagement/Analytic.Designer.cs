@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Analitica no encontrada.
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La analítica seleccionada no contiene recursos asignados..
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.resourcesNotFound.
         /// </summary>
         public static string ResourcesNotFound {
             get {

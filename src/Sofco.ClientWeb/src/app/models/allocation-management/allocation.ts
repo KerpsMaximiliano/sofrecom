@@ -8,6 +8,8 @@ export class Allocation {
     public analyticId: number;
     public analyticTitle: string;
     public employeeId: number;
+    public edit: boolean;
+    public id: number;
 }
 
 export class AllocationMonth {
@@ -19,6 +21,6 @@ export class AllocationMonth {
 
 export class MonthHeader {
     public display: string;
-    public month: number;
+    public month: number; 
     public year: number;
 }

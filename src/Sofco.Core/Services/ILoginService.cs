@@ -1,4 +1,5 @@
-﻿using Sofco.Common.Domains;
+﻿using System;
+using Sofco.Common.Domains;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Users;
 using Sofco.Model.Utils;
@@ -7,7 +8,7 @@ namespace Sofco.Core.Services
 {
     public interface ILoginService
     {
-        Result Login(UserLogin userLogin);
+        Response<string> Login(UserLogin userLogin);
 
         Result Refresh(UserLoginRefresh userLoginRefresh);
 

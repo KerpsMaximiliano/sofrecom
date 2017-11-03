@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Services;
@@ -7,6 +8,8 @@ using Sofco.Model.Users;
 using Sofco.Service.Settings;
 using Sofco.Service.Http.Interfaces;
 using Newtonsoft.Json;
+using Sofco.Core.DAL.Admin;
+using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
@@ -16,17 +19,21 @@ namespace Sofco.Service.Implementations
     public class LoginService : ILoginService
     {
         private readonly AzureAdConfig azureAdOptions;
+        private readonly IUserRepository userRepository;
 
         private readonly IBaseHttpClient<string> client;
 
-        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient<string> client)
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient<string> client, IUserRepository userRepo)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
+            this.userRepository = userRepo;
         }
 
-        public Result Login(UserLogin userLogin)
+        public Response<string> Login(UserLogin userLogin)
         {
+            var response = new Response<string>();
+
             var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
 
             var pairs = new List<KeyValuePair<string, string>>
@@ -38,7 +45,23 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("password", userLogin.Password)
              };
 
-            return client.Post(uri, new FormUrlEncodedContent(pairs));
+            var result = client.Post(uri, new FormUrlEncodedContent(pairs));
+
+            if (result.HasErrors)
+            {
+                response.Messages.Add(new Message("common.loginFailed", MessageType.Error));
+                return response;
+            }
+
+            if (userRepository.IsActive($"{userLogin.UserName}@sofrecom.com.ar"))
+            {
+                response.Data = result.Data;
+                return response;
+            }
+
+            response.Messages.Add(new Message(Resources.es.Admin.User.UserInactive, MessageType.Error));
+
+            return response;
         }
 
         public Result Refresh(UserLoginRefresh userLoginRefresh)

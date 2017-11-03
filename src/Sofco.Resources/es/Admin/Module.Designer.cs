@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo creado correctamente.
+        ///    Busca una cadena localizada similar a admin/module.created.
         /// </summary>
         public static string Created {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo inhabilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/module.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo habilitado correctamente.
+        ///    Busca una cadena localizada similar a admin/module.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Funcionalidades actualizadas.
+        ///    Busca una cadena localizada similar a admin/module.functionalitiesUpdated.
         /// </summary>
         public static string FunctionalitiesUpdated {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo no encontrada.
+        ///    Busca una cadena localizada similar a admin/module.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Modulo actualizado correctamente.
+        ///    Busca una cadena localizada similar a admin/module.updated.
         /// </summary>
         public static string Updated {
             get {

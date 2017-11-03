@@ -154,11 +154,11 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
-                                            <button class="btn btn-primary btn-invoice-add" (click)="addInvoice()">{{'ACTIONS.ADD' | translate }}</button>
+                                            <button class="btn btn-primary btn-invoice-add" (click)="addInvoice()" *ngIf="invoices.length > 0">{{'ACTIONS.ADD' | translate }}</button>
                                         </div>
                                     </div>
         
-                                    <div class="panel panel-primary">
+                                    <div class="panel panel-primary" *ngIf="invoicesRelated.length > 0">
                                         <div class="panel-heading">
                                             <i class="fa fa-info-circle"></i> {{'billing.solfac.invoicesRelated' | translate }}
                                         </div>

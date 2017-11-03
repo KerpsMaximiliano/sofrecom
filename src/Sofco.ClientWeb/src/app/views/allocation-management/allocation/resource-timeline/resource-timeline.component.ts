@@ -4,7 +4,6 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { AllocationService } from "app/services/allocation-management/allocation.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
-import { I18nService } from "app/services/common/i18n.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 
 declare var google: any;
@@ -23,7 +22,6 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
                 private dataTableService: DataTableService,
                 private messageService: MessageService,
-                private i18nService: I18nService,
                 private errorHandlerService: ErrorHandlerService){
     }
 
@@ -69,6 +67,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         dataTable.addColumn({ type: 'date', id: 'End' });
 
         var rows = [];
+        var resourcesName = [];
 
         self.model.forEach(function(item, index){
             var startDate = new Date(item.startDate);
@@ -77,12 +76,23 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
 
             var row = [ item.resource, `${item.percentage}%`, getTooltipHtml(item.resource, item.percentage, startDate, endDate, releaseDate), startDate, endDate ] 
             rows.push(row);
+
+            if(!resourcesName.includes(item.resource)){
+                resourcesName.push(item.resource);
+            }
         });
 
         dataTable.addRows(rows);
     
+        var height = 350;
+
+        if(resourcesName.length <= 5){
+            height = 70 * resourcesName.length;
+        }
+
         var options = {
-            timeline: { colorByRowLabel: true }
+            timeline: { colorByRowLabel: true },
+            height: height,
         };
     
         chart.draw(dataTable, options);

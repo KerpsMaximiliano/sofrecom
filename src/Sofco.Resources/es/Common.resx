@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorSave" xml:space="preserve">
-    <value>Ocurrio un error al guardar</value>
+    <value>common.errorSave</value>
   </data>
   <data name="ErrorSendMail" xml:space="preserve">
-    <value>Error al enviar el mail</value>
+    <value>common.errorSendMail</value>
   </data>
   <data name="ExportFileError" xml:space="preserve">
-    <value>Ocurrio un error al exportar el archivo</value>
+    <value>common.exportFileError</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
-    <value>Archivo no encontrado</value>
+    <value>common.fileNotFound</value>
   </data>
   <data name="GeneralError" xml:space="preserve">
-    <value>Ocurrio un error en el sistema. Consulte al administrador</value>
+    <value>common.generalError</value>
   </data>
   <data name="SaveFileError" xml:space="preserve">
-    <value>Ocurrio un error al guardar el archivo</value>
+    <value>common.saveFileError</value>
   </data>
 </root>

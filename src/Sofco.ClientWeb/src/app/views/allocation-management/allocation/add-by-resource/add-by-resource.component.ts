@@ -3,7 +3,6 @@ import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { MessageService } from "app/services/common/message.service";
-import { I18nService } from "app/services/common/i18n.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
@@ -30,12 +29,13 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     resource: any;
     resourceId: number;
 
+    public monthQuantity: number = 12;
+
     @ViewChild('allocations') allocations: any;
   
     constructor(private analyticService: AnalyticService,
         private router: Router,
         private menuService: MenuService,
-        private i18nService: I18nService,
         private allocationsService: AllocationService,
         private messageService: MessageService,
         private activatedRoute: ActivatedRoute,
@@ -80,5 +80,9 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         var analytic = this.analytics.find(x => x.id == analyticId);
 
         this.allocations.add(analytic);
+    }
+
+    search(){
+        this.allocations.getAllocations(this.resourceId);
     }
 }

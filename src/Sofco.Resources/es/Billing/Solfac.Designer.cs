@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Facturación actualizada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.billUpdated.
         /// </summary>
         public static string BillUpdated {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solfac anulada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.cancelledSucces.
         /// </summary>
         public static string CancelledSucces {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se puede cambiar el estado.
+        ///    Busca una cadena localizada similar a billing/solfac.cannotChangeStatus.
         /// </summary>
         public static string CannotChangeStatus {
             get {
@@ -87,7 +87,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor a la fecha de facturación.
+        ///    Busca una cadena localizada similar a billing/solfac.cashedDateGreaterThanInvoiceDate.
         /// </summary>
         public static string CashedDateGreaterThanInvoiceDate {
             get {
@@ -96,7 +96,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de pago no puede ser mayor a la fecha del día.
+        ///    Busca una cadena localizada similar a billing/solfac.cashedDateGreaterThanToday.
         /// </summary>
         public static string CashedDateGreaterThanToday {
             get {
@@ -105,7 +105,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor que la fecha de facturación.
+        ///    Busca una cadena localizada similar a billing/solfac.cashedDateLessThanSolfacInvoiceDate.
         /// </summary>
         public static string CashedDateLessThanSolfacInvoiceDate {
             get {
@@ -114,7 +114,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La fecha de cobro no puede ser menor a la fecha de la creación de la solicitud.
+        ///    Busca una cadena localizada similar a billing/solfac.cashedDateLessThanSolfacStartDate.
         /// </summary>
         public static string CashedDateLessThanSolfacStartDate {
             get {
@@ -123,7 +123,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La fecha de cobro es requerida.
+        ///    Busca una cadena localizada similar a billing/solfac.cashedDateRequired.
         /// </summary>
         public static string CashedDateRequired {
             get {
@@ -132,7 +132,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de cobro actualizada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.cashUpdated.
         /// </summary>
         public static string CashUpdated {
             get {
@@ -141,7 +141,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Se debe agregar un motivo de rechazo.
+        ///    Busca una cadena localizada similar a billing/solfac.commentRequired.
         /// </summary>
         public static string CommentRequired {
             get {
@@ -150,7 +150,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solfac eliminada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.deleted.
         /// </summary>
         public static string Deleted {
             get {
@@ -159,7 +159,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Ocurrio un error al actualizar el/los hitos en el CRM.
+        ///    Busca una cadena localizada similar a billing/solfac.errorSaveOnHitos.
         /// </summary>
         public static string ErrorSaveOnHitos {
             get {
@@ -168,7 +168,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Archivo importado correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.fileAdded.
         /// </summary>
         public static string FileAdded {
             get {
@@ -177,7 +177,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Archivo eliminado correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.fileDeleted.
         /// </summary>
         public static string FileDeleted {
             get {
@@ -186,7 +186,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Cantidad no puede ser menor o igual a 0.
+        ///    Busca una cadena localizada similar a billing/solfac.hitoQuantityRequired.
         /// </summary>
         public static string HitoQuantityRequired {
             get {
@@ -195,7 +195,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Precio Unitario no puede ser menor o igual a 0.
+        ///    Busca una cadena localizada similar a billing/solfac.hitoUnitPriceRequired.
         /// </summary>
         public static string HitoUnitPriceRequired {
             get {
@@ -204,7 +204,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Actualización de datos.
+        ///    Busca una cadena localizada similar a billing/solfac.infoUpdate.
         /// </summary>
         public static string InfoUpdate {
             get {
@@ -213,7 +213,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Número de factura ya existe.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceCodeAlreadyExist.
         /// </summary>
         public static string InvoiceCodeAlreadyExist {
             get {
@@ -222,7 +222,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a El número de factura es requerido.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceCodeRequired.
         /// </summary>
         public static string InvoiceCodeRequired {
             get {
@@ -231,7 +231,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de facturación no puede ser mayor a la de fecha de cobro.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceDateGreaterThanCashedDate.
         /// </summary>
         public static string InvoiceDateGreaterThanCashedDate {
             get {
@@ -240,7 +240,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de facturación no puede ser mayor a la fecha del día.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceDateGreaterThanToday.
         /// </summary>
         public static string InvoiceDateGreaterThanToday {
             get {
@@ -249,7 +249,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La fecha de facturación no puede ser menor a la fecha de la creación de la solicitud.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceDateLessThanSolfacStartDate.
         /// </summary>
         public static string InvoiceDateLessThanSolfacStartDate {
             get {
@@ -258,7 +258,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Fecha de facturación es requerida.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceDateRequired.
         /// </summary>
         public static string InvoiceDateRequired {
             get {
@@ -267,7 +267,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito removido correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.invoiceDeleted.
         /// </summary>
         public static string InvoiceDeleted {
             get {
@@ -276,7 +276,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La Solfac ha sido facturada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.invoicedSuccess.
         /// </summary>
         public static string InvoicedSuccess {
             get {
@@ -285,7 +285,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La Solfac se ha enviado a la DAF correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.invoicePendingSuccess.
         /// </summary>
         public static string InvoicePendingSuccess {
             get {
@@ -294,7 +294,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Remito/s asociados correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.invoicesAdded.
         /// </summary>
         public static string InvoicesAdded {
             get {
@@ -303,7 +303,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La Solfac ha sido rechazada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.managementControlRejectedSuccess.
         /// </summary>
         public static string ManagementControlRejectedSuccess {
             get {
@@ -312,7 +312,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solicitud no encontrada.
+        ///    Busca una cadena localizada similar a billing/solfac.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -321,7 +321,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a No se han encontrado solicitudes con los parametros de busqueda seleccionados..
+        ///    Busca una cadena localizada similar a billing/solfac.notFounds.
         /// </summary>
         public static string NotFounds {
             get {
@@ -330,7 +330,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La Solfac se ha enviado correctamente a Control de Gestión.
+        ///    Busca una cadena localizada similar a billing/solfac.pendingByManagementControlSuccess.
         /// </summary>
         public static string PendingByManagementControlSuccess {
             get {
@@ -339,7 +339,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Los porcetanjes no pueden ser menor a 0.
+        ///    Busca una cadena localizada similar a billing/solfac.percentageLessThan0.
         /// </summary>
         public static string PercentageLessThan0 {
             get {
@@ -348,7 +348,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La provincia es requerida si se incluye un porcentaje .
+        ///    Busca una cadena localizada similar a billing/solfac.provinceRequired.
         /// </summary>
         public static string ProvinceRequired {
             get {
@@ -357,7 +357,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solicitud de facturación creada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.solfacCreated.
         /// </summary>
         public static string SolfacCreated {
             get {
@@ -366,7 +366,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a Solicitud de facturación actualizada correctamente.
+        ///    Busca una cadena localizada similar a billing/solfac.solfacUpdated.
         /// </summary>
         public static string SolfacUpdated {
             get {
@@ -375,7 +375,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a El plazo no puede ser menor a 0.
+        ///    Busca una cadena localizada similar a billing/solfac.timeLimitLessThan0.
         /// </summary>
         public static string TimeLimitLessThan0 {
             get {
@@ -384,7 +384,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a La suma de porcentajes no puede ser distinta a 100%.
+        ///    Busca una cadena localizada similar a billing/solfac.totalPercentageError.
         /// </summary>
         public static string TotalPercentageError {
             get {

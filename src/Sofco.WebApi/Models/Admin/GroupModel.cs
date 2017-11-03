@@ -25,11 +25,11 @@ namespace Sofco.WebApi.Models.Admin
             Users = new List<UserModel>();
         }
 
-        [Required(ErrorMessage = "El campo descripción es requerido")]
-        [MaxLength(50, ErrorMessage = "El campo descripción debe tener un maximo de 50 caracteres")]
+        [Required(ErrorMessage = "admin/group.descriptionRequired")]
+        [MaxLength(50, ErrorMessage = "admin/group.wrongDescriptionLength")]
         public string Description { get; set; }
 
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "admin/group.wrongEmail")]
         public string Email { get; set; }
 
         public bool Active { get; set; }

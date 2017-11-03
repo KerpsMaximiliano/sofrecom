@@ -22,6 +22,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     public analytic;
     public resources: any[] = new Array<any>();
     public allocationToSearch: AllocationSearch = new AllocationSearch();
+    public monthQuantity: number = 12;
 
     getByIdSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -62,7 +63,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                 error => this.errorHandlerService.handleErrors(error));
 
             });
-        }
+        } 
 
         this.getAllocationResources();
     }

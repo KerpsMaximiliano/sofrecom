@@ -118,30 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AlreadyExist" xml:space="preserve">
-    <value>Usuario ya existente en el sistema</value>
+    <value>admin/user.alreadyExist</value>
   </data>
   <data name="Created" xml:space="preserve">
-    <value>Usuario creado correctamente</value>
+    <value>admin/user.created</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Usuario inhabilitado correctamente</value>
+    <value>admin/user.disabled</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Usuario habilitado correctamente</value>
+    <value>admin/user.enabled</value>
   </data>
   <data name="GroupAssigned" xml:space="preserve">
-    <value>Grupo asignado correctamente</value>
+    <value>admin/user.groupAssigned</value>
   </data>
   <data name="GroupRemoved" xml:space="preserve">
-    <value>Grupo removido correctamente</value>
+    <value>admin/user.groupRemoved</value>
   </data>
   <data name="LoginFailed" xml:space="preserve">
-    <value>Usuario o Contraseña incorrectas</value>
+    <value>admin/user.loginFailed</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Usuario no encontrado</value>
+    <value>admin/user.notFound</value>
   </data>
   <data name="UserGroupsUpdated" xml:space="preserve">
-    <value>Grupos del usuario actualizados correctamente</value>
+    <value>admin/user.userGroupsUpdated</value>
+  </data>
+  <data name="UserInactive" xml:space="preserve">
+    <value>admin/user.userInactive</value>
   </data>
 </root>

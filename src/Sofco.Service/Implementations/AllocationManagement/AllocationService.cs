@@ -89,11 +89,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     allocationDto.AnalyticId = analyticId;
                     allocationDto.AnalyticTitle = first.Analytic.Title;
+                    allocationDto.Id = first.Id;
                 }
                 else
                 {
                     allocationDto.AnalyticId = 0;
                     allocationDto.AnalyticTitle = string.Empty;
+                    allocationDto.Id = 0;
                 }
 
                 for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
@@ -101,9 +103,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     var allocationMonth = allocation.SingleOrDefault(x => x.StartDate.Date == date.Date);
 
                     var allocationMonthDto = new AllocationMonthDto();
-                    allocationMonthDto.AllocationId = allocationMonth == null ? 0 : allocationMonth.Id;
+                    allocationMonthDto.AllocationId = allocationMonth?.Id ?? 0;
                     allocationMonthDto.Date = date;
-                    allocationMonthDto.Percentage = allocationMonth == null ? 0 : allocationMonth.Percentage;
+                    allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
+                    allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date ?? DateTime.UtcNow;
+
+                    if (!allocationDto.ReleaseDate.HasValue)
+                    {
+                        allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date ?? DateTime.UtcNow;
+                    }
 
                     allocationDto.Months.Add(allocationMonthDto);
                 }
@@ -124,14 +132,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     if (month.AllocationId > 0)
                     {
+                        allocation.Id = month.AllocationId;
+
                         if (month.Updated)
                         {
-                            allocation.Id = month.AllocationId;
                             allocation.Percentage = month.Percentage;
-                            allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
-
                             allocationRepository.UpdatePercentage(allocation);
                         }
+
+                        allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+                        allocationRepository.UpdateReleaseDate(allocation);
                     }
                     else
                     {

@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Created" xml:space="preserve">
-    <value>Modulo creado correctamente</value>
+    <value>admin/module.created</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Modulo inhabilitado correctamente</value>
+    <value>admin/module.disabled</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Modulo habilitado correctamente</value>
+    <value>admin/module.enabled</value>
   </data>
   <data name="FunctionalitiesUpdated" xml:space="preserve">
-    <value>Funcionalidades actualizadas</value>
+    <value>admin/module.functionalitiesUpdated</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Modulo no encontrada</value>
+    <value>admin/module.notFound</value>
   </data>
   <data name="Updated" xml:space="preserve">
-    <value>Modulo actualizado correctamente</value>
+    <value>admin/module.updated</value>
   </data>
 </root>

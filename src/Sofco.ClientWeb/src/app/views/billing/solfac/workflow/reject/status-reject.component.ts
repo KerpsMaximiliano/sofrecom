@@ -55,7 +55,7 @@ export class StatusRejectComponent implements OnDestroy  {
 
     rejectByCDG(){
         if(!this.rejectComments || this.rejectComments == ""){
-            this.messageService.showError("Se debe agregar un motivo de rechazo");
+            this.messageService.showError("billing.solfac.rejectCommentRequired");
             return;
         }
 
