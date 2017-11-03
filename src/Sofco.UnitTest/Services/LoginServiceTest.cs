@@ -28,9 +28,12 @@ namespace Sofco.UnitTest.Services
         public void Setup()
         {
             clientMock = new Mock<IBaseHttpClient<string>>();
+            userRepository = new Mock<IUserRepository>();
 
             clientMock.Setup(s => s.Post(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()))
                 .Returns(new Result<string>(LoginResult));
+
+            userRepository.Setup(x => x.IsActive(It.IsAny<string>())).Returns(true);
 
             var azureConfig = new AzureAdConfig {
                 Tenant = "http://tenant.com/",
