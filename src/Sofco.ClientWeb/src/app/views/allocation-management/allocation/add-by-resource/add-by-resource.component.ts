@@ -32,6 +32,11 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     public monthQuantity: number = 12;
 
     @ViewChild('allocations') allocations: any;
+
+    dateSince: Date = new Date();
+    public dateOptions;
+
+    pmoUser: boolean;
   
     constructor(private analyticService: AnalyticService,
         private router: Router,
@@ -41,6 +46,8 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private employeeService: EmployeeService,
         private errorHandlerService: ErrorHandlerService){
+
+            this.dateOptions = this.menuService.getDatePickerOptions();
     }
 
     ngOnDestroy(): void {
@@ -50,6 +57,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.pmoUser = this.menuService.hasFunctionality('ALLOC', 'QARDD');
         var resource = JSON.parse(sessionStorage.getItem("resource"));
         
         if(resource){
@@ -83,6 +91,11 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        this.allocations.getAllocations(this.resourceId);
+        if(this.pmoUser){
+            this.allocations.getAllocations(this.resourceId, this.dateSince);
+        }
+        else{
+            this.allocations.getAllocations(this.resourceId, new Date());
+        }
     }
 }

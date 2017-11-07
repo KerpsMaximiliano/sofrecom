@@ -39,16 +39,26 @@
                 </div>
             </div>
 
-            <div class="col-sm-2">
+            <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        <div class="form-group">
-                            <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
-                            <input type="number" min="1" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                        <div class="row">
+                            <div class="col-md-5" *ngIf="pmoUser">
+                                <div class="form-group">
+                                    <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
+                                    <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
+                                    <input type="number" min="1" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="ibox-footer">
-                        <a class="btn btn-primary pointer btn-block" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search" ></i></a>
+                        <a class="btn btn-primary pointer" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search" ></i></a>
                     </div>
                 </div>
             </div>
