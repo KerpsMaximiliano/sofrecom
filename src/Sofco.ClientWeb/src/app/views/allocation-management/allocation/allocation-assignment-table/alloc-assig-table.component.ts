@@ -46,6 +46,10 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     public isEditingAnyRow: boolean = false;
     public rowEditing: any[] = new Array<any>();
 
+    dateSince: Date = new Date();
+
+    public loading: boolean = false;
+
     constructor(private menuService: MenuService,
         private allocationsService: AllocationService,
         private messageService: MessageService,
@@ -57,7 +61,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if(this.resourceId > 0){
-            this.getAllocations(this.resourceId, new Date());
+            this.getAllocations(this.resourceId, this.dateSince);
         }
     }
 
@@ -67,6 +71,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     }
 
     getAllocations(resourceId, dateSince){
+
+        this.dateSince = dateSince;
 
         if(!this.monthQuantity || this.monthQuantity < 1){
             this.messageService.showError("allocationManagement.allocation.wrongMonthQuantity");
@@ -78,6 +84,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         this.isEditingAnyRow = false;
 
         var todayPlus12Months = new Date(dateSince.getFullYear(), dateSince.getMonth()+this.monthQuantity-1, 1);
+
+        this.loading = true;
 
         this.getAllAllocationsSubscrip = this.allocationsService.getAllocations(resourceId, dateSince.toUTCString(), todayPlus12Months.toUTCString()).subscribe(data => {
             this.model = data;
@@ -95,8 +103,13 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
                 this.updateTotal(0, index);
             });
+
+            this.loading = false;
         },
-        error => this.errorHandlerService.handleErrors(error));
+        error => {
+                this.loading = false;
+                this.errorHandlerService.handleErrors(error);
+            });
     }
  
     updateMonth(value, monthIndex, month){
@@ -161,6 +174,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
             this.isEditingAnyRow = false;
             this.allocationSelected.edit = false;
+
+            this.getAllocations(this.resourceId, this.dateSince);
 
             if(this.reloadTimeline.observers.length > 0){
                 this.reloadTimeline.emit();
