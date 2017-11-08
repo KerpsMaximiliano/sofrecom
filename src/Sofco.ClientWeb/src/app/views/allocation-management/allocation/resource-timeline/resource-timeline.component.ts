@@ -92,7 +92,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
 
         var options = {
             timeline: { colorByRowLabel: true },
-            height: height,
+            height: height
         };
     
         chart.draw(dataTable, options);

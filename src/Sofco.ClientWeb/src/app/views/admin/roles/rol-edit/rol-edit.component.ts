@@ -115,7 +115,6 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
  
     onSubmit(form){
-        if(!form.invalid){
         var model = {
             id: this.role.id,
             description: this.role.description,
@@ -128,7 +127,6 @@ export class RolEditComponent implements OnInit, OnDestroy {
                 this.router.navigate(["/admin/roles"])
             },
             err => this.errorHandlerService.handleErrors(err));
-        }
     }
 
     getAllModules(){

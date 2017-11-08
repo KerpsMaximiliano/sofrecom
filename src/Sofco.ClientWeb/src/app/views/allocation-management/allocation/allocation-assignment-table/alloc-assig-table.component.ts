@@ -74,7 +74,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
         this.dateSince = dateSince;
 
-        if(!this.monthQuantity || this.monthQuantity < 1){
+        if(!this.monthQuantity || this.monthQuantity < 1 || this.monthQuantity > 36){
             this.messageService.showError("allocationManagement.allocation.wrongMonthQuantity");
             return;
         }
