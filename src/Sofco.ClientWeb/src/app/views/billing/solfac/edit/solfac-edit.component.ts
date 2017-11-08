@@ -175,6 +175,17 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality("SOLFA", "ALTA");
     }
 
+    validate(){
+      this.solfacService.validate(this.model).subscribe(
+        data => {
+          if(data.messages) this.messageService.showMessages(data.messages);
+          this.updateModal.show();
+        },
+        err => {
+          this.errorHandlerService.handleErrors(err)
+        });
+    }
+
     update(){
       this.model.comments = this.updateComments;
 
@@ -212,10 +223,6 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
     goToProject(){
       this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]);
-    }
-
-    showUpdateModal(){
-      this.updateModal.show();
     }
 
     exportPdf(invoice){
