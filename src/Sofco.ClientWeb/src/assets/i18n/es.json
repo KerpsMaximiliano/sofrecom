@@ -208,7 +208,7 @@
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Monto",
+                "unitPrice": "Precio Unitario",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
@@ -278,7 +278,7 @@
     },
     "HOME": {
         "TITLE": "Inicio",
-        "welcome": "Bienvenido a SofcoAr!",
+        "welcome": "Bienvenido a Gaps!",
         "login": "Login",
         "logout": "Logout",
         "loginFailed": "Usuario o Contraseña invalidos",

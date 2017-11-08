@@ -210,7 +210,7 @@
                 "quantity": "Quantity",
                 "unitPrice": "Ammount",
                 "total": "Total",
-                "amount": "Gross Amount",
+                "amount": "Unit Price",
                 "iva21": "I.V.A. 21%",
                 "totalAmount": "Total Ammount",
                 "withTax": "With taxes"
@@ -278,7 +278,7 @@
     },
     "HOME": {
         "TITLE": "Home",
-        "welcome": "Welcome to SofcoAr!",
+        "welcome": "Welcome to Gaps!",
         "login": "Login",
         "logout": "Logout",
         "loginFailed": "Invalid credentials",
