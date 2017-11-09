@@ -5,7 +5,10 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AppSettingService {
+
+    private NumberType: string = "NUMBER";
     private baseUrl: string;
+
     constructor(private settingService: SettingsService, 
         private appSetting: AppSetting) {
     }
@@ -31,7 +34,18 @@ export class AppSettingService {
         let appSettting = this.appSetting;
         for (var key in appSettting) {
             var item = data.find(s => s.key == key);
-            if(item != undefined){ appSettting[key] = item.value; }
+            if(item != undefined)
+            { 
+                appSettting[key] = this.parseValueByType(item);
+            }
         }
+    }
+
+    parseValueByType(item:any):any{
+        if(item.type.toUpperCase() == this.NumberType)
+        {
+            return Number(item.value);
+        }
+        return item.value;
     }
 }
