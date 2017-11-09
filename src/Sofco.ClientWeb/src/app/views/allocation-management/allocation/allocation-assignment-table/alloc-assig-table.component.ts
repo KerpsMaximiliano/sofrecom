@@ -46,6 +46,10 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     public isEditingAnyRow: boolean = false;
     public rowEditing: any[] = new Array<any>();
 
+    dateSince: Date = new Date();
+
+    public loading: boolean = false;
+
     constructor(private menuService: MenuService,
         private allocationsService: AllocationService,
         private messageService: MessageService,
@@ -57,7 +61,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if(this.resourceId > 0){
-            this.getAllocations(this.resourceId);
+            this.getAllocations(this.resourceId, this.dateSince);
         }
     }
 
@@ -66,21 +70,24 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         if(this.addSubscrip) this.addSubscrip.unsubscribe();
     }
 
-    getAllocations(resourceId){
+    getAllocations(resourceId, dateSince){
 
-        if(!this.monthQuantity || this.monthQuantity < 1){
+        this.dateSince = dateSince;
+
+        if(!this.monthQuantity || this.monthQuantity < 1 || this.monthQuantity > 36){
             this.messageService.showError("allocationManagement.allocation.wrongMonthQuantity");
             return;
         }
 
-        var today = new Date();
-        today.setDate(1);
+        dateSince.setDate(1);
         this.totals = [];
         this.isEditingAnyRow = false;
 
-        var todayPlus12Months = new Date(today.getFullYear(), today.getMonth()+this.monthQuantity-1, 1);
+        var todayPlus12Months = new Date(dateSince.getFullYear(), dateSince.getMonth()+this.monthQuantity-1, 1);
 
-        this.getAllAllocationsSubscrip = this.allocationsService.getAllocations(resourceId, today.toUTCString(), todayPlus12Months.toUTCString()).subscribe(data => {
+        this.loading = true;
+
+        this.getAllAllocationsSubscrip = this.allocationsService.getAllocations(resourceId, dateSince.toUTCString(), todayPlus12Months.toUTCString()).subscribe(data => {
             this.model = data;
 
             if(this.model.allocations.length == 0){
@@ -96,8 +103,13 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
                 this.updateTotal(0, index);
             });
+
+            this.loading = false;
         },
-        error => this.errorHandlerService.handleErrors(error));
+        error => {
+                this.loading = false;
+                this.errorHandlerService.handleErrors(error);
+            });
     }
  
     updateMonth(value, monthIndex, month){
@@ -162,6 +174,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
             this.isEditingAnyRow = false;
             this.allocationSelected.edit = false;
+
+            this.getAllocations(this.resourceId, this.dateSince);
 
             if(this.reloadTimeline.observers.length > 0){
                 this.reloadTimeline.emit();

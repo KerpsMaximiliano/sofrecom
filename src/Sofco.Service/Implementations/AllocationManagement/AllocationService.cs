@@ -100,7 +100,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
                 {
-                    var allocationMonth = allocation.SingleOrDefault(x => x.StartDate.Date == date.Date);
+                    var allocationMonth = allocation.FirstOrDefault(x => x.StartDate.Date == date.Date);
 
                     var allocationMonthDto = new AllocationMonthDto();
                     allocationMonthDto.AllocationId = allocationMonth?.Id ?? 0;

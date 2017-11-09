@@ -76,25 +76,22 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form){
-    if(!form.invalid){
-
-      var json = {
-        id: this.module.id,
-        description: this.module.description,
-        active: this.module.active,
-        email: this.module.email,
-        role: {
-          id: this.module.role.id,
-          description: "fake"
-        }
+    var json = {
+      id: this.module.id,
+      description: this.module.description,
+      active: this.module.active,
+      email: this.module.email,
+      role: {
+        id: this.module.role.id,
+        description: "fake"
       }
-
-      this.editSubscrip = this.service.edit(json).subscribe(
-        data => {
-          if(data.messages) this.messageService.showMessages(data.messages);
-          this.router.navigate(["/admin/groups"])
-        },
-        err => this.errorHandlerService.handleErrors(err));
     }
+
+    this.editSubscrip = this.service.edit(json).subscribe(
+      data => {
+        if(data.messages) this.messageService.showMessages(data.messages);
+        this.router.navigate(["/admin/groups"])
+      },
+      err => this.errorHandlerService.handleErrors(err));
   }
 }

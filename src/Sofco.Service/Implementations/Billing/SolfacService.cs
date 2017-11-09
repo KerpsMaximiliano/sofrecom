@@ -231,8 +231,6 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                //solfac.Invoices = invoiceRepository.GetBySolfac(solfac.Id);
-
                 solfac.UpdatedDate = DateTime.Now;
 
                 // Add History
@@ -333,7 +331,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private Response<Solfac> Validate(Solfac solfac)
+        public Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();
 

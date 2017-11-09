@@ -213,7 +213,7 @@
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Monto",
+                "unitPrice": "Precio Unitario",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
@@ -283,7 +283,7 @@
     },
     "HOME": {
         "TITLE": "Inicio",
-        "welcome": "Bienvenido a SofcoAr!",
+        "welcome": "Bienvenido a Gaps!",
         "login": "Login",
         "logout": "Logout",
         "loginFailed": "Usuario o Contraseña invalidos",
@@ -311,7 +311,7 @@
             "analyticCicleLife": "Ciclo de vida de la analítica",
             "totals": "Totales",
             "releaseDate": "Fecha de Liberación",
-            "wrongMonthQuantity": "Meses a mostrar es requerido",
+            "wrongMonthQuantity": "Meses a mostrar debe ser mayor o igual a 1 y menor o igual a 36",
             "monthQuantity": "Meses a mostrar",
             "releaseDateShortDesc": "F. Liberación",
             "grid": {
