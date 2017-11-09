@@ -8,7 +8,6 @@ using Sofco.WebApi.Extensions;
 namespace Sofco.WebApi.Controllers.Admin
 {
     [Route("api/settings")]
-    [Authorize]
     public class SettingsController : Controller
     {
         private readonly ISettingService settingService;
@@ -27,6 +26,7 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Post([FromBody] List<GlobalSetting> globalSettings)
         {
             var result = settingService.Save(globalSettings);
