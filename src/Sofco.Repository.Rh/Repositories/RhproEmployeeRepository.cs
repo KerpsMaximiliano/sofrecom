@@ -1,44 +1,42 @@
-﻿using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Domain.Rh.Rhpro;
-using System;
+using Sofco.Repository.Rh.Repositories.Interfaces;
 
 namespace Sofco.Repository.Rh.Repositories
 {
     public class RhproEmployeeRepository : IRhproEmployeeRepository
     {
-        protected readonly RhproContext context;
+        private DbSet<RhproEmployee> RhproEmployeeSet { get; }
 
-        private DbSet<RhproEmployee> rhproEmployeeSet { get; set; }
+        private DbSet<RhproEmployeeLicense> RhproEmployeeLicenseSet { get; }
 
-        private DbSet<RhproEmployeeLicense> rhproEmployeeLicenseSet { get; set; }
-
-        private DbSet<RhproLicenseType> rhproLicenseTypeSet { get; set; }
+        private DbSet<RhproLicenseType> RhproLicenseTypeSet { get; }
 
         public RhproEmployeeRepository(RhproContext context)
         {
-            rhproEmployeeSet = context.Set<RhproEmployee>();
+            RhproEmployeeSet = context.Set<RhproEmployee>();
 
-            rhproEmployeeLicenseSet = context.Set<RhproEmployeeLicense>();
+            RhproEmployeeLicenseSet = context.Set<RhproEmployeeLicense>();
 
-            rhproLicenseTypeSet = context.Set<RhproLicenseType>();
+            RhproLicenseTypeSet = context.Set<RhproLicenseType>();
         }
 
         public IList<RhproEmployee> GetAll()
         {
-            return rhproEmployeeSet.ToList();
+            return RhproEmployeeSet.ToList();
         }
 
         public IList<RhproLicenseType> GetLicenseTypes()
         {
-            return rhproLicenseTypeSet.ToList();
+            return RhproLicenseTypeSet.ToList();
         }
 
         public IList<RhproEmployeeLicense> GetEmployeeLicensesWithStartDate(DateTime startDate)
         {
-            return rhproEmployeeLicenseSet
+            return RhproEmployeeLicenseSet
                 .Where(s => s.Elfechadesde >= startDate)
                 .ToList();
         }

@@ -68,6 +68,11 @@
             "edit": "Edit Module",
             "add": "Add Module",
             "deleteConfirm": "¿Are you sure you want to delete the module?"
+        },
+        "settings": {
+            "title": "Configs",
+            "saveSuccess": "Save successfully",
+            "AllocationManagement_Months": "Allocations - Months"
         }
     },
     "billing":{

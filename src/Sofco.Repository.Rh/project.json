@@ -2,11 +2,8 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Microsoft.EntityFrameworkCore": "1.1.2",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
-    "Microsoft.EntityFrameworkCore.SqlServer.Design": {
-      "version": "1.0.1",
-      "type": "build"
-    },
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1",
+    "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.1",
     "NETStandard.Library": "1.6.1",
     "Sofco.Common": "1.0.0-*",
     "Sofco.Domain.Rh": "1.0.0-*",

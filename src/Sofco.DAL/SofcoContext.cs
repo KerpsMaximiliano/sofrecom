@@ -27,6 +27,7 @@ namespace Sofco.DAL
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<GlobalSetting> GlobalSettings { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
@@ -77,6 +78,7 @@ namespace Sofco.DAL
             builder.MapEmployee();
             builder.MapLicenseType();
             builder.MapEmployeeLicense();
+            builder.MapGlobalSetting();
         }
     }
 }

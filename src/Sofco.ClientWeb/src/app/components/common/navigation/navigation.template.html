@@ -29,6 +29,7 @@
           <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasFunctionality('ROL', 'QUERY')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasFunctionality('MOD', 'QUERY')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasFunctionality('FUNC', 'QUERY')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
         </ul>
       </li>
 

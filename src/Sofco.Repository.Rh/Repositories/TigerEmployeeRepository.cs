@@ -9,29 +9,27 @@ namespace Sofco.Repository.Rh.Repositories
 {
     public class TigerEmployeeRepository : ITigerEmployeeRepository
     {
-        protected readonly TigerContext context;
-
-        private DbSet<TigerEmployee> tigerEmployeeSet { get; set; }
+        private DbSet<TigerEmployee> TigerEmployeeSet { get; }
 
         public TigerEmployeeRepository(TigerContext context)
         {
-            tigerEmployeeSet = context.Set<TigerEmployee>();
+            TigerEmployeeSet = context.Set<TigerEmployee>();
         }
 
         public IList<TigerEmployee> GetAll()
         {
-            return tigerEmployeeSet.ToList();
+            return TigerEmployeeSet.ToList();
         }
 
         public IList<TigerEmployee> GetWithStartDate(DateTime startDate)
         {
-            return tigerEmployeeSet
+            return TigerEmployeeSet
                 .Where(s => s.Feiem >= startDate).ToList();
         }
 
         public IList<TigerEmployee> GetWithEndDate(DateTime endDate)
         {
-            return tigerEmployeeSet
+            return TigerEmployeeSet
                 .Where(s => s.Febaj != null && s.Febaj >= endDate).ToList();
         }
     }

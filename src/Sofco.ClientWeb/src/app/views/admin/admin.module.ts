@@ -15,6 +15,7 @@ import { UsersComponent } from './users/user-list/users.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 
 import { GroupsComponent } from './groups/group-list/groups.component';
+import { SettingsComponent } from './settings/settings.component';
 
 import { FunctionalitiesComponent } from './functionalities/functionalities.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
@@ -26,18 +27,19 @@ import { GroupService } from "app/services/admin/group.service";
 import { ModuleService } from "app/services/admin/module.service";
 import { RoleService } from "app/services/admin/role.service";
 import { UserService } from "app/services/admin/user.service";
+import { SettingsService } from "app/services/admin/settings.service";
 import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
-                 UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent],
+                 UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, SettingsComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
 
-  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService],
+  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService],
   
-  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent]
+  exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, SettingsComponent]
 })
 
 export class AdminModule {}
