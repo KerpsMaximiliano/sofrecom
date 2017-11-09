@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { SettingsService } from "app/services/admin/settings.service";
+import { AppSettingService } from 'app/services/common/app-setting.service'
 import { AppSetting } from 'app/services/common/app-setting'
 
 @Component({
@@ -19,6 +20,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       private service: SettingsService,
       private messageService: MessageService,
       private appSettting: AppSetting,
+      private appSetttingService: AppSettingService,
       private errorHandlerService: ErrorHandlerService) {
   }
   
@@ -49,15 +51,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   saveHandler() {
     this.messageService.succes('ADMIN.settings.saveSuccess');
     for (var key in this.appSettting) {
-      var item = this.getValueByKey(key);
+      var item = this.data.find(s => s.key == key);
       if(item != null){
-        this.appSettting[key] = item;
+        this.appSettting[key] = this.appSetttingService.parseValueByType(item);
       }
     }
-  }
-
-  getValueByKey(key:string) {
-    let setting = this.data.find(s => s.key == key);
-    return setting != undefined?setting.value:null;
   }
 }
