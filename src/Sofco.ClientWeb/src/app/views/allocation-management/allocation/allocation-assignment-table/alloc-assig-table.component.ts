@@ -83,6 +83,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         this.totals = [];
         this.isEditingAnyRow = false;
 
+        this.monthQuantity = Number(this.monthQuantity);
+
         var todayPlus12Months = new Date(dateSince.getFullYear(), dateSince.getMonth()+this.monthQuantity-1, 1);
 
         this.loading = true;
