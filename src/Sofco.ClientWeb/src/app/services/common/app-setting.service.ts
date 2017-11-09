@@ -19,8 +19,9 @@ export class AppSettingService {
                 .getAll()
                 .toPromise()
                 .then(
-                    d => { 
+                    d => {
                         this.loadHandler(d.json().data); 
+                        this.appSetting.ApiVersion = d.headers.get("x-app-version");
                         return this.appSetting;
                     }
                 ).catch((err: any) => {

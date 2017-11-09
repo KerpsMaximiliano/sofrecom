@@ -12,6 +12,6 @@
         private const int Revision = 2;
         private const string AppVersionFormat = "{0}.{1}.{2}";
 
-        public static string Version { get; private set; }
+        public static string Version { get; }
     }
 }
