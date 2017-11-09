@@ -33,6 +33,7 @@ import { AnalyticSearchComponent } from 'app/views/allocation-management/analyti
 import { AddAllocationComponent } from 'app/views/allocation-management/allocation/add-by-analytic/add-by-analytic.component';
 import { AddAllocationByResourceComponent } from 'app/views/allocation-management/allocation/add-by-resource/add-by-resource.component';
 import { ResourceSearchComponent } from 'app/views/allocation-management/resources/search/resource-search.component';
+import { SettingsComponent } from 'app/views/admin/settings/settings.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -65,6 +66,10 @@ export const ROUTES:Routes = [
       { path: "entities", children: [
         { path: '', component: ModulesComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "QUERY" } },
         { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "UPDAT" } }
+      ]},
+
+      { path: 'settings', children:[
+        {path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
       ]},
     ]
   },

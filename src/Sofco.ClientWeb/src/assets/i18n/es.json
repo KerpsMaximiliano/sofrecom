@@ -68,6 +68,11 @@
             "edit": "Editar Modulo",
             "add": "Agregar Modulo",
             "deleteConfirm": "¿Esta seguro que desea eliminar el modulo?"
+        },
+        "settings": {
+            "title": "Configuración",
+            "saveSuccess": "Datos actualizados exitosamente",
+            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar"
         }
     },
     "billing":{

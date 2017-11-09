@@ -43,7 +43,12 @@
              "edit": "Éditer Module",
              "add": "Ajouter Module",
              "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer le module?"
-         }
+         },
+         "settings": {
+            "title": "Configs",
+            "saveSuccess": "Save successfully",
+            "AllocationManagement_Months": "Allocations - Months"
+        }
      },
      "billing":{
          "title": "Facturation",
