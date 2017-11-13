@@ -521,34 +521,34 @@
 			"responses": []
 		},
 		{
-			"folder": "9ab4bb35-b5e0-71ed-df76-4d2b7db576f7",
 			"id": "48f64836-0ab1-3acb-b927-bf409ffe3a2d",
-			"name": "Login",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\r\n  \"userName\": \"jlarenze\",\r\n  \"password\": \"Sofco2017\"\r\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:9696/api/login",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"enabled": true,
-					"description": ""
+					"description": "",
+					"enabled": true
 				}
 			],
+			"url": "http://localhost:9696/api/login",
+			"folder": "9ab4bb35-b5e0-71ed-df76-4d2b7db576f7",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510598904010,
+			"name": "Login",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
-			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+			"rawModeData": "{\r\n  \"userName\": \"jlarenze\",\r\n  \"password\": \"M0ldGTdMghuKIi472KelyA==\"\r\n}"
 		},
 		{
 			"id": "50111005-4da8-5f16-7988-fc204d66d6cc",

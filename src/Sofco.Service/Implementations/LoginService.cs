@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
-using Sofco.Core.Services;
-using Sofco.Common.Domains;
-using Sofco.Model.Users;
-using Sofco.Service.Settings;
-using Sofco.Service.Http.Interfaces;
 using Newtonsoft.Json;
+using Sofco.Common.Domains;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Services;
 using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
-using Sofco.Model.Utils;
 using Sofco.Model.Enums;
+using Sofco.Model.Users;
+using Sofco.Model.Utils;
+using Sofco.Service.Http.Interfaces;
+using Sofco.Service.Settings;
 
 namespace Sofco.Service.Implementations
 {
@@ -36,13 +35,15 @@ namespace Sofco.Service.Implementations
 
             var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
 
+            var password = CryptographyHelper.Decrypt(userLogin.Password);
+
             var pairs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("grant_type", azureAdOptions.GrantType),
                 new KeyValuePair<string, string>("client_id", azureAdOptions.ClientId),
                 new KeyValuePair<string, string>("resource", azureAdOptions.Audience),
                 new KeyValuePair<string, string>("username", $"{userLogin.UserName}@tebrasofre.onmicrosoft.com"),
-                new KeyValuePair<string, string>("password", userLogin.Password)
+                new KeyValuePair<string, string>("password", password)
              };
 
             var result = client.Post(uri, new FormUrlEncodedContent(pairs));
