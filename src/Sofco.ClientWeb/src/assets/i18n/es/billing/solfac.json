@@ -41,5 +41,7 @@
     "documentTypeRequired": "El tipo de documento es requerido",
     "userApplicantIdRequired": "El solicitante es requerido",
     "imputationNumber3Required": "El número de imputacion es requerido",
-    "currencyRequired": "La moneda es requerida"
+    "currencyRequired": "La moneda es requerida",
+    "detailNotFound": "Detalle no encontrado",
+    "detailDeleted": "Detalle eliminado correctamente"
 }

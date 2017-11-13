@@ -28,5 +28,6 @@ namespace Sofco.Core.Services.Billing
         Response<ICollection<Invoice>> GetInvoices(int id);
         Response AddInvoices(int id, IList<int> invoices);
         Response<Solfac> Validate(Solfac solfac);
+        Response DeleteDetail(int id);
     }
 }

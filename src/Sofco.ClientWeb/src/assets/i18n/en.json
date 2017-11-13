@@ -44,7 +44,7 @@
             "addGroup": "Groups Assignment",
             "searchByMail": "Search by Mail",
             "searchBySurname": "Search by Surname",
-            "userNotFoundInAd": "User found in Active Directory"
+            "userNotFoundInAd": "User/s not found in Active Directory"
         },
         "GROUPS": {
             "TITLE": "Groups",
@@ -201,6 +201,7 @@
             "dateSince": "Date since",
             "dateTo": "Date to",
             "invoicesRelated": "Invoices Related",
+            "hito": "Milestone",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"

@@ -5,10 +5,10 @@ using System.Text;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using Sofco.Framework.ValidationHandlers.Billing;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {

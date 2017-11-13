@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Models.Billing
@@ -7,32 +7,26 @@ namespace Sofco.WebApi.Models.Billing
     public class HitoViewModel
     {
         public HitoViewModel()
-        {
+        { 
         }
 
         public HitoViewModel(Hito hito)
         {
             Id = hito.Id;
-            Description = DescriptionOld = hito.Description;
-            Quantity = hito.Quantity;
-            UnitPrice = UnitPriceOld = hito.UnitPrice;
+            Description = hito.Description;
             Total = hito.Total;
             ExternalProjectId = hito.ExternalProjectId;
             ExternalHitoId = hito.ExternalHitoId;
             Currency = hito.Currency;
             Month = hito.Month;
+            SolfacId = hito.SolfacId;
         }
 
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "billing/solfac.hitoDescriptionRequired")]
+        public int SolfacId { get; set; }
+
         public string Description { get; set; }
-
-        [Required(ErrorMessage = "billing/solfac.hitoQuantity")]
-        public short? Quantity { get; set; }
-
-        [Required(ErrorMessage = "billing/solfac.hitoUnitPriceRequired")]
-        public decimal? UnitPrice { get; set; }
 
         public decimal Total { get; set; }
 
@@ -44,25 +38,20 @@ namespace Sofco.WebApi.Models.Billing
 
         public short Month { get; set; }
 
-        public string DescriptionOld { get; set; }
-
-        public decimal UnitPriceOld { get; set; }
-
         public Hito CreateDomain()
         {
             var hito = new Hito();
 
             hito.Id = Id;
             hito.Description = Description;
-            hito.Quantity = Quantity.GetValueOrDefault();
-            hito.UnitPrice = UnitPrice.GetValueOrDefault();
             hito.Total = Total;
             hito.ExternalProjectId = ExternalProjectId;
             hito.ExternalHitoId = ExternalHitoId;
             hito.Currency = Currency;
             hito.Month = Month;
-            hito.DescriptionOld = DescriptionOld;
-            hito.UnitPriceOld = UnitPriceOld;
+            hito.SolfacId = SolfacId;
+
+            hito.Details = new List<HitoDetail>();
 
             return hito;
         }

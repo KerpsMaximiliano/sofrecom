@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing
@@ -23,7 +24,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().HasOne(x => x.Currency).WithMany(x => x.Solfacs).HasForeignKey(x => x.CurrencyId);
             builder.Entity<Solfac>().HasOne(x => x.ImputationNumber).WithMany(x => x.Solfacs).HasForeignKey(x => x.ImputationNumber3Id);
 
-            builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
+            builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Solfac>().HasMany(x => x.Histories).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Attachments).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Invoices).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
@@ -35,11 +36,20 @@ namespace Sofco.DAL.Mappings.Billing
         {
             builder.Entity<Hito>().HasKey(_ => _.Id);
             builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(100);
-
-            builder.Entity<Hito>().Ignore(_ => _.DescriptionOld);
-            builder.Entity<Hito>().Ignore(_ => _.UnitPriceOld);
+            builder.Entity<Hito>().Property(_ => _.Currency).HasMaxLength(10);
 
             builder.Entity<Hito>().HasOne(x => x.Solfac).WithMany(x => x.Hitos).HasForeignKey(x => x.SolfacId);
+            builder.Entity<Hito>().HasMany(x => x.Details).WithOne(x => x.Hito).HasForeignKey(x => x.HitoId).OnDelete(DeleteBehavior.Cascade);
+        }
+
+        public static void MapHitoDetails(this ModelBuilder builder)
+        {
+            builder.Entity<HitoDetail>().HasKey(_ => _.Id);
+            builder.Entity<HitoDetail>().Property(_ => _.Description).HasMaxLength(100);
+
+            builder.Entity<HitoDetail>().Ignore(_ => _.ExternalHitoId);
+
+            builder.Entity<HitoDetail>().HasOne(x => x.Hito).WithMany(x => x.Details).HasForeignKey(x => x.HitoId);
         }
     }
 }

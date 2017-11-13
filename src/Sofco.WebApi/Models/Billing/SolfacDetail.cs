@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sofco.Model.Enums;
 
 namespace Sofco.WebApi.Models.Billing
@@ -62,9 +63,17 @@ namespace Sofco.WebApi.Models.Billing
                 CurrencyName = domain.Currency.Text;
 
             Hitos = new List<HitoViewModel>();
+            Details = new List<HitoDetailViewModel>();
 
             foreach (var hito in domain.Hitos)
             {
+                foreach (var hitoDetail in hito.Details)
+                {
+                    var detailViewModel = new HitoDetailViewModel(hitoDetail);
+                    detailViewModel.ExternalHitoId = hito.ExternalHitoId;
+                    Details.Add(detailViewModel);
+                }
+
                 Hitos.Add(new HitoViewModel(hito));
             }
         }
@@ -141,6 +150,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public ICollection<HitoViewModel> Hitos { get; set; }
 
+        public ICollection<HitoDetailViewModel> Details { get; set; }
+
         public string ProvinceName1 { get; set; }
 
         public string ProvinceName2 { get; set; }
@@ -194,7 +205,20 @@ namespace Sofco.WebApi.Models.Billing
             solfac.WithTax = WithTax;
 
             foreach (var hitoViewModel in Hitos)
-                solfac.Hitos.Add(hitoViewModel.CreateDomain());
+            {
+                var hito = hitoViewModel.CreateDomain();
+
+                var details = Details.Where(x => x.ExternalHitoId == hitoViewModel.ExternalHitoId);
+
+                foreach (var hitoDetailViewModel in details)
+                {
+                    var domainDetail = hitoDetailViewModel.CreateDomain();
+                    domainDetail.HitoId = hito.Id;
+                    hito.Details.Add(domainDetail);
+                }
+
+                solfac.Hitos.Add(hito);
+            }
 
             return solfac;
         }

@@ -138,7 +138,7 @@
                                                     <icheck [(checked)]="hito.included" *ngIf="hito.billed == false"></icheck>
                                                 </td>
                                                 <td>{{ hito.name }}</td>
-                                                <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number }}</td>
+                                                <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number: '1.2-2' }}</td>
                                                 <td>{{ hito.startDate | date:'dd/MM/yyyy' }}</td>
                                                 <td>{{ hito.month }}</td>
                                                 <td>

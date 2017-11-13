@@ -44,7 +44,7 @@
             "addGroup": "Asignar Grupos",
             "searchByMail": "Buscar por Email",
             "searchBySurname": "Buscar por Apellido",
-            "userNotFoundInAd": "Usuario/s encontrado/s en el Active Directory"
+            "userNotFoundInAd": "Usuario/s no encontrado/s en el Active Directory"
         },
         "GROUPS": {
             "TITLE": "Grupos",
@@ -201,6 +201,7 @@
             "dateSince": "Fecha desde",
             "dateTo": "Fecha hasta",
             "invoicesRelated": "Remitos Asociados",
+            "hito": "Hito",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -208,7 +209,7 @@
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Precio Unitario",
+                "unitPrice": "Precio Uni.",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",

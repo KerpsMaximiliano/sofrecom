@@ -41,5 +41,7 @@
     "documentTypeRequired": "The document type is required",
     "userApplicantIdRequired": "The applicant is required",
     "imputationNumber3Required": "The imputation number is required",
-    "currencyRequired": "The currency is required"
+    "currencyRequired": "The currency is required",
+    "detailNotFound": "Detail not found",
+    "detailDeleted": "Detail deleted successfully"
 }

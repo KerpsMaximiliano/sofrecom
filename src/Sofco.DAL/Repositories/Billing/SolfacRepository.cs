@@ -53,7 +53,7 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.ImputationNumber)
-                .Include(x => x.Hitos)
+                .Include(x => x.Hitos).ThenInclude(x => x.Details)
                 .SingleOrDefault(x => x.Id == id);
         }
 
@@ -179,6 +179,16 @@ namespace Sofco.DAL.Repositories.Billing
             var externalIdsText = externalIds.Select(s => s.ToString());
 
             return context.Hitos.Where(x => externalIdsText.Contains(x.ExternalHitoId)).ToList();
+        }
+
+        public HitoDetail GetDetail(int id)
+        {
+            return context.HitoDetails.SingleOrDefault(x => x.Id == id);
+        }
+
+        public void DeleteDetail(HitoDetail detail)
+        {
+            context.HitoDetails.Remove(detail);
         }
     }
 }

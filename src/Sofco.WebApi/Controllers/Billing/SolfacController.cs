@@ -273,6 +273,17 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpDelete]
+        [Route("details/{id}")]
+        public IActionResult DeleteDetail(int id)
+        {
+            var response = solfacService.DeleteDetail(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
         [Route("{id}/invoice/{invoiceId}")]
         public IActionResult DeleteInvoiceOfSolfac(int id, int invoiceId)
         {

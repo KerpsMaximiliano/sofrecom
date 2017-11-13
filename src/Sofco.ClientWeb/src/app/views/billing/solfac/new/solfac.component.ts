@@ -14,6 +14,7 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
+import { Hito } from 'app/models/billing/solfac/hito';
 
 declare var $:any;
 
@@ -96,7 +97,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.projectId = project.id;
       this.model.documentType = 1;
       this.model.totalAmount = 0;
-      this.model.imputationNumber1 = project.analytic;
+      this.model.imputationNumber1 = project.analytic; 
       this.model.imputationNumber3 = 1;
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
@@ -105,15 +106,22 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.service = sessionStorage.getItem("serviceName");
       this.model.remito = project.remito;
 
-      this.model.hitos = new Array<HitoDetail>();
+      this.model.hitos = new Array<Hito>();
+      this.model.details = new Array<HitoDetail>();
+
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoDetail = new HitoDetail(hito.name, 1, hito.ammount, project.id, hito.id, hito.money);
-        this.model.hitos.push(hitoDetail);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0);
+        this.model.hitos.push(hitoNew);
+
+        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
+        this.model.details.push(detail);
+
+        this.calculateDetail(detail);
       });
 
-      this.calculate();
+      this.calculateAmounts();
     }
 
     getUserOptions(){
@@ -144,10 +152,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    calculate(){
-      this.model.hitos.forEach(item => {
-        this.calculateDetail(item);
-      });
+    addDetail(){
+      var externalHitoId = "";
+
+      if(this.model.hitos.length > 0){
+        externalHitoId = this.model.hitos[0].externalHitoId;
+      }
+
+      var detail = new HitoDetail(0, "", 1, 1, 1, 0, externalHitoId);
+      this.model.details.push(detail);
 
       this.calculateAmounts();
     }
@@ -169,7 +182,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     calculateAmounts(){
       this.model.totalAmount = 0;
       
-      this.model.hitos.forEach(detail => {
+      this.model.details.forEach(detail => {
         this.model.totalAmount += detail.total;
       });
     }
@@ -187,6 +200,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
           
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    deleteDetail(index){
+      this.model.details.splice(index, 1);
+
+      this.calculateAmounts();
     }
 
     canSave(){
@@ -212,8 +231,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setCurrencySymbol(currencyId){
-      console.log(this.test);
-
       switch(currencyId){
         case "1": { this.currencySymbol = "$"; break; }
         case "2": { this.currencySymbol = "U$D"; break; }

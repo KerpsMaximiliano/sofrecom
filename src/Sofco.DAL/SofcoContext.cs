@@ -33,6 +33,7 @@ namespace Sofco.DAL
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
+        public DbSet<HitoDetail> HitoDetails { get; set; }
         public DbSet<Solfac> Solfacs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
@@ -77,6 +78,7 @@ namespace Sofco.DAL
             builder.MapEmployee();
             builder.MapLicenseType();
             builder.MapEmployeeLicense();
+            builder.MapHitoDetails();
         }
     }
 }

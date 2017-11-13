@@ -22,3 +22,14 @@ dt {
 dd.total-amount{
     margin-bottom: 10px;
 }
+
+.detail-total {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 135px;
+}
+
+.widget{
+    margin-top: 0px!important;
+}
