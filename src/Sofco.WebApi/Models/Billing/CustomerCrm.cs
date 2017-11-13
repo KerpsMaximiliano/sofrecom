@@ -25,5 +25,9 @@
         public string CurrencyDescription { get; set; }
 
         public string Contact { get; set; }
+
+        public int? PaymentTermCode { get; set; }
+
+        public string PaymentTermDescription { get; set; }
     }
 }

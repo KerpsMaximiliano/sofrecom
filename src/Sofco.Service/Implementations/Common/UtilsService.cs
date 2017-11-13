@@ -20,6 +20,11 @@ namespace Sofco.Service.Implementations.Common
             return _repository.GetCurrencies();
         }
 
+        public IList<PaymentTerm> GetPaymentTerms()
+        {
+            return _repository.GetPaymentTerms();
+        }
+
         public IList<DocumentType> GetDocumentTypes()
         {
             return _repository.GetDocumentTypes();

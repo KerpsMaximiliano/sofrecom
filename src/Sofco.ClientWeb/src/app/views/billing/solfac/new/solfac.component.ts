@@ -31,6 +31,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
+    public paymentTerms: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
@@ -80,12 +81,24 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.businessName = customer.nombre;
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
+
+        if(customer.paymentTermCode == 0){
+          customer.paymentTermCode = 1;
+        }
+        
+        this.model.paymentTermId = customer.paymentTermCode;
       }
       else{
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.nombre;
           this.model.clientName = data.contact;
           this.model.celphone = data.telephone;
+
+          if(customer.paymentTermCode == 0){
+            customer.paymentTermCode = 1;
+          }
+
+          this.model.paymentTermId = data.paymentTermCode;
         },
         err => this.errorHandlerService.handleErrors(err));
       }
@@ -148,6 +161,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers;
+        this.paymentTerms = data.paymentTerms;
       },
       err => this.errorHandlerService.handleErrors(err));
     }

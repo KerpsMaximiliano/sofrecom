@@ -29,6 +29,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public documentTypes: Option[] = new Array<Option>();
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
+    public paymentTerms: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
@@ -150,7 +151,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
-        this.imputationNumbers = data.imputationNumbers;
+        this.imputationNumbers = data.imputationNumbers; 
+        this.paymentTerms = data.paymentTerms;
       },
       err => this.errorHandlerService.handleErrors(err));
     }

@@ -12,5 +12,7 @@ namespace Sofco.WebApi.Models.Billing
         public IList<SelectListItem> ImputationNumbers { get; set; }
 
         public IList<SelectListItem> Currencies { get; set; }
+
+        public IList<SelectListItem> PaymentTerms { get; set; }
     }
 }

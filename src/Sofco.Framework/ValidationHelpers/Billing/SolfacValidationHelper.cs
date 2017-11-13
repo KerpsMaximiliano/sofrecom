@@ -151,7 +151,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateTimeLimit(Solfac solfac, Response response)
         {
-            if (solfac.TimeLimit <= 0)
+            if (solfac.PaymentTermId <= 0)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.TimeLimitLessThan0, MessageType.Error));
             }

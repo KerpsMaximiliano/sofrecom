@@ -36,7 +36,7 @@ namespace Sofco.Service.Implementations
 
             var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
 
-            var password = CryptographyHelper.Decrypt(userLogin.Password);
+            //var password = CryptographyHelper.Decrypt(userLogin.Password);
 
             var pairs = new List<KeyValuePair<string, string>>
             {
@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("client_id", azureAdOptions.ClientId),
                 new KeyValuePair<string, string>("resource", azureAdOptions.Audience),
                 new KeyValuePair<string, string>("username", $"{userLogin.UserName}@tebrasofre.onmicrosoft.com"),
-                new KeyValuePair<string, string>("password", password)
+                new KeyValuePair<string, string>("password", userLogin.Password)
              };
 
             var result = client.Post(uri, new FormUrlEncodedContent(pairs));

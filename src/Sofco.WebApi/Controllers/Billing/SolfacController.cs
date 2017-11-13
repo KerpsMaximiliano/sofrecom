@@ -97,7 +97,8 @@ namespace Sofco.WebApi.Controllers.Billing
                 Currencies = utilsService.GetCurrencies().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
                 DocumentTypes = utilsService.GetDocumentTypes().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
                 ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                Provinces = new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Seleccione una opción" } }
+                Provinces = new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Seleccione una opción" } },
+                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList()
             };
 
             var provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();

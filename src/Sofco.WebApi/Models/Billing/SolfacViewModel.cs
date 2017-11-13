@@ -77,7 +77,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public string ParticularSteps { get; set; }
 
-        public short TimeLimit { get; set; }
+        public int PaymentTermId { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
 
@@ -130,7 +130,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Province2Id = Province2Id;
             solfac.Province3Id = Province3Id;
             solfac.ParticularSteps = ParticularSteps;
-            solfac.TimeLimit = TimeLimit;
+            solfac.PaymentTermId = PaymentTermId;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
             solfac.CustomerId = CustomerId;

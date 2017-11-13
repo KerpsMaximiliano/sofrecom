@@ -41,9 +41,7 @@ export class LoginComponent implements OnInit {
     login() {
         var userName = this.model.username.split("@")[0];
 
-        var userNameEncrypted = this.cryptoService.encrypt(userName);
-
-        this.loginSubscrip = this.authenticationService.login(userNameEncrypted, this.model.password).subscribe(
+        this.loginSubscrip = this.authenticationService.login(userName, this.model.password).subscribe(
             data => {
                 this.onLoginSucces(data);
             },

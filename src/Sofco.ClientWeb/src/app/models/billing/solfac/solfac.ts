@@ -29,7 +29,7 @@ export class Solfac {
         public details: HitoDetail[],
         public attachedParts: string,
         public particularSteps: string,
-        public timeLimit: string,
+        public paymentTermId: number,
         public userApplicantName: string,
         public projectId: string,
         public invoicesId: string[],

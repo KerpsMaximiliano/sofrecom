@@ -24,7 +24,7 @@ namespace Sofco.WebApi.Models.Billing
             ImputationNumber1 = domain.ImputationNumber1;
             TotalAmount = domain.TotalAmount;
             ParticularSteps = domain.ParticularSteps;
-            TimeLimit = domain.TimeLimit;
+            PaymentTermId = domain.PaymentTermId;
             CurrencyId = domain.CurrencyId;
             UserApplicantId = domain.UserApplicantId;
             DocumentTypeId = domain.DocumentType.Id;
@@ -62,6 +62,9 @@ namespace Sofco.WebApi.Models.Billing
             if (domain.Currency != null)
                 CurrencyName = domain.Currency.Text;
 
+            if (domain.PaymentTerm != null)
+                PaymentTermName = domain.PaymentTerm.Text;
+
             Hitos = new List<HitoViewModel>();
             Details = new List<HitoDetailViewModel>();
 
@@ -77,6 +80,8 @@ namespace Sofco.WebApi.Models.Billing
                 Hitos.Add(new HitoViewModel(hito));
             }
         }
+
+        public string PaymentTermName { get; set; }
 
         public string ServiceName { get; set; }
 
@@ -140,7 +145,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public string ParticularSteps { get; set; }
 
-        public short TimeLimit { get; set; }
+        public int PaymentTermId { get; set; }
 
         public string InvoiceCode { get; set; }
 
@@ -196,7 +201,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Province2Id = Province2Id;
             solfac.Province3Id = Province3Id;
             solfac.ParticularSteps = ParticularSteps;
-            solfac.TimeLimit = TimeLimit;
+            solfac.PaymentTermId = PaymentTermId;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
             solfac.CustomerId = CustomerId;
