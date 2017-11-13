@@ -55,7 +55,7 @@ namespace Sofco.UnitTest.Services
             var userLogin = new UserLogin
             {
                 UserName = "User1",
-                Password = "pass01"
+                Password = "M0ldGTdMghuKIi472KelyA=="
             };
 
             var actualLogin = sut.Login(userLogin);
