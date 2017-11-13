@@ -10,6 +10,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { LoginComponent } from "app/views/appviews/login/login.component";
 import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
+import { CryptographyService } from 'app/services/common/cryptography.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SpinnerModule } from 'app/components/spinner/spinner.module';
     LoginComponent,
     ForbiddenComponent
   ],
+  providers: [ CryptographyService ]
 })
 
 export class AppviewsModule {
