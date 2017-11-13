@@ -90,7 +90,13 @@ namespace Sofco.WebApi
                 Audience = Configuration["AzureAd:Audience"]
             });
 
-            app.UseCors(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseCors(builder => builder.WithOrigins("*")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowCredentials()
+                .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName)
+                );
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
         }

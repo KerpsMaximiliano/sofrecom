@@ -8,10 +8,10 @@
         }
 
         private const int Major = 0;
-        private const int Minor = 3;
-        private const int Revision = 1;
+        private const int Minor = 4;
+        private const int Revision = 2;
         private const string AppVersionFormat = "{0}.{1}.{2}";
 
-        public static string Version { get; private set; }
+        public static string Version { get; }
     }
 }
