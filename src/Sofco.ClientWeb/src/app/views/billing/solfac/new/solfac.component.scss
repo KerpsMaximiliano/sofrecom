@@ -23,10 +23,14 @@ dd.total-amount{
     margin-bottom: 10px;
 }
 
-.detail-total {
+.text-ellipsis {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.detail-total {
+    @extend .text-ellipsis;
     max-width: 135px;
 }
 
