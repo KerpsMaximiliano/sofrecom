@@ -48,7 +48,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
-                                <input type="number" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                                <input type="number" class="form-control input-sm" min="1" max="36" [(ngModel)]="monthQuantity">
                             </div>
                         </div>
                     </div>

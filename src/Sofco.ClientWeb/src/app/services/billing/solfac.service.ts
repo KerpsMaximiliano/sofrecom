@@ -39,6 +39,10 @@ export class SolfacService {
   add(model){
      return this.http.post(`${this.baseUrl}/solfacs`, model).map((res:Response) => res.json());
   }
+ 
+  validate(model){
+    return this.http.post(`${this.baseUrl}/solfacs/validate`, model).map((res:Response) => res.json());
+  }
 
   update(model){
     return this.http.put(`${this.baseUrl}/solfacs`, model).map((res:Response) => res.json());
@@ -69,6 +73,10 @@ export class SolfacService {
   delete(id){
      return this.http.delete(`${this.baseUrl}/solfacs/${id}`).map((res:Response) => res.json());
   }
+
+  deleteDetail(id){
+    return this.http.delete(`${this.baseUrl}/solfacs/details/${id}`).map((res:Response) => res.json());
+ }
 
   deleteInvoiceOfSolfac(id, invoiceId){
     return this.http.delete(`${this.baseUrl}/solfacs/${id}/invoice/${invoiceId}`).map((res:Response) => res.json());

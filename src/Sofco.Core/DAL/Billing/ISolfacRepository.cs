@@ -29,5 +29,7 @@ namespace Sofco.Core.DAL.Billing
         void UpdateCash(Solfac solfacToModif);
         bool InvoiceCodeExist(string invoiceCode);
         IList<Hito> GetHitosByExternalIds(List<Guid> externalIds);
+        HitoDetail GetDetail(int id);
+        void DeleteDetail(HitoDetail detail);
     }
 }

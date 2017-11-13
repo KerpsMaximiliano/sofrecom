@@ -9,6 +9,7 @@ import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.comp
 import { TranslateModule } from "@ngx-translate/core";
 import { LoginComponent } from "app/views/appviews/login/login.component";
 import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
+import { SpinnerModule } from 'app/components/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { StarterViewComponent } from "app/views/appviews/home/starterview.compon
     PeityModule,
     SparklineModule,
     FormsModule,
-    TranslateModule
+    TranslateModule,
+    SpinnerModule
   ],
   exports: [
     StarterViewComponent,

@@ -1,18 +1,12 @@
 export class HitoDetail {
-    public id: number = 0;
-    public total: number = 0;
-    public descriptionOld: string;
-    public unitPriceOld: number;
 
     constructor(
+        public id: number,
         public description: string,
+        public total: number,
         public quantity: number,
         public unitPrice: number,
-        public externalProjectId: string,
-        public externalHitoId: string,
-        public currency: string
-    ){
-        this.descriptionOld = this.description;
-        this.unitPriceOld = this.unitPriceOld;
-    }
+        public hitoId: number,
+        public externalHitoId: string
+    ){}
 }

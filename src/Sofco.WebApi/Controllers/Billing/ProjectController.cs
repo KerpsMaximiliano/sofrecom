@@ -151,13 +151,7 @@ namespace Sofco.WebApi.Controllers.Billing
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
 
-                        if (existHito != null)
-                        {
-                            hitoCrm.Billed = true;
-                            hitoCrm.AmmountBilled = existHito.UnitPrice;
-                        }
-
-                        if (!hitoCrm.Status.Equals("Pendiente") && !hitoCrm.Status.Equals("Proyectado"))
+                        if ((!hitoCrm.Status.Equals("Pendiente") && !hitoCrm.Status.Equals("Proyectado")) || existHito != null)
                         {
                             hitoCrm.Billed = true;
                         }

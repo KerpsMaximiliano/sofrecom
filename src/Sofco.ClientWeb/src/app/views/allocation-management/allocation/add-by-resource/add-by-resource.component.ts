@@ -9,6 +9,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { DateRangePickerComponent } from "app/components/datepicker/date-range-picker.component";
 import { AllocationService } from "app/services/allocation-management/allocation.service";
 import { AllocationModel, Allocation } from "app/models/allocation-management/allocation";
+import { AppSetting } from 'app/services/common/app-setting'
 
 declare var $:any;
 
@@ -45,8 +46,8 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private activatedRoute: ActivatedRoute,
         private employeeService: EmployeeService,
-        private errorHandlerService: ErrorHandlerService){
-
+        private errorHandlerService: ErrorHandlerService,
+        private appSetting: AppSetting){
             this.dateOptions = this.menuService.getDatePickerOptions();
     }
 
@@ -57,6 +58,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.monthQuantity = this.appSetting.AllocationManagement_Months;
         this.pmoUser = this.menuService.hasFunctionality('ALLOC', 'QARDD');
         var resource = JSON.parse(sessionStorage.getItem("resource"));
         

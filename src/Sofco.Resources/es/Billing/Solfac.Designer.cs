@@ -159,6 +159,24 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.detailDeleted.
+        /// </summary>
+        public static string DetailDeleted {
+            get {
+                return ResourceManager.GetString("DetailDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.detailNotFound.
+        /// </summary>
+        public static string DetailNotFound {
+            get {
+                return ResourceManager.GetString("DetailNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a billing/solfac.errorSaveOnHitos.
         /// </summary>
         public static string ErrorSaveOnHitos {

@@ -1,7 +1,7 @@
 IF (NOT EXISTS (SELECT 1 FROM app.Modules WHERE Code = 'REPOR'))
 BEGIN
-	INSERT INTO app.Modules  (Active, [Description], Code, MenuId) 
-	VALUES (1, 'Reporte', 'REPOR', 1);
+	INSERT INTO app.Modules  (Active, [Description], Code) 
+	VALUES (1, 'Reporte', 'REPOR');
 
 	IF (NOT EXISTS (SELECT 1 FROM app.Functionalities WHERE [Description] = 'Reporte Solfac'))
 	BEGIN

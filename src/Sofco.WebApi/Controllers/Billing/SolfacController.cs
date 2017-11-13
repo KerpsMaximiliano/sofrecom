@@ -109,6 +109,24 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
+        [Route("validate")]
+        public IActionResult Validate([FromBody] SolfacDetail model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors())
+                return BadRequest(errors);
+
+            var domain = model.CreateDomain();
+
+            var response = solfacService.Validate(domain);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
         public IActionResult Post([FromBody] SolfacViewModel model)
         {
             var errors = this.GetErrors();
@@ -250,6 +268,17 @@ namespace Sofco.WebApi.Controllers.Billing
 
             if (response.HasErrors())
                 return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("details/{id}")]
+        public IActionResult DeleteDetail(int id)
+        {
+            var response = solfacService.DeleteDetail(id);
+
+            if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
         }

@@ -15,8 +15,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public void Delete(List<EmployeeLicense> employeeLicenses, DateTime startDate)
         {
-            var numbers = employeeLicenses.Select(s => s.EmployeeNumber).ToList();
-
             var deleteItems = context.EmployeeLicenses.Where(s => s.StartDate >= startDate).ToList();
 
             Delete(deleteItems);

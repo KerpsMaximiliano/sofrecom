@@ -135,7 +135,7 @@ namespace Sofco.Service.Implementations.Admin
 
                 response.Messages.Add(new Message(Resources.es.Admin.User.GroupRemoved, MessageType.Success));
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }

@@ -38,12 +38,15 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public invoicesRelated: any[] = new Array<any>();
 
     public updateComments: string;
+
+    private detailSelected: any;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    deleteSubscrip: Subscription;
 
     @ViewChild('history') history: any;
 
@@ -55,6 +58,16 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       true,
       "ACTIONS.ACCEPT",
       "ACTIONS.cancel"
+    );
+
+    @ViewChild('deleteDetailModal') deleteDetailModal;
+    public deleteDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "deleteDetailModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     constructor(private messageService: MessageService,
@@ -76,13 +89,14 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.getInvoices();
       });
     }
-
+ 
     ngOnDestroy(){
        if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
        if(this.getInvoiceOptionsSubs) this.getInvoiceOptionsSubs.unsubscribe();
        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
        if(this.changeStatusSubscrip) this.getDetailSubscrip.unsubscribe();
+       if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
     }
 
     getSolfac(solfacId){
@@ -122,7 +136,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.invoices = data;
       },
       err => this.errorHandlerService.handleErrors(err));
-    }
+    } 
 
     getInvoices(){
       this.getInvoiceOptionsSubs = this.solfacService.getInvoices(this.solfacId).subscribe(data => {
@@ -141,11 +155,46 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    calculate(){
-      this.model.hitos.forEach(item => {
-        this.calculateDetail(item);
-      });
+    addDetail(){
+      var externalHitoId = "";
 
+      if(this.model.hitos.length > 0){
+        externalHitoId = this.model.hitos[0].externalHitoId;
+      }
+
+      var detail = new HitoDetail(0, "", 1, 1, 1, 0, externalHitoId);
+      this.model.details.push(detail);
+
+      this.calculateAmounts();
+    }
+
+    openDeleteDetail(detail, index){
+      this.detailSelected = { detail, index }; 
+      this.deleteDetailModal.show();
+    }
+
+    deleteDetail(){
+      if(this.detailSelected.detail.id == 0){
+        this.removeDetail();
+        this.deleteDetailModal.hide();
+        return;
+      }
+
+      this.solfacService.deleteDetail(this.detailSelected.detail.id).subscribe(
+        data => {
+          this.deleteDetailModal.hide();
+
+          if(data.messages) this.messageService.showMessages(data.messages);
+          this.removeDetail();
+        },
+        err => {
+          this.deleteDetailModal.hide();
+          this.errorHandlerService.handleErrors(err)
+        });
+    }
+
+    removeDetail(){
+      this.model.details.splice(this.detailSelected.index, 1);
       this.calculateAmounts();
     }
 
@@ -166,13 +215,24 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     calculateAmounts(){
       this.model.totalAmount = 0;
       
-      this.model.hitos.forEach(detail => {
+      this.model.details.forEach(detail => {
         this.model.totalAmount += detail.total;
       });
     }
 
     canUpdate(){
         return this.menuService.hasFunctionality("SOLFA", "ALTA");
+    }
+
+    validate(){
+      this.solfacService.validate(this.model).subscribe(
+        data => {
+          if(data.messages) this.messageService.showMessages(data.messages);
+          this.updateModal.show();
+        },
+        err => {
+          this.errorHandlerService.handleErrors(err)
+        });
     }
 
     update(){
@@ -212,10 +272,6 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
     goToProject(){
       this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]);
-    }
-
-    showUpdateModal(){
-      this.updateModal.show();
     }
 
     exportPdf(invoice){

@@ -23,7 +23,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return base.GetAll();
         }
 
-        private List<Employee> getByEmployeeNumbers(string[] employeeNumbers)
+        private List<Employee> GetByEmployeeNumbers(string[] employeeNumbers)
         {
             return context.Employees
                 .Where(s => employeeNumbers.Contains(s.EmployeeNumber))
@@ -32,7 +32,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public void Save(List<Employee> employees)
         {
-            var storedItems = getByEmployeeNumbers(employees.Select(s => s.EmployeeNumber).ToArray());
+            var storedItems = GetByEmployeeNumbers(employees.Select(s => s.EmployeeNumber).ToArray());
 
             var storedNumbers = storedItems.Select(s => s.EmployeeNumber).ToList();
 

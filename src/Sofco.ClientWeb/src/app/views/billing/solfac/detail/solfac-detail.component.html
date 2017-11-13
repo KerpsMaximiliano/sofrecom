@@ -109,17 +109,17 @@
                                     <thead>
                                     <tr>
                                         <th>{{'billing.solfac.milestone.detail' | translate }}</th>
-                                        <th>{{'billing.solfac.milestone.quantity' | translate }}</th>
-                                        <th>{{'billing.solfac.milestone.unitPrice' | translate }}</th>
-                                        <th>{{'billing.solfac.milestone.total' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let detail of model.hitos">
-                                            <td class="col-lg-7">{{detail.description}}</td>
-                                            <td class="col-lg-1">{{detail.quantity | number: '1.2-2'}}</td>
-                                            <td class="col-lg-1">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
-                                            <td class="col-lg-2">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                        <tr *ngFor="let detail of model.details">
+                                            <td>{{detail.description}}</td>
+                                            <td width="45">{{detail.quantity | number: '1.2-2'}}</td>
+                                            <td width="135">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
+                                            <td width="135">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -151,7 +151,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <!-- Movimientos -->
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">

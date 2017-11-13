@@ -46,7 +46,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
             this.getInvoices();
         });
     }
-
+ 
     ngOnDestroy(){
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();

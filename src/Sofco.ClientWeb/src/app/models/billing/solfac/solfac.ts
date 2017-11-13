@@ -1,4 +1,5 @@
 import { HitoDetail } from 'app/models/billing/solfac/hitoDetail';
+import { Hito } from 'app/models/billing/solfac/hito';
 
 export class Solfac {
     constructor(
@@ -24,7 +25,8 @@ export class Solfac {
         public province2Id: number,
         public otherProvince3Percentage: number,
         public province3Id: number,
-        public hitos: HitoDetail[],
+        public hitos: Hito[],
+        public details: HitoDetail[],
         public attachedParts: string,
         public particularSteps: string,
         public timeLimit: string,

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using NuGet.Packaging;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -11,6 +13,7 @@ namespace Sofco.WebApi.Models.Billing
         public SolfacViewModel()
         {
             Hitos = new List<HitoViewModel>();
+            Details = new List<HitoDetailViewModel>();
             InvoicesId = new List<int>();
         }
 
@@ -78,6 +81,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public ICollection<HitoViewModel> Hitos { get; set; }
 
+        public ICollection<HitoDetailViewModel> Details { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public int ModifiedByUserId { get; set; }
@@ -135,8 +140,16 @@ namespace Sofco.WebApi.Models.Billing
             solfac.InvoiceRequired = Remito;
 
             foreach (var hitoViewModel in Hitos)
-                solfac.Hitos.Add(hitoViewModel.CreateDomain());
+            {
+                var hito = hitoViewModel.CreateDomain();
 
+                var details = Details.Where(x => x.ExternalHitoId == hitoViewModel.ExternalHitoId);
+
+                hito.Details.AddRange(details.Select(x => x.CreateDomain()));
+
+                solfac.Hitos.Add(hito);
+            }
+             
             return solfac;
         }
     }

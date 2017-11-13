@@ -44,7 +44,7 @@
             "addGroup": "Asignar Grupos",
             "searchByMail": "Buscar por Email",
             "searchBySurname": "Buscar por Apellido",
-            "userNotFoundInAd": "Usuario/s encontrado/s en el Active Directory"
+            "userNotFoundInAd": "Usuario/s no encontrado/s en el Active Directory"
         },
         "GROUPS": {
             "TITLE": "Grupos",
@@ -68,6 +68,11 @@
             "edit": "Editar Modulo",
             "add": "Agregar Modulo",
             "deleteConfirm": "¿Esta seguro que desea eliminar el modulo?"
+        },
+        "settings": {
+            "title": "Configuración",
+            "saveSuccess": "Datos actualizados exitosamente",
+            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar"
         }
     },
     "billing":{
@@ -201,6 +206,7 @@
             "dateSince": "Fecha desde",
             "dateTo": "Fecha hasta",
             "invoicesRelated": "Remitos Asociados",
+            "hito": "Hito",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -208,7 +214,7 @@
             "milestone": {
                 "detail": "Detalle",
                 "quantity": "Cantidad",
-                "unitPrice": "Precio Unitario",
+                "unitPrice": "Precio Uni.",
                 "total": "Total",
                 "amount": "Importe Bruto",
                 "iva21": "I.V.A. 21%",
@@ -306,7 +312,7 @@
             "analyticCicleLife": "Ciclo de vida de la analítica",
             "totals": "Totales",
             "releaseDate": "Fecha de Liberación",
-            "wrongMonthQuantity": "Meses a mostrar es requerido",
+            "wrongMonthQuantity": "Meses a mostrar debe ser mayor o igual a 1 y menor o igual a 36",
             "monthQuantity": "Meses a mostrar",
             "releaseDateShortDesc": "F. Liberación",
             "grid": {

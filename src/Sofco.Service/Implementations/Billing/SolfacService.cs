@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -12,8 +13,8 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.DAL.Admin;
-using Sofco.Framework.ValidationHandlers.Billing;
 using Sofco.Core.Mail;
+using Sofco.Framework.ValidationHelpers.Billing;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -69,8 +70,11 @@ namespace Sofco.Service.Implementations.Billing
                     invoiceRepository.UpdateStatus(invoiceToModif);
                 }
 
-                // Save Invoices related
-                solfacRepository.Save();
+                if (invoicesId.Any())
+                {
+                    // Save Invoices related
+                    solfacRepository.Save();
+                }
 
                 response.Data = solfac;
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacCreated, MessageType.Success));
@@ -231,8 +235,6 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                //solfac.Invoices = invoiceRepository.GetBySolfac(solfac.Id);
-
                 solfac.UpdatedDate = DateTime.Now;
 
                 // Add History
@@ -333,7 +335,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private Response<Solfac> Validate(Solfac solfac)
+        public Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();
 
@@ -341,6 +343,32 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
+
+            return response;
+        }
+
+        public Response DeleteDetail(int id)
+        {
+            var response = new Response();
+
+            var detail = solfacRepository.GetDetail(id);
+
+            if (detail == null)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.DetailNotFound, MessageType.Error));
+                return response;
+            }
+
+            try
+            {
+                solfacRepository.DeleteDetail(detail);
+                solfacRepository.Save();
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.DetailDeleted, MessageType.Success));
+            }
+            catch
+            {
+                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+            }
 
             return response;
         }
@@ -385,22 +413,17 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     try
                     {
-                        var description = string.Empty;
-                        if (item.Description != item.DescriptionOld)
+                        var sum = item.Details.Sum(x => x.Total);
+
+                        if (sum != item.Total)
                         {
-                            description = $"Name={item.Description}";
+                            var total = $"Ammount={sum}";
+
+                            var stringContent = new StringContent(total, Encoding.UTF8, "application/x-www-form-urlencoded");
+                            var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
+
+                            httpResponse.EnsureSuccessStatusCode();
                         }
-
-                        var unitPrice = string.Empty;
-                        if (item.UnitPrice != item.UnitPriceOld)
-                        {
-                            unitPrice = $"Ammount={item.UnitPrice}";
-                        }
-
-                        var stringContent = new StringContent(string.Join("&", description, unitPrice), Encoding.UTF8, "application/x-www-form-urlencoded");
-                        var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
-
-                        httpResponse.EnsureSuccessStatusCode();
                     }
                     catch (Exception)
                     {

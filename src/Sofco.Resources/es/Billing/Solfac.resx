@@ -228,4 +228,10 @@
   <data name="InvoicesAdded" xml:space="preserve">
     <value>billing/solfac.invoicesAdded</value>
   </data>
+  <data name="DetailNotFound" xml:space="preserve">
+    <value>billing/solfac.detailNotFound</value>
+  </data>
+  <data name="DetailDeleted" xml:space="preserve">
+    <value>billing/solfac.detailDeleted</value>
+  </data>
 </root>

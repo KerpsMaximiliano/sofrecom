@@ -1,12 +1,13 @@
-﻿using Sofco.Core.DAL.Billing;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Sofco.Core.DAL.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
-using System;
-using System.Collections.Generic;
 
-namespace Sofco.Framework.ValidationHandlers.Billing
+namespace Sofco.Framework.ValidationHelpers.Billing
 {
     public static class SolfacValidationHelper
     {
@@ -123,10 +124,10 @@ namespace Sofco.Framework.ValidationHandlers.Billing
         {
             foreach (var hito in hitos)
             {
-                if (hito.Quantity <= 0)
+                if (hito.Details.Any(x => x.Quantity <= 0))
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoQuantityRequired, MessageType.Error));
 
-                if (hito.UnitPrice <= 0)
+                if (hito.Details.Any(x => x.UnitPrice <= 0))
                     response.Messages.Add(new Message(Resources.es.Billing.Solfac.HitoUnitPriceRequired, MessageType.Error));
             }
         }

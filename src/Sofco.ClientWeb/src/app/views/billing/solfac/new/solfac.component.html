@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-
+ 
                     <!-- Numero de contrato -->
                     <div class="row">
                         <div class="col-lg-6 col-md-5 col-sm-5">
@@ -145,29 +145,60 @@
             <!-- Detalle de hitos -->
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">
+                    <h3>Hitos</h3>
+
+                    <div class="row">
+                        <div class="col-lg-3" *ngFor="let hito of model.hitos">
+                            <div class="widget navy-bg">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-bookmark fa-3x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <h3 class="text-ellipsis"> {{ hito.description }} </h3>
+                                        <span class="font-bold">{{ currencySymbol }} {{ hito.total | number: '1.2-2' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="table-responsive">
+                            <div class="form-group">
+                                <button class="btn btn-success" type="button" (click)="addDetail()">Agregar <i class="fa fa-plus"></i></button>
+                            </div>
+
+                            <div class="table-responsive" *ngIf="model.details && model.details.length > 0">
                                 <table class="table invoice-table">
                                     <thead>
-                                    <tr>
-                                        <th>{{'billing.solfac.milestone.detail' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
-                                        <th>{{'billing.solfac.milestone.total' | translate }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-center">{{'billing.solfac.hito' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.detail' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let detail of model.hitos">
-                                            <td class="col-lg-7"><input type="text" class="form-control" [(ngModel)]="detail.description"></td>
-                                            <td class="col-lg-1">
-                                                <input type="text" class="form-control" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
+                                        <tr *ngFor="let detail of model.details; let i = index">
+                                            <td class="text-center" width="45">
+                                                <button class="btn btn-danger btn-xs" (click)="deleteDetail(i)" type="button"><i class="fa fa-trash fa-2x"></i></button>
                                             </td>
-                                            <td class="col-lg-2">
-                                                <input type="text" class="form-control" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
+                                            <td width="145">
+                                                <select class="form-control input-sm" [(ngModel)]="detail.externalHitoId">
+                                                    <option *ngFor="let hito of model.hitos" [value]="hito?.externalHitoId">{{hito?.description}}</option>
+                                                </select>
                                             </td>
-                                            <td class="col-lg-2">{{ detail.total | number: '1.2-2' }}</td>
+                                            <td><input type="text" class="form-control input-sm" [(ngModel)]="detail.description"></td>
+                                            <td width="45">
+                                                <input type="text" class="form-control input-sm" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
+                                            </td>
+                                            <td width="135">
+                                                <input type="text" class="form-control input-sm" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
+                                            </td>
+                                            <td width="135" class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -175,11 +206,11 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" *ngIf="model.details && model.details.length > 0">
                         <div class="col-sm-4 col-sm-offset-8">
                             <dl class="dl-horizontal">
                                 <dt><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></dt>
-                                <dd class="total-amount">{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</dd>
+                                <dd class="total-amount detail-total">{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</dd>
 
                                 <dt><strong>{{'billing.solfac.milestone.withTax' | translate }} </strong></dt>
                                 <dd>

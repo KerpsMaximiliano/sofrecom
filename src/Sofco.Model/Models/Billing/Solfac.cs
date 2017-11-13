@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.Model.Models.Admin;

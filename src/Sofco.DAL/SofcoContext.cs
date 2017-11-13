@@ -27,12 +27,14 @@ namespace Sofco.DAL
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<GlobalSetting> GlobalSettings { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
+        public DbSet<HitoDetail> HitoDetails { get; set; }
         public DbSet<Solfac> Solfacs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
@@ -77,6 +79,8 @@ namespace Sofco.DAL
             builder.MapEmployee();
             builder.MapLicenseType();
             builder.MapEmployeeLicense();
+            builder.MapHitoDetails();
+            builder.MapGlobalSetting();
         }
     }
 }
