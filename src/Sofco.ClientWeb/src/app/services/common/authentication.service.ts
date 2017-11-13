@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
 import { MenuService } from "app/services/admin/menu.service";
+import { CryptographyService } from "app/services/common/cryptography.service";
+
 
 @Injectable()
 export class AuthenticationService {
@@ -12,15 +14,15 @@ export class AuthenticationService {
 
     constructor(private http: Http, 
                 private service: Service,
-                private menuService: MenuService) {
-    
+                private menuService: MenuService,
+                private cryptoService: CryptographyService) {
         this.baseUrl = this.service.UrlApi;
     }
 
     login(username: string, password: string) {
         var json = {
             userName: username,
-            password: password
+            password: this.cryptoService.encrypt(password)
         }
 
         return this.http.post(`${this.service.UrlApi}/login`, json, { headers: this.service.getLoginHeaders()}).map(this.loginResponseHanlder);

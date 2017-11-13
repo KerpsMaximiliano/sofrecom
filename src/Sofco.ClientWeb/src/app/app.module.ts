@@ -33,6 +33,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { I18nService } from 'app/services/common/i18n.service';
 import { AppSettingService } from 'app/services/common/app-setting.service';
 import { AppSetting } from 'app/services/common/app-setting';
+import { CryptographyService } from 'app/services/common/cryptography.service';
 
 import { HttpAuth } from "app/services/common/http-auth";
 import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
@@ -90,7 +91,8 @@ export function HttpLoaderFactory(http: Http) {
       useFactory: appSettingFactory,
       deps: [AppSettingService], 
       multi: true
-    }
+    },
+    CryptographyService
   ],
   bootstrap: [AppComponent]
 })

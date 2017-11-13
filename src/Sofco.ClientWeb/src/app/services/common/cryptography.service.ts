@@ -4,17 +4,19 @@ import * as CryptoJS from 'crypto-js';
 @Injectable()
 export class CryptographyService {
     
-    constructor() { }
+    private key = CryptoJS.enc.Utf8.parse("zoMgRaMpAamuDezt");
+    private iv = CryptoJS.enc.Utf8.parse("A0f08A80E#A08s8f");
 
-    private readonly key: string = "";
-    private readonly iv: number[] = [1, 2, 3, 4, 5];
+    encrypt(text: string) {
 
-    encrypt(data: string){
-        var key = CryptoJS.enc.Utf8.parse(this.key);
-        var iv = CryptoJS.enc.Utf8.parse(this.iv);
+        let params = { 
+            iv: this.iv, 
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        };
 
-        var cipherData = CryptoJS.AES.encrypt(data, key, { iv: iv });
+        var encrypted = CryptoJS.AES.encrypt(text, this.key, params);
 
-        return cipherData;
+        return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
     }
 }

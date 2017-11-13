@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
-using Sofco.Core.Services;
-using Sofco.Common.Domains;
-using Sofco.Model.Users;
-using Sofco.Service.Settings;
-using Sofco.Service.Http.Interfaces;
 using Newtonsoft.Json;
+using Sofco.Common.Domains;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Services;
 using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
-using Sofco.Model.Utils;
 using Sofco.Model.Enums;
+using Sofco.Model.Users;
+using Sofco.Model.Utils;
+using Sofco.Service.Http.Interfaces;
+using Sofco.Service.Settings;
 
 namespace Sofco.Service.Implementations
 {
