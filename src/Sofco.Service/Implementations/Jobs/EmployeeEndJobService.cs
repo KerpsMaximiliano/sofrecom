@@ -25,6 +25,8 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly IGroupRepository groupRepository;
 
+        private readonly IMailBuilder mailBuilder;
+
         private readonly IMailSender mailSender;
 
         private readonly JobSetting setting;
@@ -33,6 +35,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         public EmployeeEndJobService(IEmployeeRepository employeeRepository,
             IGroupRepository groupRepository,
+            IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<JobSetting> jobSettingOptions,
             IOptions<EmailConfig> emailConfigOptions)
@@ -40,6 +43,8 @@ namespace Sofco.Service.Implementations.Jobs
             this.employeeRepository = employeeRepository;
 
             this.groupRepository = groupRepository;
+
+            this.mailBuilder = mailBuilder;
 
             this.mailSender = mailSender;
 
@@ -65,38 +70,24 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var mailTos = groupRepository.GetEmail(emailConfig.PmoCode);
 
-            var result = new Email
-                {
-                    Subject = Subject,
-                    Recipient = mailTos,
-                    Body = BuildBody(employeeEnds)
-                };
-
-            return result;
-        }
-
-        private string BuildBody(List<Employee> employees)
-        {
-            var template = MailResource.DefaultTemplate;
+            var data = new Dictionary<string, string>();
 
             var content = new StringBuilder();
 
-            foreach (var item in employees)
+            foreach (var item in employeeEnds)
             {
                 var link = $"{emailConfig.SiteUrl}";
 
                 content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.EmployeeNumber} - {item.EndDate?.ToString(DateFormat)}</a>");
             }
 
-            var body = template.Replace("{content}", $"<ul>{content.ToString()}</ul>");
+            data.Add("content", $"<ul>{content}</ul>");
+            data.Add("title", Subject);
+            data.Add("message", string.Empty);
 
-            body = body.Replace("{title}", Subject);
+            var mail = mailBuilder.GetEmail(MailType.Default, mailTos, Subject, data);
 
-            body = body.Replace("{message}", "");
-
-            body = body.Replace("{homeLink}", emailConfig.SiteUrl);
-
-            return body;
+            return mail;
         }
     }
 }

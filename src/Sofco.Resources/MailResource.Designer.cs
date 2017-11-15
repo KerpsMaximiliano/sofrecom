@@ -71,12 +71,12 @@ namespace Sofco.Resources {
         ///	}
         ///	.title {
         ///		font-size:12pt; font-weight:bold; color:#242F89;
-        ///		margin-bottom:5px
+        ///		margin-bottom:10px
         ///	}
         ///	.content { margin-bottom:10px }
         ///	.contentResult { margin-left:10px; margin-bottom:10px }
         ///	.footer { margin-top:10px;height:40px;color:#818080;font-size:9pt;text-align:center }
-        ///	ul [rest of string was truncated]&quot;;.
+        ///	u [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DefaultTemplate {
             get {

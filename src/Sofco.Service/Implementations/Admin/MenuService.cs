@@ -8,24 +8,26 @@ namespace Sofco.Service.Implementations.Admin
 {
     public class MenuService : IMenuService
     {
-        private readonly IMenuRepository _menuRepository;
-        private readonly IUserGroupRepository _userGroupRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly IMenuRepository menuRepository;
+
+        private readonly IUserGroupRepository userGroupRepository;
+
+        private readonly IRoleRepository roleRepository;
 
         public MenuService(IMenuRepository menuRepository, IUserGroupRepository userGroupRepository, IRoleRepository roleRepository)
         {
-            _menuRepository = menuRepository;
-            _userGroupRepository = userGroupRepository;
-            _roleRepository = roleRepository;
+            this.menuRepository = menuRepository;
+            this.userGroupRepository = userGroupRepository;
+            this.roleRepository = roleRepository;
         }
 
         public IList<RoleFunctionality> GetFunctionalitiesByUserName(string userName)
         {
-            var groupsId = _userGroupRepository.GetGroupsId(userName);
+            var groupsId = userGroupRepository.GetGroupsId(userName);
 
-            var roles = _roleRepository.GetRolesByGroup(groupsId);
+            var roles = roleRepository.GetRolesByGroup(groupsId);
 
-            var modules = _menuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
+            var modules = menuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
 
             return modules;
         }

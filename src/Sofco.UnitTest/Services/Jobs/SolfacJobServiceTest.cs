@@ -27,6 +27,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<ISolfacRepository> solfacRepositoryMock;
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
+        private Mock<IMailBuilder> mailBuilderMock;
         private Mock<IMailSender> mailSenderMock;
         private Mock<IOptions<EmailConfig>> emailOptionsMock;
         private Mock<IOptions<JobSetting>> jobOptionsMock;
@@ -36,6 +37,7 @@ namespace Sofco.UnitTest.Services.Jobs
         {
             solfacRepositoryMock = new Mock<ISolfacRepository>();
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
+            mailBuilderMock = new Mock<IMailBuilder>();
             mailSenderMock = new Mock<IMailSender>();
             emailOptionsMock = new Mock<IOptions<EmailConfig>>();
             jobOptionsMock = new Mock<IOptions<JobSetting>>();
@@ -52,6 +54,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             sut = new SolfacJobServiceTesteable(solfacRepositoryMock.Object,
                 crmInvoiceServiceMock.Object,
+                mailBuilderMock.Object,
                 mailSenderMock.Object,
                 emailOptionsMock.Object,
                 jobOptionsMock.Object);
@@ -96,8 +99,18 @@ namespace Sofco.UnitTest.Services.Jobs
 
     internal class SolfacJobServiceTesteable : SolfacJobService
     {
-        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, ICrmInvoiceService crmInvoiceService, IMailSender mailSender, IOptions<EmailConfig> emailConfigOptions, IOptions<JobSetting> jobOptions) 
-            : base(solfacRepository, crmInvoiceService, mailSender, emailConfigOptions, jobOptions)
+        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, 
+            ICrmInvoiceService crmInvoiceService,
+            IMailBuilder mailBuilder,
+            IMailSender mailSender, 
+            IOptions<EmailConfig> emailConfigOptions, 
+            IOptions<JobSetting> jobOptions) 
+            : base(solfacRepository, 
+                  crmInvoiceService, 
+                  mailBuilder,
+                  mailSender, 
+                  emailConfigOptions, 
+                  jobOptions)
         {
         }
 

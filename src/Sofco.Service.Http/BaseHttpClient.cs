@@ -9,7 +9,7 @@ namespace Sofco.Service.Http
 {
     public class BaseHttpClient<T> : IBaseHttpClient<T> where T : class
     {
-        private const string ErrorResponseMessage = "Error";
+        private const string ErrorDelimeter = " - ";
 
         private readonly HttpClient httpClient;
 
@@ -33,13 +33,14 @@ namespace Sofco.Service.Http
         {
             var response = httpClient.SendAsync(requestMessage).Result;
 
-            var result = new Result<TResult>();
-
             if (!response.IsSuccessStatusCode)
             {
-                result.AddError(response.ReasonPhrase);
-
-                return result;
+                throw new Exception(
+                    requestMessage.RequestUri
+                    + ErrorDelimeter +
+                    response.ReasonPhrase 
+                    + ErrorDelimeter + 
+                    response.Content.ReadAsStringAsync().Result);
             }
 
             var resultData = GetResponseResult<TResult>(response);
@@ -56,18 +57,9 @@ namespace Sofco.Service.Http
                 return (TResult)(object)resultText;
             }
 
-            try
-            {
-                return jsonSerializerSettings == null ?
-                    JsonConvert.DeserializeObject<TResult>(resultText)
-                    : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
-            }
-            catch (JsonSerializationException ex)
-            {
-                // TODO: Implement logger
-                // logger.LogError($"{ex.Message} | Response: {resultText}");
-                throw;
-            }
+            return jsonSerializerSettings == null ?
+                JsonConvert.DeserializeObject<TResult>(resultText)
+                : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
         }
 
         public Result<T> Post(string urlPath, HttpContent content)
