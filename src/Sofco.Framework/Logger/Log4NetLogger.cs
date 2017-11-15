@@ -93,7 +93,9 @@ namespace Sofco.Framework.Logger
 
         private void SendMail(string message, Exception exception)
         {
-            var content = message + "<br><br>" + exception.StackTrace;
+            var content = message +"<br><br>"+ 
+                exception.Message +"<br>"+ 
+                exception.StackTrace;
 
             var mail = mailBuilder.GetSupportEmail(mailLogSubject, content);
 

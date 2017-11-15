@@ -9,6 +9,8 @@ namespace Sofco.Service.Http
 {
     public class BaseHttpClient<T> : IBaseHttpClient<T> where T : class
     {
+        private const string ErrorDelimeter = " - ";
+
         private readonly HttpClient httpClient;
 
         public BaseHttpClient(HttpClient httpClient)
@@ -31,13 +33,14 @@ namespace Sofco.Service.Http
         {
             var response = httpClient.SendAsync(requestMessage).Result;
 
-            var result = new Result<TResult>();
-
             if (!response.IsSuccessStatusCode)
             {
-                result.AddError(response.ReasonPhrase);
-
-                return result;
+                throw new Exception(
+                    requestMessage.RequestUri
+                    + ErrorDelimeter +
+                    response.ReasonPhrase 
+                    + ErrorDelimeter + 
+                    response.Content.ReadAsStringAsync().Result);
             }
 
             var resultData = GetResponseResult<TResult>(response);
