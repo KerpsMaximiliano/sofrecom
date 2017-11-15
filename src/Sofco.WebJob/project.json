@@ -5,6 +5,7 @@
     "AutoMapper": "6.1.1",
     "Hangfire": "1.6.17",
     "Hangfire.Autofac": "2.3.1",
+    "log4net": "2.0.8",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Routing": "1.0.1",

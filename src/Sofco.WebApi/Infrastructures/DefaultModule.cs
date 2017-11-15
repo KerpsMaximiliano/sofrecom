@@ -3,6 +3,8 @@ using System.Net.Http;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
+using Sofco.Common.Logger;
+using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.Mail;
@@ -48,6 +50,14 @@ namespace Sofco.WebApi.Infrastructures
 
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
             builder.RegisterType<InvoiceStatusFactory>().As<IInvoiceStatusFactory>();
+
+            RegisterLogger(builder);
+        }
+
+        private static void RegisterLogger(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(LoggerWrapper<>))
+                .As(typeof(ILoggerWrapper<>));
         }
     }
 }

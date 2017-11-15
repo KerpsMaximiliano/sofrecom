@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Sofco.Common.Logger.Interfaces;
 
 namespace Sofco.WebApi.Filters
 {
@@ -11,9 +12,13 @@ namespace Sofco.WebApi.Filters
     {
         private readonly RequestDelegate next;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        private readonly ILoggerWrapper<ErrorHandlingMiddleware> log;
+
+
+        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerWrapper<ErrorHandlingMiddleware> log)
         {
             this.next = next;
+            this.log = log;
         }
 
         public async Task Invoke(HttpContext context)
@@ -28,9 +33,11 @@ namespace Sofco.WebApi.Filters
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+            log.LogError(exception.Message, exception);
+
+            var code = HttpStatusCode.InternalServerError;
 
             if (exception is KeyNotFoundException)
                 code = HttpStatusCode.NotFound;
@@ -40,6 +47,7 @@ namespace Sofco.WebApi.Filters
                     success = false,
                     error = new { exception.Message, exception.StackTrace }
                 });
+
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;

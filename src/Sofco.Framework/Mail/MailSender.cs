@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MailKit.Net.Smtp;
 using MimeKit;
+using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Framework.Helpers;
@@ -12,10 +14,12 @@ namespace Sofco.Framework.Mail
 {
     public class MailSender : IMailSender
     {
-        const char MailDelimiter = ';';
+        private const char MailDelimiter = ';';
 
         private readonly IHostingEnvironment environment;
-        private readonly EmailConfig emailConfig;
+
+        private readonly ILoggerWrapper<MailSender> logger;
+
         private readonly string fromEmail;
         private readonly string fromDisplayName;
         private readonly string smtpServer;
@@ -23,10 +27,13 @@ namespace Sofco.Framework.Mail
         private readonly string smtpDomain;
         private readonly string mailDevFolder;
 
-        public MailSender(IHostingEnvironment environment, IOptions<EmailConfig> emailConfigOption)
+        public MailSender(IHostingEnvironment environment, 
+            IOptions<EmailConfig> emailConfigOption, 
+            ILoggerWrapper<MailSender> logger)
         {
+            this.logger = logger;
             this.environment = environment;
-            emailConfig = emailConfigOption.Value;
+            var emailConfig = emailConfigOption.Value;
             fromEmail = emailConfig.EmailFrom;
             fromDisplayName = emailConfig.DisplyNameFrom;
             smtpServer = emailConfig.SmtpServer;
@@ -57,7 +64,7 @@ namespace Sofco.Framework.Mail
 
         private void AddRecipients(MimeMessage message, string recipients)
         {
-            string[] recipientsMails = recipients.Split(MailDelimiter);
+            var recipientsMails = recipients.Split(MailDelimiter);
             foreach(var email in recipientsMails)
             {
                 message.To.Add(new MailboxAddress(email, email));
@@ -117,9 +124,17 @@ namespace Sofco.Framework.Mail
                 client.LocalDomain = smtpDomain;
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                foreach (var message in messages)
+                try
                 {
-                    client.Send(message);
+                    foreach (var message in messages)
+                    {
+                        client.Send(message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e.Message, e);
+                    throw;
                 }
 
                 client.Disconnect(true);

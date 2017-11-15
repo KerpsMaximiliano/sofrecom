@@ -1,19 +1,24 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Hangfire;
+using log4net;
+using log4net.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Hangfire;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Sofco.WebJob.Services;
-using Sofco.WebJob.Filters;
-using Sofco.WebJob.Security;
-using Sofco.WebJob.Infrastructures;
 using Sofco.Core.Config;
-using Sofco.Service.Settings.Jobs;
+using Sofco.Common.Logger.Extensions;
 using Sofco.Repository.Rh.Settings;
+using Sofco.Service.Settings.Jobs;
+using Sofco.WebJob.Filters;
+using Sofco.WebJob.Infrastructures;
+using Sofco.WebJob.Security;
+using Sofco.WebJob.Services;
 
 namespace Sofco.WebJob
 {
@@ -50,8 +55,8 @@ namespace Sofco.WebJob
 
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterModule(new DefaultModule(){ Configuration = Configuration });
-            containerBuilder.RegisterModule(new DatabaseModule() { Configuration = Configuration });
+            containerBuilder.RegisterModule(new DefaultModule { Configuration = Configuration });
+            containerBuilder.RegisterModule(new DatabaseModule { Configuration = Configuration });
             containerBuilder.RegisterModule(new AutoMapperModule());
 
             containerBuilder.Populate(services);
@@ -72,14 +77,25 @@ namespace Sofco.WebJob
 
             app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:PanelUsername"], Configuration["JobSetting:PanelPassword"]));
 
-            app.UseHangfireDashboard(WebJobPath, new DashboardOptions()
+            app.UseHangfireDashboard(WebJobPath, new DashboardOptions
             {
                 Authorization = new[] { new CustomAuthorizeFilter() }
             });
 
             app.UseHangfireServer();
 
+            ConfigureLogger(loggerFactory);
+
             JobService.Init(Configuration["JobSetting:LocalTimeZoneName"]);
+        }
+
+        private static void ConfigureLogger(ILoggerFactory loggerFactory)
+        {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            loggerFactory.AddLog4Net();
         }
     }
 }
