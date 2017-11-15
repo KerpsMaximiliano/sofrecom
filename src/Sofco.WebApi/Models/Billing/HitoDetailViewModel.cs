@@ -21,6 +21,7 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public int Id { get; set; }
+
         public int HitoId { get; set; }
 
         [Required(ErrorMessage = "billing/solfac.hitoDescriptionRequired")]

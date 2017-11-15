@@ -48,7 +48,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet("user/{userMail}")]
-        public async Task <IActionResult> Get(string userMail)
+        public async Task<IActionResult> Get(string userMail)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 var hasDirectorGroup = this.userService.HasDirectorGroup(userMail);
 
                 HttpResponseMessage response;
-                 
+
                 if (hasDirectorGroup)
                 {
                     response = await client.GetAsync($"/api/account");

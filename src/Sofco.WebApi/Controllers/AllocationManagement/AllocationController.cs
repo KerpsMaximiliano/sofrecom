@@ -16,7 +16,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public AllocationController(IAllocationService allocationServ)
         {
             allocationService = allocationServ;
-        } 
+        }
 
         [HttpPost]
         public IActionResult Post([FromBody] AllocationDto allocation)

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using log4net;
+using log4net.Config;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -95,10 +99,18 @@ namespace Sofco.WebApi
                 .AllowAnyMethod()
                 .AllowAnyOrigin()
                 .AllowCredentials()
-                .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName)
-                );
+                .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName));
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
+
+            ConfigureLogger();
+        }
+
+        private static void ConfigureLogger()
+        {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
         }
     }
 }

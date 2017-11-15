@@ -129,7 +129,7 @@
 	}
 	.title {
 		font-size:12pt; font-weight:bold; color:#242F89;
-		margin-bottom:5px
+		margin-bottom:10px
 	}
 	.content { margin-bottom:10px }
 	.contentResult { margin-left:10px; margin-bottom:10px }
@@ -139,16 +139,14 @@
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="panel"&gt;
-	&lt;div class="title"&gt;
-		SOFCO - &lt;font color="#38A43A"&gt;{title}&lt;/font&gt;
-	&lt;/div&gt;
+	&lt;div class="title"&gt;{title}&lt;/div&gt;
 	&lt;div class="content"&gt;
 		{message}&lt;br&gt;&lt;br&gt;
 	&lt;/div&gt;
 	&lt;div class="contentResult"&gt;{content}&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="footer"&gt;
-Por favor, no responda este mail, cualquier consulta realicela a traves del portal &lt;a href="{homeLink}"&gt;SofCoAr&lt;/a&gt;.&lt;br/&gt;
+Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href="{homeLink}"&gt;portal&lt;/a&gt;.&lt;br/&gt;
 &lt;/div&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
   </data>
@@ -175,7 +173,7 @@ Por favor, no responda este mail, cualquier consulta realicela a traves del port
 &lt;body&gt;
 &lt;div class="panel"&gt;
 	&lt;div class="title"&gt;
-		SOFCO - &lt;font color="#38A43A"&gt;Hitos&lt;/font&gt;
+		&lt;font color="#38A43A"&gt;Hitos&lt;/font&gt;
 	&lt;/div&gt;
 	&lt;div class="content"&gt;
 		Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
@@ -183,7 +181,7 @@ Por favor, no responda este mail, cualquier consulta realicela a traves del port
 	&lt;div class="contentResult"&gt;{content}&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="footer"&gt;
-Por favor, no responda este mail, cualquier consulta realicela a traves del portal &lt;a href="{siteUrl}"&gt;SofCoAr&lt;/a&gt;.&lt;br/&gt;
+Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href="{homeLink}"&gt;portal&lt;/a&gt;.&lt;br/&gt;
 &lt;/div&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
   </data>

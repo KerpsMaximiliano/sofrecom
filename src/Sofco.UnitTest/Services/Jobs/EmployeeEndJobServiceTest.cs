@@ -29,6 +29,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IGroupRepository> groupRepositoryMock;
 
+        private Mock<IMailBuilder> mailBuilderMock;
+
         private Mock<IMailSender> mailSenderMock;
 
         private Mock<IOptions<JobSetting>> JobSettingOptionMock;
@@ -40,6 +42,7 @@ namespace Sofco.UnitTest.Services.Jobs
         {
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
             groupRepositoryMock = new Mock<IGroupRepository>();
+            mailBuilderMock = new Mock<IMailBuilder>();
             mailSenderMock = new Mock<IMailSender>();
             JobSettingOptionMock = new Mock<IOptions<JobSetting>>();
             emailOptionMock = new Mock<IOptions<EmailConfig>>();
@@ -66,6 +69,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             sut = new EmployeeEndJobService(employeeRepositoryMock.Object,
                 groupRepositoryMock.Object,
+                mailBuilderMock.Object,
                 mailSenderMock.Object,
                 JobSettingOptionMock.Object,
                 emailOptionMock.Object);

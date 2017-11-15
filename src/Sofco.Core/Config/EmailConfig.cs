@@ -21,5 +21,9 @@
         public string PmoCode { get; set; }
 
         public string MailDevFolder { get; set; }
+
+        public string SupportMailTo { get; set; }
+
+        public string SupportMailLogTitle { get; set; }
     }
 }
