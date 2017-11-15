@@ -23,11 +23,7 @@ namespace Sofco.WebApi.Filters
 
         private readonly IMailSender mailSender;
 
-        public ErrorHandlingMiddleware(RequestDelegate next, 
-            ILoggerWrapper<ErrorHandlingMiddleware> log, 
-            IMailBuilder mailBuilder, 
-            IMailSender mailSender,
-            IOptions<EmailConfig> emailConfigOption)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerWrapper<ErrorHandlingMiddleware> log, IMailBuilder mailBuilder, IMailSender mailSender, IOptions<EmailConfig> emailConfigOption)
         {
             this.next = next;
 
@@ -68,7 +64,6 @@ namespace Sofco.WebApi.Filters
                     success = false,
                     error = new { exception.Message, exception.StackTrace }
                 });
-
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;

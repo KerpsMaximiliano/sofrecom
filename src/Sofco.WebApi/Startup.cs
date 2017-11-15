@@ -99,8 +99,7 @@ namespace Sofco.WebApi
                 .AllowAnyMethod()
                 .AllowAnyOrigin()
                 .AllowCredentials()
-                .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName)
-                );
+                .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName));
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
 
