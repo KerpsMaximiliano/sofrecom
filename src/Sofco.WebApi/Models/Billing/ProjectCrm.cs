@@ -20,9 +20,9 @@ namespace Sofco.WebApi.Models.Billing
 
         public string PurchaseOrder { get; set; }
 
-        public string OportunityId { get; set; }
+        public string OpportunityId { get; set; }
 
-        public string OportunityName { get; set; }
+        public string OpportunityName { get; set; }
 
         public decimal TotalAmmount { get; set; }
 
