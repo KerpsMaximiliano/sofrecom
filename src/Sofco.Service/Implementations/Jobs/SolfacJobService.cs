@@ -9,7 +9,6 @@ using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
 using Sofco.Model;
-using Sofco.Resources;
 using Sofco.Core.Config;
 using Sofco.Service.Settings.Jobs;
 
@@ -17,27 +16,35 @@ namespace Sofco.Service.Implementations.Jobs
 {
     public class SolfacJobService : ISolfacJobService
     {
-        const string DateFormat = "dd/MM/yyyy";
-        const string Subject = "HITOS sin Solfac";
+        private const string DateFormat = "dd/MM/yyyy";
 
-        private int DaysToExpire = 5;
+        private const string Subject = "HITOS sin Solfac";
+
+        private readonly int daysToExpire;
 
         private readonly ISolfacRepository solfacRepository;
+
         private readonly ICrmInvoiceService crmInvoiceService;
+
+        private readonly IMailBuilder mailBuilder;
+
         private readonly IMailSender mailSender;
+
         private readonly EmailConfig emailConfig;
 
         public SolfacJobService(ISolfacRepository solfacRepository,
             ICrmInvoiceService crmInvoiceService,
+            IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<EmailConfig> emailConfigOptions,
             IOptions<JobSetting> setting)
         {
             this.solfacRepository = solfacRepository;
             this.crmInvoiceService = crmInvoiceService;
+            this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             emailConfig = emailConfigOptions.Value;
-            DaysToExpire = setting.Value.SolfacJob.DaysToExpire;
+            daysToExpire = setting.Value.SolfacJob.DaysToExpire;
         }
 
         public void SendHitosNotifications()
@@ -51,7 +58,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private List<CrmHito> GetHitosWithoutSolfac()
         {
-            var crmHitosResult = crmInvoiceService.GetHitosToExpire(DaysToExpire);
+            var crmHitosResult = crmInvoiceService.GetHitosToExpire(daysToExpire);
 
             var crmHitosList = crmHitosResult.Data.ToList();
 
@@ -75,12 +82,11 @@ namespace Sofco.Service.Implementations.Jobs
             foreach (var item in groupedList)
             {
                 if (item.Key == null) continue;
-                result.Add(new Email
-                {
-                    Subject = Subject,
-                    Recipient = item.Key,
-                    Body = BuildBody(item.Value)
-                });
+
+                var mailContent = GetContent(item.Value);
+
+                result.Add(mailBuilder.GetEmail(
+                    MailType.HitosWithoutSolfac, item.Key, Subject, mailContent));
             }
 
             return result;
@@ -106,28 +112,24 @@ namespace Sofco.Service.Implementations.Jobs
             return list;
         }
 
-        private string BuildBody(List<CrmHito> hitos)
+        private Dictionary<string, string> GetContent(List<CrmHito> hitos)
         {
-            var template = MailResource.HitosWithoutSolfac;
-
             var content = new StringBuilder();
 
-            foreach(var item in hitos)
+            foreach (var item in hitos)
             {
-                var link = $"{emailConfig.SiteUrl}/billing/"+
-                    $"customers/{item.CustomerId}"+
-                    $"/services/{item.ServiceId}"+
-                    $"/projects/{item.ProjectId}";
+                var link = $"{emailConfig.SiteUrl}/billing/" +
+                           $"customers/{item.CustomerId}" +
+                           $"/services/{item.ServiceId}" +
+                           $"/projects/{item.ProjectId}";
 
                 content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.ProjectName} - {item.ScheduledDate.ToString(DateFormat)}</a>");
             }
 
-            var body = template.Replace("{content}", $"<ul>{content.ToString()}</ul>");
-
-            body = body.Replace("{siteUrl}", emailConfig.SiteUrl);
-
-
-            return body;
+            return new Dictionary<string, string>
+            {
+                {MailContentKey.Content, $"<ul>{content}</ul>"}
+            };
         }
     }
 }

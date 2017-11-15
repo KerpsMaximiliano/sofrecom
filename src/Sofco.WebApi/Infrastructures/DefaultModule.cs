@@ -39,6 +39,9 @@ namespace Sofco.WebApi.Infrastructures
                 .Where(s => s.Name.EndsWith(RepositoryAssemblyEndName))
                 .AsImplementedInterfaces();
 
+            builder.RegisterType<MailBuilder>()
+                .As<IMailBuilder>();
+
             builder.RegisterType<MailSender>()
                 .As<IMailSender>()
                 .SingleInstance();

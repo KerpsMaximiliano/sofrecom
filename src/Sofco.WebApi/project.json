@@ -78,7 +78,8 @@
       "**/*.cshtml",
       "appsettings.json",
       "appsettings.*.json",
-      "web.config"
+      "web.config",
+      "log4net.config"
     ]
   },
   "scripts": {

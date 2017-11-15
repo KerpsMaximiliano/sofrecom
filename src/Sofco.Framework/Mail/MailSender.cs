@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MailKit.Net.Smtp;
@@ -65,8 +66,10 @@ namespace Sofco.Framework.Mail
         private void AddRecipients(MimeMessage message, string recipients)
         {
             var recipientsMails = recipients.Split(MailDelimiter);
-            foreach(var email in recipientsMails)
+            foreach(var item in recipientsMails)
             {
+                var email = item.Trim();
+
                 message.To.Add(new MailboxAddress(email, email));
             }
         }

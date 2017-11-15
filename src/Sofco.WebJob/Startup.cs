@@ -12,7 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sofco.Core.Config;
-using Sofco.Common.Logger.Extensions;
+using Sofco.Core.Mail;
+using Sofco.Framework.Logger.Extensions;
 using Sofco.Repository.Rh.Settings;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Filters;
@@ -25,6 +26,8 @@ namespace Sofco.WebJob
     public class Startup
     {
         private const string WebJobPath = "/panel";
+
+        private IContainer container;
 
         public Startup(IHostingEnvironment env)
         {
@@ -61,7 +64,7 @@ namespace Sofco.WebJob
 
             containerBuilder.Populate(services);
 
-            var container = containerBuilder.Build();
+            container = containerBuilder.Build();
 
             JobActivator.Current = new AutofacJobActivator(container);
 
@@ -89,13 +92,16 @@ namespace Sofco.WebJob
             JobService.Init(Configuration["JobSetting:LocalTimeZoneName"]);
         }
 
-        private static void ConfigureLogger(ILoggerFactory loggerFactory)
+        private void ConfigureLogger(ILoggerFactory loggerFactory)
         {
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
 
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
-            loggerFactory.AddLog4Net();
+            loggerFactory.AddLog4Net(
+                container.Resolve<IMailSender>(), 
+                container.Resolve<IMailBuilder>(),
+                Configuration["Mail:SupportMailLogTitle"]);
         }
     }
 }

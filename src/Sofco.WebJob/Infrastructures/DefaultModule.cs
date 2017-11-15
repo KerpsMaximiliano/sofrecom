@@ -30,7 +30,10 @@ namespace Sofco.WebJob.Infrastructures
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(s => s.Name.EndsWith(ServiceAssemblyEndName))
                 .AsImplementedInterfaces();
-            
+
+            builder.RegisterType<MailBuilder>()
+                .As<IMailBuilder>();
+
             builder.RegisterType<MailSender>()
                 .As<IMailSender>()
                 .SingleInstance();
@@ -47,6 +50,5 @@ namespace Sofco.WebJob.Infrastructures
             builder.RegisterGeneric(typeof(LoggerWrapper<>))
                 .As(typeof(ILoggerWrapper<>));
         }
-
     }
 }

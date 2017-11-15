@@ -2,17 +2,32 @@
 using System.Reflection;
 using log4net;
 using Microsoft.Extensions.Logging;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using Sofco.Core.Mail;
 
-namespace Sofco.Common.Logger
+namespace Sofco.Framework.Logger
 {
     public class Log4NetLogger : ILogger
     {
+        private readonly string mailLogSubject;
+
         private readonly ILog logger;
 
-        public Log4NetLogger(string name)
+        private readonly IMailSender mailSender;
+
+        private readonly IMailBuilder mailBuilder;
+
+        public Log4NetLogger(string name, 
+            IMailSender mailSender, 
+            IMailBuilder mailBuilder,
+            string mailLogSubject)
         {
             logger = LogManager.GetLogger(Assembly.GetEntryAssembly(), name);
+
+            this.mailSender = mailSender;
+
+            this.mailBuilder = mailBuilder;
+
+            this.mailLogSubject = mailLogSubject;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -22,16 +37,9 @@ namespace Sofco.Common.Logger
                 return;
             }
 
-            string message;
+            var message = null != formatter ? formatter(state, exception) : exception.Message;
 
-            if (null != formatter)
-            {
-                message = formatter(state, exception);
-            }
-            else
-            {
-                message = exception.Message;
-            }
+            SendMail(message, exception);
 
             switch (logLevel)
             {
@@ -81,6 +89,15 @@ namespace Sofco.Common.Logger
         public IDisposable BeginScope<TState>(TState state)
         {
             return null;
+        }
+
+        private void SendMail(string message, Exception exception)
+        {
+            var content = message + "<br><br>" + exception.StackTrace;
+
+            var mail = mailBuilder.GetSupportEmail(mailLogSubject, content);
+
+            mailSender.Send(mail);
         }
     }
 }
