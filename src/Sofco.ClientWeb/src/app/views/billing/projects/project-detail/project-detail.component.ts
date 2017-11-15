@@ -29,12 +29,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     solfacs: any[] = new Array();
     invoices: any[] = new Array();
     public loading:  boolean = true;
-
+    
     incomesBilled: number = 0;
     incomesCashed: number = 0;
     incomesPending: number = 0;
 
     @ViewChild('hito') hito;
+    @ViewChild('splitHito') splitHito;
 
     constructor(
         private router: Router,
@@ -59,7 +60,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
             this.getProject(params['projectId']);
             this.getSolfacs(this.projectId);
-            this.getHitos(this.projectId);
+            this.getHitos();
             this.getInvoices(this.projectId);
         });
     }
@@ -100,10 +101,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getHitos(projectId){
-        this.getHitosSubscrip = this.service.getHitos(projectId).subscribe(d => {
+    getHitos(){
+        this.getHitosSubscrip = this.service.getHitos(this.projectId).subscribe(d => {
             this.hitos = d;
 
+            this.datatableService.destroy('#hitoTable');
             this.datatableService.init('#hitoTable', false);
 
             this.calculateIncomes();
@@ -126,7 +128,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.datatableService.init('#solfacTable', false);
-            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -216,5 +217,25 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     canSeeSolfacs(){
         return this.menuService.hasFunctionality('SOLFA', 'QUERY');
+    }
+
+    canSplit(){
+        var hitos = this.getHitosSelected();
+
+        if(hitos.length == 1){
+            return true;
+        } 
+
+        return false;
+    }
+
+    split(){
+        var hito = this.getHitosSelected()[0];
+
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.managerId;
+        hito.opportunityId = this.project.opportunityId;
+
+        this.splitHito.openModal(hito);
     }
 }

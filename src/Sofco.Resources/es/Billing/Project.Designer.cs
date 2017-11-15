@@ -60,11 +60,47 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.almost2HitosRequired.
+        /// </summary>
+        public static string Almost2HitosRequired {
+            get {
+                return ResourceManager.GetString("Almost2HitosRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.hitoAmmoutRequired.
+        /// </summary>
+        public static string HitoAmmoutRequired {
+            get {
+                return ResourceManager.GetString("HitoAmmoutRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.hitoSplitted.
+        /// </summary>
+        public static string HitoSplitted {
+            get {
+                return ResourceManager.GetString("HitoSplitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a billing/projects.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.opportunityRequired.
+        /// </summary>
+        public static string OpportunityRequired {
+            get {
+                return ResourceManager.GetString("OpportunityRequired", resourceCulture);
             }
         }
     }

@@ -140,12 +140,16 @@
                 "milestone": {
                     "title": "Milestones",
                     "description": "Desctiption",
+                    "name": "Name",
                     "amount": "Amount",
                     "ammountBilled": "Amount Billed",
                     "startDate": "Start Date",
                     "month": "Month",
                     "status": "Status",
-                    "new": "New Request"
+                    "new": "New Request",
+                    "split": "Split milestone",
+                    "cantToSplit": "Quantity to split",
+                    "splitTitle": "Split Milestone"
                 },
                 "requests": {
                     "title": "Requests",

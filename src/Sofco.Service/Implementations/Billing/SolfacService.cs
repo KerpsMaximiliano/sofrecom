@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Billing;
@@ -369,6 +370,81 @@ namespace Sofco.Service.Implementations.Billing
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
+
+            return response;
+        }
+
+        public async Task<Response> SplitHito(IList<HitoSplittedParams> hitos)
+        {
+            var response = ValidateHitoSplitted(hitos);
+
+            if (response.HasErrors()) return response;
+
+            var first = hitos.FirstOrDefault();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(crmConfig.Url);
+
+                await UpdateFirstHito(response, first, client);
+                await CreateNewHitos(response, hitos, client);
+
+                if (!response.HasErrors())
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Project.HitoSplitted, MessageType.Success));
+                }
+            }
+
+            return response;
+        }
+
+        private async Task CreateNewHitos(Response response, IList<HitoSplittedParams> hitos, HttpClient client)
+        {
+            for (int i = 1; i < hitos.Count; i++)
+            {
+                var hito = hitos[i];
+
+                try
+                {
+                    var data = $"Ammount={hito.Ammount}&StatusCode={hito.StatusCode}&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
+                               $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
+
+                    var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+                    var httpResponse = await client.PostAsync($"/api/InvoiceMilestone", stringContent);
+
+                    httpResponse.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
+                }
+            }
+        }
+
+        private async Task UpdateFirstHito(Response response, HitoSplittedParams first, HttpClient client)
+        {
+            try
+            {
+                var data = $"Ammount={first.Ammount}&Name={first.Name}";
+
+                var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+                var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{first.ExternalHitoId}", stringContent);
+
+                httpResponse.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
+            }
+        }
+
+        private Response ValidateHitoSplitted(IList<HitoSplittedParams> hitos)
+        {
+            var response = new Response();
+
+            HitoValidatorHelper.ValidateHitosQuantity(hitos, response);
+            HitoValidatorHelper.ValidateAmmounts(hitos, response);
+            HitoValidatorHelper.ValidateOpportunity(hitos, response);
 
             return response;
         }

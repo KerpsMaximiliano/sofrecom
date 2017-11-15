@@ -37,5 +37,7 @@ namespace Sofco.WebApi.Models.Billing
         public bool Remito { get; set; }
 
         public string Manager { get; set; }
+
+        public string ManagerId { get; set; }
     }
 }

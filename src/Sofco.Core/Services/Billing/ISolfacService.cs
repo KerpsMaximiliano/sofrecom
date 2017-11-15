@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sofco.Core.Config;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
@@ -29,5 +30,6 @@ namespace Sofco.Core.Services.Billing
         Response AddInvoices(int id, IList<int> invoices);
         Response<Solfac> Validate(Solfac solfac);
         Response DeleteDetail(int id);
+        Task<Response> SplitHito(IList<HitoSplittedParams> hitos);
     }
 }
