@@ -36,7 +36,6 @@ namespace Sofco.Model.Models.Billing
         public int Province2Id { get; set; }
         public int Province3Id { get; set; }
         public string ParticularSteps { get; set; }
-        public short TimeLimit { get; set; }
         public string Analytic { get; set; }
 
         public ICollection<Hito> Hitos { get; set; }
@@ -54,6 +53,9 @@ namespace Sofco.Model.Models.Billing
         public string ImputationNumber1 { get; set; }
         public ImputationNumber ImputationNumber { get; set; }
         public int ImputationNumber3Id { get; set; }
+
+        public int PaymentTermId { get; set; }
+        public PaymentTerm PaymentTerm { get; set; }
 
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }

@@ -74,7 +74,9 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
-                                        <input type="number" class="form-control input-sm" [(ngModel)]="model.timeLimit">
+                                        <select class="form-control input-sm" [(ngModel)]="model.paymentTermId">
+                                            <option *ngFor="let paymentTerm of paymentTerms" [value]="paymentTerm?.value">{{paymentTerm?.text}}</option>
+                                        </select>
                                     </div>
                                 </div>
         
@@ -87,7 +89,7 @@
                                     </div>
                                 </div>
                             </div>
-        
+         
                             <!-- Numero de imputacion-->
                             <div class="row">
                                 <div class="col-sm-12">

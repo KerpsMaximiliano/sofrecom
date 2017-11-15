@@ -19,6 +19,11 @@ namespace Sofco.DAL.Repositories.Common
             return _context.Currencies.ToList().AsReadOnly();
         }
 
+        public IList<PaymentTerm> GetPaymentTerms()
+        {
+            return _context.PaymentTerms.ToList().AsReadOnly();
+        }
+
         public IList<DocumentType> GetDocumentTypes()
         {
             return _context.DocumentTypes.ToList().AsReadOnly();

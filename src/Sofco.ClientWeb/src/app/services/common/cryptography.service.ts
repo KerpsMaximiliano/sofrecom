@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import * as CryptoJS from 'crypto-js'; 
+import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class CryptographyService {
-
+    
     private key = CryptoJS.enc.Utf8.parse("zoMgRaMpAamuDezt");
     private iv = CryptoJS.enc.Utf8.parse("A0f08A80E#A08s8f");
 

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20171113184701_PaymentTerm")]
+    partial class PaymentTerm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -370,7 +371,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ParticularSteps")
                         .HasMaxLength(500);
 
-                    b.Property<int>("PaymentTermId");
+                    b.Property<int?>("PaymentTermId");
 
                     b.Property<string>("Project")
                         .HasMaxLength(100);
@@ -873,10 +874,9 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("ImputationNumber3Id")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.PaymentTerm", "PaymentTerm")
+                    b.HasOne("Sofco.Model.Utils.PaymentTerm")
                         .WithMany("Solfacs")
-                        .HasForeignKey("PaymentTermId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PaymentTermId");
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")

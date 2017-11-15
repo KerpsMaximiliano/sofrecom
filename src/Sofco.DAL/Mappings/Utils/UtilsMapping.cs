@@ -38,6 +38,10 @@ namespace Sofco.DAL.Mappings.Utils
             // Primary Key
             builder.Entity<Product>().HasKey(_ => _.Id);
             builder.Entity<Product>().Property(_ => _.Text).HasMaxLength(30);
+
+            // Primary Key
+            builder.Entity<PaymentTerm>().HasKey(_ => _.Id);
+            builder.Entity<PaymentTerm>().Property(_ => _.Text).HasMaxLength(30);
         }
     }
 }

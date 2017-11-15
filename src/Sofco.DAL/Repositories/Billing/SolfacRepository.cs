@@ -53,6 +53,7 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.ImputationNumber)
+                .Include(x => x.PaymentTerm)
                 .Include(x => x.Hitos).ThenInclude(x => x.Details)
                 .SingleOrDefault(x => x.Id == id);
         }

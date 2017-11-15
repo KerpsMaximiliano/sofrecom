@@ -9,5 +9,6 @@ namespace Sofco.Core.Services.Common
         IList<ImputationNumber> GetImputationNumbers();
         IList<DocumentType> GetDocumentTypes();
         IList<Currency> GetCurrencies();
+        IList<PaymentTerm> GetPaymentTerms();
     }
 }

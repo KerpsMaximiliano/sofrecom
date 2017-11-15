@@ -8,10 +8,7 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { AuthenticationService } from "app/services/common/authentication.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { UserService } from "app/services/admin/user.service";
-
-declare var require: any;
-
-var CryptoJS = require("crypto-js");
+import { CryptographyService } from 'app/services/common/cryptography.service';
 
 @Component({
   selector: 'login',
@@ -33,6 +30,7 @@ export class LoginComponent implements OnInit {
         private menuService: MenuService,
         private messageService: MessageService,
         private userService: UserService,
+        private cryptoService: CryptographyService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() { 

@@ -81,7 +81,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 UpdateHitos(solfac.Hitos, response);
             }
-            catch
+            catch (Exception e)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
