@@ -4,12 +4,12 @@ using Sofco.Common.Domains;
 
 namespace Sofco.Service.Http.Interfaces
 {
-    public interface IBaseHttpClient<T> where T : class
+    public interface IBaseHttpClient
     {
-        Result<T> Post(string urlPath, HttpContent content);
+        Result<T> Post<T>(string urlPath, HttpContent content);
 
-        Result<T> Get(string urlPath, string token = null);
+        Result<T> Get<T>(string urlPath, string token = null);
 
-        Result<List<T>> GetMany(string urlPath);
+        Result<List<T>> GetMany<T>(string urlPath);
     }
 }

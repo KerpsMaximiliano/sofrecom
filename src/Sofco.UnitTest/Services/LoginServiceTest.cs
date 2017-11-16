@@ -16,7 +16,7 @@ namespace Sofco.UnitTest.Services
     {
         const string LoginResult = "loginResult";
 
-        private Mock<IBaseHttpClient<string>> clientMock;
+        private Mock<IBaseHttpClient> clientMock;
 
         private Mock<IOptions<AzureAdConfig>> azureAdOptionsMock;
 
@@ -27,10 +27,10 @@ namespace Sofco.UnitTest.Services
         [SetUp]
         public void Setup()
         {
-            clientMock = new Mock<IBaseHttpClient<string>>();
+            clientMock = new Mock<IBaseHttpClient>();
             userRepository = new Mock<IUserRepository>();
 
-            clientMock.Setup(s => s.Post(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()))
+            clientMock.Setup(s => s.Post<string>(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()))
                 .Returns(new Result<string>(LoginResult));
 
             userRepository.Setup(x => x.IsActive(It.IsAny<string>())).Returns(true);
@@ -63,7 +63,7 @@ namespace Sofco.UnitTest.Services
             Assert.NotNull(actualLogin);
             Assert.AreEqual(LoginResult, actualLogin.Data);
 
-            clientMock.Verify(s => s.Post(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()), Times.Once);
+            clientMock.Verify(s => s.Post<string>(It.IsAny<string>(), It.IsAny<FormUrlEncodedContent>()), Times.Once);
         }
     }
 }
