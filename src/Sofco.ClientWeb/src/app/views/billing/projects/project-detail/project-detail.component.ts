@@ -220,11 +220,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canSplit(){
-        var hitos = this.getHitosSelected();
-
-        if(hitos.length == 1){
-            return true;
-        } 
+        if(this.menuService.hasFunctionality('SOLFA', 'SPLIH')){
+            var hitos = this.getHitosSelected();
+            
+            if(hitos.length == 1){
+                return true;
+            } 
+        }
 
         return false;
     }
@@ -235,6 +237,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.projectId = this.projectId;
         hito.managerId = this.project.managerId;
         hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
 
         this.splitHito.openModal(hito);
     }

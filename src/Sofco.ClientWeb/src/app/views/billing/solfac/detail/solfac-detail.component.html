@@ -50,7 +50,7 @@
                 <div class="panel-body">
                     <!-- Datos CRM -->
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd><i class="fa fa-building"></i> {{model.businessName}}</dd>
                                 <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.clientName}}</dd>
@@ -61,7 +61,7 @@
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
                             </dl>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate }}</span></dd>
                                 <dt>{{'billing.solfac.contractNumber' | translate }}: </dt><dd>{{model.contractNumber}}</dd>
@@ -77,7 +77,7 @@
                     </div>
         
                     <div class="row">   
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.documentType' | translate }}: </dt><dd>{{model.documentType}}</dd>
                                 <dt>{{'billing.solfac.currency' | translate }}: </dt><dd>{{model.currencyName}}</dd>
@@ -85,7 +85,7 @@
                                 <dt>{{'billing.solfac.timeLimit' | translate }}: </dt><dd>{{ model.paymentTermName }}</dd>
                             </dl>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.milestone.withTax' | translate }}</dt>
                                 <dd>
@@ -116,10 +116,10 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let detail of model.details">
-                                            <td>{{detail.description}}</td>
-                                            <td width="45">{{detail.quantity | number: '1.2-2'}}</td>
-                                            <td width="135">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
-                                            <td width="135">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                            <td><pre>{{detail.description}}</pre></td>
+                                            <td class="column-quantity text-ellipsis" title="{{detail.quantity | number: '1.2-2'}}">{{detail.quantity | number: '1.2-2'}}</td>
+                                            <td class="column-price text-ellipsis" title="{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
+                                            <td class="column-price text-ellipsis" title="{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

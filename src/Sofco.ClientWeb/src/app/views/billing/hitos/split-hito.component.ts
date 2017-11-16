@@ -66,8 +66,7 @@ export class SplitHitoComponent implements OnDestroy  {
             opportunityId: this.hitoSelected.opportunityId,
             managerId: this.hitoSelected.managerId,
             externalHitoId: this.hitoSelected.id,
-            //moneyId: this.hitoSelected.moneyId
-            moneyId: 'f7326b1d-1432-e711-80f3-70106fa701c1'
+            moneyId: this.hitoSelected.currencyId
         }
 
         this.hitos.push(newHito);

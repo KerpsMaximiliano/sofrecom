@@ -34,6 +34,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public string Currency { get; set; }
 
+        public string CurrencyId { get; set; }
+
         public bool Remito { get; set; }
 
         public string Manager { get; set; }

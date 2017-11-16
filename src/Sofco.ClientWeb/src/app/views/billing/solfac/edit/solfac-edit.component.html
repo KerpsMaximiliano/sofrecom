@@ -184,14 +184,14 @@
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-4" *ngFor="let hito of model.hitos">
+                        <div class="col-sm-3" *ngFor="let hito of model.hitos">
                             <div class="widget navy-bg">
                                 <div class="row">
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-3">
                                         <i class="fa fa-bookmark fa-3x"></i>
                                     </div>
-                                    <div class="col-xs-8 text-right">
-                                        <h3> {{ hito.description }} </h3>
+                                    <div class="col-xs-9 text-right">
+                                        <h3 class="text-ellipsis"> {{ hito.description }} </h3>
                                         <span class="font-bold">{{ currencySymbol }} {{ hito.total | number: '1.2-2' }}</span>
                                     </div>
                                 </div>
@@ -202,39 +202,41 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <button class="btn btn-success" type="button" (click)="addDetail()">Agregar <i class="fa fa-plus"></i></button>
+                                <button class="btn btn-success" type="button" (click)="addDetail()">{{'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
                             </div>
 
                             <div class="table-responsive" *ngIf="model.details && model.details.length > 0">
                                 <table class="table invoice-table">
                                     <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th class="text-center">{{'billing.solfac.hito' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.detail' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
-                                        <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-center">{{'billing.solfac.hito' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.detail' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                            <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let detail of model.details; let i = index">
-                                            <td class="text-center" width="45">
+                                            <td class="text-center" style="width: 45px; min-width: 45px">
                                                 <button class="btn btn-danger btn-xs" (click)="openDeleteDetail(detail, i)" type="button"><i class="fa fa-trash fa-2x"></i></button>
                                             </td>
-                                            <td width="145">
+                                            <td style="width: 145px; min-width: 145px">
                                                 <select class="form-control input-sm" [(ngModel)]="detail.externalHitoId">
                                                     <option *ngFor="let hito of model.hitos" [value]="hito?.externalHitoId">{{hito?.description}}</option>
                                                 </select>
                                             </td>
-                                            <td><input type="text" class="form-control input-sm" [(ngModel)]="detail.description"></td>
-                                            <td width="45">
+                                            <td>
+                                                <textarea rows="4" class="form-control" [(ngModel)]="detail.description"></textarea>
+                                            </td>
+                                            <td style="width: 45px; min-width: 45px">
                                                 <input type="text" class="form-control input-sm" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
                                             </td>
-                                            <td width="135">
+                                            <td style="width: 135px; min-width: 135px">
                                                 <input type="text" class="form-control input-sm" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
                                             </td>
-                                            <td width="135" class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                            <td style="width: 135px; min-width: 135px" class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
