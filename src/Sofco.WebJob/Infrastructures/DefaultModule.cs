@@ -5,17 +5,18 @@ using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
-using Sofco.WebJob.Jobs.Interfaces;
 using Sofco.Core.Mail;
 using Sofco.Framework.Mail;
 using Sofco.Service.Http;
 using Sofco.Service.Http.Interfaces;
+using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Infrastructures
 {
     public class DefaultModule : Module
     {
         private const string ServiceAssemblyEndName = "Service";
+        private const string ClientAssemblyEndName = "Client";
 
         public IConfigurationRoot Configuration { set; get; }
 
@@ -38,10 +39,14 @@ namespace Sofco.WebJob.Infrastructures
                 .As<IMailSender>()
                 .SingleInstance();
 
-            builder.RegisterGeneric(typeof(BaseHttpClient<>))
-                .As(typeof(IBaseHttpClient<>))
-                .WithParameter(new TypedParameter(typeof(HttpClient), new HttpClient()))
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(ClientAssemblyEndName))
+                .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterType<HttpClient>()
+                .SingleInstance();
+
             RegisterLogger(builder);
         }
 

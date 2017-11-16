@@ -7,7 +7,7 @@ using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Http
 {
-    public class BaseHttpClient<T> : IBaseHttpClient<T> where T : class
+    public class BaseHttpClient : IBaseHttpClient
     {
         private const string ErrorDelimeter = " - ";
 
@@ -29,18 +29,21 @@ namespace Sofco.Service.Http
             return request;
         }
 
-        private Result<TResult> GetResult<TResult>(HttpRequestMessage requestMessage) where TResult : class
+        private Result<TResult> GetResult<TResult>(HttpRequestMessage requestMessage)
         {
             var response = httpClient.SendAsync(requestMessage).Result;
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(
-                    requestMessage.RequestUri
+                var result = new Result<TResult>();
+
+                result.AddError(requestMessage.RequestUri
                     + ErrorDelimeter +
                     response.ReasonPhrase 
                     + ErrorDelimeter + 
                     response.Content.ReadAsStringAsync().Result);
+
+                return result;
             }
 
             var resultData = GetResponseResult<TResult>(response);
@@ -62,7 +65,7 @@ namespace Sofco.Service.Http
                 : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
         }
 
-        public Result<T> Post(string urlPath, HttpContent content)
+        public Result<T> Post<T>(string urlPath, HttpContent content)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Post);
 
@@ -71,7 +74,7 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
-        public Result<T> Get(string urlPath, string token = null)
+        public Result<T> Get<T>(string urlPath, string token = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
 
@@ -83,7 +86,7 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
-        public Result<List<T>> GetMany(string urlPath)
+        public Result<List<T>> GetMany<T>(string urlPath)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
 

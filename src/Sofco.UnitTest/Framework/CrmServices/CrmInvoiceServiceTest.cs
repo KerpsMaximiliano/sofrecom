@@ -15,13 +15,13 @@ namespace Sofco.UnitTest.Framework.CrmServices
     {
         private CrmInvoiceService sut;
 
-        private Mock<IBaseHttpClient<CrmHito>> clientMock;
+        private Mock<ICrmHttpClient> clientMock;
         private Mock<IOptions<CrmConfig>> crmOptionsMock;
 
         [SetUp]
         public void Setup()
         {
-            clientMock = new Mock<IBaseHttpClient<CrmHito>>();
+            clientMock = new Mock<ICrmHttpClient>();
 
             crmOptionsMock = new Mock<IOptions<CrmConfig>>();
 
@@ -33,13 +33,13 @@ namespace Sofco.UnitTest.Framework.CrmServices
         [Test]
         public void ShouldPassGetHitosToExpire()
         {
-            clientMock.Setup(s => s.GetMany(It.IsAny<string>())).Returns(new Result<List<CrmHito>>());
+            clientMock.Setup(s => s.GetMany<CrmHito>(It.IsAny<string>())).Returns(new Result<List<CrmHito>>());
 
             var actual = sut.GetHitosToExpire(5);
 
             Assert.False(actual.HasErrors);
 
-            clientMock.Verify(s => s.GetMany(It.IsAny<string>()), Times.Once);
+            clientMock.Verify(s => s.GetMany<CrmHito>(It.IsAny<string>()), Times.Once);
         }
     }
 }

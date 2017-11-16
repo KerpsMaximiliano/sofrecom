@@ -18,15 +18,16 @@ namespace Sofco.Service.Implementations
     public class LoginService : ILoginService
     {
         private readonly AzureAdConfig azureAdOptions;
+
         private readonly IUserRepository userRepository;
 
-        private readonly IBaseHttpClient<string> client;
+        private readonly IBaseHttpClient client;
 
-        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient<string> client, IUserRepository userRepo)
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUserRepository userRepository)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
-            this.userRepository = userRepo;
+            this.userRepository = userRepository;
         }
 
         public Response<string> Login(UserLogin userLogin)
@@ -46,7 +47,7 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("password", password)
              };
 
-            var result = client.Post(uri, new FormUrlEncodedContent(pairs));
+            var result = client.Post<string>(uri, new FormUrlEncodedContent(pairs));
 
             if (result.HasErrors)
             {
@@ -78,7 +79,7 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("refresh_token", refreshToken)
              };
 
-            return client.Post(uri, new FormUrlEncodedContent(pairs));
+            return client.Post<string>(uri, new FormUrlEncodedContent(pairs));
         }
 
 
@@ -96,7 +97,7 @@ namespace Sofco.Service.Implementations
 
             var graphUri = $"{azureAdOptions.GraphUsersUrl}?$filter=startswith(surname, '{surname}')";
 
-            var result = client.Get(graphUri, tokenResponse.Data.access_token);
+            var result = client.Get<string>(graphUri, tokenResponse.Data.access_token);
 
             if (result.HasErrors)
             {
@@ -131,17 +132,17 @@ namespace Sofco.Service.Implementations
             }
 
             var mail = email;
-            var username = string.Empty;
 
             if (email.Contains("@sofrecom.com.ar"))
             {
-                username = email.Split('@')[0];
+                var username = email.Split('@')[0];
+
                 mail = $"{username}@tebrasofre.onmicrosoft.com";
             }
 
             var graphUri = azureAdOptions.GraphUsersUrl + "/" + mail;
 
-            var result = client.Get(graphUri, tokenResponse.Data.access_token);
+            var result = client.Get<string>(graphUri, tokenResponse.Data.access_token);
 
             if (result.HasErrors)
             {
@@ -168,7 +169,7 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("grant_type", azureAdOptions.ClientCredentials)
              };
 
-            var result = client.Post(uri, new FormUrlEncodedContent(pairs));
+            var result = client.Post<string>(uri, new FormUrlEncodedContent(pairs));
             var response = new Response<AzureAdLoginResponse>();
 
             if (result.HasErrors)
