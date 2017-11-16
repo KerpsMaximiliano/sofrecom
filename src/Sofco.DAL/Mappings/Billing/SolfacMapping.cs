@@ -46,7 +46,7 @@ namespace Sofco.DAL.Mappings.Billing
         public static void MapHitoDetails(this ModelBuilder builder)
         {
             builder.Entity<HitoDetail>().HasKey(_ => _.Id);
-            builder.Entity<HitoDetail>().Property(_ => _.Description).HasMaxLength(100);
+            builder.Entity<HitoDetail>().Property(_ => _.Description).HasMaxLength(3000);
 
             builder.Entity<HitoDetail>().Ignore(_ => _.ExternalHitoId);
 
