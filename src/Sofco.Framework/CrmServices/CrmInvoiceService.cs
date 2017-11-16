@@ -10,11 +10,11 @@ namespace Sofco.Framework.CrmServices
 {
     public class CrmInvoiceService : ICrmInvoiceService
     {
-        private readonly IBaseHttpClient<CrmHito> client;
+        private readonly ICrmHttpClient client;
 
         private readonly CrmConfig crmConfig;
 
-        public CrmInvoiceService(IBaseHttpClient<CrmHito> client, IOptions<CrmConfig> crmOptions)
+        public CrmInvoiceService(ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
         {
             this.client = client;
             crmConfig = crmOptions.Value;
@@ -24,7 +24,7 @@ namespace Sofco.Framework.CrmServices
         {
             var url = $"{crmConfig.Url}/api/InvoiceMilestone/GetMilestoneToExpire?daysToExpire={daysToExpire}&status=1,717620003";
 
-            return client.GetMany(url);
+            return client.GetMany<CrmHito>(url);
         }
     }
 }

@@ -10,8 +10,6 @@ using Sofco.Core.StatusHandlers;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
-using Sofco.Service.Http;
-using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.WebApi.Infrastructures
 {
@@ -20,6 +18,7 @@ namespace Sofco.WebApi.Infrastructures
         private const string ManagerAssemblyEndName = "Manager";
         private const string RepositoryAssemblyEndName = "Repository";
         private const string ServiceAssemblyEndName = "Service";
+        private const string ClientAssemblyEndName = "Client";
 
         public IConfigurationRoot Configuration { get; set; }
 
@@ -46,9 +45,12 @@ namespace Sofco.WebApi.Infrastructures
                 .As<IMailSender>()
                 .SingleInstance();
 
-            builder.RegisterGeneric(typeof(BaseHttpClient<>))
-                .As(typeof(IBaseHttpClient<>))
-                .WithParameter(new TypedParameter(typeof(HttpClient), new HttpClient()))
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(ClientAssemblyEndName))
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            builder.RegisterType<HttpClient>()
                 .SingleInstance();
 
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
