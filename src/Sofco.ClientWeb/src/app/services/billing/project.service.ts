@@ -35,4 +35,8 @@ export class ProjectService {
   getInvoices(projectId){
       return this.http.get(`${this.baseUrl}/invoices/project/${projectId}`).map((res:Response) => res.json());
   }
+
+  splitHito(hitos){
+    return this.http.post(`${this.baseUrl}/projects/hitos/split`, hitos).map((res:Response) => res.json());
+  }
 }

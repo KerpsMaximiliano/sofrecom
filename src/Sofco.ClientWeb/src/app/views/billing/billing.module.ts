@@ -45,6 +45,7 @@ import { UpdateSolfacBillComponent } from 'app/views/billing/solfac/workflow/upd
 import { UpdateSolfacCashComponent } from 'app/views/billing/solfac/workflow/update-cash/update-solfac-cash.component';
 import { WidgetModule } from 'app/components/widget/widget.module';
 import { Select2Module } from 'app/components/select2/select2';
+import { SplitHitoComponent } from 'app/views/billing/hitos/split-hito.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -52,7 +53,7 @@ import { Select2Module } from 'app/components/select2/select2';
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent],
+                 UpdateSolfacCashComponent, SplitHitoComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module],

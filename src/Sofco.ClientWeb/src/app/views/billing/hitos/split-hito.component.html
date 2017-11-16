@@ -1,0 +1,35 @@
+<ng2-modal [config]="spliHitoModalConfig" #spliHitoModal (accept)="save()">
+    
+    <div class="row margin-bottom-m">
+        <div class="col-sm-12">
+            <label class="control-label">{{ 'billing.project.detail.milestone.cantToSplit' | translate }}</label>
+            <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="cant" min="2" max="5">
+                <span class="input-group-btn"> 
+                    <button type="button" class="btn btn-primary" (click)="split()">{{ 'billing.project.detail.milestone.split' | translate }}</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-m" *ngIf="hitos.length > 0">
+        <div class="col-sm-8">
+            <label class="control-label">{{ 'billing.project.detail.milestone.name' | translate }}</label>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
+        </div>
+    </div>
+
+    <div class="row" *ngFor="let hito of hitos">
+        <div class="col-sm-8">
+            <label class="control-label">{{ hito.name }}</label>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <input type="number" class="form-control" [(ngModel)]="hito.ammount">
+            </div>
+        </div>
+    </div>
+
+</ng2-modal>

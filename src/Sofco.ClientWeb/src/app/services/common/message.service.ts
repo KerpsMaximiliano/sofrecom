@@ -22,15 +22,27 @@ export class MessageService {
         })
     }
 
-    showError(message: string){
+    showError(message){
         this.toastrService.error(this.i18nService.translateByKey(message));
     }
 
-    showWarning(message: string){
+    showWarning(message){
         this.toastrService.warning(this.i18nService.translateByKey(message));
     }
 
-    succes(message: string){
+    succes(message){
         this.toastrService.success(this.i18nService.translateByKey(message));
+    }
+
+    showErrorByFolder(folder: any, code: string) {
+        this.toastrService.error(this.i18nService.translate(folder, code));
+    }
+
+    showWarningByFolder(folder, code){
+        this.toastrService.warning(this.i18nService.translate(folder, code));
+    }
+
+    showSuccessByFolder(folder, code){
+        this.toastrService.success(this.i18nService.translate(folder, code));
     }
 }

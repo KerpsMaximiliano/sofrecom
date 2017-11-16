@@ -139,13 +139,17 @@
                 },
                 "milestone": {
                     "title": "Hitos",
+                    "name": "Nombre",
                     "description": "Descripción",
                     "amount": "Monto",
                     "ammountBilled": "M. Facturado",
                     "startDate": "Fecha Creación",
                     "month": "Mes",
                     "status": "Estado",
-                    "new": "Generar Solicitud"
+                    "new": "Generar Solicitud",
+                    "split": "Dividir hito",
+                    "cantToSplit": "Cantidad a dividir",
+                    "splitTitle": "División de hito"
                 },
                 "requests": {
                     "title": "Solicitudes",

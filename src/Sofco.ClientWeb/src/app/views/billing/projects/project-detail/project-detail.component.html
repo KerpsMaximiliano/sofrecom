@@ -148,8 +148,9 @@
                                         </tbody>
                                     </table>
 
-                                    <div class="button-group" *ngIf="generateSolfacVisible() && canCreateSolfac()">
-                                        <button (click)="generateSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
+                                    <div class="button-group">
+                                        <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="generateSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button *ngIf="canSplit()" (click)="split()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.split' | translate }}  <i class="fa fa-clone"></i></button> 
                                     </div>
                                 </div>
 
@@ -190,3 +191,5 @@
         </div>
     </div>
 </div>
+
+<split-hito #splitHito (hitosReload)="getHitos()"></split-hito>

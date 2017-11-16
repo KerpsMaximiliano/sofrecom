@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
@@ -169,6 +170,17 @@ namespace Sofco.WebApi.Controllers.Billing
                     return BadRequest();
                 }
             }
+        }
+
+        [HttpPost]
+        [Route("hitos/split")]
+        public async Task<IActionResult> SplitHitos([FromBody] IList<HitoSplittedParams> hitos)
+        {
+            var response = await solfacService.SplitHito(hitos);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
         }
     }
 }

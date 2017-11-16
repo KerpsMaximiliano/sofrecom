@@ -14,3 +14,23 @@ table.dataTable tbody th,
 table.dataTable tbody td {
     white-space: nowrap;
 }
+
+pre {
+    background-color: transparent;
+}
+
+.column-quantity {
+    width: 45px;
+    max-width: 45px;
+}
+
+.column-price {
+    width: 135px;
+    max-width: 135px;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
