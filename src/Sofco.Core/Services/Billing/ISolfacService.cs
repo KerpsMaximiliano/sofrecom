@@ -31,5 +31,7 @@ namespace Sofco.Core.Services.Billing
         Response<Solfac> Validate(Solfac solfac);
         Response DeleteDetail(int id);
         Task<Response> SplitHito(IList<HitoSplittedParams> hitos);
+
+        Response<Solfac> Post(Solfac solfac, IList<int> invoicesId);
     }
 }

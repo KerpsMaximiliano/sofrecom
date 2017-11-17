@@ -43,5 +43,6 @@
     "imputationNumber3Required": "The imputation number is required",
     "currencyRequired": "The currency is required",
     "detailNotFound": "Detail not found",
-    "detailDeleted": "Detail deleted successfully"
+    "detailDeleted": "Detail deleted successfully",
+    "creditNoteTotalExceeded": "The total amount cannot exceeded the milestone."
 }

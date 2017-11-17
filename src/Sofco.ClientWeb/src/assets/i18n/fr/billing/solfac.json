@@ -41,5 +41,6 @@
     "documentTypeRequired": "El tipo de documento es requerido",
     "userApplicantIdRequired": "El solicitante es requerido",
     "imputationNumber3Required": "El número de imputacion es requerido",
-    "currencyRequired": "La moneda es requerida"
+    "currencyRequired": "La moneda es requerida",
+    "creditNoteTotalExceeded": "La suma total no puede superar el importe del hito."
 }

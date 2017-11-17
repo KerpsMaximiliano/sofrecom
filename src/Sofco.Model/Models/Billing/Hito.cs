@@ -16,5 +16,11 @@ namespace Sofco.Model.Models.Billing
         public string ExternalHitoId { get; set; }
 
         public List<HitoDetail> Details { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public int OpportunityId { get; set; }
+
+        public int ManagerId { get; set; }
     }
 }

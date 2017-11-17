@@ -249,7 +249,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
         let hitos = this.getHitosSelected();
 
-        let isValid = hitos.length > 0;
+        let isValid = hitos.length == 1;
 
         hitos.forEach(item => {
             if(item.status != this.billedHitoStatus){

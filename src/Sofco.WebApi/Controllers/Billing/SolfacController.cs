@@ -137,16 +137,12 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.Add(domain, model.InvoicesId);
+            var result = solfacService.Post(domain, model.InvoicesId);
 
-            if (response.HasErrors())
-                return BadRequest(response);
+            if (result.HasErrors())
+                return BadRequest(result);
 
-            var solfacChangeStatusResponse = new SolfacChangeStatusResponse { HitoStatus = HitoStatus.Pending, Hitos = response.Data.Hitos.Select(x => x.ExternalHitoId).ToList() };
-
-            ChangeHitoStatus(solfacChangeStatusResponse);
-
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpPut]
@@ -236,29 +232,6 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(response);
 
             return Ok(response);
-        }
-
-        private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-                HttpResponseMessage response;
-
-                foreach (var item in data.Hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int)data.HitoStatus}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
         }
 
         [HttpDelete]

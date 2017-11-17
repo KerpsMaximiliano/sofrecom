@@ -156,5 +156,36 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.TimeLimitLessThan0, MessageType.Error));
             }
         }
+
+        public static Response<Solfac> ValidatePost(Solfac solfac, ISolfacRepository solfacRepository)
+        {
+            var response = new Response<Solfac>();
+
+            if (IsCreditNote(solfac))
+            {
+                ValidateCreditNote(solfac, solfacRepository, response);
+            }
+
+            return response;
+        }
+
+        private static bool IsCreditNote(Solfac solfac)
+        {
+            return new[] { SolfacDocumentType.CreditNoteA, SolfacDocumentType.CreditNoteB }.Contains(solfac.DocumentTypeId);
+        }
+
+        private static void ValidateCreditNote(Solfac solfac, ISolfacRepository solfacRepository, Response response)
+        {
+            var hito = solfac.Hitos.First().SolfacId;
+
+            var totalLimit = solfacRepository.GetById(hito).TotalAmount;
+
+            var hitosTotalImport = solfac.Hitos.Sum(s => s.Details.Sum(d => d.Total));
+
+            if (hitosTotalImport > totalLimit)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CreditNoteTotalExceededError, MessageType.Error));
+            }
+        }
     }
 }

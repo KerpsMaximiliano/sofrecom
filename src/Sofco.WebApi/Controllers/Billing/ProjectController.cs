@@ -141,7 +141,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 return Ok(projectService.GetHitosByProject(projectId));
             }
-            catch
+            catch(Exception ex)
             {
                 return BadRequest();
             }
