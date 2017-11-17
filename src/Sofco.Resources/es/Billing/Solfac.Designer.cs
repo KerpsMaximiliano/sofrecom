@@ -149,12 +149,13 @@ namespace Sofco.Resources.es.Billing {
             }
         }
         
-        /// <summary>
-        ///    Looks up a localized string similar to billing/solfac.creditNoteTotalExceeded.
-        /// </summary>
         public static string CreditNoteTotalExceededError {
+            get { return ResourceManager.GetString("CreditNoteTotalExceededError", resourceCulture); }
+        }
+
+        public static string ContractNumberEmpty {
             get {
-                return ResourceManager.GetString("CreditNoteTotalExceededError", resourceCulture);
+                return ResourceManager.GetString("ContractNumberEmpty", resourceCulture);
             }
         }
         
@@ -227,6 +228,15 @@ namespace Sofco.Resources.es.Billing {
         public static string HitoUnitPriceRequired {
             get {
                 return ResourceManager.GetString("HitoUnitPriceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.imputationNumberEmpty.
+        /// </summary>
+        public static string ImputationNumberEmpty {
+            get {
+                return ResourceManager.GetString("ImputationNumberEmpty", resourceCulture);
             }
         }
         

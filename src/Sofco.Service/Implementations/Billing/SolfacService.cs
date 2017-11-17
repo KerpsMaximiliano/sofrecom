@@ -228,7 +228,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.Deleted, MessageType.Success));
             }
-            catch
+            catch(Exception ex)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
@@ -357,6 +357,8 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
+            SolfacValidationHelper.ValidateContractNumber(solfac, response);
+            SolfacValidationHelper.ValidateImputationNumber(solfac, response);
 
             return response;
         }

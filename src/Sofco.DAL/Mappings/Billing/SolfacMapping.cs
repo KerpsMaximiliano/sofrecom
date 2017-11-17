@@ -25,7 +25,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().HasOne(x => x.ImputationNumber).WithMany(x => x.Solfacs).HasForeignKey(x => x.ImputationNumber3Id);
             builder.Entity<Solfac>().HasOne(x => x.PaymentTerm).WithMany(x => x.Solfacs).HasForeignKey(x => x.PaymentTermId);
 
-            builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Histories).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Attachments).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Invoices).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
@@ -40,7 +40,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Hito>().Property(_ => _.Currency).HasMaxLength(10);
 
             builder.Entity<Hito>().HasOne(x => x.Solfac).WithMany(x => x.Hitos).HasForeignKey(x => x.SolfacId);
-            builder.Entity<Hito>().HasMany(x => x.Details).WithOne(x => x.Hito).HasForeignKey(x => x.HitoId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Hito>().HasMany(x => x.Details).WithOne(x => x.Hito).HasForeignKey(x => x.HitoId);
         }
 
         public static void MapHitoDetails(this ModelBuilder builder)

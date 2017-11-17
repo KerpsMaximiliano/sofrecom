@@ -44,5 +44,7 @@
     "currencyRequired": "The currency is required",
     "detailNotFound": "Detail not found",
     "detailDeleted": "Detail deleted successfully",
-    "creditNoteTotalExceeded": "The total amount cannot exceeded the milestone."
+    "creditNoteTotalExceeded": "The total amount cannot exceeded the milestone.",
+    "imputationNumberEmpty": "Imputation number is required",
+    "contractNumberEmpty": "Contract number is required"
 }

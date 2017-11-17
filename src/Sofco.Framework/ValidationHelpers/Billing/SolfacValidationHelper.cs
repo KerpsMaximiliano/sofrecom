@@ -9,7 +9,7 @@ using Sofco.Model.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {
-    public static class SolfacValidationHelper
+    public class SolfacValidationHelper
     {
         public static void ValidateCasheDate(SolfacStatusParams parameters, Response response, Solfac solfac)
         {
@@ -154,6 +154,22 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (solfac.PaymentTermId <= 0)
             {
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.TimeLimitLessThan0, MessageType.Error));
+            }
+        }
+
+        public static void ValidateImputationNumber(Solfac solfac, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(solfac.ImputationNumber1))
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ImputationNumberEmpty, MessageType.Error));
+            }
+        }
+
+        public static void ValidateContractNumber(Solfac solfac, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(solfac.ContractNumber))
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ContractNumberEmpty, MessageType.Error));
             }
         }
 

@@ -183,16 +183,18 @@
             <!-- Detalle de hitos -->
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body">
+                    <h3>{{'billing.project.detail.milestone.title' | translate }}</h3>
+
                     <div class="row">
-                        <div class="col-sm-3" *ngFor="let hito of model.hitos">
+                        <div class="col-sm-4" *ngFor="let hito of model.hitos">
                             <div class="widget navy-bg">
                                 <div class="row">
                                     <div class="col-xs-3">
                                         <i class="fa fa-bookmark fa-3x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <h3 class="text-ellipsis"> {{ hito.description }} </h3>
-                                        <span class="font-bold">{{ currencySymbol }} {{ hito.total | number: '1.2-2' }}</span>
+                                        <h3 class="text-ellipsis" title="{{ hito.description }}"> {{ hito.description }} </h3>
+                                        <span class="font-bold hito-price">{{ currencySymbol }} {{ hito.total | number: '1.2-2' }}</span>
                                     </div>
                                 </div>
                             </div>

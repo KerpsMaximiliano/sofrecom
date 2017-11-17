@@ -237,4 +237,10 @@
   <data name="CreditNoteTotalExceededError" xml:space="preserve">
     <value>billing/solfac.creditNoteTotalExceeded</value>
   </data>
+  <data name="ContractNumberEmpty" xml:space="preserve">
+    <value>billing/solfac.contractNumberEmpty</value>
+  </data>
+  <data name="ImputationNumberEmpty" xml:space="preserve">
+    <value>billing/solfac.imputationNumberEmpty</value>
+  </data>
 </root>
