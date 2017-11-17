@@ -26,12 +26,14 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly ISolfacService solfacService;
         private readonly CrmConfig crmConfig;
         private readonly IUserService userService;
+        private readonly IProjectService projectService;
 
-        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService)
+        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService, IProjectService projectService)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;
             this.userService = userService;
+            this.projectService = projectService;
         }
 
         [HttpGet("{serviceId}/options")]
@@ -133,42 +135,15 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpGet]
         [Route("{projectId}/hitos")]
-        public async Task<IActionResult> GetHitos(string projectId)
+        public IActionResult GetHitos(string projectId)
         {
-            var hitos = solfacService.GetHitosByProject(projectId);
-
-            using (var client = new HttpClient())
+            try
             {
-                try
-                {
-                    client.BaseAddress = new Uri(crmConfig.Url);
-                    var response = await client.GetAsync($"/api/InvoiceMilestone?idProject={projectId}");
-                    response.EnsureSuccessStatusCode();
-
-                    var stringResult = await response.Content.ReadAsStringAsync();
-                    var hitosCRM = JsonConvert.DeserializeObject<IList<HitoCrm>>(stringResult);
-
-                    foreach (var hitoCrm in hitosCRM)
-                    {
-                        var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
-
-                        if ((!hitoCrm.Status.Equals("Pendiente") && !hitoCrm.Status.Equals("Proyectado")) || existHito != null)
-                        {
-                            hitoCrm.Billed = true;
-                        }
-
-                        if (hitoCrm.Status.Equals("A ser facturado"))
-                        {
-                            hitoCrm.Status = HitoStatus.ToBeBilled.ToString();
-                        }
-                    }
-
-                    return Ok(hitosCRM);
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+                return Ok(projectService.GetHitosByProject(projectId));
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
 

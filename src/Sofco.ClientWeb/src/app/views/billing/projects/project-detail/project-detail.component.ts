@@ -6,6 +6,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-project-detail',
@@ -33,6 +34,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     incomesBilled: number = 0;
     incomesCashed: number = 0;
     incomesPending: number = 0;
+
+    billedHitoStatus:string = "Facturado";
+    pendingHitoStatus:string = "Pendiente";
+    projectedHitoStatus:string = "Proyectado";
 
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
@@ -149,11 +154,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     generateSolfacVisible(){
         var hitos = this.getHitosSelected();
 
-        if(hitos.length > 0){
-            return true;
-        } 
+        let isValid = hitos.length > 0;
+        
+        hitos.forEach(item => {
+            if(item.billed){
+                isValid = false;
+            }
+        });
 
-        return false;
+        return isValid;
     }
 
     getHitosSelected(){
@@ -220,15 +229,35 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canSplit(){
-        if(this.menuService.hasFunctionality('SOLFA', 'SPLIH')){
-            var hitos = this.getHitosSelected();
-            
-            if(hitos.length == 1){
-                return true;
-            } 
-        }
-
+        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) 
         return false;
+
+        let hitos = this.getHitosSelected();
+        let isValid = hitos.length == 1;
+            
+        hitos.forEach(item => {
+            if(item.billed){
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    canCreateCreditNote():boolean {
+        if(!this.canCreateSolfac()) return false;
+
+        let hitos = this.getHitosSelected();
+
+        let isValid = hitos.length > 0;
+
+        hitos.forEach(item => {
+            if(item.status != this.billedHitoStatus){
+                isValid = false;
+            }
+        });
+
+        return isValid;
     }
 
     split(){
@@ -240,5 +269,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.currencyId = this.project.currencyId;
 
         this.splitHito.openModal(hito);
+    }
+
+    hitosShowCheckBox(hito:any):boolean {
+        return hito.status != 'ToBeBilled' && hito.status != "Pagado";
+    }
+
+    createCreditNote() {
+        this.generateSolfac();
     }
 }
