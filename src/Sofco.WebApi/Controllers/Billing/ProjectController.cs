@@ -84,7 +84,7 @@ namespace Sofco.WebApi.Controllers.Billing
             }
             catch
             {
-                return BadRequest();
+                return BadRequest(new List<ProjectCrm>());
             }
         }
 

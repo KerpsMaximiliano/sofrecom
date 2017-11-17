@@ -21,8 +21,10 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.UserGroup
                 .Include(x => x.User)
-                .Where(x => x.User.UserName.Equals(userName))
+                .Include(x => x.Group)
+                .Where(x => x.User.UserName.Equals(userName) && x.Group.Active)
                 .Select(x => x.GroupId)
+                .Distinct()
                 .ToArray();
         }
     }

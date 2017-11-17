@@ -7,6 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Model.Relationships;
 using Sofco.Core.Services.Admin;
+using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Service.Implementations.Admin
@@ -98,6 +99,10 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
+            RoleValidationHelper.ValidateIfDescriptionExist(response, _roleRepository, role);
+
+            if (response.HasErrors()) return response;
+
             try
             {
                 role.StartDate = DateTime.Now;
@@ -119,6 +124,10 @@ namespace Sofco.Service.Implementations.Admin
         public Response<Role> Update(Role role)
         {
             var response = new Response<Role>();
+
+            RoleValidationHelper.ValidateIfDescriptionExist(response, _roleRepository, role);
+
+            if (response.HasErrors()) return response;
 
             try
             {

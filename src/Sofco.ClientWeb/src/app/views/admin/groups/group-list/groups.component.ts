@@ -41,7 +41,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     "fa-eye",     //other1Icon
     "fa-check",      //other2Icon
     "fa-cogs",        //other3Icon
-    { title: this.i18nService.translateByKey("ADMIN.GROUPS.TITLE"), columns: [0, 2, 3]},
+    { title: this.i18nService.translateByKey("ADMIN.GROUPS.TITLE"), columns: [0, 1, 3, 4]},
     0,     //orderByColumn
     "asc"
     ); 

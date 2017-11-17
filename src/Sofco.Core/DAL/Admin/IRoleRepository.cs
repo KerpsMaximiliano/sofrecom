@@ -11,5 +11,6 @@ namespace Sofco.Core.DAL.Admin
         IList<Role> GetRolesByGroup(IEnumerable<int> groupIds);
         Role GetDetail(int id);
         IList<Role> GetAllActivesReadOnly();
+        bool ExistByDescription(string roleDescription, int roleId);
     }
 }

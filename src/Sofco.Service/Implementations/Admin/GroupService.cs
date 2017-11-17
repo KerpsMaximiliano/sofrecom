@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Services.Admin;
+using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Service.Implementations.Admin
@@ -79,8 +80,8 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
-                ValidateRol(group, response);
-                ValidateDescription(group, response);
+                GroupValidationHelper.ValidateRol(group, response, _roleRepository);
+                GroupValidationHelper.ValidateDescription(group, response, _repository);
 
                 if (response.HasErrors()) return response;
 
@@ -98,29 +99,6 @@ namespace Sofco.Service.Implementations.Admin
             }
 
             return response;
-        }
-
-        private void ValidateRol(Group group, Response<Group> response)
-        {
-            if (group.Role != null)
-            {
-                var role = _roleRepository.GetSingle(x => x.Id == group.Role.Id);
-
-                if (role == null)
-                {
-                    response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
-                }
-
-                group.Role = role;
-            }
-        }
-
-        private void ValidateDescription(Group group, Response<Group> response)
-        {
-            if (_repository.DescriptionExist(group.Description, group.Id))
-            {
-                response.Messages.Add(new Message(Resources.es.Admin.Group.DescriptionAlreadyExist, MessageType.Error));
-            }
         }
 
         public Response<Group> Update(Group group, int roleId)
@@ -150,7 +128,7 @@ namespace Sofco.Service.Implementations.Admin
 
                 if (response.HasErrors()) return response;
 
-                ValidateDescription(group, response);
+                GroupValidationHelper.ValidateDescription(group, response, _repository);
 
                 if (group.Active) group.EndDate = null;
 

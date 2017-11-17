@@ -123,6 +123,9 @@
   <data name="Deleted" xml:space="preserve">
     <value>admin/role.deleted</value>
   </data>
+  <data name="DescriptionExist" xml:space="preserve">
+    <value>admin/role.descriptionExist</value>
+  </data>
   <data name="DescriptionMaxLengthError" xml:space="preserve">
     <value>admin/role.descriptionMaxLengthError</value>
   </data>
