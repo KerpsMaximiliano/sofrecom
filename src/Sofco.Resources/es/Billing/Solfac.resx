@@ -234,4 +234,10 @@
   <data name="DetailDeleted" xml:space="preserve">
     <value>billing/solfac.detailDeleted</value>
   </data>
+  <data name="ContractNumberEmpty" xml:space="preserve">
+    <value>billing/solfac.contractNumberEmpty</value>
+  </data>
+  <data name="ImputationNumberEmpty" xml:space="preserve">
+    <value>billing/solfac.imputationNumberEmpty</value>
+  </data>
 </root>

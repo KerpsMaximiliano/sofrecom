@@ -43,5 +43,7 @@
     "imputationNumber3Required": "The imputation number is required",
     "currencyRequired": "The currency is required",
     "detailNotFound": "Detail not found",
-    "detailDeleted": "Detail deleted successfully"
+    "detailDeleted": "Detail deleted successfully",
+    "imputationNumberEmpty": "Imputation number is required",
+    "contractNumberEmpty": "Contract number is required"
 }

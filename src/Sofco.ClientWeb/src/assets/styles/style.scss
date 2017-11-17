@@ -270,3 +270,13 @@ ul.indented{
 .btn-allignment-input{
   margin-top: 22px;
 }
+
+pre {
+  background-color: transparent;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

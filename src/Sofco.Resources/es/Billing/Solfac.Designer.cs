@@ -150,6 +150,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.contractNumberEmpty.
+        /// </summary>
+        public static string ContractNumberEmpty {
+            get {
+                return ResourceManager.GetString("ContractNumberEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a billing/solfac.deleted.
         /// </summary>
         public static string Deleted {
@@ -218,6 +227,15 @@ namespace Sofco.Resources.es.Billing {
         public static string HitoUnitPriceRequired {
             get {
                 return ResourceManager.GetString("HitoUnitPriceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.imputationNumberEmpty.
+        /// </summary>
+        public static string ImputationNumberEmpty {
+            get {
+                return ResourceManager.GetString("ImputationNumberEmpty", resourceCulture);
             }
         }
         
