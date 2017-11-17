@@ -43,6 +43,7 @@ export class SplitHitoComponent implements OnDestroy  {
 
   openModal(hito){
     this.hitoSelected = hito;
+    this.hitos = new Array();
     this.spliHitoModal.show();
   }
 
@@ -58,7 +59,7 @@ export class SplitHitoComponent implements OnDestroy  {
 
         var newHito = {
             name: `${this.hitoSelected.name} - ${i+1}`,
-            ammount: this.hitoSelected.ammount,
+            ammount: i == 0 ? this.hitoSelected.ammount : 1,
             statusCode: 717620003,
             startDate: this.hitoSelected.startDate,
             month: this.hitoSelected.month,
@@ -74,6 +75,11 @@ export class SplitHitoComponent implements OnDestroy  {
   }
 
   save(){
+    if(this.hitos.length == 0){
+      this.messageService.showErrorByFolder("billing/projects", "hitoSplittedRequired");
+      return;
+    }
+
     this.subscrip = this.projectService.splitHito(this.hitos).subscribe(data => {
         if(data.messages) this.messageService.showMessages(data.messages);
         this.spliHitoModal.hide();
