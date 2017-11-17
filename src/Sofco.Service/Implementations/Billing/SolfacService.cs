@@ -215,7 +215,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.Deleted, MessageType.Success));
             }
-            catch
+            catch(Exception ex)
             {
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
