@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Sofco.Common.Domains;
 
 namespace Sofco.Model.Models.Billing
 {
-    public class HitoDetail : BaseEntity
+    public class HitoDetail : BaseEntity, IEntityDate
     {
         public string Description { get; set; }
         public short Quantity { get; set; }
@@ -14,5 +16,10 @@ namespace Sofco.Model.Models.Billing
 
         [NotMapped]
         public string ExternalHitoId { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime? Created { get; set; }
+
+        public DateTime? Modified { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Domains;
+using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL.Billing;
@@ -30,6 +30,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ILoggerWrapper<SolfacService> logger;
 
         public SolfacService(ISolfacRepository solfacRepository,
             IInvoiceRepository invoiceRepository,
@@ -37,7 +38,7 @@ namespace Sofco.Service.Implementations.Billing
             IUserRepository userRepository,
             IOptions<CrmConfig> crmOptions,
             IMailSender mailSender, 
-            ICrmInvoiceService crmInvoiceService)
+            ICrmInvoiceService crmInvoiceService, ILoggerWrapper<SolfacService> logger)
         {
             this.solfacRepository = solfacRepository;
             this.invoiceRepository = invoiceRepository;
@@ -46,6 +47,7 @@ namespace Sofco.Service.Implementations.Billing
             this.userRepository = userRepository;
             this.mailSender = mailSender;
             this.crmInvoiceService = crmInvoiceService;
+            this.logger = logger;
         }
 
         public Response<Solfac> Add(Solfac solfac, IList<int> invoicesId)
@@ -56,6 +58,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
+                CreateHitoOnCrm(solfac);
+
                 solfac.UpdatedDate = DateTime.Now;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 
@@ -93,8 +97,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 UpdateHitos(solfac.Hitos, response);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
 
@@ -265,8 +270,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogError(ex.Message);
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
             }
 
@@ -359,6 +365,11 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
             SolfacValidationHelper.ValidateContractNumber(solfac, response);
             SolfacValidationHelper.ValidateImputationNumber(solfac, response);
+
+            if (IsCreditNote(solfac))
+            {
+                SolfacValidationHelper.ValidateCreditNote(solfac, solfacRepository, response);
+            }
 
             return response;
         }
@@ -688,13 +699,6 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<Solfac> Post(Solfac solfac, IList<int> invoicesId)
         {
-            var validationResult = SolfacValidationHelper.ValidatePost(solfac, solfacRepository);
-
-            if (validationResult.HasErrors())
-                return validationResult;
-
-            CreateDataOnCrm(solfac);
-
             var result = Add(solfac, invoicesId);
 
             if (result.HasErrors())
@@ -735,7 +739,7 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        private void CreateDataOnCrm(Solfac solfac)
+        private void CreateHitoOnCrm(Solfac solfac)
         {
             if (!IsCreditNote(solfac))
                 return;

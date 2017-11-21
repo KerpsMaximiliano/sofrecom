@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Domains;
+using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Domain.Crm;
 using Sofco.Framework.CrmServices;
@@ -27,7 +28,9 @@ namespace Sofco.UnitTest.Framework.CrmServices
 
             crmOptionsMock.SetupGet(s => s.Value).Returns(new CrmConfig { Url = "sofcoarUrl" });
 
-            sut = new CrmInvoiceService(clientMock.Object, crmOptionsMock.Object);
+            var loggerMock = new Mock< ILoggerWrapper<CrmInvoiceService>>();
+
+            sut = new CrmInvoiceService(clientMock.Object, crmOptionsMock.Object, loggerMock.Object);
         }
 
         [Test]

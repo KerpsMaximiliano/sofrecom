@@ -134,7 +134,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
@@ -278,7 +278,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setSolfacType(hitos:Array<any>) {
       this.isCreditNoteSolfacType = hitos.every(s => s.status == "Facturado");
+
       this.isDefaultSolfacType = !this.isCreditNoteSolfacType;
+
+      if(this.isCreditNoteSolfacType)
+      {
+        let currentHito = hitos[0];
+        let hito = this.model.hitos[0];
+        hito.solfacId = currentHito.solfacId;
+      }
 
       this.updateDocumentTypes();
     }
@@ -295,5 +303,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       let allowedValues = this.getAllowedDocumentType();
       
       this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.value));
+
+      if(!allowedValues.includes(this.model.documentType.toString()))
+      {
+        this.model.documentType = Number(allowedValues[0]);
+      }
     }
 }

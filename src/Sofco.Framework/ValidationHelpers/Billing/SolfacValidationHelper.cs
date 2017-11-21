@@ -173,24 +173,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static Response<Solfac> ValidatePost(Solfac solfac, ISolfacRepository solfacRepository)
-        {
-            var response = new Response<Solfac>();
-
-            if (IsCreditNote(solfac))
-            {
-                ValidateCreditNote(solfac, solfacRepository, response);
-            }
-
-            return response;
-        }
-
-        private static bool IsCreditNote(Solfac solfac)
-        {
-            return new[] { SolfacDocumentType.CreditNoteA, SolfacDocumentType.CreditNoteB }.Contains(solfac.DocumentTypeId);
-        }
-
-        private static void ValidateCreditNote(Solfac solfac, ISolfacRepository solfacRepository, Response response)
+        public static void ValidateCreditNote(Solfac solfac, ISolfacRepository solfacRepository, Response response)
         {
             var hito = solfac.Hitos.First().SolfacId;
 

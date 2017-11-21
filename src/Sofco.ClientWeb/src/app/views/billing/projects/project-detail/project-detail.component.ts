@@ -245,19 +245,21 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canCreateCreditNote():boolean {
+        if(!this.isValidCreditNote()) return false;
+
         if(!this.canCreateSolfac()) return false;
 
-        let hitos = this.getHitosSelected();
+        return true;
+    }
 
-        let isValid = hitos.length == 1;
-
-        hitos.forEach(item => {
-            if(item.status != this.billedHitoStatus){
-                isValid = false;
-            }
-        });
-
-        return isValid;
+    isValidCreditNote():boolean {
+        if(this.solfacs.length == 0) return false;
+        var hitos = this.getHitosSelected();
+        if(hitos.length != 1) return false;
+        var hito = hitos[0];
+        if(hito.solfacId == 0) return false;
+        if(hito.status != this.billedHitoStatus) return false;
+        return true;
     }
 
     split(){
@@ -272,10 +274,25 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     hitosShowCheckBox(hito:any):boolean {
-        return hito.status != 'ToBeBilled' && hito.status != "Pagado";
+        var isValid = hito.status != 'ToBeBilled' && hito.status != "Pagado";
+
+        if(!isValid) return false;
+
+        if(hito.status == this.billedHitoStatus){
+            if(hito.solfacId == 0) return false;
+        }
+
+        return isValid;
     }
 
     createCreditNote() {
+        var hito = this.getHitosSelected()[0];
+        
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.managerId;
+        hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
+
         this.generateSolfac();
     }
 }

@@ -23,5 +23,7 @@ namespace Sofco.Domain.Crm
         public string Status { get; set; }
 
         public string StatusCode { get; set; }
+
+        public int SolfacId { get; set; }
     }
 }

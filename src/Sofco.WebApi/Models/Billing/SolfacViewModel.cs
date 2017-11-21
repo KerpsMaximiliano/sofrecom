@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NuGet.Packaging;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 

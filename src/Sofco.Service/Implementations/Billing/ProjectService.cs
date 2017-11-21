@@ -43,7 +43,13 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
 
-                    if ((!hitoCrm.Status.Equals("Pendiente") && !hitoCrm.Status.Equals("Proyectado")) || existHito != null)
+                    if (existHito != null)
+                    {
+                        hitoCrm.SolfacId = existHito.SolfacId;
+                    }
+
+                    if (!hitoCrm.Status.Equals("Pendiente") 
+                        && !hitoCrm.Status.Equals("Proyectado") || existHito != null)
                     {
                         hitoCrm.Billed = true;
                     }

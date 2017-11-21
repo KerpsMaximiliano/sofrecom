@@ -20,6 +20,9 @@ namespace Sofco.WebApi.Models.Billing
             Currency = hito.Currency;
             Month = hito.Month;
             SolfacId = hito.SolfacId;
+            CurrencyId = hito.CurrencyId;
+            OpportunityId = hito.OpportunityId;
+            ManagerId = hito.ManagerId;
         }
 
         public int Id { get; set; }
@@ -38,20 +41,30 @@ namespace Sofco.WebApi.Models.Billing
 
         public short Month { get; set; }
 
+        public string CurrencyId { get; set; }
+
+        public string OpportunityId { get; set; }
+
+        public string ManagerId { get; set; }
+
         public Hito CreateDomain()
         {
-            var hito = new Hito();
-
-            hito.Id = Id;
-            hito.Description = Description;
-            hito.Total = Total;
-            hito.ExternalProjectId = ExternalProjectId;
-            hito.ExternalHitoId = ExternalHitoId;
-            hito.Currency = Currency;
-            hito.Month = Month;
-            hito.SolfacId = SolfacId;
-
-            hito.Details = new List<HitoDetail>();
+            var hito = new Hito
+            {
+                Id = Id,
+                Description = Description,
+                Total = Total,
+                ExternalProjectId = ExternalProjectId,
+                ExternalHitoId = ExternalHitoId,
+                Currency = Currency,
+                Month = Month,
+                SolfacId = SolfacId,
+                CurrencyId = CurrencyId,
+                OpportunityId = OpportunityId,
+                ManagerId = ManagerId,
+                Modified = Id > 0 ? DateTime.UtcNow : (DateTime?)null,
+                Details = new List<HitoDetail>()
+            };
 
             return hito;
         }

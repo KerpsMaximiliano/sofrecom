@@ -50,7 +50,7 @@ namespace Sofco.WebApi.Filters
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            log.LogError(exception.Message, exception);
+            log.LogError(exception);
 
             SendMail(exception);
 

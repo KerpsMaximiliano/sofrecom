@@ -5,13 +5,12 @@ using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Domains;
+using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Domain.Crm;
-using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Framework.CrmServices
@@ -22,10 +21,16 @@ namespace Sofco.Framework.CrmServices
 
         private readonly CrmConfig crmConfig;
 
-        public CrmInvoiceService(ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
+        private readonly ILoggerWrapper<CrmInvoiceService> logger;
+
+        public CrmInvoiceService(ICrmHttpClient client, 
+            IOptions<CrmConfig> crmOptions,
+            ILoggerWrapper<CrmInvoiceService> logger
+            )
         {
             this.client = client;
             crmConfig = crmOptions.Value;
+            this.logger = logger;
         }
 
         public Result<List<CrmHito>> GetHitosToExpire(int daysToExpire)
@@ -40,12 +45,8 @@ namespace Sofco.Framework.CrmServices
             var hito = solfac.Hitos.First();
 
             var ammount = hito.Details.Sum(s => s.Total);
-            var statusCode = HitoStatus.Pending;
+            var statusCode = (int)HitoStatus.Pending;
             var startDate = DateTime.Now;
-            var name = hito.Description;
-            var moneyId = hito.CurrencyId; //TODO: add column to database - frontend: project.currencyId
-            var opportunityId = hito.OpportunityId; //TODO: add column to database - frontend: project.OpportunityId
-            var managerId = hito.ManagerId; //TODO: add column to database - frontend: project.ManagerId
 
             var result = new Result<string>();
             try
@@ -60,12 +61,20 @@ namespace Sofco.Framework.CrmServices
 
                 var clientResult = client.Post<string>($"{crmConfig.Url}/api/InvoiceMilestone", stringContent);
 
-                result.Data = clientResult.Data;
+                result.Data = CleanStringResult(clientResult.Data);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex);
                 result.AddError(Resources.es.Billing.Solfac.ErrorSaveOnHitos);
             }
+
+            return result;
+        }
+
+        private string CleanStringResult(string data)
+        {
+            var result = data.Replace("\"", "");
 
             return result;
         }
