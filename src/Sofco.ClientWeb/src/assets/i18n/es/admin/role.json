@@ -11,5 +11,6 @@
     "roleModuleAlreadyCreated": "Modulo ya asociado al rol",
     "roleModuleAlreadyRemoved": "Modulo no asociado al rol",
     "updated": "Rol modificado correctamente",
-    "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres"
-}
+    "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres",
+    "descriptionExist": "Descripción ya existe"
+} 

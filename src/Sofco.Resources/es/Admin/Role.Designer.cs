@@ -78,6 +78,15 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a admin/role.descriptionExist.
+        /// </summary>
+        public static string DescriptionExist {
+            get {
+                return ResourceManager.GetString("DescriptionExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a admin/role.descriptionMaxLengthError.
         /// </summary>
         public static string DescriptionMaxLengthError {

@@ -55,7 +55,7 @@ namespace Sofco.WebApi.Controllers.Billing
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new List<ServiceCrm>());
             }
         }
 

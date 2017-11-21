@@ -11,5 +11,6 @@
     "roleModuleAlreadyCreated": "Module already associated with the role",
     "roleModuleAlreadyRemoved": "Module not associated with the role",
     "updated": "Role modified successfully",
-    "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
+    "wrongDescriptionLength": "The description field must have a maximum of 50 characters",
+    "descriptionExist": "Description already exist"
 }

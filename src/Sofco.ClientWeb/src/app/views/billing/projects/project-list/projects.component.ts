@@ -53,6 +53,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       },
       err => {
         this.loading = false;
+        this.datatableService.init('#projectTable', true);
         this.errorHandlerService.handleErrors(err)
       });
     }

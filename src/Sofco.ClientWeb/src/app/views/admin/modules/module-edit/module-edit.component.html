@@ -70,7 +70,9 @@
                 <i class="fa fa-info-circle"></i> {{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}
             </div>
             <div class="panel-body scroll">
-                <table class="table table-striped">
+                <p *ngIf="module.functionalities.length == 0">{{ 'noInfoAvailable' | translate }}</p>
+
+                <table class="table table-striped" *ngIf="module.functionalities.length > 0">
                     <thead>
                         <tr>
                             <th>{{'ADMIN.description' | translate }}</th>
