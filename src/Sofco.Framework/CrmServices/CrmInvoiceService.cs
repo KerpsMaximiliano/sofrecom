@@ -18,6 +18,8 @@ namespace Sofco.Framework.CrmServices
 {
     public class CrmInvoiceService : ICrmInvoiceService
     {
+        private const string PrefixCreditNoteTitle = "Nota de Crédito - ";
+
         private readonly ICrmHttpClient client;
 
         private readonly CrmConfig crmConfig;
@@ -48,13 +50,14 @@ namespace Sofco.Framework.CrmServices
             var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
             var statusCode = (int)HitoStatus.Pending;
             var startDate = DateTime.Now;
+            var name = PrefixCreditNoteTitle + hito.Description;
 
             var result = new Result<string>();
             try
             {
                 var data =
                     $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
-                    + $"&Name={hito.Description}&MoneyId={hito.CurrencyId}"
+                    + $"&Name={name}&MoneyId={hito.CurrencyId}"
                     + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
                     + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
