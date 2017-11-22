@@ -1,5 +1,5 @@
-﻿using Sofco.Model.Models.TimeManagement;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Model.Utils
 {

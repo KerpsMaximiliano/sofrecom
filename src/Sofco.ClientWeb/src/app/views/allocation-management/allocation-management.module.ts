@@ -21,10 +21,14 @@ import { AllocationAssignmentTableComponent } from 'app/views/allocation-managem
 import { ResourceSearchComponent } from 'app/views/allocation-management/resources/search/resource-search.component';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { ResourceTimelineComponent } from 'app/views/allocation-management/allocation/resource-timeline/resource-timeline.component';
+import { CostCenterService } from 'app/services/allocation-management/cost-center.service';
+import { AddCostCenterComponent } from 'app/views/allocation-management/cost-center/add/add-cost-center.component';
+import { ListCostCenterComponent } from 'app/views/allocation-management/cost-center/list/list-cost-center.component';
 
 @NgModule({
   declarations: [
-    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent
+    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent, AddCostCenterComponent,
+    ListCostCenterComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,7 @@ import { ResourceTimelineComponent } from 'app/views/allocation-management/alloc
     IboxtoolsModule,
     Ng2ModalModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService ],
   exports: [],
 })
 

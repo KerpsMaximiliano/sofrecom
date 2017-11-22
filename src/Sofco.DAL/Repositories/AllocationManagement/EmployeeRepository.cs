@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
-using Sofco.Model.Models.TimeManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

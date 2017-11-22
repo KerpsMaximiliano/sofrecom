@@ -349,6 +349,17 @@
                 "client": "Cliet",
                 "commercialManager": "Commercial Manager"
             }
+        },
+        "costCenter": {
+            "title": "Cost Center",
+            "list": "Cost Center´s List",
+            "add": {
+                "title": "New cost center",
+                "code": "Code",
+                "letter": "Letter",
+                "description": "Description",
+                "active": "Active"
+            }
         }
     },
     "ACTIONS":{

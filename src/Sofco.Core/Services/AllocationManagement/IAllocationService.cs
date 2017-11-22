@@ -1,8 +1,7 @@
 ﻿using Sofco.Model.DTO;
 using Sofco.Model.Utils;
-using Sofco.Model.Models.TimeManagement;
 using System;
-using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
 {

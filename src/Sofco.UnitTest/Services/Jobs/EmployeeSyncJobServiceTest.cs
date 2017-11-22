@@ -8,7 +8,7 @@ using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.Jobs
 {

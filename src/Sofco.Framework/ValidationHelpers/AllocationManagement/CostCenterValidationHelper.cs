@@ -1,0 +1,59 @@
+﻿using System.Text.RegularExpressions;
+using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Utils;
+
+namespace Sofco.Framework.ValidationHelpers.AllocationManagement
+{
+    public class CostCenterValidationHelper
+    {
+        public static void ValidateCode(Response response, CostCenter domain, ICostCenterRepository costCenterRepository)
+        {
+            if (domain.Code == 0)
+            {
+                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeIsRequired, MessageType.Error));
+            }
+            else
+            {
+                if (domain.Code.ToString().Length != 3)
+                {
+                    response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeWrongLength, MessageType.Error));
+                }
+                else
+                {
+                    if (costCenterRepository.ExistCode(domain.Code))
+                    {
+                        response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeAlreadyExist, MessageType.Error));
+                    }
+                }
+            }
+        }
+
+        public static void ValidateLetter(Response response, CostCenter domain)
+        {
+            if (string.IsNullOrWhiteSpace(domain.Letter))
+            {
+                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.LetterIsRequired, MessageType.Error));
+            }
+            else
+            {
+                Match match = Regex.Match(domain.Letter, @"(?i)^[a-z]+");
+
+                if (domain.Letter.Length != 1 || !match.Success)
+                {
+                    response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.LetterWrong, MessageType.Error));
+                }
+            }
+        }
+
+        public static void ValidateDescription(Response response, CostCenter domain)
+        {
+            if (string.IsNullOrWhiteSpace(domain.Description))
+            {
+                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.DescriptionRequired, MessageType.Error));
+            }
+        }
+    }
+}
+

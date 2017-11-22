@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 
-namespace Sofco.Model.Models.TimeManagement
+namespace Sofco.Model.Models.AllocationManagement
 {
     public class Employee : BaseEntity, IEntityDate
     {

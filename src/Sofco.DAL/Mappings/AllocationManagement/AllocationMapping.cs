@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 
-namespace Sofco.DAL.Mappings.TimeManagement
+namespace Sofco.DAL.Mappings.AllocationManagement
 {
     public static class AllocationMapping
     {

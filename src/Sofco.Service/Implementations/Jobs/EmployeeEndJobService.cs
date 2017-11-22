@@ -9,7 +9,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Model;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Settings.Jobs;
 using Sofco.Resources;
 

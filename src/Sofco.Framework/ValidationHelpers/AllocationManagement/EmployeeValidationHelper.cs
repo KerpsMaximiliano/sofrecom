@@ -1,6 +1,6 @@
 ﻿using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.AllocationManagement

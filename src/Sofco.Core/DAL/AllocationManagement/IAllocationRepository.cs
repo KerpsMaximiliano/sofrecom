@@ -1,7 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.TimeManagement;
 using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {

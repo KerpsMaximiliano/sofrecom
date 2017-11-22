@@ -6,7 +6,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Rh.Rhpro;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 
 namespace Sofco.Service.Implementations.Jobs

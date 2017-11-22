@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.DAL.Mappings.Admin;
+using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
-using Sofco.Model.Models.TimeManagement;
-using Sofco.DAL.Mappings.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL
 {
@@ -41,12 +41,13 @@ namespace Sofco.DAL
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
 
-        // Time Management Mappings
+        // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
         public DbSet<Allocation> Allocations { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<LicenseType> LicenseTypes { get; set; }
         public DbSet<EmployeeLicense> EmployeeLicenses { get; set; }
+        public DbSet<CostCenter> CostCenters { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -82,6 +83,7 @@ namespace Sofco.DAL
             builder.MapEmployeeLicense();
             builder.MapHitoDetails();
             builder.MapGlobalSetting();
+            builder.MapCostCenter();
         }
     }
 }
