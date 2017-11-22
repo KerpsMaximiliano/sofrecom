@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.AllocationManagement {
+namespace Sofco.Resources.AllocationManagement {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es.AllocationManagement {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Employee {
+    public class Analytic {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Employee() {
+        internal Analytic() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.AllocationManagement.Employee", typeof(Employee).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.Analytic", typeof(Analytic).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,11 +60,20 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/employee.notFound.
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a allocationManagement/analytic.resourcesNotFound.
+        /// </summary>
+        public static string ResourcesNotFound {
+            get {
+                return ResourceManager.GetString("ResourcesNotFound", resourceCulture);
             }
         }
     }

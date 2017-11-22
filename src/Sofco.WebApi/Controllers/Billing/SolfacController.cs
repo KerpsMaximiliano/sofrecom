@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (!solfacs.Any())
             {
                 var response = new Response();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFounds, MessageType.Warning));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.NotFounds, MessageType.Warning));
                 return Ok(response);
             }
 
@@ -137,16 +137,12 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.Add(domain, model.InvoicesId);
+            var result = solfacService.Post(domain, model.InvoicesId);
 
-            if (response.HasErrors())
-                return BadRequest(response);
+            if (result.HasErrors())
+                return BadRequest(result);
 
-            var solfacChangeStatusResponse = new SolfacChangeStatusResponse { HitoStatus = HitoStatus.Pending, Hitos = response.Data.Hitos.Select(x => x.ExternalHitoId).ToList() };
-
-            ChangeHitoStatus(solfacChangeStatusResponse);
-
-            return Ok(response);
+            return Ok(result);
         }
 
         [HttpPut]
@@ -238,29 +234,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(response);
         }
 
-        private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-                HttpResponseMessage response;
-
-                foreach (var item in data.Hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int)data.HitoStatus}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
-        }
-
         [HttpDelete]
         [Route("{id}")]
         public IActionResult Delete(int id)
@@ -338,7 +311,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 catch
                 {
                     var error = new Response();
-                    error.Messages.Add(new Message(Resources.es.Common.SaveFileError, MessageType.Error));
+                    error.Messages.Add(new Message(Resources.Common.SaveFileError, MessageType.Error));
                     return BadRequest(error);
                 }
             }
@@ -371,7 +344,7 @@ namespace Sofco.WebApi.Controllers.Billing
             catch
             {
                 var response = new Response();
-                response.Messages.Add(new Message(Resources.es.Common.ExportFileError, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ExportFileError, MessageType.Error));
                 return BadRequest(response);
             }
         }

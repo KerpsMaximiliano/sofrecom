@@ -135,7 +135,7 @@
                                         <tbody>
                                             <tr *ngFor="let hito of hitos">
                                                 <td class="col-lg-1">
-                                                    <icheck [(checked)]="hito.included" *ngIf="hito.billed == false"></icheck>
+                                                    <icheck [(checked)]="hito.included" *ngIf="hitosShowCheckBox(hito)"></icheck>
                                                 </td>
                                                 <td>{{ hito.name }}</td>
                                                 <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number: '1.2-2' }}</td>
@@ -149,7 +149,9 @@
                                     </table>
 
                                     <div class="button-group">
-                                        <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="generateSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="createSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button *ngIf="canCreateCreditNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
+                                        <button *ngIf="canCreateDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canSplit()" (click)="split()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.split' | translate }}  <i class="fa fa-clone"></i></button> 
                                     </div>
                                 </div>

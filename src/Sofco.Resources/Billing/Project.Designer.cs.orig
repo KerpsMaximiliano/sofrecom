@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es {
+namespace Sofco.Resources.Billing {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Common {
+    public class Project {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Common() {
+        internal Project() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Common", typeof(Common).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Project", typeof(Project).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,56 +60,65 @@ namespace Sofco.Resources.es {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.errorSave.
+        ///    Busca una cadena localizada similar a billing/projects.almost2HitosRequired.
         /// </summary>
-        public static string ErrorSave {
+        public static string Almost2HitosRequired {
             get {
-                return ResourceManager.GetString("ErrorSave", resourceCulture);
+                return ResourceManager.GetString("Almost2HitosRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.errorSendMail.
+        ///    Busca una cadena localizada similar a billing/projects.hitoAmmoutRequired.
         /// </summary>
-        public static string ErrorSendMail {
+        public static string HitoAmmoutRequired {
             get {
-                return ResourceManager.GetString("ErrorSendMail", resourceCulture);
+                return ResourceManager.GetString("HitoAmmoutRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.exportFileError.
+        ///    Busca una cadena localizada similar a billing/projects.hitoSplitted.
         /// </summary>
-        public static string ExportFileError {
+        public static string HitoSplitted {
             get {
-                return ResourceManager.GetString("ExportFileError", resourceCulture);
+                return ResourceManager.GetString("HitoSplitted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.fileNotFound.
+        ///    Busca una cadena localizada similar a billing/projects.monthRequired.
         /// </summary>
-        public static string FileNotFound {
+        public static string MonthRequired {
             get {
-                return ResourceManager.GetString("FileNotFound", resourceCulture);
+                return ResourceManager.GetString("MonthRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.generalError.
+        ///    Busca una cadena localizada similar a billing/projects.nameRequired.
         /// </summary>
-        public static string GeneralError {
+        public static string NameRequired {
             get {
-                return ResourceManager.GetString("GeneralError", resourceCulture);
+                return ResourceManager.GetString("NameRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a common.saveFileError.
+        ///    Busca una cadena localizada similar a billing/projects.notFound.
         /// </summary>
-        public static string SaveFileError {
+        public static string NotFound {
             get {
-                return ResourceManager.GetString("SaveFileError", resourceCulture);
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.opportunityRequired.
+        /// </summary>
+        public static string OpportunityRequired {
+            get {
+                return ResourceManager.GetString("OpportunityRequired", resourceCulture);
             }
         }
     }

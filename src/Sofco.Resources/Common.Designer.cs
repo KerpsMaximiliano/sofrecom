@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Admin {
+namespace Sofco.Resources {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es.Admin {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Group {
+    public class Common {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Group() {
+        internal Common() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Admin.Group", typeof(Group).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Common", typeof(Common).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,83 +60,56 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.created.
+        ///    Busca una cadena localizada similar a common.errorSave.
         /// </summary>
-        public static string Created {
+        public static string ErrorSave {
             get {
-                return ResourceManager.GetString("Created", resourceCulture);
+                return ResourceManager.GetString("ErrorSave", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.deleted.
+        ///    Busca una cadena localizada similar a common.errorSendMail.
         /// </summary>
-        public static string Deleted {
+        public static string ErrorSendMail {
             get {
-                return ResourceManager.GetString("Deleted", resourceCulture);
+                return ResourceManager.GetString("ErrorSendMail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.descriptionAlreadyExist.
+        ///    Busca una cadena localizada similar a common.exportFileError.
         /// </summary>
-        public static string DescriptionAlreadyExist {
+        public static string ExportFileError {
             get {
-                return ResourceManager.GetString("DescriptionAlreadyExist", resourceCulture);
+                return ResourceManager.GetString("ExportFileError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.disabled.
+        ///    Busca una cadena localizada similar a common.fileNotFound.
         /// </summary>
-        public static string Disabled {
+        public static string FileNotFound {
             get {
-                return ResourceManager.GetString("Disabled", resourceCulture);
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.enabled.
+        ///    Busca una cadena localizada similar a common.generalError.
         /// </summary>
-        public static string Enabled {
+        public static string GeneralError {
             get {
-                return ResourceManager.GetString("Enabled", resourceCulture);
+                return ResourceManager.GetString("GeneralError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.notFound.
+        ///    Busca una cadena localizada similar a common.saveFileError.
         /// </summary>
-        public static string NotFound {
+        public static string SaveFileError {
             get {
-                return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.roleAssigned.
-        /// </summary>
-        public static string RoleAssigned {
-            get {
-                return ResourceManager.GetString("RoleAssigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.roleRemoved.
-        /// </summary>
-        public static string RoleRemoved {
-            get {
-                return ResourceManager.GetString("RoleRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a admin/group.updated.
-        /// </summary>
-        public static string Updated {
-            get {
-                return ResourceManager.GetString("Updated", resourceCulture);
+                return ResourceManager.GetString("SaveFileError", resourceCulture);
             }
         }
     }

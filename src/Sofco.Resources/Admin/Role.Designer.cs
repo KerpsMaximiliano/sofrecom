@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Admin {
+namespace Sofco.Resources.Admin {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Admin.Role", typeof(Role).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Role", typeof(Role).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

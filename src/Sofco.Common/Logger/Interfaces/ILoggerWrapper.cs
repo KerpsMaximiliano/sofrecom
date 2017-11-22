@@ -6,6 +6,6 @@ namespace Sofco.Common.Logger.Interfaces
     {
         void LogError(string message);
 
-        void LogError(string error, Exception exception);
+        void LogError(Exception exception);
     }
 }

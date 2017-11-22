@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Billing {
+namespace Sofco.Resources.Admin {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es.Billing {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Customer {
+    public class Functionality {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Customer() {
+        internal Functionality() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Billing.Customer", typeof(Customer).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Functionality", typeof(Functionality).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,52 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a billing/customer.notFound.
+        ///    Busca una cadena localizada similar a admin/functionality.created.
+        /// </summary>
+        public static string Created {
+            get {
+                return ResourceManager.GetString("Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/functionality.disabled.
+        /// </summary>
+        public static string Disabled {
+            get {
+                return ResourceManager.GetString("Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/functionality.enabled.
+        /// </summary>
+        public static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyCreated.
+        /// </summary>
+        public static string ModuleFunctionalityAlreadyCreated {
+            get {
+                return ResourceManager.GetString("ModuleFunctionalityAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyRemoved.
+        /// </summary>
+        public static string ModuleFunctionalityAlreadyRemoved {
+            get {
+                return ResourceManager.GetString("ModuleFunctionalityAlreadyRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/functionality.notFound.
         /// </summary>
         public static string NotFound {
             get {

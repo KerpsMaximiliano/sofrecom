@@ -1,6 +1,6 @@
 {
   "name": "sofcoar",
-  "version": "0.7.2",
+  "version": "0.7.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -54,7 +54,7 @@
     "moment": "^2.19.1",
     "ng2-charts": "^1.5.0",
     "ng2-cookies": "^1.0.12",
-    "ng2-datepicker": "^2.1.0",
+    "ng2-datepicker": "2.1.0",
     "ng2-daterangepicker": "^2.0.10",
     "ng2-file-upload": "^1.2.1",
     "ngx-bootstrap": "^1.6.6",

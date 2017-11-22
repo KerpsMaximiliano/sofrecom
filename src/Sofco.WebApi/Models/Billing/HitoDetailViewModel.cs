@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.WebApi.Models.Billing
@@ -39,15 +40,17 @@ namespace Sofco.WebApi.Models.Billing
 
         public HitoDetail CreateDomain()
         {
-            var detail = new HitoDetail();
-
-            detail.Id = Id;
-            detail.Description = Description;
-            detail.Quantity = Quantity.GetValueOrDefault();
-            detail.UnitPrice = UnitPrice.GetValueOrDefault();
-            detail.Total = Total;
-            detail.HitoId = HitoId;
-            detail.ExternalHitoId = ExternalHitoId;
+            var detail = new HitoDetail
+            {
+                Id = Id,
+                Description = Description,
+                Quantity = Quantity.GetValueOrDefault(),
+                UnitPrice = UnitPrice.GetValueOrDefault(),
+                Total = Total,
+                HitoId = HitoId,
+                ExternalHitoId = ExternalHitoId,
+                Modified = Id > 0 ? DateTime.UtcNow : (DateTime?)null
+            };
 
             return detail;
         }

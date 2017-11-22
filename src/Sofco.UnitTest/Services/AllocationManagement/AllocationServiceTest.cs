@@ -48,7 +48,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             var response = sut.Add(parameters);
 
             Assert.True(response.HasErrors());
-            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.es.AllocationManagement.Allocation.WrongPercentage));
+            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.AllocationManagement.Allocation.WrongPercentage));
         }
 
         [TestCase]
@@ -97,14 +97,14 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             var response = sut.Add(parameters);
 
             Assert.True(response.HasErrors());
-            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.es.AllocationManagement.Allocation.ReleaseDateIsRequired));
+            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.AllocationManagement.Allocation.ReleaseDateIsRequired));
 
             parameters.ReleaseDate = DateTime.MinValue;
 
             response = sut.Add(parameters);
 
             Assert.True(response.HasErrors());
-            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.es.AllocationManagement.Allocation.ReleaseDateIsRequired));
+            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.AllocationManagement.Allocation.ReleaseDateIsRequired));
         }
 
         [TestCase]
@@ -201,7 +201,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             var response = sut.Add(parameters);
 
             Assert.True(response.HasErrors());
-            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.es.AllocationManagement.Allocation.CannotBeAssign));
+            Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.AllocationManagement.Allocation.CannotBeAssign));
 
             allocationRepositoryMock.Verify(x => x.Insert(It.IsAny<Allocation>()), Times.Never);
             allocationRepositoryMock.Verify(s => s.Save(), Times.Never);

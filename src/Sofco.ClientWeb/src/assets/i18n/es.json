@@ -148,7 +148,9 @@
                     "status": "Estado",
                     "new": "Generar Solicitud",
                     "split": "Generar hito",
-                    "splitTitle": "Generar nuevo hito"
+                    "splitTitle": "Generar nuevo hito",
+                    "createCreditNote": "Generar Nota de Crédito",
+                    "createDebitNote": "Generar Nota de Débito"
                 },
                 "requests": {
                     "title": "Solicitudes",

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Billing {
+namespace Sofco.Resources.Billing {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Billing.Invoice", typeof(Invoice).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Invoice", typeof(Invoice).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -110,6 +110,24 @@ namespace Sofco.Resources.es.Billing {
         public static string CannotSendToDaf {
             get {
                 return ResourceManager.GetString("CannotSendToDaf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Nota de Crédito -.
+        /// </summary>
+        public static string CrmPrefixCreditNoteTitle {
+            get {
+                return ResourceManager.GetString("CrmPrefixCreditNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a Nota de Débito -.
+        /// </summary>
+        public static string CrmPrefixDebitNoteTitle {
+            get {
+                return ResourceManager.GetString("CrmPrefixDebitNoteTitle", resourceCulture);
             }
         }
         

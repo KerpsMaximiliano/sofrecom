@@ -11,7 +11,7 @@ namespace Sofco.Framework.ValidationHelpers.Admin
         {
             if (roleRepository.ExistByDescription(role.Description, role.Id))
             {
-                response.Messages.Add(new Message(Resources.es.Admin.Role.DescriptionExist, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.Role.DescriptionExist, MessageType.Error));
             }
         }
     }

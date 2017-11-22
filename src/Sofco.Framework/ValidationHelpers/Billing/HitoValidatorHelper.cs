@@ -14,7 +14,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (hito.Ammount <= 0)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.HitoAmmoutRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.HitoAmmoutRequired, MessageType.Error));
             }
         }
 
@@ -22,7 +22,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (string.IsNullOrWhiteSpace(hito.OpportunityId) || hito.OpportunityId.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.OpportunityRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.OpportunityRequired, MessageType.Error));
             }
         }
 
@@ -30,7 +30,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (string.IsNullOrWhiteSpace(hito.Name))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.NameRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.NameRequired, MessageType.Error));
             }
         }
 
@@ -38,7 +38,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (hito.Month <= 0 || hito.Month > 12)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.MonthRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.MonthRequired, MessageType.Error));
             }
         }
     }

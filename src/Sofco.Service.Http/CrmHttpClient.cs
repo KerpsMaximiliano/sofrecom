@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Sofco.Common.Domains;
 using Sofco.Service.Http.Interfaces;
 
@@ -7,6 +8,8 @@ namespace Sofco.Service.Http
 {
     public class CrmHttpClient : ICrmHttpClient
     {
+        private const string ErrorDelimiter = ";";
+
         private readonly IBaseHttpClient client;
 
         public CrmHttpClient(IBaseHttpClient client)
@@ -20,10 +23,23 @@ namespace Sofco.Service.Http
 
             if (result.HasErrors)
             {
-                throw new Exception(string.Join("; ", result.Errors));
+                throw new Exception(string.Join(ErrorDelimiter, result.Errors));
             }
 
             return result;
+        }
+
+        public Result<T> Post<T>(string urlPath, StringContent stringContent)
+        {
+            var result = client.Post<T>(urlPath, stringContent);
+
+            if (result.HasErrors)
+            {
+                throw new Exception(string.Join(ErrorDelimiter, result.Errors));
+            }
+
+            return result;
+
         }
     }
 }

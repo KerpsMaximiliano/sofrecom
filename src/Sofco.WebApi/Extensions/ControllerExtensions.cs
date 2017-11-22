@@ -9,7 +9,7 @@ namespace Sofco.WebApi.Extensions
     {
         public static Response GetErrors(this Controller controller)
         {
-            var respose = new Response();
+            var response = new Response();
 
             if (!controller.ModelState.IsValid)
             {
@@ -19,12 +19,12 @@ namespace Sofco.WebApi.Extensions
                 {
                     foreach (var item in error)
                     {
-                        respose.Messages.Add(new Message(item.ErrorMessage, MessageType.Error));
+                        response.Messages.Add(new Message(item.ErrorMessage, MessageType.Error));
                     }
                 }
             }
 
-            return respose;
+            return response;
         }
 
         public static string GetUserMail(this Controller controller)

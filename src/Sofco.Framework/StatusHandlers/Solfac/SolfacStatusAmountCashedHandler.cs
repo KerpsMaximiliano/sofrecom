@@ -31,7 +31,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.Status != SolfacStatus.Invoiced)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
             SolfacValidationHelper.ValidateCasheDate(parameters, response, solfac);
@@ -58,7 +58,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Solfac.InvoicedSuccess;
+            return Resources.Billing.Solfac.InvoicedSuccess;
         }
 
         private HitoStatus GetHitoStatus()

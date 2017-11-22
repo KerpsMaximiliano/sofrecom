@@ -45,11 +45,11 @@ namespace Sofco.Service.Implementations.Admin
                 _userRepository.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.es.Admin.User.Enabled : Resources.es.Admin.User.Disabled, MessageType.Success));
+                response.Messages.Add(new Message(active ? Resources.Admin.User.Enabled : Resources.Admin.User.Disabled, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
             return response;
         }
 
@@ -61,7 +61,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (user == null)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -69,7 +69,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (userGroup == null)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.Group.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -78,7 +78,7 @@ namespace Sofco.Service.Implementations.Admin
             _userGroupRepository.Insert(entity);
             _userGroupRepository.Save();
 
-            response.Messages.Add(new Message(Resources.es.Admin.User.GroupAssigned, MessageType.Success));
+            response.Messages.Add(new Message(Resources.Admin.User.GroupAssigned, MessageType.Success));
 
             return response;
         }
@@ -102,7 +102,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
             return response;
         }
 
@@ -114,7 +114,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -122,7 +122,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!groupExist)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.Group.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.Group.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -133,11 +133,11 @@ namespace Sofco.Service.Implementations.Admin
                 _userGroupRepository.Delete(entity);
                 _userGroupRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.Admin.User.GroupRemoved, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Admin.User.GroupRemoved, MessageType.Success));
             }
             catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -151,7 +151,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -182,11 +182,11 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 _userGroupRepository.Save();
-                response.Messages.Add(new Message(Resources.es.Admin.User.UserGroupsUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Admin.User.UserGroupsUpdated, MessageType.Success));
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -200,7 +200,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if(user == null)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -222,11 +222,11 @@ namespace Sofco.Service.Implementations.Admin
                 _userRepository.Insert(domain);
                 _userRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.Admin.User.Created, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Admin.User.Created, MessageType.Success));
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -238,7 +238,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (_userRepository.ExistByMail(mail))
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.AlreadyExist, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.AlreadyExist, MessageType.Error));
             }
 
             return response;

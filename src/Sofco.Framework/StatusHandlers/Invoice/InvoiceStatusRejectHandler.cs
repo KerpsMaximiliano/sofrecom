@@ -36,7 +36,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             if (invoice.InvoiceStatus == InvoiceStatus.Approved || invoice.InvoiceStatus == InvoiceStatus.Cancelled ||
                 invoice.InvoiceStatus == InvoiceStatus.Related || invoice.InvoiceStatus == InvoiceStatus.SendPending)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotReject, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.CannotReject, MessageType.Error));
             }
 
             if (!response.HasErrors())
@@ -61,7 +61,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Invoice.Reject;
+            return Resources.Billing.Invoice.Reject;
         }
 
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)

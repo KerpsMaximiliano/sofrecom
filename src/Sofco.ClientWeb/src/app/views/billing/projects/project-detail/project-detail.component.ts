@@ -6,6 +6,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-project-detail',
@@ -33,6 +34,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     incomesBilled: number = 0;
     incomesCashed: number = 0;
     incomesPending: number = 0;
+
+    billedHitoStatus:string = "Facturado";
+    pendingHitoStatus:string = "Pendiente";
+    projectedHitoStatus:string = "Proyectado";
+    documentTypeKey:string = "documentTypeName";
 
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
@@ -150,11 +156,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     generateSolfacVisible(){
         var hitos = this.getHitosSelected();
 
-        if(hitos.length > 0){
-            return true;
-        } 
+        let isValid = hitos.length > 0;
+        
+        hitos.forEach(item => {
+            if(item.billed){
+                isValid = false;
+            }
+        });
 
-        return false;
+        return isValid;
     }
 
     getHitosSelected(){
@@ -221,15 +231,54 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canSplit(){
-        if(this.menuService.hasFunctionality('SOLFA', 'SPLIH')){
-            var hitos = this.getHitosSelected();
-            
-            if(hitos.length == 1){
-                return true;
-            } 
-        }
-
+        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) 
         return false;
+
+        let hitos = this.getHitosSelected();
+        let isValid = hitos.length == 1;
+            
+        hitos.forEach(item => {
+            if(item.billed){
+                if(item.status == "Cerrado") return;
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    canCreateCreditNote():boolean {
+        if(!this.canCreateSolfac()) return false;
+
+        if(!this.isValidCreditNote()) return false;
+
+        return true;
+    }
+
+    canCreateDebitNote():boolean {
+        if(!this.canCreateSolfac()) return false;
+
+        if(!this.isValidDebitNote()) return false;
+
+        return true;
+    }
+
+    isValidCreditNote():boolean {
+        if(this.solfacs.length == 0) return false;
+        var hitos = this.getHitosSelected();
+        if(hitos.length != 1) return false;
+        var hito = hitos[0];
+        if(hito.solfacId == 0) return false;
+        if(hito.status != this.billedHitoStatus) return false;
+        return true;
+    }
+
+    isValidDebitNote():boolean {
+        var hitos = this.getHitosSelected();
+        if(hitos.length != 1) return false;
+        var hito = hitos[0];
+        if(hito.status != this.billedHitoStatus) return false;
+        return true;
     }
 
     split(){
@@ -241,5 +290,41 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.currencyId = this.project.currencyId;
 
         this.splitHito.openModal(hito);
+    }
+
+    hitosShowCheckBox(hito:any):boolean {
+        return hito.status != 'ToBeBilled' && hito.status != "Pagado";
+    }
+
+    createSolfac() {
+        sessionStorage.removeItem(this.documentTypeKey);
+        
+        this.generateSolfac();
+    }
+
+    createCreditNote() {
+        var hito = this.getHitosSelected()[0];
+        
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.managerId;
+        hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
+
+        sessionStorage.setItem(this.documentTypeKey, "creditNote");
+
+        this.generateSolfac();
+    }
+
+    createDebitNote() {
+        var hito = this.getHitosSelected()[0];
+        
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.managerId;
+        hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
+
+        sessionStorage.setItem(this.documentTypeKey, "debitNote");
+
+        this.generateSolfac();
     }
 }

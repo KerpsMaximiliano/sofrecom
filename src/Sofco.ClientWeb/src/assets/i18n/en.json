@@ -148,7 +148,9 @@
                     "status": "Status",
                     "new": "New Request",
                     "split": "Create milestone",
-                    "splitTitle": "Create new milestone"
+                    "splitTitle": "Create new milestone",
+                    "createCreditNote": "Generate Credit Note",
+                    "createDebitNote": "Generate Debit Note"
                 },
                 "requests": {
                     "title": "Requests",

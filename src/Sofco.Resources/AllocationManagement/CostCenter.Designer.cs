@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.AllocationManagement {
+namespace Sofco.Resources.AllocationManagement {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es.AllocationManagement {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Allocation {
+    public class CostCenter {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Allocation() {
+        internal CostCenter() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.AllocationManagement {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.AllocationManagement.Allocation", typeof(Allocation).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.CostCenter", typeof(CostCenter).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,92 +60,65 @@ namespace Sofco.Resources.es.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.added.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.codeAlreadyExist.
         /// </summary>
-        public static string Added {
+        public static string CodeAlreadyExist {
             get {
-                return ResourceManager.GetString("Added", resourceCulture);
+                return ResourceManager.GetString("CodeAlreadyExist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.billingPercentageExceeded.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.codeIsRequired.
         /// </summary>
-        public static string BillingPercentageExceeded {
+        public static string CodeIsRequired {
             get {
-                return ResourceManager.GetString("BillingPercentageExceeded", resourceCulture);
+                return ResourceManager.GetString("CodeIsRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.cannotBeAssign.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.codeWrongLength.
         /// </summary>
-        public static string CannotBeAssign {
+        public static string CodeWrongLength {
             get {
-                return ResourceManager.GetString("CannotBeAssign", resourceCulture);
+                return ResourceManager.GetString("CodeWrongLength", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceOutOfRange.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.descriptionRequired.
         /// </summary>
-        public static string DateSinceOutOfRange {
+        public static string DescriptionRequired {
             get {
-                return ResourceManager.GetString("DateSinceOutOfRange", resourceCulture);
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceRequired.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.letterIsRequired.
         /// </summary>
-        public static string DateSinceRequired {
+        public static string LetterIsRequired {
             get {
-                return ResourceManager.GetString("DateSinceRequired", resourceCulture);
+                return ResourceManager.GetString("LetterIsRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToLessThanDateSince.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.letterWrong.
         /// </summary>
-        public static string DateToLessThanDateSince {
+        public static string LetterWrong {
             get {
-                return ResourceManager.GetString("DateToLessThanDateSince", resourceCulture);
+                return ResourceManager.GetString("LetterWrong", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToOutOfRange.
+        ///    Busca una cadena localizada similar a allocationManagement/costCenter.save.
         /// </summary>
-        public static string DateToOutOfRange {
+        public static string Save {
             get {
-                return ResourceManager.GetString("DateToOutOfRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToRequired.
-        /// </summary>
-        public static string DateToRequired {
-            get {
-                return ResourceManager.GetString("DateToRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.releaseDateIsRequired.
-        /// </summary>
-        public static string ReleaseDateIsRequired {
-            get {
-                return ResourceManager.GetString("ReleaseDateIsRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.wrongPercentage.
-        /// </summary>
-        public static string WrongPercentage {
-            get {
-                return ResourceManager.GetString("WrongPercentage", resourceCulture);
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
     }

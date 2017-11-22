@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (invoce == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -64,7 +64,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 if (user == null)
                 {
-                    response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
                     return response;
                 }
 
@@ -82,11 +82,11 @@ namespace Sofco.Service.Implementations.Billing
                 invoiceRepository.Save();
 
                 response.Data = invoice;
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceCreated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceCreated, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -112,11 +112,11 @@ namespace Sofco.Service.Implementations.Billing
                 invoiceRepository.Save();
 
                 response.Data = invoice;
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.ExcelUpload, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -130,7 +130,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (invoce == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -158,11 +158,11 @@ namespace Sofco.Service.Implementations.Billing
                 invoiceRepository.Save();
 
                 response.Data = invoice;
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.PdfUpload, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -176,7 +176,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (invoce == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -192,7 +192,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (invoice == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -222,7 +222,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             try
@@ -232,7 +232,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSendMail, MessageType.Error));
             }
 
             return response;
@@ -251,13 +251,13 @@ namespace Sofco.Service.Implementations.Billing
 
             if (invoice == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
             if (invoice.InvoiceStatus != InvoiceStatus.SendPending && invoice.InvoiceStatus != InvoiceStatus.Rejected)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotDelete, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.CannotDelete, MessageType.Error));
                 return response;
             }
 
@@ -266,11 +266,11 @@ namespace Sofco.Service.Implementations.Billing
                 invoiceRepository.Delete(invoice);
                 invoiceRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.Deleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.Deleted, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -309,7 +309,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if(invoice == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -323,7 +323,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;

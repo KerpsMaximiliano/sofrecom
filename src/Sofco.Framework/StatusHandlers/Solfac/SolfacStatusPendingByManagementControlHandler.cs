@@ -43,13 +43,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             {
                 if (!solfacRepository.HasAttachments(solfac.Id))
                 {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
                 }
 
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             return response;
         }
 
@@ -72,7 +72,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Solfac.PendingByManagementControlSuccess;
+            return Resources.Billing.Solfac.PendingByManagementControlSuccess;
         }
 
         private HitoStatus GetHitoStatus()

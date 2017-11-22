@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Admin {
+namespace Sofco.Resources.Admin {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace Sofco.Resources.es.Admin {
     // con la opción /str o recompile su proyecto de VS.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Functionality {
+    public class Module {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal Functionality() {
+        internal Module() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Admin.Functionality", typeof(Functionality).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Module", typeof(Module).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.created.
+        ///    Busca una cadena localizada similar a admin/module.created.
         /// </summary>
         public static string Created {
             get {
@@ -69,7 +69,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.disabled.
+        ///    Busca una cadena localizada similar a admin/module.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -78,7 +78,7 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.enabled.
+        ///    Busca una cadena localizada similar a admin/module.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -87,29 +87,29 @@ namespace Sofco.Resources.es.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyCreated.
+        ///    Busca una cadena localizada similar a admin/module.functionalitiesUpdated.
         /// </summary>
-        public static string ModuleFunctionalityAlreadyCreated {
+        public static string FunctionalitiesUpdated {
             get {
-                return ResourceManager.GetString("ModuleFunctionalityAlreadyCreated", resourceCulture);
+                return ResourceManager.GetString("FunctionalitiesUpdated", resourceCulture);
             }
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.moduleFunctionalityAlreadyRemoved.
-        /// </summary>
-        public static string ModuleFunctionalityAlreadyRemoved {
-            get {
-                return ResourceManager.GetString("ModuleFunctionalityAlreadyRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Busca una cadena localizada similar a admin/functionality.notFound.
+        ///    Busca una cadena localizada similar a admin/module.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a admin/module.updated.
+        /// </summary>
+        public static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
             }
         }
     }

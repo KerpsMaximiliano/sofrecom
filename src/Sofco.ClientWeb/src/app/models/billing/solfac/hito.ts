@@ -8,6 +8,9 @@ export class Hito {
         public externalHitoId: string,
         public currency: string,
         public month: number,
-        public solfacId: number
+        public solfacId: number,
+        public currencyId: number,
+        public opportunityId: string,
+        public managerId: string
     ){}
 }

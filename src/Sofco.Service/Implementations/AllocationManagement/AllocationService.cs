@@ -157,11 +157,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 allocationRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Allocation.Added, MessageType.Success));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.Added, MessageType.Success));
             }
             catch (Exception ex)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
         }
     }

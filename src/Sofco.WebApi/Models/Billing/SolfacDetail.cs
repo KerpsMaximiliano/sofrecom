@@ -72,8 +72,10 @@ namespace Sofco.WebApi.Models.Billing
             {
                 foreach (var hitoDetail in hito.Details)
                 {
-                    var detailViewModel = new HitoDetailViewModel(hitoDetail);
-                    detailViewModel.ExternalHitoId = hito.ExternalHitoId;
+                    var detailViewModel = new HitoDetailViewModel(hitoDetail)
+                    {
+                        ExternalHitoId = hito.ExternalHitoId,
+                    };
                     Details.Add(detailViewModel);
                 }
 
