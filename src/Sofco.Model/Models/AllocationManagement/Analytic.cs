@@ -1,10 +1,9 @@
-﻿using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Sofco.Model.Enums.TimeManagement;
+using Sofco.Model.Utils;
 
-namespace Sofco.Model.Models.TimeManagement
+namespace Sofco.Model.Models.AllocationManagement
 {
     public class Analytic : BaseEntity
     {

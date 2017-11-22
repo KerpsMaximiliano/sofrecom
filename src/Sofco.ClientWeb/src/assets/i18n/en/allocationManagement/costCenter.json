@@ -1,0 +1,9 @@
+{
+    "save": "Cost center successfully created",
+    "codeIsRequired": "The code is required",
+    "codeWrongLength": "The code must have 3 digits",
+    "letterIsRequired": "The letter is required",
+    "letterWrong": "The letter should not be a number or a special character",
+    "descriptionRequired": "The description is required",
+    "codeAlreadyExist": "Code already exist"
+}

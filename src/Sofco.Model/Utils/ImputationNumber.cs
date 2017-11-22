@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.TimeManagement;
 
 namespace Sofco.Model.Utils
 {

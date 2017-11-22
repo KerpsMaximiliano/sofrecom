@@ -46,6 +46,7 @@
           <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('allocationManagement')}">
               <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
               <li [ngClass]="{active: activeRoute('resources')}"><a [routerLink]="['/allocationManagement/resources']">{{'allocationManagement.resources.title' | translate }}</a></li>
+              <li [ngClass]="{active: activeRoute('costCenter')}"><a [routerLink]="['/allocationManagement/costCenter']">{{'allocationManagement.costCenter.title' | translate }}</a></li>
           </ul>
         </li> 
 

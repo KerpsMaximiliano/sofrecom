@@ -1,0 +1,9 @@
+{
+    "save": "Centro de costos creado exitosamente",
+    "codeIsRequired": "El código es requerido",
+    "codeWrongLength": "El código debe tener 3 digitos",
+    "letterIsRequired": "La letra es requerida",
+    "letterWrong": "La letra no debe ser un número ni un caracter especial",
+    "descriptionRequired": "La descripción es requerida",
+    "codeAlreadyExist": "Código ya existe"
+}

@@ -1,11 +1,11 @@
 ﻿using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Model.Models.TimeManagement;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 { 

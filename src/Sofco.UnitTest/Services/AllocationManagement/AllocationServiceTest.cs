@@ -2,13 +2,13 @@
 using NUnit.Framework;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Model.DTO;
-using Sofco.Model.Models.TimeManagement;
 using Sofco.Service.Implementations.AllocationManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
 {

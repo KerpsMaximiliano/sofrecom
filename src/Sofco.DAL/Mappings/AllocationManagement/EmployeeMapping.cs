@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.TimeManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Sofco.Model.Models.AllocationManagement;
 
-namespace Sofco.DAL.Mappings.TimeManagement
+namespace Sofco.DAL.Mappings.AllocationManagement
 {
     public static class EmployeeMapping
     {

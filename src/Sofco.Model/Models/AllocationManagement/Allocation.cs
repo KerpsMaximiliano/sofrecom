@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Model.Models.TimeManagement
+namespace Sofco.Model.Models.AllocationManagement
 {
     public class Allocation : BaseEntity
     {

@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Models.TimeManagement;
-using Sofco.Model.Utils;
+﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
 {

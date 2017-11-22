@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
 {

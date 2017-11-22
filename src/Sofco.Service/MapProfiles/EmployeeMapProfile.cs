@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.MapProfiles
 {

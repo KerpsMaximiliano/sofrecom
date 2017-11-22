@@ -8,7 +8,7 @@ using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Mail;
 using Sofco.Model;
-using Sofco.Model.Models.TimeManagement;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Service.Settings.Jobs;
 
