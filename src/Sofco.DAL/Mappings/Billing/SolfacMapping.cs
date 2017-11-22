@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing

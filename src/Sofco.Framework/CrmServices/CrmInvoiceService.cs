@@ -10,6 +10,7 @@ using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Domain.Crm;
 using Sofco.Model.Enums;
+using Sofco.Model.Helpers;
 using Sofco.Model.Models.Billing;
 using Sofco.Service.Http.Interfaces;
 
@@ -44,7 +45,7 @@ namespace Sofco.Framework.CrmServices
         {
             var hito = solfac.Hitos.First();
 
-            var ammount = hito.Details.Sum(s => s.Total);
+            var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
             var statusCode = (int)HitoStatus.Pending;
             var startDate = DateTime.Now;
 

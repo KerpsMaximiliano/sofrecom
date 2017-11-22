@@ -18,6 +18,7 @@ using Sofco.Model.Utils;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Mail;
 using Sofco.Framework.ValidationHelpers.Billing;
+using Sofco.Model.Helpers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -366,7 +367,7 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateContractNumber(solfac, response);
             SolfacValidationHelper.ValidateImputationNumber(solfac, response);
 
-            if (IsCreditNote(solfac))
+            if (SolfacHelper.IsCreditNote(solfac))
             {
                 SolfacValidationHelper.ValidateCreditNote(solfac, solfacRepository, response);
             }
@@ -741,7 +742,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private void CreateHitoOnCrm(Solfac solfac)
         {
-            if (!IsCreditNote(solfac))
+            if (!SolfacHelper.IsCreditNote(solfac))
                 return;
 
             var hito = solfac.Hitos.First();
@@ -751,11 +752,6 @@ namespace Sofco.Service.Implementations.Billing
             var hitoResult = crmInvoiceService.CreateHitoBySolfac(solfac);
 
             hito.ExternalHitoId = hitoResult.Data;
-        }
-
-        private static bool IsCreditNote(Solfac solfac)
-        {
-            return new[] { SolfacDocumentType.CreditNoteA, SolfacDocumentType.CreditNoteB }.Contains(solfac.DocumentTypeId);
         }
     }
 }
