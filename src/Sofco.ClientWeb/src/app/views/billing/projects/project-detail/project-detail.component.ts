@@ -245,20 +245,36 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
-    canCreateCreditAndDebitNote():boolean {
-        if(!this.isValidCreditAndDebitNote()) return false;
-
+    canCreateCreditNote():boolean {
         if(!this.canCreateSolfac()) return false;
+
+        if(!this.isValidCreditNote()) return false;
 
         return true;
     }
 
-    isValidCreditAndDebitNote():boolean {
+    canCreateDebitNote():boolean {
+        if(!this.canCreateSolfac()) return false;
+
+        if(!this.isValidDebitNote()) return false;
+
+        return true;
+    }
+
+    isValidCreditNote():boolean {
         if(this.solfacs.length == 0) return false;
         var hitos = this.getHitosSelected();
         if(hitos.length != 1) return false;
         var hito = hitos[0];
         if(hito.solfacId == 0) return false;
+        if(hito.status != this.billedHitoStatus) return false;
+        return true;
+    }
+
+    isValidDebitNote():boolean {
+        var hitos = this.getHitosSelected();
+        if(hitos.length != 1) return false;
+        var hito = hitos[0];
         if(hito.status != this.billedHitoStatus) return false;
         return true;
     }
@@ -275,15 +291,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     hitosShowCheckBox(hito:any):boolean {
-        var isValid = hito.status != 'ToBeBilled' && hito.status != "Pagado";
-
-        if(!isValid) return false;
-
-        if(hito.status == this.billedHitoStatus){
-            if(hito.solfacId == 0) return false;
-        }
-
-        return isValid;
+        return hito.status != 'ToBeBilled' && hito.status != "Pagado";
     }
 
     createSolfac() {
