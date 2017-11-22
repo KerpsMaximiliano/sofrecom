@@ -12,19 +12,19 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             if (domain.Code == 0)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeIsRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.CodeIsRequired, MessageType.Error));
             }
             else
             {
                 if (domain.Code.ToString().Length != 3)
                 {
-                    response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeWrongLength, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.CodeWrongLength, MessageType.Error));
                 }
                 else
                 {
                     if (costCenterRepository.ExistCode(domain.Code))
                     {
-                        response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.CodeAlreadyExist, MessageType.Error));
+                        response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.CodeAlreadyExist, MessageType.Error));
                     }
                 }
             }
@@ -34,7 +34,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             if (string.IsNullOrWhiteSpace(domain.Letter))
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.LetterIsRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.LetterIsRequired, MessageType.Error));
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
                 if (domain.Letter.Length != 1 || !match.Success)
                 {
-                    response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.LetterWrong, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.LetterWrong, MessageType.Error));
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             if (string.IsNullOrWhiteSpace(domain.Description))
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.DescriptionRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.DescriptionRequired, MessageType.Error));
             }
         }
     }

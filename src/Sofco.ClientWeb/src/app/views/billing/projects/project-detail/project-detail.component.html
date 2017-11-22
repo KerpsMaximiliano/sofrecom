@@ -150,7 +150,8 @@
 
                                     <div class="button-group">
                                         <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="generateSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
-                                        <button *ngIf="canCreateCreditNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
+                                        <button *ngIf="canCreateCreditAndDebitNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
+                                        <button *ngIf="canCreateCreditAndDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canSplit()" (click)="split()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.split' | translate }}  <i class="fa fa-clone"></i></button> 
                                     </div>
                                 </div>

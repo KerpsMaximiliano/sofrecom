@@ -13,7 +13,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (!exist)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Employee.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Employee.NotFound, MessageType.Error));
             }
         }
 
@@ -23,7 +23,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (employee == null)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Employee.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Employee.NotFound, MessageType.Error));
             }
 
             return employee;

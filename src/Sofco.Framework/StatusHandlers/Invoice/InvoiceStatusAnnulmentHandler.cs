@@ -34,7 +34,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Invoice.Cancelled;
+            return Resources.Billing.Invoice.Cancelled;
         }
 
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)

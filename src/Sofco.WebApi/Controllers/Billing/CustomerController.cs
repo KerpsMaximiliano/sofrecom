@@ -73,7 +73,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
                 {
                     var response = new Model.Utils.Response();
-                    response.Messages.Add(new Model.Utils.Message(Resources.es.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
+                    response.Messages.Add(new Model.Utils.Message(Resources.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
 
                     return BadRequest(response);
                 }

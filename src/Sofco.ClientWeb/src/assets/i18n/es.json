@@ -150,7 +150,8 @@
                     "split": "Dividir hito",
                     "cantToSplit": "Cantidad a dividir",
                     "splitTitle": "División de hito",
-                    "createCreditNote": "Generar Nota de Crédito"
+                    "createCreditNote": "Generar Nota de Crédito",
+                    "createDebitNote": "Generar Nota de Débito"
                 },
                 "requests": {
                     "title": "Solicitudes",

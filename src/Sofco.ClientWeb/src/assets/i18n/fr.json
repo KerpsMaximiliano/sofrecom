@@ -116,8 +116,13 @@
                      "startDate": "Date de Création",
                      "month": "Mois",
                      "status": "État",
-                     "new": "Générer Demande"
-                 },
+                     "new": "Générer Demande",
+                     "split": "Split milestone",
+                     "cantToSplit": "Quantity to split",
+                     "splitTitle": "Split Milestone",
+                     "createCreditNote": "Generate Credit Note",
+                     "createDebitNote": "Generate Debit Note"
+                  },
                  "requests": {
                      "title": "Demandes",
                      "project": "Projet",

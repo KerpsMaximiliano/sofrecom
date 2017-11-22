@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.es.Billing {
+namespace Sofco.Resources.Billing {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace Sofco.Resources.es.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.es.Billing.Solfac", typeof(Solfac).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Solfac", typeof(Solfac).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -149,13 +149,21 @@ namespace Sofco.Resources.es.Billing {
             }
         }
         
-        public static string CreditNoteTotalExceededError {
-            get { return ResourceManager.GetString("CreditNoteTotalExceededError", resourceCulture); }
-        }
-
+        /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.contractNumberEmpty.
+        /// </summary>
         public static string ContractNumberEmpty {
             get {
                 return ResourceManager.GetString("ContractNumberEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.creditNoteTotalExceeded.
+        /// </summary>
+        public static string CreditNoteTotalExceededError {
+            get {
+                return ResourceManager.GetString("CreditNoteTotalExceededError", resourceCulture);
             }
         }
         
@@ -232,7 +240,7 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a billing/solfac.imputationNumberEmpty.
+        ///    Looks up a localized string similar to billing/solfac.imputationNumberEmpty.
         /// </summary>
         public static string ImputationNumberEmpty {
             get {

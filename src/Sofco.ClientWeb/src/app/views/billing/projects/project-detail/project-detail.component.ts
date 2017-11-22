@@ -38,6 +38,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     billedHitoStatus:string = "Facturado";
     pendingHitoStatus:string = "Pendiente";
     projectedHitoStatus:string = "Proyectado";
+    documentTypeKey:string = "documentTypeName";
 
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
@@ -244,15 +245,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
-    canCreateCreditNote():boolean {
-        if(!this.isValidCreditNote()) return false;
+    canCreateCreditAndDebitNote():boolean {
+        if(!this.isValidCreditAndDebitNote()) return false;
 
         if(!this.canCreateSolfac()) return false;
 
         return true;
     }
 
-    isValidCreditNote():boolean {
+    isValidCreditAndDebitNote():boolean {
         if(this.solfacs.length == 0) return false;
         var hitos = this.getHitosSelected();
         if(hitos.length != 1) return false;
@@ -285,6 +286,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
+    createSolfac() {
+        sessionStorage.removeItem(this.documentTypeKey);
+        
+        this.generateSolfac();
+    }
+
     createCreditNote() {
         var hito = this.getHitosSelected()[0];
         
@@ -292,6 +299,21 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.managerId = this.project.managerId;
         hito.opportunityId = this.project.opportunityId;
         hito.currencyId = this.project.currencyId;
+
+        sessionStorage.setItem(this.documentTypeKey, "creditNote");
+
+        this.generateSolfac();
+    }
+
+    createDebitNote() {
+        var hito = this.getHitosSelected()[0];
+        
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.managerId;
+        hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
+
+        sessionStorage.setItem(this.documentTypeKey, "debitNote");
 
         this.generateSolfac();
     }

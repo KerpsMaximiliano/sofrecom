@@ -94,14 +94,14 @@ namespace Sofco.Service.Implementations.Billing
                 }
 
                 response.Data = solfac;
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacCreated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacCreated, MessageType.Success));
 
                 UpdateHitos(solfac.Hitos, response);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex);
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -139,7 +139,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (solfac == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -193,7 +193,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             try
@@ -203,7 +203,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSendMail, MessageType.Warning));
+                response.Messages.Add(new Message(Resources.Common.ErrorSendMail, MessageType.Warning));
             }
 
             return response;
@@ -232,11 +232,11 @@ namespace Sofco.Service.Implementations.Billing
                 solfacRepository.Delete(solfac);
                 solfacRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.Deleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.Deleted, MessageType.Success));
             }
             catch(Exception ex)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -269,12 +269,12 @@ namespace Sofco.Service.Implementations.Billing
                 // Update hitos in CRM
                 UpdateHitos(solfac.Hitos, response);
 
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.SolfacUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacUpdated, MessageType.Success));
             }
             catch(Exception ex)
             {
                 logger.LogError(ex.Message);
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -288,7 +288,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (solfac == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.NotFound, MessageType.Error));
                 return response;
             }
 
@@ -304,7 +304,7 @@ namespace Sofco.Service.Implementations.Billing
             solfacRepository.Save();
 
             response.Data = attachment;
-            response.Messages.Add(new Message(Resources.es.Billing.Solfac.FileAdded, MessageType.Success));
+            response.Messages.Add(new Message(Resources.Billing.Solfac.FileAdded, MessageType.Success));
 
             return response;
         }
@@ -322,7 +322,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (file == null)
             {
-                response.Messages.Add(new Message(Resources.es.Common.FileNotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.FileNotFound, MessageType.Error));
                 return response;
             }
 
@@ -338,7 +338,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (file == null)
             {
-                response.Messages.Add(new Message(Resources.es.Common.FileNotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.FileNotFound, MessageType.Error));
                 return response;
             }
 
@@ -346,11 +346,11 @@ namespace Sofco.Service.Implementations.Billing
             {
                 solfacRepository.DeleteFile(file);
                 solfacRepository.Save();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.FileDeleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.FileDeleted, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -383,7 +383,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (detail == null)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.DetailNotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.DetailNotFound, MessageType.Error));
                 return response;
             }
 
@@ -391,11 +391,11 @@ namespace Sofco.Service.Implementations.Billing
             {
                 solfacRepository.DeleteDetail(detail);
                 solfacRepository.Save();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.DetailDeleted, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.DetailDeleted, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -418,7 +418,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 if (!response.HasErrors())
                 {
-                    response.Messages.Add(new Message(Resources.es.Billing.Project.HitoSplitted, MessageType.Success));
+                    response.Messages.Add(new Message(Resources.Billing.Project.HitoSplitted, MessageType.Success));
                 }
             }
 
@@ -444,7 +444,7 @@ namespace Sofco.Service.Implementations.Billing
                 }
                 catch (Exception ex)
                 {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
                 }
             }
         }
@@ -463,7 +463,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
 
@@ -535,7 +535,7 @@ namespace Sofco.Service.Implementations.Billing
                     }
                     catch (Exception)
                     {
-                        response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos,
+                        response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos,
                             MessageType.Warning));
                     }
                 }
@@ -569,11 +569,11 @@ namespace Sofco.Service.Implementations.Billing
                 solfacRepository.AddHistory(history);
 
                 solfacRepository.Save();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.BillUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.BillUpdated, MessageType.Success));
             }
             catch (Exception ex)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -600,11 +600,11 @@ namespace Sofco.Service.Implementations.Billing
                 solfacRepository.AddHistory(history);
 
                 solfacRepository.Save();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CashUpdated, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.CashUpdated, MessageType.Success));
             }
             catch (Exception ex)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -631,16 +631,16 @@ namespace Sofco.Service.Implementations.Billing
 
                     invoiceRepository.Save();
 
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoiceDeleted, MessageType.Success));
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.InvoiceDeleted, MessageType.Success));
                 }
                 else
                 {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 }
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -682,17 +682,17 @@ namespace Sofco.Service.Implementations.Billing
                     }
                     else
                     {
-                        response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFound, MessageType.Warning));
+                        response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Warning));
                     }
                 }
 
                 invoiceRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.InvoicesAdded, MessageType.Success));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.InvoicesAdded, MessageType.Success));
             }
             catch
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
@@ -742,7 +742,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private void CreateHitoOnCrm(Solfac solfac)
         {
-            if (!SolfacHelper.IsCreditNote(solfac))
+            if (!SolfacHelper.IsCreditNote(solfac) && !SolfacHelper.IsDebitNote(solfac))
                 return;
 
             var hito = solfac.Hitos.First();

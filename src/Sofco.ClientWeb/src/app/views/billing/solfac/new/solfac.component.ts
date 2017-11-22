@@ -46,7 +46,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     public test;
 
-    isDefaultSolfacType:boolean = true;
     isCreditNoteSolfacType:boolean = false;
     isDebitNoteSolfacType:boolean = false;
     documentTypeDicts:Object = {
@@ -54,7 +53,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
       "creditNote": ["2", "4"],
       "debitNote": ["5"]
     }
-
+    documentTypeKey:string = "documentTypeName";
+    
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -277,11 +277,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setSolfacType(hitos:Array<any>) {
-      this.isCreditNoteSolfacType = hitos.every(s => s.status == "Facturado");
+      let documentTypeName = sessionStorage.getItem(this.documentTypeKey);
+      sessionStorage.removeItem(this.documentTypeKey);
+      this.isCreditNoteSolfacType = documentTypeName == "creditNote";
+      this.isDebitNoteSolfacType = documentTypeName == "debitNote";
 
-      this.isDefaultSolfacType = !this.isCreditNoteSolfacType;
-
-      if(this.isCreditNoteSolfacType)
+      if(this.isCreditNoteSolfacType || this.isDebitNoteSolfacType)
       {
         let currentHito = hitos[0];
         let hito = this.model.hitos[0];
@@ -295,6 +296,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       if(this.isCreditNoteSolfacType)
       {
         return this.documentTypeDicts["creditNote"];
+      }
+      if(this.isDebitNoteSolfacType)
+      {
+        return this.documentTypeDicts["debitNote"];
       }
       return this.documentTypeDicts["default"];
     }

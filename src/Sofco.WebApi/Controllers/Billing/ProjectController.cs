@@ -62,7 +62,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 if (project.Id.Equals("00000000-0000-0000-0000-000000000000"))
                 {
                     var response = new Response();
-                    response.Messages.Add(new Message(Resources.es.Billing.Project.NotFound, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Billing.Project.NotFound, MessageType.Error));
 
                     return BadRequest(response);
                 }

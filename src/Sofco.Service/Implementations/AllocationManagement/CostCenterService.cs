@@ -33,11 +33,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 costCenterRepository.Insert(domain);
                 costCenterRepository.Save();
 
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.CostCenter.Save, MessageType.Success));
+                response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.Save, MessageType.Success));
             }
             catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
             return response;
