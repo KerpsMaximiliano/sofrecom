@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,14 +23,12 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly IUtilsService utilsService;
         private readonly ISolfacService solfacService;
         private readonly EmailConfig emailConfig;
-        private readonly CrmConfig crmConfig;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, IOptions<CrmConfig> crmOptions)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig)
         {
             this.utilsService = utilsService;
             this.solfacService = solfacService;
             this.emailConfig = emailConfig.Value;
-            crmConfig = crmOptions.Value;
         }
 
         [HttpPost]
@@ -122,7 +117,8 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.Validate(domain);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -174,7 +170,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.Add(domain, model.InvoicesId);
+            var response = solfacService.CreateSolfac(domain, model.InvoicesId);
 
             if (response.HasErrors())
                 return BadRequest(response);
@@ -252,7 +248,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteDetail(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -301,12 +298,13 @@ namespace Sofco.WebApi.Controllers.Billing
                     if (response.HasErrors())
                         return BadRequest(response);
 
-                    var responseFile = new Response<SolfacAttachmentViewModel>();
-                    responseFile.Messages = response.Messages;
-                    responseFile.Data = new SolfacAttachmentViewModel(response.Data);
+                    var responseFile = new Response<SolfacAttachmentViewModel>
+                    {
+                        Messages = response.Messages,
+                        Data = new SolfacAttachmentViewModel(response.Data)
+                    };
 
                     return Ok(responseFile);
-
                 }
                 catch
                 {

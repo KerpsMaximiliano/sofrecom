@@ -141,7 +141,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 return Ok(projectService.GetHitosByProject(projectId));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -153,7 +153,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = await solfacService.SplitHito(hito);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

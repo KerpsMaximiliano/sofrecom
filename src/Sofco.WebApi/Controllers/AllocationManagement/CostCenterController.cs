@@ -32,7 +32,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             var response = costCenterService.Add(domain);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(response);
         }

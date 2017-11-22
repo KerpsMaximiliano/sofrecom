@@ -52,8 +52,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-
-                IList<CustomerCrm> customers = await GetCustomers(userMail);
+                var customers = await GetCustomers(userMail);
 
                 return Ok(customers);
             }

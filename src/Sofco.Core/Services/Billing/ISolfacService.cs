@@ -9,7 +9,7 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ISolfacService
     {
-        Response<Solfac> Add(Solfac solfac, IList<int> invoicesId);
+        Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId);
         IList<Solfac> Search(SolfacParams parameter, string userMail);
         IList<Hito> GetHitosByProject(string projectId);
         IList<Solfac> GetByProject(string projectId);

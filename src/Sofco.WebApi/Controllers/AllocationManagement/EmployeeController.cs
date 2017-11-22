@@ -21,6 +21,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Get()
         {
             var model = employeeService.GetAll().Select(x => new EmployeeOptionModel(x));
+
             return Ok(model);
         }
 
@@ -29,7 +30,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = employeeService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new EmployeeOptionModel(response.Data));
         }

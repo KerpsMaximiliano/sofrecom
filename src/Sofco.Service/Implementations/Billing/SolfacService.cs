@@ -51,7 +51,7 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
         }
 
-        public Response<Solfac> Add(Solfac solfac, IList<int> invoicesId)
+        public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId)
         {
             var response = Validate(solfac);
 
@@ -703,7 +703,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<Solfac> Post(Solfac solfac, IList<int> invoicesId)
         {
-            var result = Add(solfac, invoicesId);
+            var result = CreateSolfac(solfac, invoicesId);
 
             if (result.HasErrors())
                 return result;
