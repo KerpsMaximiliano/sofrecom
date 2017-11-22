@@ -250,7 +250,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (!invoices.Any())
             {
                 var response = new Response();
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NotFounds, MessageType.Warning));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFounds, MessageType.Warning));
                 return Ok(response);
             }
 

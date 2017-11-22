@@ -39,14 +39,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             if (invoice.InvoiceStatus == InvoiceStatus.Approved || invoice.InvoiceStatus == InvoiceStatus.Cancelled ||
                 invoice.InvoiceStatus == InvoiceStatus.Related)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotSendToDaf, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.CannotSendToDaf, MessageType.Error));
             }
 
             if ((invoice.InvoiceStatus == InvoiceStatus.SendPending ||
                  invoice.InvoiceStatus == InvoiceStatus.Rejected) &&
                 string.IsNullOrWhiteSpace(invoice.ExcelFileName))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NeedExcelToSend, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NeedExcelToSend, MessageType.Error));
             }
 
             if (!response.HasErrors())
@@ -75,7 +75,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Invoice.SentToDaf;
+            return Resources.Billing.Invoice.SentToDaf;
         }
 
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)

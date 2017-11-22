@@ -40,7 +40,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (!resources.Any())
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Analytic.ResourcesNotFound, MessageType.Warning));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.ResourcesNotFound, MessageType.Warning));
             }
 
             response.Data = resources;

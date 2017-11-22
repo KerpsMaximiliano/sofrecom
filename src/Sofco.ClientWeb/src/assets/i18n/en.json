@@ -149,7 +149,9 @@
                     "new": "New Request",
                     "split": "Split milestone",
                     "cantToSplit": "Quantity to split",
-                    "splitTitle": "Split Milestone"
+                    "splitTitle": "Split Milestone",
+                    "createCreditNote": "Generate Credit Note",
+                    "createDebitNote": "Generate Debit Note"
                 },
                 "requests": {
                     "title": "Requests",

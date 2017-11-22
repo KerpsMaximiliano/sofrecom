@@ -41,7 +41,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.Status != SolfacStatus.PendingByManagementControl)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.CannotChangeStatus, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
             
             return response;
@@ -66,7 +66,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Solfac.InvoicePendingSuccess;
+            return Resources.Billing.Solfac.InvoicePendingSuccess;
         }
 
         private HitoStatus GetHitoStatus()

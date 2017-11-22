@@ -34,23 +34,23 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             if (invoice.InvoiceStatus == InvoiceStatus.SendPending || invoice.InvoiceStatus == InvoiceStatus.Cancelled ||
                 invoice.InvoiceStatus == InvoiceStatus.Related || invoice.InvoiceStatus == InvoiceStatus.Rejected)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.CannotApprove, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.CannotApprove, MessageType.Error));
             }
 
             if (invoice.InvoiceStatus == InvoiceStatus.Sent && string.IsNullOrWhiteSpace(invoice.PdfFileName))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.NeedPdfToApprove, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.NeedPdfToApprove, MessageType.Error));
             }
 
             if (string.IsNullOrWhiteSpace(parameters.InvoiceNumber))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceNumerRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceNumerRequired, MessageType.Error));
             }
             else
             {
                 if (_invoiceRepository.InvoiceNumberExist(parameters.InvoiceNumber))
                 {
-                    response.Messages.Add(new Message(Resources.es.Billing.Invoice.InvoiceNumerAlreadyExist, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceNumerAlreadyExist, MessageType.Error));
                 }
             }
 
@@ -71,7 +71,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetSuccessMessage()
         {
-            return Resources.es.Billing.Invoice.Approved;
+            return Resources.Billing.Invoice.Approved;
         }
 
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)

@@ -10,5 +10,10 @@ namespace Sofco.Model.Helpers
         {
             return new[] { SolfacDocumentType.CreditNoteA, SolfacDocumentType.CreditNoteB }.Contains(solfac.DocumentTypeId);
         }
+
+        public static bool IsDebitNote(Solfac solfac)
+        {
+            return SolfacDocumentType.DebitNote == solfac.DocumentTypeId;
+        }
     }
 }

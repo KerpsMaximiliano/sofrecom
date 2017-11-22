@@ -61,7 +61,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Admin.User.UserInactive, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Admin.User.UserInactive, MessageType.Error));
 
             return response;
         }
@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations
 
             if (result.HasErrors)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
             }
             else
             {
@@ -146,7 +146,7 @@ namespace Sofco.Service.Implementations
 
             if (result.HasErrors)
             {
-                response.Messages.Add(new Message(Resources.es.Admin.User.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
             }
             else
             {
@@ -174,7 +174,7 @@ namespace Sofco.Service.Implementations
 
             if (result.HasErrors)
             {
-                response.Messages.Add(new Message(Resources.es.Common.GeneralError, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
             else
             {

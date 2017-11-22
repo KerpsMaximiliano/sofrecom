@@ -5,5 +5,7 @@
         public const int CreditNoteA = 2;
 
         public const int CreditNoteB = 4;
+
+        public const int DebitNote = 5;
     }
 }

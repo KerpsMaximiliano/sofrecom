@@ -30,11 +30,11 @@ namespace Sofco.Service.Implementations.Admin
                 _functionalityRepository.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.es.Admin.Functionality.Enabled : Resources.es.Admin.Functionality.Disabled, MessageType.Success));
+                response.Messages.Add(new Message(active ? Resources.Admin.Functionality.Enabled : Resources.Admin.Functionality.Disabled, MessageType.Success));
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Admin.Functionality.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Admin.Functionality.NotFound, MessageType.Error));
             return response;
         }
 
@@ -58,7 +58,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.es.Admin.Functionality.NotFound, MessageType.Error));
+            response.Messages.Add(new Message(Resources.Admin.Functionality.NotFound, MessageType.Error));
             return response;
         }
 

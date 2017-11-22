@@ -14,7 +14,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             if (allocation.Months.Any(x => x.Percentage < 0 || x.Percentage > 100))
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Allocation.WrongPercentage, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.WrongPercentage, MessageType.Error));
             }
         }
 
@@ -36,7 +36,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (percentageGreaterThan100)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Allocation.CannotBeAssign, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.CannotBeAssign, MessageType.Error));
             }
         }
 
@@ -44,7 +44,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             if (!allocation.ReleaseDate.HasValue || allocation.ReleaseDate == DateTime.MinValue)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Allocation.ReleaseDateIsRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.ReleaseDateIsRequired, MessageType.Error));
             }
         }
     }

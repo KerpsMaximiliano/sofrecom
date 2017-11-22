@@ -14,7 +14,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (hitos.Any(x => x.Ammount <= 0))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.HitoAmmoutRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.HitoAmmoutRequired, MessageType.Error));
             }
         }
 
@@ -22,7 +22,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (hitos.Count < 2)
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.Almost2HitosRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.Almost2HitosRequired, MessageType.Error));
             }
         }
 
@@ -30,7 +30,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (hitos.Any(x => x.OpportunityId.Equals("00000000-0000-0000-0000-000000000000") || string.IsNullOrWhiteSpace(x.OpportunityId)))
             {
-                response.Messages.Add(new Message(Resources.es.Billing.Project.OpportunityRequired, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Billing.Project.OpportunityRequired, MessageType.Error));
             }
         }
     }

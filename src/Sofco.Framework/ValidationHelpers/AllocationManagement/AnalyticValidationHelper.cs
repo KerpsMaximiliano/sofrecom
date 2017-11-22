@@ -13,7 +13,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (analytic == null)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Analytic.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.NotFound, MessageType.Error));
             }
 
             return analytic;
@@ -25,7 +25,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (!exist)
             {
-                response.Messages.Add(new Message(Resources.es.AllocationManagement.Analytic.NotFound, MessageType.Error));
+                response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.NotFound, MessageType.Error));
             }
         }
     }

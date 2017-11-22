@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (!solfacs.Any())
             {
                 var response = new Response();
-                response.Messages.Add(new Message(Resources.es.Billing.Solfac.NotFounds, MessageType.Warning));
+                response.Messages.Add(new Message(Resources.Billing.Solfac.NotFounds, MessageType.Warning));
                 return Ok(response);
             }
 
@@ -311,7 +311,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 catch
                 {
                     var error = new Response();
-                    error.Messages.Add(new Message(Resources.es.Common.SaveFileError, MessageType.Error));
+                    error.Messages.Add(new Message(Resources.Common.SaveFileError, MessageType.Error));
                     return BadRequest(error);
                 }
             }
@@ -344,7 +344,7 @@ namespace Sofco.WebApi.Controllers.Billing
             catch
             {
                 var response = new Response();
-                response.Messages.Add(new Message(Resources.es.Common.ExportFileError, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Common.ExportFileError, MessageType.Error));
                 return BadRequest(response);
             }
         }

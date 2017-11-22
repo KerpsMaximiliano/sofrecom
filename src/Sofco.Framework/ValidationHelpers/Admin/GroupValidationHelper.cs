@@ -15,7 +15,7 @@ namespace Sofco.Framework.ValidationHelpers.Admin
 
                 if (role == null)
                 {
-                    response.Messages.Add(new Message(Resources.es.Admin.Role.NotFound, MessageType.Error));
+                    response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
                 }
 
                 group.Role = role;
@@ -26,7 +26,7 @@ namespace Sofco.Framework.ValidationHelpers.Admin
         {
             if (groupRepository.DescriptionExist(group.Description, group.Id))
             {
-                response.Messages.Add(new Message(Resources.es.Admin.Group.DescriptionAlreadyExist, MessageType.Error));
+                response.Messages.Add(new Message(Resources.Admin.Group.DescriptionAlreadyExist, MessageType.Error));
             }
         }
     }
