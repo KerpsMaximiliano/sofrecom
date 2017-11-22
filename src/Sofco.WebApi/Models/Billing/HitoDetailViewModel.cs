@@ -8,7 +8,6 @@ namespace Sofco.WebApi.Models.Billing
     {
         public HitoDetailViewModel()
         {
-             
         }
 
         public HitoDetailViewModel(HitoDetail domain)

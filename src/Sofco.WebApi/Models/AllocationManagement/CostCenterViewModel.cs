@@ -14,9 +14,13 @@ namespace Sofco.WebApi.Models.AllocationManagement
         }
 
         public int Id { get; set; }
+
         public int Code { get; set; }
+
         public string Letter { get; set; }
+
         public string Description { get; set; }
+
         public bool Active { get; set; }
     }
 }
