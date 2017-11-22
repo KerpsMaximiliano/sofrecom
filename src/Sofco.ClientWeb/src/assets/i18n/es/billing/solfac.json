@@ -45,5 +45,6 @@
     "detailNotFound": "Detalle no encontrado",
     "detailDeleted": "Detalle eliminado correctamente",
     "imputationNumberEmpty": "Número de imputación es requerido",
-    "contractNumberEmpty": "Número de contrato es requerido"
+    "contractNumberEmpty": "Número de contrato es requerido",
+    "solfacHasNoAttachments": "Se ha enviado una solicitud de facturación sin documentos asociados"
 }

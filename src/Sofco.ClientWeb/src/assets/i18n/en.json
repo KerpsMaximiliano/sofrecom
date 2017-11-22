@@ -147,9 +147,8 @@
                     "month": "Month",
                     "status": "Status",
                     "new": "New Request",
-                    "split": "Split milestone",
-                    "cantToSplit": "Quantity to split",
-                    "splitTitle": "Split Milestone"
+                    "split": "Create milestone",
+                    "splitTitle": "Create new milestone"
                 },
                 "requests": {
                     "title": "Requests",
@@ -416,6 +415,7 @@
     "Cancelled": "Cancelled",
     "Proyectado": "Projected",
     "Pendiente": "Pending",
+    "Cerrado": "Close",
     "ToBeBilled": "To be billed",
     "Facturado": "Billed",
     "Pagado": "Cashed",

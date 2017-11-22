@@ -143,13 +143,12 @@
                     "description": "Descripción",
                     "amount": "Monto",
                     "ammountBilled": "M. Facturado",
-                    "startDate": "Fecha Creación",
+                    "startDate": "Fecha Programada",
                     "month": "Mes",
                     "status": "Estado",
                     "new": "Generar Solicitud",
-                    "split": "Dividir hito",
-                    "cantToSplit": "Cantidad a dividir",
-                    "splitTitle": "División de hito"
+                    "split": "Generar hito",
+                    "splitTitle": "Generar nuevo hito"
                 },
                 "requests": {
                     "title": "Solicitudes",
@@ -416,6 +415,7 @@
     "Cancelled": "Anulado",
     "Proyectado": "Proyectado",
     "Pendiente": "Pendiente",
+    "Cerrado": "Cerrado",
     "ToBeBilled": "A ser facturado",
     "Facturado": "Facturado",
     "Pagado": "Pagado",

@@ -136,8 +136,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.hitos.forEach((item, index) => {
             if(item.status == "Facturado") this.incomesBilled += item.ammount;
             if(item.status == "Pagado") this.incomesCashed += item.ammount;
-            if(item.status != "Facturado" && item.status != "Pagado") this.incomesPending += item.ammount;
         });
+
+        this.incomesPending = this.project.incomes - this.incomesBilled - this.incomesCashed;
     }
 
     generateSolfac() {

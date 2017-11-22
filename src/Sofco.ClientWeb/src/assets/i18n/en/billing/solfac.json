@@ -45,5 +45,6 @@
     "detailNotFound": "Detail not found",
     "detailDeleted": "Detail deleted successfully",
     "imputationNumberEmpty": "Imputation number is required",
-    "contractNumberEmpty": "Contract number is required"
+    "contractNumberEmpty": "Contract number is required",
+    "solfacHasNoAttachments": "Se esta enviando una solicitud de facturación sin documentos asociados"
 }

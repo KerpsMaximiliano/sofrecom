@@ -152,11 +152,9 @@ namespace Sofco.Service.Implementations.Billing
                 // Validate status
                 var statusErrors = solfacStatusHandler.Validate(solfac, parameters);
 
-                if (statusErrors.HasErrors())
-                {
-                    response.AddMessages(statusErrors.Messages);
-                    return response;
-                }
+                if (statusErrors.Messages.Any()) response.AddMessages(statusErrors.Messages);
+
+                if (response.HasErrors()) return response;
 
                 // Update Status
                 solfacStatusHandler.SaveStatus(solfac, parameters, solfacRepository);
@@ -174,7 +172,9 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch
             {
+                response = new Response();
                 response.Messages.Add(new Message(Resources.es.Common.ErrorSave, MessageType.Error));
+                return response;
             }
 
             try
@@ -376,20 +376,18 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public async Task<Response> SplitHito(IList<HitoSplittedParams> hitos)
+        public async Task<Response> SplitHito(HitoSplittedParams hito)
         {
-            var response = ValidateHitoSplitted(hitos);
+            var response = ValidateHitoSplitted(hito);
 
             if (response.HasErrors()) return response;
-
-            var first = hitos.FirstOrDefault();
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(crmConfig.Url);
 
-                await UpdateFirstHito(response, first, client);
-                await CreateNewHitos(response, hitos, client);
+                await UpdateFirstHito(response, hito, client);
+                await CreateNewHito(response, hito, client);
 
                 if (!response.HasErrors())
                 {
@@ -400,37 +398,41 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private async Task CreateNewHitos(Response response, IList<HitoSplittedParams> hitos, HttpClient client)
-        {
-            for (int i = 1; i < hitos.Count; i++)
-            {
-                var hito = hitos[i];
-
-                try
-                {
-                    var data = $"Ammount={hito.Ammount}&StatusCode={hito.StatusCode}&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
-                               $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
-
-                    var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-                    var httpResponse = await client.PostAsync($"/api/InvoiceMilestone", stringContent);
-
-                    httpResponse.EnsureSuccessStatusCode();
-                }
-                catch (Exception ex)
-                {
-                    response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
-                }
-            }
-        }
-
-        private async Task UpdateFirstHito(Response response, HitoSplittedParams first, HttpClient client)
+        private async Task CreateNewHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
             try
             {
-                var data = $"Ammount={first.Ammount}&Name={first.Name}";
+                var data = $"Ammount={hito.Ammount}&StatusCode={hito.StatusCode}&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
+                            $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-                var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{first.ExternalHitoId}", stringContent);
+                var httpResponse = await client.PostAsync($"/api/InvoiceMilestone", stringContent);
+
+                httpResponse.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                response.Messages.Add(new Message(Resources.es.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
+            }
+        }
+
+        private async Task UpdateFirstHito(Response response, HitoSplittedParams hito, HttpClient client)
+        {
+            if(hito.AmmountFirstHito == 0) return;
+
+            try
+            {
+                if (hito.AmmountFirstHito - hito.Ammount <= 0)
+                    hito.AmmountFirstHito = 0;
+                else
+                    hito.AmmountFirstHito -= hito.Ammount;
+
+                var data = $"Ammount={hito.AmmountFirstHito}";
+
+                if (hito.AmmountFirstHito == 0) data += "&StatusCode=717620004";
+
+                var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+                var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
 
                 httpResponse.EnsureSuccessStatusCode();
             }
@@ -440,13 +442,14 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        private Response ValidateHitoSplitted(IList<HitoSplittedParams> hitos)
+        private Response ValidateHitoSplitted(HitoSplittedParams hito)
         {
             var response = new Response();
 
-            HitoValidatorHelper.ValidateHitosQuantity(hitos, response);
-            HitoValidatorHelper.ValidateAmmounts(hitos, response);
-            HitoValidatorHelper.ValidateOpportunity(hitos, response);
+            HitoValidatorHelper.ValidateName(hito, response);
+            HitoValidatorHelper.ValidateMonth(hito, response);
+            HitoValidatorHelper.ValidateAmmounts(hito, response);
+            HitoValidatorHelper.ValidateOpportunity(hito, response);
 
             return response;
         }

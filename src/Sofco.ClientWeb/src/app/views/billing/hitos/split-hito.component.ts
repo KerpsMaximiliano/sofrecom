@@ -6,6 +6,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { ProjectService } from 'app/services/billing/project.service';
+import { NewHito } from 'app/models/billing/solfac/newHito';
 
 @Component({
   selector: 'split-hito',
@@ -24,18 +25,21 @@ export class SplitHitoComponent implements OnDestroy  {
   );
 
   subscrip: Subscription;
-  cant: number = 2;
 
   @Output() hitosReload: EventEmitter<any> = new EventEmitter();
 
-  public hitos: any[] = new Array();
+  public hito: NewHito = new NewHito();
   public hitoSelected: any;
+  public options;
 
   constructor(private messageService: MessageService,
     private menuService: MenuService,
     private projectService: ProjectService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router) {}
+    private router: Router) {
+      
+      this.options = this.menuService.getDatePickerOptions();
+    }
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -43,44 +47,20 @@ export class SplitHitoComponent implements OnDestroy  {
 
   openModal(hito){
     this.hitoSelected = hito;
-    this.hitos = new Array();
+    this.hito = new NewHito();
     this.spliHitoModal.show();
   }
 
-  split(){
-    if(!this.cant || this.cant < 2 || this.cant > 5){
-        this.messageService.showWarningByFolder("billing/projects", "hitoQuantityBetween2and5");
-        this.cant = 2;
-    }
-
-    this.hitos = new Array();
-
-    for(var i = 0; i < this.cant; i++){
-
-        var newHito = {
-            name: `${this.hitoSelected.name} - ${i+1}`,
-            ammount: i == 0 ? this.hitoSelected.ammount : 1,
-            statusCode: 717620003,
-            startDate: this.hitoSelected.startDate,
-            month: this.hitoSelected.month,
-            projectId: this.hitoSelected.projectId,
-            opportunityId: this.hitoSelected.opportunityId,
-            managerId: this.hitoSelected.managerId,
-            externalHitoId: this.hitoSelected.id,
-            moneyId: this.hitoSelected.currencyId
-        }
-
-        this.hitos.push(newHito);
-    }
-  }
-
   save(){
-    if(this.hitos.length == 0){
-      this.messageService.showErrorByFolder("billing/projects", "hitoSplittedRequired");
-      return;
-    }
+    this.hito.statusCode = 717620003;
+    this.hito.projectId = this.hitoSelected.projectId;
+    this.hito.opportunityId = this.hitoSelected.opportunityId;
+    this.hito.managerId = this.hitoSelected.managerId;
+    this.hito.externalHitoId = this.hitoSelected.id;
+    this.hito.moneyId = this.hitoSelected.currencyId;
+    this.hito.ammountFirstHito = this.hitoSelected.ammount;
 
-    this.subscrip = this.projectService.splitHito(this.hitos).subscribe(data => {
+    this.subscrip = this.projectService.createNewHito(this.hito).subscribe(data => {
         if(data.messages) this.messageService.showMessages(data.messages);
         this.spliHitoModal.hide();
 

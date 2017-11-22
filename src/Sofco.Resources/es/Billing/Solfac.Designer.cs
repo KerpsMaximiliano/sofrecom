@@ -402,6 +402,15 @@ namespace Sofco.Resources.es.Billing {
         }
         
         /// <summary>
+        ///    Busca una cadena localizada similar a billing/solfac.solfacHasNoAttachments.
+        /// </summary>
+        public static string SolfacHasNoAttachments {
+            get {
+                return ResourceManager.GetString("SolfacHasNoAttachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Busca una cadena localizada similar a billing/solfac.solfacUpdated.
         /// </summary>
         public static string SolfacUpdated {

@@ -5,5 +5,7 @@
     "hitoSplitted": "Milestone has been splitted successfully. CRM has been updated successfully",
     "opportunityRequired": "The opportunity is not loaded in CRM. Update CRM before dividing the milestone",
     "hitoQuantityBetween2and5": "The number of milestones to be divided must be between 2 and 5",
-    "hitoSplittedRequired": "Before saving, divide the milestone"
+    "hitoSplittedRequired": "Before saving, divide the milestone",
+    "nameRequired": "Name is required",
+    "monthRequired": "Month is required"
 }

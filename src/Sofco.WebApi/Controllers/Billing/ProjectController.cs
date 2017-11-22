@@ -173,10 +173,10 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        [Route("hitos/split")]
-        public async Task<IActionResult> SplitHitos([FromBody] IList<HitoSplittedParams> hitos)
+        [Route("hitos/new")]
+        public async Task<IActionResult> SplitHito([FromBody] HitoSplittedParams hito)
         {
-            var response = await solfacService.SplitHito(hitos);
+            var response = await solfacService.SplitHito(hito);
 
             if (response.HasErrors()) return BadRequest(response);
 
