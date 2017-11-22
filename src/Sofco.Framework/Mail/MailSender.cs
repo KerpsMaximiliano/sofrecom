@@ -136,7 +136,7 @@ namespace Sofco.Framework.Mail
                 }
                 catch (Exception e)
                 {
-                    logger.LogError(e.Message, e);
+                    logger.LogError(e);
                     throw;
                 }
 

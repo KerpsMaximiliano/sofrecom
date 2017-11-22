@@ -46,6 +46,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     public test;
 
+    isDefaultSolfacType:boolean = true;
+    isCreditNoteSolfacType:boolean = false;
+    isDebitNoteSolfacType:boolean = false;
+    documentTypeDicts:Object = {
+      "default": ["1", "3", "6", "7"],
+      "creditNote": ["2", "4"],
+      "debitNote": ["5"]
+    }
+
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -125,7 +134,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
@@ -133,6 +142,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
         this.calculateDetail(detail);
       });
+
+      this.setSolfacType(hitos);
 
       this.calculateAmounts();
     }
@@ -162,6 +173,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers;
         this.paymentTerms = data.paymentTerms;
+        this.updateDocumentTypes();
       },
       err => this.errorHandlerService.handleErrors(err));
     }
@@ -262,5 +274,39 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     cancel(){
       this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
+    }
+
+    setSolfacType(hitos:Array<any>) {
+      this.isCreditNoteSolfacType = hitos.every(s => s.status == "Facturado");
+
+      this.isDefaultSolfacType = !this.isCreditNoteSolfacType;
+
+      if(this.isCreditNoteSolfacType)
+      {
+        let currentHito = hitos[0];
+        let hito = this.model.hitos[0];
+        hito.solfacId = currentHito.solfacId;
+      }
+
+      this.updateDocumentTypes();
+    }
+
+    getAllowedDocumentType():Array<string> {
+      if(this.isCreditNoteSolfacType)
+      {
+        return this.documentTypeDicts["creditNote"];
+      }
+      return this.documentTypeDicts["default"];
+    }
+
+    updateDocumentTypes() {
+      let allowedValues = this.getAllowedDocumentType();
+      
+      this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.value));
+
+      if(!allowedValues.includes(this.model.documentType.toString()))
+      {
+        this.model.documentType = Number(allowedValues[0]);
+      }
     }
 }

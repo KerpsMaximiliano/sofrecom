@@ -9,7 +9,7 @@ namespace Sofco.Service.Http
 {
     public class BaseHttpClient : IBaseHttpClient
     {
-        private const string ErrorDelimeter = " - ";
+        private const string ErrorDelimiter = " - ";
 
         private readonly HttpClient httpClient;
 
@@ -38,9 +38,9 @@ namespace Sofco.Service.Http
                 var result = new Result<TResult>();
 
                 result.AddError(requestMessage.RequestUri
-                    + ErrorDelimeter +
+                    + ErrorDelimiter +
                     response.ReasonPhrase 
-                    + ErrorDelimeter + 
+                    + ErrorDelimiter + 
                     response.Content.ReadAsStringAsync().Result);
 
                 return result;

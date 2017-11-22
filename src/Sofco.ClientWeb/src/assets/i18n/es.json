@@ -149,7 +149,8 @@
                     "new": "Generar Solicitud",
                     "split": "Dividir hito",
                     "cantToSplit": "Cantidad a dividir",
-                    "splitTitle": "División de hito"
+                    "splitTitle": "División de hito",
+                    "createCreditNote": "Generar Nota de Crédito"
                 },
                 "requests": {
                     "title": "Solicitudes",

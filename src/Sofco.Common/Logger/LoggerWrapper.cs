@@ -18,9 +18,9 @@ namespace Sofco.Common.Logger
             log.Error(message);
         }
 
-        public void LogError(string error, Exception exception)
+        public void LogError(Exception exception)
         {
-            log.Error(error, exception);
+            log.Error(exception.Message, exception);
         }
     }
 }
