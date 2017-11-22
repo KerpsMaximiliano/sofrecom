@@ -165,7 +165,6 @@ namespace Sofco.WebApi.Controllers.Billing
                         return BadRequest(response);
 
                     return Ok(response);
-
                 }
                 catch
                 {
@@ -205,7 +204,6 @@ namespace Sofco.WebApi.Controllers.Billing
                         return BadRequest(response);
 
                     return Ok(response);
-
                 }
                 catch
                 {

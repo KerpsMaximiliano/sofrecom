@@ -46,13 +46,14 @@ namespace Sofco.WebApi.Models.Admin
 
         internal User CreateDomain()
         {
-            var user = new User();
-
-            user.Name = this.Name;
-            user.UserName = this.UserName;
-            user.Email = this.Email;
-            user.Active = true;
-            user.StartDate = DateTime.Now;
+            var user = new User
+            {
+                Name = Name,
+                UserName = UserName,
+                Email = Email,
+                Active = true,
+                StartDate = DateTime.Now
+            };
 
             return user;
         }
@@ -60,7 +61,8 @@ namespace Sofco.WebApi.Models.Admin
 
     public class UserDetailModel : UserModel
     {
-        public UserDetailModel(User user) : base(user)
+        public UserDetailModel(User user)
+            : base(user)
         {
             Roles = new List<SelectListItem>();
             Modules = new List<ModuleModelDetail>();

@@ -6,10 +6,6 @@ namespace Sofco.WebApi.Models.Billing
 {
     public class HitoViewModel
     {
-        public HitoViewModel()
-        { 
-        }
-
         public HitoViewModel(Hito hito)
         {
             Id = hito.Id;
