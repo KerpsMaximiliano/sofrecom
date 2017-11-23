@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
@@ -15,10 +16,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     public class SolfacStatusPendingByManagementControlHandler : ISolfacStatusHandler
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly ISolfacRepository solfacRepository;
 
-        public SolfacStatusPendingByManagementControlHandler(IGroupRepository groupRepository)
+        public SolfacStatusPendingByManagementControlHandler(IGroupRepository groupRepository, ISolfacRepository solfacRepo)
         {
             _groupRepository = groupRepository;
+            solfacRepository = solfacRepo;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -38,6 +41,16 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected)
             {
+                if (solfac.InvoiceRequired && !solfacRepository.HasInvoices(solfac.Id))
+                {
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
+                }
+
+                if (!response.HasErrors() && !solfacRepository.HasAttachments(solfac.Id))
+                {
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
+                }
+
                 return response;
             }
 

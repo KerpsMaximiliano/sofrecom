@@ -87,7 +87,24 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to billing/projects.notFound.
+        ///    Busca una cadena localizada similar a billing/projects.monthRequired.
+        /// </summary>
+        public static string MonthRequired {
+            get {
+                return ResourceManager.GetString("MonthRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Busca una cadena localizada similar a billing/projects.nameRequired.
+        /// </summary>
+        public static string NameRequired {
+            get {
+                return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// </summary>
         public static string NotFound {
             get {

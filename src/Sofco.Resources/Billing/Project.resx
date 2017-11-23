@@ -126,6 +126,12 @@
   <data name="HitoSplitted" xml:space="preserve">
     <value>billing/projects.hitoSplitted</value>
   </data>
+  <data name="MonthRequired" xml:space="preserve">
+    <value>billing/projects.monthRequired</value>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>billing/projects.nameRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>billing/projects.notFound</value>
   </data>

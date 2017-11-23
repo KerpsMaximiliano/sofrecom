@@ -12,7 +12,10 @@ namespace Sofco.WebApi.Models.Billing
             BusinessName = domain.BusinessName;
 
             if (domain.DocumentType != null)
+            {
+                DocumentTypeId = domain.DocumentTypeId;
                 DocumentTypeName = domain.DocumentType.Text;
+            }
 
             if (domain.UserApplicant != null)
                 Manager = domain.UserApplicant.Name;
@@ -27,6 +30,8 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public int Id { get; set; }
+
+        public int DocumentTypeId { get; set; }
 
         public string Project { get; set; }
 

@@ -7,7 +7,8 @@ import { DataTableService } from 'app/services/common/datatable.service';
 
 @Component({
   selector: 'solfac-history',
-  templateUrl: './solfac-history.component.html'
+  templateUrl: './solfac-history.component.html',
+  styleUrls: ['./solfac-history.component.scss']
 })
 export class SolfacHistoryComponent implements OnInit, OnDestroy {
 

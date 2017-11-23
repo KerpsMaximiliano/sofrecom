@@ -7,12 +7,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusFactory : ISolfacStatusFactory
     {
-        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupRepository groupRepository;
         private readonly ISolfacRepository solfacRepository;
 
-        public SolfacStatusFactory(IGroupRepository groupRepository, ISolfacRepository solfacRepo)
+        public SolfacStatusFactory(IGroupRepository groupRepo, ISolfacRepository solfacRepo)
         {
-            _groupRepository = groupRepository;
+            groupRepository = groupRepo;
             solfacRepository = solfacRepo;
         }
 
@@ -20,9 +20,9 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             switch (status)
             {
-                case SolfacStatus.PendingByManagementControl: return new SolfacStatusPendingByManagementControlHandler(_groupRepository);
+                case SolfacStatus.PendingByManagementControl: return new SolfacStatusPendingByManagementControlHandler(groupRepository, solfacRepository);
                 case SolfacStatus.ManagementControlRejected: return new SolfacStatusManagementControlRejectedHandler();
-                case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(_groupRepository);
+                case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(groupRepository);
                 case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(solfacRepository);
                 case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler();
                 default: return null;

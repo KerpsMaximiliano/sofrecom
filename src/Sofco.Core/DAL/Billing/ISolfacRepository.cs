@@ -31,5 +31,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Hito> GetHitosByExternalIds(List<Guid> externalIds);
         HitoDetail GetDetail(int id);
         void DeleteDetail(HitoDetail detail);
+        bool HasAttachments(int solfacId);
+        bool HasInvoices(int solfacId);
     }
 }

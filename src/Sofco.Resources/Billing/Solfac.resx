@@ -243,4 +243,10 @@
   <data name="ImputationNumberEmpty" xml:space="preserve">
     <value>billing/solfac.imputationNumberEmpty</value>
   </data>
+  <data name="SolfacHasNoAttachments" xml:space="preserve">
+    <value>billing/solfac.solfacHasNoAttachments</value>
+  </data>
+  <data name="SolfacHasNoInvoices" xml:space="preserve">
+    <value>billing/solfac.solfacHasNoInvoices</value>
+  </data>
 </root>

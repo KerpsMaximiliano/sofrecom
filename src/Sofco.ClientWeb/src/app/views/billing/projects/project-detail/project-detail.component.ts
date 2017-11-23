@@ -7,6 +7,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { forEach } from '@angular/router/src/utils/collection';
+import { DocumentTypes } from 'app/models/enums/documentTypes';
 
 @Component({
   selector: 'app-project-detail',
@@ -139,11 +140,21 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateIncomes() {
-        this.hitos.forEach((item, index) => {
-            if(item.status == "Facturado") this.incomesBilled += item.ammount;
-            if(item.status == "Pagado") this.incomesCashed += item.ammount;
-            if(item.status != "Facturado" && item.status != "Pagado") this.incomesPending += item.ammount;
+        this.solfacs.forEach((item, index) => {
+
+            if(item.documentTypeId != DocumentTypes.DebitNote){
+
+                if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
+                    this.incomesBilled += item.totalAmount;
+                }
+
+                if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
+                    this.incomesCashed += item.totalAmount;
+                }
+            }
         });
+
+        this.incomesPending = this.project.incomes - this.incomesBilled - this.incomesCashed;
     }
 
     generateSolfac() {
@@ -238,6 +249,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             
         hitos.forEach(item => {
             if(item.billed){
+                if(item.status == "Cerrado") return;
                 isValid = false;
             }
         });
