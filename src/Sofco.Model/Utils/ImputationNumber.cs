@@ -7,6 +7,7 @@ namespace Sofco.Model.Utils
     public class ImputationNumber : Option
     {
         public IList<Solfac> Solfacs { get; set; }
+
         public ICollection<Analytic> Analytics { get; set; }
     }
 }
