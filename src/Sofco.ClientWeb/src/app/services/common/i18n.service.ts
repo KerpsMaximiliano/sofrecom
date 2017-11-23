@@ -44,6 +44,8 @@ export class I18nService {
     translate(folder, code){
         var lang = this.config.currLang;
 
+        if(!folder || folder == null || folder == '') return;
+
         var translateFile = require(`../../../assets/i18n/${lang}/${folder}.json`);
 
         var value = "";
