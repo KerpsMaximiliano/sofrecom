@@ -459,11 +459,10 @@ namespace Sofco.Service.Implementations.Billing
 
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
                 var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
-                await client.PutAsync($"/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
 
                 httpResponse.EnsureSuccessStatusCode();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
