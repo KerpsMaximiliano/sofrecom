@@ -12,6 +12,7 @@ using Sofco.Domain.Crm;
 using Sofco.Model.Enums;
 using Sofco.Model.Helpers;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Utils;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Framework.CrmServices
@@ -51,6 +52,7 @@ namespace Sofco.Framework.CrmServices
             var name = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
+
             try
             {
                 var data =
@@ -69,6 +71,34 @@ namespace Sofco.Framework.CrmServices
             {
                 logger.LogError(ex);
                 result.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
+
+            return result;
+        }
+
+        public Response UpdateHitos(ICollection<Hito> hitos)
+        {
+            var result = new Response();
+
+            foreach (var item in hitos)
+            {
+                try
+                {
+                    var sum = item.Details.Sum(x => x.Total);
+
+                    if (sum == item.Total) continue;
+
+                    var total = $"Ammount={sum}";
+
+                    var stringContent = new StringContent(total, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex);
+                    result.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Warning));
+                }
             }
 
             return result;

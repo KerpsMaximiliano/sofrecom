@@ -39,7 +39,18 @@ namespace Sofco.Service.Http
             }
 
             return result;
+        }
 
+        public Result<T> Put<T>(string urlPath, StringContent stringContent)
+        {
+            var result = client.Put<T>(urlPath, stringContent);
+
+            if (result.HasErrors)
+            {
+                throw new Exception(string.Join(ErrorDelimiter, result.Errors));
+            }
+
+            return result;
         }
     }
 }

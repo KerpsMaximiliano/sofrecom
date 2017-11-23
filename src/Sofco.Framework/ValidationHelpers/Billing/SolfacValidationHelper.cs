@@ -48,9 +48,9 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             return solfac;
         }
 
-        public static Solfac ValidateIfExist(int id, ISolfacRepository _solfacRepository, Response response)
+        public static Solfac ValidateIfExist(int id, ISolfacRepository solfacRepository, Response response)
         {
-            var solfac = _solfacRepository.GetSingle(x => x.Id == id);
+            var solfac = solfacRepository.GetSingle(x => x.Id == id);
 
             if (solfac == null)
             {

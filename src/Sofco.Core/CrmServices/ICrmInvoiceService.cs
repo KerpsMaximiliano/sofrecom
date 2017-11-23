@@ -2,6 +2,7 @@
 using Sofco.Common.Domains;
 using Sofco.Domain.Crm;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.CrmServices
 {
@@ -10,5 +11,7 @@ namespace Sofco.Core.CrmServices
         Result<List<CrmHito>> GetHitosToExpire(int daysToExpire);
 
         Result<string> CreateHitoBySolfac(Solfac solfac);
+
+        Response UpdateHitos(ICollection<Hito> hitos);
     }
 }
