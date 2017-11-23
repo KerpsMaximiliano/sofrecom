@@ -41,7 +41,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected)
             {
-                if (solfac.InvoiceRequired && !solfacRepository.HasInvoices(solfac.Id))
+                if (solfac.InvoiceRequired && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteA 
+                                           && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteB
+                                           && solfac.DocumentTypeId != SolfacDocumentType.DebitNote
+                                           && !solfacRepository.HasInvoices(solfac.Id))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
                 }

@@ -6,4 +6,4 @@ export enum DocumentTypes {
     DebitNote = 5,
     ExtFact = 6,
     Others = 7
-}
+} 
