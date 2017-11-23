@@ -451,7 +451,7 @@ namespace Sofco.Service.Implementations.Billing
                 if (hito.AmmountFirstHito - hito.Ammount <= 0)
                     hito.AmmountFirstHito = 0;
                 else
-                    hito.AmmountFirstHito -= hito.Ammount;
+                    hito.AmmountFirstHito -= hito.Ammount.GetValueOrDefault();
 
                 var data = $"Ammount={hito.AmmountFirstHito}";
 

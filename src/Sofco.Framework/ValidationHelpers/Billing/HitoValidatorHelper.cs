@@ -12,7 +12,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
     {
         public static void ValidateAmmounts(HitoSplittedParams hito, Response response)
         {
-            if (hito.Ammount <= 0)
+            if (!hito.Ammount.HasValue || hito.Ammount.GetValueOrDefault() <= 0)
             {
                 response.Messages.Add(new Message(Resources.Billing.Project.HitoAmmoutRequired, MessageType.Error));
             }
