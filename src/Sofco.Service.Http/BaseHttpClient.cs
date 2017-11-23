@@ -74,6 +74,15 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
+        public Result<T> Put<T>(string urlPath, HttpContent content)
+        {
+            var requestMessage = BuildRequest(urlPath, HttpMethod.Put);
+
+            requestMessage.Content = content;
+
+            return GetResult<T>(requestMessage);
+        }
+
         public Result<T> Get<T>(string urlPath, string token = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);

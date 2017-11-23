@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations.Billing
             this.solfacRepository = solfacRepository;
             this.invoiceRepository = invoiceRepository;
             this.solfacStatusFactory = solfacStatusFactory;
-            this.crmConfig = crmOptions.Value;
+            crmConfig = crmOptions.Value;
             this.userRepository = userRepository;
             this.mailSender = mailSender;
             this.crmInvoiceService = crmInvoiceService;
@@ -96,7 +96,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = solfac;
                 response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacCreated, MessageType.Success));
 
-                UpdateHitos(solfac.Hitos, response);
+                var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
+
+                response.AddMessages(crmResult.Messages);
             }
             catch (Exception ex)
             {
@@ -267,7 +269,9 @@ namespace Sofco.Service.Implementations.Billing
                 solfacRepository.Save();
 
                 // Update hitos in CRM
-                UpdateHitos(solfac.Hitos, response);
+                var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
+
+                response.AddMessages(crmResult.Messages);
 
                 response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacUpdated, MessageType.Success));
             }
@@ -509,39 +513,6 @@ namespace Sofco.Service.Implementations.Billing
             };
 
             return history;
-        }
-
-        private async void UpdateHitos(ICollection<Hito> hitos, Response response)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                foreach (var item in hitos)
-                {
-                    try
-                    {
-                        var sum = item.Details.Sum(x => x.Total);
-
-                        if (sum != item.Total)
-                        {
-                            var total = $"Ammount={sum}";
-
-                            var stringContent = new StringContent(total, Encoding.UTF8,
-                                "application/x-www-form-urlencoded");
-                            var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{item.ExternalHitoId}",
-                                stringContent);
-
-                            httpResponse.EnsureSuccessStatusCode();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos,
-                            MessageType.Warning));
-                    }
-                }
-            }
         }
 
         public Response UpdateBill(int id, SolfacStatusParams parameters)
