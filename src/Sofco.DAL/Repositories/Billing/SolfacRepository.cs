@@ -196,5 +196,10 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Solfacs.Include(x => x.Attachments).SingleOrDefault(x => x.Id == solfacId).Attachments.Any();
         }
+
+        public bool HasInvoices(int solfacId)
+        {
+            return context.Solfacs.Include(x => x.Invoices).SingleOrDefault(x => x.Id == solfacId).Invoices.Any();
+        }
     }
 }

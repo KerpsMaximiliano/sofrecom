@@ -41,7 +41,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected)
             {
-                if (!solfacRepository.HasAttachments(solfac.Id))
+                if (solfac.InvoiceRequired && !solfacRepository.HasInvoices(solfac.Id))
+                {
+                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
+                }
+
+                if (!response.HasErrors() && !solfacRepository.HasAttachments(solfac.Id))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
                 }

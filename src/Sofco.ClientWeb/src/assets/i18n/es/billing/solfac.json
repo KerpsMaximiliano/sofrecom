@@ -47,5 +47,6 @@
     "creditNoteTotalExceeded": "La suma total no puede superar el importe del hito.",
     "imputationNumberEmpty": "Número de imputación es requerido",
     "contractNumberEmpty": "Número de contrato es requerido",
-    "solfacHasNoAttachments": "Se ha enviado una solicitud de facturación sin documentos asociados"
+    "solfacHasNoAttachments": "Se ha enviado una solicitud de facturación sin documentos asociados",
+    "solfacHasNoInvoices": "No se puede enviar la solicitud. Se necesita adjuntar un remito"
 }

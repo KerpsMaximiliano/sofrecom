@@ -47,5 +47,6 @@
     "creditNoteTotalExceeded": "The total amount cannot exceeded the milestone.",
     "imputationNumberEmpty": "Imputation number is required",
     "contractNumberEmpty": "Contract number is required",
-    "solfacHasNoAttachments": "Se esta enviando una solicitud de facturación sin documentos asociados"
+    "solfacHasNoAttachments": "Se esta enviando una solicitud de facturación sin documentos asociados",
+    "solfacHasNoInvoices": "The request can not be sent. You need to attach an invoice"
 }

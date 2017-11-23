@@ -246,4 +246,7 @@
   <data name="SolfacHasNoAttachments" xml:space="preserve">
     <value>billing/solfac.solfacHasNoAttachments</value>
   </data>
+  <data name="SolfacHasNoInvoices" xml:space="preserve">
+    <value>billing/solfac.solfacHasNoInvoices</value>
+  </data>
 </root>
