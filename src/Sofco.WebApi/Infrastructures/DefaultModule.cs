@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using Sofco.Core.StatusHandlers;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
+using StackExchange.Redis;
 
 namespace Sofco.WebApi.Infrastructures
 {
@@ -56,6 +58,8 @@ namespace Sofco.WebApi.Infrastructures
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
             builder.RegisterType<InvoiceStatusFactory>().As<IInvoiceStatusFactory>();
 
+            RegisterRedisDependencies(builder);
+
             RegisterLogger(builder);
         }
 
@@ -63,6 +67,24 @@ namespace Sofco.WebApi.Infrastructures
         {
             builder.RegisterGeneric(typeof(LoggerWrapper<>))
                 .As(typeof(ILoggerWrapper<>));
+        }
+
+        private void RegisterRedisDependencies(ContainerBuilder builder)
+        {
+            builder.Register(c =>
+                {
+                    var redisConfig = Configuration["Redis:ConnectionString"];
+
+                    var lazyConnection =
+                        new Lazy<ConnectionMultiplexer>(
+                            () => ConnectionMultiplexer.Connect(redisConfig));
+                    return lazyConnection.Value;
+                })
+                .As<ConnectionMultiplexer>()
+                .SingleInstance();
+
+            builder.Register(c => c.Resolve<Lazy<ConnectionMultiplexer>>().Value.GetDatabase())
+                .As<IDatabase>();
         }
     }
 }
