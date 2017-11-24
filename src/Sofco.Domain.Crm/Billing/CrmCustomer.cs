@@ -1,6 +1,6 @@
-﻿namespace Sofco.WebApi.Models.Billing
+﻿namespace Sofco.Domain.Crm.Billing
 {
-    public class CustomerCrm
+    public class CrmCustomer
     {
         public string Id { get; set; }
 

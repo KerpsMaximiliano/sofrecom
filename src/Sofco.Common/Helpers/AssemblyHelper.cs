@@ -26,6 +26,7 @@ namespace Sofco.Common.Helpers
         private static bool IsCandidateLibrary(RuntimeLibrary library, string assemblyName)
         {
             return library.Name == (assemblyName)
+                || library.Name.StartsWith(assemblyName)
                 || library.Dependencies.Any(d => d.Name.StartsWith(assemblyName));
         }
 

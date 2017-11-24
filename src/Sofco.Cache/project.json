@@ -4,6 +4,8 @@
   "dependencies": {
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "10.0.3",
+    "Sofco.Common": "1.0.0-*",
+    "Sofco.Core": "1.0.0-*",
     "StackExchange.Redis": "1.2.6"
   },
 

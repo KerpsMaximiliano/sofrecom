@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Cache.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
@@ -28,15 +27,13 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly CrmConfig crmConfig;
         private readonly IUserService userService;
         private readonly IProjectService projectService;
-        private readonly ICacheManager cacheManager;
 
-        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService, IProjectService projectService, ICacheManager cache)
+        public ProjectController(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, IUserService userService, IProjectService projectService)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;
             this.userService = userService;
             this.projectService = projectService;
-            this.cacheManager = cache;
         }
 
         [HttpGet("{serviceId}/options")]
@@ -81,8 +78,6 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("service/{serviceId}")]
         public async Task<IActionResult> Get(string serviceId)
         {
-            this.cacheManager.Set("test", "prueba");
-
             try
             {
                 var projects = await GetProjects(serviceId);

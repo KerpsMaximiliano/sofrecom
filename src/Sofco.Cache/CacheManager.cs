@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Sofco.Cache.Interfaces;
+using Sofco.Core.Cache;
 using StackExchange.Redis;
 
-namespace Sofco.Cache.Implementations
+namespace Sofco.Cache
 {
     public class CacheManager : ICacheManager
     {
@@ -62,6 +64,43 @@ namespace Sofco.Cache.Implementations
         public void Set<T>(string cacheKey, T result, TimeSpan? cacheExpire = null)
         {
             redis.StringSet(cacheKey, Serialize(result), cacheExpire);
+        }
+
+        public IList<T> GetHashList<T>(string cacheKey)
+        {
+            var result = new List<T>();
+
+            var cache = redis.HashGetAll(cacheKey);
+
+            if (cache.Any())
+            {
+                result = cache.Select(s => Deserialize<T>(s.Value)).ToList();
+            }
+
+            return result;
+        }
+
+        public IList<T> GetHashList<T>(string cacheKey, Func<IList<T>> resolver, Func<T, string> getKey, TimeSpan cacheExpire)
+        {
+            var result = GetHashList<T>(cacheKey);
+
+            if (result.Any())
+                return result;
+
+            result = resolver();
+
+            SetHashList(cacheKey, result, getKey, cacheExpire);
+
+            return result;
+        }
+
+        public void SetHashList<T>(string cacheKey, IList<T> result, Func<T, string> getKey, TimeSpan cacheExpire)
+        {
+            var hashes = result.Select(s => new HashEntry(getKey(s), Serialize(s))).ToArray();
+
+            redis.HashSet(cacheKey, hashes);
+
+            redis.KeyExpire(cacheKey, cacheExpire);
         }
 
         private string Serialize(object obj)

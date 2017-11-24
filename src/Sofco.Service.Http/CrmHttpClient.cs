@@ -29,6 +29,18 @@ namespace Sofco.Service.Http
             return result;
         }
 
+        public Result<T> Get<T>(string urlPath)
+        {
+            var result = client.Get<T>(urlPath);
+
+            if (result.HasErrors)
+            {
+                throw new Exception(string.Join(ErrorDelimiter, result.Errors));
+            }
+
+            return result;
+        }
+
         public Result<T> Post<T>(string urlPath, StringContent stringContent)
         {
             var result = client.Post<T>(urlPath, stringContent);

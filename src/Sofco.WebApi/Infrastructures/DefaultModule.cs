@@ -21,6 +21,7 @@ namespace Sofco.WebApi.Infrastructures
         private const string RepositoryAssemblyEndName = "Repository";
         private const string ServiceAssemblyEndName = "Service";
         private const string ClientAssemblyEndName = "Client";
+        private const string DataAssemblyEndName = "Data";
 
         public IConfigurationRoot Configuration { get; set; }
 
@@ -38,6 +39,10 @@ namespace Sofco.WebApi.Infrastructures
 
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(s => s.Name.EndsWith(RepositoryAssemblyEndName))
+                .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(DataAssemblyEndName))
                 .AsImplementedInterfaces();
 
             builder.RegisterType<MailBuilder>()
