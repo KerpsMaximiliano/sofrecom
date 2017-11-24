@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Sofco.WebApi.Models.Billing
+namespace Sofco.Domain.Crm.Billing
 {
-    public class ServiceCrm
+    public class CrmService
     {
         public string Id { get; set; }
 

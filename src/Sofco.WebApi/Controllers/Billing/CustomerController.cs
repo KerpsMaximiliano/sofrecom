@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
+using Sofco.Domain.Crm.Billing;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -32,7 +34,7 @@ namespace Sofco.WebApi.Controllers.Billing
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new List<CrmCustomer>());
             }
         }
 
@@ -47,7 +49,7 @@ namespace Sofco.WebApi.Controllers.Billing
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new List<CrmCustomer>());
             }
         }
         
