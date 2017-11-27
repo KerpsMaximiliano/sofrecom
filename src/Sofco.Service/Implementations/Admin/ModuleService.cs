@@ -1,33 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Model.Utils;
-using Sofco.Core.DAL.Admin;
 using Sofco.Model.Enums;
 using Sofco.Core.Services.Admin;
+using Sofco.DAL;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Service.Implementations.Admin
 {
     public class ModuleService : IModuleService
     {
-        private readonly IModuleRepository moduleRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ModuleService(IModuleRepository moduleRepository)
+        public ModuleService(IUnitOfWork unitOfWork)
         {
-            this.moduleRepository = moduleRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<Module> Active(int id, bool active)
         {
             var response = new Response<Module>();
-            var entity = moduleRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.ModuleRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
                 entity.Active = active;
 
-                moduleRepository.Update(entity);
-                moduleRepository.Save();
+                unitOfWork.ModuleRepository.Update(entity);
+                unitOfWork.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.Admin.Module.Enabled : Resources.Admin.Module.Disabled, MessageType.Success));
@@ -41,15 +41,15 @@ namespace Sofco.Service.Implementations.Admin
         public IList<Module> GetAllReadOnly(bool active)
         {
             if (active)
-                return moduleRepository.GetAllActivesReadOnly();
+                return unitOfWork.ModuleRepository.GetAllActivesReadOnly();
             else
-                return moduleRepository.GetAllReadOnly();
+                return unitOfWork.ModuleRepository.GetAllReadOnly();
         }
 
         public Response<Module> GetById(int id)
         {
             var response = new Response<Module>();
-            var entity = moduleRepository.GetSingleWithFunctionalities(x => x.Id == id);
+            var entity = unitOfWork.ModuleRepository.GetSingleWithFunctionalities(x => x.Id == id);
 
             if (entity != null)
             {
@@ -67,8 +67,8 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
-                moduleRepository.Update(data);
-                moduleRepository.Save();
+                unitOfWork.ModuleRepository.Update(data);
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Module.Updated, MessageType.Success));
             }
             catch (Exception)
@@ -81,7 +81,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public IList<Module> GetAllWithFunctionalitiesReadOnly()
         {
-            return moduleRepository.GetAllWithFunctionalitiesReadOnly();
+            return unitOfWork.ModuleRepository.GetAllWithFunctionalitiesReadOnly();
         }
     }
 }

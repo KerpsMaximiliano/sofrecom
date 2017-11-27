@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Core.DAL.Admin;
 using Sofco.Core.Services.Admin;
+using Sofco.DAL;
 using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
@@ -11,20 +11,17 @@ namespace Sofco.Service.Implementations.Admin
 {
     public class GroupService : IGroupService
     {
-        private readonly IGroupRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        private readonly IRoleRepository roleRepository;
-
-        public GroupService(IGroupRepository repository, IRoleRepository roleRepository)
+        public GroupService(IUnitOfWork unitOfWork)
         {
-            this.repository = repository;
-            this.roleRepository = roleRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<Group> Active(int id, bool active)
         {
             var response = new Response<Group>();
-            var entity = repository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.GroupRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
@@ -40,8 +37,8 @@ namespace Sofco.Service.Implementations.Admin
                     entity.EndDate = DateTime.Now;
                 }
 
-                repository.Update(entity);
-                repository.Save();
+                unitOfWork.GroupRepository.Update(entity);
+                unitOfWork.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.Admin.Group.Enabled : Resources.Admin.Group.Disabled, MessageType.Success));
@@ -55,15 +52,15 @@ namespace Sofco.Service.Implementations.Admin
         public IList<Group> GetAllReadOnly(bool active)
         {
             if (active)
-                return repository.GetAllActivesReadOnly();
+                return unitOfWork.GroupRepository.GetAllActivesReadOnly();
             else
-                return repository.GetAllReadOnly();
+                return unitOfWork.GroupRepository.GetAllReadOnly();
         }
 
         public Response<Group> GetById(int id)
         {
             var response = new Response<Group>();
-            var group = repository.GetSingleFull(x => x.Id == id);
+            var group = unitOfWork.GroupRepository.GetSingleFull(x => x.Id == id);
 
             if (group != null)
             {
@@ -81,15 +78,15 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
-                GroupValidationHelper.ValidateRol(group, response, roleRepository);
-                GroupValidationHelper.ValidateDescription(group, response, repository);
+                GroupValidationHelper.ValidateRol(group, response, unitOfWork.RoleRepository);
+                GroupValidationHelper.ValidateDescription(group, response, unitOfWork.GroupRepository);
 
                 if (response.HasErrors()) return response;
 
                 group.StartDate = DateTime.Now;
 
-                repository.Insert(group);
-                repository.Save();
+                unitOfWork.GroupRepository.Insert(group);
+                unitOfWork.Save();
 
                 response.Data = group;
                 response.Messages.Add(new Message(Resources.Admin.Group.Created, MessageType.Success));
@@ -116,7 +113,7 @@ namespace Sofco.Service.Implementations.Admin
                 {
                     if(group.Role == null || roleId != group.Role.Id)
                     {
-                        var role = roleRepository.GetSingle(x => x.Id == roleId);
+                        var role = unitOfWork.RoleRepository.GetSingle(x => x.Id == roleId);
 
                         if (role == null)
                         {
@@ -129,12 +126,12 @@ namespace Sofco.Service.Implementations.Admin
 
                 if (response.HasErrors()) return response;
 
-                GroupValidationHelper.ValidateDescription(group, response, repository);
+                GroupValidationHelper.ValidateDescription(group, response, unitOfWork.GroupRepository);
 
                 if (group.Active) group.EndDate = null;
 
-                repository.Update(group);
-                repository.Save();
+                unitOfWork.GroupRepository.Update(group);
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Group.Updated, MessageType.Success));
             }
             catch (Exception)
@@ -148,14 +145,14 @@ namespace Sofco.Service.Implementations.Admin
         public Response<Group> DeleteById(int id)
         {
             var response = new Response<Group>();
-            var entity = repository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.GroupRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
                 entity.EndDate = DateTime.Now;
 
-                repository.Delete(entity);
-                repository.Save();
+                unitOfWork.GroupRepository.Delete(entity);
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.Admin.Group.Deleted, MessageType.Success));
                 return response;
@@ -167,15 +164,15 @@ namespace Sofco.Service.Implementations.Admin
 
         public Response<Group> AddRole(int roleId, int groupId)
         {
-            var role = roleRepository.GetSingle(x => x.Id == roleId);
+            var role = unitOfWork.RoleRepository.GetSingle(x => x.Id == roleId);
 
             var response = ValidateCommonRole(role, groupId);
 
             if (response.HasErrors()) return response;
 
             response.Data.Role = role;
-            repository.Update(response.Data);
-            repository.Save();
+            unitOfWork.GroupRepository.Update(response.Data);
+            unitOfWork.GroupRepository.Save();
 
             response.Messages.Add(new Message(Resources.Admin.Group.RoleAssigned, MessageType.Success));
             return response;
@@ -183,15 +180,15 @@ namespace Sofco.Service.Implementations.Admin
 
         public Response<Group> RemoveRole(int roleId, int groupId)
         {
-            var role = roleRepository.GetSingle(x => x.Id == roleId);
+            var role = unitOfWork.RoleRepository.GetSingle(x => x.Id == roleId);
 
             var response = ValidateCommonRole(role, groupId);
 
             if (response.HasErrors()) return response;
 
             response.Data.Role = null;
-            repository.Update(response.Data);
-            repository.Save();
+            unitOfWork.GroupRepository.Update(response.Data);
+            unitOfWork.Save();
 
             response.Messages.Add(new Message(Resources.Admin.Group.RoleRemoved, MessageType.Success));
             return response;
@@ -207,7 +204,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var group = repository.GetSingleWithRole(x => x.Id == groupId);
+            var group = unitOfWork.GroupRepository.GetSingleWithRole(x => x.Id == groupId);
 
             if (group == null)
             {
