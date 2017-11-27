@@ -39,6 +39,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     billedHitoStatus:string = "Facturado";
     pendingHitoStatus:string = "Pendiente";
     projectedHitoStatus:string = "Proyectado";
+    paidHitoStatus:string = "Pagado";
+    toBeBilledHitoStatus:string = "ToBeBilled";
     documentTypeKey:string = "documentTypeName";
 
     @ViewChild('hito') hito;
@@ -279,7 +281,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(hitos.length != 1) return false;
         var hito = hitos[0];
         if(hito.solfacId == 0) return false;
-        if(hito.status != this.billedHitoStatus) return false;
+        if(hito.status != this.billedHitoStatus 
+            && hito.status != this.paidHitoStatus) return false;
         return true;
     }
 
@@ -287,7 +290,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         var hitos = this.getHitosSelected();
         if(hitos.length != 1) return false;
         var hito = hitos[0];
-        if(hito.status != this.billedHitoStatus) return false;
+        if(hito.status != this.billedHitoStatus 
+            && hito.status != this.paidHitoStatus
+            && hito.status != this.toBeBilledHitoStatus) return false;
         return true;
     }
 
@@ -300,10 +305,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.currencyId = this.project.currencyId;
 
         this.splitHito.openModal(hito);
-    }
-
-    hitosShowCheckBox(hito:any):boolean {
-        return hito.status != 'ToBeBilled' && hito.status != "Pagado";
     }
 
     createSolfac() {
