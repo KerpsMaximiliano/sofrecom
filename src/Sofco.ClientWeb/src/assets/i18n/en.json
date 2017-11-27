@@ -148,6 +148,7 @@
                     "status": "Status",
                     "new": "New Request",
                     "split": "Create milestone",
+                    "close": "Close milestone",
                     "splitTitle": "Create new milestone",
                     "createCreditNote": "Generate Credit Note",
                     "createDebitNote": "Generate Debit Note"

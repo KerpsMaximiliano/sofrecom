@@ -39,4 +39,8 @@ export class ProjectService {
   createNewHito(hito){
     return this.http.post(`${this.baseUrl}/projects/hitos/new`, hito).map((res:Response) => res.json());
   }
+
+  closeHito(id){
+    return this.http.put(`${this.baseUrl}/hitos/${id}/close`, {}).map((res:Response) => res.json());
+  }
 }
