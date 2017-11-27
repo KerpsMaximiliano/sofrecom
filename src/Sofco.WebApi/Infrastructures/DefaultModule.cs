@@ -8,6 +8,7 @@ using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.DAL;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
@@ -62,6 +63,7 @@ namespace Sofco.WebApi.Infrastructures
 
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
             builder.RegisterType<InvoiceStatusFactory>().As<IInvoiceStatusFactory>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             RegisterRedisDependencies(builder);
 

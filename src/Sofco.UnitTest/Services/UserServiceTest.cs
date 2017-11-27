@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL.Admin;
+using Sofco.DAL;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
@@ -14,8 +15,7 @@ namespace Sofco.UnitTest.Services
     public class UserServiceTest
     {
         private Mock<IUserRepository> userRepositoryMock;
-        private Mock<IGroupRepository> groupRepositoryMock;
-        private Mock<IUserGroupRepository> userGroupRepository;
+        private Mock<IUnitOfWork> unitOfWork;
 
         private UserService sut;
 
@@ -24,13 +24,13 @@ namespace Sofco.UnitTest.Services
         {
             userRepositoryMock = new Mock<IUserRepository>();
 
-            groupRepositoryMock = new Mock<IGroupRepository>();
+            unitOfWork = new Mock<IUnitOfWork>();
 
-            userGroupRepository = new Mock<IUserGroupRepository>();
+            unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
 
             userRepositoryMock.Setup(s => s.Update(It.IsAny<User>()));
 
-            sut = new UserService(userRepositoryMock.Object, groupRepositoryMock.Object, userGroupRepository.Object);
+            sut = new UserService(unitOfWork.Object);
         }
 
         [TestCase(true)]
@@ -69,7 +69,7 @@ namespace Sofco.UnitTest.Services
 
             userRepositoryMock.Verify(s => s.GetSingle(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
             userRepositoryMock.Verify(s => s.Update(It.IsAny<User>()), Times.Once);
-            userRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Sofco.UnitTest.Services
 
             userRepositoryMock.Verify(s => s.GetSingle(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
             userRepositoryMock.Verify(s => s.Update(It.IsAny<User>()), Times.Never);
-            userRepositoryMock.Verify(s => s.Save(), Times.Never);
+            unitOfWork.Verify(s => s.Save(), Times.Never);
         }
     }
 }

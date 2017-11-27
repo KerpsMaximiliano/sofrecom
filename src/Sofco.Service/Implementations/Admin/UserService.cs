@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Model.Utils;
-using Sofco.Core.DAL.Admin;
 using Sofco.Core.Services.Admin;
+using Sofco.DAL;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Relationships;
@@ -11,21 +11,17 @@ namespace Sofco.Service.Implementations.Admin
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IGroupRepository _groupRepository;
-        private readonly IUserGroupRepository _userGroupRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UserService(IUserRepository userRepository, IGroupRepository groupRepository, IUserGroupRepository userGroupRepository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
-            _groupRepository = groupRepository;
-            _userGroupRepository = userGroupRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<User> Active(int id, bool active)
         {
             var response = new Response<User>();
-            var entity = _userRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.UserRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
@@ -41,8 +37,8 @@ namespace Sofco.Service.Implementations.Admin
                     entity.EndDate = DateTime.Now;
                 }
 
-                _userRepository.Update(entity);
-                _userRepository.Save();
+                unitOfWork.UserRepository.Update(entity);
+                unitOfWork.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.Admin.User.Enabled : Resources.Admin.User.Disabled, MessageType.Success));
@@ -57,7 +53,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<User>();
 
-            var user = _userRepository.GetSingleWithUserGroup(x => x.Id == userId);
+            var user = unitOfWork.UserRepository.GetSingleWithUserGroup(x => x.Id == userId);
 
             if (user == null)
             {
@@ -65,7 +61,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var userGroup = _groupRepository.GetSingle(x => x.Id == groupId);
+            var userGroup = unitOfWork.GroupRepository.GetSingle(x => x.Id == groupId);
 
             if (userGroup == null)
             {
@@ -75,8 +71,8 @@ namespace Sofco.Service.Implementations.Admin
 
             var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
-            _userGroupRepository.Insert(entity);
-            _userGroupRepository.Save();
+            unitOfWork.UserGroupRepository.Insert(entity);
+            unitOfWork.Save();
 
             response.Messages.Add(new Message(Resources.Admin.User.GroupAssigned, MessageType.Success));
 
@@ -86,15 +82,15 @@ namespace Sofco.Service.Implementations.Admin
         public IList<User> GetAllReadOnly(bool active)
         {
             if (active)
-                return _userRepository.GetAllActivesReadOnly();
+                return unitOfWork.UserRepository.GetAllActivesReadOnly();
             else
-                return _userRepository.GetAllReadOnly();
+                return unitOfWork.UserRepository.GetAllReadOnly();
         }
 
         public Response<User> GetById(int id)
         {
             var response = new Response<User>();
-            var entity = _userRepository.GetSingleWithUserGroup(x => x.Id == id);
+            var entity = unitOfWork.UserRepository.GetSingleWithUserGroup(x => x.Id == id);
 
             if (entity != null)
             {
@@ -110,7 +106,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<User>();
 
-            var userExist = _userRepository.ExistById(userId);
+            var userExist = unitOfWork.UserRepository.ExistById(userId);
 
             if (!userExist)
             {
@@ -118,7 +114,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var groupExist = _groupRepository.ExistById(groupId);
+            var groupExist = unitOfWork.GroupRepository.ExistById(groupId);
 
             if (!groupExist)
             {
@@ -130,8 +126,8 @@ namespace Sofco.Service.Implementations.Admin
             {
                 var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
-                _userGroupRepository.Delete(entity);
-                _userGroupRepository.Save();
+                unitOfWork.UserGroupRepository.Delete(entity);
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.Admin.User.GroupRemoved, MessageType.Success));
             }
@@ -147,7 +143,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<User>();
 
-            var userExist = _userRepository.ExistById(userId);
+            var userExist = unitOfWork.UserRepository.ExistById(userId);
 
             if (!userExist)
             {
@@ -160,28 +156,28 @@ namespace Sofco.Service.Implementations.Admin
                 foreach (var groupId in groupsToAdd)
                 {
                     var entity = new UserGroup { UserId = userId, GroupId = groupId };
-                    var groupExist = _groupRepository.ExistById(groupId);
-                    var userGroupExist = _userGroupRepository.ExistById(userId, groupId);
+                    var groupExist = unitOfWork.GroupRepository.ExistById(groupId);
+                    var userGroupExist = unitOfWork.UserGroupRepository.ExistById(userId, groupId);
 
                     if (groupExist && !userGroupExist)
                     {
-                        _userGroupRepository.Insert(entity);
+                        unitOfWork.UserGroupRepository.Insert(entity);
                     }
                 }
 
                 foreach (var groupId in groupsToRemove)
                 {
                     var entity = new UserGroup { UserId = userId, GroupId = groupId };
-                    var groupExist = _groupRepository.ExistById(groupId);
-                    var userGroupExist = _userGroupRepository.ExistById(userId, groupId);
+                    var groupExist = unitOfWork.GroupRepository.ExistById(groupId);
+                    var userGroupExist = unitOfWork.UserGroupRepository.ExistById(userId, groupId);
 
                     if (groupExist && userGroupExist)
                     {
-                        _userGroupRepository.Delete(entity);
+                        unitOfWork.UserGroupRepository.Delete(entity);
                     }
                 }
 
-                _userGroupRepository.Save();
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.User.UserGroupsUpdated, MessageType.Success));
             }
             catch (Exception)
@@ -196,7 +192,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<User>();
 
-            var user = _userRepository.GetSingle(x => x.Email.Equals(mail));
+            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(mail));
 
             if(user == null)
             {
@@ -210,7 +206,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public bool HasDirectorGroup(string userMail)
         {
-            return _userRepository.HasDirectorGroup(userMail);
+            return unitOfWork.UserRepository.HasDirectorGroup(userMail);
         }
 
         public Response Add(User domain)
@@ -219,8 +215,8 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
-                _userRepository.Insert(domain);
-                _userRepository.Save();
+                unitOfWork.UserRepository.Insert(domain);
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.Admin.User.Created, MessageType.Success));
             }
@@ -236,7 +232,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response();
 
-            if (_userRepository.ExistByMail(mail))
+            if (unitOfWork.UserRepository.ExistByMail(mail))
             {
                 response.Messages.Add(new Message(Resources.Admin.User.AlreadyExist, MessageType.Error));
             }
@@ -246,12 +242,12 @@ namespace Sofco.Service.Implementations.Admin
 
         public bool HasDafGroup(string userMail, string dafCode)
         {
-            return _userRepository.HasDafGroup(userMail, dafCode);
+            return unitOfWork.UserRepository.HasDafGroup(userMail, dafCode);
         }
 
         public bool HasCdgGroup(string userMail, string cdgCode)
         {
-            return _userRepository.HasDafGroup(userMail, cdgCode);
+            return unitOfWork.UserRepository.HasDafGroup(userMail, cdgCode);
         }
     }
 }
