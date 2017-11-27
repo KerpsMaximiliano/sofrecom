@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL.Billing;
@@ -16,6 +15,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
@@ -31,7 +31,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
-        private readonly ILoggerWrapper<SolfacService> logger;
+        private readonly ILogMailer<SolfacService> logger;
 
         public SolfacService(ISolfacRepository solfacRepository,
             IInvoiceRepository invoiceRepository,
@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             IUserRepository userRepository,
             IOptions<CrmConfig> crmOptions,
             IMailSender mailSender, 
-            ICrmInvoiceService crmInvoiceService, ILoggerWrapper<SolfacService> logger)
+            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacRepository = solfacRepository;
             this.invoiceRepository = invoiceRepository;
@@ -277,7 +277,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch(Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -376,6 +376,12 @@ namespace Sofco.Service.Implementations.Billing
                 SolfacValidationHelper.ValidateCreditNote(solfac, solfacRepository, response);
             }
 
+            if (SolfacHelper.IsDebitNote(solfac) || SolfacHelper.IsCreditNote(solfac))
+            {
+                var hito = solfac.Hitos.First();
+                HitoValidatorHelper.ValidateOpportunity(new HitoSplittedParams { OpportunityId = hito.OpportunityId }, response);
+            }
+
             return response;
         }
 
@@ -442,6 +448,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
@@ -466,8 +473,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 httpResponse.EnsureSuccessStatusCode();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
@@ -546,6 +554,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -577,6 +586,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -611,8 +621,9 @@ namespace Sofco.Service.Implementations.Billing
                     response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -663,8 +674,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.Billing.Solfac.InvoicesAdded, MessageType.Success));
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -706,8 +718,9 @@ namespace Sofco.Service.Implementations.Billing
 
                         response.EnsureSuccessStatusCode();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        logger.LogError(ex);
                     }
                 }
             }
