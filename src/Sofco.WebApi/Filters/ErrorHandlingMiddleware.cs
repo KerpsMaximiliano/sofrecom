@@ -3,37 +3,22 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Common.Logger.Interfaces;
-using Sofco.Core.Config;
-using Sofco.Core.Mail;
+using Sofco.Core.Logger;
 
 namespace Sofco.WebApi.Filters
 {
     public class ErrorHandlingMiddleware
     {
-        private readonly string mailLogSubject;
-
         private readonly RequestDelegate next;
 
-        private readonly ILoggerWrapper<ErrorHandlingMiddleware> log;
+        private readonly ILogMailer<ErrorHandlingMiddleware> logMailer;
 
-        private readonly IMailBuilder mailBuilder;
-
-        private readonly IMailSender mailSender;
-
-        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerWrapper<ErrorHandlingMiddleware> log, IMailBuilder mailBuilder, IMailSender mailSender, IOptions<EmailConfig> emailConfigOption)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogMailer<ErrorHandlingMiddleware> logMailer)
         {
             this.next = next;
 
-            this.log = log;
-
-            this.mailBuilder = mailBuilder;
-
-            this.mailSender = mailSender;
-
-            mailLogSubject = emailConfigOption.Value.SupportMailLogTitle;
+            this.logMailer = logMailer;
         }
 
         public async Task Invoke(HttpContext context)
@@ -50,9 +35,7 @@ namespace Sofco.WebApi.Filters
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            log.LogError(exception);
-
-            SendMail(exception);
+            logMailer.LogError(exception);
 
             var code = HttpStatusCode.InternalServerError;
 
@@ -68,15 +51,6 @@ namespace Sofco.WebApi.Filters
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);
-        }
-
-        private void SendMail(Exception exception)
-        {
-            var content = exception.Message + "<br><br>" + exception.StackTrace;
-
-            var mail = mailBuilder.GetSupportEmail(mailLogSubject, content);
-
-            mailSender.Send(mail);
         }
     }
 }
