@@ -47,8 +47,8 @@ export const ROUTES:Routes = [
     children: [
       { path: 'roles', children:[
         { path: '', component: RolesComponent, canActivate: [AuthGuard], data: { module: "ROL", functionality: "QUERY" } },
-        { path: 'add', component: RolAddComponent, data: { module: "ROL", functionality: "ALTA" } },
-        { path: 'edit/:id', component: RolEditComponent, data: { module: "ROL", functionality: "UPDAT" } }
+        { path: 'add', component: RolAddComponent, canActivate: [AuthGuard], data: { module: "ROL", functionality: "ALTA" } },
+        { path: 'edit/:id', component: RolEditComponent, canActivate: [AuthGuard], data: { module: "ROL", functionality: "UPDAT" } }
       ]},
 
       { path: 'groups', children:[
