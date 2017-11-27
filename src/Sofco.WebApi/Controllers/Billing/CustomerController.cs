@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Sofco.Core.Config;
-using Sofco.Core.Services;
-using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models.Billing;
+using Sofco.Core.Services.Billing;
+using Sofco.Domain.Crm.Billing;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -19,23 +14,19 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class CustomerController : Controller
     {
-        private readonly IUserService userService;
-        private readonly CrmConfig crmConfig;
-        private readonly ILoginService loginService;
+        private readonly ICustomerService customerService;
 
-        public CustomerController(IUserService userService, IOptions<CrmConfig> crmOptions, ILoginService loginService)
+        public CustomerController(ICustomerService customerService)
         {
-            this.userService = userService;
-            crmConfig = crmOptions.Value;
-            this.loginService = loginService;
+            this.customerService = customerService;
         }
 
         [HttpGet("{userMail}/options")]
-        public async Task<IActionResult> GetOptions(string userMail)
+        public IActionResult GetOptions(string userMail)
         {
             try
             {
-                var customers = await GetCustomers(userMail);
+                var customers = this.customerService.GetCustomers(userMail, User.Identity.Name);
 
                 var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
 
@@ -43,87 +34,39 @@ namespace Sofco.WebApi.Controllers.Billing
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new List<CrmCustomer>());
             }
         }
 
         [HttpGet("user/{userMail}")]
-        public async Task<IActionResult> Get(string userMail)
+        public IActionResult Get(string userMail)
         {
             try
             {
-                var customers = await GetCustomers(userMail);
+                var customers = this.customerService.GetCustomers(userMail, this.GetUserName());
 
                 return Ok(customers);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new List<CrmCustomer>());
             }
         }
-
+        
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetById(string customerId)
+        public IActionResult GetById(string customerId)
         {
             try
             {
-                var customer = await GetCustomerById(customerId);
+                var response = this.customerService.GetCustomerById(customerId);
 
-                if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
-                {
-                    var response = new Model.Utils.Response();
-                    response.Messages.Add(new Model.Utils.Message(Resources.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
+                if (response.HasErrors()) return BadRequest(response);
 
-                    return BadRequest(response);
-                }
-
-                return Ok(customer);
+                return Ok(response.Data);
             }
-            catch
+            catch (Exception e)
             {
                 return BadRequest();
-            }
-        }
-
-        private async Task<CustomerCrm> GetCustomerById(string customerId)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-                var response = await client.GetAsync($"/api/account/{customerId}");
-                response.EnsureSuccessStatusCode();
-
-                var stringResult = await response.Content.ReadAsStringAsync();
-                var customer = JsonConvert.DeserializeObject<CustomerCrm>(stringResult);
-
-                return customer;
-            }
-        }
-
-        private async Task<IList<CustomerCrm>> GetCustomers(string userMail)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                var hasDirectorGroup = this.userService.HasDirectorGroup(userMail);
-
-                HttpResponseMessage response;
-
-                if (hasDirectorGroup)
-                {
-                    response = await client.GetAsync($"/api/account");
-                }
-                else
-                {
-                    response = await client.GetAsync($"/api/account?idManager={userMail}");
-                }
-
-                response.EnsureSuccessStatusCode();
-
-                var stringResult = await response.Content.ReadAsStringAsync();
-                var customers = JsonConvert.DeserializeObject<IList<CustomerCrm>>(stringResult);
-                return customers;
             }
         }
     }

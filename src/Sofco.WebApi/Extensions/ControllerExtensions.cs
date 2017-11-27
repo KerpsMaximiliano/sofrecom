@@ -35,5 +35,12 @@ namespace Sofco.WebApi.Extensions
 
             return mail;
         }
+
+        public static string GetUserName(this Controller controller)
+        {
+            var username = controller.User.Identity.Name.Split('@');
+
+            return username[0];
+        }
     }
 }

@@ -6,6 +6,8 @@ namespace Sofco.Service.Http.Interfaces
 {
     public interface ICrmHttpClient
     {
+        Result<T> Get<T>(string urlPath);
+
         Result<List<T>> GetMany<T>(string urlPath);
 
         Result<T> Post<T>(string urlPath, StringContent stringContent);

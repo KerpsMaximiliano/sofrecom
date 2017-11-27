@@ -44,4 +44,8 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
+
+    goToAdd(){
+        this.router.navigate(['/allocationManagement/costCenter/add']);
+    }
 }
