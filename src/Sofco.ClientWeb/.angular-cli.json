@@ -53,7 +53,8 @@
         "prod": "environments/environment.prod.ts",
         "azsof01wd-dev": "environments/environment.azsof01wd-dev.ts",
         "azsof01wd-qa": "environments/environment.azsof01wd-qa.ts",
-        "azsof01wt": "environments/environment.azsof01wt.ts"
+        "azsof01wt": "environments/environment.azsof01wt.ts",
+        "azgap01wp": "environments/environment.azgap01wp.ts"
       }
     }
   ],

@@ -82,6 +82,44 @@
 		{
 			"owner": "659544",
 			"lastUpdatedBy": "659544",
+			"lastRevision": 2438520423,
+			"folder": "d52418b5-b5ee-1be3-5e6e-93a60fa017a3",
+			"id": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"name": "Admin",
+			"description": "",
+			"order": [
+				"35023969-ad1c-a439-85c1-5e4974f64b65",
+				"7b264daf-95f2-56bd-281e-5b163672acf7",
+				"14bbf8ea-9d63-74fb-51a8-ae3187aa7c2d",
+				"600136a8-e61d-0608-5ccb-4143fcf58498",
+				"01826a5d-f089-919f-a246-e7bccf290c68",
+				"00a5eb13-dfc0-f3e3-48f2-4efeea118b46",
+				"68383bd7-4850-0bc0-664a-791cd781dd7c",
+				"4c86f0cd-a1f0-c198-6dfd-96547b2bda31",
+				"b0ea9f93-1485-d65f-d000-debeaece25cb"
+			],
+			"folders_order": [],
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+		},
+		{
+			"owner": "659544",
+			"lastUpdatedBy": "659544",
+			"lastRevision": 2437258025,
+			"folder": null,
+			"id": "d52418b5-b5ee-1be3-5e6e-93a60fa017a3",
+			"name": "Azgap01wp - Prod",
+			"description": "",
+			"order": [],
+			"folders_order": [
+				"37d71d6f-beaa-9b2a-19ed-98bda970e770",
+				"49fa66a6-fabe-fb1f-2eb3-224ffa23e6ee",
+				"23c43cd2-4a1f-cd87-6ce6-ef45488430b8"
+			],
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+		},
+		{
+			"owner": "659544",
+			"lastUpdatedBy": "659544",
 			"lastRevision": 2455931572,
 			"folder": null,
 			"id": "55dbc13b-e5d7-1e18-ecb9-c113bff79523",
@@ -183,6 +221,30 @@
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
 		},
 		{
+			"name": "Billing",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"order": [
+				"365f24b8-9e8d-3d01-367d-c19ef59bb173"
+			],
+			"owner": "659544",
+			"folder": "e3d9740f-07dd-f888-bc48-79f908d52259",
+			"folders_order": [],
+			"id": "87ef4563-0cd4-c451-e509-a588340ca5c0"
+		},
+		{
+			"name": "Billing",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"order": [
+				"fbf377f5-c61f-24d0-8f4c-a0aa97e1d678"
+			],
+			"owner": "659544",
+			"folder": "d52418b5-b5ee-1be3-5e6e-93a60fa017a3",
+			"folders_order": [],
+			"id": "49fa66a6-fabe-fb1f-2eb3-224ffa23e6ee"
+		},
+		{
 			"owner": "659544",
 			"lastUpdatedBy": "659544",
 			"lastRevision": 2437258025,
@@ -193,6 +255,7 @@
 			"order": [],
 			"folders_order": [
 				"9ab4bb35-b5e0-71ed-df76-4d2b7db576f7",
+				"87ef4563-0cd4-c451-e509-a588340ca5c0",
 				"c65e7d39-5701-6275-f891-4578023dc3af"
 			]
 		},
@@ -248,6 +311,20 @@
 			],
 			"folders_order": [],
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+		},
+		{
+			"owner": "659544",
+			"lastUpdatedBy": "659544",
+			"lastRevision": 2427928610,
+			"folder": "d52418b5-b5ee-1be3-5e6e-93a60fa017a3",
+			"id": "23c43cd2-4a1f-cd87-6ce6-ef45488430b8",
+			"name": "Reports",
+			"description": "",
+			"order": [
+				"da699d24-877c-99d8-41e3-9b7b308f6ba7"
+			],
+			"folders_order": [],
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
 		}
 	],
 	"folders_order": [
@@ -255,6 +332,7 @@
 		"55dbc13b-e5d7-1e18-ecb9-c113bff79523",
 		"81a3c7fa-5252-cab8-31a5-55041551b239",
 		"54afc922-f03b-dd1d-5350-5c8d974eac4d",
+		"d52418b5-b5ee-1be3-5e6e-93a60fa017a3",
 		"07bdf184-520a-f937-5b0d-31f96809c614"
 	],
 	"timestamp": 0,
@@ -286,6 +364,64 @@
 			"helperAttributes": {},
 			"time": 1509547355106,
 			"name": "Menus",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
+		},
+		{
+			"id": "00a5eb13-dfc0-f3e3-48f2-4efeea118b46",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/roles/6012/detail",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547386903,
+			"name": "Roles/6012/detail",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
+		},
+		{
+			"id": "01826a5d-f089-919f-a246-e7bccf290c68",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/roles",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547348119,
+			"name": "Roles",
 			"description": "",
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": []
@@ -465,6 +601,28 @@
 			"responses": []
 		},
 		{
+			"id": "14bbf8ea-9d63-74fb-51a8-ae3187aa7c2d",
+			"headers": "",
+			"headerData": [],
+			"url": "azgap01wp.sofrecom.local:91/api/users",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511546264331,
+			"name": "Users",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
+		},
+		{
 			"id": "2234b2dc-b331-765c-dbbd-44e000b68020",
 			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTA2NjgxMzksIm5iZiI6MTUxMDY2ODEzOSwiZXhwIjoxNTEwNjgyODM5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBK2VISTEvVUp6bGpaMEl4a2FWdWFZOVo1QjdGTEhmU1VNTENlVUN3SUJ0bz0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTgxLjI3LjE5NS4yMTYiLCJuYW1lIjoiSnVhbiBKb3NlIExhcmVuemUiLCJvaWQiOiI3ODA0ODU3Ni00YmY1LTQ0YTEtYWE3Mi1lMDgyMjBkZWFjMTQiLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJJQXU2ZEhuT1FfcHJXSzRldjJuRkNwUDNwMkphZS05SmJOY2dpMzZnRU9NIiwidGlkIjoiMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4IiwidW5pcXVlX25hbWUiOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInVwbiI6ImpsYXJlbnplQHRlYnJhc29mcmUub25taWNyb3NvZnQuY29tIiwidmVyIjoiMS4wIn0.oocRlH9yC8JKIdp2Yi2gQXgZ4FdEKd3jrQN6MZVptNKUPIi-wdNw9oZ7py5St4V2rH4LcnHyme5leI63QNdRqXuQKIS5kawv63Ctb4RmeE9audF31H37PmDnJu11INoLp3Hhp9ZzPXnUpZRMkXpyTn2pVyrnhs0BXYwzAYpKEcDHUyWD4LJ5w4PopY-amMdpKjE8nObdToE2UhdoEOEKn1xwbM4vcjYZr1hwongjDy30sVWXXymGunHLY_hJPwhPO2AQvfhAxxhGoGaYwkhN_hGUiwLETLenEESpO4Zi8aQPSubTIzUui4gC3UVF-d3PhUkpKBZdsCwoib07gaW61A\n",
 			"headerData": [
@@ -492,6 +650,67 @@
 			"description": "",
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": []
+		},
+		{
+			"id": "35023969-ad1c-a439-85c1-5e4974f64b65",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/login",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547332255,
+			"name": "Login",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": [],
+			"rawModeData": "{\r\n  \"userName\": \"jlarenze\",\r\n  \"password\": \"M0ldGTdMghuKIi472KelyA==\"\r\n}"
+		},
+		{
+			"id": "365f24b8-9e8d-3d01-367d-c19ef59bb173",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTEyNjk5ODcsIm5iZiI6MTUxMTI2OTk4NywiZXhwIjoxNTExMjg0Njg3LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBR0pqc245OTV3NTU3amxxNmJiNGxuQ0k2ZmdiYXVVbmVYSzdiQjNXdmc5OD0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMjAxLjE3OS4xODcuMjQ3IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImRzbEtYOGdFcEV1MFlGaTJGNllFQUEiLCJ2ZXIiOiIxLjAifQ.3QPYzb7CX3DYFQnWI5NbWZGQcvHK2ddOh8NriMe6i6B08tdzlbGgmdM8L2OB-ZGhiygv2U8KdmxFrQ1RrLA2lL8DmbFOLiS19zrB8DdvOpVnwUACmy0VwD7W0mun7CnXFDRkI4fnzFJvPLsQHpAb2lOxmva57Ihv_pw7oFIpBnGICh7wWxXv9sh-2a0cVegkb3mMDRQ3GBfFV21yVTGguqLvRjrE7ZYA0HPdds9ghXhTBFdwFXpr9Go8YscS-PcslWTz21LK2Mr1STyF9GsIfCYo19KEjKhNThMUxFHqerqaaD_WR5u6QS5rJODucyKcBmm5Ts8GwBI38Kp0uyYWUw\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTEyNjk5ODcsIm5iZiI6MTUxMTI2OTk4NywiZXhwIjoxNTExMjg0Njg3LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBR0pqc245OTV3NTU3amxxNmJiNGxuQ0k2ZmdiYXVVbmVYSzdiQjNXdmc5OD0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMjAxLjE3OS4xODcuMjQ3IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImRzbEtYOGdFcEV1MFlGaTJGNllFQUEiLCJ2ZXIiOiIxLjAifQ.3QPYzb7CX3DYFQnWI5NbWZGQcvHK2ddOh8NriMe6i6B08tdzlbGgmdM8L2OB-ZGhiygv2U8KdmxFrQ1RrLA2lL8DmbFOLiS19zrB8DdvOpVnwUACmy0VwD7W0mun7CnXFDRkI4fnzFJvPLsQHpAb2lOxmva57Ihv_pw7oFIpBnGICh7wWxXv9sh-2a0cVegkb3mMDRQ3GBfFV21yVTGguqLvRjrE7ZYA0HPdds9ghXhTBFdwFXpr9Go8YscS-PcslWTz21LK2Mr1STyF9GsIfCYo19KEjKhNThMUxFHqerqaaD_WR5u6QS5rJODucyKcBmm5Ts8GwBI38Kp0uyYWUw",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:9696/api/projects/b488e8ed-48c5-e711-8107-e0071b6fd061/hitos",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"data": null,
+			"dataMode": "params",
+			"name": "Hitos",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1511270398786,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "87ef4563-0cd4-c451-e509-a588340ca5c0"
 		},
 		{
 			"id": "3b8e0563-b95c-6087-5534-2985b0736c42",
@@ -580,6 +799,28 @@
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
 			"rawModeData": "{\r\n  \"userName\": \"jlarenze\",\r\n  \"password\": \"M0ldGTdMghuKIi472KelyA==\"\r\n}"
+		},
+		{
+			"id": "4c86f0cd-a1f0-c198-6dfd-96547b2bda31",
+			"headers": "",
+			"headerData": [],
+			"url": "http://azgap01wp.sofrecom.local:91/api/settings",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547419591,
+			"name": "Settings",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
 		},
 		{
 			"id": "50111005-4da8-5f16-7988-fc204d66d6cc",
@@ -764,6 +1005,35 @@
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
 		},
 		{
+			"id": "600136a8-e61d-0608-5ccb-4143fcf58498",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTA2NjgxMzksIm5iZiI6MTUxMDY2ODEzOSwiZXhwIjoxNTEwNjgyODM5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBK2VISTEvVUp6bGpaMEl4a2FWdWFZOVo1QjdGTEhmU1VNTENlVUN3SUJ0bz0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTgxLjI3LjE5NS4yMTYiLCJuYW1lIjoiSnVhbiBKb3NlIExhcmVuemUiLCJvaWQiOiI3ODA0ODU3Ni00YmY1LTQ0YTEtYWE3Mi1lMDgyMjBkZWFjMTQiLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJJQXU2ZEhuT1FfcHJXSzRldjJuRkNwUDNwMkphZS05SmJOY2dpMzZnRU9NIiwidGlkIjoiMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4IiwidW5pcXVlX25hbWUiOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInVwbiI6ImpsYXJlbnplQHRlYnJhc29mcmUub25taWNyb3NvZnQuY29tIiwidmVyIjoiMS4wIn0.oocRlH9yC8JKIdp2Yi2gQXgZ4FdEKd3jrQN6MZVptNKUPIi-wdNw9oZ7py5St4V2rH4LcnHyme5leI63QNdRqXuQKIS5kawv63Ctb4RmeE9audF31H37PmDnJu11INoLp3Hhp9ZzPXnUpZRMkXpyTn2pVyrnhs0BXYwzAYpKEcDHUyWD4LJ5w4PopY-amMdpKjE8nObdToE2UhdoEOEKn1xwbM4vcjYZr1hwongjDy30sVWXXymGunHLY_hJPwhPO2AQvfhAxxhGoGaYwkhN_hGUiwLETLenEESpO4Zi8aQPSubTIzUui4gC3UVF-d3PhUkpKBZdsCwoib07gaW61A\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTA2NjgxMzksIm5iZiI6MTUxMDY2ODEzOSwiZXhwIjoxNTEwNjgyODM5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBK2VISTEvVUp6bGpaMEl4a2FWdWFZOVo1QjdGTEhmU1VNTENlVUN3SUJ0bz0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTgxLjI3LjE5NS4yMTYiLCJuYW1lIjoiSnVhbiBKb3NlIExhcmVuemUiLCJvaWQiOiI3ODA0ODU3Ni00YmY1LTQ0YTEtYWE3Mi1lMDgyMjBkZWFjMTQiLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJJQXU2ZEhuT1FfcHJXSzRldjJuRkNwUDNwMkphZS05SmJOY2dpMzZnRU9NIiwidGlkIjoiMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4IiwidW5pcXVlX25hbWUiOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInVwbiI6ImpsYXJlbnplQHRlYnJhc29mcmUub25taWNyb3NvZnQuY29tIiwidmVyIjoiMS4wIn0.oocRlH9yC8JKIdp2Yi2gQXgZ4FdEKd3jrQN6MZVptNKUPIi-wdNw9oZ7py5St4V2rH4LcnHyme5leI63QNdRqXuQKIS5kawv63Ctb4RmeE9audF31H37PmDnJu11INoLp3Hhp9ZzPXnUpZRMkXpyTn2pVyrnhs0BXYwzAYpKEcDHUyWD4LJ5w4PopY-amMdpKjE8nObdToE2UhdoEOEKn1xwbM4vcjYZr1hwongjDy30sVWXXymGunHLY_hJPwhPO2AQvfhAxxhGoGaYwkhN_hGUiwLETLenEESpO4Zi8aQPSubTIzUui4gC3UVF-d3PhUkpKBZdsCwoib07gaW61A",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/users/email/jlarenze@sofrecom.com.ar",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547313119,
+			"name": "Users/email/jlarenze@sofrecom.com.ar",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
+		},
+		{
 			"id": "6389b2f8-e5b6-ceaf-9357-1de21882d7b8",
 			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MDk0NjExMjEsIm5iZiI6MTUwOTQ2MTEyMSwiZXhwIjoxNTA5NDc1ODIxLCJhY3IiOiIxIiwiYWlvIjoiWTJOZ1lHQlMzQ1gxZU9FQzB5Zk8vTzg1SERkVVAvV1prN0xzSEZlbzlMV3psOTBTekh3QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJiMjYxZTFiMS1iMjA3LTQ5ODctYmRkOC0xZDY1YmM4ZTEyODYiLCJhcHBpZGFjciI6IjAiLCJpcGFkZHIiOiIxMDQuNDEuNTIuMTMzIiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInZlciI6IjEuMCJ9.LlUhPbzdL342mwRAEQvnImfGQYtBLXYgCdEoaL7I7QgPHRkRPtyivGAebUP-Rqb9PlyNJKoSGQ1P_rmu4eafFlKKm4k4qE4OmjBj2w7wxcWrA7RCJduMSg3kWFRwrZETkc0hltZVzuqXCec4eIc-dSmjVB2vrUcJoznY2IrGz2vAM0jtoVvOqFzSHRM3RtazUzsnYw0zK7gMss5nwyGViXThbsU3H7MboM9MTHJKClKUXJ2Irpdt8oFqHv24Ww-febc64xCwSM9BqwgP-8fm8bxpk85jYp9WTaRdg_ZydUn3Ute20bkA3afjwcOzBo_RyrQNSzG8mpiinfHu3NpmCg\nContent-Type: application/json\n",
 			"headerData": [
@@ -798,6 +1068,35 @@
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
 			"rawModeData": "{\n  \"dateSince\"  : \"2017-09-01T03:00:00.000Z\",\n  \"dateTo\": \"2017-10-21T02:59:59.999Z\"\n}"
+		},
+		{
+			"id": "68383bd7-4850-0bc0-664a-791cd781dd7c",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/menu/jlarenze",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547409239,
+			"name": "Menus",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
 		},
 		{
 			"id": "688d0261-3d47-777c-e04b-8299b5df1d97",
@@ -888,6 +1187,36 @@
 			"responses": [],
 			"rawModeData": null,
 			"descriptionFormat": null
+		},
+		{
+			"id": "7b264daf-95f2-56bd-281e-5b163672acf7",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "azgap01wp.sofrecom.local:91/api/login/refresh",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511546255373,
+			"name": "Login - RefreshToken",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": [],
+			"rawModeData": "{\r\n  \"refreshToken\": \"AQABAAAAAABHh4kmS_aKT5XrjzxRAtHzAus0_9gOX9g-mZD5GWyXryJtWmiXxNUzoCbzL8622FxdfH6HmsezqUlMkEDnkAKwIVPg9HjAf4i3bqBv9xZJzuw3pjXwbzX9zRmFbrTMmeWUbePZbTS3ikMTv2UpoIimpld_6WG0HC2qkoTybXq7mk07wCuoeYw-SbG6yuJJ4p-cp97HC-_ubQ2wtsD7slyS8hcKtx67hqHibaifphJnK02sBASuGjESgSn_RQxC2Dmo5s6_H0zEYTNRLiWUWYO1wT0v7hA10fzdJmrlfprL49qiPIuBOgBJoQsjxKOFVbO4humOB1t4idaYcbnZ_Dxlo4GKI579QQ_SFjfrIS-nUT5Q6WUfbB5_LqQhRvtvtEWCEGkc93X8Wsem63BRHdZDe2Ppty4bcPLvVmSMJ41c22snGhERDuu59riW1D4_6GGxEZpgOEPmzAwYnDd5s6HHW5OvaXWRkNneyCGPfXA98hTI7E-TKuUM8zUsX4dgeNaJjT7dNRBjRi6TAlb0j88gSbwH7m70CH-qU8-vF5STl7fsowZupkd5Lg-8S3CiJXAMAehZ5TxlsKprlyjshJ6kLKYlgbM4ruhVAhI26391uRnRLwa4HFNwlrGFdNZnry4BypG-sYQCV7tD3WX5C0V1rJdy-jATCwOoNLWKZIxxu3XVGmBQIOwsE9ebHYJEszt7lq31UVpxQNFwQNz68ZXnZVhE6eUUmS5XZmz-wx7A8UaoDDRhJeo-N3TTxig-7EkgAA\"\r\n}"
 		},
 		{
 			"id": "867e34f6-ce9d-2644-4cbf-6eded794a25f",
@@ -1058,6 +1387,42 @@
 			"responses": []
 		},
 		{
+			"id": "b0ea9f93-1485-d65f-d000-debeaece25cb",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/settings",
+			"folder": "37d71d6f-beaa-9b2a-19ed-98bda970e770",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547443400,
+			"name": "Settings",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": [],
+			"rawModeData": "[\n    {\n        \"id\": 1,\n        \"key\": \"AllocationManagement_Months\",\n        \"value\": \"11\",\n        \"type\": \"Number\"\n    }\n]"
+		},
+		{
 			"id": "c36e79a0-f1f0-6b39-3ec5-b0b036029474",
 			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTA3NDkyODksIm5iZiI6MTUxMDc0OTI4OSwiZXhwIjoxNTEwNzYzOTg5LCJhY3IiOiIxIiwiYWlvIjoiWTJOZ1lJaTlsQm5sK1dsVnZ0dU4rcDRic1R5YzRnYXpkaFpkWE16QzgyanYzSGpURS9NQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJiMjYxZTFiMS1iMjA3LTQ5ODctYmRkOC0xZDY1YmM4ZTEyODYiLCJhcHBpZGFjciI6IjAiLCJpcGFkZHIiOiIxMDQuNDEuMzguMTQ0IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInZlciI6IjEuMCJ9.oFSQca-HmxnsunegK702w2C74mpN-t_kI4F6kDy5eYnCeWv2LJfo5JUWRWTu5zRZWX-2WYSTde5U8jl4mVZ6KiMeRIZcmsaOyJPFRwnuxZRtaDujI45vCrntkybhWzw1f7E18Wj0fSaf-8UP3R5R67cg7nxBBHiJW5ja2Sy7KX8kEUysvlIDrf9FZ5RESANPEIB1HbftB6iaGfzKJxsdHY6hEsNLVaZM1_BOCtzVGslSOjJXEVx2PlMZ19Sgc1gAllwtk6GZ0RIn4LlNnAoI1je0gqJbzprf516QtoeixORWBhEmGBu5x8Z-iVNh2XebZN41qC8ZyDy63aW_5Jrm6A\n",
 			"headerData": [
@@ -1116,23 +1481,8 @@
 			"responses": []
 		},
 		{
-			"folder": "9ab4bb35-b5e0-71ed-df76-4d2b7db576f7",
 			"id": "d0a46320-ae0a-0ad5-73d6-ca7bc78cea24",
-			"name": "Login - RefreshToken",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\r\n  \"refreshToken\": \"AQABAAAAAAABlDrqfEFlSaui6xnRjX5EZObn-Z3oc8G9EuJNk1LNux-FbEVdnFXUS1toB4ILBRsMNNgQSONrqfZomzVdf6PtDfr3W7hxP5ET6RBcWnrsxaA4LeedhYH4er5qVG60eAQoKzKqCLbwjbuKoOqyOS-3HFWm96JgCcPVxlgHA0T9Jy_wUdiWMgsFLVZ-xeh199l0z7yPnmYGNQfn60ZF2UvmXnNxsRslmsJAu3mlqjG_M9VSkFqQOyGLNn2AZ4nddg41vvKRW9obNsCEdv1GjFRI7QQXT9Kg5AI--8a2eVp8T9pWkVA-_4FzQHMHqX1LBiF95dOegj4KuW2umXtf2GWsWVqzsq05bhqauMM2sjpaVFytnknOGiGo1hSV_q-GU1ZzTHDNata2ljOb0904UMF8GbzCCnfTpyZRQcZbbxMhPU_qYdCmGdtw9Tz5dsdSj5KUSCCn2wc-qlp52G-na9PbQePR1cBAUXX4lNXxVFj2UeeTA4LG_pgjW0mrIDdTM_K0qhUHEAfJ9UYzLfOx3CC3VRMBFuIf7LdhPSyjVUehBomGu4lNGkp66oy3wh3loatdQNP23YE4dPFbBOYq7CLVkLOwXZUJRD9BuJ99PIJxE7gfjaL3xc_6wNXzwPvc_QIWsuGGJgGKKJ6vUCIM9HANtT6TIqZkXWlIuL0iVs9qINg4hhS5bq0OOm4Paqam4C9WGEqFx5Rjp1fj4j7juaSRWPIpn8EAX2M_UbOcAPD72s4KjVzOWsLY6N67cbGVujEgAA\"\r\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:9696/api/login/refresh",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1141,9 +1491,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://localhost:9696/api/login/refresh",
+			"folder": "9ab4bb35-b5e0-71ed-df76-4d2b7db576f7",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510951150507,
+			"name": "Login - RefreshToken",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
-			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+			"rawModeData": "{\r\n  \"refreshToken\": \"AQABAAAAAABHh4kmS_aKT5XrjzxRAtHzAus0_9gOX9g-mZD5GWyXryJtWmiXxNUzoCbzL8622FxdfH6HmsezqUlMkEDnkAKwIVPg9HjAf4i3bqBv9xZJzuw3pjXwbzX9zRmFbrTMmeWUbePZbTS3ikMTv2UpoIimpld_6WG0HC2qkoTybXq7mk07wCuoeYw-SbG6yuJJ4p-cp97HC-_ubQ2wtsD7slyS8hcKtx67hqHibaifphJnK02sBASuGjESgSn_RQxC2Dmo5s6_H0zEYTNRLiWUWYO1wT0v7hA10fzdJmrlfprL49qiPIuBOgBJoQsjxKOFVbO4humOB1t4idaYcbnZ_Dxlo4GKI579QQ_SFjfrIS-nUT5Q6WUfbB5_LqQhRvtvtEWCEGkc93X8Wsem63BRHdZDe2Ppty4bcPLvVmSMJ41c22snGhERDuu59riW1D4_6GGxEZpgOEPmzAwYnDd5s6HHW5OvaXWRkNneyCGPfXA98hTI7E-TKuUM8zUsX4dgeNaJjT7dNRBjRi6TAlb0j88gSbwH7m70CH-qU8-vF5STl7fsowZupkd5Lg-8S3CiJXAMAehZ5TxlsKprlyjshJ6kLKYlgbM4ruhVAhI26391uRnRLwa4HFNwlrGFdNZnry4BypG-sYQCV7tD3WX5C0V1rJdy-jATCwOoNLWKZIxxu3XVGmBQIOwsE9ebHYJEszt7lq31UVpxQNFwQNz68ZXnZVhE6eUUmS5XZmz-wx7A8UaoDDRhJeo-N3TTxig-7EkgAA\"\r\n}"
 		},
 		{
 			"folder": "07bdf184-520a-f937-5b0d-31f96809c614",
@@ -1174,6 +1539,42 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086"
+		},
+		{
+			"id": "da699d24-877c-99d8-41e3-9b7b308f6ba7",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/reports/solfacs",
+			"folder": "23c43cd2-4a1f-cd87-6ce6-ef45488430b8",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547487642,
+			"name": "Reports/Solfac",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": [],
+			"rawModeData": "{\n  \"dateSince\"  : \"2017-09-01T03:00:00.000Z\",\n  \"dateTo\": \"2017-10-21T02:59:59.999Z\"\n}"
 		},
 		{
 			"id": "dc9ef3c3-7d1e-7cc4-4200-6874ddde11fb",
@@ -1325,6 +1726,36 @@
 			"helperAttributes": {},
 			"time": 1509547387705,
 			"name": "Project Detail",
+			"description": "",
+			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
+			"responses": []
+		},
+		{
+			"id": "fbf377f5-c61f-24d0-8f4c-a0aa97e1d678",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyIsImtpZCI6IjJLVmN1enFBaWRPTHFXU2FvbDd3Z0ZSR0NZbyJ9.eyJhdWQiOiJodHRwczovL3RlYnJhc29mcmUub25taWNyb3NvZnQuY29tLzAyYjA0OWJmLWMyZGItNDA0ZS1hMWQ3LTIyYmYwZWE1YTMzMiIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OC8iLCJpYXQiOjE1MTE1NDY5NDQsIm5iZiI6MTUxMTU0Njk0NCwiZXhwIjoxNTExNTYxNjQ0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOEdBQUFBMlNubmliV2R6QmJEalJQeURkU3p0elhxNG5YNE9vQTFESHB0TGF5NmNhRT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiYjI2MWUxYjEtYjIwNy00OTg3LWJkZDgtMWQ2NWJjOGUxMjg2IiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMTkxLjIzMi4xODAuMTA2IiwibmFtZSI6Ikp1YW4gSm9zZSBMYXJlbnplIiwib2lkIjoiNzgwNDg1NzYtNGJmNS00NGExLWFhNzItZTA4MjIwZGVhYzE0Iiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiSUF1NmRIbk9RX3ByV0s0ZXYybkZDcFAzcDJKYWUtOUpiTmNnaTM2Z0VPTSIsInRpZCI6IjBjZDhjYzQ4LWEzMzgtNDVlYi1iMDFjLTM3YzYyM2Q5MGE3OCIsInVuaXF1ZV9uYW1lIjoiamxhcmVuemVAdGVicmFzb2ZyZS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJqbGFyZW56ZUB0ZWJyYXNvZnJlLm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6ImpoMTd0RXRlNFV5WjRSVTNCTU1lQUEiLCJ2ZXIiOiIxLjAifQ.Q3GNu0QsZUhAbih4Udi9jQzcfCcOaHOVOSJp3vKUHlQkOmOlyjbU78iHiisQk0_7JWk3bmw5uIpo5hSZre20GH29UQSvTSwWU0A8yaJ1Hn34QSkNNsG6QUOc7yyPywYm61-l6rmqrog0KGQqz4OKTAT2RJTFFYCn3l8HGJs3oPeXqTG3AXt-_RhLTAm0Qz3NXDQGJoYsXfGShiPuvPy2l_hywsWYNWgPX_ONtsy8UVgXChJyumQRyZsu8nM1StgMh3BW4YGnL_xuX-tWg6l24HGyOdm2Z-gg_v_EW2G0ilJNGhvH8dZsIpAXt1cAC_iaWPQHQqOIVbJAxOBJFSE0xg",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azgap01wp.sofrecom.local:91/api/projects/b488e8ed-48c5-e711-8107-e0071b6fd061/hitos",
+			"folder": "49fa66a6-fabe-fb1f-2eb3-224ffa23e6ee",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511547470224,
+			"name": "Hitos",
 			"description": "",
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": []
