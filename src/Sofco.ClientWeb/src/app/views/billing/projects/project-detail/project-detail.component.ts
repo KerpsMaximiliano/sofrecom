@@ -9,6 +9,7 @@ import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentTypes } from 'app/models/enums/documentTypes';
 import { MessageService } from 'app/services/common/message.service';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-project-detail',
@@ -46,6 +47,16 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
+
+    @ViewChild('closeHitoModal') closeHitoModal;
+    public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "closeHitoModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(
         private router: Router,
@@ -120,7 +131,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.datatableService.init('#hitoTable', false);
 
             this.calculateIncomes();
-            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -279,14 +289,18 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
-    close(){
+    closeHito(){
         var hito = this.getHitosSelected()[0];
-
+    
         this.service.closeHito(hito.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
-            this.getHitos();
+            hito.status = "Cerrado";
+            this.closeHitoModal.hide();
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.closeHitoModal.hide();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     canCreateCreditNote():boolean {
