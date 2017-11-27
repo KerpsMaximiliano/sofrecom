@@ -42,5 +42,12 @@ namespace Sofco.WebApi.Extensions
 
             return username[0];
         }
+
+        public static IActionResult CreateResponse(this Controller controller, Response response)
+        {
+            if (response.HasErrors()) return controller.BadRequest(response);
+
+            return controller.Ok(response);
+        }
     }
 }

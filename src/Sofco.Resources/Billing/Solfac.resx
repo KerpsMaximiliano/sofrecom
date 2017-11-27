@@ -249,4 +249,7 @@
   <data name="SolfacHasNoInvoices" xml:space="preserve">
     <value>billing/solfac.solfacHasNoInvoices</value>
   </data>
+  <data name="CloseHito" xml:space="preserve">
+    <value>billing/solfac.closeHito</value>
+  </data>
 </root>
