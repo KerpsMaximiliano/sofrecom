@@ -1,0 +1,611 @@
+{
+	"id": "b61594b9-0235-87a5-f150-b92e0abf6cd5",
+	"name": "Sofrecom-Sofco-CRM",
+	"description": "",
+	"order": [
+		"faf29716-d04d-5969-c608-96efbf1d7e5e",
+		"9d52fc42-c13c-3c92-d39b-e7c02a7c6772",
+		"d5ee90a6-3d50-22ba-092a-d90abd78edf1",
+		"b9c7bf60-87b6-c49e-0ada-7eee40347157",
+		"c1222866-763f-4de6-f4fc-63bdffdfdf71",
+		"508b77a1-71e9-0547-87f6-2b498bb72651",
+		"397382a1-4977-11f5-95ca-9119ea7487c7",
+		"9cfcb2c5-9c07-c946-02f3-65e93edb76d6"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 0,
+	"owner": "659544",
+	"public": false,
+	"requests": [
+		{
+			"folder": null,
+			"id": "397382a1-4977-11f5-95ca-9119ea7487c7",
+			"name": "GetAccount",
+			"dataMode": "urlencoded",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "120",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "717620001",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Hito 1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"method": "GET",
+			"pathVariables": {},
+			"url": "http://azsof01wd.sofrecom.local:8098/api/Project?id=00046124-4b8e-e711-80fc-e0071b685921",
+			"preRequestScript": "",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"queryParams": [
+				{
+					"key": "id",
+					"value": "00046124-4b8e-e711-80fc-e0071b685921",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariableData": [],
+			"responses": [],
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5"
+		},
+		{
+			"folder": null,
+			"id": "508b77a1-71e9-0547-87f6-2b498bb72651",
+			"name": "GetAccountsByManager",
+			"dataMode": "urlencoded",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "120",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "717620001",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Hito 1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"method": "GET",
+			"pathVariables": {},
+			"url": "http://azsof01wd.sofrecom.local:8098/api/Account?idManager=domiguel@sofrecom.com.ar",
+			"preRequestScript": "",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"queryParams": [
+				{
+					"key": "idManager",
+					"value": "domiguel@sofrecom.com.ar",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariableData": [],
+			"responses": [],
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5"
+		},
+		{
+			"id": "9cfcb2c5-9c07-c946-02f3-65e93edb76d6",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azsof01wd.sofrecom.local:8098/api/InvoiceMilestone",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "1000",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StartDate",
+					"value": "2017-11-17T17:40:54.2821287-03:00",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "H3-OP1-Abbot - 1 - 4 - 3 - 2 - 2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "MoneyId",
+					"value": "f7326b1d-1432-e711-80f3-70106fa701c1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Month",
+					"value": "3",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ProjectId",
+					"value": "b488e8ed-48c5-e711-8107-e0071b6fd061",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "OpportunityId",
+					"value": "13fce80b-85c4-e711-810b-e0071b6e5e61",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ManagerId",
+					"value": "2915edb8-6e71-e711-8100-e0071b68c9a1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511269007198,
+			"name": "Create Hito",
+			"description": "",
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5",
+			"responses": []
+		},
+		{
+			"id": "9d52fc42-c13c-3c92-d39b-e7c02a7c6772",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azsof01wd.sofrecom.local:8098/api/InvoiceMilestone/e8f76921-c788-e711-80fb-e0071b685921",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "200000",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "StatusCode",
+					"value": "1",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "Name",
+					"value": "Hito 2 Demo",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingNumber",
+					"value": "1112334",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511268956047,
+			"name": "EditHitosFacturacion",
+			"description": "",
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5",
+			"responses": []
+		},
+		{
+			"id": "b9c7bf60-87b6-c49e-0ada-7eee40347157",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azsof01wd.sofrecom.local:8098/api/InvoiceMilestone?idProject=8674ba20-aab5-e711-8107-e0071b6e5e61",
+			"folder": null,
+			"queryParams": [
+				{
+					"key": "idProject",
+					"value": "8674ba20-aab5-e711-8107-e0071b6e5e61",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "120",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "717620001",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Hito 1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510853422347,
+			"name": "GetHitosByProject",
+			"description": "",
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5",
+			"responses": []
+		},
+		{
+			"folder": null,
+			"id": "c1222866-763f-4de6-f4fc-63bdffdfdf71",
+			"name": "GetProject",
+			"dataMode": "urlencoded",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "120",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "717620001",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Hito 1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"method": "GET",
+			"pathVariables": {},
+			"url": "http://azsof01wd.sofrecom.local:8098/api/Project?id=00046124-4b8e-e711-80fc-e0071b685921",
+			"preRequestScript": "",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"queryParams": [
+				{
+					"key": "id",
+					"value": "00046124-4b8e-e711-80fc-e0071b685921",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariableData": [],
+			"responses": [],
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5"
+		},
+		{
+			"id": "d5ee90a6-3d50-22ba-092a-d90abd78edf1",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://azsof01wd.sofrecom.local:8098/api/InvoiceMilestone/GetMilestoneToExpire?daysToExpire=30&status=1,717620003",
+			"folder": null,
+			"queryParams": [
+				{
+					"key": "daysToExpire",
+					"value": "30",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "status",
+					"value": "1,717620003",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [
+				{
+					"key": "Ammount",
+					"value": "120",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "StatusCode",
+					"value": "717620001",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "BillingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "InvoicingDate",
+					"value": "2017-09-25 23:30:00",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Hito 1",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510776581977,
+			"name": "GetHitosFacturacionAExpirar",
+			"description": "",
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5",
+			"responses": []
+		},
+		{
+			"folder": null,
+			"id": "faf29716-d04d-5969-c608-96efbf1d7e5e",
+			"name": "Azure AD Autorizacion",
+			"dataMode": "urlencoded",
+			"data": [
+				{
+					"key": "username",
+					"value": "ldrughieri@tebrasofre.onmicrosoft.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "Sofco2017",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "b261e1b1-b207-4987-bdd8-1d65bc8e1286",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "resource",
+					"value": "https://tebrasofre.onmicrosoft.com/02b049bf-c2db-404e-a1d7-22bf0ea5a332",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"method": "POST",
+			"pathVariables": {},
+			"url": "https://login.windows.net/0cd8cc48-a338-45eb-b01c-37c623d90a78/oauth2/token?api-version=1.1",
+			"preRequestScript": "",
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"queryParams": [],
+			"headerData": [],
+			"pathVariableData": [],
+			"responses": [],
+			"collectionId": "b61594b9-0235-87a5-f150-b92e0abf6cd5"
+		}
+	]
+}
