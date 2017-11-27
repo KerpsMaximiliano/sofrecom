@@ -21,7 +21,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('confirmDeleteFileModal') confirmModal;
     
-    files: any[] = new Array<any>();
+    public files: any[] = new Array<any>();
     fileId: number;
     index: number;
     
