@@ -153,6 +153,7 @@
                                         <button *ngIf="canCreateCreditNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canCreateDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canSplit()" (click)="split()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.split' | translate }}  <i class="fa fa-clone"></i></button> 
+                                        <button *ngIf="canClose()" (click)="closeHitoModal.show()" type="button" class="btn btn-danger btn-sm">{{ 'billing.project.detail.milestone.close' | translate }}  <i class="fa fa-times"></i></button> 
                                     </div>
                                 </div>
 
@@ -187,11 +188,13 @@
             </div>
         </div>
         <div class="ibox-footer">
-            <div class="text-right">
-                <button class="btn btn-default" (click)="goToProjects()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
-            </div>
+            <button class="btn btn-success" (click)="goToProjects()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
         </div>
     </div>
 </div>
 
 <split-hito #splitHito (hitosReload)="getHitos()"></split-hito>
+
+<ng2-modal [config]="closeHitoModalConfig" #closeHitoModal (accept)="closeHito()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

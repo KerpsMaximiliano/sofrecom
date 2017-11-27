@@ -8,6 +8,8 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentTypes } from 'app/models/enums/documentTypes';
+import { MessageService } from 'app/services/common/message.service';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-project-detail',
@@ -46,11 +48,22 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
 
+    @ViewChild('closeHitoModal') closeHitoModal;
+    public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "closeHitoModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
         private datatableService: DataTableService,
+        private messageService: MessageService,
         public menuService: MenuService,
         private errorHandlerService: ErrorHandlerService) {}
 
@@ -118,7 +131,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.datatableService.init('#hitoTable', false);
 
             this.calculateIncomes();
-            //this.datatableService.adjustColumns();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -257,6 +269,38 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         });
 
         return isValid;
+    }
+
+    canClose(){
+        let hitos = this.getHitosSelected();
+        let isValid = hitos.length == 1;
+        
+        if(!isValid) return;
+
+        hitos.forEach(item => {
+            if(!item.billed){
+                isValid = true;
+            }
+            else{
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    closeHito(){
+        var hito = this.getHitosSelected()[0];
+    
+        this.service.closeHito(hito.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+            hito.status = "Cerrado";
+            this.closeHitoModal.hide();
+        },
+        err => {
+            this.closeHitoModal.hide();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     canCreateCreditNote():boolean {
