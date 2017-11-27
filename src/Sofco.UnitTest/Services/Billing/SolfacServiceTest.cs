@@ -134,6 +134,7 @@ namespace Sofco.UnitTest.Services.Billing
                     {
                         SolfacId = 1,
                         Total = 100,
+                        OpportunityId = "16546510-3460-0346-0346-034634634600",
                         Details = new List<HitoDetail>
                         {
                             new HitoDetail
