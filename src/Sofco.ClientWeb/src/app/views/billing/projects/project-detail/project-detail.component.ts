@@ -295,6 +295,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.service.closeHito(hito.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             hito.status = "Cerrado";
+            hito.statusCode = "717620004";
             this.closeHitoModal.hide();
         },
         err => {
