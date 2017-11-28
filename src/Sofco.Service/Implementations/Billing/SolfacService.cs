@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -435,10 +436,12 @@ namespace Sofco.Service.Implementations.Billing
 
         private async Task CreateNewHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
+
+
             try
             {
                     var data =
-                        $"Ammount={hito.Ammount}&StatusCode={hito.StatusCode}&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
+                        $"Ammount={hito.Ammount}&StatusCode=1&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
                             $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -455,7 +458,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private async Task UpdateFirstHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
-            if(hito.AmmountFirstHito == 0) return;
+            if (hito.AmmountFirstHito == 0 || hito.StatusCode == "717620004") return;
 
             try
             {

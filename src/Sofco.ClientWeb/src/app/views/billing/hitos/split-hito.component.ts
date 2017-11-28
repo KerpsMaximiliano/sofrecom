@@ -52,7 +52,7 @@ export class SplitHitoComponent implements OnDestroy  {
   }
 
   save(){
-    this.hito.statusCode = 717620003;
+    this.hito.statusCode = this.hitoSelected.statusCode;
     this.hito.projectId = this.hitoSelected.projectId;
     this.hito.opportunityId = this.hitoSelected.opportunityId;
     this.hito.managerId = this.hitoSelected.managerId;

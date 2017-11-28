@@ -210,6 +210,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Analytic = ImputationNumber1;
             solfac.Service = ServiceName;
             solfac.WithTax = WithTax;
+            solfac.InvoiceRequired = InvoiceRequired;
 
             foreach (var hitoViewModel in Hitos)
             {

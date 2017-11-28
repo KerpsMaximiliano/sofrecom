@@ -57,16 +57,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     @ViewChild('solfacAttachments') solfacAttachments;
 
-    @ViewChild('saveModal') saveModal;
-    public saveModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "ACTIONS.confirmTitle",
-        "saveModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-    
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -238,7 +228,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
           
         },
         err => { 
-          this.saveModal.hide();
           this.errorHandlerService.handleErrors(err);
         });
     }
