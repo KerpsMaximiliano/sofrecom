@@ -12,6 +12,9 @@ export class MessageService {
                 private i18nService: I18nService) {
                     this.errorConfig = new ToastConfig();
                     this.errorConfig.timeOut = 10000;
+                    this.errorConfig.extendedTimeOut = 10000;
+                    this.errorConfig.closeButton = true;
+                    this.errorConfig.progressBar = true;
                  }
 
     showMessages(messages: Message[]) {
