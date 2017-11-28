@@ -693,40 +693,12 @@ namespace Sofco.Service.Implementations.Billing
             if (result.HasErrors())
                 return result;
 
-            var solfacChangeStatusResponse = new SolfacChangeStatusResponse
-            {
-                HitoStatus = HitoStatus.Pending,
-                Hitos = result.Data.Hitos.Select(x => x.ExternalHitoId).ToList()
-            };
+            if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
+                return result;
 
-            ChangeHitoStatus(solfacChangeStatusResponse);
+            crmInvoiceService.UpdateHitoStatus(result.Data.Hitos.ToList(), HitoStatus.Pending);
 
             return result;
-        }
-
-        private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                foreach (var item in data.Hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int) data.HitoStatus}", Encoding.UTF8,
-                            "application/x-www-form-urlencoded");
-
-                        var response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex);
-                    }
-                }
-            }
         }
 
         private void CreateHitoOnCrm(Solfac solfac)

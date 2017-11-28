@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Sofco.Common.Domains;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
 using Sofco.Framework.CrmServices;
 using Sofco.Model.Enums;
@@ -34,7 +35,7 @@ namespace Sofco.UnitTest.Framework.CrmServices
 
             crmOptionsMock.SetupGet(s => s.Value).Returns(new CrmConfig { Url = "sofcoarUrl" });
 
-            var loggerMock = new Mock< ILoggerWrapper<CrmInvoiceService>>();
+            var loggerMock = new Mock<ILogMailer<CrmInvoiceService>>();
 
             sut = new CrmInvoiceService(clientMock.Object, crmOptionsMock.Object, loggerMock.Object);
         }
