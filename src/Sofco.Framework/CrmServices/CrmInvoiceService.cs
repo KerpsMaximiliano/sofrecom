@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -49,19 +50,19 @@ namespace Sofco.Framework.CrmServices
 
             var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
             var statusCode = (int)HitoStatus.Pending;
-            var startDate = DateTime.Now;
+            var startDate = WebUtility.UrlEncode($"{DateTime.UtcNow:O}");
             var name = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
 
+            var data =
+                $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
+                + $"&Name={name}&MoneyId={hito.CurrencyId}"
+                + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
+                + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
+
             try
             {
-                var data =
-                    $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
-                    + $"&Name={name}&MoneyId={hito.CurrencyId}"
-                    + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
-                    + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
-
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
 
                 var clientResult = client.Post<string>($"{crmConfig.Url}/api/InvoiceMilestone", stringContent);
@@ -70,7 +71,7 @@ namespace Sofco.Framework.CrmServices
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                logger.LogError(data, ex);
                 result.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
             }
 
@@ -83,21 +84,23 @@ namespace Sofco.Framework.CrmServices
 
             foreach (var item in hitos)
             {
+                var sum = item.Details.Sum(x => x.Total);
+
+                if (sum == item.Total) continue;
+
+                var total = $"Ammount={sum}";
+
+                var urlPath = $"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}";
+
                 try
                 {
-                    var sum = item.Details.Sum(x => x.Total);
-
-                    if (sum == item.Total) continue;
-
-                    var total = $"Ammount={sum}";
-
                     var stringContent = new StringContent(total, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
+                    client.Put<string>(urlPath, stringContent);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex);
+                    logger.LogError(total+" - "+urlPath, ex);
                     result.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Warning));
                 }
             }

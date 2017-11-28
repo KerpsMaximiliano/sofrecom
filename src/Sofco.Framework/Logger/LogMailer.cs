@@ -9,6 +9,8 @@ namespace Sofco.Framework.Logger
 {
     public class LogMailer<T> : ILogMailer<T>
     {
+        private const string MessageDelimiter = " - ";
+
         private readonly string mailLogSubject;
 
         private readonly ILoggerWrapper<T> logger;
@@ -28,6 +30,13 @@ namespace Sofco.Framework.Logger
             mailLogSubject = emailConfigOption.Value.SupportMailLogTitle;
         }
 
+        public void LogError(string message, Exception exception)
+        {
+            logger.LogError(message, exception);
+
+            SendMail(message, exception);
+        }
+
         public void LogError(Exception exception)
         {
             logger.LogError(exception);
@@ -37,7 +46,16 @@ namespace Sofco.Framework.Logger
 
         private void SendMail(Exception exception)
         {
-            var content = exception.Message + "<br><br>" + exception.StackTrace;
+            SendMail(string.Empty, exception);
+        }
+
+        private void SendMail(string message, Exception exception)
+        {
+            var msg = string.IsNullOrEmpty(message)
+                ? exception.Message
+                : message + MessageDelimiter + exception.Message;
+
+            var content = msg + "<br><br>" + exception.StackTrace;
 
             var mail = mailBuilder.GetSupportEmail(mailLogSubject, content);
 
