@@ -136,10 +136,10 @@
     <value>billing/invoice.cannotSendToDaf</value>
   </data>
   <data name="CrmPrefixCreditNoteTitle" xml:space="preserve">
-    <value>Nota de Crédito -</value>
+    <value>Nota de Crédito - </value>
   </data>
   <data name="CrmPrefixDebitNoteTitle" xml:space="preserve">
-    <value>Nota de Débito -</value>
+    <value>Nota de Débito - </value>
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>billing/invoice.deleted</value>
