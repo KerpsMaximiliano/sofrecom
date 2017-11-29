@@ -29,7 +29,7 @@
           <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
         </ul>
       </li>
-
+ 
       <!--BILLING-->
       <li [ngClass]="{active: activeRoute('billing')}" *ngIf="menuService.hasBillingMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
