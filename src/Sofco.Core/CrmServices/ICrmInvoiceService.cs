@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Domain.Crm;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
@@ -13,5 +14,7 @@ namespace Sofco.Core.CrmServices
         Result<string> CreateHitoBySolfac(Solfac solfac);
 
         Response UpdateHitos(ICollection<Hito> hitos);
+
+        void UpdateHitoStatus(List<Hito> hitos, HitoStatus hitoStatus);
     }
 }

@@ -8,6 +8,7 @@ using Sofco.Common.Domains;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
 using Sofco.Model.Enums;
 using Sofco.Model.Helpers;
@@ -23,11 +24,11 @@ namespace Sofco.Framework.CrmServices
 
         private readonly CrmConfig crmConfig;
 
-        private readonly ILoggerWrapper<CrmInvoiceService> logger;
+        private readonly ILogMailer<CrmInvoiceService> logger;
 
         public CrmInvoiceService(ICrmHttpClient client, 
             IOptions<CrmConfig> crmOptions,
-            ILoggerWrapper<CrmInvoiceService> logger
+            ILogMailer<CrmInvoiceService> logger
             )
         {
             this.client = client;
@@ -102,6 +103,25 @@ namespace Sofco.Framework.CrmServices
             }
 
             return result;
+        }
+
+        public void UpdateHitoStatus(List<Hito> hitos, HitoStatus hitoStatus)
+        {
+            var statusCode = (int) hitoStatus;
+
+            foreach (var hito in hitos)
+            {
+                try
+                {
+                    var stringContent = new StringContent($"StatusCode={statusCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex);
+                }
+            }
         }
 
         private string CleanStringResult(string data)
