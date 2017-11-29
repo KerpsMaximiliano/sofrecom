@@ -95,7 +95,6 @@ namespace Sofco.UnitTest.Services.Billing
             solfacRepositoryMock.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.Never);
-            crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);
         }
 
         [Test]
@@ -114,7 +113,6 @@ namespace Sofco.UnitTest.Services.Billing
             solfacRepositoryMock.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.Never);
-            crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);
         }
 
         private Solfac GetSolfacData()
