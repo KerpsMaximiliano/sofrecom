@@ -97,6 +97,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = solfac;
                 response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacCreated, MessageType.Success));
 
+                if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
+                    return response;
+
                 var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
 
                 response.AddMessages(crmResult.Messages);
