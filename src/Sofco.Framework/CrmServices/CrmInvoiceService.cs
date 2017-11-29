@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -48,24 +49,25 @@ namespace Sofco.Framework.CrmServices
         {
             var hito = solfac.Hitos.First();
 
-            var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
+            var ammount = hito.Details.Sum(s => s.Total).ToString("0.##", new CultureInfo("en-US"));
+            var ammountText = SolfacHelper.IsCreditNote(solfac) ? "-"+ammount : ammount;
             var statusCode = (int)HitoStatus.Pending;
-            var startDate = $"{DateTime.UtcNow:O}";
+            var startDate = DateTime.UtcNow;
             var name = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
 
             var data =
-                $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
+                $"Ammount={ammountText}&StatusCode={statusCode}&StartDate={startDate:O}"
                 + $"&Name={name}&MoneyId={hito.CurrencyId}"
                 + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
                 + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
             try
             {
-                var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+                var content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-                var clientResult = client.Post<string>($"{crmConfig.Url}/api/InvoiceMilestone", stringContent);
+                var clientResult = client.Post<string>($"{crmConfig.Url}/api/InvoiceMilestone", content);
 
                 result.Data = CleanStringResult(clientResult.Data);
             }

@@ -41,9 +41,9 @@ namespace Sofco.Service.Http
             return result;
         }
 
-        public Result<T> Post<T>(string urlPath, StringContent stringContent)
+        public Result<T> Post<T>(string urlPath, HttpContent content)
         {
-            var result = client.Post<T>(urlPath, stringContent);
+            var result = client.Post<T>(urlPath, content);
 
             if (result.HasErrors)
             {
@@ -53,9 +53,9 @@ namespace Sofco.Service.Http
             return result;
         }
 
-        public Result<T> Put<T>(string urlPath, StringContent stringContent)
+        public Result<T> Put<T>(string urlPath, HttpContent content)
         {
-            var result = client.Put<T>(urlPath, stringContent);
+            var result = client.Put<T>(urlPath, content);
 
             if (result.HasErrors)
             {

@@ -10,8 +10,8 @@ namespace Sofco.Service.Http.Interfaces
 
         Result<List<T>> GetMany<T>(string urlPath);
 
-        Result<T> Post<T>(string urlPath, StringContent stringContent);
+        Result<T> Post<T>(string urlPath, HttpContent content);
 
-        Result<T> Put<T>(string urlPath, StringContent stringContent);
+        Result<T> Put<T>(string urlPath, HttpContent content);
     }
 }
