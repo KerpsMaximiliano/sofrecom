@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Jobs;
+using Sofco.DAL;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Model.Models.AllocationManagement;
@@ -19,11 +20,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly IRhproEmployeeRepository rhproEmployeeRepository;
 
-        private readonly IEmployeeRepository employeeRepository;
-
-        private readonly ILicenseTypeRepository licenseTypeRepository;
-
-        private readonly IEmployeeLicenseRepository employeeLicenseRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly IMapper mapper;
 
@@ -31,16 +28,12 @@ namespace Sofco.Service.Implementations.Jobs
 
         public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
             IRhproEmployeeRepository rhproEmployeeRepository,
-            IEmployeeRepository employeeRepository,
-            ILicenseTypeRepository licenseTypeRepository,
-            IEmployeeLicenseRepository employeeLicenseRepository,
+            IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             this.tigerEmployeeRepository = tigerEmployeeRepository;
             this.rhproEmployeeRepository = rhproEmployeeRepository;
-            this.employeeRepository = employeeRepository;
-            this.licenseTypeRepository = licenseTypeRepository;
-            this.employeeLicenseRepository = employeeLicenseRepository;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             startDate = DateTime.UtcNow.AddYears(FromLastYears);
         }
@@ -58,23 +51,23 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var licenseTypes = Translate(rhproEmployeeRepository.GetLicenseTypes().ToList());
 
-            licenseTypeRepository.Save(licenseTypes);
+            unitOfWork.LicenseTypeRepository.Save(licenseTypes);
         }
 
         private void SyncEmployeeLicense()
         {
             var employeeLicenses = Translate(rhproEmployeeRepository.GetEmployeeLicensesWithStartDate(startDate).ToList());
 
-            employeeLicenseRepository.Delete(employeeLicenses, startDate);
+            unitOfWork.EmployeeLicenseRepository.Delete(employeeLicenses, startDate);
 
-            employeeLicenseRepository.Save(employeeLicenses);
+            unitOfWork.EmployeeLicenseRepository.Save(employeeLicenses);
         }
 
         private void SyncEmployee()
         {
             var employees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
 
-            employeeRepository.Save(employees);
+            unitOfWork.EmployeeRepository.Save(employees);
         }
 
         private List<Employee> Translate(List<TigerEmployee> tigerEmployees)

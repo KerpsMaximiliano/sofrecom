@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.Config;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -9,14 +9,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusRejectHandler : IInvoiceStatusHandler
     {
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusRejectHandler(IInvoiceRepository invoiceRepository)
+        public InvoiceStatusRejectHandler(IUnitOfWork unitOfWork)
         {
-            _invoiceRepository = invoiceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
-        private string MailBody = "<font size='3'>" +
+        private string mailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimado, </br></br>" +
                                                 "El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: </br>" +
@@ -41,7 +41,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
             if (!response.HasErrors())
             {
-                MailBody = MailBody.Replace("*", parameters.Comment);
+                mailBody = mailBody.Replace("*", parameters.Comment);
             }
 
             return response;
@@ -51,7 +51,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             var link = $"{siteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}";
 
-            return string.Format(MailBody, link);
+            return string.Format(mailBody, link);
         }
 
         public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
@@ -72,7 +72,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Rejected };
-            _invoiceRepository.UpdateStatus(invoiceToModif);
+            unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
         }
     }
 }

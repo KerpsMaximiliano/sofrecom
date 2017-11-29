@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Admin;
 using Sofco.DAL;
 using Sofco.Model.Models.Admin;

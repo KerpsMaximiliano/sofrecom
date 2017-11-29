@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Admin;
-using Sofco.DAL;
 using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Admin

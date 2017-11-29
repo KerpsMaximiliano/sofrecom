@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
@@ -14,11 +15,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusInvoicedHandler : ISolfacStatusHandler
     {
-        private readonly ISolfacRepository solfacRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusInvoicedHandler(ISolfacRepository solfacRepo)
+        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork)
         {
-            solfacRepository = solfacRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -41,7 +42,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
             
             return response;
@@ -74,10 +75,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Billed;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
-            solfacRepository.UpdateStatusAndInvoice(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatusAndInvoice(solfacToModif);
             solfac.InvoiceDate = parameters.InvoiceDate;
         }
 
@@ -92,7 +93,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 {
                     try
                     {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault():O}", Encoding.UTF8, "application/x-www-form-urlencoded");
                         response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();

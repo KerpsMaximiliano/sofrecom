@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL;
 using Sofco.Model.Enums;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Admin;
-using Sofco.DAL;
 using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;

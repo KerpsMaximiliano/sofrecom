@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Sofco.Core.CrmServices;
-using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
+using Sofco.DAL;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -22,7 +23,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly int daysToExpire;
 
-        private readonly ISolfacRepository solfacRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly ICrmInvoiceService crmInvoiceService;
 
@@ -32,14 +33,14 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        public SolfacJobService(ISolfacRepository solfacRepository,
+        public SolfacJobService(IUnitOfWork unitOfWork,
             ICrmInvoiceService crmInvoiceService,
             IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<EmailConfig> emailConfigOptions,
             IOptions<JobSetting> setting)
         {
-            this.solfacRepository = solfacRepository;
+            this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
@@ -64,7 +65,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             var crmHitosIdList = crmHitosList.Select(s => s.Id).ToList();
 
-            var hitos = solfacRepository.GetHitosByExternalIds(crmHitosIdList);
+            var hitos = unitOfWork.SolfacRepository.GetHitosByExternalIds(crmHitosIdList);
 
             var hitoExternalIds = hitos.Select(s => new Guid(s.ExternalHitoId));
 

@@ -1,7 +1,7 @@
 ﻿using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
@@ -11,23 +11,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
 { 
     public class AnalyticService : IAnalyticService
     {
-        private readonly IAnalyticRepository analyticRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public AnalyticService(IAnalyticRepository analyticRepo)
+        public AnalyticService(IUnitOfWork unitOfWork)
         {
-            analyticRepository = analyticRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public ICollection<Analytic> GetAll()
         {
-            return analyticRepository.GetAllReadOnly();
+            return unitOfWork.AnalyticRepository.GetAllReadOnly();
         }
 
         public Response<Analytic> GetById(int id)
         {
             var response = new Response<Analytic>();
 
-            response.Data = AnalyticValidationHelper.Find(response, analyticRepository, id);
+            response.Data = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, id);
 
             return response;
         }
@@ -36,7 +36,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<IList<Allocation>>();
 
-            var resources = analyticRepository.GetResources(id);
+            var resources = unitOfWork.AnalyticRepository.GetResources(id);
 
             if (!resources.Any())
             {

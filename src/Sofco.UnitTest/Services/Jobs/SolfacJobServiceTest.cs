@@ -6,8 +6,10 @@ using NUnit.Framework;
 using Sofco.Common.Domains;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
+using Sofco.DAL;
 using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Model.Models.Billing;
@@ -32,6 +34,8 @@ namespace Sofco.UnitTest.Services.Jobs
         private Mock<IOptions<EmailConfig>> emailOptionsMock;
         private Mock<IOptions<JobSetting>> jobOptionsMock;
 
+        private Mock<IUnitOfWork> unitOfWork;
+
         [SetUp]
         public void Setup()
         {
@@ -41,6 +45,10 @@ namespace Sofco.UnitTest.Services.Jobs
             mailSenderMock = new Mock<IMailSender>();
             emailOptionsMock = new Mock<IOptions<EmailConfig>>();
             jobOptionsMock = new Mock<IOptions<JobSetting>>();
+
+            unitOfWork = new Mock<IUnitOfWork>();
+
+            unitOfWork.Setup(x => x.SolfacRepository).Returns(solfacRepositoryMock.Object);
 
             emailOptionsMock.SetupGet(s => s.Value).Returns(new EmailConfig
             {
@@ -52,7 +60,7 @@ namespace Sofco.UnitTest.Services.Jobs
                 SolfacJob = new SolfacJobSetting { DaysToExpire = 5 }
             });
 
-            sut = new SolfacJobServiceTesteable(solfacRepositoryMock.Object,
+            sut = new SolfacJobServiceTesteable(unitOfWork.Object,
                 crmInvoiceServiceMock.Object,
                 mailBuilderMock.Object,
                 mailSenderMock.Object,
@@ -99,13 +107,13 @@ namespace Sofco.UnitTest.Services.Jobs
 
     internal class SolfacJobServiceTesteable : SolfacJobService
     {
-        public SolfacJobServiceTesteable(ISolfacRepository solfacRepository, 
+        public SolfacJobServiceTesteable(IUnitOfWork unitOfWork, 
             ICrmInvoiceService crmInvoiceService,
             IMailBuilder mailBuilder,
             IMailSender mailSender, 
             IOptions<EmailConfig> emailConfigOptions, 
             IOptions<JobSetting> jobOptions) 
-            : base(solfacRepository, 
+            : base(unitOfWork, 
                   crmInvoiceService, 
                   mailBuilder,
                   mailSender, 

@@ -6,10 +6,12 @@ using Sofco.Common.Domains;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.DAL;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -30,6 +32,8 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<ILoggerWrapper<SolfacService>> loggerMock;
 
+        private Mock<IUnitOfWork> unitOfWork;
+
         [SetUp]
         public void Setup()
         {
@@ -45,16 +49,20 @@ namespace Sofco.UnitTest.Services.Billing
             var optionsMock = new Mock<IOptions<CrmConfig>>();
             optionsMock.SetupGet(s => s.Value).Returns(crmConfigMock.Object);
 
+            unitOfWork = new Mock<IUnitOfWork>();
+
+            unitOfWork.Setup(x => x.SolfacRepository).Returns(solfacRepositoryMock.Object);
+            unitOfWork.Setup(x => x.InvoiceRepository).Returns(invoiceRepositoryMock.Object);
+            unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
+
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
 
             crmInvoiceServiceMock.Setup(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>())).Returns(new Response());
 
             crmInvoiceServiceMock.Setup(s => s.CreateHitoBySolfac(It.IsAny<Solfac>())).Returns(new Result<string>("1"));
 
-            sut = new SolfacService(solfacRepositoryMock.Object,
-                invoiceRepositoryMock.Object,
-                solfacStatusFactoryMock.Object,
-                userRepositoryMock.Object,
+            sut = new SolfacService(solfacStatusFactoryMock.Object,
+                unitOfWork.Object,
                 optionsMock.Object,
                 mailSenderMock.Object,
                 crmInvoiceServiceMock.Object,
@@ -72,7 +80,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Never);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
-            solfacRepositoryMock.Verify(s => s.Save(), Times.Exactly(2));
+            unitOfWork.Verify(s => s.Save(), Times.Exactly(2));
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.AtLeastOnce);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.AtLeastOnce);
             crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);
@@ -92,7 +100,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Once);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
-            solfacRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.Never);
             crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);
@@ -111,7 +119,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Once);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
-            solfacRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.Never);
             crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);

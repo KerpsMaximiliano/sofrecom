@@ -1,6 +1,5 @@
 ﻿using Sofco.Core.Config;
-using Sofco.Core.DAL.Admin;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -10,16 +9,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusSentHandler : IInvoiceStatusHandler
     {
-        private readonly IGroupRepository _groupRepository;
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusSentHandler(IGroupRepository groupRepository, IInvoiceRepository invoiceRepository)
+        public InvoiceStatusSentHandler(IUnitOfWork unitOfWork)
         {
-            _groupRepository = groupRepository;
-            _invoiceRepository = invoiceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
-        private string MailBody = "<font size='3'>" +
+        private string mailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "Se ha cargado un REMITO que requiere revisión y generación (pdf). </br>" +
@@ -52,9 +49,9 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             if (!response.HasErrors())
             {
                 if (string.IsNullOrWhiteSpace(parameters.Comment))
-                    MailBody = MailBody.Replace("*", string.Empty);
+                    mailBody = mailBody.Replace("*", string.Empty);
                 else
-                    MailBody = MailBody.Replace("*", $"Comentarios: {parameters.Comment}. </br>");
+                    mailBody = mailBody.Replace("*", $"Comentarios: {parameters.Comment}. </br>");
          
             }
 
@@ -65,7 +62,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             var link = $"{siteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}";
 
-            return string.Format(MailBody, link);
+            return string.Format(mailBody, link);
         }
 
         public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
@@ -80,13 +77,13 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
-            return _groupRepository.GetEmail(emailConfig.DafCode);
+            return unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
         }
 
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Sent };
-            _invoiceRepository.UpdateStatus(invoiceToModif);
+            unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
         }
     }
 }

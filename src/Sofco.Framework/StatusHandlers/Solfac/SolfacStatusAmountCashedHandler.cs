@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
@@ -14,6 +14,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusAmountCashedHandler : ISolfacStatusHandler
     {
+        private readonly IUnitOfWork unitOfWork;
+
+        public SolfacStatusAmountCashedHandler(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
@@ -66,10 +73,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Cashed;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, CashedDate = parameters.CashedDate };
-            solfacRepository.UpdateStatusAndCashed(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatusAndCashed(solfacToModif);
             solfac.CashedDate = parameters.CashedDate;
         }
 
@@ -84,7 +91,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 {
                     try
                     {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&BillingDate={solfac.CashedDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&BillingDate={solfac.CashedDate.GetValueOrDefault():O}", Encoding.UTF8, "application/x-www-form-urlencoded");
                         response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();

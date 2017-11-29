@@ -4,7 +4,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 
-namespace Sofco.DAL
+namespace Sofco.Core.DAL
 {
     public interface IUnitOfWork
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
@@ -11,18 +11,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
 {
     public class CostCenterService : ICostCenterService
     {
-        private readonly ICostCenterRepository costCenterRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public CostCenterService(ICostCenterRepository costCenterRepo)
+        public CostCenterService(IUnitOfWork unitOfWork)
         {
-            this.costCenterRepository = costCenterRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response Add(CostCenter domain)
         {
             var response = new Response();
 
-            CostCenterValidationHelper.ValidateCode(response, domain, costCenterRepository);
+            CostCenterValidationHelper.ValidateCode(response, domain, unitOfWork.CostCenterRepository);
             CostCenterValidationHelper.ValidateLetter(response, domain);
             CostCenterValidationHelper.ValidateDescription(response, domain);
 
@@ -30,8 +30,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                costCenterRepository.Insert(domain);
-                costCenterRepository.Save();
+                unitOfWork.CostCenterRepository.Insert(domain);
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.Save, MessageType.Success));
             }
@@ -45,7 +45,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public ICollection<CostCenter> GetAll()
         {
-            return costCenterRepository.GetAll();
+            return unitOfWork.CostCenterRepository.GetAll();
         }
     }
 }

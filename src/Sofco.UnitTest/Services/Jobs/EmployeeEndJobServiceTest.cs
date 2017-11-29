@@ -4,9 +4,11 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Mail;
+using Sofco.DAL;
 using Sofco.Model;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Implementations.Jobs;
@@ -37,6 +39,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IOptions<EmailConfig>> emailOptionMock;
 
+        private Mock<IUnitOfWork> unitOfWork;
+
         [SetUp]
         public void Setup()
         {
@@ -46,6 +50,11 @@ namespace Sofco.UnitTest.Services.Jobs
             mailSenderMock = new Mock<IMailSender>();
             JobSettingOptionMock = new Mock<IOptions<JobSetting>>();
             emailOptionMock = new Mock<IOptions<EmailConfig>>();
+
+            unitOfWork = new Mock<IUnitOfWork>();
+
+            unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
 
             JobSettingOptionMock.SetupGet(s => s.Value).Returns(
                 new JobSetting
@@ -67,8 +76,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             mailSenderMock.Setup(s => s.Send(It.IsAny<Email>()));
 
-            sut = new EmployeeEndJobService(employeeRepositoryMock.Object,
-                groupRepositoryMock.Object,
+            sut = new EmployeeEndJobService(unitOfWork.Object,
                 mailBuilderMock.Object,
                 mailSenderMock.Object,
                 JobSettingOptionMock.Object,

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
+using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.DAL;

@@ -3,8 +3,9 @@ using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Common.Domains;
-using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL;
 using Sofco.Core.Services;
+using Sofco.DAL;
 using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Enums;
@@ -19,15 +20,15 @@ namespace Sofco.Service.Implementations
     {
         private readonly AzureAdConfig azureAdOptions;
 
-        private readonly IUserRepository userRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly IBaseHttpClient client;
 
-        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUserRepository userRepository)
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUnitOfWork unitOfWork)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
-            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<string> Login(UserLogin userLogin)
@@ -55,7 +56,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            if (userRepository.IsActive($"{userLogin.UserName}@sofrecom.com.ar"))
+            if (unitOfWork.UserRepository.IsActive($"{userLogin.UserName}@sofrecom.com.ar"))
             {
                 response.Data = result.Data;
                 return response;

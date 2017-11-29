@@ -1,5 +1,4 @@
-﻿using Sofco.Core.DAL.Admin;
-using Sofco.Core.DAL.Billing;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.Enums;
 
@@ -7,24 +6,22 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusFactory : ISolfacStatusFactory
     {
-        private readonly IGroupRepository groupRepository;
-        private readonly ISolfacRepository solfacRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusFactory(IGroupRepository groupRepo, ISolfacRepository solfacRepo)
+        public SolfacStatusFactory(IUnitOfWork unitOfWork)
         {
-            groupRepository = groupRepo;
-            solfacRepository = solfacRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public ISolfacStatusHandler GetInstance(SolfacStatus status)
         {
             switch (status)
             {
-                case SolfacStatus.PendingByManagementControl: return new SolfacStatusPendingByManagementControlHandler(groupRepository, solfacRepository);
-                case SolfacStatus.ManagementControlRejected: return new SolfacStatusManagementControlRejectedHandler();
-                case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(groupRepository);
-                case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(solfacRepository);
-                case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler();
+                case SolfacStatus.PendingByManagementControl: return new SolfacStatusPendingByManagementControlHandler(unitOfWork);
+                case SolfacStatus.ManagementControlRejected: return new SolfacStatusManagementControlRejectedHandler(unitOfWork);
+                case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(unitOfWork);
+                case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(unitOfWork);
+                case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler(unitOfWork);
                 default: return null;
             }
         }
