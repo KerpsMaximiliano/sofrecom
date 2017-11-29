@@ -50,7 +50,7 @@ namespace Sofco.Framework.CrmServices
 
             var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
             var statusCode = (int)HitoStatus.Pending;
-            var startDate = WebUtility.UrlEncode($"{DateTime.UtcNow:O}");
+            var startDate = $"{DateTime.UtcNow:O}";
             var name = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
