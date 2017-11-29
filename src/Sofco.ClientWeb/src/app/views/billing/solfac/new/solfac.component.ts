@@ -54,7 +54,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       "debitNote": ["5"]
     }
     documentTypeKey:string = "documentTypeName";
-    
+
+    @ViewChild('solfacAttachments') solfacAttachments;
+
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private userService: UserService,
@@ -225,7 +227,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
           }, 1000);
           
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => { 
+          this.errorHandlerService.handleErrors(err);
+        });
     }
 
     deleteDetail(index){
@@ -236,24 +240,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     canSave(){
       return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.solfacId == 0;
-    }
-
-    send(){
-      this.model.invoicesId = <any>$('#invoices').val();
-
-      this.solfacService.send(this.model).subscribe(
-        data => {
-          if(data.messages) this.messageService.showMessages(data.messages);
-
-          setTimeout(() => {
-            this.cancel();
-          }, 1500)
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    canSend(){
-      return this.menuService.hasFunctionality("SOLFA", "ALTA") && this.menuService.hasFunctionality("SOLFA", "SCDG") && this.solfacId == 0;
     }
 
     setCurrencySymbol(currencyId){

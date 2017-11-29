@@ -23,7 +23,7 @@
 
             <div class="btn-right">
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
-                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="goToProject()"></status-sendToCdg>
+                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="goToProject()" [attachments]="solfacAttachments.files?.length"></status-sendToCdg>
                 
                 <button class="btn btn-primary btn-outline dim" (click)="validate()" *ngIf="canUpdate()"> {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i></button>
             </div>
@@ -350,7 +350,7 @@
             <!-- Attachments -->
             <div id="tab-5" class="tab-pane">
                 <div class="panel-body">
-                    <solfac-attachments [solfacId]="solfacId"></solfac-attachments>
+                    <solfac-attachments #solfacAttachments [solfacId]="solfacId"></solfac-attachments>
                 </div>
             </div>
         </div>

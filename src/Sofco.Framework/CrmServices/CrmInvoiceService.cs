@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -8,6 +9,7 @@ using Sofco.Common.Domains;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
 using Sofco.Model.Enums;
 using Sofco.Model.Helpers;
@@ -23,11 +25,11 @@ namespace Sofco.Framework.CrmServices
 
         private readonly CrmConfig crmConfig;
 
-        private readonly ILoggerWrapper<CrmInvoiceService> logger;
+        private readonly ILogMailer<CrmInvoiceService> logger;
 
         public CrmInvoiceService(ICrmHttpClient client, 
             IOptions<CrmConfig> crmOptions,
-            ILoggerWrapper<CrmInvoiceService> logger
+            ILogMailer<CrmInvoiceService> logger
             )
         {
             this.client = client;
@@ -48,19 +50,19 @@ namespace Sofco.Framework.CrmServices
 
             var ammount = SolfacHelper.IsCreditNote(solfac) ? -1*hito.Details.Sum(s => s.Total) : hito.Details.Sum(s => s.Total);
             var statusCode = (int)HitoStatus.Pending;
-            var startDate = DateTime.Now;
+            var startDate = $"{DateTime.UtcNow:O}";
             var name = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
 
+            var data =
+                $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
+                + $"&Name={name}&MoneyId={hito.CurrencyId}"
+                + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
+                + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
+
             try
             {
-                var data =
-                    $"Ammount={ammount}&StatusCode={statusCode}&StartDate={startDate:O}"
-                    + $"&Name={name}&MoneyId={hito.CurrencyId}"
-                    + $"&Month={hito.Month}&ProjectId={hito.ExternalProjectId}"
-                    + $"&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
-
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
 
                 var clientResult = client.Post<string>($"{crmConfig.Url}/api/InvoiceMilestone", stringContent);
@@ -69,7 +71,7 @@ namespace Sofco.Framework.CrmServices
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                logger.LogError(data, ex);
                 result.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
             }
 
@@ -82,26 +84,47 @@ namespace Sofco.Framework.CrmServices
 
             foreach (var item in hitos)
             {
+                var sum = item.Details.Sum(x => x.Total);
+
+                if (sum == item.Total) continue;
+
+                var total = $"Ammount={sum}";
+
+                var urlPath = $"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}";
+
                 try
                 {
-                    var sum = item.Details.Sum(x => x.Total);
-
-                    if (sum == item.Total) continue;
-
-                    var total = $"Ammount={sum}";
-
                     var stringContent = new StringContent(total, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}", stringContent);
+                    client.Put<string>(urlPath, stringContent);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex);
+                    logger.LogError(total+" - "+urlPath, ex);
                     result.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Warning));
                 }
             }
 
             return result;
+        }
+
+        public void UpdateHitoStatus(List<Hito> hitos, HitoStatus hitoStatus)
+        {
+            var statusCode = (int) hitoStatus;
+
+            foreach (var hito in hitos)
+            {
+                try
+                {
+                    var stringContent = new StringContent($"StatusCode={statusCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex);
+                }
+            }
         }
 
         private string CleanStringResult(string data)

@@ -7,9 +7,11 @@ using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.DAL;
+using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.Solfac;
@@ -75,6 +77,9 @@ namespace Sofco.WebApi.Infrastructures
         {
             builder.RegisterGeneric(typeof(LoggerWrapper<>))
                 .As(typeof(ILoggerWrapper<>));
+
+            builder.RegisterGeneric(typeof(LogMailer<>))
+                .As(typeof(ILogMailer<>));
         }
 
         private void RegisterRedisDependencies(ContainerBuilder builder)

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
@@ -17,6 +17,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.DAL;
 using Sofco.Framework.ValidationHelpers.Billing;
@@ -31,13 +32,13 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
-        private readonly ILoggerWrapper<SolfacService> logger;
+        private readonly ILogMailer<SolfacService> logger;
 
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IOptions<CrmConfig> crmOptions,
             IMailSender mailSender, 
-            ICrmInvoiceService crmInvoiceService, ILoggerWrapper<SolfacService> logger)
+            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
@@ -273,7 +274,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch(Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -372,6 +373,12 @@ namespace Sofco.Service.Implementations.Billing
                 SolfacValidationHelper.ValidateCreditNote(solfac, unitOfWork.SolfacRepository, response);
             }
 
+            if (SolfacHelper.IsDebitNote(solfac) || SolfacHelper.IsCreditNote(solfac))
+            {
+                var hito = solfac.Hitos.First();
+                HitoValidatorHelper.ValidateOpportunity(new HitoSplittedParams { OpportunityId = hito.OpportunityId }, response);
+            }
+
             return response;
         }
 
@@ -425,10 +432,12 @@ namespace Sofco.Service.Implementations.Billing
 
         private async Task CreateNewHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
+
+
             try
             {
                     var data =
-                        $"Ammount={hito.Ammount}&StatusCode={hito.StatusCode}&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
+                        $"Ammount={hito.Ammount}&StatusCode=1&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
                             $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -438,13 +447,14 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
 
         private async Task UpdateFirstHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
-            if(hito.AmmountFirstHito == 0) return;
+            if (hito.AmmountFirstHito == 0 || hito.StatusCode == "717620004") return;
 
             try
             {
@@ -462,8 +472,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 httpResponse.EnsureSuccessStatusCode();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
@@ -542,6 +553,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -573,6 +585,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -607,8 +620,9 @@ namespace Sofco.Service.Implementations.Billing
                     response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -659,8 +673,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.Billing.Solfac.InvoicesAdded, MessageType.Success));
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -674,39 +689,12 @@ namespace Sofco.Service.Implementations.Billing
             if (result.HasErrors())
                 return result;
 
-            var solfacChangeStatusResponse = new SolfacChangeStatusResponse
-            {
-                HitoStatus = HitoStatus.Pending,
-                Hitos = result.Data.Hitos.Select(x => x.ExternalHitoId).ToList()
-            };
+            if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
+                return result;
 
-            ChangeHitoStatus(solfacChangeStatusResponse);
+            crmInvoiceService.UpdateHitoStatus(result.Data.Hitos.ToList(), HitoStatus.Pending);
 
             return result;
-        }
-
-        private async void ChangeHitoStatus(SolfacChangeStatusResponse data)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                foreach (var item in data.Hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int) data.HitoStatus}", Encoding.UTF8,
-                            "application/x-www-form-urlencoded");
-
-                        var response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
         }
 
         private void CreateHitoOnCrm(Solfac solfac)

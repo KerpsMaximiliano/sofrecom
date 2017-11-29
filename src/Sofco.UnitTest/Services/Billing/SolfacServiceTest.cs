@@ -3,12 +3,12 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Domains;
-using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.DAL;
@@ -30,7 +30,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<CrmConfig> crmConfigMock;
         private Mock<IMailSender> mailSenderMock;
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
-        private Mock<ILoggerWrapper<SolfacService>> loggerMock;
+        private Mock<ILogMailer<SolfacService>> loggerMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -44,7 +44,7 @@ namespace Sofco.UnitTest.Services.Billing
             crmConfigMock = new Mock<CrmConfig>();
             mailSenderMock = new Mock<IMailSender>();
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
-            loggerMock = new Mock<ILoggerWrapper<SolfacService>>();
+            loggerMock = new Mock<ILogMailer<SolfacService>>();
 
             var optionsMock = new Mock<IOptions<CrmConfig>>();
             optionsMock.SetupGet(s => s.Value).Returns(crmConfigMock.Object);
@@ -142,6 +142,7 @@ namespace Sofco.UnitTest.Services.Billing
                     {
                         SolfacId = 1,
                         Total = 100,
+                        OpportunityId = "16546510-3460-0346-0346-034634634600",
                         Details = new List<HitoDetail>
                         {
                             new HitoDetail

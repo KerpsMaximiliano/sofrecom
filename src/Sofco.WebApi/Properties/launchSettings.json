@@ -15,7 +15,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express - azsof01wd": {
+    "IIS Express - azsof01wd - Dev": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "azsof01wd-dev"
+      }
+    },
+    "IIS Express - azsof01wd - QA": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {

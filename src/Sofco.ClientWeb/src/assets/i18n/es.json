@@ -76,9 +76,9 @@
         }
     },
     "billing":{
-        "title": "Facturación",
+        "title": "Aseg. Ingresos y Costos",
         "customer":{
-            "title": "Clientes",
+            "title": "Gestión Facturación",
             "management": "Listado de Clientes",
             "edit": "Editar Cliente",
             "add": "Agregar Cliente",
@@ -146,7 +146,7 @@
                     "startDate": "Fecha Programada",
                     "month": "Mes",
                     "status": "Estado",
-                    "new": "Generar Solicitud",
+                    "new": "Generar Solicitud", 
                     "split": "Generar hito",
                     "close": "Cerrar hito",
                     "splitTitle": "Generar nuevo hito",

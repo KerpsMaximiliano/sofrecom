@@ -22,10 +22,8 @@
 
             <div class="btn-right">
                 <button class="btn btn-primary btn-outline dim" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
-                <button class="btn btn-primary btn-outline dim" (click)="send()" *ngIf="canSend()"> {{'ACTIONS.saveAndSend' | translate }} <i class="fa fa-save"></i></button>
 
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
-                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="cancel()"></status-sendToCdg>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
   selector: 'status-sendToCdg',
@@ -26,6 +27,7 @@ export class StatusSendToCdgComponent implements OnDestroy  {
 
   @Input() solfacId: number;
   @Input() status: string;
+  @Input() attachments: number;
 
   @Output() history: EventEmitter<any> = new EventEmitter();
   @Output() updateStatus: EventEmitter<any> = new EventEmitter();
@@ -33,9 +35,12 @@ export class StatusSendToCdgComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
+  message: string;
+
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
+    private i18nService: I18nService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -54,6 +59,17 @@ export class StatusSendToCdgComponent implements OnDestroy  {
     }
 
     return false;
+  }
+
+  showModal(){
+    if(this.attachments == 0){
+        this.message = this.i18nService.translate('billing/solfac', 'solfacHasNoAttachmentsConfirm');
+    }
+    else{
+        this.message = this.i18nService.translateByKey('ACTIONS.confirmBody');
+    }
+
+    this.sendToCdgModal.show();
   }
 
   sendToCDG(){
