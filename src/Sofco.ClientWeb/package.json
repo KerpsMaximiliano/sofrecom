@@ -64,6 +64,7 @@
     "rxjs": "^5.1.0",
     "select2": "^4.0.4",
     "summernote": "^0.8.7",
+    "sweetalert2": "^7.0.6",
     "toastr-ng2": "^4.1.1",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.18"

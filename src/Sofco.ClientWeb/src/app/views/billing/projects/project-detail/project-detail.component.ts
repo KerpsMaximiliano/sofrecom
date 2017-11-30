@@ -154,21 +154,42 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateIncomes() {
+        var incomesPending = this.project.incomes;
+
         this.solfacs.forEach((item, index) => {
 
-            if(item.documentTypeId != DocumentTypes.DebitNote){
+            if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
 
-                if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
-                    this.incomesBilled += item.totalAmount;
+                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
+                    this.incomesBilled -= item.totalAmount;
+                    incomesPending += item.totalAmount;
                 }
+                else{
+                    this.incomesBilled += item.totalAmount;
 
-                if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
+                    if(item.documentTypeId != DocumentTypes.DebitNote){
+                        incomesPending -= item.totalAmount;
+                    }
+                }
+            }
+
+            if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
+
+                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
+                    this.incomesCashed -= item.totalAmount;
+                    incomesPending += item.totalAmount;
+                }
+                else{
                     this.incomesCashed += item.totalAmount;
+
+                    if(item.documentTypeId != DocumentTypes.DebitNote){
+                        incomesPending -= item.totalAmount;
+                    }
                 }
             }
         });
 
-        this.incomesPending = this.project.incomes - this.incomesBilled - this.incomesCashed;
+        this.incomesPending = incomesPending;
     }
 
     generateSolfac() {

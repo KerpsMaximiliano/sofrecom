@@ -27,7 +27,7 @@ namespace Sofco.Core.Services.Billing
         Response UpdateCashedDate(int id, SolfacStatusParams parameters);
         Response DeleteInvoice(int id, int invoiceId);
         Response<ICollection<Invoice>> GetInvoices(int id);
-        Response AddInvoices(int id, IList<int> invoices);
+        Response<List<Invoice>> AddInvoices(int id, IList<int> invoices);
         Response<Solfac> Validate(Solfac solfac);
         Response DeleteDetail(int id);
         Task<Response> SplitHito(HitoSplittedParams hito);
