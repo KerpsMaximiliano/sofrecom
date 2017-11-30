@@ -640,7 +640,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<ICollection<Invoice>>();
 
-            var solfac = SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
+            SolfacValidationHelper.ValidateIfExist(id, solfacRepository, response);
 
             if (response.HasErrors()) return response;
 

@@ -40,7 +40,6 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public dateOptions;
 
     public filterByDates: boolean = true;
-    public loading:  boolean = false;
 
     constructor(
         private router: Router,
@@ -144,6 +143,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.messageService.showLoading();
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
@@ -155,11 +156,11 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             dateTo: this.filterByDates ? this.dateTo : null
         }
 
-        this.loading = true;
-
         this.getAllSubscrip = this.service.search(parameters).subscribe(data => {
 
             setTimeout(() => {
+                this.messageService.closeLoading();
+
                 this.data = [];
 
                 if(data.messages) {
@@ -171,12 +172,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
                 this.datatableService.destroy('#solfacsTable');
                 this.datatableService.init('#solfacsTable', true);
-
-                this.loading = false;
             }, 500)
         },
         err => {
-            this.loading = false;
             this.errorHandlerService.handleErrors(err)
         });
     }

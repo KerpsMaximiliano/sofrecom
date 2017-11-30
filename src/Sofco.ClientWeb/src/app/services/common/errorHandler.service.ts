@@ -11,6 +11,8 @@ export class ErrorHandlerService {
                 private router: Router){}
 
     public handleErrors(response){
+        this.messageService.closeLoading();
+        
         switch(response.status){
             case 400: this.handle400(response); break;
             case 401: this.handle401(response); break;

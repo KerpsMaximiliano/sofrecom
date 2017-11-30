@@ -49,11 +49,13 @@ namespace Sofco.Framework.CrmServices
         {
             var hito = solfac.Hitos.First();
 
-            var ammount = hito.Details.Sum(s => s.Total).ToString("0.##", new CultureInfo("en-US"));
+            hito.Total = hito.Details.Sum(s => s.Total);
+
+            var ammount = hito.Total.ToString("0.##", new CultureInfo("en-US"));
             var ammountText = SolfacHelper.IsCreditNote(solfac) ? "-"+ammount : ammount;
             var statusCode = (int)HitoStatus.Pending;
             var startDate = DateTime.UtcNow;
-            var name = GetPrefixTitle(solfac) + hito.Description;
+            var name = hito.Description = GetPrefixTitle(solfac) + hito.Description;
 
             var result = new Result<string>();
 

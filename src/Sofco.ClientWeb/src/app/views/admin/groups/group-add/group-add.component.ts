@@ -29,9 +29,13 @@ export class GroupAddComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form){
+    this.messageService.showLoading();
+
     this.group.active = true;
     this.service.add(this.group).subscribe(
       data => {
+        this.messageService.closeLoading();
+        
         if(data.messages) this.messageService.showMessages(data.messages);
         this.router.navigate(["/admin/groups"]);
       },

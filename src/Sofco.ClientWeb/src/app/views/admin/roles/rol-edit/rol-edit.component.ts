@@ -115,6 +115,8 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
  
     onSubmit(form){
+        this.messageService.showLoading();
+
         var model = {
             id: this.role.id,
             description: this.role.description,
@@ -123,6 +125,8 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
         this.editSubscrip = this.service.edit(model).subscribe(
             data => {
+                this.messageService.closeLoading();
+
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.router.navigate(["/admin/roles"])
             },

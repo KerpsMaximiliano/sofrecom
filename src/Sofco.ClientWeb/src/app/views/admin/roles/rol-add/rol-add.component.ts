@@ -26,10 +26,14 @@ export class RolAddComponent implements OnInit {
 
     onSubmit(form){
       if(!form.invalid){
+        this.messageService.showLoading();
+
         this.rol.active = true;
         this.service.add(this.rol).subscribe(
           data => {
+            this.messageService.closeLoading();
             if(data.messages) this.messageService.showMessages(data.messages);
+
             this.router.navigate(["/admin/roles"]);
           },
           err => this.errorHandlerService.handleErrors(err));

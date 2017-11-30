@@ -65,6 +65,14 @@ export class MessageService {
           });
     }
 
+    showLoginLoading(){
+        swal({
+            onOpen: () => {
+              swal.showLoading()
+            }
+          });
+    }
+
     closeLoading(){
         swal.close();
     }

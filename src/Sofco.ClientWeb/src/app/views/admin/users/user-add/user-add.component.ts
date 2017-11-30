@@ -34,6 +34,8 @@ export class UserAddComponent implements OnDestroy {
     }
 
     save() {
+        this.messageService.showLoading();
+
         var json = {
             email: this.model.userPrincipalName,
             name: this.model.displayName,
@@ -42,11 +44,12 @@ export class UserAddComponent implements OnDestroy {
 
         this.saveSubscrip = this.service.save(json).subscribe(
             response => {
+                this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
 
                 setTimeout(() => {
                     this.router.navigate(['/admin/users']);
-                }, 1000)
+                }, 500)
             },
             error => this.errorHandlerService.handleErrors(error)
         )
