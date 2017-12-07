@@ -88,39 +88,16 @@
                         <div class="panel-heading">
                             <div class="panel-options"> 
                                 <ul class="nav nav-tabs">
-                                    <li class="active" *ngIf="canSeeInvoices()"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
-                                    <li class=""><a href="#tab-2" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
-                                    <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-3" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
+                                    <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
+                                    <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
+                                    <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="panel-body">
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1" *ngIf="canSeeInvoices()">
-                                    <table class="table table-striped" id="invoiceTable" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
-                                                <th class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
-                                                <th class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)" class="pointer" >
-                                                <td>{{ invoice.invoiceNumber }}</td>
-                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy HH:mm' }}</td>
-                                                <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <div class="button-group" *ngIf="canCreateInvoice()">
-                                        <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
-                                    </div>
-                                </div>
-                    
-                                <div class="tab-pane" id="tab-2">
+                                <div class="tab-pane active" id="tab-1">
                                     <table class="table table-striped" id="hitoTable" width="100%">
                                         <thead>
                                             <tr>
@@ -157,7 +134,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane" id="tab-3" *ngIf="canSeeSolfacs()">
+                                <div class="tab-pane" id="tab-2" *ngIf="canSeeSolfacs()">
                                     <table class="table table-striped" id="solfacTable" width="100%">
                                         <thead>
                                             <tr>
@@ -180,6 +157,29 @@
                                             </tr>
                                         </tbody>
                                     </table>        
+                                </div>
+
+                                <div class="tab-pane" id="tab-3" *ngIf="canSeeInvoices()">
+                                    <table class="table table-striped" id="invoiceTable" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)" class="pointer" >
+                                                <td>{{ invoice.invoiceNumber }}</td>
+                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                                                <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="button-group" *ngIf="canCreateInvoice()">
+                                        <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
