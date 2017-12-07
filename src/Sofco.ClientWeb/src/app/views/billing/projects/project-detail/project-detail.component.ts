@@ -198,20 +198,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(["/billing/solfac"]);
     }
 
-    generateSolfacVisible(){
-        var hitos = this.getHitosSelected();
-
-        let isValid = hitos.length > 0;
-        
-        hitos.forEach(item => {
-            if(item.billed){
-                isValid = false;
-            }
-        });
-
-        return isValid;
-    }
-
     getHitosSelected(){
         var hitos = this.hitos.filter(hito => {
             if(hito.included && hito.included == true){
@@ -275,19 +261,33 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('SOLFA', 'QUERY');
     }
 
-    canSplit(){
-        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) 
-        return false;
+    generateSolfacVisible(){
+        var hitos = this.getHitosSelected();
 
-        let hitos = this.getHitosSelected();
-        let isValid = hitos.length == 1;
-            
+        let isValid = hitos.length > 0;
+    
         hitos.forEach(item => {
-            if(item.billed){
-                if(item.status == "Cerrado") return;
+            if(item.billed || item.status == "Cerrado"){
                 isValid = false;
             }
         });
+
+        return isValid;
+    }
+
+    canSplit(){
+        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) return false;
+
+        let hitos = this.getHitosSelected();
+        let isValid = hitos.length == 1;
+        
+        if(!isValid) return false;
+
+        var hito = hitos[0];
+
+        if(hito.status == "Cerrado") return true;
+
+        if(hito.billed) isValid = false;
 
         return isValid;
     }
@@ -296,16 +296,20 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         let hitos = this.getHitosSelected();
         let isValid = hitos.length == 1;
         
-        if(!isValid) return;
+        if(!isValid) return false;
 
-        hitos.forEach(item => {
-            if(!item.billed){
-                isValid = true;
-            }
-            else{
-                isValid = false;
-            }
-        });
+        var hito = hitos[0];
+
+        if(hito.status == "Cerrado") {
+            return false;
+        }
+
+        if(!hito.billed){
+            isValid = true;
+        }
+        else{
+            isValid = false;
+        }
 
         return isValid;
     }
