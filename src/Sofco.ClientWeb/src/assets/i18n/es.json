@@ -300,6 +300,20 @@
         "forbidden": "Acceso no Autorizado",
         "forbiddenMessage": "Lo sentimos, usted no tiene acceso a la página solicitada. Por favor vuelva a la página de inicio."
     },
+    "contracts": {
+        "title": "Gestión de Contratos",
+        "costCenter": {
+            "title": "Centro de Costos",
+            "list": "Listado de centro de costos",
+            "add": {
+                "title": "Nuevo centro de costos",
+                "code": "Código",
+                "letter": "Letra",
+                "description": "Descripción",
+                "active": "Activo"
+            }
+        }
+    },
     "allocationManagement": {
         "title": "Gestión de Recursos",
         "allocation": {
@@ -351,17 +365,6 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Manager Comercial"
-            }
-        },
-        "costCenter": {
-            "title": "Centro de Costos",
-            "list": "Listado de centro de costos",
-            "add": {
-                "title": "Nuevo centro de costos",
-                "code": "Código",
-                "letter": "Letra",
-                "description": "Descripción",
-                "active": "Activo"
             }
         }
     },

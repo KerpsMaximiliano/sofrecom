@@ -24,5 +24,6 @@ namespace Sofco.Core.DAL.Billing
         ICollection<InvoiceHistory> GetHistories(int id);
         void UpdateSolfacId(Invoice invoiceToModif);
         ICollection<Invoice> GetBySolfac(int id);
+        void UpdatePdfFileName(Invoice invoiceToModif);
     }
 }
