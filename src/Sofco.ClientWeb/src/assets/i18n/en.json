@@ -285,7 +285,8 @@
             "pdfAddedSucces": "PDF has successfully been imported",
             "excelAddedSucces": "Excel has successfully been imported",
             "invoiceNumberRequired": "The invoice number is required",
-            "goToSolfac": "Go to Invoice Request"
+            "goToSolfac": "Go to Invoice Request",
+            "excelFileName": "Excel file"
         }
     },
     "HOME": {
@@ -403,7 +404,8 @@
         "updateCash": "Update Cash",
         "applyChanges": "Apply changes",
         "assign": "Assign",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "title": "Acciones"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
@@ -428,6 +430,7 @@
     "selectAnOption": "Select an option",
     "dateToLessThanSince": "Date to cannot be less than date since",
     "filterByDates": "Filter by dates",
+    "name": "Name",
     "report":{
         "title": "Report",
         "solfacs": {

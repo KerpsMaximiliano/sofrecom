@@ -92,24 +92,28 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Invoice> SaveExcel(Invoice invoice)
+        public Response<Invoice> SaveExcel(Invoice invoice, string fileFileName)
         {
             var response = new Response<Invoice>();
 
             try
             {
-                var datetime = DateTime.Now;
+                var datetime = DateTime.UtcNow;
 
                 var invoiceToSave = new Invoice
                 {
                     Id = invoice.Id,
                     ExcelFile = invoice.ExcelFile,
-                    ExcelFileName = string.Concat("REMITO_", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".xlsx"),
+                    ExcelFileName = fileFileName,
                     ExcelFileCreatedDate = datetime
                 };
 
                 invoiceRepository.UpdateExcel(invoiceToSave);
                 invoiceRepository.Save();
+
+                invoice.ExcelFile = null;
+                invoice.ExcelFileName = fileFileName;
+                invoice.ExcelFileCreatedDate = datetime;
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
@@ -138,24 +142,28 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Invoice> SavePdf(Invoice invoice)
+        public Response<Invoice> SavePdf(Invoice invoice, string fileFileName)
         {
             var response = new Response<Invoice>();
 
             try
             {
-                var datetime = DateTime.Now;
+                var datetime = DateTime.UtcNow;
 
                 var invoiceToSave = new Invoice
                 {
                     Id = invoice.Id,
                     PdfFile = invoice.PdfFile,
-                    PdfFileName = string.Concat("REMITO_", invoice.AccountName, "_", invoice.Service, "_", invoice.Project, "_", datetime.ToString("yyyyMMdd"), ".pdf"),
+                    PdfFileName = fileFileName,
                     PdfFileCreatedDate = datetime
                 };
 
                 invoiceRepository.UpdatePdf(invoiceToSave);
                 invoiceRepository.Save();
+
+                invoice.PdfFile = null;
+                invoice.PdfFileName = fileFileName;
+                invoice.PdfFileCreatedDate = datetime;
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));

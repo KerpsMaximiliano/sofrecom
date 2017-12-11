@@ -285,7 +285,8 @@
             "pdfAddedSucces": "PDF importado correctamente",
             "excelAddedSucces": "Excel importado correctamente",
             "invoiceNumberRequired": "El número de remito es requerido",
-            "goToSolfac": "Ir a la Solicitud"
+            "goToSolfac": "Ir a la Solicitud",
+            "excelFileName": "Archivo excel"
         }
     },
     "HOME": {
@@ -403,7 +404,8 @@
         "updateCash": "Actualizar Cobro",
         "assign": "Asignar",
         "applyChanges": "Aplicar cambios",
-        "confirm": "Confirmar"
+        "confirm": "Confirmar",
+        "title": "Acciones"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -428,6 +430,7 @@
     "selectAnOption": "Seleccione una opción",
     "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
     "filterByDates": "Filtrar por fechas",
+    "name": "Nombre",
     "report":{
         "title": "Reporte",
         "solfacs": {

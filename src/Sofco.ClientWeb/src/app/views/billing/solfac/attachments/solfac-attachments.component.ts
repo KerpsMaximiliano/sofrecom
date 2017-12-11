@@ -73,9 +73,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     }
 
     clearSelectedFile(){
-        if(this.uploader.queue.length > 0){
-            this.uploader.queue[0].remove();
-        }
+        this.uploader.clearQueue();
   
         this.selectedFile.nativeElement.value = '';
     }
@@ -92,16 +90,20 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     }
 
     deleteFile(){
+        this.confirmModal.hide();
+        this.messageService.showLoading();
+
         this.solfacService.deleteFile(this.fileId).subscribe(response => {
             if(response.messages) this.messageService.showMessages(response.messages);
             this.files.splice(this.index, 1);
 
-            this.confirmModal.hide();
             this.fileId = null;
             this.index = null;
+
+            this.messageService.closeLoading();
         },
         err => {
-            this.confirmModal.hide();
+            this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err)
         });
     }

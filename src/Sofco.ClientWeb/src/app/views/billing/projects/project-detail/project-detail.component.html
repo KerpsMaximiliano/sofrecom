@@ -163,14 +163,16 @@
                                     <table class="table table-striped" id="invoiceTable" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
-                                                <th class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
-                                                <th class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
+                                                <th class="col-lg-2">{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
+                                                <th>{{'billing.invoice.excelFileName' | translate }}</th>
+                                                <th class="text-center col-lg-2">{{'billing.project.detail.invoices.date' | translate }}</th>
+                                                <th class="text-center col-lg-2">{{'billing.project.detail.invoices.status' | translate }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)" class="pointer" >
                                                 <td>{{ invoice.invoiceNumber }}</td>
+                                                <td>{{ invoice.excelFileName }}</td>
                                                 <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy HH:mm' }}</td>
                                                 <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
                                             </tr>

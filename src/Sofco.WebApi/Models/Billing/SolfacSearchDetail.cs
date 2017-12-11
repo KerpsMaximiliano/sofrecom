@@ -66,6 +66,7 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             AccountName = invoice.AccountName;
             Service = invoice.Service;
+            ExcelFileName = invoice.ExcelFileName;
             Project = invoice.Project;
             ProjectId = invoice.ProjectId;
             CreatedDate = invoice.CreatedDate;
@@ -74,6 +75,8 @@ namespace Sofco.WebApi.Models.Billing
             if (invoice.User != null)
                 User = invoice.User.Name;
         }
+
+        public string ExcelFileName { get; set; }
 
         public int Id { get; set; }
 

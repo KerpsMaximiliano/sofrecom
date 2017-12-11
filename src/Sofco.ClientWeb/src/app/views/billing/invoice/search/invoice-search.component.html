@@ -116,22 +116,20 @@
                             <thead>
                                 <tr>
                                     <th>{{'billing.invoice.invoiceNumber' | translate }}</th>
+                                    <th>{{'billing.invoice.excelFileName' | translate }}</th>
                                     <th>{{'billing.invoice.account' | translate }}</th>
-                                    <th>{{'billing.invoice.service' | translate }}</th>
                                     <th>{{'billing.invoice.project' | translate }}</th>
                                     <th>{{'billing.invoice.user' | translate }}</th>
-                                    <th>{{'billing.invoice.createdDate' | translate }}</th>
                                     <th class="text-center">{{'billing.invoice.status' | translate }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let invoice of data" (click)="goToDetail(invoice)" class="pointer">
                                     <td>{{invoice.invoiceNumber}}</td>
+                                    <td title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
                                     <td>{{invoice.accountName}}</td>
-                                    <td>{{invoice.service}}</td>
                                     <td>{{invoice.project}}</td>
                                     <td>{{invoice.user}}</td>
-                                    <td>{{invoice.createdDate | date:'dd/MM/yyyy HH:mm'}}</td>
                                     <td class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
                                 </tr>
                             </tbody>
