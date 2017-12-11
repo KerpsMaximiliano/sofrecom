@@ -2,7 +2,7 @@
     <div class="col-lg-4 col-sm-5" *ngIf="canUploadFiles()">
         <h3>{{'billing.solfac.import' | translate }}</h3>
 
-        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple />
 
         <div class="uploader-margin-top">
             <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="col-lg-8 col-sm-7" *ngIf="uploader.getNotUploadedItems().length">
-        <table class="table table-striped dataTable" role="grid" id="solfacsTable">
+        <table class="table table-striped dataTable" role="grid">
             <thead>
                 <tr>
                     <th>{{'name' | translate }}</th>

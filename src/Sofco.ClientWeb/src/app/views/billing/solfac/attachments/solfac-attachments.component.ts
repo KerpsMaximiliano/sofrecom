@@ -56,8 +56,10 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
 
             var file = json.data;
             this.files.push({ id: file.id, name: file.name, creationDate: file.creationDate });
+        };
 
-            this.clearSelectedFile();
+        this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
+            item.remove();
         };
     }
 
