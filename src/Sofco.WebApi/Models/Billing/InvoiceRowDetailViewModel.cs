@@ -11,7 +11,10 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             CreatedDate = invoice.CreatedDate;
             InvoiceStatus = invoice.InvoiceStatus.ToString();
+            ExcelFileName = invoice.ExcelFileName;
         }
+
+        public string ExcelFileName { get; set; }
 
         public int Id { get; set; }
 

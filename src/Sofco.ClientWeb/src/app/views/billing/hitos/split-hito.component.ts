@@ -48,6 +48,8 @@ export class SplitHitoComponent implements OnDestroy  {
   openModal(hito){
     this.hitoSelected = hito;
     this.hito = new NewHito();
+    this.hito.month = hito.month;
+    this.hito.startDate = new Date(hito.startDate);
     this.spliHitoModal.show();
   }
 

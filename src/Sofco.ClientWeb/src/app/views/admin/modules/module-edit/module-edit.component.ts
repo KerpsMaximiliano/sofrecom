@@ -16,7 +16,7 @@ import { I18nService } from 'app/services/common/i18n.service';
 })
 export class ModuleEditComponent implements OnInit, OnDestroy {
 
-    public module: Module = <Module>{};
+    public module: Module;
     private id: number;
     private paramsSubscrip: Subscription;
     private getSubscrip: Subscription;

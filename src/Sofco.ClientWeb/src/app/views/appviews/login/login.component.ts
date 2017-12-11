@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
 
     login() {
         var userName = this.model.username.split("@")[0];
+        this.messageService.showLoginLoading();
 
         this.loginSubscrip = this.authenticationService.login(userName, this.model.password).subscribe(
             data => {
@@ -65,6 +66,8 @@ export class LoginComponent implements OnInit {
 
         this.menuSubscrip = this.menuService.get(userName).subscribe(
             data => {
+                this.messageService.closeLoading();
+
                 localStorage.setItem('menu', JSON.stringify(data));
                 Cookie.set("currentUser", userName);
                 Cookie.set("currentUserMail", this.model.username);

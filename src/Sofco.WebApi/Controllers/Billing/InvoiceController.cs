@@ -159,7 +159,7 @@ namespace Sofco.WebApi.Controllers.Billing
                         response.Data.ExcelFile = memoryStream.ToArray();
                     }
 
-                    response = invoiceService.SaveExcel(response.Data);
+                    response = invoiceService.SaveExcel(response.Data, file.FileName);
 
                     if (response.HasErrors())
                         return BadRequest(response);
@@ -198,7 +198,7 @@ namespace Sofco.WebApi.Controllers.Billing
                         response.Data.PdfFile = memoryStream.ToArray();
                     }
 
-                    response = invoiceService.SavePdf(response.Data);
+                    response = invoiceService.SavePdf(response.Data, file.FileName);
 
                     if (response.HasErrors())
                         return BadRequest(response);

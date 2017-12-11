@@ -4,6 +4,8 @@ import { Message } from "app/models/message";
 import { I18nService } from 'app/services/common/i18n.service';
 import { ToastConfig } from 'toastr-ng2/toastr-config';
 
+declare var swal: any;
+
 @Injectable()
 export class MessageService {
     private errorConfig:ToastConfig;
@@ -52,5 +54,26 @@ export class MessageService {
 
     showSuccessByFolder(folder, code){
         this.toastrService.success(this.i18nService.translate(folder, code));
+    }
+
+    showLoading(){
+        swal({
+            title: 'Procesando !',
+            onOpen: () => {
+              swal.showLoading()
+            }
+          });
+    }
+
+    showLoginLoading(){
+        swal({
+            onOpen: () => {
+              swal.showLoading()
+            }
+          });
+    }
+
+    closeLoading(){
+        swal.close();
     }
 }

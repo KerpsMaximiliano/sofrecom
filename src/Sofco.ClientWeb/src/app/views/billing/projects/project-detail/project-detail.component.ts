@@ -154,41 +154,48 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateIncomes() {
+        var incomesPending = this.project.incomes;
+
         this.solfacs.forEach((item, index) => {
 
-            if(item.documentTypeId != DocumentTypes.DebitNote){
+            if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
 
-                if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
-                    this.incomesBilled += item.totalAmount;
+                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
+                    this.incomesBilled -= item.totalAmount;
+                    incomesPending += item.totalAmount;
                 }
+                else{
+                    this.incomesBilled += item.totalAmount;
 
-                if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
+                    if(item.documentTypeId != DocumentTypes.DebitNote){
+                        incomesPending -= item.totalAmount;
+                    }
+                }
+            }
+
+            if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
+
+                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
+                    this.incomesCashed -= item.totalAmount;
+                    incomesPending += item.totalAmount;
+                }
+                else{
                     this.incomesCashed += item.totalAmount;
+
+                    if(item.documentTypeId != DocumentTypes.DebitNote){
+                        incomesPending -= item.totalAmount;
+                    }
                 }
             }
         });
 
-        this.incomesPending = this.project.incomes - this.incomesBilled - this.incomesCashed;
+        this.incomesPending = incomesPending;
     }
 
     generateSolfac() {
         var hitos = this.getHitosSelected();
         sessionStorage.setItem("hitosSelected", JSON.stringify(hitos));
         this.router.navigate(["/billing/solfac"]);
-    }
-
-    generateSolfacVisible(){
-        var hitos = this.getHitosSelected();
-
-        let isValid = hitos.length > 0;
-        
-        hitos.forEach(item => {
-            if(item.billed){
-                isValid = false;
-            }
-        });
-
-        return isValid;
     }
 
     getHitosSelected(){
@@ -254,19 +261,33 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('SOLFA', 'QUERY');
     }
 
-    canSplit(){
-        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) 
-        return false;
+    generateSolfacVisible(){
+        var hitos = this.getHitosSelected();
 
-        let hitos = this.getHitosSelected();
-        let isValid = hitos.length == 1;
-            
+        let isValid = hitos.length > 0;
+    
         hitos.forEach(item => {
-            if(item.billed){
-                if(item.status == "Cerrado") return;
+            if(item.billed || item.status == "Cerrado"){
                 isValid = false;
             }
         });
+
+        return isValid;
+    }
+
+    canSplit(){
+        if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) return false;
+
+        let hitos = this.getHitosSelected();
+        let isValid = hitos.length == 1;
+        
+        if(!isValid) return false;
+
+        var hito = hitos[0];
+
+        if(hito.status == "Cerrado") return true;
+
+        if(hito.billed) isValid = false;
 
         return isValid;
     }
@@ -275,16 +296,20 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         let hitos = this.getHitosSelected();
         let isValid = hitos.length == 1;
         
-        if(!isValid) return;
+        if(!isValid) return false;
 
-        hitos.forEach(item => {
-            if(!item.billed){
-                isValid = true;
-            }
-            else{
-                isValid = false;
-            }
-        });
+        var hito = hitos[0];
+
+        if(hito.status == "Cerrado") {
+            return false;
+        }
+
+        if(!hito.billed){
+            isValid = true;
+        }
+        else{
+            isValid = false;
+        }
 
         return isValid;
     }

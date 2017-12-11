@@ -17,7 +17,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-invoice-search',
-  templateUrl: './invoice-search.component.html'
+  templateUrl: './invoice-search.component.html',
+  styleUrls: ['./invoice-search.component.scss']
 })
 export class InvoiceSearchComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
@@ -39,7 +40,6 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     
     public dateOptions;
 
-    public loading:  boolean = false;
     public filterByDates: boolean = true;
 
     constructor(
@@ -126,6 +126,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.messageService.showLoading();
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
@@ -137,11 +139,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             dateTo: this.filterByDates ? this.dateTo : null
         }
 
-        this.loading = true;
-
         this.getAllSubscrip = this.service.search(parameters).subscribe(data => {
 
             setTimeout(() => {
+                this.messageService.closeLoading();
+
                 this.data = [];
 
                 if(data.messages) {
@@ -153,14 +155,9 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
                 this.datatableService.destroy('#invoiceTable');
                 this.datatableService.init('#invoiceTable', true);
-
-                this.loading = false;
             }, 500)
         },
-        err => {
-            this.loading = false;
-            this.errorHandlerService.handleErrors(err)
-        });
+        err => this.errorHandlerService.handleErrors(err));
     }
 
     showUserApplicantFilter(){

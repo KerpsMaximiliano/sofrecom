@@ -115,8 +115,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.messageService.succes("billing.invoice.pdfAddedSucces");
 
-            this.model.pdfFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.pdf`;
-            this.model.pdfFileCreatedDate = new Date().toLocaleDateString();
+            var dataJson = JSON.parse(response);
+            
+            if(dataJson){
+                this.model.pdfFileName = dataJson.data.pdfFileName;
+                this.model.pdfFileCreatedDate = new Date(dataJson.data.pdfFileCreatedDate).toLocaleDateString();
+            }
+
             this.configUploader();
             this.clearSelectedFile();
         };
@@ -136,8 +141,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             this.messageService.succes("billing.invoice.excelAddedSucces");
 
-            this.model.excelFileName = `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`;
-            this.model.excelFileCreatedDate = new Date().toLocaleDateString();
+            var dataJson = JSON.parse(response);
+
+            if(dataJson){
+                this.model.excelFileName = dataJson.data.excelFileName;
+                this.model.excelFileCreatedDate = new Date(dataJson.data.excelFileCreatedDate).toLocaleDateString();
+            }
+
             this.configUploader();
             this.clearSelectedFile();
         };

@@ -298,10 +298,19 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
       this.solfacService.addInvoices(this.solfacId, invoices).subscribe(data => {
         if(data.messages) this.messageService.showMessages(data.messages);
-        
-        setTimeout(function() {
-          window.location.reload();
-        }, 1000);
+    
+        if(data.data && data.data.length > 0){
+
+          data.data.forEach(element => {
+            this.invoicesRelated.push({ id: element.id, invoiceNumber: element.invoiceNumber });
+          });
+
+          this.invoices = this.invoices.filter(item => {
+            if(!invoices.includes(item.value)) return item;
+
+            return null;
+          })
+        }
       },
       err => this.errorHandlerService.handleErrors(err));
     }

@@ -26,7 +26,8 @@
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../node_modules/datatables.net-buttons-bs/css/buttons.bootstrap.css",
         "styles.scss",
-        "../node_modules/toastr-ng2/toastr.css"
+        "../node_modules/toastr-ng2/toastr.css",
+        "../node_modules/sweetalert2/dist/sweetalert2.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
@@ -45,7 +46,8 @@
         "../node_modules/datatables.net-buttons-bs/js/buttons.bootstrap.js",
         "../node_modules/jszip/dist/jszip.min.js",
         "../node_modules/datatables.net-buttons/js/buttons.html5.js",
-        "../node_modules/moment/min/moment.min.js"
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/sweetalert2/dist/sweetalert2.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
