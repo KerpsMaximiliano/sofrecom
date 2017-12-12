@@ -27,8 +27,8 @@ namespace Sofco.WebApi
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
