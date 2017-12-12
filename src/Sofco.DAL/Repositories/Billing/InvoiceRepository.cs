@@ -227,5 +227,10 @@ namespace Sofco.DAL.Repositories.Billing
                 SolfacId = x.SolfacId
             }).ToList();
         }
+
+        public void UpdatePdfFileName(Invoice invoiceToModif)
+        {
+            context.Entry(invoiceToModif).Property("PdfFileName").IsModified = true;
+        }
     }
 }

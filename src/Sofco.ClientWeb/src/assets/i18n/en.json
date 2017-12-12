@@ -300,6 +300,20 @@
         "forbidden": "Unauthorized access",
         "forbiddenMessage": "Sorry, you do not have access to the requested page. Please return to the home page."
     },
+    "contracts": {
+        "title": "Contracts Management",
+        "costCenter": {
+            "title": "Cost Center",
+            "list": "Cost Center´s List",
+            "add": {
+                "title": "New cost center",
+                "code": "Code",
+                "letter": "Letter",
+                "description": "Description",
+                "active": "Active"
+            }
+        }
+    },
     "allocationManagement": {
         "title": "Allocation Management",
         "allocation": {
@@ -351,17 +365,6 @@
                 "name": "Name",
                 "client": "Cliet",
                 "commercialManager": "Commercial Manager"
-            }
-        },
-        "costCenter": {
-            "title": "Cost Center",
-            "list": "Cost Center´s List",
-            "add": {
-                "title": "New cost center",
-                "code": "Code",
-                "letter": "Letter",
-                "description": "Description",
-                "active": "Active"
             }
         }
     },

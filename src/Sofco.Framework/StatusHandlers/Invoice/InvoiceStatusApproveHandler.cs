@@ -81,8 +81,11 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
-            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber };
+            var newPdfFileName = $"R-{parameters.InvoiceNumber}-{invoice.PdfFileName}";
+
+            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber, PdfFileName = newPdfFileName };
             _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
+            _invoiceRepository.UpdatePdfFileName(invoiceToModif);
         }
     }
 }

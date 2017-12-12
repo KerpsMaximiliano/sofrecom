@@ -46,6 +46,6 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
     }
 
     goToAdd(){
-        this.router.navigate(['/allocationManagement/costCenter/add']);
+        this.router.navigate(['/contracts/costCenter/add']);
     }
 }

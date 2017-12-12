@@ -105,7 +105,17 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
-
+  {
+    path: 'contracts', component: BasicLayoutComponent,
+    children: [
+    {
+      path: "costCenter",
+      children: [
+        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
+        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+      ]
+    }]
+  },
   {
     path: 'allocationManagement', component: BasicLayoutComponent,
     children: [
@@ -119,13 +129,6 @@ export const ROUTES:Routes = [
         children: [
           { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } } ,
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
-        ]
-      },
-      {
-        path: "costCenter",
-        children: [
-          { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
         ]
       }]
   },
