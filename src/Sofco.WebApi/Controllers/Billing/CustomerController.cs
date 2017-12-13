@@ -21,12 +21,12 @@ namespace Sofco.WebApi.Controllers.Billing
             this.customerService = customerService;
         }
 
-        [HttpGet("{userMail}/options")]
-        public IActionResult GetOptions(string userMail)
+        [HttpGet("{userName}/options")]
+        public IActionResult GetOptions(string userName)
         {
             try
             {
-                var customers = this.customerService.GetCustomers(userMail, User.Identity.Name);
+                var customers = this.customerService.GetCustomers(this.GetUserMail(), userName);
 
                 var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
 
@@ -38,12 +38,12 @@ namespace Sofco.WebApi.Controllers.Billing
             }
         }
 
-        [HttpGet("user/{userMail}")]
-        public IActionResult Get(string userMail)
+        [HttpGet("user/{userName}")]
+        public IActionResult Get(string userName)
         {
             try
             {
-                var customers = this.customerService.GetCustomers(userMail, this.GetUserName());
+                var customers = this.customerService.GetCustomers(this.GetUserMail(), userName);
 
                 return Ok(customers);
             }
