@@ -100,4 +100,19 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(event.invoiceDate) this.model.invoiceDate = event.invoiceDate;
         if(event.cashedDate) this.model.cashedDate = event.cashedDate;
     }
+
+    print(){
+        var mywindow = window;
+        mywindow.open('', 'PRINT', 'height=414,width=1200');
+
+        mywindow.document.body.innerHTML = document.getElementById('tab-1').innerHTML;
+    
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+    
+        mywindow.print();
+        mywindow.close();
+    
+        return true;
+    }
 }

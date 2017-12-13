@@ -89,7 +89,13 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Invoices
                 .Include(x => x.Solfac)
-                .Where(x => x.Solfac == null && x.InvoiceStatus == InvoiceStatus.Approved && x.ProjectId == projectId).ToList();
+                .Where(x => x.Solfac == null && x.InvoiceStatus == InvoiceStatus.Approved && x.ProjectId == projectId)
+                .Select(x => new Invoice
+                {
+                    PdfFileName = x.PdfFileName,
+                    Id = x.Id
+                })
+                .ToList();
         }
 
         public bool InvoiceNumberExist(string invoiceNumber)
