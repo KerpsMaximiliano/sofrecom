@@ -39,10 +39,9 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
-        var userName = this.model.username.split("@")[0];
         this.messageService.showLoginLoading();
 
-        this.loginSubscrip = this.authenticationService.login(userName, this.model.password).subscribe(
+        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
             data => {
                 this.onLoginSucces(data);
             },
@@ -53,8 +52,6 @@ export class LoginComponent implements OnInit {
         Cookie.set('access_token', data.access_token);
         Cookie.set('refresh_token', data.refresh_token);  
 
-        var userName = this.model.username.split("@")[0];
-
         this.userSubscrip = this.userService.getByEmail(this.model.username).subscribe(
             userData => {
                 Cookie.set('userInfo', JSON.stringify(userData));  
@@ -64,12 +61,12 @@ export class LoginComponent implements OnInit {
             error => this.errorHandlerService.handleErrors(error)
         );
 
-        this.menuSubscrip = this.menuService.get(userName).subscribe(
+        this.menuSubscrip = this.menuService.get(this.model.username).subscribe(
             data => {
                 this.messageService.closeLoading();
 
                 localStorage.setItem('menu', JSON.stringify(data));
-                Cookie.set("currentUser", userName);
+                Cookie.set("currentUser", this.model.username);
                 Cookie.set("currentUserMail", this.model.username);
 
                 this.menuService.menu = data.menus;

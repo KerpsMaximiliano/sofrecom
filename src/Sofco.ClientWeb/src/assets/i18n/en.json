@@ -286,7 +286,7 @@
             "excelAddedSucces": "Excel has successfully been imported",
             "invoiceNumberRequired": "The invoice number is required",
             "goToSolfac": "Go to Invoice Request",
-            "excelFileName": "Excel file"
+            "excelFileName": "File Name"
         }
     },
     "HOME": {

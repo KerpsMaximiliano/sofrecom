@@ -125,9 +125,9 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpGet("email/{mail}")]
-        public IActionResult Get(string mail)
+        public IActionResult Get(string username)
         {
-            var response = userService.GetByMail(mail);
+            var response = userService.GetByMail(this.GetUserMail());
 
             if (response.HasErrors())
                 return BadRequest(response);
