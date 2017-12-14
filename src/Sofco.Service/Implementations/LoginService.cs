@@ -133,12 +133,12 @@ namespace Sofco.Service.Implementations
 
             var mail = email;
 
-            if (email.Contains("@sofrecom.com.ar"))
-            {
-                var username = email.Split('@')[0];
+            //if (email.Contains("@sofrecom.com.ar"))
+            //{
+            //    var username = email.Split('@')[0];
 
-                mail = $"{username}@tebrasofre.onmicrosoft.com";
-            }
+            //    mail = $"{username}@tebrasofre.onmicrosoft.com";
+            //}
 
             var graphUri = azureAdOptions.GraphUsersUrl + "/" + mail;
 

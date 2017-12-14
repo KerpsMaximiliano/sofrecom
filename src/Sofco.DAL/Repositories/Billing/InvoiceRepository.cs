@@ -148,6 +148,7 @@ namespace Sofco.DAL.Repositories.Billing
                             Service = x.Service,
                             Project = x.Project,
                             ExcelFileName = x.ExcelFileName,
+                            PdfFileName = x.PdfFileName,
                             ProjectId = x.ProjectId,
                             User = x.User,
                             CreatedDate = x.CreatedDate,

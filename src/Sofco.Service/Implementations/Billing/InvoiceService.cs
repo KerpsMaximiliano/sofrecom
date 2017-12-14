@@ -292,7 +292,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (isDirector || isDaf || isCdg)
             {
-                return invoiceRepository.SearchByParams(parameters);
+                return invoiceRepository.SearchByParams(parameters); 
             }
             else
             {
