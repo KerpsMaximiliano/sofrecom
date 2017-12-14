@@ -113,11 +113,13 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public IList<Solfac> Search(SolfacParams parameter, string userMail)
+        public IList<Solfac> Search(SolfacParams parameter, string userMail, EmailConfig emailConfig)
         {
             var isDirector = userRepository.HasDirectorGroup(userMail);
+            var isDaf = userRepository.HasDafGroup(userMail, emailConfig.DafCode);
+            var isCdg = userRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
 
-            if (isDirector)
+            if (isDirector || isDaf || isCdg)
             {
                 return solfacRepository.SearchByParams(parameter);
             }
