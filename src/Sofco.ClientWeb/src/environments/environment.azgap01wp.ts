@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    urlApi:  "http://azgap01wp:91/api"
+    urlApi:  "https://gaps.sofrecom.com.ar:91/api"
   };
   
