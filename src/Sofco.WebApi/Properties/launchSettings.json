@@ -29,6 +29,13 @@
         "ASPNETCORE_ENVIRONMENT": "azsof01wd-qa"
       }
     },
+    "IIS Express - azsof01wt - UAT": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "azsof01wt"
+      }
+    },
     "IIS Express - Localhost": {
       "commandName": "IISExpress",
       "launchBrowser": true,

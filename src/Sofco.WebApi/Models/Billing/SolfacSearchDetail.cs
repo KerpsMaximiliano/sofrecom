@@ -66,7 +66,7 @@ namespace Sofco.WebApi.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             AccountName = invoice.AccountName;
             Service = invoice.Service;
-            ExcelFileName = invoice.ExcelFileName;
+            ExcelFileName = string.IsNullOrWhiteSpace(invoice.PdfFileName) ? invoice.ExcelFileName : invoice.PdfFileName;
             Project = invoice.Project;
             ProjectId = invoice.ProjectId;
             CreatedDate = invoice.CreatedDate;
