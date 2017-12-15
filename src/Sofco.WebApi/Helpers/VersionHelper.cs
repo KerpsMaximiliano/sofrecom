@@ -4,7 +4,7 @@
     {
         public static string Version { get; }
 
-        private const int Major = 0;
+        private const int Major = 1;
 
         private const int Minor = 6;
 
