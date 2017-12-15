@@ -30,6 +30,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "localhost"
       }
+    },
+    "IIS Express - azgap01wp - Prod": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "azgap01wp"
+      }
     }
   }
 }
