@@ -1,0 +1,119 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.invoice.management' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.project.title' | translate }}</a>
+            </li>
+            <li>
+                <a (click)="cancel()">{{ model.project }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'billing.invoice.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="row">
+        <div class="col-lg-12">
+            <button *ngIf="model.id > 0" class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-pencil"></i> {{'billing.invoice.draft' | translate }} </button>
+
+            <div class="btn-right">
+                <button (click)="confirmModal.show()" class="btn btn-danger btn-outline dim" *ngIf="canDelete()" >{{'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i></button>
+
+                <invoice-status-sendToDaf [invoiceId]="model.id" [excelFileName]="model.excelFileName" [status]="model.invoiceStatus" (callback)="sendCallback($event)"></invoice-status-sendToDaf>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+          <h3>{{'billing.invoice.information' | translate }}</h3>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>{{'billing.invoice.invoiceNumber' | translate }}: </h4></dt>
+                        <dd><h4 class="text-navy">0000-00000000</h4></dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>{{'billing.invoice.status' | translate }}: </h4></dt>
+                        <dd><span class="label label-warning">{{ model.invoiceStatus | translate }}</span></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{'billing.invoice.account' | translate }}: </dt><dd>{{model.accountName}}</dd>
+                        <dt>{{'billing.invoice.service' | translate }}: </dt><dd>{{model.service}}</dd>
+                        <dt>{{'billing.invoice.project' | translate }}: </dt><dd>{{model.project}}</dd>
+                        <dt>{{'billing.invoice.cuit' | translate }}: </dt><dd>{{model.cuit}}</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{'billing.invoice.address' | translate }}:</dt><dd>{{model.address}}</dd>
+                        <dt>{{'billing.invoice.zipCode' | translate }}: </dt><dd>{{model.zipcode}}</dd>
+                        <dt>{{'billing.invoice.city' | translate }}: </dt><dd>{{model.city}}</dd>
+                        <dt>{{'billing.invoice.province' | translate }}: </dt><dd>{{model.province}}</dd>
+                        <dt>{{'billing.invoice.country' | translate }}: </dt><dd>{{model.country}}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="canUploadExcel()">
+                <div class="col-lg-8">
+                    <h3>{{'billing.invoice.excelImport' | translate }}</h3>
+                    <input type="file" #selectedFile ng2FileSelect [uploader]="uploader" />
+                </div>
+            </div>
+
+            <div class="row" *ngIf="canUploadExcel()">
+                <div class="col-lg-6">
+                    <div class="uploader-margin-top">
+                        <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                        </button>
+
+                        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-success" *ngIf="model.id > 0 && excelUploaded">
+                {{'billing.invoice.excelUploaded' | translate }}
+            </div>
+
+        </div>
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> {{'ACTIONS.cancel' | translate }} </button>
+                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> {{'billing.invoice.createAndExport' | translate }} </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="delete()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

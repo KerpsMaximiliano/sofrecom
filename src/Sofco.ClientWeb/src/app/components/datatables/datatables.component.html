@@ -1,0 +1,74 @@
+
+<table id="dt-component" class="dataTable" class="display nowrap" cellspacing="0" width="100%" *ngIf="data">
+    <thead>
+        <tr>
+            <th *ngFor="let column of visibleColumns" [width] = "column.width">{{column.title | translate}}</th>
+            <th *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow" width="{{actionsColumnWidth}}px">
+                {{ 'ADMIN.actions' | translate }}
+            </th>
+        </tr>
+    </thead>
+    <tbody *ngIf="data && data.length > 0">
+
+        <!--RECORRO LAS FILAS-->
+        <tr  *ngFor="let d of data" [ngClass]="editionType == editionTypeEnum.HandInAllTheRow ? 'cursor-pointer' : 'cursor-default'">
+
+            <!--RECORRO LAS COLUMNAS-->
+            <td *ngFor="let column of visibleColumns" [ngClass]="(column.alignment == alignmentEnum.center)?
+                                                                'text-center':
+                                                            (column.alignment == alignmentEnum.left)?
+                                                                'text-left':
+                                                                'text-right'"
+                                                [routerLink]="(editionType == editionTypeEnum.HandInAllTheRow)?['edit', d[idColumnName]]:[]">
+
+                <!-- TIPO  NONE -->
+                <span *ngIf="column.dataType==dataTypeEnum.string">{{d[column.name]}}</span>
+
+                <!--CHECK PARA BOOLEAN-->
+                <span class="fa" *ngIf="column.dataType==dataTypeEnum.boolean" [ngClass]="(d[column.name])?'fa-check text-success':'fa-close text-danger'"></span>
+                
+                <!-- TIPO MONEDA -->
+                <span *ngIf="column.dataType==dataTypeEnum.currency">{{d[column.name] | number: '1.2-2'}}</span>
+
+                <!-- TIPO LABELS -->
+                <span *ngIf="column.dataType==dataTypeEnum.labelWarning" class="label label-warning">{{d[column.name]}}</span>
+                <span *ngIf="column.dataType==dataTypeEnum.labelDanger" class="label label-danger">{{d[column.name]}}</span>
+                <span *ngIf="column.dataType==dataTypeEnum.labelPrimary" class="label label-primary">{{d[column.name]}}</span> 
+
+                <!-- TIPO DATE -->
+                <span *ngIf="column.dataType==dataTypeEnum.date">{{d[column.name] | date:'dd/MM/yyyy'}}</span>
+            </td>
+
+            <!--<td *ngIf="!editionTypeEnum.HandInAllTheRow" *ngFor="let column of columns" >{{d[column.name]}}</td>-->
+
+            <!--EDIT AND DELETE-->
+            <td *ngIf="editionType == editionTypeEnum.ButtonsAtTheEndOfTheRow">
+                
+                <button *ngIf="options.b_habInhab && d[options.activeFieldName] && canHabInhab()" class="btn btn-danger btn-xs pull-right datatables-action-button" (click)="habInhabClick(d[idColumnName])" ><span class="fa fa-trash" title="{{locationTexts.inHabilitateText}}"></span></button>
+                <button *ngIf="options.b_habInhab && !d[options.activeFieldName] && canHabInhab()" class="btn btn-success btn-xs pull-right datatables-action-button" (click)="habInhabClick(d[idColumnName])" ><span class="fa fa-mail-reply" title="{{locationTexts.habilitateText}}"></span></button>
+
+                <button *ngIf="options.b_delete" class="btn btn-danger btn-xs pull-right datatables-action-button" (click)="deleteClick(d[idColumnName])" ><span class="fa fa-trash" title="{{locationTexts.deleteText}}"></span></button>
+
+                <button *ngIf="options.b_edit && canEdit()" class="btn btn-warning btn-xs pull-right datatables-action-button" 
+                    (click)="editClick(d[idColumnName])" >
+                    <span class="fa fa-edit"  title="{{locationTexts.editText}}"></span>
+                </button><!--[routerLink]="['edit', d[idColumnName]]"-->
+
+                <button *ngIf="options.b_view"     class="btn btn-primary btn-xs pull-right datatables-action-button" (click)="viewClick(d[idColumnName])" ><span class="fa fa-eye" title="{{locationTexts.searchText}}"></span></button>
+                
+                <!--<button *ngIf="options.b_habInhab" class="btn btn-primary btn-xs pull-right datatables-action-button" (click)="habInhabClick(d[idColumnName])" ><span class="fa" [ngClass]="(d[activeFieldName])?'fa-trash text-danger':'fa-mail-forward'" [title]="(d[activeFieldName])?{{locationTexts.inHabilitateText}}:{{locationTexts.habilitateText}}"></span></button>-->
+
+                <button *ngIf="options.b_other1" class="btn btn-success btn-xs pull-right datatables-action-button" (click)="other1Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other1Icon]" title="{{locationTexts.other1Text}}"></span></button>
+                <button *ngIf="options.b_other2" class="btn btn-warning btn-xs pull-right datatables-action-button" (click)="other2Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other2Icon]" title="{{locationTexts.other2Text}}"></span></button>
+                <button *ngIf="options.b_other3" class="btn btn-default btn-xs pull-right datatables-action-button" (click)="other3Click(d[idColumnName])" ><span class="fa" [ngClass]="[options.other3Icon]" title="{{locationTexts.other3Text}}"></span></button>
+
+
+            </td>
+
+        </tr>
+    </tbody>
+</table>
+
+<ng2-modal *ngIf="data && data.length > 0" [config]="modalConfig" #modalNg2Datatables (accept)="confirm(deleteRowIndex)"> <!--(accept)="" (cancel)=""-->
+    <h4>{{modalMessage}}</h4>
+</ng2-modal>

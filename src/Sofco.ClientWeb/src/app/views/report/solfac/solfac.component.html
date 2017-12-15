@@ -1,0 +1,77 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'report.solfacs.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'report.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'report.solfacs.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+ 
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'report.dateRange' | translate }}</label>
+                        <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker></date-range-picker>
+                    </div>
+                </div>
+                <div class="form-group text-right" style="margin-top:30px">
+                    <button class="btn btn-success" (click)="apply()"> {{ 'ACTIONS.applyChanges' | translate }} <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+                    <spinner></spinner>
+
+                    <solfac-chart #chart></solfac-chart>
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <iboxtools #boxtools></iboxtools>
+                </div>
+                <div class="ibox-content" id="dataSource">
+                       
+                    <table class="table table-striped dataTable" role="grid" id="solfacsTable">
+                        <thead>
+                            <tr>
+                                <th>{{'report.solfacs.projectName' | translate }}</th>
+                                <th>{{'report.solfacs.businessName' | translate }}</th>
+                                <th>{{'report.solfacs.clientName' | translate }}</th>
+                                <th>{{'report.solfacs.invoiceCode' | translate }}</th>
+                                <th>{{'report.solfacs.invoiceDate' | translate }}</th>
+                                <th>{{'report.solfacs.amount' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let solfac of data">
+                                <td>{{ solfac.projectName }}</td>
+                                <td>{{ solfac.businessName }}</td>
+                                <td>{{ solfac.clientName }}</td>
+                                <td>{{ solfac.invoiceCode }}</td>
+                                <td>{{ solfac.invoiceDate | date:'dd/MM/yyyy' }}</td>
+                                <td class="text-right">{{ solfac.amount | number: '1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

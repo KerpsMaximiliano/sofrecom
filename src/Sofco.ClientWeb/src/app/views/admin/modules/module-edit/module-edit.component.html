@@ -1,0 +1,103 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{'ADMIN.module.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['../../']">{{'ADMIN.module.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'ACTIONS.EDIT' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{'ADMIN.module.edit' | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
+
+                        <!--Description-->
+                        <div class="form-group"><label class="col-xs-2 control-label">{{'ADMIN.description' | translate }}</label>
+                            <div class="col-xs-10">
+                              <input type="text"  
+                                  name="description"
+                                  class="form-control" 
+                                  [(ngModel)]="module.description"
+                                  #descripRef="ngModel"
+                                  disabled> 
+                            </div>
+                        </div>
+
+                        <!--CHECK ACTIVE-->
+                        <div class="form-group" *ngIf="module">
+                            <div class="col-xs-12">
+                                 <icheck  [(checked)]="module.active">
+                                     <label class="col-xs-2 control-label icheck-label">{{'ADMIN.active' | translate }}</label> 
+                                 </icheck>
+                            </div>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <div class="col-xs-offset-2">
+                            <button class="btn btn-primary" type="submit"><strong>{{'ACTIONS.ACCEPT' | translate }}</strong></button>
+                            <a [routerLink]="['/admin/entities']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="row">
+
+    <!--MODULES-->
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <i class="fa fa-info-circle"></i> {{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}
+            </div>
+            <div class="panel-body scroll">
+                <p *ngIf="module?.functionalities?.length == 0">{{ 'noInfoAvailable' | translate }}</p>
+
+                <table class="table table-striped" *ngIf="module?.functionalities?.length > 0">
+                    <thead>
+                        <tr>
+                            <th>{{'ADMIN.description' | translate }}</th>
+                            <th>{{'ADMIN.active' | translate }}</th>
+                            <th>{{'ADMIN.action' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let f of module.functionalities">
+                            <td>{{f.description}}</td>
+                            <td>
+                                <span class="fa" [ngClass]="(f.active)?'fa-check text-success':'fa-close text-danger'"></span>
+                            </td>
+                            <td class="text-center">
+                                 <button *ngIf="f.active" class="btn btn-danger btn-xs" (click)="habInhabClick(f)" ><span class="fa fa-trash"></span></button>
+                                 <button *ngIf="!f.active" class="btn btn-success btn-xs" (click)="habInhabClick(f)" ><span class="fa fa-mail-reply"></span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>        
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
+    <h4>{{modalMessage}}</h4>
+</ng2-modal>

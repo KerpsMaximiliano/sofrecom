@@ -1,0 +1,7 @@
+<button class="btn btn-primary btn-outline dim" (click)="showModal()" *ngIf="canSendToCDG()"> 
+    {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i>
+</button>
+
+<ng2-modal [config]="sendToCdgModalConfig" #sendToCdgModal (accept)="sendToCDG()">
+    <h4>{{ message | translate }}</h4>
+</ng2-modal>

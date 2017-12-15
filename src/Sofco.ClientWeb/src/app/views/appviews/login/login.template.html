@@ -1,0 +1,17 @@
+<h1 class="logo-name"><img src="assets/images/inicio2.png"/></h1>
+
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <p>{{'HOME.welcome' | translate }}</p>
+        <form class="m-t" role="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" [(ngModel)]="model.username" placeholder="{{'HOME.user' | translate }}" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" [(ngModel)]="model.password" placeholder="{{'HOME.password' | translate }}" required="">
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">{{'HOME.login' | translate }}</button>
+
+        </form>
+    </div>
+</div>

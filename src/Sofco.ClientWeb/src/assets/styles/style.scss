@@ -1,0 +1,287 @@
+/*
+ *
+ *   INSPINIA - Responsive Admin Theme
+ *   version 2.7.1
+ *
+*/
+// Google Fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+// Variables, Mixins
+@import "imports/variables";
+@import "imports/mixins";
+
+// INSPINIA Theme Elements
+@import "imports/typography";
+@import "imports/navigation";
+@import "imports/top_navigation";
+@import "imports/buttons";
+@import "imports/badges_labels";
+@import "imports/elements";
+@import "imports/sidebar";
+@import "imports/base";
+@import "imports/pages";
+@import "imports/chat";
+@import "imports/metismenu";
+@import "imports/spinners";
+
+// Landing page styles
+@import "imports/landing";
+
+// RTL Support
+@import "imports/rtl";
+
+// For demo only - config box style
+@import "imports/theme-config";
+
+// INSPINIA Skins
+@import "imports/skins";
+@import "imports/md-skin";
+
+// Media query style
+@import "imports/media";
+
+// Custom style
+// Your custom style to override base style
+@import "imports/custom";
+
+// Clear layout on print mode
+@media print {
+  nav.navbar-static-side {
+    display: none;
+  }
+  body { overflow: visible !important; }
+
+  #page-wrapper {
+    margin: 0;
+  }
+}
+
+/*
+.btn-group{
+    margin-top: -60px;
+}*/
+
+.btn-group .buttons-print {
+  border-radius: 0 5px 5px 0;
+}
+
+.btn-group .buttons-html5 {
+  border-radius: 5px 0 0 5px;
+}
+
+
+
+li.paginate-button a{
+  height:32px;
+  padding-top:15px;
+}
+
+
+input[type="checkbox"]{
+  margin-top:-4px;
+}
+
+.icheck-label.icheck-label{
+    width:16%;
+}
+
+.icon-danger {
+  color: #ed5565;
+}
+
+.icon-white {
+  color: white;
+}
+
+//popup
+.modal-header{
+  background-color:#1ab394;
+  color:#fff;
+  font-weight: bold;
+}
+
+.modal-header h3{
+  font-weight: bold;
+}
+
+div.scroll{
+  overflow-y: auto; 
+  max-height:300px;
+}
+
+.icon-round{
+  border-radius: 35px;
+  font-weight: bold; 
+  font-size: 18px;
+  box-shadow: 2px 2px 1px 0px #5e6f6c;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(26, 179, 148, 0.2);
+}
+
+.icon-round:hover{
+  background-color: rgba(26, 179, 148, 0.9);
+}
+
+.text-xl{
+  font-size: 24px;
+}
+
+.text-l{
+  font-size: 20px;
+}
+
+.text-m{
+  font-size: 16px;
+}
+
+.text-smaller{
+  font-size: 0.99em;
+}
+
+.margin-left-m{
+  margin-left: 20px;
+}
+
+.margin-left-s{
+  margin-left: 10px;
+}
+
+.margin-right-m{
+  margin-right: 20px;
+}
+
+.margin-bottom-xs{
+  margin-bottom: 5px;
+}
+
+.margin-bottom-s{
+  margin-bottom: 10px;
+}
+
+.margin-bottom-m{
+  margin-bottom: 15px;
+}
+
+li.indented{
+  margin-left:20px;
+}
+
+.todo-list > li.indented{
+  background-color:white;
+}
+
+ul.indented{
+  background-color:white;
+}
+
+/*SECTION admin_roleEdit*/
+#admin_roleEdit{
+  
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-white{
+  color: white!important;
+}
+
+.text-green {
+  color: #1ab394;
+}
+
+.text-dark{
+  color: black;
+}
+
+.label-SendPending, .label-PendingByManagementControl {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-InvoicePending{
+  background-color: #23c6c8;
+  color: #FFFFFF;
+}
+
+.label-Sent {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-Rejected, .label-Cancelled, .label-ManagementControlRejected {
+  background-color: #ED5565;
+  color: #FFFFFF;
+}
+
+.label-Approved, .label-Invoiced, .label-AmountCashed {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
+.label-Related {
+  background-color: #7CB400;
+  color: #FFFFFF;
+}
+
+.label-Proyectado, .label-Pendiente {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-ToBeBilled {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-Cerrado {
+  background-color: black;
+  color: #FFFFFF;
+}
+
+.label-Facturado {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
+.label-Pagado {
+  background-color: #7CB400;
+  color: #FFFFFF;
+}
+
+.error-desc{
+  font-size: 14px;
+}
+
+.btn-right{
+  float: right;
+} 
+
+.ngx-datepicker-calendar-container{
+  z-index: 1000;
+}
+
+.font-18{
+  font-size: 18px;
+}
+
+.select2 {
+  width: 100%;
+}
+
+.btn-allignment-input{
+  margin-top: 22px;
+}
+
+pre {
+  background-color: transparent;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

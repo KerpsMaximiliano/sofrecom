@@ -1,0 +1,8 @@
+<button class="btn btn-danger btn-outline dim" *ngIf="canCancel()"(click)="annulmentModal.show()">
+    {{'ACTIONS.annulment' | translate }} 
+    <i class="fa fa-times"></i>
+</button>
+
+<ng2-modal [config]="annulmentModalConfig" #annulmentModal (accept)="annulment()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

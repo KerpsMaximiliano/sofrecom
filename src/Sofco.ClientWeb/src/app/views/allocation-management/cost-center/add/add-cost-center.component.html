@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'contracts.costCenter.add.title' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'contracts.title' | translate }}
+            </li>
+            <!-- <li>
+                <a [routerLink]="['/allocationManagement/analytics']"> {{ 'allocationManagement.analytics.title' | translate }} </a>
+            </li> -->
+            <li class="active">
+                <strong> {{ 'contracts.costCenter.title' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <!-- Codigo -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label"> {{ 'contracts.costCenter.add.code' | translate }}</label>
+                                <input type="number" min="0" max="999" class="form-control" [(ngModel)]="model.code"> 
+                            </div>
+                        </div>
+
+                        <!-- Letra -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label"> {{ 'contracts.costCenter.add.letter' | translate }} </label>
+                                <input type="text" maxlength="1" class="form-control" [(ngModel)]="model.letter"> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descripcion -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label"> {{ 'contracts.costCenter.add.description' | translate }} </label>
+                                <input type="text" class="form-control" [(ngModel)]="model.description"> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }} <i class="fa fa-plus"></i> </button>
+                    <a class="btn btn-link btn-success text-white" [routerLink]="['/contracts/costCenter']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    

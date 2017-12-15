@@ -1,0 +1,13 @@
+{
+    "created": "Group created successfully",
+    "deleted": "Group successfully deleted",
+    "descriptionAlreadyExist": "The description already exists",
+    "disabled": "Group disabled successfully",
+    "enabled": "Group enabled successfully",
+    "notFound": "Group not found",
+    "roleAssigned": "Role assigned to the group successfully",
+    "roleRemoved": "Role removed to the group successfully",
+    "updated": "Group modified successfully",
+    "descriptionRequired": "The description field is required",
+    "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
+}

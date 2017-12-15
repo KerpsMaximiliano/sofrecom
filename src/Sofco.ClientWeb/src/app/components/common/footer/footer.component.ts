@@ -1,0 +1,20 @@
+import { Component } from '@angular/core';
+import { AppSetting } from 'app/services/common/app-setting'
+declare function require(name: string);
+
+@Component({
+  selector: 'footer',
+  templateUrl: 'footer.template.html'
+})
+
+export class FooterComponent { 
+  public appVersion: string;
+  public apiVersion: string;
+
+  constructor(private appSetting: AppSetting){
+    var appPackage = require(`../../../../../package.json`);
+    
+    this.appVersion = appPackage.version;
+    this.apiVersion = appSetting.ApiVersion;
+  }
+}

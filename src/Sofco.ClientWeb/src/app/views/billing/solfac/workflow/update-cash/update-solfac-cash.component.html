@@ -1,0 +1,10 @@
+<button class="btn btn-primary btn-outline dim" (click)="updateCashModal.show()" *ngIf="canUpdateCash()"> 
+    {{ 'ACTIONS.updateCash' | translate }} <i class="fa fa-money"></i> 
+</button>
+
+<ng2-modal [config]="updateCashModalConfig" #updateCashModal (accept)="updateCash()">
+    <div class="form-group">
+        <label class="control-label">{{'billing.solfac.cashedDate' | translate }}</label>
+        <ng-datepicker [(ngModel)]="cashedDate" [options]="options"></ng-datepicker>
+    </div>
+</ng2-modal> 

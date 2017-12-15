@@ -1,0 +1,28 @@
+<table class="table table-striped" id="historyTable" width="100%">
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">{{'billing.solfac.histories.createdDate' | translate }}</th>
+            <th class="text-center">{{'billing.solfac.histories.userName' | translate }}</th>
+            <th class="text-center">{{'billing.solfac.histories.solfacStatusFrom' | translate }}</th>
+            <th class="text-center">{{'billing.solfac.histories.solfacStatusTo' | translate }}</th>
+            <th class="text-center">{{'billing.solfac.histories.comment' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let history of histories; let i = index" class="pointer">
+            <td class="text-center col-lg-1">{{i+1}}</td>
+            <td class="text-center col-lg-2">{{ history.createdDate | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td class="text-center col-lg-2">{{ history.userName }}</td>
+            <td class="text-center"><span class="label label-{{history.statusFrom}}">{{ history.statusFrom | translate}}</span></td>
+            <td class="text-center"><span class="label label-{{history.statusTo}}">{{ history.statusTo | translate}}</span></td>
+            <td class="text-center col-lg-1">
+                <button *ngIf="history.comment" (click)="showComments(history)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<ng2-modal [config]="commentsModalConfig" #commentsModal>
+    <pre>{{ historyComments }}</pre>
+</ng2-modal>

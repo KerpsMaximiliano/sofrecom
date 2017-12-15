@@ -1,0 +1,14 @@
+<button class="btn btn-primary btn-outline dim" (click)="sendToDafModal.show()" *ngIf="canSendToDAF()"> 
+    {{ 'ACTIONS.sendToDaf' | translate }} <i class="fa fa-envelope"></i>
+</button>
+
+<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()">
+    <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="control-label">{{'comments' | translate }}</label>
+                    <textarea class="form-control" name="comments" rows="10" [(ngModel)]="comments"></textarea>
+                </div>
+            </div>
+        </div>
+</ng2-modal> 

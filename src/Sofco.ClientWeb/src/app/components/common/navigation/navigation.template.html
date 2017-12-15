@@ -1,0 +1,70 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="profile-element" dropdown>
+          <img alt="image" class="img-circle" src="assets/images/logo_small2.png">
+          <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()">
+            <strong><i class="fa fa-angle-left"></i> </strong>
+          </a>
+        </div>
+        <div class="logo-element">
+          <a class="minimalize-styl-2 icon-round btn pull-right" (click)="toggleNavigation()" >
+            <strong><i class="fa fa-angle-right"></i> </strong>
+          </a>
+          <p> &nbsp; </p>
+        </div>
+      </li> 
+
+      <!--ADMIN-->
+      <li [ngClass]="{active: activeRoute('admin')}" *ngIf="menuService.hasAdminMenu()">
+        <a href="#"><i class="fa fa-gears"></i> <span class="nav-label">{{'ADMIN.TITLE' | translate }}</span> <span class="fa arrow"></span> </a>
+
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('admin')}">
+          <li [ngClass]="{active: activeRoute('users')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a [routerLink]="['/admin/users']" >{{'ADMIN.USERS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('groups')}" *ngIf="menuService.hasFunctionality('GRP', 'QUERY')"><a [routerLink]="['/admin/groups']">{{'ADMIN.GROUPS.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('roles')}"  *ngIf="menuService.hasFunctionality('ROL', 'QUERY')"><a [routerLink]="['/admin/roles']">{{'ADMIN.ROLES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('entities')}"  *ngIf="menuService.hasFunctionality('MOD', 'QUERY')"><a [routerLink]="['/admin/entities']">{{'ADMIN.module.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasFunctionality('FUNC', 'QUERY')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
+        </ul>
+      </li>
+ 
+      <!--BILLING-->
+      <li [ngClass]="{active: activeRoute('billing')}" *ngIf="menuService.hasBillingMenu()">
+        <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">{{'billing.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('billing')}">
+            <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.searchTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('searchInvoice')}" *ngIf="menuService.hasFunctionality('REM', 'QUERY')"><a [routerLink]="['/billing/invoice/search']">{{'billing.invoice.searchTitle' | translate }}</a></li>
+        </ul>
+      </li> 
+
+      <!-- CONTRACTS -->
+      <li [ngClass]="{active: activeRoute('contracts')}" *ngIf="menuService.hasAllocationManagementMenu()">
+        <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'contracts.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('contracts')}">
+            <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('ALLOC', 'CCLST')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
+        </ul>
+      </li> 
+
+      <!--ALLOCATIONS-->
+      <li [ngClass]="{active: activeRoute('allocationManagement')}" *ngIf="menuService.hasAllocationManagementMenu()">
+        <a href="#"><i class="fa fa-users"></i> <span class="nav-label">{{'allocationManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('allocationManagement')}">
+            <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('resources')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/resources']">{{'allocationManagement.resources.title' | translate }}</a></li>
+        </ul>
+      </li> 
+
+      <!--REPORT-->
+      <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
+        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('report')}">
+          <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+</nav>

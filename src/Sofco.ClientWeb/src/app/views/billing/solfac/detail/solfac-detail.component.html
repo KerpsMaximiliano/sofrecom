@@ -1,0 +1,206 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.solfac.detail' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'billing.solfac.detail' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+ 
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-success btn-outline dim" (click)="goToProject()"> {{ 'ACTIONS.goToProject' | translate }} <i class="fa fa-building"></i></button>
+            <button class="btn btn-success btn-outline dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
+
+            <div class="btn-right">
+                <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
+                <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToCdg>
+                <status-reject [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-reject>
+                <status-sendToDaf [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToDaf>
+
+                <update-solfac-bill [solfacId]="solfacId" [status]="model.statusName" [invoiceCode]="model.invoiceCode" [invoiceDate]="model.invoiceDate" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></update-solfac-bill>
+                <update-solfac-cash [solfacId]="solfacId" [status]="model.statusName" [cashedDate]="model.cashedDate" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></update-solfac-cash>
+
+                <status-bill [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-bill>
+                <status-cash [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-cash>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="tabs-container margin-bottom-20">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-4"> <i class="fa fa-file"></i> {{ 'billing.solfac.invoicesRelated' | translate }} </a></li>
+        </ul>
+        <div class="tab-content">
+ 
+            <!-- Datos generales -->
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body">
+                    <!-- Datos CRM -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd><i class="fa fa-building"></i> {{model.businessName}}</dd>
+                                <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.clientName}}</dd>
+                                <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd><i class="fa fa-phone"></i> {{model.celPhone}}</dd>
+                                <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.userApplicantName}}</dd>
+                                
+                                <dt *ngIf="model.invoiceCode">{{'billing.solfac.invoiceCode' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate }}</span></dd>
+                                <dt>{{'billing.solfac.contractNumber' | translate }}: </dt><dd>{{model.contractNumber}}</dd>
+                                <dt>{{'billing.solfac.project' | translate }}: </dt><dd><i class="fa fa-building"></i> {{model.project}}</dd>
+                                
+                                <dt *ngIf="model.invoiceDate">{{'billing.solfac.invoiceDate' | translate }}: </dt>
+                                <dd *ngIf="model.invoiceDate"><i class="fa fa-calendar"></i> {{model.invoiceDate | date: 'dd/MM/yyyy' }}</dd>
+
+                                <dt *ngIf="model.cashedDate">{{'billing.solfac.cashedDate' | translate }}: </dt>
+                                <dd *ngIf="model.cashedDate"><i class="fa fa-calendar"></i> {{model.cashedDate | date: 'dd/MM/yyyy' }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+        
+                    <div class="row">   
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.solfac.documentType' | translate }}: </dt><dd>{{model.documentType}}</dd>
+                                <dt>{{'billing.solfac.currency' | translate }}: </dt><dd>{{model.currencyName}}</dd>
+                                <dt>{{'billing.solfac.imputationNumber' | translate }}: </dt><dd>{{model.imputationNumber1 }} {{model.imputationNumber3 }}</dd>
+                                <dt>{{'billing.solfac.timeLimit' | translate }}: </dt><dd>{{ model.paymentTermName }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{'billing.solfac.milestone.withTax' | translate }}</dt>
+                                <dd>
+                                    <span *ngIf="model.withTax" class="label label-primary">{{ 'ACTIONS.yes' | translate }}</span>
+                                    <span *ngIf="!model.withTax" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
+                                </dd>
+
+                                <dt>{{'billing.solfac.impositiveInfo.capital' | translate }}: </dt><dd>{{model.capitalPercentage}} %</dd>
+                                <dt>{{'billing.solfac.impositiveInfo.bsas' | translate }}: </dt><dd>{{model.buenosAiresPercentage}} %</dd>
+                                <dt *ngIf="model.otherProvince1Percentage > 0">{{model.provinceName1}}: </dt><dd *ngIf="model.otherProvince1Percentage > 0">{{model.otherProvince1Percentage}} %</dd>
+                                <dt *ngIf="model.otherProvince2Percentage > 0">{{model.provinceName2}}: </dt><dd *ngIf="model.otherProvince2Percentage > 0">{{model.otherProvince2Percentage}} %</dd>
+                                <dt *ngIf="model.otherProvince3Percentage > 0">{{model.provinceName3}}: </dt><dd *ngIf="model.otherProvince3Percentage > 0">{{model.otherProvince3Percentage}} %</dd>
+                            </dl>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table invoice-table">
+                                    <thead>
+                                    <tr>
+                                        <th>{{'billing.solfac.milestone.detail' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                        <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let detail of model.details">
+                                            <td><pre>{{detail.description}}</pre></td>
+                                            <td class="column-quantity text-ellipsis" title="{{detail.quantity | number: '1.2-2'}}">{{detail.quantity | number: '1.2-2'}}</td>
+                                            <td class="column-price text-ellipsis" title="{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}">{{ currencySymbol }} {{detail.unitPrice | number: '1.2-2'}}</td>
+                                            <td class="column-price text-ellipsis" title="{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+        
+                            <table class="table invoice-total">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></td>
+                                        <td>{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <i class="fa fa-info-circle"></i> {{ 'billing.project.detail.milestone.title' | translate }}
+                                </div>
+                                <div class="panel-body">
+                                    <ol class="dd-list">
+                                        <li *ngFor="let hito of model.hitos" class="dd-item">
+                                            <div class="dd-handle">{{ hito.description }}</div>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <i class="fa fa-info-circle"></i> {{'billing.solfac.particularSteps' | translate }}
+                                </div>
+                                <div class="panel-body">
+                                    <pre class="pre-clear" *ngIf="model.particularSteps">{{model.particularSteps}}</pre>
+                                    <p *ngIf="model.particularSteps == null">{{ 'noInfoAvailable' | translate }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- Movimientos -->
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <solfac-history #history [solfacId]="solfacId"></solfac-history>
+                </div>
+            </div>
+
+            <!-- Attachments -->
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <solfac-attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
+                </div>
+            </div>
+
+            <!-- Invoices -->
+            <div id="tab-4" class="tab-pane">
+                <div class="panel-body">
+                    <div class="row attachments-scroll">
+                        <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">
+                            <div class="file-box">
+                                <div class="file">
+                                    <a (click)="exportPdf(invoice)">
+                                        <div class="icon"><i class="fa fa-file"></i></div>
+                                        <div class="file-name">
+                                            {{ invoice.invoiceNumber }}
+                                            <br>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

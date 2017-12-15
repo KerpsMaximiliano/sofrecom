@@ -1,0 +1,14 @@
+<button class="btn btn-danger btn-outline dim" (click)="rejectModal.show()" *ngIf="canRejectByCDG()"> 
+    {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i>
+</button>
+
+<ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="rejectByCDG()">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="control-label">{{'comments' | translate }}</label>
+                <textarea class="form-control" name="rejectComments" rows="10" [(ngModel)]="rejectComments"></textarea>
+            </div>
+        </div>
+    </div>
+ </ng2-modal> 

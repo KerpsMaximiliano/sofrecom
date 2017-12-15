@@ -1,0 +1,43 @@
+dt {
+    margin-bottom: 10px 
+}
+
+.solfacStatus{
+    font-size: 14px;
+}
+
+.hito-price{
+    font-size: 15px;
+}
+
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+
+.text-center{
+    text-align: center!important;
+}
+
+.total-amount{
+    border-bottom: 1px solid #DDDDDD;
+    text-align: right;
+}
+
+dd.total-amount{
+    margin-bottom: 10px;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.detail-total {
+    @extend .text-ellipsis;
+    max-width: 135px;
+}
+
+.widget{
+    margin-top: 0px!important;
+}

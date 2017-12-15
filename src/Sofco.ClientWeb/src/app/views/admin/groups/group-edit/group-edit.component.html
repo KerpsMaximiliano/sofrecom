@@ -1,0 +1,83 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{'ADMIN.GROUPS.TITLE' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['../../']">{{'ADMIN.GROUPS.TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{'ACTIONS.EDIT' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{'ADMIN.GROUPS.EDIT' | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)" *ngIf="module != null">
+
+                        <!--Description-->
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">{{'ADMIN.description' | translate }}</label>
+                            <div class="col-xs-6">
+                              <input type="text"  
+                                  name="description"
+                                  class="form-control" 
+                                  [(ngModel)]="module.description"
+                                  #descripRef="ngModel"
+                                  required> 
+                            </div>
+                        </div>
+
+                        <!--Mail-->
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">{{'ADMIN.GROUPS.mail' | translate }}</label>
+                            <div class="col-xs-6">
+                                <input type="email" name="email" class="form-control" [(ngModel)]="module.email"> 
+                            </div>
+                        </div>
+
+                        <!--COMBO DE ROLES-->
+                        <div class="form-group"><label class="col-xs-2 control-label">{{'ADMIN.GROUPS.rolAsigned' | translate }}</label>
+                            <div class="col-xs-6">
+                              <select class="form-control m-b" name="role" [(ngModel)]="module.role.id">
+                                  <option *ngFor="let role of roles" [value]="role?.value">{{role?.text}}</option>
+                              </select>
+                            </div>
+                        </div>
+
+                        <!--CHECK ACTIVE-->
+                        <div class="form-group" *ngIf="module">
+                            <div class="col-xs-12">
+                                 <icheck  [(checked)]="module.active">
+                                     <label class="col-xs-2 control-label icheck-label">{{'ADMIN.active' | translate }}</label> 
+                                 </icheck>
+                            </div>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <div class="col-xs-offset-2">
+                            <button class="btn btn-primary" type="submit">{{'ACTIONS.ACCEPT' | translate }}</button>
+                            <button (click)="goToGroups()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
