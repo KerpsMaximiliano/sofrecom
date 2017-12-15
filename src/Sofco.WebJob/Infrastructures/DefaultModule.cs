@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.Service.Http;
 using Sofco.Service.Http.Interfaces;
@@ -54,6 +56,9 @@ namespace Sofco.WebJob.Infrastructures
         {
             builder.RegisterGeneric(typeof(LoggerWrapper<>))
                 .As(typeof(ILoggerWrapper<>));
+
+            builder.RegisterGeneric(typeof(LogMailer<>))
+                .As(typeof(ILogMailer<>));
         }
     }
 }

@@ -20,7 +20,8 @@ namespace Sofco.Framework.Mail
 
             templatesDicts = new Dictionary<MailType, string>
             {
-                { MailType.Default, MailResource.DefaultTemplate }
+                { MailType.Default, MailResource.DefaultTemplate },
+                { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac }
             };
         }
 
