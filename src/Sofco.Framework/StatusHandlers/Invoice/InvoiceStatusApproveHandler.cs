@@ -1,5 +1,7 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -57,14 +59,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             return response;
         }
 
-        public string GetBodyMail(Model.Models.Billing.Invoice invoice, string siteUrl)
+        private string GetBodyMail(Model.Models.Billing.Invoice invoice, string siteUrl)
         {
             var link = $"{siteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}";
 
             return string.Format(mailBody, link);
         }
 
-        public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
+        private string GetSubjectMail(Model.Models.Billing.Invoice invoice)
         {
             return string.Format(MailSubject, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
         }
@@ -74,7 +76,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             return Resources.Billing.Invoice.Approved;
         }
 
-        public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        private string GetRecipients(Model.Models.Billing.Invoice invoice)
         {
             return invoice.User.Email;
         }
@@ -86,6 +88,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber, PdfFileName = newPdfFileName };
 
             unitOfWork.InvoiceRepository.UpdateStatusAndApprove(invoiceToModif);
+        }
+
+        public void SendMail(IMailSender mailSender, Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        {
+            var subjectToDaf = GetSubjectMail(invoice);
+            var bodyToDaf = GetBodyMail(invoice, emailConfig.SiteUrl);
+            var recipientsToDaf = GetRecipients(invoice);
+
+            mailSender.Send(recipientsToDaf, subjectToDaf, bodyToDaf);
         }
     }
 }

@@ -233,7 +233,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 // Send Mail
-                HandleSendMail(emailConfig, invoiceStatusHandler, invoice);
+                invoiceStatusHandler.SendMail(mailSender, invoice, emailConfig);
             }
             catch
             {
@@ -295,15 +295,6 @@ namespace Sofco.Service.Implementations.Billing
             {
                 return unitOfWork.InvoiceRepository.SearchByParamsAndUser(parameters, userMail);
             }
-        }
-
-        private void HandleSendMail(EmailConfig emailConfig, IInvoiceStatusHandler invoiceStatusHandler, Invoice invoice)
-        {
-            var subject = invoiceStatusHandler.GetSubjectMail(invoice);
-            var body = invoiceStatusHandler.GetBodyMail(invoice, emailConfig.SiteUrl);
-            var recipients = invoiceStatusHandler.GetRecipients(invoice, emailConfig);
-
-            mailSender.Send(recipients, subject, body);
         }
 
         public Response<Invoice> Clone(int id)

@@ -1,7 +1,7 @@
-﻿using Sofco.Core.StatusHandlers;
-using System;
-using Sofco.Core.Config;
+﻿using Sofco.Core.Config;
+using Sofco.Core.StatusHandlers;
 using Sofco.Core.DAL;
+using Sofco.Core.Mail;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
@@ -17,21 +17,6 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             this.unitOfWork = unitOfWork;
         }
 
-        public string GetBodyMail(Model.Models.Billing.Invoice invoice, string siteUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetRecipients(Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetSuccessMessage()
         {
             return Resources.Billing.Invoice.Cancelled;
@@ -41,6 +26,10 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Cancelled };
             unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
+        }
+
+        public void SendMail(IMailSender mailSender, Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        {
         }
 
         public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)

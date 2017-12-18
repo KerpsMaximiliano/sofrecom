@@ -199,7 +199,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 // Send Mail
-                HandleSendMail(emailConfig, solfacStatusHandler, solfac);
+                solfacStatusHandler.SendMail(mailSender, solfac, emailConfig);
             }
             catch
             {
@@ -490,15 +490,6 @@ namespace Sofco.Service.Implementations.Billing
             HitoValidatorHelper.ValidateOpportunity(hito, response);
 
             return response;
-        }
-
-        private void HandleSendMail(EmailConfig emailConfig, ISolfacStatusHandler solfacStatusHandler, Solfac solfac)
-        {
-            var subject = solfacStatusHandler.GetSubjectMail(solfac);
-            var body = solfacStatusHandler.GetBodyMail(solfac, emailConfig.SiteUrl);
-            var recipients = solfacStatusHandler.GetRecipients(solfac, emailConfig);
-
-            mailSender.Send(recipients, subject, body);
         }
 
         private SolfacHistory GetHistory(int solfacId, SolfacStatus statusFrom, SolfacStatus statusTo, int userId,
