@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Admin;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
+using Sofco.DAL;
 using Sofco.Model;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Settings.Jobs;
-using Sofco.Resources;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -21,9 +20,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         const string Subject = "Empleados con baja";
 
-        private readonly IEmployeeRepository employeeRepository;
-
-        private readonly IGroupRepository groupRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly IMailBuilder mailBuilder;
 
@@ -33,16 +30,13 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        public EmployeeEndJobService(IEmployeeRepository employeeRepository,
-            IGroupRepository groupRepository,
+        public EmployeeEndJobService(IUnitOfWork unitOfWork,
             IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<JobSetting> jobSettingOptions,
             IOptions<EmailConfig> emailConfigOptions)
         {
-            this.employeeRepository = employeeRepository;
-
-            this.groupRepository = groupRepository;
+            this.unitOfWork = unitOfWork;
 
             this.mailBuilder = mailBuilder;
 
@@ -59,7 +53,7 @@ namespace Sofco.Service.Implementations.Jobs
                 .ConvertTime(DateTime.Now.AddDays(setting.EmployeeEndJob.DaysFromNow),
                 TimeZoneInfo.FindSystemTimeZoneById(setting.LocalTimeZoneName));
 
-            var employeeEnds = employeeRepository.GetByEndDate(localToday.Date);
+            var employeeEnds = unitOfWork.EmployeeRepository.GetByEndDate(localToday.Date);
 
             if (!employeeEnds.Any()) return;
 
@@ -68,7 +62,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private Email GetEmail(List<Employee> employeeEnds)
         {
-            var mailTos = groupRepository.GetEmail(emailConfig.PmoCode);
+            var mailTos = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
 
             var data = new Dictionary<string, string>();
 

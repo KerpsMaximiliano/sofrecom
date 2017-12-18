@@ -1,20 +1,20 @@
 ﻿using Sofco.Core.StatusHandlers;
 using System;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
-using Sofco.Core.DAL.Billing;
 
 namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusAnnulmentHandler : IInvoiceStatusHandler
     {
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusAnnulmentHandler(IInvoiceRepository invoiceRepository)
+        public InvoiceStatusAnnulmentHandler(IUnitOfWork unitOfWork)
         {
-            _invoiceRepository = invoiceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public string GetBodyMail(Model.Models.Billing.Invoice invoice, string siteUrl)
@@ -40,7 +40,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Cancelled };
-            _invoiceRepository.UpdateStatus(invoiceToModif);
+            unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
         }
 
         public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)

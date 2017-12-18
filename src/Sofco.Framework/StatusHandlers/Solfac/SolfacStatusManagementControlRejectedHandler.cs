@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
@@ -14,6 +14,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusManagementControlRejectedHandler : ISolfacStatusHandler
     {
+        private readonly IUnitOfWork unitOfWork;
+
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
         private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
@@ -74,10 +81,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Pending;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
-            solfacRepository.UpdateStatus(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)

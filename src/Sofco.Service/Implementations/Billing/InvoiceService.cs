@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Admin;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -10,37 +9,35 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Mail;
+using Sofco.DAL;
 
 namespace Sofco.Service.Implementations.Billing
 {
     public class InvoiceService : IInvoiceService
     {
-        private readonly IInvoiceRepository invoiceRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IInvoiceStatusFactory invoiceStatusFactory;
         private readonly IMailSender mailSender;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, 
-            IUserRepository userRepository, 
+        public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
             IMailSender mailSender)
         {
-            this.invoiceRepository = invoiceRepository;
-            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
             this.invoiceStatusFactory = invoiceStatusFactory;
             this.mailSender = mailSender;
         }
 
         public IList<Invoice> GetByProject(string projectId)
         {
-            return invoiceRepository.GetByProject(projectId);
+            return unitOfWork.InvoiceRepository.GetByProject(projectId);
         }
 
         public Response<Invoice> GetById(int id)
         {
             var response = new Response<Invoice>();
 
-            var invoce = invoiceRepository.GetById(id);
+            var invoce = unitOfWork.InvoiceRepository.GetById(id);
 
             if (invoce == null)
             {
@@ -60,7 +57,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 var userName = identityName.Split('@')[0];
-                var user = userRepository.GetSingle(x => x.UserName == userName);
+                var user = unitOfWork.UserRepository.GetSingle(x => x.UserName == userName);
 
                 if (user == null)
                 {
@@ -76,10 +73,10 @@ namespace Sofco.Service.Implementations.Billing
                 invoice.Histories.Add(GetHistory(InvoiceStatus.None, invoice.InvoiceStatus, invoice.UserId, string.Empty));
 
                 // Insert Solfac
-                invoiceRepository.Insert(invoice);
+                unitOfWork.InvoiceRepository.Insert(invoice);
 
                 // Save
-                invoiceRepository.Save();
+                unitOfWork.Save();
 
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceCreated, MessageType.Success));
@@ -108,8 +105,8 @@ namespace Sofco.Service.Implementations.Billing
                     ExcelFileCreatedDate = datetime
                 };
 
-                invoiceRepository.UpdateExcel(invoiceToSave);
-                invoiceRepository.Save();
+                unitOfWork.InvoiceRepository.UpdateExcel(invoiceToSave);
+                unitOfWork.Save();
 
                 invoice.ExcelFile = null;
                 invoice.ExcelFileName = fileFileName;
@@ -130,7 +127,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoce = invoiceRepository.GetExcel(invoiceId);
+            var invoce = unitOfWork.InvoiceRepository.GetExcel(invoiceId);
 
             if (invoce == null)
             {
@@ -158,8 +155,8 @@ namespace Sofco.Service.Implementations.Billing
                     PdfFileCreatedDate = datetime
                 };
 
-                invoiceRepository.UpdatePdf(invoiceToSave);
-                invoiceRepository.Save();
+                unitOfWork.InvoiceRepository.UpdatePdf(invoiceToSave);
+                unitOfWork.Save();
 
                 invoice.PdfFile = null;
                 invoice.PdfFileName = fileFileName;
@@ -180,7 +177,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoce = invoiceRepository.GetPdf(invoiceId);
+            var invoce = unitOfWork.InvoiceRepository.GetPdf(invoiceId);
 
             if (invoce == null)
             {
@@ -196,7 +193,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
-            var invoice = invoiceRepository.GetById(invoiceId);
+            var invoice = unitOfWork.InvoiceRepository.GetById(invoiceId);
 
             if (invoice == null)
             {
@@ -222,10 +219,10 @@ namespace Sofco.Service.Implementations.Billing
 
                 // Add history
                 var history = GetHistory(invoiceId, invoice.InvoiceStatus, status, parameters.UserId, parameters.Comment);
-                invoiceRepository.AddHistory(history);
+                unitOfWork.InvoiceRepository.AddHistory(history);
 
                 // Save
-                invoiceRepository.Save();
+                unitOfWork.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
             catch
@@ -248,14 +245,14 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<Invoice> GetOptions(string projectId)
         {
-            return invoiceRepository.GetOptions(projectId);
+            return unitOfWork.InvoiceRepository.GetOptions(projectId);
         }
 
         public Response Delete(int id)
         {
             var response = new Response();
 
-            var invoice = invoiceRepository.GetById(id);
+            var invoice = unitOfWork.InvoiceRepository.GetById(id);
 
             if (invoice == null)
             {
@@ -271,8 +268,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                invoiceRepository.Delete(invoice);
-                invoiceRepository.Save();
+                unitOfWork.InvoiceRepository.Delete(invoice);
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.Billing.Invoice.Deleted, MessageType.Success));
             }
@@ -286,17 +283,17 @@ namespace Sofco.Service.Implementations.Billing
 
         public ICollection<Invoice> Search(InvoiceParams parameters, string userMail, EmailConfig emailConfig)
         {
-            var isDirector = userRepository.HasDirectorGroup(userMail);
-            var isDaf = userRepository.HasDafGroup(userMail, emailConfig.DafCode);
-            var isCdg = userRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail, emailConfig.DafCode);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
 
             if (isDirector || isDaf || isCdg)
             {
-                return invoiceRepository.SearchByParams(parameters); 
+                return unitOfWork.InvoiceRepository.SearchByParams(parameters);
             }
             else
             {
-                return invoiceRepository.SearchByParamsAndUser(parameters, userMail);
+                return unitOfWork.InvoiceRepository.SearchByParamsAndUser(parameters, userMail);
             }
         }
 
@@ -313,7 +310,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<Invoice>();
 
-            var invoice = invoiceRepository.GetSingle(x => x.Id == id);
+            var invoice = unitOfWork.InvoiceRepository.GetSingle(x => x.Id == id);
 
             if(invoice == null)
             {
@@ -325,8 +322,8 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                invoiceRepository.Insert(invoiceToClone);
-                invoiceRepository.Save();
+                unitOfWork.InvoiceRepository.Insert(invoiceToClone);
+                unitOfWork.Save();
                 response.Data = invoiceToClone;
             }
             catch (Exception)
@@ -339,7 +336,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public ICollection<InvoiceHistory> GetHistories(int id)
         {
-            return invoiceRepository.GetHistories(id);
+            return unitOfWork.InvoiceRepository.GetHistories(id);
         }
 
         private InvoiceHistory GetHistory(int invoiceId, InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)

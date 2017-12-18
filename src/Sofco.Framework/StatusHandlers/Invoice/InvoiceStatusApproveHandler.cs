@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.Config;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -9,14 +9,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusApproveHandler : IInvoiceStatusHandler
     {
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusApproveHandler(IInvoiceRepository invoiceRepository)
+        public InvoiceStatusApproveHandler(IUnitOfWork unitOfWork)
         {
-            _invoiceRepository = invoiceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
-        private const string MailBody = "<font size='3'>" +
+        private string mailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimado, </br></br>" +
                                                 "El REMITO del asunto se encuentra GENERADO. Para acceder, por favor " +
@@ -48,7 +48,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             }
             else
             {
-                if (_invoiceRepository.InvoiceNumberExist(parameters.InvoiceNumber))
+                if (unitOfWork.InvoiceRepository.InvoiceNumberExist(parameters.InvoiceNumber))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceNumerAlreadyExist, MessageType.Error));
                 }
@@ -61,7 +61,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             var link = $"{siteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}";
 
-            return string.Format(MailBody, link);
+            return string.Format(mailBody, link);
         }
 
         public string GetSubjectMail(Model.Models.Billing.Invoice invoice)
@@ -82,10 +82,10 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var newPdfFileName = $"R-{parameters.InvoiceNumber}-{invoice.PdfFileName}";
-
+            
             var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber, PdfFileName = newPdfFileName };
-            _invoiceRepository.UpdateStatusAndApprove(invoiceToModif);
-            _invoiceRepository.UpdatePdfFileName(invoiceToModif);
+
+            unitOfWork.InvoiceRepository.UpdateStatusAndApprove(invoiceToModif);
         }
     }
 }

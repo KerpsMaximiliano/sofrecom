@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -15,13 +14,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusPendingByManagementControlHandler : ISolfacStatusHandler
     {
-        private readonly IGroupRepository _groupRepository;
-        private readonly ISolfacRepository solfacRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusPendingByManagementControlHandler(IGroupRepository groupRepository, ISolfacRepository solfacRepo)
+        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork)
         {
-            _groupRepository = groupRepository;
-            solfacRepository = solfacRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -44,12 +41,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 if (solfac.InvoiceRequired && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteA 
                                            && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteB
                                            && solfac.DocumentTypeId != SolfacDocumentType.DebitNote
-                                           && !solfacRepository.HasInvoices(solfac.Id))
+                                           && !unitOfWork.SolfacRepository.HasInvoices(solfac.Id))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
                 }
 
-                if (!response.HasErrors() && !solfacRepository.HasAttachments(solfac.Id))
+                if (!response.HasErrors() && !unitOfWork.SolfacRepository.HasAttachments(solfac.Id))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
                 }
@@ -75,7 +72,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
-            return _groupRepository.GetEmail(emailConfig.CdgCode);
+            return unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
         }
 
         public string GetSuccessMessage()
@@ -88,10 +85,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Pending;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
-            solfacRepository.UpdateStatus(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)

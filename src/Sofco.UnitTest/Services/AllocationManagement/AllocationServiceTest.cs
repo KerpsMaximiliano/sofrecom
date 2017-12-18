@@ -7,7 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
+using Sofco.Core.DAL;
+using Sofco.DAL;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
@@ -18,6 +19,8 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<IAllocationRepository> allocationRepositoryMock;
         private Mock<IAnalyticRepository> analyticRepositoryMock;
         private Mock<IEmployeeRepository> employeeRepositoryMock;
+
+        private Mock<IUnitOfWork> unitOfWork;
 
         private AllocationService sut;
 
@@ -30,7 +33,13 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
 
-            sut = new AllocationService(allocationRepositoryMock.Object, analyticRepositoryMock.Object, employeeRepositoryMock.Object);
+            unitOfWork = new Mock<IUnitOfWork>();
+
+            unitOfWork.Setup(x => x.AllocationRepository).Returns(allocationRepositoryMock.Object);
+            unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
+            unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+
+            sut = new AllocationService(unitOfWork.Object);
         }
 
         [TestCase]
@@ -133,7 +142,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             Assert.False(response.HasErrors());
 
             allocationRepositoryMock.Verify(x => x.Insert(It.IsAny<Allocation>()), Times.Exactly(3));
-            allocationRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
         }
 
         [TestCase]
@@ -168,7 +177,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             Assert.False(response.HasErrors());
 
             allocationRepositoryMock.Verify(x => x.Insert(It.IsAny<Allocation>()), Times.Exactly(3));
-            allocationRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
         }
 
         [TestCase]
@@ -233,7 +242,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             Assert.False(response.HasErrors());
 
             allocationRepositoryMock.Verify(x => x.UpdatePercentage(It.IsAny<Allocation>()), Times.Exactly(3));
-            allocationRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
         }
 
 
@@ -263,7 +272,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             Assert.False(response.HasErrors());
 
             allocationRepositoryMock.Verify(x => x.UpdatePercentage(It.IsAny<Allocation>()), Times.Exactly(1));
-            allocationRepositoryMock.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Once);
         }
     }
 }

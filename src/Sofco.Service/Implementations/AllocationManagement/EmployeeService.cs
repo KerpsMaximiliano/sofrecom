@@ -1,6 +1,6 @@
 ﻿using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Models.AllocationManagement;
@@ -9,23 +9,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository employeeRepository;
+        private readonly IUnitOfWork unitOfWork;
         
-        public EmployeeService(IEmployeeRepository employeeRepo)
+        public EmployeeService(IUnitOfWork unitOfWork)
         {
-            employeeRepository = employeeRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public ICollection<Employee> GetAll()
         {
-            return employeeRepository.GetAll();
+            return unitOfWork.EmployeeRepository.GetAll();
         }
 
         public Response<Employee> GetById(int id)
         {
             var response = new Response<Employee>();
 
-            response.Data = EmployeeValidationHelper.Find(response, employeeRepository, id);
+            response.Data = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
 
             return response;
         }

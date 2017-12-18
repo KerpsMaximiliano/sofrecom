@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
@@ -8,29 +6,26 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Framework.Helpers;
 using System.Linq;
+using Sofco.Core.DAL;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
-    public class AllocationService : IAllocationService 
+    public class AllocationService : IAllocationService
     {
-        private readonly IAllocationRepository allocationRepository;
-        private readonly IAnalyticRepository analyticRepository;
-        private readonly IEmployeeRepository employeeRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public AllocationService(IAllocationRepository allocationRepo, IAnalyticRepository analyticRepo, IEmployeeRepository employeeRepo)
+        public AllocationService(IUnitOfWork unitOfWork)
         {
-            allocationRepository = allocationRepo;
-            analyticRepository = analyticRepo;
-            employeeRepository = employeeRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
         {
             var response = new Response<Allocation>();
 
-            AnalyticValidationHelper.Exist(response, analyticRepository, allocation.AnalyticId);
-            EmployeeValidationHelper.Exist(response, employeeRepository, allocation.EmployeeId);
+            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, allocation.AnalyticId);
+            EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, allocation.EmployeeId);
             AllocationValidationHelper.ValidatePercentage(response, allocation);
             AllocationValidationHelper.ValidateReleaseDate(response, allocation);
 
@@ -39,7 +34,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var firstMonth = allocation.Months.FirstOrDefault();
             var lastMonth = allocation.Months[allocation.Months.Count - 1];
 
-            var allocationsBetweenDays = allocationRepository.GetAllocationsBetweenDays(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
+            var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 
             if(allocationsBetweenDays.Count > 0)
             {
@@ -59,7 +54,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
-            var allocations = allocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
 
             var allocationResponse = new AllocationResponse();
 
@@ -137,11 +132,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         if (month.Updated)
                         {
                             allocation.Percentage = month.Percentage;
-                            allocationRepository.UpdatePercentage(allocation);
+                            unitOfWork.AllocationRepository.UpdatePercentage(allocation);
                         }
 
                         allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
-                        allocationRepository.UpdateReleaseDate(allocation);
+                        unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
                     }
                     else
                     {
@@ -151,11 +146,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         allocation.EmployeeId = allocationDto.EmployeeId;
                         allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
 
-                        allocationRepository.Insert(allocation);
+                        unitOfWork.AllocationRepository.Insert(allocation);
                     }
                 }
 
-                allocationRepository.Save();
+                unitOfWork.Save();
 
                 response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.Added, MessageType.Success));
             }
