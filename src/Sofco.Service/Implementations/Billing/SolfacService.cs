@@ -455,7 +455,9 @@ namespace Sofco.Service.Implementations.Billing
 
         private async Task UpdateFirstHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
-            if (hito.AmmountFirstHito == 0 || hito.StatusCode == "717620004") return;
+            var closeStatusCode = crmConfig.CloseStatusCode;
+
+            if (hito.AmmountFirstHito == 0 || hito.StatusCode == closeStatusCode) return;
 
             if (hito.AmmountFirstHito - hito.Ammount <= 0)
                 hito.AmmountFirstHito = 0;
@@ -464,7 +466,7 @@ namespace Sofco.Service.Implementations.Billing
 
             var data = $"Ammount={hito.AmmountFirstHito}";
 
-            if (hito.AmmountFirstHito == 0) data += "&StatusCode=717620004";
+            if (hito.AmmountFirstHito == 0) data += "&StatusCode="+ closeStatusCode;
 
             var urlPath = $"/api/InvoiceMilestone/{hito.ExternalHitoId}";
 

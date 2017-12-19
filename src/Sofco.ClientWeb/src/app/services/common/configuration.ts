@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment'
 export class  Configuration {
 
     UrlApi : string;
+    crmCloseStatusCode : string;
 
     public currLang: string = 'es';
 
@@ -18,6 +19,7 @@ export class  Configuration {
         tr.use(this.currLang);
 
         this.UrlApi = environment.urlApi;
+        this.crmCloseStatusCode = environment.crmCloseStatusCode;
     }
 
     setCurrLang(currLang: string){
