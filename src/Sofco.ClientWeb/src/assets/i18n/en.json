@@ -213,6 +213,7 @@
             "dateTo": "Date to",
             "invoicesRelated": "Invoices Related",
             "hito": "Milestone",
+            "pdfViewer": "PDF Viewer",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -408,7 +409,8 @@
         "applyChanges": "Apply changes",
         "assign": "Assign",
         "confirm": "Confirm",
-        "title": "Acciones"
+        "title": "Actions",
+        "export": "Export"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

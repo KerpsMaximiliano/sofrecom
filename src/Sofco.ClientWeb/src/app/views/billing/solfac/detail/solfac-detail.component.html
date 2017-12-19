@@ -187,7 +187,7 @@
                         <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">
                             <div class="file-box">
                                 <div class="file">
-                                    <a (click)="exportPdf(invoice)">
+                                    <a (click)="pdfViewer.getPdf(invoice.id)">
                                         <div class="icon"><i class="fa fa-file"></i></div>
                                         <div class="file-name">
                                             {{ invoice.pdfFileName }}
@@ -195,6 +195,10 @@
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
                                         </div>
                                     </a>
+                                    <div class="file-name export-file text-center pointer" (click)="exportPdf(invoice)">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'ACTIONS.export' | translate }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -204,3 +208,5 @@
         </div>
     </div>
 </div>
+
+<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>

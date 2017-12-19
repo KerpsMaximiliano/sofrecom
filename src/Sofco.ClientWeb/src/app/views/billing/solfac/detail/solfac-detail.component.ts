@@ -20,6 +20,7 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('history') history: any;
+    @ViewChild('pdfViewer') pdfViewer: any;
  
     public model: any = {};
     public solfacId: any;
@@ -81,7 +82,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
 
     exportPdf(invoice){
-        this.invoiceService.getPdf(invoice.id).subscribe(file => {
+        this.invoiceService.downloadPdf(invoice.id).subscribe(file => {
             FileSaver.saveAs(file, invoice.pdfFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
