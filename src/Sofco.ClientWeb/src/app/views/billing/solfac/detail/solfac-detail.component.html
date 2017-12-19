@@ -190,7 +190,7 @@
                                     <a (click)="exportPdf(invoice)">
                                         <div class="icon"><i class="fa fa-file"></i></div>
                                         <div class="file-name">
-                                            {{ invoice.invoiceNumber }}
+                                            {{ invoice.pdfFileName }}
                                             <br>
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
                                         </div>

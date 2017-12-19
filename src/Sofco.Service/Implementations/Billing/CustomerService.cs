@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Model.Utils;
@@ -12,14 +12,14 @@ namespace Sofco.Service.Implementations.Billing
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly ICustomerData customerData;
         private readonly ICrmHttpClient client;
         private readonly CrmConfig crmConfig;
 
-        public CustomerService(IUserRepository userRepository, ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
+        public CustomerService(IUnitOfWork unitOfWork, ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
         {
-            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
             this.customerData = customerData;
             this.client = client;
             this.crmConfig = crmOptions.Value;
@@ -27,7 +27,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<CrmCustomer> GetCustomers(string userMail, string identityName)
         {
-            var hasDirectorGroup = this.userRepository.HasDirectorGroup(userMail);
+            var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
 
             return customerData.GetCustomers(identityName, userMail, hasDirectorGroup);
         }

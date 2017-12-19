@@ -130,7 +130,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.datatableService.destroy('#hitoTable');
             this.datatableService.init('#hitoTable', false);
 
-            this.calculateIncomes();
+          
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -149,6 +149,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.datatableService.init('#solfacTable', false);
+
+            //this.calculateIncomes();
         },
         err => this.errorHandlerService.handleErrors(err));
     }

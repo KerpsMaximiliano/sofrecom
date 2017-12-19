@@ -1,5 +1,4 @@
-﻿using Sofco.Core.DAL.Admin;
-using Sofco.Core.DAL.Billing;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.Enums;
 
@@ -7,23 +6,21 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 {
     public class InvoiceStatusFactory : IInvoiceStatusFactory
     {
-        private readonly IGroupRepository _groupRepository;
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusFactory(IGroupRepository groupRepository, IInvoiceRepository invoiceRepository)
+        public InvoiceStatusFactory(IUnitOfWork unitOfWork)
         {
-            _groupRepository = groupRepository;
-            _invoiceRepository = invoiceRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public IInvoiceStatusHandler GetInstance(InvoiceStatus status)
         {
             switch (status)
             {
-                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(_groupRepository, _invoiceRepository);
-                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler(_invoiceRepository);
-                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(_invoiceRepository);
-                case InvoiceStatus.Cancelled: return new InvoiceStatusAnnulmentHandler(_invoiceRepository);
+                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(unitOfWork);
+                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler(unitOfWork);
+                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(unitOfWork);
+                case InvoiceStatus.Cancelled: return new InvoiceStatusAnnulmentHandler(unitOfWork);
                 default: return null;
             }
         }

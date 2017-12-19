@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
+using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
@@ -14,11 +16,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusInvoicedHandler : ISolfacStatusHandler
     {
-        private readonly ISolfacRepository solfacRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusInvoicedHandler(ISolfacRepository solfacRepo)
+        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork)
         {
-            solfacRepository = solfacRepo;
+            this.unitOfWork = unitOfWork;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -41,25 +43,25 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 response.Messages.Add(new Message(Resources.Billing.Solfac.CannotChangeStatus, MessageType.Error));
             }
 
-            SolfacValidationHelper.ValidateInvoiceCode(parameters, solfacRepository, response, solfac.InvoiceCode);
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
             
             return response;
         }
 
-        public string GetBodyMail(Model.Models.Billing.Solfac solfac, string siteUrl)
+        private string GetBodyMail(Model.Models.Billing.Solfac solfac, string siteUrl)
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
             return string.Format(MailBody, link);
         }
 
-        public string GetSubjectMail(Model.Models.Billing.Solfac solfac)
+        private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
         {
             return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        private string GetRecipients(Model.Models.Billing.Solfac solfac)
         {
             return solfac.UserApplicant.Email;
         }
@@ -74,10 +76,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Billed;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
-            solfacRepository.UpdateStatusAndInvoice(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatusAndInvoice(solfacToModif);
             solfac.InvoiceDate = parameters.InvoiceDate;
         }
 
@@ -92,7 +94,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 {
                     try
                     {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault().ToString("O")}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault():O}", Encoding.UTF8, "application/x-www-form-urlencoded");
                         response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();
@@ -102,6 +104,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                     }
                 }
             }
+        }
+
+        public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        {
+            var subject = GetSubjectMail(solfac);
+            var body = GetBodyMail(solfac, emailConfig.SiteUrl);
+            var recipients = GetRecipients(solfac);
+
+            mailSender.Send(recipients, subject, body);
         }
     }
 }
