@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Reports;
+using Sofco.DAL;
 using Sofco.Model.Models.Report;
 
 namespace Sofco.Service.Implementations.Reports
 {
     public class SolfacReportService : ISolfacReportService
     {
-        private readonly ISolfacReportRepository solfacReportRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SolfacReportService(ISolfacReportRepository solfacReportRepository)
+        public SolfacReportService(IUnitOfWork unitOfWork)
         {
-            this.solfacReportRepository = solfacReportRepository;
+            this.unitOfWork = unitOfWork;
         }
         public Result<List<SolfacReport>> Get(SolfacReportParams parameters)
         {
-            return new Result<List<SolfacReport>>(solfacReportRepository.Get(parameters));
+            return new Result<List<SolfacReport>>(unitOfWork.SolfacReportRepository.Get(parameters));
         }
     }
 }

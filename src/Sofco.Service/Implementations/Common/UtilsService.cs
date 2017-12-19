@@ -1,43 +1,42 @@
 ﻿using Sofco.Core.Services.Common;
 using System.Collections.Generic;
-using Sofco.Model.Utils;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Common;
+using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Common
 {
     public class UtilsService : IUtilsService
     {
-        private readonly IUtilsRepository _repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UtilsService(IUtilsRepository repo)
+        public UtilsService(IUnitOfWork unitOfWork)
         {
-            _repository = repo;
+            this.unitOfWork = unitOfWork;
         }
 
         public IList<Currency> GetCurrencies()
         {
-            return _repository.GetCurrencies();
+            return unitOfWork.UtilsRepository.GetCurrencies();
         }
 
         public IList<PaymentTerm> GetPaymentTerms()
         {
-            return _repository.GetPaymentTerms();
+            return unitOfWork.UtilsRepository.GetPaymentTerms();
         }
 
         public IList<DocumentType> GetDocumentTypes()
         {
-            return _repository.GetDocumentTypes();
+            return unitOfWork.UtilsRepository.GetDocumentTypes();
         }
 
         public IList<ImputationNumber> GetImputationNumbers()
         {
-            return _repository.GetImputationNumbers();
+            return unitOfWork.UtilsRepository.GetImputationNumbers();
         }
 
         public IList<Province> GetProvinces()
         {
-            return _repository.GetProvinces();
+            return unitOfWork.UtilsRepository.GetProvinces();
         }
     }
 }

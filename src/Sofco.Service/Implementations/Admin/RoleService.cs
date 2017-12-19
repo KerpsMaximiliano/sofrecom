@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.DAL;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
-using Sofco.Core.DAL.Admin;
 using Sofco.Model.Relationships;
 using Sofco.Core.Services.Admin;
+using Sofco.DAL;
 using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Models.Admin;
 
@@ -12,23 +13,17 @@ namespace Sofco.Service.Implementations.Admin
 {
     public class RoleService : IRoleService
     {
-        private readonly IRoleRepository roleRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        private readonly IRoleFunctionalityRepository roleFunctionalityRepository;
-
-        private readonly IFunctionalityRepository functionalityRepository;
-
-        public RoleService(IRoleRepository repository, IRoleFunctionalityRepository roleFunctionality, IFunctionalityRepository functionalityRepository)
+        public RoleService(IUnitOfWork unitOfWork)
         {
-            roleRepository = repository;
-            roleFunctionalityRepository = roleFunctionality;
-            this.functionalityRepository = functionalityRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<Role> Active(int id, bool active)
         {
             var response = new Response<Role>();
-            var entity = roleRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.RoleRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
@@ -44,8 +39,8 @@ namespace Sofco.Service.Implementations.Admin
                     entity.EndDate = DateTime.Now;
                 }
 
-                roleRepository.Update(entity);
-                roleRepository.Save();
+                unitOfWork.RoleRepository.Update(entity);
+                unitOfWork.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.Admin.Role.Enabled : Resources.Admin.Role.Disabled, MessageType.Success));
@@ -59,15 +54,15 @@ namespace Sofco.Service.Implementations.Admin
         public IList<Role> GetAllReadOnly(bool active)
         {
             if (active)
-                return roleRepository.GetAllActivesReadOnly();
+                return unitOfWork.RoleRepository.GetAllActivesReadOnly();
             else
-                return roleRepository.GetAllReadOnly();
+                return unitOfWork.RoleRepository.GetAllReadOnly();
         }
 
         public Response<Role> GetDetail(int id)
         {
             var response = new Response<Role>();
-            var role = roleRepository.GetDetail(id);
+            var role = unitOfWork.RoleRepository.GetDetail(id);
 
             if (role != null)
             {
@@ -82,7 +77,7 @@ namespace Sofco.Service.Implementations.Admin
         public Response<Role> GetById(int id)
         {
             var response = new Response<Role>();
-            var role = roleRepository.GetSingle(x => x.Id == id);
+            var role = unitOfWork.RoleRepository.GetSingle(x => x.Id == id);
 
             if(role != null)
             {
@@ -98,7 +93,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
-            RoleValidationHelper.ValidateIfDescriptionExist(response, roleRepository, role);
+            RoleValidationHelper.ValidateIfDescriptionExist(response, unitOfWork.RoleRepository, role);
 
             if (response.HasErrors()) return response;
 
@@ -106,8 +101,8 @@ namespace Sofco.Service.Implementations.Admin
             {
                 role.StartDate = DateTime.Now;
 
-                roleRepository.Insert(role);
-                roleRepository.Save();
+                unitOfWork.RoleRepository.Insert(role);
+                unitOfWork.RoleRepository.Save();
 
                 response.Data = role;
                 response.Messages.Add(new Message(Resources.Admin.Role.Created, MessageType.Success));
@@ -124,7 +119,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
-            RoleValidationHelper.ValidateIfDescriptionExist(response, roleRepository, role);
+            RoleValidationHelper.ValidateIfDescriptionExist(response, unitOfWork.RoleRepository, role);
 
             if (response.HasErrors()) return response;
 
@@ -132,8 +127,8 @@ namespace Sofco.Service.Implementations.Admin
             {
                 if (role.Active) role.EndDate = null;
 
-                roleRepository.Update(role);
-                roleRepository.Save();
+                unitOfWork.RoleRepository.Update(role);
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Role.Updated, MessageType.Success));
             }
             catch (Exception)
@@ -147,14 +142,14 @@ namespace Sofco.Service.Implementations.Admin
         public Response<Role> DeleteById(int id)
         {
             var response = new Response<Role>();
-            var entity = roleRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.RoleRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
                 entity.EndDate = DateTime.Now;
 
-                roleRepository.Delete(entity);
-                roleRepository.Save();
+                unitOfWork.RoleRepository.Delete(entity);
+                unitOfWork.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(Resources.Admin.Role.Deleted, MessageType.Success));
@@ -167,14 +162,14 @@ namespace Sofco.Service.Implementations.Admin
 
         public IList<Role> GetRolesByGroup(IEnumerable<int> groupIds)
         {
-            return roleRepository.GetRolesByGroup(groupIds);
+            return unitOfWork.RoleRepository.GetRolesByGroup(groupIds);
         }
 
         public Response<Role> AddFunctionalities(int roleId, List<int> functionalitiesToAdd)
         {
             var response = new Response<Role>();
 
-            var roleExist = roleRepository.ExistById(roleId);
+            var roleExist = unitOfWork.RoleRepository.ExistById(roleId);
 
             if (!roleExist)
             {
@@ -187,16 +182,16 @@ namespace Sofco.Service.Implementations.Admin
                 foreach (var functionalityId in functionalitiesToAdd)
                 {
                     var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
-                    var functionalityExist = functionalityRepository.ExistById(functionalityId);
-                    var roleFunctionalityExist = roleFunctionalityRepository.ExistById(roleId, functionalityId);
+                    var functionalityExist = unitOfWork.FunctionalityRepository.ExistById(functionalityId);
+                    var roleFunctionalityExist = unitOfWork.RoleFunctionalityRepository.ExistById(roleId, functionalityId);
 
                     if (functionalityExist && !roleFunctionalityExist)
                     {
-                        roleFunctionalityRepository.Insert(entity);
+                        unitOfWork.RoleFunctionalityRepository.Insert(entity);
                     }
                 }
 
-                roleFunctionalityRepository.Save();
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
             }
             catch (Exception)
@@ -211,7 +206,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
-            var roleExist = roleRepository.ExistById(roleId);
+            var roleExist = unitOfWork.RoleRepository.ExistById(roleId);
 
             if (!roleExist)
             {
@@ -219,7 +214,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var functionalityExist = functionalityRepository.ExistById(functionalityId);
+            var functionalityExist = unitOfWork.FunctionalityRepository.ExistById(functionalityId);
 
             if (!functionalityExist)
             {
@@ -227,7 +222,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var rolefunctionalityExist = roleFunctionalityRepository.ExistById(roleId, functionalityId);
+            var rolefunctionalityExist = unitOfWork.RoleFunctionalityRepository.ExistById(roleId, functionalityId);
 
             if (rolefunctionalityExist)
             {
@@ -236,8 +231,8 @@ namespace Sofco.Service.Implementations.Admin
             else
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
-                roleFunctionalityRepository.Insert(entity);
-                roleFunctionalityRepository.Save();
+                unitOfWork.RoleFunctionalityRepository.Insert(entity);
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
@@ -248,7 +243,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
-            var roleExist = roleRepository.ExistById(roleId);
+            var roleExist = unitOfWork.RoleRepository.ExistById(roleId);
 
             if (!roleExist)
             {
@@ -256,7 +251,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var functionalityExist = functionalityRepository.ExistById(functionalityId);
+            var functionalityExist = unitOfWork.FunctionalityRepository.ExistById(functionalityId);
 
             if (!functionalityExist)
             {
@@ -264,7 +259,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var rolefunctionalityExist = roleFunctionalityRepository.ExistById(roleId, functionalityId);
+            var rolefunctionalityExist = unitOfWork.RoleFunctionalityRepository.ExistById(roleId, functionalityId);
 
             if (!rolefunctionalityExist)
             {
@@ -273,8 +268,8 @@ namespace Sofco.Service.Implementations.Admin
             else
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
-                roleFunctionalityRepository.Delete(entity);
-                roleFunctionalityRepository.Save();
+                unitOfWork.RoleFunctionalityRepository.Delete(entity);
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
             }
 
@@ -285,7 +280,7 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<Role>();
 
-            var roleExist = roleRepository.ExistById(roleId);
+            var roleExist = unitOfWork.RoleRepository.ExistById(roleId);
 
             if (!roleExist)
             {
@@ -298,16 +293,16 @@ namespace Sofco.Service.Implementations.Admin
                 foreach (var functionalityId in functionalities)
                 {
                     var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
-                    var functionalityExist = functionalityRepository.ExistById(functionalityId);
-                    var roleFunctionalityExist = roleFunctionalityRepository.ExistById(roleId, functionalityId);
+                    var functionalityExist = unitOfWork.FunctionalityRepository.ExistById(functionalityId);
+                    var roleFunctionalityExist = unitOfWork.RoleFunctionalityRepository.ExistById(roleId, functionalityId);
 
                     if (functionalityExist && roleFunctionalityExist)
                     {
-                        roleFunctionalityRepository.Delete(entity);
+                        unitOfWork.RoleFunctionalityRepository.Delete(entity);
                     }
                 }
 
-                roleFunctionalityRepository.Save();
+                unitOfWork.Save();
                 response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
             }
             catch (Exception)

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL;
+using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
@@ -14,6 +15,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 {
     public class SolfacStatusManagementControlRejectedHandler : ISolfacStatusHandler
     {
+        private readonly IUnitOfWork unitOfWork;
+
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
         private string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
@@ -47,19 +55,19 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return response;
         }
 
-        public string GetBodyMail(Model.Models.Billing.Solfac solfac, string siteUrl)
+        private string GetBodyMail(Model.Models.Billing.Solfac solfac, string siteUrl)
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
             return string.Format(MailBody, link);
         }
 
-        public string GetSubjectMail(Model.Models.Billing.Solfac solfac)
+        private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
         {
             return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        public string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        private string GetRecipients(Model.Models.Billing.Solfac solfac)
         {
             return solfac.UserApplicant.Email;
         }
@@ -74,10 +82,10 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Pending;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters, ISolfacRepository solfacRepository)
+        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
-            solfacRepository.UpdateStatus(solfacToModif);
+            unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
@@ -101,6 +109,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                     }
                 }
             }
+        }
+
+        public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        {
+            var subject = GetSubjectMail(solfac);
+            var body = GetBodyMail(solfac, emailConfig.SiteUrl);
+            var recipients = GetRecipients(solfac);
+
+            mailSender.Send(recipients, subject, body);
         }
     }
 }

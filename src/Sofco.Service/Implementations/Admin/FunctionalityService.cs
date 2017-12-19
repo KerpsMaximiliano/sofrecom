@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Sofco.Core.DAL;
 using Sofco.Model.Utils;
-using Sofco.Core.DAL.Admin;
 using Sofco.Model.Enums;
 using Sofco.Core.Services.Admin;
+using Sofco.DAL;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Relationships;
 
@@ -10,24 +11,24 @@ namespace Sofco.Service.Implementations.Admin
 {
     public class FunctionalityService : IFunctionalityService
     {
-        private readonly IFunctionalityRepository _functionalityRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public FunctionalityService(IFunctionalityRepository functionalityRepository)
+        public FunctionalityService(IUnitOfWork unitOfWork)
         {
-            _functionalityRepository = functionalityRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Response<Functionality> Active(int id, bool active)
         {
             var response = new Response<Functionality>();
-            var entity = _functionalityRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.FunctionalityRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
                 entity.Active = active;
 
-                _functionalityRepository.Update(entity);
-                _functionalityRepository.Save();
+                unitOfWork.FunctionalityRepository.Update(entity);
+                unitOfWork.FunctionalityRepository.Save();
 
                 response.Data = entity;
                 response.Messages.Add(new Message(active ? Resources.Admin.Functionality.Enabled : Resources.Admin.Functionality.Disabled, MessageType.Success));
@@ -41,16 +42,16 @@ namespace Sofco.Service.Implementations.Admin
         public IList<Functionality> GetAllReadOnly(bool active)
         {
             if (active)
-                return _functionalityRepository.GetAllActivesReadOnly();
+                return unitOfWork.FunctionalityRepository.GetAllActivesReadOnly();
             else
-                return _functionalityRepository.GetAllReadOnly();
+                return unitOfWork.FunctionalityRepository.GetAllReadOnly();
         }
 
 
         public Response<Functionality> GetById(int id)
         {
             var response = new Response<Functionality>();
-            var entity = _functionalityRepository.GetSingle(x => x.Id == id);
+            var entity = unitOfWork.FunctionalityRepository.GetSingle(x => x.Id == id);
 
             if (entity != null)
             {
@@ -64,17 +65,17 @@ namespace Sofco.Service.Implementations.Admin
 
         public IList<Functionality> GetFunctionalitiesByModule(int moduleId)
         {
-            return _functionalityRepository.GetFuntionalitiesByModule(new int[] { moduleId });
+            return unitOfWork.FunctionalityRepository.GetFuntionalitiesByModule(new int[] { moduleId });
         }
 
         public IList<Functionality> GetFunctionalitiesByModule(IEnumerable<int> modules)
         {
-            return _functionalityRepository.GetFuntionalitiesByModule(modules);
+            return unitOfWork.FunctionalityRepository.GetFuntionalitiesByModule(modules);
         }
 
         public IList<RoleFunctionality> GetFunctionalitiesByRole(IEnumerable<int> roles)
         {
-            return _functionalityRepository.GetFuntionalitiesByRole(roles);
+            return unitOfWork.FunctionalityRepository.GetFuntionalitiesByRole(roles);
         }
     }
 }

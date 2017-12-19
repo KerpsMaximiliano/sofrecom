@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
@@ -19,19 +19,19 @@ namespace Sofco.Service.Implementations.Billing
     public class ProjectService : IProjectService
     {
         private readonly ISolfacService solfacService;
-        private readonly IUserRepository userRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly CrmConfig crmConfig;
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
 
         public ProjectService(ISolfacService solfacService, 
             IOptions<CrmConfig> crmOptions, 
-            IUserRepository userRepository,
+            IUnitOfWork unitOfWork,
             IProjectData projectData, 
             ICrmHttpClient client)
         {
             this.solfacService = solfacService;
-            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
@@ -78,7 +78,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<CrmProject> GetProjects(string serviceId, string userMail, string userName)
         {
-            var hasDirectorGroup = this.userRepository.HasDirectorGroup(userMail);
+            var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
 
             return projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup);
         }

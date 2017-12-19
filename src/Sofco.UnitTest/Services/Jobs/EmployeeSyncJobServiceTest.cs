@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using AutoMapper;
 using Moq;
 using NUnit.Framework;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.DAL;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Domain.Rh.Rhpro;
@@ -29,6 +31,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IMapper> mapperMock;
 
+        private Mock<IUnitOfWork> unitOfWork;
+
         [SetUp]
         public void Setup()
         {
@@ -39,12 +43,16 @@ namespace Sofco.UnitTest.Services.Jobs
             employeeLicenseRepositoryMock = new Mock<IEmployeeLicenseRepository>();
             mapperMock = new Mock<IMapper>();
 
+            unitOfWork = new Mock<IUnitOfWork>();
+
+            unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.LicenseTypeRepository).Returns(licenseTypeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.EmployeeLicenseRepository).Returns(employeeLicenseRepositoryMock.Object);
+
             sut = new EmployeeSyncJobService(
                 tigerEmployeeRepositoryMock.Object,
                 rhproEmployeeRepositoryMock.Object,
-                employeeRepositoryMock.Object,
-                licenseTypeRepositoryMock.Object,
-                employeeLicenseRepositoryMock.Object,
+                unitOfWork.Object,
                 mapperMock.Object);
         }
 
