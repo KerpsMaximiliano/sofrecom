@@ -20,6 +20,8 @@ export class Ng2ModalComponent implements OnInit {
   @Output() close = new EventEmitter<any>();
   @Output() accept = new EventEmitter<any>();
 
+  @Input() size;
+
   constructor() { }
 
   ngOnInit() {
