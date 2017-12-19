@@ -457,25 +457,28 @@ namespace Sofco.Service.Implementations.Billing
         {
             if (hito.AmmountFirstHito == 0 || hito.StatusCode == "717620004") return;
 
+            if (hito.AmmountFirstHito - hito.Ammount <= 0)
+                hito.AmmountFirstHito = 0;
+            else
+                hito.AmmountFirstHito -= hito.Ammount.GetValueOrDefault();
+
+            var data = $"Ammount={hito.AmmountFirstHito}";
+
+            if (hito.AmmountFirstHito == 0) data += "&StatusCode=717620004";
+
+            var urlPath = $"/api/InvoiceMilestone/{hito.ExternalHitoId}";
+
             try
             {
-                if (hito.AmmountFirstHito - hito.Ammount <= 0)
-                    hito.AmmountFirstHito = 0;
-                else
-                    hito.AmmountFirstHito -= hito.Ammount.GetValueOrDefault();
-
-                var data = $"Ammount={hito.AmmountFirstHito}";
-
-                if (hito.AmmountFirstHito == 0) data += "&StatusCode=717620004";
-
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-                var httpResponse = await client.PutAsync($"/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
+
+                var httpResponse = await client.PutAsync(urlPath, stringContent);
 
                 httpResponse.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                logger.LogError(urlPath + "; data:" + data, ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
