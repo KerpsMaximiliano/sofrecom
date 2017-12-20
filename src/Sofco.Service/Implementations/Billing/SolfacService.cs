@@ -433,22 +433,23 @@ namespace Sofco.Service.Implementations.Billing
 
         private async Task CreateNewHito(Response response, HitoSplittedParams hito, HttpClient client)
         {
+            var data =
+                $"Ammount={hito.Ammount}&StatusCode=1&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
+                $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
 
+            var urlPath = "/api/InvoiceMilestone";
 
             try
             {
-                var data =
-                    $"Ammount={hito.Ammount}&StatusCode=1&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
-                        $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
-
                 var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-                var httpResponse = await client.PostAsync($"/api/InvoiceMilestone", stringContent);
+
+                var httpResponse = await client.PostAsync(urlPath, stringContent);
 
                 httpResponse.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                logger.LogError(urlPath +"; data: "+ data,ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
@@ -480,7 +481,7 @@ namespace Sofco.Service.Implementations.Billing
             }
             catch (Exception ex)
             {
-                logger.LogError(urlPath + "; data:" + data, ex);
+                logger.LogError(urlPath + "; data: " + data, ex);
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
             }
         }
