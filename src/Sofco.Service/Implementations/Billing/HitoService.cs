@@ -24,13 +24,15 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
+            var closeStatusCode = crmConfig.CloseStatusCode;
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(crmConfig.Url);
 
                 try
                 {
-                    var stringContent = new StringContent($"StatusCode=717620004", Encoding.UTF8, "application/x-www-form-urlencoded");
+                    var stringContent = new StringContent("StatusCode="+ closeStatusCode, Encoding.UTF8, "application/x-www-form-urlencoded");
                     var result = client.PutAsync($"/api/InvoiceMilestone/{id}", stringContent).Result;
 
                     result.EnsureSuccessStatusCode();

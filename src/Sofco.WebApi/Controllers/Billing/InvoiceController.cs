@@ -128,6 +128,26 @@ namespace Sofco.WebApi.Controllers.Billing
                 if (response.HasErrors())
                     return BadRequest(response);
 
+                return Ok(response.Data.PdfFile);
+            }
+            catch
+            {
+                var response = new Response();
+                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("{invoiceId}/pdf/download")]
+        public IActionResult DownloadPdf(int invoiceId)
+        {
+            try
+            {
+                var response = invoiceService.GetPdf(invoiceId);
+
+                if (response.HasErrors())
+                    return BadRequest(response);
+
                 return File(response.Data.PdfFile, "application/octet-stream", response.Data.PdfFileName);
             }
             catch
