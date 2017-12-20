@@ -8,6 +8,22 @@
 }
 
 .remove-file {
-    background-color: #ED6684;
+    background-color: #ea394c;
     color: #FFFFFF;
+    width: 50%;
+}
+
+.export-file {
+    background-color: #1872ab;
+    color: #FFFFFF;
+    width: 50%;
+} 
+
+.file-buttons{
+    display: -webkit-box;
+}
+
+.pdf-file{
+    cursor: pointer;
+    color: #337ab7;
 }

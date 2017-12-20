@@ -41,7 +41,7 @@
             <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
-            <li class=""><a data-toggle="tab" href="#tab-4"> <i class="fa fa-file"></i> {{ 'billing.solfac.invoicesRelated' | translate }} </a></li>
+            <li class=""><a data-toggle="tab" href="#tab-4" *ngIf="invoicesRelated.length > 0"> <i class="fa fa-file"></i> {{ 'billing.solfac.invoicesRelated' | translate }} </a></li>
         </ul>
         <div class="tab-content">
  
@@ -181,7 +181,7 @@
             </div>
 
             <!-- Invoices -->
-            <div id="tab-4" class="tab-pane">
+            <div id="tab-4" class="tab-pane" *ngIf="invoicesRelated.length > 0">
                 <div class="panel-body">
                     <div class="row attachments-scroll">
                         <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">

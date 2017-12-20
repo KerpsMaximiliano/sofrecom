@@ -30,6 +30,7 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
+        private solfacService: SolfacService,
         private errorHandlerService: ErrorHandlerService) { 
     }
 
@@ -48,37 +49,47 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
         this.pdfModal.hide();
     }
 
+    getAttachment(fileId){
+        this.pdfModal.show();
+
+        this.solfacService.getFile(fileId).subscribe(file => {
+            var pdfData = atob(file);
+            this.render(pdfData);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    } 
+
     getPdf(invoiceId){
         this.pdfModal.show();
 
-        var self = this;
-
-        self.invoiceService.getPdf(invoiceId).subscribe(file => {
+        this.invoiceService.getPdf(invoiceId).subscribe(file => {
             var pdfData = atob(file);
-            
-            PDFJS.getDocument({data: pdfData}).then(function (pdfDoc_) {
-                var pageNumber = 1;
-                pdfDoc_.getPage(pageNumber).then(function(page) {
-                    
-                    var scale = 1;
-                    var viewport = page.getViewport(scale);
-                
-                    // Prepare canvas using PDF page dimensions
-                    self.canvas.height = viewport.height;
-                    self.canvas.width = viewport.width;
-                
-                    // Render PDF page into canvas context
-                    var renderContext = {
-                        canvasContext: self.ctx,
-                        viewport: viewport
-                    };
-
-                    page.render(renderContext);
-                });
-            });
-
+            this.render(pdfData);
         },
-        err => self.errorHandlerService.handleErrors(err));
+        err => this.errorHandlerService.handleErrors(err));
     } 
-x
+
+    render(pdfData){
+        var self = this;
+        PDFJS.getDocument({data: pdfData}).then(function (pdfDoc_) {
+            var pageNumber = 1;
+            pdfDoc_.getPage(pageNumber).then(function(page) {
+                
+                var scale = 1;
+                var viewport = page.getViewport(scale);
+            
+                // Prepare canvas using PDF page dimensions
+                self.canvas.height = viewport.height;
+                self.canvas.width = viewport.width;
+            
+                // Render PDF page into canvas context
+                var renderContext = {
+                    canvasContext: self.ctx,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+            });
+        });
+    }
 }

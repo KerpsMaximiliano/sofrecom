@@ -327,6 +327,27 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet]
+        [Route("file/{fileId}/download")]
+        public IActionResult DownloadFile(int fileId)
+        {
+            try
+            {
+                var response = solfacService.GetFileById(fileId);
+
+                if (response.HasErrors())
+                    return BadRequest(response);
+
+                return File(response.Data.File, "application/octet-stream", response.Data.Name);
+            }
+            catch
+            {
+                var response = new Response();
+                response.Messages.Add(new Message(Resources.Common.ExportFileError, MessageType.Error));
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet]
         [Route("file/{fileId}")]
         public IActionResult GetFile(int fileId)
         {
@@ -337,7 +358,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 if (response.HasErrors())
                     return BadRequest(response);
 
-                return File(response.Data.File, "application/octet-stream", response.Data.Name);
+                return Ok(response.Data.File);
             }
             catch
             {
