@@ -189,7 +189,7 @@
                                 <div class="file">
                                     <a (click)="pdfViewer.getPdf(invoice.id)">
                                         <div class="icon"><i class="fa fa-file"></i></div>
-                                        <div class="file-name">
+                                        <div class="file-name text-word-break">
                                             {{ invoice.pdfFileName }}
                                             <br>
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>

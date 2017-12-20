@@ -93,9 +93,8 @@
                             <div class="file-box" *ngIf="model.excelFileName">
                                 <div class="file">
                                     <a (click)="exportExcel()">
-                                        <span class="corner"></span>
                                         <div class="icon"><i class="fa fa-file"></i></div>
-                                        <div class="file-name">
+                                        <div class="file-name text-word-break">
                                             {{ model.excelFileName }}
                                             <br>
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ model.excelFileCreatedDate }}</small>
@@ -103,18 +102,22 @@
                                     </a>
                                 </div>
                             </div>
+                            
                             <div class="file-box" *ngIf="model.pdfFileName">
                                 <div class="file">
-                                    <a (click)="exportPdf()">
-                                        <span class="corner"></span>
+                                    <a (click)="pdfViewer.getPdf(model.id)">
                                         <div class="icon"><i class="fa fa-file"></i></div>
-                                        <div class="file-name">
+                                        <div class="file-name text-word-break">
                                             {{ model.pdfFileName }}
                                             <br>
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ model.pdfFileCreatedDate }}</small>
                                         </div>
                                     </a>
-                                </div>
+                                    <div class="file-name export-file text-center pointer" (click)="exportPdf()">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'ACTIONS.export' | translate }}
+                                    </div>
+                                </div> 
                             </div>
                         </div>
         
@@ -155,3 +158,5 @@
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="delete()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
+ 
+<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>

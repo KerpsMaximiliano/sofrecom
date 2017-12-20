@@ -167,9 +167,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         },
         err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     exportPdf(){
-        this.service.getPdf(this.model.id).subscribe(file => {
+        this.service.downloadPdf(this.model.id).subscribe(file => {
             FileSaver.saveAs(file, this.model.pdfFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
