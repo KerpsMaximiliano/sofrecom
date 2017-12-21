@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.DAL.Mappings.Admin
@@ -10,9 +9,9 @@ namespace Sofco.DAL.Mappings.Admin
         {
             // Primary Key
             builder.Entity<User>().HasKey(_ => _.Id);
-            builder.Entity<User>().Property(_ => _.Name).HasMaxLength(50).IsRequired();
-            builder.Entity<User>().Property(_ => _.Email).HasMaxLength(50).IsRequired();
-            builder.Entity<User>().Property(_ => _.UserName).HasMaxLength(50).IsRequired();
+            builder.Entity<User>().Property(_ => _.Name).HasMaxLength(150).IsRequired();
+            builder.Entity<User>().Property(_ => _.Email).HasMaxLength(150).IsRequired();
+            builder.Entity<User>().Property(_ => _.UserName).HasMaxLength(150).IsRequired();
 
             builder.Entity<User>().HasMany(x => x.Invoices).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             //builder.Entity<User>().HasMany(x => x.Analytics).WithOne(x => x.Director).HasForeignKey(x => x.DirectorId).OnDelete(DeleteBehavior.SetNull); ;
