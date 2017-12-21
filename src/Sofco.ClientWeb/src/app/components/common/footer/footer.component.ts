@@ -4,7 +4,8 @@ declare function require(name: string);
 
 @Component({
   selector: 'footer',
-  templateUrl: 'footer.template.html'
+  templateUrl: 'footer.template.html',
+  styleUrls: ['./footer.component.scss']
 })
 
 export class FooterComponent { 

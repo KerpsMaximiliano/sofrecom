@@ -1,7 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
         <h2>{{'billing.solfac.detail' | translate }}</h2>
-        <ol class="breadcrumb">
+        <ol class="breadcrumb no-print">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
@@ -16,12 +16,13 @@
 </div>
  
 <div class="wrapper wrapper-content animated fadeInUp">
-    <div class="row">
+    <div class="row no-print">
         <div class="col-lg-12">
             <button class="btn btn-success btn-outline dim" (click)="goToProject()"> {{ 'ACTIONS.goToProject' | translate }} <i class="fa fa-building"></i></button>
             <button class="btn btn-success btn-outline dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
 
             <div class="btn-right">
+                <button class="btn btn-success btn-outline dim" (click)="printSolfac()"> {{ 'ACTIONS.print' | translate }} <i class="fa fa-print"></i></button>
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
                 <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToCdg>
                 <status-reject [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-reject>
@@ -37,20 +38,23 @@
     </div>
  
     <div class="tabs-container margin-bottom-20">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs no-print">
             <li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> {{ 'billing.solfac.contractInfo' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-2"> <i class="fa fa-clock-o"></i> {{ 'billing.solfac.movements' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-3"> <i class="fa fa-file"></i> {{ 'billing.solfac.attachments' | translate }} </a></li>
             <li class=""><a data-toggle="tab" href="#tab-4"> <i class="fa fa-file"></i> {{ 'billing.solfac.invoicesRelated' | translate }} </a></li>
         </ul>
         <div class="tab-content">
+            <div id="tab-5" class="tab-pane">
+                <div class="panel-body" id="printContent"></div>
+            </div>
  
             <!-- Datos generales -->
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body">
                     <!-- Datos CRM -->
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-print-1">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd><i class="fa fa-building"></i> {{model.businessName}}</dd>
                                 <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd><i class="fa fa-user"></i> {{model.clientName}}</dd>
@@ -61,7 +65,7 @@
                                 <dd *ngIf="model.invoiceCode"><h4 class="text-navy">{{model.invoiceCode}}</h4></dd>
                             </dl>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-print-2">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate }}</span></dd>
                                 <dt>{{'billing.solfac.contractNumber' | translate }}: </dt><dd>{{model.contractNumber}}</dd>
@@ -77,15 +81,15 @@
                     </div>
         
                     <div class="row">   
-                        <div class="col-md-6">
-                            <dl class="dl-horizontal">
+                        <div class="col-md-6 col-print-1">
+                            <dl class="dl-horizontal ">
                                 <dt>{{'billing.solfac.documentType' | translate }}: </dt><dd>{{model.documentType}}</dd>
                                 <dt>{{'billing.solfac.currency' | translate }}: </dt><dd>{{model.currencyName}}</dd>
                                 <dt>{{'billing.solfac.imputationNumber' | translate }}: </dt><dd>{{model.imputationNumber1 }} {{model.imputationNumber3 }}</dd>
                                 <dt>{{'billing.solfac.timeLimit' | translate }}: </dt><dd>{{ model.paymentTermName }}</dd>
                             </dl>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-print-2">
                             <dl class="dl-horizontal">
                                 <dt>{{'billing.solfac.milestone.withTax' | translate }}</dt>
                                 <dd>
@@ -163,6 +167,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row print" style="display:none">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i> {{ 'billing.solfac.attachments' | translate }}
+                            </div>
+                            <div class="panel-body">
+                                <ol class="dd-list">
+                                    <li *ngFor="let item of attachments.files" class="dd-item">
+                                        <div class="dd-handle">{{ item.name }}</div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
  
@@ -176,7 +195,7 @@
             <!-- Attachments -->
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body">
-                    <solfac-attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
+                    <solfac-attachments #attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
                 </div>
             </div>
 

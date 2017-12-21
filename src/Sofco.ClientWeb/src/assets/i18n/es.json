@@ -229,7 +229,7 @@
             },
             "impositiveInfo": {
                 "title": "Información Impositiva",
-                "capital": "Capital %:",
+                "capital": "Capital %",
                 "bsas": "Provincia de Bs. As",
                 "otherProvince": "Otras Provincias",
                 "province": "Provincia"
@@ -408,7 +408,8 @@
         "assign": "Asignar",
         "applyChanges": "Aplicar cambios",
         "confirm": "Confirmar",
-        "title": "Acciones"
+        "title": "Acciones",
+        "print": "Imprimir"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

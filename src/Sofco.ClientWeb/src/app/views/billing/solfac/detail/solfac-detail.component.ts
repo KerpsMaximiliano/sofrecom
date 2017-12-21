@@ -100,4 +100,8 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(event.invoiceDate) this.model.invoiceDate = event.invoiceDate;
         if(event.cashedDate) this.model.cashedDate = event.cashedDate;
     }
+
+    printSolfac(){
+        window.print();
+    }
 }

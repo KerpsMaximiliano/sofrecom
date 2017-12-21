@@ -408,7 +408,8 @@
         "applyChanges": "Apply changes",
         "assign": "Assign",
         "confirm": "Confirm",
-        "title": "Acciones"
+        "title": "Acciones",
+        "print": "Print"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
