@@ -1,0 +1,8 @@
+@media print {
+    .app-version, .app-version * {
+		font-size: 6pt;
+        color: gray !important;
+        -webkit-print-color-adjust: exact; 
+        font-weight: normal !important;
+	}
+}

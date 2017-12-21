@@ -269,7 +269,8 @@
          "goToSearch": "Aller à Recherches",
          "confirmTitle": "Confirmer action",
          "confirmBody": "¿Etes-vous sûr de vouloir confirmer l’action?",
-         "applyChanges": "Appliquer"
+         "applyChanges": "Appliquer",
+         "print": "Imprimer"
      },
      "SendPending": "En Attente d’être Envoyer",
      "PendingByManagementControl": "E.A. de Révision de Control Gestion",
