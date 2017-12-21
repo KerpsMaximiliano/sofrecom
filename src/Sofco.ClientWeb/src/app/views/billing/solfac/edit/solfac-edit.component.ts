@@ -41,6 +41,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public updateComments: string;
 
     private detailSelected: any;
+
+    @ViewChild('pdfViewer') pdfViewer: any;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
@@ -277,7 +279,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     exportPdf(invoice){
-      this.invoiceService.getPdf(invoice.id).subscribe(file => {
+      this.invoiceService.downloadPdf(invoice.id).subscribe(file => {
           FileSaver.saveAs(file, invoice.pdfFileName);
       },
       err => this.errorHandlerService.handleErrors(err));

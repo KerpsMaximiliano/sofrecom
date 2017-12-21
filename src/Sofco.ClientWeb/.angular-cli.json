@@ -38,6 +38,7 @@
         "../vendor/pace/pace.min.js",
         "../node_modules/pdfmake/build/pdfmake.min.js",
         "assets/js/vfs_fonts.js",
+        "assets/js/pdfjs/pdf.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/datatables.net-buttons/js/dataTables.buttons.js",

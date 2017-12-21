@@ -213,6 +213,7 @@
             "dateTo": "Fecha hasta",
             "invoicesRelated": "Remitos Asociados",
             "hito": "Hito",
+            "pdfViewer": "Visualización de PDF",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -409,7 +410,8 @@
         "applyChanges": "Aplicar cambios",
         "confirm": "Confirmar",
         "title": "Acciones",
-        "print": "Imprimir"
+        "print": "Imprimir",
+        "export": "Exportar"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

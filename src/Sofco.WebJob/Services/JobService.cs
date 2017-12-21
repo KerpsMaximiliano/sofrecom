@@ -12,11 +12,15 @@ namespace Sofco.WebJob.Services
 
         private const string EmployeeEndJobName = "EmployeeEndNotificationJob";
 
+        private const string AzureJobName = "UpdateAzureUsers";
+
         public static void Init(string timeZoneName)
         {
             var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
 
             RecurringJob.AddOrUpdate<ISolfacJob>(SolfacJobName, j => j.Execute(), Cron.Daily(8), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IAzureJob>(AzureJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
             //RecurringJob.AddOrUpdate<IEmployeeSyncJob>(EmployeeSyncJobName, j => j.Execute(), Cron.Daily(7), localTimeZone);
 

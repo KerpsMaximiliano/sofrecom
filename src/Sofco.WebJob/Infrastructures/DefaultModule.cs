@@ -5,8 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
+using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.DAL;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.Service.Http;
@@ -48,6 +50,8 @@ namespace Sofco.WebJob.Infrastructures
 
             builder.RegisterType<HttpClient>()
                 .SingleInstance();
+
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             RegisterLogger(builder);
         }

@@ -10,6 +10,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentTypes } from 'app/models/enums/documentTypes';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Configuration } from 'app/services/common/configuration';
 
 @Component({
   selector: 'app-project-detail',
@@ -65,7 +66,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private datatableService: DataTableService,
         private messageService: MessageService,
         public menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) {}
+        private errorHandlerService: ErrorHandlerService,
+        private config: Configuration) {}
 
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -322,7 +324,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.service.closeHito(hito.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             hito.status = "Cerrado";
-            hito.statusCode = "717620004";
+            hito.statusCode = this.config.crmCloseStatusCode;
             this.closeHitoModal.hide();
         },
         err => {

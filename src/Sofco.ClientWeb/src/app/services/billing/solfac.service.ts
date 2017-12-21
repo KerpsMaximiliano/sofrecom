@@ -98,8 +98,8 @@ export class SolfacService {
     return this.http.post(`${this.baseUrl}/solfacs/${id}/invoices`, invoices).map((res:Response) => res.json());
   }
 
-  getFile(id){
-    return this.http.get(`${this.baseUrl}/solfacs/file/${id}`,
+  downloadFile(id){
+    return this.http.get(`${this.baseUrl}/solfacs/file/${id}/download`,
      {
        responseType: ResponseContentType.Blob
      })
@@ -111,5 +111,9 @@ export class SolfacService {
          return new Blob([res._body],{ type: 'application/vnd.ms-excel' })
        }
      });
- }
+  }
+
+  getFile(id){
+    return this.http.get(`${this.baseUrl}/solfacs/file/${id}`).map((res:any) =>  res.json());
+  }
 }

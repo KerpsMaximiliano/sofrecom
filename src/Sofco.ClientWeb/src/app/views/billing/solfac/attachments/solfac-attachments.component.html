@@ -52,16 +52,23 @@
             <div class="col-lg-3 col-sm-6 col" *ngFor="let file of files; let i = index">
                 <div class="file-box">
                     <div class="file">
-                        <a (click)="exportExcel(file)">
+                        <div [ngClass]="file.name.endsWith('.pdf') ? 'pdf-file' : ''" (click)="showPdf(file)">
                             <div class="icon"><i class="fa fa-file"></i></div>
-                            <div class="file-name">
+                            <div class="file-name text-word-break">
                                 {{ file.name }}
                                 <br>
                                 <small>{{'billing.invoice.createdAt' | translate }}: {{ file.creationDate | date: 'dd/MM/yyyy HH:mm' }}</small>
                             </div>
-                        </a>
-                        <div *ngIf="status != 'Invoiced' && status != 'AmountCashed'" class="file-name remove-file text-center pointer" (click)="showConfirm(file.id, i)">
-                            {{ 'ACTIONS.DELETE' | translate }}
+                        </div>
+                        <div class="file-buttons">
+                            <div class="file-name export-file text-center pointer" (click)="exportFile(file)">
+                                <i class="fa fa-download"></i>
+                                {{ 'ACTIONS.export' | translate }}
+                            </div>
+                            <div *ngIf="status != 'Invoiced' && status != 'AmountCashed'" class="file-name remove-file text-center pointer" (click)="showConfirm(file.id, i)">
+                                <i class="fa fa-trash"></i>
+                                {{ 'ACTIONS.DELETE' | translate }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,3 +80,5 @@
 <ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
+
+<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>

@@ -20,6 +20,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     @Input() status: string;
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('confirmDeleteFileModal') confirmModal;
+    @ViewChild('pdfViewer') pdfViewer: any;
     
     public files: any[] = new Array<any>();
     fileId: number;
@@ -80,11 +81,17 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         this.selectedFile.nativeElement.value = '';
     }
 
-    exportExcel(file){
-        this.solfacService.getFile(file.id).subscribe(response => {
+    exportFile(file){
+        this.solfacService.downloadFile(file.id).subscribe(response => {
             FileSaver.saveAs(response, file.name);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    showPdf(file){
+        if(file.name.endsWith('.pdf')){
+            this.pdfViewer.getAttachment(file.id);
+        }
     }
 
     canUploadFiles(){

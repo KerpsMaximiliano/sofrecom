@@ -66,8 +66,8 @@ export class InvoiceService {
       });
   }
 
-  getPdf(id){
-     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf`,
+  downloadPdf(id){
+     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`,
       {
         responseType: ResponseContentType.Blob
       })
@@ -81,8 +81,11 @@ export class InvoiceService {
       });
   }
 
+  getPdf(id){
+    return this.http.get(`${this.baseUrl}/invoices/${id}/pdf`, { headers: this.service.getHeaders()}).map((res:Response) => res.json());
+ }
+
   export(model){
-    debugger;
     return this.http.post(`${this.baseUrl}/invoices/excel`,
       model,  
       {
