@@ -49,6 +49,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "azgap01wp"
       }
+    },
+    "IIS Express - wks729l": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "wks729l"
+      }
     }
   }
 }
