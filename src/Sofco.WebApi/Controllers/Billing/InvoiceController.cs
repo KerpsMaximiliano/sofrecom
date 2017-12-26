@@ -85,7 +85,6 @@ namespace Sofco.WebApi.Controllers.Billing
             try
             {
                 var excel = invoiceFileManager.CreateInvoiceExcel(model.CreateDomain());
-
                 var fileName = string.Concat("remito_", DateTime.Now.ToString("d"));
 
                 return File(excel.GetAsByteArray(), "application/octet-stream", fileName);
