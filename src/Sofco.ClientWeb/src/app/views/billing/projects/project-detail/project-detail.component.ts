@@ -125,8 +125,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getHitos(){
-        this.getHitosSubscrip = this.service.getHitos(this.projectId).subscribe(d => {
+    getHitos(reload = false){
+        this.getHitosSubscrip = this.service.getHitos(this.projectId, reload).subscribe(d => {
             this.hitos = d;
 
             this.datatableService.destroy('#hitoTable');
