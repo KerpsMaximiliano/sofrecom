@@ -369,12 +369,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     split(){
-        var hito = this.getHitosSelected()[0];
-
-        hito.projectId = this.projectId;
-        hito.managerId = this.project.managerId;
-        hito.opportunityId = this.project.opportunityId;
-        hito.currencyId = this.project.currencyId;
+        var hito = this.translateHito(this.getHitosSelected()[0]);
 
         this.splitHito.openModal(hito);
     }
@@ -386,28 +381,26 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     createCreditNote() {
-        var hito = this.getHitosSelected()[0];
+        var hito = this.translateHito(this.getHitosSelected()[0]);
         
-        hito.projectId = this.projectId;
-        hito.managerId = this.project.managerId;
-        hito.opportunityId = this.project.opportunityId;
-        hito.currencyId = this.project.currencyId;
-
         sessionStorage.setItem(this.documentTypeKey, "creditNote");
 
         this.generateSolfac();
     }
 
     createDebitNote() {
-        var hito = this.getHitosSelected()[0];
+        var hito = this.translateHito(this.getHitosSelected()[0]);
         
-        hito.projectId = this.projectId;
-        hito.managerId = this.project.managerId;
-        hito.opportunityId = this.project.opportunityId;
-        hito.currencyId = this.project.currencyId;
-
         sessionStorage.setItem(this.documentTypeKey, "debitNote");
 
         this.generateSolfac();
+    }
+
+    translateHito(hito:any) {
+        hito.projectId = this.projectId;
+        hito.managerId = this.project.ownerId;
+        hito.opportunityId = this.project.opportunityId;
+        hito.currencyId = this.project.currencyId;
+        return hito;
     }
 }

@@ -73,7 +73,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<CrmProject> GetProjectById(string projectId)
         {
-            var url = $"{crmConfig.Url}/api/v/{projectId}";
+            var url = $"{crmConfig.Url}/api/project/{projectId}";
 
             var project = client.Get<CrmProject>(url).Data;
 
