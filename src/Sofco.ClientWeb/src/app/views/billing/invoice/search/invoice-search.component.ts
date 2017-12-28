@@ -14,6 +14,7 @@ import { InvoiceService } from 'app/services/billing/invoice.service';
 import { MenuService } from 'app/services/admin/menu.service';
 import { I18nService } from 'app/services/common/i18n.service';
 declare var $: any;
+declare var moment: any;
 
 @Component({
   selector: 'app-invoice-search',
@@ -153,8 +154,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                     this.data = data;
                 }      
 
+                var columns = [0, 1, 2, 3, 4, 5];
+                var title = `REMITOS-${moment(new Date()).format("YYYYMMDD")}`;
+
                 this.datatableService.destroy('#invoiceTable');
-                this.datatableService.init('#invoiceTable', true);
+                this.datatableService.initWithExportButtons('#invoiceTable', columns, title);
             }, 500)
         },
         err => this.errorHandlerService.handleErrors(err));

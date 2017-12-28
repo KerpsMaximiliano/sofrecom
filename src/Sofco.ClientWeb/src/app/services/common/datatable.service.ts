@@ -11,7 +11,7 @@ export class DataTableService {
         $(selector).DataTable().destroy();
     }
 
-    init(selector, scroll){
+    initWithExportButtons(selector, columns, title){
         var lang = {};
         if(this.config.currLang == "es" || this.config.currLang == "fr"){
           lang = this.getLanguageEs();
@@ -19,12 +19,48 @@ export class DataTableService {
 
         setTimeout(()=>{
             $( document ).ready(function() {
-                var options = {
+                var options: any = {
+                    oSearch: { "bSmart": false, "bRegex": true },
+                    dom: '<"html5buttons"B>lTfgitp',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5', title: title,
+                            exportOptions: {
+                                columns: columns
+                            }
+                        },
+                        {
+                          extend: 'pdfHtml5', title: title,
+                            exportOptions: {
+                                columns: columns
+                            }
+                        }
+                      ],
+                    responsive: true, 
+                    language: lang,
+                }
+
+                // if(scroll) options.scrollX = true;
+                this.tableRef = $(selector).DataTable(options);
+            });
+        });
+    }
+
+    init(selector, scroll, hasExport = false){
+        var lang = {};
+        if(this.config.currLang == "es" || this.config.currLang == "fr"){
+          lang = this.getLanguageEs();
+        }
+
+        setTimeout(()=>{
+            $( document ).ready(function() {
+                var options: any = {
                     oSearch: { "bSmart": false, "bRegex": true },
                     // scrollX: false,
                     responsive: true, 
                     language: lang,
                 }
+
                 // if(scroll) options.scrollX = true;
                 this.tableRef = $(selector).DataTable(options);
             });

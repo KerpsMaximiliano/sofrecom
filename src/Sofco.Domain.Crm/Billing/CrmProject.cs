@@ -41,5 +41,7 @@ namespace Sofco.Domain.Crm.Billing
         public string Manager { get; set; }
 
         public string ManagerId { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }

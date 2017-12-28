@@ -14,6 +14,8 @@ import { MessageService } from "app/services/common/message.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { MenuService } from 'app/services/admin/menu.service';
 
+declare var moment: any;
+
 @Component({
   selector: 'app-solfacSearch',
   templateUrl: './solfac-search.component.html'
@@ -170,8 +172,11 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
                     this.data = data;
                 }      
 
+                var columns = [0, 1, 2, 3, 4, 5, 6];
+                var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
+
                 this.datatableService.destroy('#solfacsTable');
-                this.datatableService.init('#solfacsTable', true);
+                this.datatableService.initWithExportButtons('#solfacsTable', columns, title);
             }, 500)
         },
         err => {
