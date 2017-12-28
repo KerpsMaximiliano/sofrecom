@@ -125,14 +125,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getHitos(){
-        this.getHitosSubscrip = this.service.getHitos(this.projectId).subscribe(d => {
+    getHitos(reload = false){
+        this.getHitosSubscrip = this.service.getHitos(this.projectId, reload).subscribe(d => {
             this.hitos = d;
 
             this.datatableService.destroy('#hitoTable');
             this.datatableService.init('#hitoTable', false);
-
-          
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -258,7 +256,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canSeeInvoices(){
-        return this.menuService.hasFunctionality('REM', 'QUERY');
+        return this.menuService.hasFunctionality('REM', 'QUERY') && this.project.remito == true;
     }
 
     canSeeSolfacs(){

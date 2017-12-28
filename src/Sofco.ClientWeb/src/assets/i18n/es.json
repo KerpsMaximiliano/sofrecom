@@ -230,7 +230,7 @@
             },
             "impositiveInfo": {
                 "title": "Información Impositiva",
-                "capital": "Capital %:",
+                "capital": "Capital %",
                 "bsas": "Provincia de Bs. As",
                 "otherProvince": "Otras Provincias",
                 "province": "Provincia"
@@ -410,6 +410,7 @@
         "applyChanges": "Aplicar cambios",
         "confirm": "Confirmar",
         "title": "Acciones",
+        "print": "Imprimir",
         "export": "Exportar"
     },
     "SendPending": "Borrador",

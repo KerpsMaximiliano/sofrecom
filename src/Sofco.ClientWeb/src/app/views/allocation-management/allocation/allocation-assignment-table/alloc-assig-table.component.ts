@@ -155,12 +155,20 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     confirm(allocation){
         this.allocationSelected = allocation;
 
-        if(allocation.id && allocation.id > 0 && allocation.releaseDate){
-            this.releaseDate = new Date(allocation.releaseDate);
-        }
-        else{
-            this.releaseDate = new Date();
-        }
+        let date = new Date();
+
+        allocation.months.forEach(element => {
+            if(element.percentage > 0){
+
+                if(typeof element.date == 'string'){
+                    element.date = new Date(element.date);
+                }
+
+                date = new Date(element.date.getFullYear(), element.date.getMonth()+1, 0);
+            }
+        });
+
+        this.releaseDate = date;
 
         this.confirmModal.show();
     }
@@ -182,6 +190,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             }
         },
         error => {
+            this.allocationSelected.releaseDate = null;
             this.confirmModal.hide();
             this.errorHandlerService.handleErrors(error);
         });

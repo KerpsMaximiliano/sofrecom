@@ -484,20 +484,21 @@
 			"id": "05c2b97e-24c2-3d16-585a-a497cdce4b93",
 			"headers": "",
 			"headerData": [],
-			"url": "azsof01wt.sofrecom.local:91/api/users/email/jlarenze@sofrecom.com.ar",
+			"url": "azsof01wt.sofrecom.local:91/api/users/email/jlarenze",
 			"folder": "949cd864-ea05-29a2-dcc0-91725386a01a",
 			"queryParams": [],
+			"events": [],
 			"pathVariables": {},
 			"pathVariableData": [],
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"time": 1509547279780,
+			"auth": null,
+			"time": 1513778813683,
 			"name": "Users/email/jlarenze@sofrecom.com.ar",
 			"description": "",
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
-			"auth": null,
 			"currentHelper": null,
 			"helperAttributes": null
 		},
@@ -1390,7 +1391,6 @@
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
 			"isFromCollection": true,
-			"collectionRequestId": "d5c2629c-e307-cf12-a7c9-76f181225122",
 			"currentHelper": null,
 			"helperAttributes": null
 		},
@@ -1752,26 +1752,18 @@
 		},
 		{
 			"id": "d5c2629c-e307-cf12-a7c9-76f181225122",
-			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFCSGg0a21TX2FLVDVYcmp6eFJBdEh6bURPb1Z1WmdDdHUzOWxtV1R2ZDdUVDFjNy0xQmxPTDJBOEo5VW1OTjhkSXNfcnNxRlI1NkdfUjY1WEJ0MlIybGtGOGN4M1hEdDFTNTZ2WFhISXVPSENBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIiwia2lkIjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8wY2Q4Y2M0OC1hMzM4LTQ1ZWItYjAxYy0zN2M2MjNkOTBhNzgvIiwiaWF0IjoxNTEzMzQ1MDM1LCJuYmYiOjE1MTMzNDUwMzUsImV4cCI6MTUxMzM1OTczNSwiYWlvIjoiWTJOZ1lLanlQUEN1N1BUWjViNkdMM1MzZjU1MUNRQT0iLCJhcHBfZGlzcGxheW5hbWUiOiJTb2ZjbyIsImFwcGlkIjoiZGU5NmRjMDgtZTM5MS00OWRkLWFhMzgtYmM3YzJkNTQwZTcxIiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4LyIsIm9pZCI6ImQ1YjRlYmFkLTEzOGItNGM3OC1iMDA0LTRmOTZkMGE2ZTE4NSIsInJvbGVzIjpbIkRpcmVjdG9yeS5SZWFkLkFsbCIsIlVzZXIuUmVhZC5BbGwiXSwic3ViIjoiZDViNGViYWQtMTM4Yi00Yzc4LWIwMDQtNGY5NmQwYTZlMTg1IiwidGlkIjoiMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4IiwidXRpIjoidXRwRENtVzJjVUdMOWRoeEpmd1ZBQSIsInZlciI6IjEuMCJ9.e2uZYLsKRmuPC2TboJ9bzZQDhZN_o8_npdsB5P6sg_Yba4Dj45aEcjoRmf_YEjyX9RIigl9ArRcBa79xombPOJdSrnDx0apBidNlbeVjt521tAbTXXFjUx-XM1O2seCOfkXG-ADLO8PEnskjtXlLWeGpoOOkhfGbV8vuoFpxxpk1ntj14OwI3zIQxYYXqKp3Z5trBeOHSKc0PFm3ch9lmiRe-R-iDFh9k5A0Sx0FvzHGiwsabcvZJ0gU6R8QMmnOGXg2UQNM804ye0S6m4TMY_J_-zRj1mHXCVL4J1CEYBj86YgsiJo4KbCaVc5kWAvwATd87vjC_jSlM-Y7pUORrg\n",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFCSGg0a21TX2FLVDVYcmp6eFJBdEh6cHpoZFlwelJQRUwzbFpMUmg4M1VPMlVhMDF0LWVPS1V3eWduSXlhTmdKMHpMUTdIcENyNXZ2UW9DX2NOajIxRzZxWW1PdTQwSTNBUFJqa05RcHIta1NBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIiwia2lkIjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQvIiwiaWF0IjoxNTEzMzU2NzM1LCJuYmYiOjE1MTMzNTY3MzUsImV4cCI6MTUxMzM2MDYzNSwiYWlvIjoiWTJOZ1lDZ1NqQklRQ3J2Z1Y2cll0Tm1YZTdVekFBPT0iLCJhcHBfZGlzcGxheW5hbWUiOiJHYXBzIEdyYXBoIiwiYXBwaWQiOiIzMDEyZDgwZS05Y2M0LTQ2MDktYTk2My1mM2E4MzQ2NDg3MTciLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQvIiwib2lkIjoiYzMwNWU5NjQtMTIwMy00NWNjLWFiNDUtZTc0Yzk5NjFjNTM1Iiwicm9sZXMiOlsiVXNlci5SZWFkLkFsbCJdLCJzdWIiOiJjMzA1ZTk2NC0xMjAzLTQ1Y2MtYWI0NS1lNzRjOTk2MWM1MzUiLCJ0aWQiOiIzMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQiLCJ1dGkiOiJiRWxKS2duUXRrYVdZMlh0UXprQUFBIiwidmVyIjoiMS4wIn0.h8QWH3Ct8bxGUej7gVEf6MqA9Iv6FIer4FBLvPB1vI8tXvsaXm4lDXt5TsjRc_J81_nKqLOuGCmZxNZEJ_eaSQiMZyV928TrQ2ovi1Iqes3NRxiGoNURoV_0aCBjXZMobgIRfNr2_4urWnEfjENYlHs50y0oEC8D7ZHsyWJLlkWGl-7OOnOAkXfctzLiONpMbpLNy3jWCp4GPpdthoVg_DVx-y4jHatrNycD8a3BXF9JQf66TvVnAtwkKP_bHBmhlu0L6nchequnUY2rwr0grKoql1SYLrdS5uP3fH7XnHEQtczifuOQjuPNJuV1C-aZTisGjdqaGxd6TUA-jTHTqg\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFCSGg0a21TX2FLVDVYcmp6eFJBdEh6bURPb1Z1WmdDdHUzOWxtV1R2ZDdUVDFjNy0xQmxPTDJBOEo5VW1OTjhkSXNfcnNxRlI1NkdfUjY1WEJ0MlIybGtGOGN4M1hEdDFTNTZ2WFhISXVPSENBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIiwia2lkIjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8wY2Q4Y2M0OC1hMzM4LTQ1ZWItYjAxYy0zN2M2MjNkOTBhNzgvIiwiaWF0IjoxNTEzMzQ1MDM1LCJuYmYiOjE1MTMzNDUwMzUsImV4cCI6MTUxMzM1OTczNSwiYWlvIjoiWTJOZ1lLanlQUEN1N1BUWjViNkdMM1MzZjU1MUNRQT0iLCJhcHBfZGlzcGxheW5hbWUiOiJTb2ZjbyIsImFwcGlkIjoiZGU5NmRjMDgtZTM5MS00OWRkLWFhMzgtYmM3YzJkNTQwZTcxIiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4LyIsIm9pZCI6ImQ1YjRlYmFkLTEzOGItNGM3OC1iMDA0LTRmOTZkMGE2ZTE4NSIsInJvbGVzIjpbIkRpcmVjdG9yeS5SZWFkLkFsbCIsIlVzZXIuUmVhZC5BbGwiXSwic3ViIjoiZDViNGViYWQtMTM4Yi00Yzc4LWIwMDQtNGY5NmQwYTZlMTg1IiwidGlkIjoiMGNkOGNjNDgtYTMzOC00NWViLWIwMWMtMzdjNjIzZDkwYTc4IiwidXRpIjoidXRwRENtVzJjVUdMOWRoeEpmd1ZBQSIsInZlciI6IjEuMCJ9.e2uZYLsKRmuPC2TboJ9bzZQDhZN_o8_npdsB5P6sg_Yba4Dj45aEcjoRmf_YEjyX9RIigl9ArRcBa79xombPOJdSrnDx0apBidNlbeVjt521tAbTXXFjUx-XM1O2seCOfkXG-ADLO8PEnskjtXlLWeGpoOOkhfGbV8vuoFpxxpk1ntj14OwI3zIQxYYXqKp3Z5trBeOHSKc0PFm3ch9lmiRe-R-iDFh9k5A0Sx0FvzHGiwsabcvZJ0gU6R8QMmnOGXg2UQNM804ye0S6m4TMY_J_-zRj1mHXCVL4J1CEYBj86YgsiJo4KbCaVc5kWAvwATd87vjC_jSlM-Y7pUORrg",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFCSGg0a21TX2FLVDVYcmp6eFJBdEh6cHpoZFlwelJQRUwzbFpMUmg4M1VPMlVhMDF0LWVPS1V3eWduSXlhTmdKMHpMUTdIcENyNXZ2UW9DX2NOajIxRzZxWW1PdTQwSTNBUFJqa05RcHIta1NBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIiwia2lkIjoieDQ3OHh5T3Bsc00xSDdOWGs3U3gxN3gxdXBjIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQvIiwiaWF0IjoxNTEzMzU2NzM1LCJuYmYiOjE1MTMzNTY3MzUsImV4cCI6MTUxMzM2MDYzNSwiYWlvIjoiWTJOZ1lDZ1NqQklRQ3J2Z1Y2cll0Tm1YZTdVekFBPT0iLCJhcHBfZGlzcGxheW5hbWUiOiJHYXBzIEdyYXBoIiwiYXBwaWQiOiIzMDEyZDgwZS05Y2M0LTQ2MDktYTk2My1mM2E4MzQ2NDg3MTciLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQvIiwib2lkIjoiYzMwNWU5NjQtMTIwMy00NWNjLWFiNDUtZTc0Yzk5NjFjNTM1Iiwicm9sZXMiOlsiVXNlci5SZWFkLkFsbCJdLCJzdWIiOiJjMzA1ZTk2NC0xMjAzLTQ1Y2MtYWI0NS1lNzRjOTk2MWM1MzUiLCJ0aWQiOiIzMWQ3YzUxMC0yZTFhLTRiNzQtYjBmZS04OTk2YTdhMjNhNGQiLCJ1dGkiOiJiRWxKS2duUXRrYVdZMlh0UXprQUFBIiwidmVyIjoiMS4wIn0.h8QWH3Ct8bxGUej7gVEf6MqA9Iv6FIer4FBLvPB1vI8tXvsaXm4lDXt5TsjRc_J81_nKqLOuGCmZxNZEJ_eaSQiMZyV928TrQ2ovi1Iqes3NRxiGoNURoV_0aCBjXZMobgIRfNr2_4urWnEfjENYlHs50y0oEC8D7ZHsyWJLlkWGl-7OOnOAkXfctzLiONpMbpLNy3jWCp4GPpdthoVg_DVx-y4jHatrNycD8a3BXF9JQf66TvVnAtwkKP_bHBmhlu0L6nchequnUY2rwr0grKoql1SYLrdS5uP3fH7XnHEQtczifuOQjuPNJuV1C-aZTisGjdqaGxd6TUA-jTHTqg",
 					"description": "",
 					"enabled": true
 				}
 			],
-			"url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(surname, 'Baunaly')",
+			"url": "https://graph.microsoft.com/v1.0/users/30993067-69f8-45f1-ab5e-aea4052c511d",
 			"folder": "07bdf184-520a-f937-5b0d-31f96809c614",
-			"queryParams": [
-				{
-					"key": "$filter",
-					"value": "startswith(surname, 'Baunaly')",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
+			"queryParams": [],
 			"events": [],
 			"pathVariables": {},
 			"pathVariableData": [],
@@ -1779,13 +1771,11 @@
 			"data": null,
 			"dataMode": "params",
 			"auth": null,
-			"time": 1513352897078,
+			"time": 1513357154854,
 			"name": "Users - tebrasofre - filter",
 			"description": "",
 			"collectionId": "03278678-9dd7-7972-8d4f-8b8e8f010086",
 			"responses": [],
-			"isFromCollection": true,
-			"collectionRequestId": "775f37f6-8e8c-f717-6386-3eb47153a2b0",
 			"currentHelper": null,
 			"helperAttributes": null
 		},

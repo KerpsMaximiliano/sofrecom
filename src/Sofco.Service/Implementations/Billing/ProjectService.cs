@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
@@ -37,43 +34,34 @@ namespace Sofco.Service.Implementations.Billing
             this.client = client;
         }
 
-        public IList<CrmProjectHito> GetHitosByProject(string projectId)
+        public IList<CrmProjectHito> GetHitosByProject(string projectId, bool reload)
         {
             var hitos = solfacService.GetHitosByProject(projectId);
 
-            using (var client = new HttpClient())
+            var crmProjectHitos = projectData.GetHitos(projectId, reload);
+
+            foreach (var hitoCrm in crmProjectHitos)
             {
-                client.BaseAddress = new Uri(crmConfig.Url);
-                var response = client.GetAsync($"/api/InvoiceMilestone?idProject={projectId}").Result;
-                response.EnsureSuccessStatusCode();
+                var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
 
-                var stringResult = response.Content.ReadAsStringAsync().Result;
-
-                var crmProjectHitos = JsonConvert.DeserializeObject<IList<CrmProjectHito>>(stringResult);
-
-                foreach (var hitoCrm in crmProjectHitos)
+                if (existHito != null)
                 {
-                    var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hitoCrm.Id);
-
-                    if (existHito != null)
-                    {
-                        hitoCrm.SolfacId = existHito.SolfacId;
-                    }
-
-                    if (!hitoCrm.Status.Equals("Pendiente") 
-                        && !hitoCrm.Status.Equals("Proyectado") || existHito != null)
-                    {
-                        hitoCrm.Billed = true;
-                    }
-
-                    if (hitoCrm.Status.Equals("A ser facturado"))
-                    {
-                        hitoCrm.Status = HitoStatus.ToBeBilled.ToString();
-                    }
+                    hitoCrm.SolfacId = existHito.SolfacId;
                 }
 
-                return crmProjectHitos;
+                if (!hitoCrm.Status.Equals("Pendiente") 
+                    && !hitoCrm.Status.Equals("Proyectado") || existHito != null)
+                {
+                    hitoCrm.Billed = true;
+                }
+
+                if (hitoCrm.Status.Equals("A ser facturado"))
+                {
+                    hitoCrm.Status = HitoStatus.ToBeBilled.ToString();
+                }
             }
+
+            return crmProjectHitos;
         }
 
         public IList<CrmProject> GetProjects(string serviceId, string userMail, string userName)

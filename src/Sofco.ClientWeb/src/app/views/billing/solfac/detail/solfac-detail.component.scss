@@ -39,3 +39,118 @@ table.dataTable tbody td {
     background-color: rgb(67, 86, 192);
     color: #FFFFFF;
 }
+
+@media print {
+
+	@page {
+		size: A4; 
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 10pt;
+	}
+	h1, h2, h3 {
+		font-size: 14pt;
+	}
+
+	.print {
+		display: inline !important;
+	}
+
+	.no-print, .no-print *, .breadcrumb {
+        display: none !important;
+	}
+	
+	.page-heading {
+		background-color: #eeeeee !important;
+		-webkit-print-color-adjust: exact; 
+		margin:0px;
+		padding-bottom: 5px;
+	}
+
+	.mainPanel, .contentPanel {
+		line-height: 1.3;
+	}
+
+    .col-print-1 { width:50%; float:left; }
+	.col-print-2 { width:50%; float:left; }
+	.col-print-1 *, .col-print-2 * {font-size: 6pt;}
+
+	dl {
+		padding: 0.5em;
+	}
+
+	dt {
+    	float: left;
+    	clear: left;
+    	width: 100px;
+    	text-align: right;
+		font-weight: bold;
+		margin-top: 0px;
+		margin-bottom: 3px;
+		margin-left: 0px;
+		margin-right: 10px;
+		font-size: 8pt !important;
+  	}
+	dd {
+		margin: 0 0 0 0px;
+		padding: 0 0 0 0px;
+		font-size: 8pt !important;
+	}
+	
+  	.invoice-table pre {
+		width: 450px;
+		font-size: 8pt;
+		overflow: hidden;
+  	}
+
+	.invoice-total * {
+		text-align: right;
+		font-size: 8pt;
+	}
+	  
+	.invoice-table th, .invoice-table td {
+		font-size: 8pt;
+		vertical-align: top;
+		overflow: hidden;
+	}
+
+	.invoice-total {
+		border-bottom: lightgray 1px solid !important;
+		-webkit-print-color-adjust: exact; 
+	}
+
+	.label {
+		padding: 1px 2px 1px 2px;
+	}
+
+	.label, .panel-heading {
+		background-color: #eeeeee !important;
+		-webkit-print-color-adjust: exact; 
+	}
+
+	.panel-body, .tab-pane {
+		margin: 0px;
+		padding: 0px;
+		border: none;
+	}
+
+	.panel-heading, .panel-body {
+		font-size: 8pt;
+	}
+
+	.dd-handle, .dd-list {
+		border: none;
+	}
+
+	.panel-body p {
+		padding: 5px;
+	}
+
+	.table-responsive {
+		overflow: hidden;
+	}
+}

@@ -92,14 +92,16 @@
         
                             <div class="file-box" *ngIf="model.excelFileName">
                                 <div class="file">
-                                    <a (click)="exportExcel()">
-                                        <div class="icon"><i class="fa fa-file"></i></div>
-                                        <div class="file-name text-word-break">
-                                            {{ model.excelFileName }}
-                                            <br>
-                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ model.excelFileCreatedDate }}</small>
-                                        </div>
-                                    </a>
+                                    <div class="icon"><i class="fa fa-file"></i></div>
+                                    <div class="file-name text-word-break">
+                                        {{ model.excelFileName }}
+                                        <br>
+                                        <small>{{'billing.invoice.createdAt' | translate }}: {{ model.excelFileCreatedDate }}</small>
+                                    </div>
+                                    <div class="file-name export-file text-center pointer" (click)="exportExcel()">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'ACTIONS.export' | translate }}
+                                    </div>
                                 </div>
                             </div>
                             

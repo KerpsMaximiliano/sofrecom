@@ -10,7 +10,6 @@ using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
-using Sofco.DAL;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs

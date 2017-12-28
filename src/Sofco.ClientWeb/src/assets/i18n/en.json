@@ -410,6 +410,7 @@
         "assign": "Assign",
         "confirm": "Confirm",
         "title": "Actions",
+        "print": "Print",
         "export": "Export"
     },
     "SendPending": "Send Pending",
