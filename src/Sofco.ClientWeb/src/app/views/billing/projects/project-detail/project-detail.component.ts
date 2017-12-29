@@ -256,7 +256,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canSeeInvoices(){
-        return this.menuService.hasFunctionality('REM', 'QUERY') && this.project.remito == true;
+        if(this.project && this.project.remito){
+            return this.menuService.hasFunctionality('REM', 'QUERY') && this.project.remito == true;
+        }
+        
+        return false;
     }
 
     canSeeSolfacs(){
