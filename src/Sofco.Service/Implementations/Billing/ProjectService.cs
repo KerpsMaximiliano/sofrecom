@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
@@ -20,18 +22,21 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
+        private readonly ILogMailer<ProjectService> logger;
 
         public ProjectService(ISolfacService solfacService, 
             IOptions<CrmConfig> crmOptions, 
             IUnitOfWork unitOfWork,
             IProjectData projectData, 
-            ICrmHttpClient client)
+            ICrmHttpClient client,
+            ILogMailer<ProjectService> logger)
         {
             this.solfacService = solfacService;
             this.unitOfWork = unitOfWork;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
+            this.logger = logger;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId, bool reload)
@@ -64,11 +69,25 @@ namespace Sofco.Service.Implementations.Billing
             return crmProjectHitos;
         }
 
-        public IList<CrmProject> GetProjects(string serviceId, string userMail, string userName)
+        public Response<IList<CrmProject>> GetProjects(string serviceId, string userMail, string userName)
         {
-            var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            var response = new Response<IList<CrmProject>>();
 
-            return projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup);
+            try
+            {
+                var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(userMail);
+
+                var result = projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup);
+
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
         }
 
         public Response<CrmProject> GetProjectById(string projectId)

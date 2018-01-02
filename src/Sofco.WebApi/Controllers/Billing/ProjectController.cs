@@ -31,7 +31,12 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                IList<CrmProject> customers = this.projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
+                var respone = projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
+
+                if (respone.HasErrors()) return BadRequest(respone);
+
+                var customers = respone.Data;
+
                 var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
 
                 return Ok(model);
@@ -62,16 +67,11 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("service/{serviceId}")]
         public IActionResult Get(string serviceId)
         {
-            try
-            {
-                var projects = this.projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
+            var response = projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
 
-                return Ok(projects);
-            }
-            catch
-            {
-                return BadRequest(new List<ProjectCrm>());
-            }
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response.Data);
         }
 
         [HttpGet]
