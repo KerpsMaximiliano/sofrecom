@@ -10,5 +10,6 @@
     "updated": "Grupo modificado correctamente",
     "descriptionRequired": "El campo descripción es requerido",
     "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres",
-    "wrongEmail": "El mail ingresado no es valido"
+    "wrongEmail": "El mail ingresado no es valido",
+    "mailRequired": "El mail es requerido"
 } 
