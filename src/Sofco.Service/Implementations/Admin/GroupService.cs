@@ -78,6 +78,7 @@ namespace Sofco.Service.Implementations.Admin
 
             try
             {
+                GroupValidationHelper.ValidateMail(group, response);
                 GroupValidationHelper.ValidateRol(group, response, unitOfWork.RoleRepository);
                 GroupValidationHelper.ValidateDescription(group, response, unitOfWork.GroupRepository);
 

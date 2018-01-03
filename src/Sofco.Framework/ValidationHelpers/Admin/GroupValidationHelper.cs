@@ -29,5 +29,13 @@ namespace Sofco.Framework.ValidationHelpers.Admin
                 response.Messages.Add(new Message(Resources.Admin.Group.DescriptionAlreadyExist, MessageType.Error));
             }
         }
+
+        public static void ValidateMail(Group group, Response<Group> response)
+        {
+            if (string.IsNullOrWhiteSpace(group.Email))
+            {
+                response.AddError(Resources.Admin.Group.MailRequired);
+            }
+        }
     }
 }

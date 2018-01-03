@@ -132,6 +132,9 @@
   <data name="Enabled" xml:space="preserve">
     <value>admin/group.enabled</value>
   </data>
+  <data name="MailRequired" xml:space="preserve">
+    <value>admin/group.mailRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>admin/group.notFound</value>
   </data>

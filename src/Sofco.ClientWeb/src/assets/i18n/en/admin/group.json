@@ -9,5 +9,6 @@
     "roleRemoved": "Role removed to the group successfully",
     "updated": "Group modified successfully",
     "descriptionRequired": "The description field is required",
-    "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
+    "wrongDescriptionLength": "The description field must have a maximum of 50 characters",
+    "mailRequired": "The field Email is required"
 }
