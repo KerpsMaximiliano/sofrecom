@@ -4,7 +4,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
 {
     public class AddCostCenterViewModel
     {
-        public int Code { get; set; }
+        public int? Code { get; set; }
 
         public string Letter { get; set; }
 
@@ -14,7 +14,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         {
             var domain = new CostCenter
             {
-                Code = Code,
+                Code = Code.GetValueOrDefault(),
                 Letter = Letter,
                 Description = Description,
                 Active = true

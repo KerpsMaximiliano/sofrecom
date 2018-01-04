@@ -25,7 +25,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
