@@ -31,6 +31,12 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
         public static void CheckIfTitleIsNumber(Response response, Analytic analytic)
         {
+            if (string.IsNullOrWhiteSpace(analytic.Title))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.TitleIsRequired);
+                return;
+            }
+
             var titleId = 0;
             var titleSplitted = analytic.Title.Split('-')[1];
             var title = titleSplitted.Substring(1, titleSplitted.Length - 1);
@@ -81,6 +87,14 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             if (analyticRepository.ExistTitle(analytic.Title))
             {
                 response.AddError(Resources.AllocationManagement.Analytic.TitleAlreadyExist);
+            }
+        }
+
+        public static void CheckDates(Response response, Analytic analytic)
+        {
+            if (analytic.EndDateContract < analytic.StartDateContract)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.WrongDates);
             }
         }
     }

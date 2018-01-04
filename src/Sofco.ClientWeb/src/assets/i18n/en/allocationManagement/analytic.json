@@ -8,5 +8,7 @@
     "currencyIsRequired": "The currency is required",
     "saveSuccess": "Analytic successfully created",
     "costCenterIsRequired": "Cost Center is required",
-    "titleAlreadyExist": "Title already exists"
+    "titleAlreadyExist": "Title already exists",
+    "wrongDates": "Start Date cannot be greater than End Date",
+    "titleIsRequired": "The Title is required"
 }

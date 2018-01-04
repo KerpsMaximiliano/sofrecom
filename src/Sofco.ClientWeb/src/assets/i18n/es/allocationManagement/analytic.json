@@ -8,5 +8,7 @@
     "currencyIsRequired": "La moneda es requerida",
     "saveSuccess": "Analitica creada exitosamente",
     "costCenterIsRequired": "Centro de costos es requerido",
-    "titleAlreadyExist": "EL titulo ya existe"
+    "titleAlreadyExist": "EL titulo ya existe",
+    "wrongDates": "La fecha de inicio no puede ser mayor a la fecha de fin",
+    "titleIsRequired": "El titulo es requerido"
 }

@@ -148,5 +148,23 @@ namespace Sofco.Resources.AllocationManagement {
                 return ResourceManager.GetString("TitleIsNotANumber", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.titleIsRequired.
+        /// </summary>
+        public static string TitleIsRequired {
+            get {
+                return ResourceManager.GetString("TitleIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.wrongDates.
+        /// </summary>
+        public static string WrongDates {
+            get {
+                return ResourceManager.GetString("WrongDates", resourceCulture);
+            }
+        }
     }
 }

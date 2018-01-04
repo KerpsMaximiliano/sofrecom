@@ -147,4 +147,10 @@
   <data name="TitleIsNotANumber" xml:space="preserve">
     <value>allocationManagement/analytic.titleIsNotANumber</value>
   </data>
+  <data name="TitleIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.titleIsRequired</value>
+  </data>
+  <data name="WrongDates" xml:space="preserve">
+    <value>allocationManagement/analytic.wrongDates</value>
+  </data>
 </root>
