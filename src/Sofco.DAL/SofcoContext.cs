@@ -59,6 +59,9 @@ namespace Sofco.DAL
         public DbSet<ClientGroup> ClientGroups { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
+        public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

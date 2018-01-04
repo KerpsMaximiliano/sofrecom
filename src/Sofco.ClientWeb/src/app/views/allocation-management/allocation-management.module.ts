@@ -24,11 +24,14 @@ import { ResourceTimelineComponent } from 'app/views/allocation-management/alloc
 import { CostCenterService } from 'app/services/allocation-management/cost-center.service';
 import { AddCostCenterComponent } from 'app/views/allocation-management/cost-center/add/add-cost-center.component';
 import { ListCostCenterComponent } from 'app/views/allocation-management/cost-center/list/list-cost-center.component';
+import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/new/new-analytic.component';
+import { AnalyticFormComponent } from 'app/views/allocation-management/analytics/analytic-form/analytic-form.component';
+import { ICheckModule } from 'app/components/icheck/icheck.module';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent, AddCostCenterComponent,
-    ListCostCenterComponent
+    ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { ListCostCenterComponent } from 'app/views/allocation-management/cost-ce
     NgDatepickerModule,
     DateRangePickerModule,
     IboxtoolsModule,
+    ICheckModule,
     Ng2ModalModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService ],

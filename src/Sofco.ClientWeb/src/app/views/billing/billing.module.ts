@@ -47,6 +47,8 @@ import { WidgetModule } from 'app/components/widget/widget.module';
 import { Select2Module } from 'app/components/select2/select2';
 import { SplitHitoComponent } from 'app/views/billing/hitos/split-hito.component';
 import { SolfacPdfViewerComponent } from 'app/views/billing/solfac/pdf-viewer/solfac-pdf-viewer.component';
+import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
+import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rightbar/project-rightbar.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -54,10 +56,10 @@ import { SolfacPdfViewerComponent } from 'app/views/billing/solfac/pdf-viewer/so
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent],
+                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module],
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
   

@@ -16,6 +16,10 @@ export class CostCenterService {
     return this.http.get(`${this.baseUrl}/costcenter`).map((res:Response) => res.json());
   }
 
+  getOptions() {
+    return this.http.get(`${this.baseUrl}/costcenter/options`).map((res:Response) => res.json());
+  }
+
   add(model){
     return this.http.post(`${this.baseUrl}/costcenter`, model).map((res:Response) => res.json());
   }

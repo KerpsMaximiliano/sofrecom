@@ -1,4 +1,12 @@
 {
     "notFound": "Analitica no encontrada",
-    "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados."
+    "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados.",
+    "titleIsNotANumber": "El titulo solo debe contener numeros",
+    "nameIsRequired": "El nombre es requerido",
+    "descriptionIsRequired": "La descripcion es requerida",
+    "directorIsRequired": "El director es requerido",
+    "currencyIsRequired": "La moneda es requerida",
+    "saveSuccess": "Analitica creada exitosamente",
+    "costCenterIsRequired": "Centro de costos es requerido",
+    "titleAlreadyExist": "EL titulo ya existe"
 }

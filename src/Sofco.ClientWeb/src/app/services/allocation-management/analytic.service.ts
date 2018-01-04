@@ -23,4 +23,16 @@ export class AnalyticService {
   getResources(id) {
     return this.http.get(`${this.baseUrl}/analytics/${id}/resources`).map((res:Response) => res.json());
   }
+
+  getOptions(){
+    return this.http.get(`${this.baseUrl}/analytics/formOptions`).map((res:Response) => res.json());
+  }
+
+  getNewTitle(costCenterId) {
+    return this.http.get(`${this.baseUrl}/analytics/title/costcenter/${costCenterId}`).map((res:Response) => res.json());
+  }
+
+  add(model){
+    return this.http.post(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
+  }
 }

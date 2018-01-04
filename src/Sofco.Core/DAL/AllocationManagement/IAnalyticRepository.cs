@@ -8,5 +8,7 @@ namespace Sofco.Core.DAL.AllocationManagement
     {
         bool Exist(int id);
         IList<Allocation> GetResources(int id);
+        Analytic GetLastAnalytic(int costCenterId);
+        bool ExistTitle(string analyticTitle);
     }
 }

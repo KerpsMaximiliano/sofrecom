@@ -1,4 +1,12 @@
 {
     "notFound": "Analytic not found",
-    "resourcesNotFound": "The selected analytics does not contain assigned resources."
+    "resourcesNotFound": "The selected analytics does not contain assigned resources.",
+    "titleIsNotANumber": "The title should only contain numbers",
+    "nameIsRequired": "The name is required",
+    "descriptionIsRequired": "The description is required",
+    "directorIsRequired": "The director is required",
+    "currencyIsRequired": "The currency is required",
+    "saveSuccess": "Analytic successfully created",
+    "costCenterIsRequired": "Cost Center is required",
+    "titleAlreadyExist": "Title already exists"
 }

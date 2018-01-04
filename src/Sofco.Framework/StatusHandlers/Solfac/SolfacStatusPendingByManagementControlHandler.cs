@@ -42,7 +42,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                                               "</span>" +
                                               "</font>";
 
-        private const string MailSubjectToUser = "REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}";
+        private const string MailSubjectToUser = "SOLFAC: INICIO PROCESO - {0} - {1} - {2} - {3}";
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {

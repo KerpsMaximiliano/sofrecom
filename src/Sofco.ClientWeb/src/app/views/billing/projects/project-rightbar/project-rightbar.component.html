@@ -1,0 +1,24 @@
+<div class="theme-config">
+    <div class="theme-config-box">
+        <div class="spin-icon" (click)="toggleNavigation()">
+            <i class="fa fa-cogs fa-spin"></i>
+        </div>
+        <div class="skin-settings">
+            <div class="title">Acciones</div>
+            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+                <span class="skin-name ">
+                    <a (click)="goToCreateAnalytic()" class="s-skin-0">
+                        Crear Analitica
+                    </a>
+                </span>
+            </div>
+            <div class="setings-item blue-skin">
+                <span class="skin-name ">
+                    <a href="#" class="s-skin-1">
+                        Listado Recursos
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

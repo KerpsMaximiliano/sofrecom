@@ -16,32 +16,35 @@
 </div>
  
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
-                    <spinner></spinner>
-
-                    <table class="table table-striped dataTable" role="grid" id="analyticsTable">
-                        <thead>
-                            <tr>
-                                <th>{{ 'allocationManagement.analytics.grid.title' | translate }}</th>
-                                <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
-                                <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
-                                <th>{{ 'allocationManagement.analytics.grid.commercialManager' | translate }} Comercial</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let analytic of model" class="pointer" (click)="goToAssignResource(analytic)">
-                                <td>{{ analytic.title}}</td>
-                                <td>{{ analytic.name}}</td>
-                                <td>{{ analytic.clientExternalName}}</td>
-                                <td>{{ analytic.commercialManager}}</td>
-                            </tr>
-                        </tbody>
-                    </table>       
-                </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h4 class="pull-left">{{ 'allocationManagement.analytics.title' | translate }}</h4>
+            
+            <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+                <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
+        </div>
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
+
+            <table class="table table-striped dataTable" role="grid" id="analyticsTable">
+                <thead>
+                    <tr>
+                        <th>{{ 'allocationManagement.analytics.grid.title' | translate }}</th>
+                        <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
+                        <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
+                        <th>{{ 'allocationManagement.analytics.grid.commercialManager' | translate }} Comercial</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let analytic of model" class="pointer" (click)="goToAssignResource(analytic)">
+                        <td>{{ analytic.title}}</td>
+                        <td>{{ analytic.name}}</td>
+                        <td>{{ analytic.clientExternalName}}</td>
+                        <td>{{ analytic.commercialManager}}</td>
+                    </tr>
+                </tbody>
+            </table>       
         </div>
     </div>
 </div>

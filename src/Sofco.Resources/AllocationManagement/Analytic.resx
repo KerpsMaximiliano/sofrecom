@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CostCenterIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.costCenterIsRequired</value>
+  </data>
+  <data name="CurrencyIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.currencyIsRequired</value>
+  </data>
+  <data name="DescriptionIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.descriptionIsRequired</value>
+  </data>
+  <data name="DirectorIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.directorIsRequired</value>
+  </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>allocationManagement/analytic.nameIsRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/analytic.notFound</value>
   </data>
   <data name="ResourcesNotFound" xml:space="preserve">
     <value>allocationManagement/analytic.resourcesNotFound</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>allocationManagement/analytic.saveSuccess</value>
+  </data>
+  <data name="TitleAlreadyExist" xml:space="preserve">
+    <value>allocationManagement/analytic.titleAlreadyExist</value>
+  </data>
+  <data name="TitleIsNotANumber" xml:space="preserve">
+    <value>allocationManagement/analytic.titleIsNotANumber</value>
   </data>
 </root>

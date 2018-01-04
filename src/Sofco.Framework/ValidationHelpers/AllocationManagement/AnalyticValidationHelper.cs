@@ -25,7 +25,62 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
             if (!exist)
             {
-                response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.NotFound, MessageType.Error));
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+            }
+        }
+
+        public static void CheckIfTitleIsNumber(Response response, Analytic analytic)
+        {
+            var titleId = 0;
+            var titleSplitted = analytic.Title.Split('-')[1];
+            var title = titleSplitted.Substring(1, titleSplitted.Length - 1);
+
+            var result = int.TryParse(title, out titleId);
+
+            if (result)
+            {
+                analytic.TitleId = titleId;
+            }
+            else
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.TitleIsNotANumber);
+            }
+        }
+
+        public static void CheckNameAndDescription(Response response, Analytic analytic)
+        {
+            if (string.IsNullOrWhiteSpace(analytic.Name))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NameIsRequired);
+            }
+
+            if (string.IsNullOrWhiteSpace(analytic.Description))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.DescriptionIsRequired);
+            }
+        }
+
+        public static void CheckDirector(Response response, Analytic analytic)
+        {
+            if (analytic.DirectorId <= 0)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.DirectorIsRequired);
+            }
+        }
+
+        public static void CheckCurrency(Response response, Analytic analytic)
+        {
+            if (!analytic.CurrencyId.HasValue || analytic.CurrencyId <= 0)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.CurrencyIsRequired);
+            }
+        }
+
+        public static void CheckIfTitleExist(Response<Analytic> response, Analytic analytic, IAnalyticRepository analyticRepository)
+        {
+            if (analyticRepository.ExistTitle(analytic.Title))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.TitleAlreadyExist);
             }
         }
     }

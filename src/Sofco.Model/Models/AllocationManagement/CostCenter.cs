@@ -1,4 +1,5 @@
-﻿using Sofco.Common.Domains;
+﻿using System.Collections.Generic;
+using Sofco.Common.Domains;
 
 namespace Sofco.Model.Models.AllocationManagement
 {
@@ -8,5 +9,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public string Letter { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
+
+        public ICollection<Analytic> Analytics { get; set; }
     }
 }

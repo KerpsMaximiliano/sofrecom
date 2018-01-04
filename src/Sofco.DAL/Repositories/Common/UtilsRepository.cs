@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.Common;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.DAL.Repositories.Common
 {
-    public class UtilsRepository : IUtilsRepository 
+    public class UtilsRepository : IUtilsRepository
     {
         protected readonly SofcoContext _context;
 
@@ -22,6 +24,41 @@ namespace Sofco.DAL.Repositories.Common
         public IList<PaymentTerm> GetPaymentTerms()
         {
             return _context.PaymentTerms.ToList().AsReadOnly();
+        }
+
+        public IList<Solution> GetSolutions()
+        {
+            return _context.Solutions.ToList().AsReadOnly();
+        }
+
+        public IList<Technology> GetTechnologies()
+        {
+            return _context.Technologies.ToList().AsReadOnly();
+        }
+
+        public IList<Product> GetProducts()
+        {
+            return _context.Products.ToList().AsReadOnly();
+        }
+
+        public IList<ClientGroup> GetClientGroups()
+        {
+            return _context.ClientGroups.ToList().AsReadOnly();
+        }
+
+        public IList<PurchaseOrder> GetPurchaseOrders()
+        {
+            return _context.PurchaseOrders.ToList().AsReadOnly();
+        }
+
+        public IList<ServiceType> GetServiceTypes()
+        {
+            return _context.ServiceTypes.ToList().AsReadOnly();
+        }
+
+        public IList<SoftwareLaw> GetSoftwareLaws()
+        {
+            return _context.SoftwareLaws.ToList().AsReadOnly();
         }
 
         public IList<DocumentType> GetDocumentTypes()

@@ -154,7 +154,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.userService.getOptions().subscribe(data => {
           this.users = data;
 
-          var userapplicant = this.users.find(x => x.userName == Cookie.get('currentUser'));
+          var userapplicant = this.users.find(x => x.userName.toLowerCase() == Cookie.get('currentUser').toLowerCase());
           this.model.userApplicantId = userapplicant.value;
           this.model.userApplicantName = userapplicant.text;
         },

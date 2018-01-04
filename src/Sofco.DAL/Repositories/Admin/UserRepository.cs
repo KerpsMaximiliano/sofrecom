@@ -35,6 +35,28 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Description.Equals("Directores")));
         }
 
+        public IList<User> GetDirectors()
+        {
+            var userGroups = context.UserGroup
+                .Include(x => x.Group)
+                .Include(x => x.User)
+                .Where(x => x.Group.Description.Equals("Directores"))
+                .ToList();
+
+            return userGroups.Select(x => x.User).ToList();
+        }
+
+        public IList<User> GetManagers()
+        {
+            var userGroups = context.UserGroup
+                .Include(x => x.Group)
+                .Include(x => x.User)
+                .Where(x => x.Group.Description.Equals("Gerentes"))
+                .ToList();
+
+            return userGroups.Select(x => x.User).ToList();
+        }
+
         public Group GetGroup(int userId)
         {
             return context.UserGroup

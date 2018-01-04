@@ -53,4 +53,9 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.messageService.showError("allocationManagement.allocation.forbidden");
         }
     }
+
+    goToAdd(){
+        sessionStorage.setItem('analyticWithProject', 'no');
+        this.router.navigate(['/allocationManagement/analytics/new']);
+    }
 }

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180103195020_AddSoftwareLaw")]
+    partial class AddSoftwareLaw
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -247,12 +248,10 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Proposal")
                         .HasMaxLength(200);
 
-                    b.Property<int?>("PurchaseOrderId");
+                    b.Property<int>("PurchaseOrder");
 
                     b.Property<string>("Service")
                         .HasMaxLength(50);
-
-                    b.Property<int?>("ServiceTypeId");
 
                     b.Property<int?>("SoftwareLawId");
 
@@ -287,10 +286,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ManagerId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("ServiceTypeId");
 
                     b.HasIndex("SoftwareLawId");
 
@@ -744,7 +739,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -770,7 +765,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -796,7 +791,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -809,7 +804,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -822,37 +817,11 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Utils.PurchaseOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(60);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PurchaseOrders");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Utils.ServiceType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(60);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceTypes");
                 });
 
             modelBuilder.Entity("Sofco.Model.Utils.SoftwareLaw", b =>
@@ -860,8 +829,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Text")
-                        .HasMaxLength(60);
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 
@@ -874,7 +842,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -887,7 +855,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(60);
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -953,14 +921,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Utils.Product", "Product")
                         .WithMany("Analytics")
                         .HasForeignKey("ProductId");
-
-                    b.HasOne("Sofco.Model.Utils.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("Analytics")
-                        .HasForeignKey("PurchaseOrderId");
-
-                    b.HasOne("Sofco.Model.Utils.ServiceType", "ServiceType")
-                        .WithMany("Analytics")
-                        .HasForeignKey("ServiceTypeId");
 
                     b.HasOne("Sofco.Model.Utils.SoftwareLaw", "SoftwareLaw")
                         .WithMany("Analytics")

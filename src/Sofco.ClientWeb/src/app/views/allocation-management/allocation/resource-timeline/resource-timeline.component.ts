@@ -87,7 +87,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         var height = 350;
 
         if(resourcesName.length <= 5){
-            height = 70 * resourcesName.length;
+            height = 100 + (35 * (resourcesName.length-1));
         }
 
         var options = {
