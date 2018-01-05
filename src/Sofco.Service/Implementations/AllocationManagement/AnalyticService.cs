@@ -26,7 +26,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
-                                                "Se dio de alta la analítica {0}, puede acceder a la misma desde el siguiente <a href='{0}' target='_blank'>link</a></br>" +
+                                                "Se dio de alta la analítica {0}, puede acceder a la misma desde el siguiente <a href='{1}' target='_blank'>link</a></br>" +
                                                 "Saludos" +
                                             "</span>" +
                                         "</font>";
@@ -150,7 +150,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             try
             {
                 var subject = string.Format(MailSubject, analytic.ClientExternalName);
-                var body = string.Format(MailBody, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var body = string.Format(MailBody, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
