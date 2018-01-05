@@ -15,5 +15,6 @@ namespace Sofco.Model.Utils
         public IList<Option> PurchaseOrders { get; set; }
         public IList<Option> SoftwareLaws { get; set; }
         public IList<Option> ServiceTypes { get; set; }
+        public IList<Option> Sellers { get; set; }
     }
 }

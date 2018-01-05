@@ -20,5 +20,6 @@ namespace Sofco.Core.DAL.Admin
         bool IsActive(string userMail);
         IList<User> GetDirectors();
         IList<User> GetManagers();
+        IList<User> GetSellers(string sellerCode);
     }
 }

@@ -26,7 +26,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
-                                                "Se dio de alta la analítica {0}, puede acceder a la misma desde el siguiente <a href='{1}' target='_blank'>link</a></br>" +
+                                                "Se dio de alta la analítica <strong>{0}</strong>, puede acceder a la misma desde el siguiente <a href='{1}' target='_blank'>link</a></br></br>" +
                                                 "Saludos" +
                                             "</span>" +
                                         "</font>";
@@ -50,6 +50,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Directors = unitOfWork.UserRepository.GetDirectors().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sellers = unitOfWork.UserRepository.GetSellers(this.emailConfig.SellerCode).Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
             options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();

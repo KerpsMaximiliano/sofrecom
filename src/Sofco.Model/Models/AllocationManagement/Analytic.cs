@@ -33,13 +33,14 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public DateTime EndDateContract { get; set; }
 
-        public string CommercialManager { get; set; }
-
         public int DirectorId { get; set; }
         public User Director { get; set; }
 
         public int? ManagerId { get; set; }
         public User Manager { get; set; }
+
+        public int? CommercialManagerId { get; set; }
+        public User CommercialManager { get; set; }
 
         public bool? EvalProp { get; set; }
 

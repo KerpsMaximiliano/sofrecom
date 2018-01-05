@@ -57,6 +57,17 @@ namespace Sofco.DAL.Repositories.Admin
             return userGroups.Select(x => x.User).ToList();
         }
 
+        public IList<User> GetSellers(string sellerCode)
+        {
+            var userGroups = context.UserGroup
+                .Include(x => x.Group)
+                .Include(x => x.User)
+                .Where(x => x.Group.Code.Equals(sellerCode))
+                .ToList();
+
+            return userGroups.Select(x => x.User).ToList();
+        }
+
         public Group GetGroup(int userId)
         {
             return context.UserGroup

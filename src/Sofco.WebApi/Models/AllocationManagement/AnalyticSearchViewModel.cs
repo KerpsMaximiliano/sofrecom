@@ -11,7 +11,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             Title = domain.Title;
             Name = domain.Name;
             ClientExternalName = domain.ClientExternalName;
-            CommercialManager = domain.CommercialManager;
+            ServiceName = domain.Service;
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
         }
@@ -21,10 +21,9 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Name { get; private set; }
 
         public string Title { get; private set; }
+        public string ServiceName { get; private set; }
 
         public string ClientExternalName { get; private set; }
-
-        public string CommercialManager { get; private set; }
 
         public DateTime StartDate { get; set; }
 

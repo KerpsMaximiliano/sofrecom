@@ -29,7 +29,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
 
         public DateTime EndDateContract { get; set; }
 
-        public string CommercialManager { get; set; }
+        public int? CommercialManagerId { get; set; }
 
         public int DirectorId { get; set; }
 
@@ -81,7 +81,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.ActivityId = ActivityId;
             domain.StartDateContract = StartDateContract.Date;
             domain.EndDateContract = EndDateContract.Date;
-            domain.CommercialManager = CommercialManager;
+            domain.CommercialManagerId = CommercialManagerId;
             domain.DirectorId = DirectorId;
             domain.ManagerId = ManagerId;
             domain.EvalProp = EvalProp;
