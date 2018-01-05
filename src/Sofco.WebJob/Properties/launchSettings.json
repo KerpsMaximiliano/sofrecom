@@ -19,21 +19,23 @@
     "IIS Express - azsof01wd": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "jobs",
+      "launchUrl": "panel",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "azsof01wd"
       }
     },
-    "IIS Express - Localhost": {
+    "IIS Express - frosales": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "panel",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "localhost"
+        "ASPNETCORE_ENVIRONMENT": "frosales"
       }
     },
     "IIS Express - azgap01wp - Prod": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "panel",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "azgap01wp"
       }

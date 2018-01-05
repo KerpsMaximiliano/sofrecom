@@ -1,6 +1,6 @@
 ﻿namespace Sofco.Core.Services.Jobs
 {
-    public interface IEmployeeEndJobService
+    public interface IEmployeeEndNotificationJobService
     {
         void SendNotification();
     }

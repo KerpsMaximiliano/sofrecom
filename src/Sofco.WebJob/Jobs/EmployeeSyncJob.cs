@@ -14,7 +14,9 @@ namespace Sofco.WebJob.Jobs
 
         public void Execute()
         {
-            jobService.Sync();
+            jobService.SyncNewEmployees();
+
+            jobService.SyncEndEmployees();
         }
     }
 }

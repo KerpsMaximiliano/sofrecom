@@ -5,9 +5,9 @@ namespace Sofco.WebJob.Jobs
 {
     public class EmployeeEndJob : IEmployeeEndJob
     {
-        private readonly IEmployeeEndJobService service;
+        private readonly IEmployeeEndNotificationJobService service;
 
-        public EmployeeEndJob(IEmployeeEndJobService service)
+        public EmployeeEndJob(IEmployeeEndNotificationJobService service)
         {
             this.service = service;
         }
