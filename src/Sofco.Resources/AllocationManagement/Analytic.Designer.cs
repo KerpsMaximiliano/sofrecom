@@ -141,11 +141,11 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to allocationManagement/analytic.titleIsNotANumber.
+        ///    Looks up a localized string similar to allocationManagement/analytic.titleInvalid.
         /// </summary>
-        public static string TitleIsNotANumber {
+        public static string TitleInvalid {
             get {
-                return ResourceManager.GetString("TitleIsNotANumber", resourceCulture);
+                return ResourceManager.GetString("TitleInvalid", resourceCulture);
             }
         }
         

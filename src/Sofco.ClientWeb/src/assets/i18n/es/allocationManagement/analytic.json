@@ -1,7 +1,7 @@
 {
     "notFound": "Analitica no encontrada",
     "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados.",
-    "titleIsNotANumber": "El titulo solo debe contener numeros",
+    "titleInvalid": "El formato del titulo no es correcto",
     "nameIsRequired": "El nombre es requerido",
     "descriptionIsRequired": "La descripcion es requerida",
     "directorIsRequired": "El director es requerido",

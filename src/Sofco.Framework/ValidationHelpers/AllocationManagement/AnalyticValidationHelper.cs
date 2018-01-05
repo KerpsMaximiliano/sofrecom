@@ -29,7 +29,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             }
         }
 
-        public static void CheckIfTitleIsNumber(Response response, Analytic analytic)
+        public static void CheckTitle(Response response, Analytic analytic, ICostCenterRepository costCenterRepository)
         {
             if (string.IsNullOrWhiteSpace(analytic.Title))
             {
@@ -37,9 +37,29 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 return;
             }
 
+            if (!analytic.Title.Contains("-"))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.TitleInvalid);
+                return;
+            }
+
+            if(analytic.CostCenterId == 0) return;
+
+            var costCenter = costCenterRepository.GetSingle(x => x.Id == analytic.CostCenterId);
+
             var titleId = 0;
-            var titleSplitted = analytic.Title.Split('-')[1];
-            var title = titleSplitted.Substring(1, titleSplitted.Length - 1);
+            var titleSplitted = analytic.Title.Split('-');
+
+            var letter = titleSplitted[1].Substring(0, 1);
+            var code = titleSplitted[0];
+
+            if (!costCenter.Code.ToString().Equals(code) || !costCenter.Letter.Equals(letter))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.TitleInvalid);
+                return;
+            }
+
+            var title = titleSplitted[1].Substring(1, titleSplitted[1].Length - 1);
 
             var result = int.TryParse(title, out titleId);
 
@@ -49,7 +69,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             }
             else
             {
-                response.AddError(Resources.AllocationManagement.Analytic.TitleIsNotANumber);
+                response.AddError(Resources.AllocationManagement.Analytic.TitleInvalid);
             }
         }
 

@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { MessageService } from "app/services/common/message.service";
-import { UserService } from "app/services/admin/user.service";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
@@ -32,7 +31,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
-    public users: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
 
@@ -59,7 +57,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
-                private userService: UserService,
                 private menuService: MenuService,
                 private customerService: CustomerService,
                 private invoiceService: InvoiceService,
@@ -68,7 +65,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.getOptions();
-      this.getUserOptions();
       this.setNewModel();
     }
 
@@ -148,17 +144,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.setSolfacType(hitos);
 
       this.calculateAmounts();
-    }
 
-    getUserOptions(){
-        this.userService.getOptions().subscribe(data => {
-          this.users = data;
+      if(Cookie.get('userInfo')){
+        var userApplicant = JSON.parse(Cookie.get('userInfo'));
 
-          var userapplicant = this.users.find(x => x.userName.toLowerCase() == Cookie.get('currentUser').toLowerCase());
-          this.model.userApplicantId = userapplicant.value;
-          this.model.userApplicantName = userapplicant.text;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        if(userApplicant && userApplicant.id && userApplicant.name){
+          this.model.userApplicantId = userApplicant.id;
+          this.model.userApplicantName = userApplicant.name;
+        }
+      }
     }
 
     getInvoicesOptions(projectId){

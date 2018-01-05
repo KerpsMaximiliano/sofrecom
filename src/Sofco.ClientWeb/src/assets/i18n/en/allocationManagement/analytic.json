@@ -1,7 +1,7 @@
 {
     "notFound": "Analytic not found",
     "resourcesNotFound": "The selected analytics does not contain assigned resources.",
-    "titleIsNotANumber": "The title should only contain numbers",
+    "titleInvalid": "The title's format is not correct",
     "nameIsRequired": "The name is required",
     "descriptionIsRequired": "The description is required",
     "directorIsRequired": "The director is required",

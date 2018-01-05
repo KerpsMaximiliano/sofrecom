@@ -72,7 +72,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<Analytic>();
 
-            AnalyticValidationHelper.CheckIfTitleIsNumber(response, analytic);
+            AnalyticValidationHelper.CheckTitle(response, analytic, unitOfWork.CostCenterRepository);
             AnalyticValidationHelper.CheckIfTitleExist(response, analytic, unitOfWork.AnalyticRepository);
             AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
