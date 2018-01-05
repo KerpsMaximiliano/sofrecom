@@ -1,5 +1,6 @@
 ﻿using System;
 using Sofco.Model;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
@@ -101,6 +102,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.CostCenterId = CostCenterId;
 
             domain.CreationDate = DateTime.UtcNow;
+            domain.Status = AnalyticStatus.Open;
 
             return domain;
         }

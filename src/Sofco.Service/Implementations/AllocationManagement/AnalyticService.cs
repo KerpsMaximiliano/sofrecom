@@ -2,7 +2,11 @@
 using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
@@ -13,10 +17,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
     public class AnalyticService : IAnalyticService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMailSender mailSender;
+        private readonly ILogMailer<AnalyticService> logger;
+        private readonly EmailConfig emailConfig;
 
-        public AnalyticService(IUnitOfWork unitOfWork)
+        private const string MailSubject = "Apertura analítica {0}";
+
+        private const string MailBody = "<font size='3'>" +
+                                            "<span style='font-size:12pt'>" +
+                                                "Estimados, </br></br>" +
+                                                "Se dio de alta la analítica {0}, puede acceder a la misma desde el siguiente <a href='{0}' target='_blank'>link</a></br>" +
+                                                "Saludos" +
+                                            "</span>" +
+                                        "</font>";
+
+        public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, IOptions<EmailConfig> emailOptions)
         {
             this.unitOfWork = unitOfWork;
+            this.mailSender = mailSender;
+            this.logger = logger;
+            this.emailConfig = emailOptions.Value;
         }
 
         public ICollection<Analytic> GetAll()
@@ -87,12 +107,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.SaveSuccess);
+
+                SendMail(analytic, response);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
             }
-    
 
             return response;
         }
@@ -121,6 +143,29 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return response;
+        }
+
+        private void SendMail(Analytic analytic, Response response)
+        {
+            try
+            {
+                var subject = string.Format(MailSubject, analytic.ClientExternalName);
+                var body = string.Format(MailBody, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+
+                var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+                var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
+                var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
+
+                var recipients = $"{mailPmo};{mailDaf};{director.Email};{manager.Email}";
+
+                mailSender.Send(recipients, subject, body);
+            }
+            catch (Exception ex)
+            {
+                response.AddWarning(Resources.Common.ErrorSendMail);
+                this.logger.LogError(ex);
+            }
         }
     }
 }

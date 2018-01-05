@@ -28,6 +28,11 @@ namespace Sofco.Model.Utils
             Messages.Add(new Message(msg, MessageType.Error));
         }
 
+        public void AddWarning(string msg)
+        {
+            Messages.Add(new Message(msg, MessageType.Warning));
+        }
+
         public void AddSuccess(string msg)
         {
             Messages.Add(new Message(msg, MessageType.Success));
