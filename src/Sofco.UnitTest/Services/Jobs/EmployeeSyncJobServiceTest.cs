@@ -5,10 +5,8 @@ using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
-using Sofco.DAL;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
-using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -21,13 +19,9 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<ITigerEmployeeRepository> tigerEmployeeRepositoryMock;
 
-        private Mock<IRhproEmployeeRepository> rhproEmployeeRepositoryMock;
-
         private Mock<IEmployeeRepository> employeeRepositoryMock;
 
-        private Mock<ILicenseTypeRepository> licenseTypeRepositoryMock;
-
-        private Mock<IEmployeeLicenseRepository> employeeLicenseRepositoryMock;
+        private Mock<IEmployeeSyncActionRepository> employeeSyncActionRepositoryMock;
 
         private Mock<IMapper> mapperMock;
 
@@ -37,48 +31,81 @@ namespace Sofco.UnitTest.Services.Jobs
         public void Setup()
         {
             tigerEmployeeRepositoryMock = new Mock<ITigerEmployeeRepository>();
-            rhproEmployeeRepositoryMock = new Mock<IRhproEmployeeRepository>();
+
+            employeeSyncActionRepositoryMock = new Mock<IEmployeeSyncActionRepository>();
+
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            licenseTypeRepositoryMock = new Mock<ILicenseTypeRepository>();
-            employeeLicenseRepositoryMock = new Mock<IEmployeeLicenseRepository>();
+
             mapperMock = new Mock<IMapper>();
 
             unitOfWork = new Mock<IUnitOfWork>();
 
-            unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
-            unitOfWork.Setup(x => x.LicenseTypeRepository).Returns(licenseTypeRepositoryMock.Object);
-            unitOfWork.Setup(x => x.EmployeeLicenseRepository).Returns(employeeLicenseRepositoryMock.Object);
+            unitOfWork.SetupGet(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+
+            unitOfWork.SetupGet(x => x.EmployeeSyncActionRepository).Returns(employeeSyncActionRepositoryMock.Object);
 
             sut = new EmployeeSyncJobService(
                 tigerEmployeeRepositoryMock.Object,
-                rhproEmployeeRepositoryMock.Object,
                 unitOfWork.Object,
                 mapperMock.Object);
         }
 
         [Test]
-        public void ShouldPassSyncTest()
+        public void ShouldPassSyncNewEmployeesTest()
         {
-            rhproEmployeeRepositoryMock.Setup(s => s.GetLicenseTypes())
-                .Returns(new List<RhproLicenseType>());
-            rhproEmployeeRepositoryMock.Setup(s => s.GetEmployeeLicensesWithStartDate(It.IsAny<DateTime>()))
-                .Returns(new List<RhproEmployeeLicense>());
-            employeeLicenseRepositoryMock.Setup(s => s.Delete(It.IsAny<List<EmployeeLicense>>(), It.IsAny<DateTime>()));
-            employeeLicenseRepositoryMock.Setup(s => s.Save(It.IsAny<List<EmployeeLicense>>()));
+            var tigerEmployees = new List<TigerEmployee> {new TigerEmployee
+            {
+                Legaj = 1, Feiem = DateTime.UtcNow.AddDays(-1)
+            }};
+
+            var storedEmployees = new List<Employee> {new Employee
+            {
+                EmployeeNumber = "2", StartDate = DateTime.UtcNow.AddYears(-1)
+            }};
+
             tigerEmployeeRepositoryMock.Setup(s => s.GetWithStartDate(It.IsAny<DateTime>()))
-                .Returns(new List<TigerEmployee>());
-            licenseTypeRepositoryMock.Setup(s => s.Save(It.IsAny<List<LicenseType>>()));
-            employeeRepositoryMock.Setup(s => s.Save(It.IsAny<List<Employee>>()));
+                .Returns(tigerEmployees);
 
-            sut.Sync();
+            mapperMock.Setup(s => s.Map<List<TigerEmployee>, List<Employee>>(It.IsAny<List<TigerEmployee>>()))
+                .Returns(storedEmployees);
 
-            rhproEmployeeRepositoryMock.Verify(s => s.GetLicenseTypes(), Times.Once);
-            rhproEmployeeRepositoryMock.Verify(s => s.GetEmployeeLicensesWithStartDate(It.IsAny<DateTime>()), Times.Once);
-            employeeLicenseRepositoryMock.Verify(s => s.Delete(It.IsAny<List<EmployeeLicense>>(), It.IsAny<DateTime>()), Times.Once);
-            employeeLicenseRepositoryMock.Verify(s => s.Save(It.IsAny<List<EmployeeLicense>>()), Times.Once);
+            mapperMock.Setup(s => s.Map<List<Employee>, List<EmployeeSyncAction>>(It.IsAny<List<Employee>>()))
+                .Returns(new List<EmployeeSyncAction>());
+
+            employeeRepositoryMock.Setup(s => s.GetByEmployeeNumber(It.IsAny<string[]>()))
+                .Returns(new List<Employee>());
+
+            sut.SyncNewEmployees();
+
             tigerEmployeeRepositoryMock.Verify(s => s.GetWithStartDate(It.IsAny<DateTime>()), Times.Once);
-            licenseTypeRepositoryMock.Verify(s => s.Save(It.IsAny<List<LicenseType>>()), Times.Once);
-            employeeRepositoryMock.Verify(s => s.Save(It.IsAny<List<Employee>>()), Times.Once);
+
+            employeeSyncActionRepositoryMock.Verify(s => s.Save(It.IsAny<List<EmployeeSyncAction>>()), Times.Once);
+
+            employeeRepositoryMock.Verify(s => s.GetByEmployeeNumber(It.IsAny<string[]>()), Times.Once);
+        }
+
+        [Test]
+        public void ShouldPassSyncEndEmployeesTest()
+        {
+            tigerEmployeeRepositoryMock.Setup(s => s.GetWithEndDate(It.IsAny<DateTime>()))
+                .Returns(new List<TigerEmployee>());
+
+            mapperMock.Setup(s => s.Map<List<TigerEmployee>, List<Employee>>(It.IsAny<List<TigerEmployee>>()))
+                .Returns(new List<Employee>());
+
+            mapperMock.Setup(s => s.Map<List<Employee>, List<EmployeeSyncAction>>(It.IsAny<List<Employee>>()))
+                .Returns(new List<EmployeeSyncAction>());
+
+            employeeRepositoryMock.Setup(s => s.GetByEmployeeNumber(It.IsAny<string[]>()))
+                .Returns(new List<Employee>());
+
+            sut.SyncEndEmployees();
+
+            tigerEmployeeRepositoryMock.Verify(s => s.GetWithEndDate(It.IsAny<DateTime>()), Times.Once);
+
+            employeeSyncActionRepositoryMock.Verify(s => s.Save(It.IsAny<List<EmployeeSyncAction>>()), Times.Once);
+
+            employeeRepositoryMock.Verify(s => s.GetByEmployeeNumber(It.IsAny<string[]>()), Times.Once);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
         const string PmoCode = "PMO";
 
-        private EmployeeEndJobService sut;
+        private EmployeeEndNotificationJobService sut;
 
         private Mock<IEmployeeRepository> employeeRepositoryMock;
 
@@ -76,7 +76,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             mailSenderMock.Setup(s => s.Send(It.IsAny<Email>()));
 
-            sut = new EmployeeEndJobService(unitOfWork.Object,
+            sut = new EmployeeEndNotificationJobService(unitOfWork.Object,
                 mailBuilderMock.Object,
                 mailSenderMock.Object,
                 JobSettingOptionMock.Object,

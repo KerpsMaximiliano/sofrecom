@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using AutoMapper;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Jobs;
-using Sofco.DAL;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Domain.Rh.Rhpro;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
+using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Service.Implementations.Jobs
 {
     public class EmployeeSyncJobService : IEmployeeSyncJobService
     {
-        const int FromLastYears = -1;
+        private const int FromLastMonth = -1;
 
         private readonly ITigerEmployeeRepository tigerEmployeeRepository;
-
-        private readonly IRhproEmployeeRepository rhproEmployeeRepository;
 
         private readonly IUnitOfWork unitOfWork;
 
@@ -27,47 +25,94 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly DateTime startDate;
 
         public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
-            IRhproEmployeeRepository rhproEmployeeRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             this.tigerEmployeeRepository = tigerEmployeeRepository;
-            this.rhproEmployeeRepository = rhproEmployeeRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            startDate = DateTime.UtcNow.AddYears(FromLastYears);
+            startDate = DateTime.UtcNow.AddMonths(FromLastMonth);
         }
 
-        public void Sync()
+        public void SyncNewEmployees()
         {
-            SyncLicenseType();
+            var procesedEmployees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
 
-            SyncEmployeeLicense();
+            procesedEmployees = procesedEmployees.Where(s => s.EndDate == null).ToList();
 
-            SyncEmployee();
+            var newEmployees = GetNewEmployees(procesedEmployees);
+
+            var syncActions = Translate(newEmployees, EmployeeSyncActionStatus.New);
+
+            unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
         }
 
-        private void SyncLicenseType()
+        private List<Employee> GetNewEmployees(List<Employee> employees)
         {
-            var licenseTypes = Translate(rhproEmployeeRepository.GetLicenseTypes().ToList());
+            var numbers = employees.Select(s => s.EmployeeNumber).ToArray();
 
-            unitOfWork.LicenseTypeRepository.Save(licenseTypes);
+            var storedEmployees = unitOfWork.EmployeeRepository.GetByEmployeeNumber(numbers);
+
+            var newEmployees = new List<Employee>();
+
+            foreach (var employee in employees)
+            {
+                var employeeNumber = employee.EmployeeNumber;
+
+                var isNew = storedEmployees.All(s => s.EmployeeNumber != employeeNumber);
+
+                if (!isNew)
+                {
+                    var storedEmployee = storedEmployees.FirstOrDefault(s => s.EmployeeNumber == employeeNumber);
+                    if (storedEmployee != null 
+                        && storedEmployee.StartDate != employee.StartDate)
+                    {
+                        isNew = true;
+                    }
+                }
+
+                if (isNew)
+                {
+                    newEmployees.Add(employee);
+                }
+            }
+
+            return newEmployees;
         }
 
-        private void SyncEmployeeLicense()
+        public void SyncEndEmployees()
         {
-            var employeeLicenses = Translate(rhproEmployeeRepository.GetEmployeeLicensesWithStartDate(startDate).ToList());
+            var procesedEmployees = Translate(tigerEmployeeRepository.GetWithEndDate(startDate).ToList());
 
-            unitOfWork.EmployeeLicenseRepository.Delete(employeeLicenses, startDate);
+            var endEmployees = GetEndEmployees(procesedEmployees);
 
-            unitOfWork.EmployeeLicenseRepository.Save(employeeLicenses);
+            var syncActions = Translate(endEmployees, EmployeeSyncActionStatus.Delete);
+
+            unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
         }
 
-        private void SyncEmployee()
+        private List<Employee> GetEndEmployees(List<Employee> employees)
         {
-            var employees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
+            var numbers = employees.Select(s => s.EmployeeNumber).ToArray();
 
-            unitOfWork.EmployeeRepository.Save(employees);
+            var storedEmployees = unitOfWork.EmployeeRepository.GetByEmployeeNumber(numbers);
+
+            var endEmployees = new List<Employee>();
+
+            foreach (var employee in employees)
+            {
+                var employeeNumber = employee.EmployeeNumber;
+
+                var storedEmployee = storedEmployees.FirstOrDefault(s => s.EmployeeNumber == employeeNumber);
+                if (storedEmployee != null 
+                    && storedEmployee.EndDate == null
+                    && employee.EndDate > RhSetting.TigerDateTimeMinValue)
+                {
+                    endEmployees.Add(employee);
+                }
+            }
+
+            return endEmployees;
         }
 
         private List<Employee> Translate(List<TigerEmployee> tigerEmployees)
@@ -75,14 +120,13 @@ namespace Sofco.Service.Implementations.Jobs
             return mapper.Map<List<TigerEmployee>, List<Employee>>(tigerEmployees);
         }
 
-        private List<LicenseType> Translate(List<RhproLicenseType> rhproLicenseType)
+        private List<EmployeeSyncAction> Translate(List<Employee> employees, string status)
         {
-            return mapper.Map<List<RhproLicenseType>, List<LicenseType>>(rhproLicenseType);
-        }
+            var result = mapper.Map<List<Employee>, List<EmployeeSyncAction>>(employees);
 
-        private List<EmployeeLicense> Translate(List<RhproEmployeeLicense> rhproEmployeeLicense)
-        {
-            return mapper.Map<List<RhproEmployeeLicense>, List<EmployeeLicense>>(rhproEmployeeLicense);
+            result.ForEach(s => { s.Status = status; });
+
+            return result;
         }
     }
 }

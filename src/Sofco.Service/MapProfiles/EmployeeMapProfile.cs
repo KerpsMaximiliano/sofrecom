@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Service.MapProfiles
 {
@@ -16,7 +18,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Name, s => s.MapFrom(x => x.Nomb))
                 .ForMember(d => d.Birthday, s => s.MapFrom(x => x.Fenac))
                 .ForMember(d => d.StartDate, s => s.MapFrom(x => x.Feiem))
-                .ForMember(d => d.EndDate, s => s.MapFrom(x => x.Febaj))
+                .ForMember(d => d.EndDate, s => s.MapFrom(x => x.Febaj == RhSetting.TigerDateTimeMinValue ? null : x.Febaj))
                 .ForMember(d => d.Profile, s => s.MapFrom(x => x.Dtitu))
                 .ForMember(d => d.Technology, s => s.MapFrom(x => x.Didio))
                 .ForMember(d => d.Seniority, s => s.MapFrom(x => x.Dgrup))
@@ -31,6 +33,9 @@ namespace Sofco.Service.MapProfiles
             CreateMap<RhproLicenseType, LicenseType>()
                 .ForMember(d => d.LicenseTypeNumber, s => s.MapFrom(x => x.Tdnro))
                 .ForMember(d => d.Description, s => s.MapFrom(x => x.Tddesc));
+
+            CreateMap<Employee, EmployeeSyncAction>()
+                .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
         }
     }
 }

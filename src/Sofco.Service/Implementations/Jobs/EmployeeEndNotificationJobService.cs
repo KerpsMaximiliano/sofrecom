@@ -7,14 +7,13 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
-using Sofco.DAL;
 using Sofco.Model;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs
 {
-    public class EmployeeEndJobService : IEmployeeEndJobService
+    public class EmployeeEndNotificationJobService : IEmployeeEndNotificationJobService
     {
         const string DateFormat = "dd/MM/yyyy";
 
@@ -30,7 +29,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        public EmployeeEndJobService(IUnitOfWork unitOfWork,
+        public EmployeeEndNotificationJobService(IUnitOfWork unitOfWork,
             IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<JobSetting> jobSettingOptions,

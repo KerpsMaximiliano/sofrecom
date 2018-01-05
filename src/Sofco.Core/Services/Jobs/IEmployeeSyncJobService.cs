@@ -2,6 +2,8 @@
 {
     public interface IEmployeeSyncJobService
     {
-        void Sync();
+        void SyncNewEmployees();
+
+        void SyncEndEmployees();
     }
 }

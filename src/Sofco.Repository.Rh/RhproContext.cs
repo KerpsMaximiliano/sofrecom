@@ -21,7 +21,7 @@ namespace Sofco.Repository.Rh
 
             builder.HasDefaultSchema(setting.RhproSchema);
 
-            builder.AddEntityConfigurationsFromAssembly(GetType().GetTypeInfo().Assembly);
+            builder.AddEntityConfigurationsFromAssembly(GetType().GetTypeInfo().Assembly, setting);
         }
     }
 }
