@@ -28,6 +28,11 @@ namespace Sofco.Model.Utils
             Messages.Add(new Message(msg, MessageType.Error));
         }
 
+        public void AddSuccess(string msg)
+        {
+            Messages.Add(new Message(msg, MessageType.Success));
+        }
+
         public void AddMessages(IList<Message> list)
         {
             foreach (var message in list)

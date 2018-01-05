@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Model.Enums.TimeManagement;
+using Sofco.Model.Models.Admin;
 using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -8,6 +9,12 @@ namespace Sofco.Model.Models.AllocationManagement
     public class Analytic : BaseEntity
     {
         public string Title { get; set; }
+
+        public int TitleId { get; set; }
+
+        public int CostCenterId { get; set; }
+
+        public CostCenter CostCenter { get; set; }
 
         public string Name { get; set; }
 
@@ -19,8 +26,6 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public string Service { get; set; }
 
-        public bool? SoftwareLaw { get; set; }
-
         public int? ActivityId { get; set; }
         public ImputationNumber Activity { get; set; }
 
@@ -31,10 +36,10 @@ namespace Sofco.Model.Models.AllocationManagement
         public string CommercialManager { get; set; }
 
         public int DirectorId { get; set; }
-        //public virtual User Director { get; set; }
+        public User Director { get; set; }
 
         public int? ManagerId { get; set; }
-        //public virtual User Manager { get; set; }
+        public User Manager { get; set; }
 
         public bool? EvalProp { get; set; }
 
@@ -67,11 +72,19 @@ namespace Sofco.Model.Models.AllocationManagement
         public int? ClientGroupId { get; set; }
         public ClientGroup ClientGroup { get; set; }
 
+        public int? PurchaseOrderId { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
+
+        public int? ServiceTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
 
         public bool BugsAccess { get; set; }
 
         public string UsersQv { get; set; }
+
+        public int? SoftwareLawId { get; set; }
+        
+        public SoftwareLaw SoftwareLaw { get; set; }
 
         public ICollection<Allocation> Allocations { get; set; }
     }

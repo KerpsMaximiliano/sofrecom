@@ -11,6 +11,8 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<CostCenter>().Property(_ => _.Code).HasMaxLength(3);
             builder.Entity<CostCenter>().Property(_ => _.Letter).HasMaxLength(1);
             builder.Entity<CostCenter>().Property(_ => _.Description).HasMaxLength(250);
+
+            builder.Entity<CostCenter>().HasMany(x => x.Analytics).WithOne(x => x.CostCenter).HasForeignKey(x => x.CostCenterId);
         }
     }
 }

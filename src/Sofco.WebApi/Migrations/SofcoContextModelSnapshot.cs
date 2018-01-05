@@ -223,6 +223,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ContractNumber")
                         .HasMaxLength(50);
 
+                    b.Property<int>("CostCenterId");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<int?>("CurrencyId");
@@ -246,12 +248,14 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Proposal")
                         .HasMaxLength(200);
 
-                    b.Property<int>("PurchaseOrder");
+                    b.Property<int?>("PurchaseOrderId");
 
                     b.Property<string>("Service")
                         .HasMaxLength(50);
 
-                    b.Property<bool?>("SoftwareLaw");
+                    b.Property<int?>("ServiceTypeId");
+
+                    b.Property<int?>("SoftwareLawId");
 
                     b.Property<int?>("SolutionId");
 
@@ -264,6 +268,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(150);
 
+                    b.Property<int>("TitleId");
+
                     b.Property<string>("UsersQv")
                         .HasMaxLength(500);
 
@@ -273,9 +279,21 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("ClientGroupId");
 
+                    b.HasIndex("CostCenterId");
+
                     b.HasIndex("CurrencyId");
 
+                    b.HasIndex("DirectorId");
+
+                    b.HasIndex("ManagerId");
+
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("ServiceTypeId");
+
+                    b.HasIndex("SoftwareLawId");
 
                     b.HasIndex("SolutionId");
 
@@ -753,7 +771,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -779,7 +797,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(50);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -805,7 +823,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -818,7 +836,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -831,11 +849,50 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.PurchaseOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.ServiceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTypes");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.SoftwareLaw", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(60);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SoftwareLaws");
                 });
 
             modelBuilder.Entity("Sofco.Model.Utils.Solution", b =>
@@ -844,7 +901,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -857,7 +914,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(30);
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -902,13 +959,39 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Analytics")
                         .HasForeignKey("ClientGroupId");
 
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.CostCenter", "CostCenter")
+                        .WithMany("Analytics")
+                        .HasForeignKey("CostCenterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Sofco.Model.Utils.Currency", "Currency")
                         .WithMany("Analytics")
                         .HasForeignKey("CurrencyId");
 
+                    b.HasOne("Sofco.Model.Models.Admin.User", "Director")
+                        .WithMany("Analytics1")
+                        .HasForeignKey("DirectorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
+                        .WithMany("Analytics2")
+                        .HasForeignKey("ManagerId");
+
                     b.HasOne("Sofco.Model.Utils.Product", "Product")
                         .WithMany("Analytics")
                         .HasForeignKey("ProductId");
+
+                    b.HasOne("Sofco.Model.Utils.PurchaseOrder", "PurchaseOrder")
+                        .WithMany("Analytics")
+                        .HasForeignKey("PurchaseOrderId");
+
+                    b.HasOne("Sofco.Model.Utils.ServiceType", "ServiceType")
+                        .WithMany("Analytics")
+                        .HasForeignKey("ServiceTypeId");
+
+                    b.HasOne("Sofco.Model.Utils.SoftwareLaw", "SoftwareLaw")
+                        .WithMany("Analytics")
+                        .HasForeignKey("SoftwareLawId");
 
                     b.HasOne("Sofco.Model.Utils.Solution", "Solution")
                         .WithMany("Analytics")

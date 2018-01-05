@@ -38,7 +38,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             }
             else
             {
-                Match match = Regex.Match(domain.Letter, @"(?i)^[a-z]+");
+                Match match = Regex.Match(domain.Letter, @"(?i)^[a-zA-Z0-9]+");
 
                 if (domain.Letter.Length != 1 || !match.Success)
                 {

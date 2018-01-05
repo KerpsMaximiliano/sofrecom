@@ -21,7 +21,7 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
 
     constructor(private costCenterService: CostCenterService,
                 private router: Router,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){

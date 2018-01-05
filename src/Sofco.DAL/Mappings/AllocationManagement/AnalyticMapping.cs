@@ -22,8 +22,8 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Analytic>().Property(_ => _.Title).HasMaxLength(150);
             builder.Entity<Analytic>().Property(_ => _.UsersQv).HasMaxLength(500);
 
-            //builder.Entity<Analytic>().HasOne(x => x.Director).WithMany(x => x.Analytics).HasForeignKey(x => x.DirectorId).OnDelete(DeleteBehavior.SetNull);
-            //builder.Entity<Analytic>().HasOne(x => x.Manager).WithMany(x => x.Analytics).HasForeignKey(x => x.ManagerId).OnDelete(DeleteBehavior.SetNull); ;
+            builder.Entity<Analytic>().HasOne(x => x.Director).WithMany(x => x.Analytics1).HasForeignKey(x => x.DirectorId);
+            builder.Entity<Analytic>().HasOne(x => x.Manager).WithMany(x => x.Analytics2).HasForeignKey(x => x.ManagerId);
 
             builder.Entity<Analytic>().HasOne(x => x.Technology).WithMany(x => x.Analytics).HasForeignKey(x => x.TechnologyId);
             builder.Entity<Analytic>().HasOne(x => x.Solution).WithMany(x => x.Analytics).HasForeignKey(x => x.SolutionId);
@@ -31,6 +31,10 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Analytic>().HasOne(x => x.Activity).WithMany(x => x.Analytics).HasForeignKey(x => x.ActivityId);
             builder.Entity<Analytic>().HasOne(x => x.ClientGroup).WithMany(x => x.Analytics).HasForeignKey(x => x.ClientGroupId);
             builder.Entity<Analytic>().HasOne(x => x.Product).WithMany(x => x.Analytics).HasForeignKey(x => x.ProductId);
+            builder.Entity<Analytic>().HasOne(x => x.CostCenter).WithMany(x => x.Analytics).HasForeignKey(x => x.CostCenterId);
+            builder.Entity<Analytic>().HasOne(x => x.SoftwareLaw).WithMany(x => x.Analytics).HasForeignKey(x => x.SoftwareLawId);
+            builder.Entity<Analytic>().HasOne(x => x.ServiceType).WithMany(x => x.Analytics).HasForeignKey(x => x.ServiceTypeId);
+            builder.Entity<Analytic>().HasOne(x => x.PurchaseOrder).WithMany(x => x.Analytics).HasForeignKey(x => x.PurchaseOrderId);
         }
     }
 }

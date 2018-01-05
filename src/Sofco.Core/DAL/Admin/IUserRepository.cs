@@ -18,5 +18,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasDafGroup(string userMail, string dafCode);
         bool HasCdgGroup(string userMail, string cdgCode);
         bool IsActive(string userMail);
+        IList<User> GetDirectors();
+        IList<User> GetManagers();
     }
 }

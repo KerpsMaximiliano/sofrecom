@@ -9,11 +9,11 @@ namespace Sofco.DAL.Mappings.Utils
         {
             // Primary Key
             builder.Entity<DocumentType>().HasKey(_ => _.Id);
-            builder.Entity<DocumentType>().Property(_ => _.Text).HasMaxLength(50);
+            builder.Entity<DocumentType>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<Province>().HasKey(_ => _.Id);
-            builder.Entity<Province>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<Province>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<ImputationNumber>().HasKey(_ => _.Id);
@@ -25,23 +25,35 @@ namespace Sofco.DAL.Mappings.Utils
 
             // Primary Key
             builder.Entity<Solution>().HasKey(_ => _.Id);
-            builder.Entity<Solution>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<Solution>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<Technology>().HasKey(_ => _.Id);
-            builder.Entity<Technology>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<Technology>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<ClientGroup>().HasKey(_ => _.Id);
-            builder.Entity<ClientGroup>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<ClientGroup>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<Product>().HasKey(_ => _.Id);
-            builder.Entity<Product>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<Product>().Property(_ => _.Text).HasMaxLength(60);
 
             // Primary Key
             builder.Entity<PaymentTerm>().HasKey(_ => _.Id);
-            builder.Entity<PaymentTerm>().Property(_ => _.Text).HasMaxLength(30);
+            builder.Entity<PaymentTerm>().Property(_ => _.Text).HasMaxLength(60);
+
+            // Primary Key
+            builder.Entity<SoftwareLaw>().HasKey(_ => _.Id);
+            builder.Entity<SoftwareLaw>().Property(_ => _.Text).HasMaxLength(60);
+
+            // Primary Key
+            builder.Entity<ServiceType>().HasKey(_ => _.Id);
+            builder.Entity<ServiceType>().Property(_ => _.Text).HasMaxLength(60);
+
+            // Primary Key
+            builder.Entity<PurchaseOrder>().HasKey(_ => _.Id);
+            builder.Entity<PurchaseOrder>().Property(_ => _.Text).HasMaxLength(60);
         }
     }
 }

@@ -18,7 +18,7 @@ import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
     BasicLayoutComponent,
     BlankLayoutComponent,
     NavigationComponent,
-    TopNavbarComponent,
+    TopNavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +31,7 @@ import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
     BasicLayoutComponent,
     BlankLayoutComponent,
     NavigationComponent,
-    TopNavbarComponent,
+    TopNavbarComponent
   ],
 })
 

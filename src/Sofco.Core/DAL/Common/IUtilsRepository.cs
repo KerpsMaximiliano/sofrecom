@@ -10,5 +10,12 @@ namespace Sofco.Core.DAL.Common
         IList<DocumentType> GetDocumentTypes();
         IList<Currency> GetCurrencies();
         IList<PaymentTerm> GetPaymentTerms();
+        IList<Solution> GetSolutions();
+        IList<Technology> GetTechnologies();
+        IList<Product> GetProducts();
+        IList<ClientGroup> GetClientGroups();
+        IList<PurchaseOrder> GetPurchaseOrders();
+        IList<SoftwareLaw> GetSoftwareLaws();
+        IList<ServiceType> GetServiceTypes();
     }
 }

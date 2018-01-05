@@ -1,4 +1,14 @@
 {
     "notFound": "Analitica no encontrada",
-    "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados."
+    "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados.",
+    "titleInvalid": "El formato del titulo no es correcto",
+    "nameIsRequired": "El nombre es requerido",
+    "descriptionIsRequired": "La descripcion es requerida",
+    "directorIsRequired": "El director es requerido",
+    "currencyIsRequired": "La moneda es requerida",
+    "saveSuccess": "Analitica creada exitosamente",
+    "costCenterIsRequired": "Centro de costos es requerido",
+    "titleAlreadyExist": "EL titulo ya existe",
+    "wrongDates": "La fecha de inicio no puede ser mayor a la fecha de fin",
+    "titleIsRequired": "El titulo es requerido"
 }

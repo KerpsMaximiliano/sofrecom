@@ -38,6 +38,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(new AnalyticSearchViewModel(response.Data));
         }
 
+        [HttpGet("formOptions")]
+        public IActionResult GetFormOptions()
+        {
+            return Ok(analyticService.GetOptions());
+        }
+
         [HttpGet("{id}/resources")]
         public IActionResult GetResources(int id)
         {
@@ -48,6 +54,26 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var response = new Response<IEnumerable<ResourceForAnalyticsModel>> { Data = model };
 
             response.AddMessages(responseResources.Messages);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] AnalyticViewModel model)
+        {
+            var response = analyticService.Add(model.CreateDomain());
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("title/costcenter/{costCenterId}")]
+        public IActionResult GetNewTitle(int costCenterId)
+        {
+            var response = analyticService.GetNewTitle(costCenterId);
+
+            if (response.HasErrors()) return BadRequest(response);
 
             return Ok(response);
         }

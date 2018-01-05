@@ -22,5 +22,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).ToList().AsReadOnly();
         }
+
+        public Analytic GetLastAnalytic(int costCenterId)
+        {
+            return context.Analytics.Where(x => x.CostCenterId == costCenterId).OrderByDescending(x => x.TitleId).Include(x => x.CostCenter).FirstOrDefault();
+        }
+
+        public bool ExistTitle(string analyticTitle)
+        {
+            return context.Analytics.Any(x => x.Title.Equals(analyticTitle));
+        }
     }
 }
