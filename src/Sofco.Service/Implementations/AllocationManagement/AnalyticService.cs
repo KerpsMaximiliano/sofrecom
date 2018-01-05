@@ -157,8 +157,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
+                var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                var recipients = $"{mailPmo};{mailDaf};{director.Email};{manager.Email}";
+                var recipients = $"{mailPmo};{mailDaf};{director.Email};{manager.Email};{seller.Email}";
 
                 mailSender.Send(recipients, subject, body);
             }
