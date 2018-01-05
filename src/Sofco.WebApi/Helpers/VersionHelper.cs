@@ -6,9 +6,9 @@
 
         private const int Major = 1;
 
-        private const int Minor = 6;
+        private const int Minor = 7;
 
-        private const int Revision = 101;
+        private const int Revision = 102;
 
         private const string AppVersionFormat = "{0}.{1}.{2}";
 

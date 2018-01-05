@@ -48,6 +48,7 @@ namespace Sofco.DAL
         public DbSet<LicenseType> LicenseTypes { get; set; }
         public DbSet<EmployeeLicense> EmployeeLicenses { get; set; }
         public DbSet<CostCenter> CostCenters { get; set; }
+        public DbSet<EmployeeSyncAction> EmployeeSyncActions { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -84,6 +85,7 @@ namespace Sofco.DAL
             builder.MapHitoDetails();
             builder.MapGlobalSetting();
             builder.MapCostCenter();
+            builder.MapEmployeeSyncAction();
         }
     }
 }

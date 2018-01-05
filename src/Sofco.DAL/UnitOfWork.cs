@@ -46,6 +46,7 @@ namespace Sofco.DAL
         private IEmployeeLicenseRepository employeeLicenseRepository;
         private IEmployeeRepository employeeRepository;
         private ILicenseTypeRepository licenseTypeRepository;
+        private IEmployeeSyncActionRepository employeeSyncActionRepository;
 
         #endregion
 
@@ -90,6 +91,9 @@ namespace Sofco.DAL
         public IEmployeeLicenseRepository EmployeeLicenseRepository => employeeLicenseRepository ?? (employeeLicenseRepository = new EmployeeLicenseRepository(context));
         public IEmployeeRepository EmployeeRepository => employeeRepository ?? (employeeRepository = new EmployeeRepository(context));
         public ILicenseTypeRepository LicenseTypeRepository => licenseTypeRepository ?? (licenseTypeRepository = new LicenseTypeRepository(context));
+
+        public IEmployeeSyncActionRepository EmployeeSyncActionRepository =>
+            employeeSyncActionRepository ?? (employeeSyncActionRepository = new EmployeeSyncActionRepository(context));
 
         #endregion
 

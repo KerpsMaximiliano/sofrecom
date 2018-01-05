@@ -42,19 +42,17 @@ namespace Sofco.WebJob.Infrastructures
 
             tigerDbBuilder.UseSqlServer(Configuration.GetConnectionString(TigerConnectionString));
 
-            var setting = new RhSetting
-            {
-                RhproSchema = Configuration["RhSetting:RhproSchema"],
-                TigerSchema = Configuration["RhSetting:TigerSchema"]
-            };
+            var rhSetting = new RhSetting();
 
-            builder.Register(r => new TigerContext(tigerDbBuilder.Options, setting));
+            Configuration.GetSection("RhSetting").Bind(rhSetting);
+
+            builder.Register(r => new TigerContext(tigerDbBuilder.Options, rhSetting));
 
             var rhProDbBuilder = new DbContextOptionsBuilder<RhproContext>();
 
             rhProDbBuilder.UseSqlServer(Configuration.GetConnectionString(RhproConnectionString));
 
-            builder.Register(r => new RhproContext(rhProDbBuilder.Options, setting));
+            builder.Register(r => new RhproContext(rhProDbBuilder.Options, rhSetting));
         }
 
         private void RegisterRepositories(ContainerBuilder builder, System.Reflection.Assembly[] assemblies)

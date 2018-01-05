@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Repository.Rh.Extensions;
+using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Repository.Rh.Maps
 {
@@ -9,7 +10,7 @@ namespace Sofco.Repository.Rh.Maps
     {
         const string TableName = "emp_lic";
 
-        public override void Map(EntityTypeBuilder<RhproEmployeeLicense> builder)
+        public override void Map(EntityTypeBuilder<RhproEmployeeLicense> builder, RhSetting setting)
         {
             builder.ToTable(TableName);
 
