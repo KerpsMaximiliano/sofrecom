@@ -35,5 +35,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return Ok(new EmployeeOptionModel(response.Data));
         }
+
+        [HttpGet("news")]
+        public IActionResult News()
+        {
+            var news = employeeService.GetNews();
+
+            var newsModel = news.Select(x => new NewsViewModel(x));
+
+            return Ok(newsModel);
+        }
     }
 }

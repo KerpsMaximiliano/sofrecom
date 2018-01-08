@@ -19,4 +19,8 @@ export class EmployeeService {
   getById(id) {
     return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }
+
+  getNews(){
+    return this.http.get(`${this.baseUrl}/employees/news`).map((res:Response) => res.json());
+  }
 }

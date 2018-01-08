@@ -29,5 +29,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             return response;
         }
+
+        public ICollection<EmployeeSyncAction> GetNews()
+        {
+            return unitOfWork.EmployeeSyncActionRepository.GetAll();
+        }
     }
 }

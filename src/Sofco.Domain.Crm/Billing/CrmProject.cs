@@ -27,10 +27,14 @@ namespace Sofco.Domain.Crm.Billing
         public decimal TotalAmmount { get; set; }
 
         public string ServiceType { get; set; }
+        public int ServiceTypeId { get; set; }
 
         public string SolutionType { get; set; }
 
+        public int SolutionTypeId { get; set; }
+
         public string TechnologyType { get; set; }
+        public int TechnologyTypeId { get; set; }
 
         public string Currency { get; set; }
 

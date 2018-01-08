@@ -357,6 +357,17 @@
                 "billeable": "Facturable (%)"
             }
         },
+        "news": {
+            "title": "Novedades",
+            "listTitle": "Listado de Novedades",
+            "grid": {
+                "employeeNumber": "Legajo",
+                "name":"Nombre",
+                "startDate": "Fecha de Alta",
+                "endDate":"Fecha de Baja",
+                "status":"Estado"
+            }
+        },
         "analytics": {
             "listTitle": "Listado de Analiticas",
             "title": "Analiticas",
@@ -465,6 +476,8 @@
     "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
     "filterByDates": "Filtrar por fechas",
     "name": "Nombre",
+    "New": "Alta",
+    "Delete": "Baja",
     "report":{
         "title": "Reporte",
         "solfacs": {

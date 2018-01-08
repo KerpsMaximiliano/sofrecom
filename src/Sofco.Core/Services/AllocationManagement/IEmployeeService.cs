@@ -8,5 +8,6 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         ICollection<Employee> GetAll();
         Response<Employee> GetById(int id);
+        ICollection<EmployeeSyncAction> GetNews();
     }
 }

@@ -357,6 +357,17 @@
                 "billeable": "Billeable (%)"
             }
         },
+        "news": {
+            "title": "News",
+            "listTitle": "News's List",
+            "grid": {
+                "employeeNumber": "Employee Number",
+                "name":"Name",
+                "startDate": "Start Date",
+                "endDate":"End Date",
+                "status":"Status"
+            }
+        },
         "analytics": {
             "listTitle": "Analytics´s List",
             "title": "Analytics",
@@ -465,6 +476,8 @@
     "dateToLessThanSince": "Date to cannot be less than date since",
     "filterByDates": "Filter by dates",
     "name": "Name",
+    "New": "New",
+    "Delete": "Deleted",
     "report":{
         "title": "Report",
         "solfacs": {

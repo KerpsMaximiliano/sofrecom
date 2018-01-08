@@ -27,11 +27,12 @@ import { ListCostCenterComponent } from 'app/views/allocation-management/cost-ce
 import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/new/new-analytic.component';
 import { AnalyticFormComponent } from 'app/views/allocation-management/analytics/analytic-form/analytic-form.component';
 import { ICheckModule } from 'app/components/icheck/icheck.module';
+import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent, AddCostCenterComponent,
-    ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent
+    ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent
   ],
   imports: [
     BrowserModule,

@@ -57,8 +57,11 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.serviceId = sessionStorage.getItem('serviceId');
             this.model.service = sessionStorage.getItem('serviceName');
             this.model.contractNumber = project.purchaseOrder;
-            this.model.amountEarned = project.totalAmmount;
+            this.model.amountEarned = project.totalAmmount; 
             this.model.currencyId = this.getCurrencyId(project.currency);
+            this.model.solutionId = project.solutionTypeId;
+            this.model.technologyId = project.technologyTypeId;
+            this.model.serviceTypeId = project.serviceTypeId;
         }
         else{
             this.model.clientExternalName = 'No Aplica';
