@@ -2,13 +2,18 @@
 using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Repository.Rh.Settings;
+using Sofco.Service.Implementations.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -24,14 +29,37 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly DateTime startDate;
 
+        private readonly IMailSender mailSender;
+
+        private readonly EmailConfig emailConfig;
+
+        private readonly ILogMailer<EmployeeSyncJobService> logger;
+
+        private const string MailSubject = "NOVEDADES RECURSOS";
+
+        private const string MailBody = "<font size='3'>" +
+                                            "<span style='font-size:12pt'>" +
+                                                "Estimados, </br></br>" +
+                                                "Existen novedades que necesitan su confirmacion, por favor acceder a la lista " +
+                                                "a traves del siguiente <a href='{0}' target='_blank'>link</a></br></br>" +
+                                                "Saludos" +
+                                            "</span>" +
+                                        "</font>";
+
         public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
             IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper,
+            ILogMailer<EmployeeSyncJobService> logger,
+            IMailSender mailSender,
+            IOptions<EmailConfig> emailOptions)
         {
             this.tigerEmployeeRepository = tigerEmployeeRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             startDate = DateTime.UtcNow.AddMonths(FromLastMonth);
+            this.mailSender = mailSender;
+            this.emailConfig = emailOptions.Value;
+            this.logger = logger;
         }
 
         public void SyncNewEmployees()
@@ -43,6 +71,8 @@ namespace Sofco.Service.Implementations.Jobs
             var newEmployees = GetNewEmployees(procesedEmployees);
 
             var syncActions = Translate(newEmployees, EmployeeSyncActionStatus.New);
+
+            SendMail();
 
             unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
         }
@@ -127,6 +157,22 @@ namespace Sofco.Service.Implementations.Jobs
             result.ForEach(s => { s.Status = status; });
 
             return result;
+        }
+
+        private void SendMail()
+        {
+            try
+            {
+                var body = string.Format(MailBody, $"{emailConfig.SiteUrl}allocationManagement/employees/news");
+
+                var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+
+                mailSender.Send(mailRrhh, MailSubject, body);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+            }
         }
     }
 }

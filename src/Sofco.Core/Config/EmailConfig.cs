@@ -20,6 +20,8 @@
 
         public string PmoCode { get; set; }
 
+        public string RrhhCode { get; set; }
+
         public string SellerCode { get; set; }
 
         public string MailDevFolder { get; set; }

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Domain.Rh.Tiger;
@@ -27,6 +31,12 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IUnitOfWork> unitOfWork;
 
+        private Mock<ILogMailer<EmployeeSyncJobService>> logger;
+
+        private Mock<IMailSender> mailSender;
+
+        private Mock<IOptions<EmailConfig>> emailOptionMock;
+
         [SetUp]
         public void Setup()
         {
@@ -40,6 +50,12 @@ namespace Sofco.UnitTest.Services.Jobs
 
             unitOfWork = new Mock<IUnitOfWork>();
 
+            logger = new Mock<ILogMailer<EmployeeSyncJobService>>();
+
+            mailSender = new Mock<IMailSender>();
+
+            emailOptionMock = new Mock<IOptions<EmailConfig>>();
+
             unitOfWork.SetupGet(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
 
             unitOfWork.SetupGet(x => x.EmployeeSyncActionRepository).Returns(employeeSyncActionRepositoryMock.Object);
@@ -47,7 +63,10 @@ namespace Sofco.UnitTest.Services.Jobs
             sut = new EmployeeSyncJobService(
                 tigerEmployeeRepositoryMock.Object,
                 unitOfWork.Object,
-                mapperMock.Object);
+                mapperMock.Object,
+                logger.Object,
+                mailSender.Object,
+                emailOptionMock.Object);
         }
 
         [Test]
