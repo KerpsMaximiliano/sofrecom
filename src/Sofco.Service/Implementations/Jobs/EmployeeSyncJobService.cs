@@ -72,7 +72,10 @@ namespace Sofco.Service.Implementations.Jobs
 
             var syncActions = Translate(newEmployees, EmployeeSyncActionStatus.New);
 
-            SendMail();
+            if (syncActions.Count > 0)
+            {
+                SendMail();
+            }
 
             unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
         }
@@ -117,6 +120,11 @@ namespace Sofco.Service.Implementations.Jobs
             var endEmployees = GetEndEmployees(procesedEmployees);
 
             var syncActions = Translate(endEmployees, EmployeeSyncActionStatus.Delete);
+
+            if (syncActions.Count > 0)
+            {
+                SendMail();
+            }
 
             unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
         }
