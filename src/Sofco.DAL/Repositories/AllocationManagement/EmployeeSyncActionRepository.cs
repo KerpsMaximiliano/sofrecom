@@ -36,6 +36,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public bool Exist(int id)
+        {
+            return context.EmployeeSyncActions.Any(x => x.Id == id);
+        }
+
         private List<EmployeeSyncAction> GetByEmployeeNumber(string[] employeeNumbers)
         {
             return context.EmployeeSyncActions

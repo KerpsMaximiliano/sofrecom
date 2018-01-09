@@ -45,5 +45,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return Ok(newsModel);
         }
+
+        [HttpDelete("news/{id}")]
+        public IActionResult DeleteNews(int id)
+        {
+            var response = employeeService.DeleteNews(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }

@@ -26,19 +26,27 @@
                         <th>{{'allocationManagement.news.grid.startDate' | translate }}</th>
                         <th>{{'allocationManagement.news.grid.endDate' | translate }}</th>
                         <th>{{'allocationManagement.news.grid.status' | translate }}</th>
+                        <th>{{'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let news of model">
+                    <tr *ngFor="let news of model; let i = index">
                         <td>{{ news.employeeNumber}}</td>
                         <td>{{ news.name}}</td>
                         <td>{{ news.startDate | date:'dd/MM/yyyy'}}</td>
                         <td>{{ news.endDate | date:'dd/MM/yyyy'}}</td>
                         <td> <span class="label label-{{news.status}}">{{ news.status | translate }}</span></td>
+                        <td>
+                            <button class="btn btn-danger btn-xs" (click)="showConfirm(news, i)">{{'ACTIONS.cancel' | translate }}</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>       
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="delete()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>
 
