@@ -19,7 +19,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     serviceName: string;
     customerName: string;
     public loading:  boolean = true;
-
+ 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -49,13 +49,22 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.projects = d;
 
-        this.datatableService.init('#projectTable', true);
+        this.initGrid();
       },
       err => {
         this.loading = false;
-        this.datatableService.init('#projectTable', true);
+        this.initGrid();
         this.errorHandlerService.handleErrors(err)
       });
+    }
+
+    initGrid(){
+      var params = {
+        selector: '#projectTable',
+        columnDefs: [ {"aTargets": [5, 6], "sType": "date-uk"} ]
+      }
+
+      this.datatableService.init2(params);
     }
 
     goToServices(){

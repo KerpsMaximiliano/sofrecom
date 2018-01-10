@@ -56,8 +56,8 @@
                                 <td>{{project.analytic}}</td>
                                 <td>{{project.purchaseOrder}}</td>
                                 <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
-                                <td> <i class="fa fa-calendar"></i> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
-                                <td> <i class="fa fa-calendar"></i> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
+                                <td> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
+                                <td> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
                             </tr>
                         </tbody>
                     </table>        

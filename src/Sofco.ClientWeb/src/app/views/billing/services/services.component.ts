@@ -45,13 +45,22 @@ export class ServicesComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.services = d;
 
-        this.datatableService.init('#serviceTable', true);
+        this.initGrid();
       },
       err => {
         this.loading = false;
         this.datatableService.init('#serviceTable', true);
         this.errorHandlerService.handleErrors(err)
       });
+    }
+
+    initGrid(){
+      var params = {
+        selector: '#serviceTable',
+        columnDefs: [ {"aTargets": [1, 2], "sType": "date-uk"} ]
+      }
+
+      this.datatableService.init2(params);
     }
 
     goToProjects(service){

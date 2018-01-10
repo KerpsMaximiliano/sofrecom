@@ -46,7 +46,48 @@ export class DataTableService {
         });
     }
 
-    init(selector, scroll, hasExport = false){
+    init2(params){
+        var lang = {};
+        if(this.config.currLang == "es" || this.config.currLang == "fr"){
+          lang = this.getLanguageEs();
+        }
+
+        setTimeout(()=>{
+            $( document ).ready(function() {
+                var options: any = {
+                    oSearch: { "bSmart": false, "bRegex": true },
+                    responsive: true, 
+                    language: lang,
+                }
+
+                if(params.columnDefs){
+                    options.aoColumnDefs = params.columnDefs;
+                }
+
+                if(params.withExport){
+                    options.dom = '<"html5buttons"B>lTfgitp';
+                    options.buttons = [
+                        {
+                            extend: 'excelHtml5', title: params.title,
+                            exportOptions: {
+                                columns: params.columns
+                            }
+                        },
+                        {
+                          extend: 'pdfHtml5', title: params.title,
+                            exportOptions: {
+                                columns: params.columns
+                            }
+                        }
+                      ];
+                }
+
+                this.tableRef = $(params.selector).DataTable(options);
+            });
+        });
+    }
+
+    init(selector, scroll){
         var lang = {};
         if(this.config.currLang == "es" || this.config.currLang == "fr"){
           lang = this.getLanguageEs();

@@ -129,30 +129,57 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.getHitosSubscrip = this.service.getHitos(this.projectId, reload).subscribe(d => {
             this.hitos = d;
 
-            this.datatableService.destroy('#hitoTable');
-            this.datatableService.init('#hitoTable', false);
+            this.initHitosGrid();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
+
+    initHitosGrid(){
+        var params = {
+          selector: '#hitoTable',
+          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+        }
+  
+        this.datatableService.destroy(params.selector);
+        this.datatableService.init2(params);
+      }
 
     getInvoices(projectId){
         this.getInvoicesSubscrip = this.service.getInvoices(projectId).subscribe(d => {
             this.invoices = d;
 
-            this.datatableService.init('#invoiceTable', false);
+            this.initInvoicesGrid();
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    initInvoicesGrid(){
+        var params = {
+          selector: '#invoiceTable',
+          columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
+        }
+  
+        this.datatableService.init2(params);
     }
 
     getSolfacs(projectId){
         this.getSolfacSubscrip = this.service.getSolfacs(projectId).subscribe(d => {
             this.solfacs = d;
 
-            this.datatableService.init('#solfacTable', false);
+            this.initSolfacGrid();
 
             //this.calculateIncomes();
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    initSolfacGrid(){
+        var params = {
+          selector: '#solfacTable',
+          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+        }
+  
+        this.datatableService.init2(params);
     }
 
     calculateIncomes() {
