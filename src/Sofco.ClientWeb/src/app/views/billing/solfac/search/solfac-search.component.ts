@@ -174,9 +174,17 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
                 var columns = [0, 1, 2, 3, 4, 5, 6];
                 var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
+ 
+                var params = {
+                    selector: '#solfacsTable',
+                    columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
+                    columns: columns,
+                    title: title,
+                    withExport: true
+                  }
 
                 this.datatableService.destroy('#solfacsTable');
-                this.datatableService.initWithExportButtons('#solfacsTable', columns, title);
+                this.datatableService.init2(params);
             }, 500)
         },
         err => {

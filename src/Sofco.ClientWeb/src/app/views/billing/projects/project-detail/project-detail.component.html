@@ -173,7 +173,7 @@
                                             <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)" class="pointer" >
                                                 <td>{{ invoice.invoiceNumber }}</td>
                                                 <td>{{ invoice.excelFileName }}</td>
-                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
                                                 <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
                                             </tr>
                                         </tbody>
