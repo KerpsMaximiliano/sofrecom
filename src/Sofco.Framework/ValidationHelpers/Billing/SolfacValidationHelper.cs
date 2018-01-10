@@ -186,5 +186,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.Messages.Add(new Message(Resources.Billing.Solfac.CreditNoteTotalExceededError, MessageType.Error));
             }
         }
+
+        public static void ValidateBusinessName(Solfac solfac, Response<Solfac> response)
+        {
+            if (string.IsNullOrWhiteSpace(solfac.BusinessName))
+            {
+                response.AddError(Resources.Billing.Solfac.BusinessNameRequired);
+            }
+        }
     }
 }

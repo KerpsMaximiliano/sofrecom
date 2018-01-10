@@ -44,19 +44,39 @@
                 <div class="panel-body">
                     <!-- Datos CRM -->
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <dl class="dl-horizontal">
-                                <dt>{{'billing.solfac.businessName' | translate }}:</dt><dd>{{model.businessName}}</dd>
-                                <dt>{{'billing.solfac.clientName' | translate }}: </dt><dd>{{model.clientName}}</dd>
-                                <dt>{{'billing.solfac.celphone' | translate }}: </dt><dd>{{model.celPhone}}</dd>
-                                
-                            </dl>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.businessName' | translate }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="model.businessName">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.clientName' | translate }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="model.clientName">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">{{'billing.solfac.celphone' | translate }}</label>
+                                        <input type="text" class="form-control" [(ngModel)]="model.celPhone">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">{{'billing.solfac.currency' | translate }}</label>
+                                        <select class="form-control" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
+                                            <option *ngFor="let currency of currencies" [value]="currency?.value">{{currency?.text}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-sm-6">
                             <dl class="dl-horizontal">
-                                <dt>{{'billing.solfac.status' | translate }}: </dt><dd><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate}}</span></dd>
-                                <dt>{{'billing.solfac.project' | translate }}: </dt><dd>{{model.project}}</dd>
-                                <dt>{{'billing.solfac.userApplicant' | translate }}: </dt><dd>{{model.userApplicantName}}</dd>
+                                <dt class="font-15">{{'billing.solfac.status' | translate }}: </dt><dd class="font-15"><span class="label label-{{model.statusName}} solfacStatus">{{model.statusName | translate}}</span></dd>
+                                <dt class="font-15">{{'billing.solfac.project' | translate }}: </dt><dd class="font-15">{{model.project}}</dd>
+                                <dt class="font-15">{{'billing.solfac.userApplicant' | translate }}: </dt><dd class="font-15">{{model.userApplicantName}}</dd>
 
                                 <dt *ngIf="model.invoiceId > 0">{{'billing.solfac.invoiceNumber' | translate }}: </dt>
                                 <dd *ngIf="model.invoiceId > 0"><h4 class="text-navy">{{ model.invoiceNumber }}</h4></dd>
@@ -68,23 +88,24 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-sm-6">
                              <!-- Plazo -->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
-                                        <select class="form-control input-sm" [(ngModel)]="model.paymentTermId">
+                                        <select class="form-control" [(ngModel)]="model.paymentTermId">
                                             <option *ngFor="let paymentTerm of paymentTerms" [value]="paymentTerm?.value">{{paymentTerm?.text}}</option>
                                         </select>
                                     </div>
                                 </div>
         
+                                <!-- Tipo de documento -->
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label">{{'billing.solfac.currency' | translate }}</label>
-                                        <select class="form-control input-sm" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
-                                            <option *ngFor="let currency of currencies" [value]="currency?.value">{{currency?.text}}</option>
+                                        <label class="control-label">{{'billing.solfac.documentType' | translate }}</label>
+                                        <select class="form-control m-b" [(ngModel)]="model.documentTypeId">
+                                            <option *ngFor="let docType of documentTypes" [value]="docType?.value">{{docType?.text}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -97,26 +118,14 @@
                                         <label class="control-label">{{'billing.solfac.imputationNumber' | translate }}</label>
                                         <div class="row">
                                             <div class="col-lg-7 col-md-7 col-sm-7">
-                                                <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control input-sm"> 
+                                                <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control"> 
                                             </div>
                                             <div class="col-lg-5 col-md-5 col-sm-5">
-                                                <select class="form-control m-b input-sm" [(ngModel)]="model.imputationNumber3Id">
+                                                <select class="form-control m-b" [(ngModel)]="model.imputationNumber3Id">
                                                     <option *ngFor="let impNumber of imputationNumbers" [value]="impNumber?.value">{{impNumber?.text}}</option>
                                                 </select>
                                             </div> 
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <!-- Tipo de documento -->
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label class="control-label">{{'billing.solfac.documentType' | translate }}</label>
-                                        <select class="form-control m-b input-sm" [(ngModel)]="model.documentTypeId">
-                                            <option *ngFor="let docType of documentTypes" [value]="docType?.value">{{docType?.text}}</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +135,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="control-label">{{'billing.solfac.contractNumber' | translate }}</label>
-                                        <input type="text" class="form-control input-sm" [(ngModel)]="model.contractNumber">
+                                        <input type="text" class="form-control" [(ngModel)]="model.contractNumber">
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +159,7 @@
                                         <div class="col-sm-9">
                                             <div class="form-group">
                                                 <label class="control-label">{{'billing.solfac.invoice' | translate }}</label>
-                                                <select id="invoices" select2 multiple class="form-control m-b input-sm">
+                                                <select id="invoices" select2 multiple class="form-control m-b">
                                                     <option *ngFor="let invoice of invoices" [value]="invoice?.value">{{invoice?.text}}</option>
                                                 </select>
                                             </div>

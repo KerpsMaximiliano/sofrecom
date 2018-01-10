@@ -50,5 +50,6 @@
     "solfacHasNoAttachments": "Se esta enviando una solicitud de facturación sin documentos asociados",
     "solfacHasNoAttachmentsConfirm": "A request is being sent without supporting information. Are you sure you want to continue?",
     "solfacHasNoInvoices": "The request can not be sent. You need to attach an invoice",
-    "closeHito": "Milestone has been closed successfully"
+    "closeHito": "Milestone has been closed successfully",
+    "businessNameRequired": "The Business Name is required"
 }
