@@ -20,6 +20,9 @@
         Invoiced,
 
         // Cobrada
-        AmountCashed
+        AmountCashed,
+
+        // Rechazada por la daf
+        RejectedByDaf
     }
 }

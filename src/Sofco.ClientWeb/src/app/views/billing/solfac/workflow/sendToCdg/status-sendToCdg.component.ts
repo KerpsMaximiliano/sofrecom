@@ -52,7 +52,8 @@ export class StatusSendToCdgComponent implements OnDestroy  {
   canSendToCDG(){
     if(this.solfacId > 0 &&
         (this.status == SolfacStatus[SolfacStatus.SendPending] || 
-         this.status == SolfacStatus[SolfacStatus.ManagementControlRejected])
+         this.status == SolfacStatus[SolfacStatus.ManagementControlRejected] ||
+         this.status == SolfacStatus[SolfacStatus.RejectedByDaf])
        && this.menuService.hasFunctionality("SOLFA", "SCDG")){
 
         return true;

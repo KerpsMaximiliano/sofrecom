@@ -106,7 +106,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.getDetailSubscrip = this.solfacService.get(solfacId).subscribe(d => {
 
         if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
-          (d.statusName == SolfacStatus[SolfacStatus.SendPending] || d.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected])){
+          (d.statusName == SolfacStatus[SolfacStatus.SendPending] || d.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected] ||
+            d.statusName == SolfacStatus[SolfacStatus.RejectedByDaf])){
 
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
