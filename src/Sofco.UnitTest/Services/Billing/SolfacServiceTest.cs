@@ -134,6 +134,7 @@ namespace Sofco.UnitTest.Services.Billing
                 ImputationNumber1 = "1",
                 UserApplicantId = 1,
                 TotalAmount = 100,
+                BusinessName = "Test",
                 Hitos = new List<Hito>
                 {
                     new Hito
