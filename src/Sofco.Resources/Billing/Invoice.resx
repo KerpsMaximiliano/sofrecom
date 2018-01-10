@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddressRequired" xml:space="preserve">
+    <value>billing/invoice.addressRequired</value>
+  </data>
   <data name="Approved" xml:space="preserve">
     <value>billing/invoice.approved</value>
   </data>
@@ -135,11 +138,20 @@
   <data name="CannotSendToDaf" xml:space="preserve">
     <value>billing/invoice.cannotSendToDaf</value>
   </data>
+  <data name="CityRequired" xml:space="preserve">
+    <value>billing/invoice.cityRequired</value>
+  </data>
+  <data name="CountryRequired" xml:space="preserve">
+    <value>billing/invoice.countryRequired</value>
+  </data>
   <data name="CrmPrefixCreditNoteTitle" xml:space="preserve">
     <value>Nota de Crédito - </value>
   </data>
   <data name="CrmPrefixDebitNoteTitle" xml:space="preserve">
     <value>Nota de Débito - </value>
+  </data>
+  <data name="CuitRequired" xml:space="preserve">
+    <value>billing/invoice.cuitRequired</value>
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>billing/invoice.deleted</value>
@@ -177,6 +189,9 @@
   <data name="PdfUpload" xml:space="preserve">
     <value>billing/invoice.pdfUpload</value>
   </data>
+  <data name="ProvinceRequired" xml:space="preserve">
+    <value>billing/invoice.provinceRequired</value>
+  </data>
   <data name="QuantityRequired" xml:space="preserve">
     <value>billing/invoice.quantityRequired</value>
   </data>
@@ -185,5 +200,8 @@
   </data>
   <data name="SentToDaf" xml:space="preserve">
     <value>billing/invoice.sentToDaf</value>
+  </data>
+  <data name="ZipCodeRequired" xml:space="preserve">
+    <value>billing/invoice.zipCodeRequired</value>
   </data>
 </root>

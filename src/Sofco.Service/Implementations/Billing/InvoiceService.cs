@@ -9,7 +9,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Mail;
-using Sofco.DAL;
+using Sofco.Framework.ValidationHelpers.Billing;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -53,6 +53,15 @@ namespace Sofco.Service.Implementations.Billing
         public Response<Invoice> Add(Invoice invoice, string identityName)
         {
             var response = new Response<Invoice>();
+
+            InvoiceValidationHelper.ValidateCuit(response, invoice);
+            InvoiceValidationHelper.ValidateAddress(response, invoice);
+            InvoiceValidationHelper.ValidateZipCode(response, invoice);
+            InvoiceValidationHelper.ValidateCity(response, invoice);
+            InvoiceValidationHelper.ValidateProvince(response, invoice);
+            InvoiceValidationHelper.ValidateCountry(response, invoice);
+
+            if (response.HasErrors()) return response;
 
             try
             {

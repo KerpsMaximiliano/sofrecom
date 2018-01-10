@@ -60,6 +60,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.addressRequired.
+        /// </summary>
+        public static string AddressRequired {
+            get {
+                return ResourceManager.GetString("AddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/invoice.approved.
         /// </summary>
         public static string Approved {
@@ -114,6 +123,24 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.cityRequired.
+        /// </summary>
+        public static string CityRequired {
+            get {
+                return ResourceManager.GetString("CityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.countryRequired.
+        /// </summary>
+        public static string CountryRequired {
+            get {
+                return ResourceManager.GetString("CountryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Nota de Crédito - .
         /// </summary>
         public static string CrmPrefixCreditNoteTitle {
@@ -128,6 +155,15 @@ namespace Sofco.Resources.Billing {
         public static string CrmPrefixDebitNoteTitle {
             get {
                 return ResourceManager.GetString("CrmPrefixDebitNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.cuitRequired.
+        /// </summary>
+        public static string CuitRequired {
+            get {
+                return ResourceManager.GetString("CuitRequired", resourceCulture);
             }
         }
         
@@ -240,6 +276,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.provinceRequired.
+        /// </summary>
+        public static string ProvinceRequired {
+            get {
+                return ResourceManager.GetString("ProvinceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/invoice.quantityRequired.
         /// </summary>
         public static string QuantityRequired {
@@ -263,6 +308,15 @@ namespace Sofco.Resources.Billing {
         public static string SentToDaf {
             get {
                 return ResourceManager.GetString("SentToDaf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to billing/invoice.zipCodeRequired.
+        /// </summary>
+        public static string ZipCodeRequired {
+            get {
+                return ResourceManager.GetString("ZipCodeRequired", resourceCulture);
             }
         }
     }

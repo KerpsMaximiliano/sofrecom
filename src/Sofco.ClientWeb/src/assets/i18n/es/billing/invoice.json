@@ -19,5 +19,11 @@
     "pdfUpload": "PDF guardo exitosamente",
     "quantityRequired": "La cantidad del detalle es requerida",
     "reject": "Remito rechazado exitosamente",
-    "sentToDaf": "Remito enviado correctamente a la DAF"
+    "sentToDaf": "Remito enviado correctamente a la DAF",
+    "cuitRequired": "El CUIT es requerido",
+    "addressRequired": "La Dirección es requerida",
+    "zipCodeRequired": "El código postal es requerido",
+    "cityRequired": "La ciudad es requerida",
+    "provinceRequired": "La provincia es requerida",
+    "countryRequired": "El país es requerido"
 }
