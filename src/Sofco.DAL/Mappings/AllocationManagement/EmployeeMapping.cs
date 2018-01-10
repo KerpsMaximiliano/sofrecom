@@ -13,6 +13,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.Seniority).HasMaxLength(100);
             builder.Entity<Employee>().Property(x => x.Technology).HasMaxLength(300);
             builder.Entity<Employee>().Property(x => x.EmployeeNumber).HasMaxLength(50);
+            builder.Entity<Employee>().Property(x => x.CreatedByUser).HasMaxLength(50);
         }
     }
 }

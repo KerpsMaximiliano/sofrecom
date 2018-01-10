@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.DAL;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
@@ -17,6 +18,16 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             else
             {
                 response.Data = entity;
+            }
+        }
+
+        public static void ValidateNewStatus(Response<EmployeeSyncAction> response)
+        {
+            if (response.Data == null) return;
+
+            if (response.Data.Status == EmployeeSyncActionStatus.Delete)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.WrongStatus);
             }
         }
     }

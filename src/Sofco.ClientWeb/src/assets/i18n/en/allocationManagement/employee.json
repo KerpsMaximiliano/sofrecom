@@ -1,3 +1,5 @@
 {
-    "notFound": "Resource not found"
-}
+    "notFound": "Resource not found",
+    "added": "Resource successfully created",
+    "wrongStatus": "The action can not be performed with the current status of the row"
+} 

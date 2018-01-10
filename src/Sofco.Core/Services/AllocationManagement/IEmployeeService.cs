@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<Employee> GetById(int id);
         ICollection<EmployeeSyncAction> GetNews();
         Response<EmployeeSyncAction> DeleteNews(int id);
+        Response<EmployeeSyncAction> Add(int newsId, string getUserName);
     }
 }

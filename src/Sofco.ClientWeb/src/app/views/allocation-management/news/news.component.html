@@ -37,7 +37,8 @@
                         <td>{{ news.endDate | date:'dd/MM/yyyy'}}</td>
                         <td> <span class="label label-{{news.status}}">{{ news.status | translate }}</span></td>
                         <td>
-                            <button class="btn btn-danger btn-xs" (click)="showConfirm(news, i)">{{'ACTIONS.cancel' | translate }}</button>
+                            <button class="btn btn-primary btn-xs" *ngIf="news.status == 'New'" (click)="showConfirmAdd(news, i)">{{'ACTIONS.ADD' | translate }}</button>
+                            <button class="btn btn-danger btn-xs" (click)="showConfirmDelete(news, i)">{{'ACTIONS.cancel' | translate }}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -46,7 +47,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="delete()">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
 

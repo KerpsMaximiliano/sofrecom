@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
+using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -50,6 +51,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult DeleteNews(int id)
         {
             var response = employeeService.DeleteNews(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost("{newsId}")]
+        public IActionResult Post(int newsId)
+        {
+            var response = employeeService.Add(newsId, this.GetUserName());
 
             if (response.HasErrors()) return BadRequest(response);
 

@@ -1,3 +1,5 @@
 {
-    "notFound": "Recurso no encontrado"
+    "notFound": "Recurso no encontrado",
+    "added": "Empleado creado exitosamente",
+    "wrongStatus": "No se puede realizar la acción con el estado actual del registro"
 }

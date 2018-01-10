@@ -23,10 +23,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     newsToDelete: any;
     indexToDelete: number;
 
-    @ViewChild('deleteModal') deleteModal;
-    public deleteModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
-        "deleteModal",
+        "confirmModal",
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -60,10 +60,37 @@ export class NewsComponent implements OnInit, OnDestroy {
         if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
     }
 
-    showConfirm(news, index){
+    showConfirmDelete(news, index){
         this.newsToDelete = news;
         this.indexToDelete = index;
-        this.deleteModal.show();
+        this.confirmModal.show();
+        this.confirm = this.delete;
+    }
+
+    showConfirmAdd(news, index){
+        this.newsToDelete = news;
+        this.indexToDelete = index;
+        this.confirmModal.show();
+        this.confirm = this.add;
+    }
+
+    confirm(){ }
+
+    add(){
+        this.messageService.showLoading();
+
+        this.getAllSubscrip = this.employeeService.add(this.newsToDelete.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            this.model.splice(this.indexToDelete, 1);
+
+            this.messageService.closeLoading();
+            this.confirmModal.hide();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     delete(){
@@ -75,7 +102,7 @@ export class NewsComponent implements OnInit, OnDestroy {
             this.model.splice(this.indexToDelete, 1);
 
             this.messageService.closeLoading();
-            this.deleteModal.hide();
+            this.confirmModal.hide();
         },
         error => {
             this.messageService.closeLoading();

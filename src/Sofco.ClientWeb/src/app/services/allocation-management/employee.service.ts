@@ -27,4 +27,8 @@ export class EmployeeService {
   deleteNews(id){
     return this.http.delete(`${this.baseUrl}/employees/news/${id}`).map((res:Response) => res.json());
   }
+
+  add(id){
+    return this.http.post(`${this.baseUrl}/employees/${id}`, {}).map((res:Response) => res.json());
+  }
 }

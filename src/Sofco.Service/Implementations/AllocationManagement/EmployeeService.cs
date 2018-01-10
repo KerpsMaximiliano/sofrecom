@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Model.Utils;
@@ -54,6 +55,42 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 response.Data = null;
                 response.AddSuccess(Resources.AllocationManagement.EmployeeSyncAction.Deleted);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<EmployeeSyncAction> Add(int newsId, string userName)
+        {
+            var response = new Response<EmployeeSyncAction>();
+
+            EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);
+            EmployeeSyncActionValidationHelper.ValidateNewStatus(response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var employee = JsonConvert.DeserializeObject<Employee>(response.Data.EmployeeData);
+                employee.Created = DateTime.UtcNow;
+                employee.Modified = DateTime.UtcNow;
+                employee.CreatedByUser = userName;
+
+                // Add new employee
+                unitOfWork.EmployeeRepository.Insert(employee);
+
+                // Delete news
+                unitOfWork.EmployeeSyncActionRepository.Delete(response.Data);
+
+                // Save all changes
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Employee.Added);
             }
             catch (Exception e)
             {
