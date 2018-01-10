@@ -368,6 +368,7 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
             SolfacValidationHelper.ValidateContractNumber(solfac, response);
             SolfacValidationHelper.ValidateImputationNumber(solfac, response);
+            SolfacValidationHelper.ValidateBusinessName(solfac, response);
 
             if (SolfacHelper.IsCreditNote(solfac))
             {

@@ -69,6 +69,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.businessNameRequired.
+        /// </summary>
+        public static string BusinessNameRequired {
+            get {
+                return ResourceManager.GetString("BusinessNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/solfac.cancelledSucces.
         /// </summary>
         public static string CancelledSucces {

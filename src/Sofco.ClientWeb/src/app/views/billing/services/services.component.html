@@ -35,7 +35,6 @@
                         <thead>
                             <tr>
                                 <th>{{"billing.service.grid.name" | translate}}</th>
-                                <th>{{"billing.service.grid.industry" | translate}}</th>
                                 <th>{{"billing.service.grid.startDate" | translate}}</th>
                                 <th>{{"billing.service.grid.endDate" | translate}}</th>
                             </tr>
@@ -43,7 +42,6 @@
                         <tbody>
                             <tr *ngFor="let service of services" class="pointer" (click)="goToProjects(service)">
                                 <td>{{service.nombre}}</td>
-                                <td>{{service.industry}}</td>
                                 <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{service.endDate | date:'dd/MM/yyyy'}}</td>
                             </tr>
