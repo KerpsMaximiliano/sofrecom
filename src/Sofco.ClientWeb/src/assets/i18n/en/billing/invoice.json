@@ -19,5 +19,11 @@
     "pdfUpload": "PDF saved successfully",
     "quantityRequired": "The amount of the detail is required",
     "reject": "Invoice rejected successfully",
-    "sentToDaf": "Invoice send correctly to the DAF"
+    "sentToDaf": "Invoice send correctly to the DAF",
+    "cuitRequired": "The CUIT is required",
+    "addressRequired": "The address is required",
+    "zipCodeRequired": "The zipcode is required",
+    "cityRequired": "The city is required",
+    "provinceRequired": "The province is required",
+    "countryRequired": "The country is required"
 }

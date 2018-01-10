@@ -40,37 +40,64 @@
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-sm-7">
                     <dl class="dl-horizontal">
-                        <dt><h4>{{'billing.invoice.invoiceNumber' | translate }}: </h4></dt>
-                        <dd><h4 class="text-navy">0000-00000000</h4></dd>
-                    </dl>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt><h4>{{'billing.invoice.status' | translate }}: </h4></dt>
-                        <dd><span class="label label-warning">{{ model.invoiceStatus | translate }}</span></dd>
-                    </dl>
-                </div>
-            </div>
+                        <dt><h3>{{'billing.invoice.invoiceNumber' | translate }}: </h3></dt>
+                        <dd><h3 class="text-navy">0000-00000000</h3></dd>
 
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{'billing.invoice.account' | translate }}: </dt><dd>{{model.accountName}}</dd>
-                        <dt>{{'billing.invoice.service' | translate }}: </dt><dd>{{model.service}}</dd>
-                        <dt>{{'billing.invoice.project' | translate }}: </dt><dd>{{model.project}}</dd>
-                        <dt>{{'billing.invoice.cuit' | translate }}: </dt><dd>{{model.cuit}}</dd>
+                        <dt><h2>{{'billing.invoice.status' | translate }}: </h2></dt>
+                        <dd class="span-center"><span class="label label-warning font-14">{{ model.invoiceStatus | translate }}</span></dd>
+
+                        <dt class="font-14">{{'billing.invoice.account' | translate }}: </dt>
+                        <dd class="font-14">{{model.accountName}}</dd>
+
+                        <dt class="font-14">{{'billing.invoice.service' | translate }}: </dt>
+                        <dd class="font-14">{{model.service}}</dd>
+
+                        <dt class="font-14">{{'billing.invoice.project' | translate }}: </dt>
+                        <dd class="font-14">{{model.project}}</dd>
                     </dl>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{'billing.invoice.address' | translate }}:</dt><dd>{{model.address}}</dd>
-                        <dt>{{'billing.invoice.zipCode' | translate }}: </dt><dd>{{model.zipcode}}</dd>
-                        <dt>{{'billing.invoice.city' | translate }}: </dt><dd>{{model.city}}</dd>
-                        <dt>{{'billing.invoice.province' | translate }}: </dt><dd>{{model.province}}</dd>
-                        <dt>{{'billing.invoice.country' | translate }}: </dt><dd>{{model.country}}</dd>
-                    </dl>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.invoice.cuit' | translate }}</label>
+                        <input type="text" class="form-control input-sm" [(ngModel)]="model.cuit">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.invoice.address' | translate }}</label>
+                        <input type="text" class="form-control input-sm" [(ngModel)]="model.address">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.invoice.zipCode' | translate }}</label>
+                                <input type="text" class="form-control input-sm" [(ngModel)]="model.zipcode">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.invoice.city' | translate }}</label>
+                                <input type="text" class="form-control input-sm" [(ngModel)]="model.city">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.invoice.province' | translate }}</label>
+                                <input type="text" class="form-control input-sm" [(ngModel)]="model.province">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.invoice.country' | translate }}</label>
+                                <input type="text" class="form-control input-sm" [(ngModel)]="model.country">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
