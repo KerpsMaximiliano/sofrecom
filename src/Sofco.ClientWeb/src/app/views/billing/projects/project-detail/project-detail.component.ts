@@ -257,7 +257,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
  
     goToSolfacDetail(solfac){
         if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
-          (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+          (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected] ||
+           solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf]))
         {
             this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
         }

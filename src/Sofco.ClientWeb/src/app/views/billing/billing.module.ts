@@ -48,6 +48,7 @@ import { Select2Module } from 'app/components/select2/select2';
 import { SplitHitoComponent } from 'app/views/billing/hitos/split-hito.component';
 import { SolfacPdfViewerComponent } from 'app/views/billing/solfac/pdf-viewer/solfac-pdf-viewer.component';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
+import { StatusRejectDafComponent } from 'app/views/billing/solfac/workflow/reject-by-daf/status-reject-daf.component';
 import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rightbar/project-rightbar.component';
 
 @NgModule({
@@ -56,7 +57,7 @@ import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rig
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent],
+                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],

@@ -22,6 +22,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(unitOfWork);
                 case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(unitOfWork);
                 case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler(unitOfWork);
+                case SolfacStatus.RejectedByDaf: return new SolfacStatusRejectedByDafHandler(unitOfWork);
                 default: return null;
             }
         }

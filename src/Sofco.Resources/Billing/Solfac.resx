@@ -255,4 +255,7 @@
   <data name="BusinessNameRequired" xml:space="preserve">
     <value>billing/solfac.businessNameRequired</value>
   </data>
+  <data name="DafRejectedSuccess" xml:space="preserve">
+    <value>billing/solfac.dafRejectedSuccess</value>
+  </data>
 </root>

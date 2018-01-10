@@ -4,5 +4,6 @@ export enum SolfacStatus {
     ManagementControlRejected = 3,
     InvoicePending = 4,
     Invoiced = 5,
-    AmountCashed = 6
+    AmountCashed = 6,
+    RejectedByDaf = 7
 }

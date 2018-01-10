@@ -177,8 +177,7 @@ namespace Sofco.Service.Implementations.Billing
                 solfacStatusHandler.SaveStatus(solfac, parameters);
 
                 // Add history
-                var history = GetHistory(solfac.Id, solfac.Status, parameters.Status, parameters.UserId,
-                    parameters.Comment);
+                var history = GetHistory(solfac.Id, solfac.Status, parameters.Status, parameters.UserId, parameters.Comment);
                 unitOfWork.SolfacRepository.AddHistory(history);
 
                 // Save
@@ -186,8 +185,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Messages.Add(new Message(solfacStatusHandler.GetSuccessMessage(), MessageType.Success));
 
                 // Update Hitos
-                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac,
-                    crmConfig.Url);
+                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac, crmConfig.Url);
             }
             catch
             {

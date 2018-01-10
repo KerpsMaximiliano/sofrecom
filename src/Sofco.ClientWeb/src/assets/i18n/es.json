@@ -455,6 +455,7 @@
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
     "ManagementControlRejected": "Rechazado Control Gestión",
+    "RejectedByDaf": "Rechazada por D.A.F.",
     "InvoicePending": "Pendiente Facturación",
     "Invoiced": "Facturada",
     "AmountCashed": "Cobrada",

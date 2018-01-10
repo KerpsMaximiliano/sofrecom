@@ -186,6 +186,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.dafRejectedSuccess.
+        /// </summary>
+        public static string DafRejectedSuccess {
+            get {
+                return ResourceManager.GetString("DafRejectedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/solfac.deleted.
         /// </summary>
         public static string Deleted {

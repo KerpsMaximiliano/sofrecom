@@ -48,7 +48,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var response = new Response();
 
-            if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected)
+            if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected || solfac.Status == SolfacStatus.RejectedByDaf)
             {
                 if (solfac.InvoiceRequired && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteA 
                                            && solfac.DocumentTypeId != SolfacDocumentType.CreditNoteB

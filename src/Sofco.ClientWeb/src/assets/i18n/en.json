@@ -455,6 +455,7 @@
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
     "ManagementControlRejected": "Rejected by Management Control",
+    "RejectedByDaf": "Rejected by D.A.F.",
     "InvoicePending": "Invoice Pending",
     "Invoiced": "Billed",
     "AmountCashed": "Cashed",
