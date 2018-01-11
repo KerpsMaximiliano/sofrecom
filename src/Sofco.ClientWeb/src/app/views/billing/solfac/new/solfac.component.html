@@ -52,23 +52,6 @@
                                 <label class="control-label">{{'billing.solfac.clientName' | translate }}</label>
                                 <input type="text" class="form-control" [(ngModel)]="model.clientName">
                             </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label">{{'billing.solfac.celphone' | translate }}</label>
-                                        <input type="text" class="form-control" [(ngModel)]="model.celphone">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label">{{'billing.solfac.currency' | translate }}</label>
-                                        <select class="form-control" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
-                                            <option *ngFor="let currency of currencies" [value]="currency?.value">{{currency?.text}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-6">
                             <dl class="dl-horizontal">
@@ -76,6 +59,31 @@
                                 <dt class="font-15">{{'billing.solfac.project' | translate }}: </dt><dd class="font-15">{{model.project}}</dd>
                                 <dt class="font-15">{{'billing.solfac.userApplicant' | translate }}: </dt><dd class="font-15">{{model.userApplicantName}}</dd>
                             </dl>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.celphone' | translate }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="model.celphone">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.currency' | translate }}</label>
+                                <select class="form-control" [(ngModel)]="model.currencyId" (ngModelChange)="setCurrencySymbol(model.currencyId)">
+                                    <option *ngFor="let currency of currencies" [value]="currency?.value">{{currency?.text}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="model.remito">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.invoice' | translate }}</label>
+                                <select id="invoices" select2 multiple class="form-control m-b">
+                                    <option *ngFor="let invoice of invoices" [value]="invoice?.value">{{invoice?.text}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -96,15 +104,6 @@
                                 <label class="control-label">{{'billing.solfac.documentType' | translate }}</label>
                                 <select class="form-control m-b" [(ngModel)]="model.documentType">
                                     <option *ngFor="let docType of documentTypes" [value]="docType?.value">{{docType?.text}}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-4" *ngIf="model.remito">
-                            <div class="form-group">
-                                <label class="control-label">{{'billing.solfac.invoice' | translate }}</label>
-                                <select id="invoices" select2 multiple class="form-control m-b">
-                                    <option *ngFor="let invoice of invoices" [value]="invoice?.value">{{invoice?.text}}</option>
                                 </select>
                             </div>
                         </div>
