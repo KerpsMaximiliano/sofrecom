@@ -94,7 +94,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 {
                     try
                     {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault():O}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}&InvoicingDate={solfac.InvoiceDate.GetValueOrDefault():O}&InvoicingNumber={solfac.InvoiceCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
                         response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();
