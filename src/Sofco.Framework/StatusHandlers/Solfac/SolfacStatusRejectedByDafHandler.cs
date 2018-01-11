@@ -67,9 +67,9 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        private string GetRecipients(Model.Models.Billing.Solfac solfac)
+        private string GetRecipients(Model.Models.Billing.Solfac solfac, string mailCdg)
         {
-            return solfac.UserApplicant.Email;
+            return $"{solfac.UserApplicant.Email};{mailCdg}";
         }
 
         public string GetSuccessMessage()
@@ -113,9 +113,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
+            var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
+
             var subject = GetSubjectMail(solfac);
             var body = GetBodyMail(solfac, emailConfig.SiteUrl);
-            var recipients = GetRecipients(solfac);
+            var recipients = GetRecipients(solfac, mailCdg);
 
             mailSender.Send(recipients, subject, body);
         }
