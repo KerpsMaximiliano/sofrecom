@@ -81,6 +81,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status, InvoiceCode = parameters.InvoiceCode, InvoiceDate = parameters.InvoiceDate };
             unitOfWork.SolfacRepository.UpdateStatusAndInvoice(solfacToModif);
             solfac.InvoiceDate = parameters.InvoiceDate;
+            solfac.InvoiceCode = parameters.InvoiceCode;
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
