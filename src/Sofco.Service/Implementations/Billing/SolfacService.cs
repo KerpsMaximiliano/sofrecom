@@ -554,6 +554,16 @@ namespace Sofco.Service.Implementations.Billing
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
+            try
+            {
+                crmInvoiceService.UpdateHitoInvoice(unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id), parameters);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
+
             return response;
         }
 

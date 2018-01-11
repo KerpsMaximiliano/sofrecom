@@ -12,6 +12,7 @@ using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
+using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Helpers;
 using Sofco.Model.Models.Billing;
@@ -121,6 +122,23 @@ namespace Sofco.Framework.CrmServices
                 try
                 {
                     var stringContent = new StringContent($"StatusCode={statusCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex);
+                }
+            }
+        }
+
+        public void UpdateHitoInvoice(IList<Hito> hitos, SolfacStatusParams parameters)
+        {
+            foreach (var hito in hitos)
+            {
+                try
+                {
+                    var stringContent = new StringContent($"InvoicingDate={parameters.InvoiceDate.GetValueOrDefault():O}&InvoicingNumber={parameters.InvoiceCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
 
                     client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
                 }
