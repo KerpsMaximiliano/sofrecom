@@ -86,11 +86,16 @@ namespace Sofco.Service.Implementations.Jobs
 
             var storedEmployees = unitOfWork.EmployeeRepository.GetByEmployeeNumber(numbers);
 
+            var news = unitOfWork.EmployeeSyncActionRepository.GetAll();
+
             var newEmployees = new List<Employee>();
 
             foreach (var employee in employees)
             {
                 var employeeNumber = employee.EmployeeNumber;
+
+                // Si ya hay una novedad de ese empleado
+                if(news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.New)) continue;
 
                 var isNew = storedEmployees.All(s => s.EmployeeNumber != employeeNumber);
 
@@ -137,9 +142,14 @@ namespace Sofco.Service.Implementations.Jobs
 
             var endEmployees = new List<Employee>();
 
+            var news = unitOfWork.EmployeeSyncActionRepository.GetAll();
+
             foreach (var employee in employees)
             {
                 var employeeNumber = employee.EmployeeNumber;
+
+                // Si ya hay una novedad de ese empleado
+                if (news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.Delete)) continue;
 
                 var storedEmployee = storedEmployees.FirstOrDefault(s => s.EmployeeNumber == employeeNumber);
                 if (storedEmployee != null 
