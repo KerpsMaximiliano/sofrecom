@@ -46,17 +46,19 @@ namespace Sofco.Data.Billing
 
         public IList<CrmProjectHito> GetHitos(string projectId, bool reload)
         {
-            if (reload)
-            {
-                var hitos = GetHitosFromCrm(projectId);
-                cacheManager.SetHashList(string.Format(HitosCacheKey, projectId), hitos, x => x.Id, cacheExpire);
-                return hitos;
-            }
+            return GetHitosFromCrm(projectId);
 
-            return cacheManager.GetHashList(string.Format(HitosCacheKey, projectId),
-                () => GetHitosFromCrm(projectId),
-                x => x.Id,
-                cacheExpire);
+            //if (reload)
+            //{
+            //    var hitos = GetHitosFromCrm(projectId);
+            //    cacheManager.SetHashList(string.Format(HitosCacheKey, projectId), hitos, x => x.Id, cacheExpire);
+            //    return hitos;
+            //}
+
+            //return cacheManager.GetHashList(string.Format(HitosCacheKey, projectId),
+            //    () => GetHitosFromCrm(projectId),
+            //    x => x.Id,
+            //    cacheExpire);
         }
 
         private IList<CrmProjectHito> GetHitosFromCrm(string projectId)
