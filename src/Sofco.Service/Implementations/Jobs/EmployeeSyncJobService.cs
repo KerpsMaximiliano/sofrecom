@@ -95,7 +95,7 @@ namespace Sofco.Service.Implementations.Jobs
                 var employeeNumber = employee.EmployeeNumber;
 
                 // Si ya hay una novedad de ese empleado
-                if(news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.New)) continue;
+                if(news != null && news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.New)) continue;
 
                 var isNew = storedEmployees.All(s => s.EmployeeNumber != employeeNumber);
 
@@ -149,7 +149,7 @@ namespace Sofco.Service.Implementations.Jobs
                 var employeeNumber = employee.EmployeeNumber;
 
                 // Si ya hay una novedad de ese empleado
-                if (news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.Delete)) continue;
+                if (news != null && news.Any(x => x.EmployeeNumber == employeeNumber && x.Status == EmployeeSyncActionStatus.Delete)) continue;
 
                 var storedEmployee = storedEmployees.FirstOrDefault(s => s.EmployeeNumber == employeeNumber);
                 if (storedEmployee != null 
