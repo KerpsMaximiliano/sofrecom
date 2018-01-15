@@ -27,8 +27,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "RRHH ha confirmado la baja del siguiente recurso </br></br>" +
-                                                "Legajo: {0}" +
-                                                "Nombre: {1}" +
+                                                "Legajo: {0}</br>" +
+                                                "Nombre: {1}</br>" +
                                                 "Fecha de baja: {2} </br></br>" +
                                                 "Muchas Gracias" +
                                             "</span>" +
