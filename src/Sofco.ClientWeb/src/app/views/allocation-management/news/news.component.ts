@@ -60,11 +60,11 @@ export class NewsComponent implements OnInit, OnDestroy {
         if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
     }
 
-    showConfirmDelete(news, index){
+    showConfirmCancel(news, index){
         this.newsToDelete = news;
         this.indexToDelete = index;
         this.confirmModal.show();
-        this.confirm = this.delete;
+        this.confirm = this.cancel;
     }
 
     showConfirmAdd(news, index){
@@ -72,6 +72,13 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToDelete = index;
         this.confirmModal.show();
         this.confirm = this.add;
+    }
+
+    showConfirmDelete(news, index){
+        this.newsToDelete = news;
+        this.indexToDelete = index;
+        this.confirmModal.show();
+        this.confirm = this.delete;
     }
 
     confirm(){ }
@@ -93,10 +100,27 @@ export class NewsComponent implements OnInit, OnDestroy {
         });
     }
 
-    delete(){
+    cancel(){
         this.messageService.showLoading();
 
         this.getAllSubscrip = this.employeeService.deleteNews(this.newsToDelete.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            this.model.splice(this.indexToDelete, 1);
+
+            this.messageService.closeLoading();
+            this.confirmModal.hide();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    delete(){
+        this.messageService.showLoading();
+
+        this.getAllSubscrip = this.employeeService.delete(this.newsToDelete.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToDelete, 1);

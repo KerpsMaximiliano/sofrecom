@@ -108,14 +108,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.SaveSuccess);
-
-                SendMail(analytic, response);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
             }
+
+            SendMail(analytic, response);
 
             return response;
         }

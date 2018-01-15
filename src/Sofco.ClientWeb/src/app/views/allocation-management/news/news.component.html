@@ -38,7 +38,8 @@
                         <td> <span class="label label-{{news.status}}">{{ news.status | translate }}</span></td>
                         <td>
                             <button class="btn btn-primary btn-xs" *ngIf="news.status == 'New'" (click)="showConfirmAdd(news, i)">{{'ACTIONS.ADD' | translate }}</button>
-                            <button class="btn btn-danger btn-xs" (click)="showConfirmDelete(news, i)">{{'ACTIONS.cancel' | translate }}</button>
+                            <button class="btn btn-danger btn-xs" *ngIf="news.status == 'Delete'" (click)="showConfirmDelete(news, i)">{{'ACTIONS.unsubscribe' | translate }}</button>
+                            <button class="btn btn-success btn-xs" (click)="showConfirmCancel(news, i)">{{'ACTIONS.cancel' | translate }}</button>
                         </td>
                     </tr>
                 </tbody>

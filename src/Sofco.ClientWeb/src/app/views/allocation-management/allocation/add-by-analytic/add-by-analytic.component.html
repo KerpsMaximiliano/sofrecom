@@ -27,11 +27,11 @@
     </div>
  
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                                 <select select2 class="form-control" id="employeeId">
@@ -45,7 +45,7 @@
                                 <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
                                 <input type="number" class="form-control input-sm" min="1" max="36" [(ngModel)]="monthQuantity">

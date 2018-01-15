@@ -20,7 +20,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            return base.GetAll();
+            return context.Employees.Where(x => x.EndDate == null).ToList();
         }
 
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
@@ -28,6 +28,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees
                 .Where(s => employeeNumbers.Contains(s.EmployeeNumber))
                 .ToList();
+        }
+
+        public Employee GetByEmployeeNumber(string employeeNumber)
+        {
+            return context.Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
+        }
+
+        public void UpdateEndDate(Employee employeeToChange)
+        {
+            context.Entry(employeeToChange).Property("Modified").IsModified = true;
+            context.Entry(employeeToChange).Property("EndDate").IsModified = true;
         }
 
         public void Save(List<Employee> employees)

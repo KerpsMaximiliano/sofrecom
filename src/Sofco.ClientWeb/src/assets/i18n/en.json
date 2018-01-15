@@ -450,7 +450,8 @@
         "confirm": "Confirm",
         "title": "Actions",
         "print": "Print",
-        "export": "Export"
+        "export": "Export",
+        "unsubscribe": "Unsubscribe"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

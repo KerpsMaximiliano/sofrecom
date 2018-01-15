@@ -450,7 +450,8 @@
         "confirm": "Confirmar",
         "title": "Acciones",
         "print": "Imprimir",
-        "export": "Exportar"
+        "export": "Exportar",
+        "unsubscribe": "Dar de baja"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

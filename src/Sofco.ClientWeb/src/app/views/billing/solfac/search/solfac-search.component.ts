@@ -103,10 +103,16 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
+        this.messageService.showLoading();
+
         this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
-          this.customers = data;
+            this.messageService.closeLoading();
+            this.customers = data;
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err)
+        });
     }
 
     customerChange(){

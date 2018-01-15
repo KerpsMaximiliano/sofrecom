@@ -30,5 +30,15 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Employee.WrongStatus);
             }
         }
+
+        public static void ValidateDeleteStatus(Response<EmployeeSyncAction> response)
+        {
+            if (response.Data == null) return;
+
+            if (response.Data.Status == EmployeeSyncActionStatus.New)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.WrongStatus);
+            }
+        }
     }
 }

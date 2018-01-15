@@ -1,5 +1,6 @@
 {
     "notFound": "Recurso no encontrado",
     "added": "Empleado creado exitosamente",
-    "wrongStatus": "No se puede realizar la acción con el estado actual del registro"
+    "wrongStatus": "No se puede realizar la acción con el estado actual del registro",
+    "deleted": "El empleado ha sido de baja correctamente"
 }

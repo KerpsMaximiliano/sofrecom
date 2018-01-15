@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
@@ -31,6 +32,23 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public bool ExistTitle(string analyticTitle)
         {
             return context.Analytics.Any(x => x.Title.Equals(analyticTitle));
+        }
+
+        public IList<Analytic> GetAnalyticsByEmployee(int employeeId)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId)
+                .Include(x => x.Analytic).ThenInclude(x => x.Manager)
+                .Select(x => new Analytic
+                {
+                    Id = x.Id,
+                    Manager = new User
+                    {
+                        Id = x.Analytic.Manager.Id,
+                        Email = x.Analytic.Manager.Email
+                    }
+                })
+                .ToList();
         }
     }
 }

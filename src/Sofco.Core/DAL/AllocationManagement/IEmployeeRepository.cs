@@ -18,5 +18,8 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<Employee> GetByEndDate(DateTime today);
 
         List<Employee> GetByEmployeeNumber(string[] employeeNumbers);
+
+        Employee GetByEmployeeNumber(string employeeNumber);
+        void UpdateEndDate(Employee employeeToChange);
     }
 }
