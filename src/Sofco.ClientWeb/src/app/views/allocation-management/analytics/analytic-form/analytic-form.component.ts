@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { Router } from "@angular/router";
@@ -16,12 +16,14 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     public options: any;
     public costCenters: any;
-
+ 
     public model: any = {};
 
     getOptionsSubscrip: Subscription;
     getCostCenterOptionsSubscrip: Subscription;
     getNewTitleSubscrip: Subscription;
+
+    @Input() mode: string;
 
     public datePickerOptions;
 
@@ -81,6 +83,8 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     }
 
     costCenterChange(){
+        if(this.mode == 'edit') return;
+
         this.getNewTitleSubscrip = this.analyticService.getNewTitle(this.model.costCenterId).subscribe(
             response => {
                 this.model.title = response.data;

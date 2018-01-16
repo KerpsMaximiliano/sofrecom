@@ -38,6 +38,7 @@ import { AddCostCenterComponent } from 'app/views/allocation-management/cost-cen
 import { ListCostCenterComponent } from 'app/views/allocation-management/cost-center/list/list-cost-center.component';
 import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/new/new-analytic.component';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
+import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -123,9 +124,10 @@ export const ROUTES:Routes = [
     children: [
       { path:"analytics", 
       children: [
-        { path:"", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
+        { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
-        { path:":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
+        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
+        { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {
         path: "resources", 

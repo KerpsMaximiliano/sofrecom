@@ -4,13 +4,13 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.title' | translate }}</label>
-                    <input type="text" class="form-control" id="title" [(ngModel)]="model.title" data-mask="999-*9999">
+                    <input type="text" class="form-control" id="title" [(ngModel)]="model.title" data-mask="999-*9999" [disabled]="mode == 'edit'">
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'contracts.costCenter.title' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.costCenterId" (ngModelChange)="costCenterChange()">
+                    <select class="form-control m-b" [(ngModel)]="model.costCenterId" (ngModelChange)="costCenterChange()" [disabled]="mode == 'edit'">
                         <option *ngFor="let costCenter of costCenters" [value]="costCenter?.id">{{costCenter?.text}}</option>
                     </select>
                 </div>

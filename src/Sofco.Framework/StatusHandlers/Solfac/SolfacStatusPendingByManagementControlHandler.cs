@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;

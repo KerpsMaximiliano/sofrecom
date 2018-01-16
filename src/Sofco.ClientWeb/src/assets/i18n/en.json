@@ -354,7 +354,7 @@
                 "name": "Name",
                 "senority": "Senority",
                 "profile": "Profile",
-                "billeable": "Billeable (%)"
+                "technology": "Technology"
             }
         },
         "news": {
@@ -373,6 +373,7 @@
             "title": "Analytics",
             "list": "List",
             "new": "New Analytic",
+            "edit": "Edit Analytic",
             "add": {
                 "title": "Title",
                 "startDate":"Start Date",

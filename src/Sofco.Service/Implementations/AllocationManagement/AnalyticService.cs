@@ -146,6 +146,34 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<Analytic> Update(Analytic analytic)
+        {
+            var response = new Response<Analytic>();
+
+            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
+            AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
+            AnalyticValidationHelper.CheckDirector(response, analytic);
+            AnalyticValidationHelper.CheckCurrency(response, analytic);
+            AnalyticValidationHelper.CheckDates(response, analytic);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.AnalyticRepository.Update(analytic);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Analytic.UpdateSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void SendMail(Analytic analytic, Response response)
         {
             try

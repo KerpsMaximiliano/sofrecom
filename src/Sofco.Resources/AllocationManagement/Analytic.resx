@@ -150,6 +150,9 @@
   <data name="TitleIsRequired" xml:space="preserve">
     <value>allocationManagement/analytic.titleIsRequired</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>allocationManagement/analytic.updateSuccess</value>
+  </data>
   <data name="WrongDates" xml:space="preserve">
     <value>allocationManagement/analytic.wrongDates</value>
   </data>

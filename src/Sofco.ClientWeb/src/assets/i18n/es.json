@@ -354,7 +354,7 @@
                 "name": "Nombre",
                 "senority": "Senority",
                 "profile": "Perfil",
-                "billeable": "Facturable (%)"
+                "technology": "Tecnologia"
             }
         },
         "news": {
@@ -373,6 +373,7 @@
             "title": "Analiticas",
             "list": "Listado",
             "new": "Alta de Analitica",
+            "edit": "Editar Analitica",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",

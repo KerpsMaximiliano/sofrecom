@@ -30,7 +30,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
     }
-
+ 
     ngOnInit(): void {
         this.getAllSubscrip = this.analyticService.getAll().subscribe(data => {
             this.model = data;
@@ -42,6 +42,10 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+    }
+
+    gotToEdit(analytic){
+        this.router.navigate([`/allocationManagement/analytics/${analytic.id}/edit`]);
     }
 
     goToAssignResource(analytic){

@@ -159,6 +159,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to allocationManagement/analytic.wrongDates.
         /// </summary>
         public static string WrongDates {

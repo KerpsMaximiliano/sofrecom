@@ -26,7 +26,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private const string MailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
-                                                "RRHH ha confirmado la baja del siguiente recurso </br></br>" +
+                                                "RRHH ha confirmado la baja del siguiente recurso: </br></br>" +
                                                 "Legajo: {0}</br>" +
                                                 "Nombre: {1}</br>" +
                                                 "Fecha de baja: {2} </br></br>" +

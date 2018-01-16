@@ -34,14 +34,19 @@
                         <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
+                        <th>{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let analytic of model" class="pointer" (click)="goToAssignResource(analytic)">
+                    <tr *ngFor="let analytic of model">
                         <td>{{ analytic.title}}</td>
                         <td>{{ analytic.name}}</td>
                         <td>{{ analytic.clientExternalName}}</td>
                         <td>{{ analytic.serviceName}}</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" (click)="gotToEdit(analytic)">{{'ACTIONS.EDIT' | translate }}</button>
+                            <button class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)">{{'ACTIONS.assign' | translate }}</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>       

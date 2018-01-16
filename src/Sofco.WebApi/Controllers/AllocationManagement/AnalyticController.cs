@@ -35,7 +35,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new AnalyticSearchViewModel(response.Data));
+            return Ok(new AnalyticViewModel(response.Data));
         }
 
         [HttpGet("formOptions")]
@@ -62,6 +62,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Post([FromBody] AnalyticViewModel model)
         {
             var response = analyticService.Add(model.CreateDomain());
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] AnalyticEditViewModel model)
+        {
+            var response = analyticService.Update(model.CreateDomain());
 
             if (response.HasErrors()) return BadRequest(response);
 

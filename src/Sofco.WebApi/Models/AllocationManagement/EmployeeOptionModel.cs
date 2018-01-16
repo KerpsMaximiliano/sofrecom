@@ -10,7 +10,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             Name = $"{domain.EmployeeNumber} - {domain.Name}";
             Senority = domain.Seniority;
             Profile = domain.Profile;
-            BillingPercentage = domain.BillingPercentage;
+            Technology = domain.Technology;
         }
 
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace Sofco.WebApi.Models.AllocationManagement
 
         public string Profile { get; set; }
 
-        public decimal BillingPercentage { get; set; }
+        public string Technology { get; set; }
     }
 }

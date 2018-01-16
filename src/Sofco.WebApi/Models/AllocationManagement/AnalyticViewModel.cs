@@ -7,6 +7,46 @@ namespace Sofco.WebApi.Models.AllocationManagement
 {
     public class AnalyticViewModel : BaseEntity
     {
+        public AnalyticViewModel()
+        {
+            
+        }
+
+        public AnalyticViewModel(Analytic domain)
+        {
+            Id = domain.Id;
+            Title = domain.Title;
+            Name = domain.Name;
+            ClientExternalId = domain.ClientExternalId;
+            ClientExternalName = domain.ClientExternalName;
+            ContractNumber = domain.ContractNumber;
+            Service = domain.Service;
+            SoftwareLawId = domain.SoftwareLawId;
+            ActivityId = domain.ActivityId;
+            StartDateContract = domain.StartDateContract;
+            EndDateContract = domain.EndDateContract;
+            CommercialManagerId = domain.CommercialManagerId;
+            DirectorId = domain.DirectorId;
+            ManagerId = domain.ManagerId;
+            EvalProp = domain.EvalProp;
+            Proposal = domain.Proposal;
+            CurrencyId = domain.CurrencyId;
+            AmountEarned = domain.AmountEarned;
+            AmountProject = domain.AmountProject;
+            SolutionId = domain.SolutionId;
+            TechnologyId = domain.TechnologyId;
+            Description = domain.Description;
+            ProductId = domain.ProductId;
+            ClientProjectTfs = domain.ClientProjectTfs;
+            ClientGroupId = domain.ClientGroupId;
+            PurchaseOrderId = domain.PurchaseOrderId;
+            ServiceTypeId = domain.ServiceTypeId;
+            BugsAccess = domain.BugsAccess;
+            UsersQv = domain.UsersQv;
+            CostCenterId = domain.CostCenterId;
+            Status = domain.Status;
+        }
+
         public string Title { get; set; }
 
         public string Name { get; set; }
@@ -66,11 +106,24 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public bool BugsAccess { get; set; }
 
         public string UsersQv { get; set; }
+        
+        public AnalyticStatus Status { get; set; }
 
-        public Analytic CreateDomain()
+        public virtual Analytic CreateDomain()
         {
             var domain = new Analytic();
 
+            FillData(domain);
+
+            domain.CreationDate = DateTime.UtcNow;
+            domain.Status = AnalyticStatus.Open;
+
+            return domain;
+        }
+
+        protected void FillData(Analytic domain)
+        {
+            domain.Id = Id;
             domain.Title = Title;
             domain.Name = Name;
             domain.ClientExternalId = ClientExternalId;
@@ -100,9 +153,19 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.BugsAccess = BugsAccess;
             domain.UsersQv = UsersQv;
             domain.CostCenterId = CostCenterId;
+        }
+    }
 
-            domain.CreationDate = DateTime.UtcNow;
-            domain.Status = AnalyticStatus.Open;
+    public class AnalyticEditViewModel : AnalyticViewModel
+    {
+        public override Analytic CreateDomain()
+        {
+            var domain = new Analytic();
+
+            FillData(domain);
+
+            domain.CreationDate = CreationDate;
+            domain.Status = Status;
 
             return domain;
         }

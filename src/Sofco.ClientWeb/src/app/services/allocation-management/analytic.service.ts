@@ -35,4 +35,8 @@ export class AnalyticService {
   add(model){
     return this.http.post(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
   }
+
+  update(model){
+    return this.http.put(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
+  }
 }
