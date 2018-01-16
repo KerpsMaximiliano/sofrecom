@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -42,7 +41,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                                               "</span>" +
                                               "</font>";
 
-        private const string MailSubjectToUser = "REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}";
+        private const string MailSubjectToUser = "SOLFAC: INICIO PROCESO - {0} - {1} - {2} - {3}";
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {

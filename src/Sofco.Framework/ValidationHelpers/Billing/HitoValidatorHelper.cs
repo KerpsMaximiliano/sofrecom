@@ -36,7 +36,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateMonth(HitoSplittedParams hito, Response response)
         {
-            if (hito.Month <= 0 || hito.Month > 12)
+            if (hito.Month <= 0)
             {
                 response.Messages.Add(new Message(Resources.Billing.Project.MonthRequired, MessageType.Error));
             }
