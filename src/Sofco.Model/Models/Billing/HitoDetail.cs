@@ -7,7 +7,7 @@ namespace Sofco.Model.Models.Billing
     public class HitoDetail : BaseEntity, IEntityDate
     {
         public string Description { get; set; }
-        public short Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Total { get; set; }
 

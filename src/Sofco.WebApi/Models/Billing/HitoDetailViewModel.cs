@@ -28,7 +28,7 @@ namespace Sofco.WebApi.Models.Billing
         public string Description { get; set; }
 
         [Required(ErrorMessage = "billing/solfac.hitoQuantity")]
-        public short? Quantity { get; set; }
+        public decimal? Quantity { get; set; }
 
         [Required(ErrorMessage = "billing/solfac.hitoUnitPriceRequired")]
         public decimal? UnitPrice { get; set; }
