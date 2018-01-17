@@ -452,7 +452,8 @@
         "title": "Acciones",
         "print": "Imprimir",
         "export": "Exportar",
-        "unsubscribe": "Dar de baja"
+        "unsubscribe": "Dar de baja",
+        "searchAll": "Buscar Todo"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

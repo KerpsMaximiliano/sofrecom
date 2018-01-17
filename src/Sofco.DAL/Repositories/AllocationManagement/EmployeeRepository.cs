@@ -3,7 +3,10 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -39,6 +42,25 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             context.Entry(employeeToChange).Property("Modified").IsModified = true;
             context.Entry(employeeToChange).Property("EndDate").IsModified = true;
+        }
+
+        public ICollection<Employee> Search(EmployeeSearchParams parameters)
+        {
+            IQueryable<Employee> query = context.Employees;
+
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
+                query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.Profile))
+                query = query.Where(x => x.Profile != null && x.Profile.ToLowerInvariant().Contains(parameters.Profile.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.Seniority))
+                query = query.Where(x => x.Seniority != null && x.Seniority.ToLowerInvariant().Contains(parameters.Seniority.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.Technology))
+                query = query.Where(x => x.Technology != null && x.Technology.ToLowerInvariant().Contains(parameters.Technology.ToLowerInvariant()));
+
+            return query.ToList();
         }
 
         public void Save(List<Employee> employees)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
+using Sofco.Model.DTO;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
@@ -18,10 +19,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             employeeService = employeeServ;
         }
 
-        [HttpGet("options")]
+        [HttpGet]
         public IActionResult Get()
         {
-            var model = employeeService.GetAll().Select(x => new EmployeeOptionModel(x));
+            var model = employeeService.GetAll().Select(x => new EmployeeViewModel(x));
 
             return Ok(model);
         }
@@ -34,7 +35,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new EmployeeOptionModel(response.Data));
+            return Ok(new EmployeeViewModel(response.Data));
+        }
+
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] EmployeeSearchParams parameters)
+        {
+            var model = employeeService.Search(parameters).Select(x => new EmployeeViewModel(x));
+
+            return Ok(model);
         }
 
         [HttpGet("news")]

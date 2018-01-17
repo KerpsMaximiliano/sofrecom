@@ -2,9 +2,9 @@
 
 namespace Sofco.WebApi.Models.AllocationManagement
 {
-    public class EmployeeOptionModel
+    public class EmployeeViewModel
     {
-        public EmployeeOptionModel(Employee domain)
+        public EmployeeViewModel(Employee domain)
         {
             Id = domain.Id;
             Name = $"{domain.EmployeeNumber} - {domain.Name}";

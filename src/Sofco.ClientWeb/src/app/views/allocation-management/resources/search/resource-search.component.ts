@@ -16,12 +16,18 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
-    public loading:  boolean = true;
-    public loadingResources: boolean = true;
     public resource: any;
+
+    public searchModel = {
+        name: "",
+        seniority: "",
+        profile: "",
+        technology: ""
+    };
 
     getAllSubscrip: Subscription;
     getAllEmployeesSubscrip: Subscription;
+    searchSubscrip: Subscription;
 
     constructor(private router: Router,
                 private menuService: MenuService,
@@ -32,20 +38,68 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.getAllEmployeesSubscrip = this.employeeService.getOptions().subscribe(data => {
-            this.loadingResources = false;
-            this.resources = data;
-            this.dataTableService.init('#resourcesTable', false);
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        this.initGrid();
     }
 
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+        if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
     }
 
     goToAssignAnalytics(resource){
         sessionStorage.setItem("resource", JSON.stringify(resource));
         this.router.navigate([`/allocationManagement/resources/${resource.id}/allocations`]);
+    }
+
+    clean(){
+        this.searchModel.name = "";
+        this.searchModel.profile = "";
+        this.searchModel.seniority = "";
+        this.searchModel.technology = "";
+    }
+
+    searchDisable(){
+        if(!this.searchModel.name && this.searchModel.name == "" &&
+           !this.searchModel.profile && this.searchModel.profile == "" &&
+           !this.searchModel.seniority && this.searchModel.seniority == "" &&
+           !this.searchModel.technology && this.searchModel.technology == ""){
+               return true;
+           }
+
+           return false;
+    }
+
+    search(){
+        this.messageService.showLoading();
+
+        this.getAllEmployeesSubscrip = this.employeeService.search(this.searchModel).subscribe(data => {
+            this.resources = data;
+            this.initGrid();
+            this.messageService.closeLoading();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error)
+        });
+    }
+
+    searchAll(){
+        this.messageService.showLoading();
+
+        this.getAllEmployeesSubscrip = this.employeeService.getAll().subscribe(data => {
+            this.resources = data;
+            this.initGrid();
+            this.messageService.closeLoading();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error)
+        });
+    }
+
+    initGrid(){
+        var options = { selector: "#resourcesTable" };
+        this.dataTableService.destroy(options.selector);
+        this.dataTableService.init2(options);
     }
 }

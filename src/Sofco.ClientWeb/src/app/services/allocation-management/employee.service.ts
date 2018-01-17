@@ -12,12 +12,16 @@ export class EmployeeService {
     this.baseUrl = this.service.UrlApi;
   }
 
-  getOptions() {
-    return this.http.get(`${this.baseUrl}/employees/options`).map((res:Response) => res.json());
+  getAll() {
+    return this.http.get(`${this.baseUrl}/employees`).map((res:Response) => res.json());
   }
 
   getById(id) {
     return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
+  }
+
+  search(model) {
+    return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
   }
 
   getNews(){

@@ -10,6 +10,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -163,6 +164,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             SendMailForUnsubscribe(response, employeeToChange);
 
             return response;
+        }
+
+        public ICollection<Employee> Search(EmployeeSearchParams parameters)
+        {
+            return unitOfWork.EmployeeRepository.Search(parameters);
         }
 
         private void SendMailForUnsubscribe(Response<EmployeeSyncAction> response, Employee employeeToChange)

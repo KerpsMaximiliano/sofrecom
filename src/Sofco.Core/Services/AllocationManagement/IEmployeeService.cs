@@ -1,5 +1,6 @@
 ﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
@@ -12,5 +13,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<EmployeeSyncAction> DeleteNews(int id);
         Response<EmployeeSyncAction> Add(int newsId, string userName);
         Response<EmployeeSyncAction> Delete(int newsId, string userName);
+        ICollection<Employee> Search(EmployeeSearchParams parameters);
     }
 }

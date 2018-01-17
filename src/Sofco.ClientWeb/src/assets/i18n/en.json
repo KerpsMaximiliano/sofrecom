@@ -452,7 +452,8 @@
         "title": "Actions",
         "print": "Print",
         "export": "Export",
-        "unsubscribe": "Unsubscribe"
+        "unsubscribe": "Unsubscribe",
+        "searchAll": "Search All"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
