@@ -171,6 +171,42 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.EmployeeRepository.Search(parameters);
         }
 
+        public Response SendUnsubscribeNotification(string employeeName)
+        {
+            var response = new Response();
+
+            if (string.IsNullOrWhiteSpace(employeeName))
+            {
+                response.AddError(Resources.AllocationManagement.Employee.NameRequired);
+                return response;
+            }
+
+            var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+            const string subject = "NOTIFICACION DE BAJA";
+
+            const string mailBody = "<font size='3'>" +
+                                        "<span style='font-size:12pt'>" +
+                                            "Estimados, </br></br>" +
+                                            "El recurso <strong>{0}</strong> ha informado la solicitud de desvinculación de la empresa </br></br>" +
+                                            "Muchas Gracias" +
+                                        "</span>" +
+                                    "</font>";
+
+            try
+            {
+                var body = string.Format(mailBody, employeeName);
+                mailSender.Send(mailRrhh, subject, body);
+                response.AddSuccess(Resources.Common.MailSent);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSendMail);
+            }
+
+            return response;
+        }
+
         private void SendMailForUnsubscribe(Response<EmployeeSyncAction> response, Employee employeeToChange)
         {
             try

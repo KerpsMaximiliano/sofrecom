@@ -454,7 +454,8 @@
         "export": "Exportar",
         "unsubscribe": "Dar de baja",
         "searchAll": "Buscar Todo",
-        "changeDates": "Cambiar Fechas"
+        "changeDates": "Cambiar Fechas",
+        "notifyUnsubscribe": "Notifcar baja"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

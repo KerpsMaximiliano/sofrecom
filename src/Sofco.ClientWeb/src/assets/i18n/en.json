@@ -439,9 +439,9 @@
         "confirmTitle": "Confirm action",
         "confirmBody": "Are you sure you want to confirm this action?",
         "confirmDelete": "Delete Confirm",
-        "confirmAdd": "Confirmación de alta",
-        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
-        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "confirmAdd": "Confirm Add",
+        "areYouSureConfirmAdd": "Are you sure you want to confirm add?",
+        "areYouSureConfirmDelete": "Are you sure you want to confirm delete?",
         "clonar": "Clone",
         "clean": "Clean",
         "updateBill": "Update Bill",
@@ -454,7 +454,8 @@
         "export": "Export",
         "unsubscribe": "Unsubscribe",
         "searchAll": "Search All",
-        "changeDates": "Change Dates"
+        "changeDates": "Change Dates",
+        "notifyUnsubscribe": "Notify unsubscribe"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

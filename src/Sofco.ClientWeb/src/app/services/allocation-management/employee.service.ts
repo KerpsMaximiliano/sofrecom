@@ -24,19 +24,15 @@ export class EmployeeService {
     return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
   }
 
-  getNews(){
-    return this.http.get(`${this.baseUrl}/employees/news`).map((res:Response) => res.json());
-  }
-
-  deleteNews(id){
-    return this.http.delete(`${this.baseUrl}/employees/news/${id}`).map((res:Response) => res.json());
-  }
-
   add(id){
     return this.http.post(`${this.baseUrl}/employees/${id}`, {}).map((res:Response) => res.json());
   }
 
   delete(id){
     return this.http.delete(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
+  }
+
+  sendUnsubscribeNotification(employeeName){
+    return this.http.post(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, {}).map((res:Response) => res.json());
   }
 }

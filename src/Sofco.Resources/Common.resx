@@ -132,6 +132,9 @@
   <data name="GeneralError" xml:space="preserve">
     <value>common.generalError</value>
   </data>
+  <data name="MailSent" xml:space="preserve">
+    <value>common.mailSent</value>
+  </data>
   <data name="SaveFileError" xml:space="preserve">
     <value>common.saveFileError</value>
   </data>

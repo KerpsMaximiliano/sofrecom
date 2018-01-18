@@ -7,6 +7,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { NewsService } from "app/services/allocation-management/news.service";
 
 @Component({
     selector: 'employee-news',
@@ -35,6 +36,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     constructor(private employeeService: EmployeeService,
                 private router: Router,
+                private newsService: NewsService,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
@@ -44,7 +46,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeService.getNews().subscribe(data => {
+        this.getAllSubscrip = this.newsService.getAll().subscribe(data => {
             this.model = data;
             this.dataTableService.init('#newsTable', false);
             this.messageService.closeLoading();
@@ -103,7 +105,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeService.deleteNews(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.newsService.delete(this.newsToDelete.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToDelete, 1);

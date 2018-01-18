@@ -51,6 +51,19 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/allocationManagement/resources/${resource.id}/allocations`]);
     }
 
+    sendUnsubscribeNotification(resource){
+        this.messageService.showLoading();
+
+        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(resource.name).subscribe(data => {
+            this.messageService.closeLoading();
+            if(data.messages) this.messageService.showMessages(data.messages);
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error)
+        });
+    }
+
     clean(){
         this.searchModel.name = "";
         this.searchModel.profile = "";

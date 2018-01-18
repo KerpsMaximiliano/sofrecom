@@ -13,5 +13,6 @@
     "errorSendMail": "Error sending the mail",
     "exportFileError": "An error occurred while exporting the file",
     "fileNotFound": "File not found",
-    "saveFileError": "An error occurred while saving the file"
+    "saveFileError": "An error occurred while saving the file",
+    "mailSent": "The Email has been sent successfully"
 }

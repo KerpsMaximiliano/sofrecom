@@ -123,6 +123,9 @@
   <data name="Deleted" xml:space="preserve">
     <value>allocationManagement/employee.deleted</value>
   </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>allocationManagement/employee.nameRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/employee.notFound</value>
   </data>

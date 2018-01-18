@@ -46,25 +46,6 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
-        [HttpGet("news")]
-        public IActionResult News()
-        {
-            var news = employeeService.GetNews();
-
-            var newsModel = news.Select(x => new NewsViewModel(x));
-
-            return Ok(newsModel);
-        }
-
-        [HttpDelete("news/{id}")]
-        public IActionResult DeleteNews(int id)
-        {
-            var response = employeeService.DeleteNews(id);
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
 
         [HttpPost("{newsId}")]
         public IActionResult Post(int newsId)
@@ -80,6 +61,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Delete(int newsId)
         {
             var response = employeeService.Delete(newsId, this.GetUserName());
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPost("sendUnsubscribeNotification/{employeeName}")]
+        public IActionResult SendUnsubscribeNotification(string employeeName)
+        {
+            var response = employeeService.SendUnsubscribeNotification(employeeName);
 
             if (response.HasErrors()) return BadRequest(response);
 

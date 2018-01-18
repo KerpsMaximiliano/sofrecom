@@ -2,5 +2,6 @@
     "notFound": "Resource not found",
     "added": "Resource successfully created",
     "wrongStatus": "The action can not be performed with the current status of the row",
-    "deleted": "The employee has been deleted correctly"
+    "deleted": "The employee has been deleted correctly",
+    "nameRequired": "The Name is required"
 } 

@@ -29,6 +29,7 @@ import { AnalyticFormComponent } from 'app/views/allocation-management/analytics
 import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
+import { NewsService } from 'app/services/allocation-management/news.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { EditAnalyticComponent } from 'app/views/allocation-management/analytics
     ICheckModule,
     Ng2ModalModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, NewsService ],
   exports: [],
 })
 
