@@ -670,7 +670,7 @@ namespace Sofco.Service.Implementations.Billing
                         unitOfWork.InvoiceRepository.UpdateStatus(invoice);
                         unitOfWork.InvoiceRepository.UpdateSolfacId(invoice);
 
-                        response.Data.Add(new Invoice { Id = invoice.Id, InvoiceNumber = invoice.InvoiceNumber });
+                        response.Data.Add(new Invoice { Id = invoice.Id, InvoiceNumber = invoice.InvoiceNumber, PdfFileName = invoice.PdfFileName });
                     }
                     else
                     {
