@@ -24,6 +24,8 @@ namespace Sofco.Domain.Crm.Billing
 
         public string OpportunityName { get; set; }
 
+        public string OpportunityNumber { get; set; }
+
         public decimal TotalAmmount { get; set; }
 
         public string ServiceType { get; set; }

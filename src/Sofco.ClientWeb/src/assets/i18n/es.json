@@ -453,7 +453,8 @@
         "print": "Imprimir",
         "export": "Exportar",
         "unsubscribe": "Dar de baja",
-        "searchAll": "Buscar Todo"
+        "searchAll": "Buscar Todo",
+        "changeDates": "Cambiar Fechas"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

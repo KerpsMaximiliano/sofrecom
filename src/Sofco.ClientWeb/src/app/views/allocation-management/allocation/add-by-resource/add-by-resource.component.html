@@ -19,37 +19,26 @@
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight">
-
         <div class="row">
-
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <div class="form-group">
-                            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
-                            <select select2 class="form-control" id="analyticId">
-                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="ibox-footer">
-                        <a class="btn btn-primary pointer" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
-                        <a class="btn btn-success" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
+            <div class="col-sm-8">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="row">
-                            <div class="col-md-5" *ngIf="pmoUser">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+                                    <select select2 class="form-control" id="analyticId">
+                                        <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" *ngIf="pmoUser">
                                 <div class="form-group">
                                     <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
                                     <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
                                     <input type="number" min="1" max="36" class="form-control input-sm" [(ngModel)]="monthQuantity">
@@ -58,11 +47,12 @@
                         </div>
                     </div>
                     <div class="ibox-footer">
-                        <a class="btn btn-primary pointer" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search" ></i></a>
+                        <a class="btn btn-primary pointer" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
+                        <a class="btn btn-primary pointer" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-search" ></i></a>
+                        <a class="btn btn-success" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 

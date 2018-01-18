@@ -453,7 +453,8 @@
         "print": "Print",
         "export": "Export",
         "unsubscribe": "Unsubscribe",
-        "searchAll": "Search All"
+        "searchAll": "Search All",
+        "changeDates": "Change Dates"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

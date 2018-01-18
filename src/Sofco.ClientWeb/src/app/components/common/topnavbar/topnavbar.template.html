@@ -1,15 +1,12 @@
 <div class="row border-bottom">
   <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
 
-    <div class="collapse navbar-collapse navbar-left margin-left-m">
-        <ul class="nav navbar-nav">
-            <li style="padding-top:5px;">
-                <span class="text-m text-muted"><br>{{'HOME.welcome' | translate }}</span>
-            </li>
-        </ul>
+    <div class="navbar-header" style="display: inline-flex">
+        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" (click)="toggleNavigation()"><i class="fa fa-bars"></i> </a>
+        <span class="text-m text-muted"><br>{{'HOME.welcome' | translate }}</span>
     </div>
 
-    <ul class="nav navbar-top-links navbar-right" style="margin-top:8px;">
+    <ul class="nav navbar-top-links navbar-right">
 
       <!--LANGUAGE-->
       <li class="dropdown">
@@ -22,7 +19,7 @@
       <!--USER-->
       <li class="dropdown">
         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
-            <i class="fa fa-user-circle-o text-xl text-success"></i> 
+            <i class="fa fa-user-circle-o text-success"></i> 
             <span class="">{{menuService.currentUser}}</span>
         </a>
         <ul class="dropdown-menu">
