@@ -51,6 +51,10 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/allocationManagement/resources/${resource.id}/allocations`]);
     }
 
+    canSendUnsubscribeNotification(){
+        return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
+    }
+
     sendUnsubscribeNotification(resource){
         this.messageService.showLoading();
 
