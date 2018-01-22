@@ -40,7 +40,7 @@
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-6">
                     <dl class="dl-horizontal">
                         <dt><h3>{{'billing.invoice.status' | translate }}: </h3></dt>
                         <dd><span class="label label-warning font-14">{{ model.invoiceStatus | translate }}</span></dd>
@@ -48,17 +48,19 @@
                         <dt><h3>{{'billing.invoice.invoiceNumber' | translate }}: </h3></dt>
                         <dd><h3 class="text-navy">0000-00000000</h3></dd>
 
-                        <dt class="font-14">{{'billing.invoice.account' | translate }}: </dt>
-                        <dd class="font-14">{{model.accountName}}</dd>
-
                         <dt class="font-14">{{'billing.invoice.service' | translate }}: </dt>
                         <dd class="font-14">{{model.service}}</dd>
 
                         <dt class="font-14">{{'billing.invoice.project' | translate }}: </dt>
                         <dd class="font-14">{{model.project}}</dd>
                     </dl>
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.invoice.account' | translate }}</label>
+                        <input type="text" class="form-control input-sm" [(ngModel)]="model.accountName">
+                    </div>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
+
                     <div class="form-group">
                         <label class="control-label">{{'billing.invoice.cuit' | translate }}</label>
                         <input type="text" class="form-control input-sm" [(ngModel)]="model.cuit">
