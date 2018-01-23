@@ -63,6 +63,12 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.getCustomers();
         this.getUserOptions();
         this.getStatuses();
+
+        var data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'))
+        if(data && data.length > 0){
+            this.data = data;
+            this.initGrid();
+        }
     }
 
     ngOnDestroy(){
@@ -176,26 +182,31 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
                 }      
                 else{
                     this.data = data;
+                    sessionStorage.setItem('lastSolfacQuery', JSON.stringify(data));
                 }      
 
-                var columns = [0, 1, 2, 3, 4, 5, 6];
-                var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
- 
-                var params = {
-                    selector: '#solfacsTable',
-                    columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
-                    columns: columns,
-                    title: title,
-                    withExport: true
-                  }
-
-                this.datatableService.destroy('#solfacsTable');
-                this.datatableService.init2(params);
+                this.initGrid();
             }, 500)
         },
         err => {
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    initGrid(){
+        var columns = [0, 1, 2, 3, 4, 5, 6];
+        var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
+
+        var params = {
+            selector: '#solfacsTable',
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
+            columns: columns,
+            title: title,
+            withExport: true
+          }
+
+        this.datatableService.destroy('#solfacsTable');
+        this.datatableService.init2(params);
     }
 
     clean(){

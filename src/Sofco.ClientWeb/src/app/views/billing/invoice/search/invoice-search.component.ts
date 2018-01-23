@@ -64,6 +64,12 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.getCustomers();
         this.getUserOptions();
         this.getStatuses();
+
+        var data = JSON.parse(sessionStorage.getItem('lastInvoiceQuery'))
+        if(data && data.length > 0){
+            this.data = data;
+            this.initGrid();
+        }
     }
 
     ngOnDestroy(){
@@ -158,13 +164,10 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 }      
                 else{
                     this.data = data;
+                    sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(this.data));
                 }      
 
-                var columns = [0, 1, 2, 3, 4, 5];
-                var title = `REMITOS-${moment(new Date()).format("YYYYMMDD")}`;
-
-                this.datatableService.destroy('#invoiceTable');
-                this.datatableService.initWithExportButtons('#invoiceTable', columns, title);
+               this.initGrid();
             }, 500)
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -172,6 +175,14 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
     showUserApplicantFilter(){
         return this.menuService.userIsDirector || this.menuService.userIsDaf || this.menuService.userIsCdg;
+    }
+
+    initGrid(){
+        var columns = [0, 1, 2, 3, 4, 5];
+        var title = `REMITOS-${moment(new Date()).format("YYYYMMDD")}`;
+
+        this.datatableService.destroy('#invoiceTable');
+        this.datatableService.initWithExportButtons('#invoiceTable', columns, title);
     }
 
     clean(){

@@ -39,11 +39,11 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
         }
 
-        public IList<CrmProjectHito> GetHitosByProject(string projectId, bool reload)
+        public IList<CrmProjectHito> GetHitosByProject(string projectId)
         {
             var hitos = solfacService.GetHitosByProject(projectId);
 
-            var crmProjectHitos = projectData.GetHitos(projectId, reload);
+            var crmProjectHitos = projectData.GetHitos(projectId);
 
             foreach (var hitoCrm in crmProjectHitos)
             {

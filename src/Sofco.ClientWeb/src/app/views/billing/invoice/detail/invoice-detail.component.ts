@@ -157,8 +157,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.showUploader = true;
     }
 
-    goBack(){
+    goToProject(){
         this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
+    }
+
+    goToSearch(){
+        this.router.navigate([`/billing/invoice/search`]);
     }
  
     exportExcel(){
@@ -201,7 +205,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            setTimeout(() => { this.goBack(); }, 1500)
+            setTimeout(() => { this.goToProject(); }, 1500)
         },
         err => this.errorHandlerService.handleErrors(err));
     }

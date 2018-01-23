@@ -7,7 +7,7 @@ namespace Sofco.Core.Services.Billing
 {
     public interface IProjectService
     {
-        IList<CrmProjectHito> GetHitosByProject(string projectId, bool reload);
+        IList<CrmProjectHito> GetHitosByProject(string projectId);
 
         Response<IList<CrmProject>> GetProjects(string serviceId, string getUserMail, string getUserName);
 

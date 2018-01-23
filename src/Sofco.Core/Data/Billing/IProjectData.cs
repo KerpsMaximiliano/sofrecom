@@ -8,6 +8,6 @@ namespace Sofco.Core.Data.Billing
     {
         IList<CrmProject> GetProjects(string serviceId, string userName, string userMail, bool hasDirectorGroup);
 
-        IList<CrmProjectHito> GetHitos(string projectId, bool reload);
+        IList<CrmProjectHito> GetHitos(string projectId);
     }
 }

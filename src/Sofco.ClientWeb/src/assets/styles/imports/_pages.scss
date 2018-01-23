@@ -1010,7 +1010,7 @@ table.issue-tracker tbody tr td {
 /* AGILE BOARD */
 
 .sortable-list {
-  padding: 10px 0;
+  padding: 0px;
 }
 
 .agile-list {
@@ -1022,7 +1022,6 @@ table.issue-tracker tbody tr td {
 
   background: #FAFAFB;
   border: 1px solid #e7eaec;
-  margin: 0 0 10px 0;
   padding: 10px;
   border-radius: 2px;
 }
@@ -1038,6 +1037,10 @@ table.issue-tracker tbody tr td {
 
 .agile-list li.danger-element {
   border-left: 3px solid $red;
+}
+
+.agile-list li.info-element, .agile-list li.warning-element {
+  margin-bottom: 10px;
 }
 
 .agile-list li.info-element {

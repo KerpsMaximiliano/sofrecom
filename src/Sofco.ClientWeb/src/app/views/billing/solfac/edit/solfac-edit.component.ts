@@ -111,6 +111,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
+
             this.getInvoicesOptions(this.model.projectId);
 
             sessionStorage.setItem('customerName', this.model.businessName);

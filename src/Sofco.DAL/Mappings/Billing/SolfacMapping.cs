@@ -12,10 +12,10 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.ClientName).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.BusinessName).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.CelPhone).HasMaxLength(50);
-            builder.Entity<Solfac>().Property(_ => _.ContractNumber).HasMaxLength(50);
-            builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(100);
+            builder.Entity<Solfac>().Property(_ => _.ContractNumber).HasMaxLength(1000);
+            builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(1000);
             builder.Entity<Solfac>().Property(_ => _.ImputationNumber1).HasMaxLength(50);
-            builder.Entity<Solfac>().Property(_ => _.ParticularSteps).HasMaxLength(500);
+            builder.Entity<Solfac>().Property(_ => _.ParticularSteps).HasMaxLength(1000);
             builder.Entity<Solfac>().Property(_ => _.InvoiceCode).HasMaxLength(50).IsRequired(false);
 
             builder.Entity<Solfac>().HasOne(x => x.UserApplicant).WithMany(x => x.Solfacs).HasForeignKey(x => x.UserApplicantId);
@@ -29,13 +29,13 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().HasMany(x => x.Attachments).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
             builder.Entity<Solfac>().HasMany(x => x.Invoices).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
           
-            builder.Entity<SolfacAttachment>().Property(_ => _.Name).HasMaxLength(200);
+            builder.Entity<SolfacAttachment>().Property(_ => _.Name).HasMaxLength(500);
         }
 
         public static void MapHitos(this ModelBuilder builder)
         {
             builder.Entity<Hito>().HasKey(_ => _.Id);
-            builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(100);
+            builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(500);
             builder.Entity<Hito>().Property(_ => _.Currency).HasMaxLength(10);
             builder.Entity<Hito>().Property(_ => _.CurrencyId).HasMaxLength(150);
             builder.Entity<Hito>().Property(_ => _.OpportunityId).HasMaxLength(150);

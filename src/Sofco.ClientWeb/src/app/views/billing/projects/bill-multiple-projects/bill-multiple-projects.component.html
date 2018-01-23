@@ -1,0 +1,53 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.project.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['/billing/customers/']">{{'billing.customer.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{customerName}}</a>
+            </li>
+            <li>
+                <a (click)="goToServices()">{{'billing.service.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{serviceName}}</a>
+            </li>
+            <li class="active">
+                <strong>{{'billing.project.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+
+            <div class="btn-right">
+                <button class="btn btn-primary btn-outline dim" (click)="createSolfac()" [disabled]="!canCreate()"> Crear Solicitud </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let project of projects; let i = index">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 class="text-ellipsis"> {{ project.nombre }} </h5>
+                </div>
+       
+                <hitos-by-project [projectId]="project.id" [index]="i" (selectHitoEvent)="selectHito($event)"></hitos-by-project>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
