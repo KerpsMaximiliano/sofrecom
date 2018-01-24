@@ -353,6 +353,7 @@
             "listTitle": "Resources´s List",
             "title": "Resources",
             "list": "List",
+            "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
             "grid": {
                 "name": "Name",
                 "senority": "Senority",
@@ -458,7 +459,8 @@
         "unsubscribe": "Unsubscribe",
         "searchAll": "Search All",
         "changeDates": "Change Dates",
-        "notifyUnsubscribe": "Notify unsubscribe"
+        "notifyUnsubscribe": "Notify unsubscribe",
+        "goHere": "Enter Here"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

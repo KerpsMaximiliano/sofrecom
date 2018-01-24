@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-12">
-            <h2><i class="fa fa-user text-green"></i> {{ resource?.name }}</h2>
+            <h2><i class="fa fa-user text-green"></i> {{ resource?.employeeNumber }} - {{ resource?.name }}</h2>
             <ol class="breadcrumb">
                 <li>
                     <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -20,7 +20,7 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="row">

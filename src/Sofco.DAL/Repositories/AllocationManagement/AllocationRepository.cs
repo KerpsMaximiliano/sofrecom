@@ -29,6 +29,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(allocation).Property("ReleaseDate").IsModified = true;
         }
 
+        public ICollection<Employee> GetByService(string serviceId)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId))
+                .Select(x => x.Employee)
+                .Distinct()
+                .ToList();
+        }
+
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
+using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -35,6 +36,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate.Date, endDate.Date);
 
             return Ok(model);
+        }
+
+        [HttpGet("service/{serviceId}")]
+        public IActionResult GetByService(string serviceId)
+        {
+            var resources = allocationService.GetByService(serviceId);
+
+            return Ok(resources.Select(x => new EmployeeViewModel(x)));
         }
     }
 }

@@ -21,7 +21,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
  
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="row">
@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                                 <select select2 class="form-control" id="employeeId">
-                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{resource?.name}}</option>
+                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.employeeNumber }} - {{resource?.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -59,8 +59,7 @@
     
     <div class="row">
         <div class="col-md-12">
-            <h2>{{ 'allocationManagement.allocation.resourcesAssigned' | translate }}</h2>
             <resource-timeline #resourceTimeline></resource-timeline>
         </div>
     </div>
-</div>
+</div> 

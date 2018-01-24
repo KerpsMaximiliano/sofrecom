@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
@@ -115,6 +116,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return allocationResponse;
+        }
+
+        public ICollection<Employee> GetByService(string serviceId)
+        {
+            return unitOfWork.AllocationRepository.GetByService(serviceId);
         }
 
         private void SaveAllocation(AllocationDto allocationDto, Response response)

@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{ 'allocationManagement.resources.listTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['/billing/customers/']">{{'billing.customer.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{customerName}}</a>
+            </li>
+            <li>
+                <a (click)="goToServices()">{{'billing.service.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{serviceName}}</a>
+            </li>
+            <li class="active">
+                <strong> {{'allocationManagement.resources.title' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="alert alert-info" *ngIf="resources && resources.length == 0">
+        {{'allocationManagement.resources.empty' | translate }} <a style="color: black" [routerLink]="['/allocationManagement/analytics']">{{'ACTIONS.goHere' | translate }}</a>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let resource of resources">
+            <div class="contact-box">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <i class="fa fa-user fa-3x"></i>
+                        <div class="m-t-xs font-bold">{{ resource.senority }}</div>
+                        <div><label class="label label-info">{{ resource.percentage }}%</label></div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h3><strong>{{ resource.name }}</strong></h3>
+                    <div class="resource-data">
+                        <div>Legajo: {{ resource.employeeNumber }}</div>
+                        <div>{{ resource.profile }}</div>
+                        <div>{{ resource.technology }}</div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

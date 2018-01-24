@@ -23,4 +23,8 @@ export class AllocationService {
   add(model){
     return this.http.post(`${this.baseUrl}/allocations`, model).map((res:Response) => res.json());
   }
+
+  getAllocationsByService(serviceId) {
+    return this.http.get(`${this.baseUrl}/allocations/service/${serviceId}`).map((res:Response) => res.json());
+  }
 }
