@@ -35,6 +35,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     private projectId: string = "";
 
     public solfacId: number = 0;
+    public multipleProjects: boolean = false;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
@@ -76,13 +77,82 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
     }
 
-    setNewModel(){
+    setDataForMultipleProjects(multipleProjects){
+      this.multipleProjects = true;
+      this.projectId = multipleProjects.ids;
+      this.model.contractNumber = multipleProjects.purchaseOrders;
+      this.model.project = multipleProjects.names;
+      this.model.projectId = multipleProjects.ids;
+      this.model.imputationNumber1 = multipleProjects.analytics; 
+      this.model.currencyId = this.getCurrencyId(multipleProjects.currency);
+      this.model.analytic = multipleProjects.analytics;
+      this.model.remito = multipleProjects.remito;
+
+      this.model.hitos = new Array<Hito>();
+      this.model.details = new Array<HitoDetail>();
+
+      multipleProjects.hitos.forEach(hito => {
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
+        this.model.hitos.push(hitoNew);
+
+        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
+        this.model.details.push(detail);
+
+        this.calculateDetail(detail);
+      });
+
+      this.setSolfacType(multipleProjects.hitos);
+
+      this.calculateAmounts();
+    }
+
+    setDataForSingleProject(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
-      var customer = JSON.parse(sessionStorage.getItem("customer"));
 
       this.getInvoicesOptions(project.id);
-
       this.projectId = project.id;
+      this.model.contractNumber = project.purchaseOrder;
+      this.model.project = project.nombre;
+      this.model.projectId = project.id;
+      this.model.imputationNumber1 = project.analytic; 
+      this.model.currencyId = this.getCurrencyId(project.currency);
+      this.model.analytic = project.analytic;
+      this.model.remito = project.remito;
+
+      this.model.hitos = new Array<Hito>();
+      this.model.details = new Array<HitoDetail>();
+
+      var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
+
+      hitos.forEach(hito => {
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
+        this.model.hitos.push(hitoNew);
+
+        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
+        this.model.details.push(detail);
+
+        this.calculateDetail(detail);
+      });
+
+      this.setSolfacType(hitos);
+
+      this.calculateAmounts();
+    }
+
+    setNewModel(){
+      var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
+
+      this.model.totalAmount = 0;
+      this.model.documentType = 1;
+
+      if(multipleProjects){
+        this.setDataForMultipleProjects(multipleProjects)
+      }
+      else{
+        this.setDataForSingleProject();
+      }
+    
+      var customer = JSON.parse(sessionStorage.getItem("customer"));
 
       if(customer){
         this.model.businessName = customer.nombre;
@@ -112,40 +182,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
       this.model.statusId = SolfacStatus[SolfacStatus.SendPending];
-      this.model.contractNumber = project.purchaseOrder;
-      this.model.project = project.nombre;
-      this.model.projectId = project.id;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-      this.model.documentType = 1;
-      this.model.totalAmount = 0;
-      this.model.imputationNumber1 = project.analytic; 
       this.model.imputationNumber3 = 1;
-      this.model.currencyId = this.getCurrencyId(project.currency);
-      this.model.analytic = project.analytic;
       this.model.customerId = sessionStorage.getItem("customerId");
       this.model.serviceId = sessionStorage.getItem("serviceId");
       this.model.service = sessionStorage.getItem("serviceName");
-      this.model.remito = project.remito;
-
-      this.model.hitos = new Array<Hito>();
-      this.model.details = new Array<HitoDetail>();
-
-      var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
-
-      hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, project.id, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
-        this.model.hitos.push(hitoNew);
-
-        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
-        this.model.details.push(detail);
-
-        this.calculateDetail(detail);
-      });
-
-      this.setSolfacType(hitos);
-
-      this.calculateAmounts();
 
       if(Cookie.get('userInfo')){
         var userApplicant = JSON.parse(Cookie.get('userInfo'));
@@ -221,6 +263,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
           this.messageService.closeLoading();
 
           if(data.messages) this.messageService.showMessages(data.messages);
+          sessionStorage.removeItem('hitosSelected');
+          sessionStorage.removeItem('multipleProjects');
 
           setTimeout(() => {
             this.router.navigate([`/billing/solfac/${data.data.id}/edit`])
@@ -260,7 +304,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     cancel(){
-      this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
+      sessionStorage.removeItem('hitosSelected');
+      sessionStorage.removeItem('multipleProjects');
+
+      if(this.multipleProjects){
+        this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects`]);
+      }
+      else{
+        this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
+      }
     }
 
     setSolfacType(hitos:Array<any>) {
@@ -296,7 +348,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       
       this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.value));
 
-      if(!allowedValues.includes(this.model.documentType.toString()))
+      if(this.documentTypes.length > 0 && !allowedValues.includes(this.model.documentType.toString()))
       {
         this.model.documentType = Number(allowedValues[0]);
       }

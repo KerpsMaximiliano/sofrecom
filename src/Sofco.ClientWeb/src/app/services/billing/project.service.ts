@@ -24,8 +24,8 @@ export class ProjectService {
     return this.http.get(`${this.baseUrl}/projects/${serviceId}/options`).map((res:Response) => res.json());
   }
 
-  getHitos(projectId, reload){
-      return this.http.get(`${this.baseUrl}/projects/${projectId}/hitos/reload/${reload}`).map((res:Response) => res.json());
+  getHitos(projectId){
+      return this.http.get(`${this.baseUrl}/projects/${projectId}/hitos`).map((res:Response) => res.json());
   }
 
   getSolfacs(projectId){

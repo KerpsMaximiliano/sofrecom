@@ -28,7 +28,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Solfac> GetByProject(string projectId)
         {
-            return context.Solfacs.Where(x => x.ProjectId == projectId).Include(x => x.DocumentType).ToList();
+            return context.Solfacs.Where(x => x.ProjectId.Contains(projectId)).Include(x => x.DocumentType).ToList();
         }
 
         public Solfac GetByIdWithUser(int id)
@@ -145,7 +145,7 @@ namespace Sofco.DAL.Repositories.Billing
                 query = query.Where(x => x.ServiceId == parameters.ServiceId);
 
             if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
-                query = query.Where(x => x.ProjectId == parameters.ProjectId);
+                query = query.Where(x => x.ProjectId.Contains(parameters.ProjectId));
 
             if (!string.IsNullOrWhiteSpace(parameters.Analytic))
                 query = query.Where(x => x.Analytic.ToLowerInvariant().Equals(parameters.Analytic.ToLowerInvariant()));

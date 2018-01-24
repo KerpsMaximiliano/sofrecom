@@ -195,7 +195,7 @@
     </div>
 </div>
 
-<split-hito #splitHito (hitosReload)="getHitos(true)"></split-hito>
+<split-hito #splitHito (hitosReload)="getHitos()"></split-hito>
 
 <ng2-modal [config]="closeHitoModalConfig" #closeHitoModal (accept)="closeHito()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>

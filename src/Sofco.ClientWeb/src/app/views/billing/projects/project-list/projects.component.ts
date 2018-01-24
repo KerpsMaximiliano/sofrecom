@@ -4,6 +4,7 @@ import { Subscription } from "rxjs/Subscription";
 import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-projects',
@@ -11,7 +12,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
 
-    projects: any[];
+    projects: any[] = new Array();
     getAllSubscrip: Subscription;
     paramsSubscrip: Subscription;
     customerId: string;
@@ -24,6 +25,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
+        private menuService: MenuService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
@@ -71,6 +73,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.router.navigate([`/billing/customers/${this.customerId}/services`]);
     }
 
+    goToBillMultiple(){
+      sessionStorage.setItem('projectsToBillMultiple', JSON.stringify(this.projects));
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/billMultiple`]);
+    }
+
     goToProjectDetail(project){
       sessionStorage.setItem("customerId", this.customerId);
       sessionStorage.setItem("serviceId", this.serviceId);
@@ -85,5 +92,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         case "Dolar": { return "U$D"; }
         case "Euro": { return "€"; }
       }
+    }
+
+    canBillMultiple(){
+      return this.menuService.hasFunctionality('SOLFA', 'MUPRO') && this.projects.length > 1;
     }
 }

@@ -309,3 +309,12 @@ pre {
 .table{
   font-size: 11px;
 }
+
+.hito-selected {
+  background-color: lightblue!important;
+}
+
+.list-hitos{
+  max-height: 310px;
+  overflow-y: auto;
+}

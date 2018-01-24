@@ -20,7 +20,6 @@ namespace Sofco.WebApi.Models.Billing
             StatusName = domain.Status.ToString();
             StatusId = domain.Status;
             Project = domain.Project;
-            ProjectId = domain.ProjectId;
             ImputationNumber1 = domain.ImputationNumber1;
             TotalAmount = domain.TotalAmount;
             ParticularSteps = domain.ParticularSteps;
@@ -48,6 +47,16 @@ namespace Sofco.WebApi.Models.Billing
             ServiceName = domain.Service;
             Integrator = domain.Integrator;
             IntegratorId = domain.IntegratorId;
+
+            if (domain.ProjectId.Contains(";"))
+            {
+                var split = domain.ProjectId.Split(';');
+                ProjectId = split[0];
+            }
+            else
+            {
+                ProjectId = domain.ProjectId;
+            }
 
             if (domain.ImputationNumber != null)
             {

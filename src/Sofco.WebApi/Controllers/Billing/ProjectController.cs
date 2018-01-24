@@ -75,12 +75,12 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet]
-        [Route("{projectId}/hitos/reload/{reload}")]
-        public IActionResult GetHitos(string projectId, bool reload)
+        [Route("{projectId}/hitos")]
+        public IActionResult GetHitos(string projectId)
         {
             try
             {
-                return Ok(projectService.GetHitosByProject(projectId, reload));
+                return Ok(projectService.GetHitosByProject(projectId));
             }
             catch (Exception ex)
             {

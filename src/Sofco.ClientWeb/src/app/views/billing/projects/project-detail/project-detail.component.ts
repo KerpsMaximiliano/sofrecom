@@ -125,9 +125,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getHitos(reload = false){
-        this.getHitosSubscrip = this.service.getHitos(this.projectId, reload).subscribe(d => {
-            this.hitos = d;
+    getHitos(){
+        this.getHitosSubscrip = this.service.getHitos(this.projectId).subscribe(d => {
+            this.hitos = d.map(item => {
+                item.projectId = this.projectId;
+                return item;
+            });
 
             this.initHitosGrid();
         },
@@ -224,6 +227,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     generateSolfac() {
         var hitos = this.getHitosSelected();
         sessionStorage.setItem("hitosSelected", JSON.stringify(hitos));
+        sessionStorage.removeItem('multipleProjects');
         this.router.navigate(["/billing/solfac"]);
     }
 

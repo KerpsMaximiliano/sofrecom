@@ -62,6 +62,9 @@
                         </tbody>
                     </table>        
                 </div>
+                <div class="ibox-footer" *ngIf="canBillMultiple()">
+                    <button type="button" class="btn btn-success" (click)="goToBillMultiple()"> Facturar multiples proyectos </button>
+                </div>
             </div>
         </div>
     </div>

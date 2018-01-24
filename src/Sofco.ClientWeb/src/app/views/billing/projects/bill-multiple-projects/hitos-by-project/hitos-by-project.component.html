@@ -1,0 +1,13 @@
+<div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+    <spinner></spinner>
+
+    <ul class="sortable-list connectList agile-list ui-sortable list-hitos" >
+        <li class="warning-element" *ngFor="let hito of hitos; let i = index" [ngClass]="(hito.selected)?'hito-selected':''" (click)="selectHito(hito, i)">
+            <h5 class="text-ellipsis">{{ hito.name }}</h5>
+            <div class="agile-detail">
+                <span class="pull-right"> {{ getCurrencySymbol(hito.money) }} {{ hito.ammount }} </span>
+                <i class="fa fa-calendar"></i> {{ hito.startDate | date:'dd/MM/yyyy' }}
+            </div>
+        </li>
+    </ul>
+</div>

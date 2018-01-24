@@ -39,6 +39,7 @@ import { ListCostCenterComponent } from 'app/views/allocation-management/cost-ce
 import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/new/new-analytic.component';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
+import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -87,6 +88,7 @@ export const ROUTES:Routes = [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/projects", children: [
             { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },
+            { path: "billMultiple", component: BillMultipleProjectsComponent, canActivate: [AuthGuard] },
             { path: ":projectId", component: ProjectDetailComponent, canActivate: [AuthGuard] },
           ]}, 
         ]}
