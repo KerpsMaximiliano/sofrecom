@@ -20,13 +20,17 @@ export class SolfacAccountControlComponent implements OnInit {
     @Input()
     public integratorProject: any;
 
+    @Input()
+    public callbackAccountDetail: boolean = false;
+
     @Output() 
     public modelChange: EventEmitter<any> = new EventEmitter<any>();
 
     private idKey:string = "value";
     private textKey:string = "text";
 
-    public customers: any[] = new Array<any>();
+    private customers: any[] = new Array<any>();
+    public selected: any;
 
     constructor(private customerService: CustomerService,
         private errorHandlerService: ErrorHandlerService,
@@ -62,7 +66,23 @@ export class SolfacAccountControlComponent implements OnInit {
         $("#accountControl").on('select2:select', function(evt){
             var data = evt.params.data;
             self.model = data.text;
-            self.modelChange.emit(self.model);
+            //self.modelChange.emit(self.model);
+            self.getSelectedDetail(data.id);
+        });
+    }
+
+    getSelectedDetail(id:string) {
+        if(!this.callbackAccountDetail) {
+            this.modelChange.emit(this.model);
+            return;
+        };
+
+        this.customerService.getById(id).subscribe(data => {
+            this.selected = data;
+            this.modelChange.emit(this.model);
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err)
         });
     }
 

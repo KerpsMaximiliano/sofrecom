@@ -12,6 +12,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { CustomerService } from 'app/services/billing/customer.service';
+import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-account-control/solfac-account-control.component';
 declare var $: any;
 
 @Component({
@@ -41,6 +42,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
+
+    @ViewChild('accountControl') accountControl: SolfacAccountControlComponent;
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -200,5 +203,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
 
         return false;
+    }
+
+    onAccountChange(data:any) {
+        var accountDetail = this.accountControl.selected;
+        this.model.cuit = accountDetail.cuit;
+        this.model.address = accountDetail.address;
+        this.model.zipcode = accountDetail.postalCode;
+        this.model.city = accountDetail.city;
+        this.model.province = accountDetail.province;
+        this.model.country = accountDetail.country;
     }
 }

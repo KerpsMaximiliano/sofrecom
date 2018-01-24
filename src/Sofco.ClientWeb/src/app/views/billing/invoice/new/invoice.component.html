@@ -56,7 +56,7 @@
                     </dl>
                     <div class="form-group">
                         <label class="control-label">{{'billing.invoice.account' | translate }}</label>
-                        <input type="text" class="form-control input-sm" [(ngModel)]="model.accountName">
+                        <solfac-account-control #accountControl [integratorProject]="project" [(model)]="model.accountName" [callbackAccountDetail]="true" (modelChange)="onAccountChange($event)"></solfac-account-control>
                     </div>
                 </div>
                 <div class="col-sm-6">
