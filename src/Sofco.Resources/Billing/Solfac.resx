@@ -258,4 +258,7 @@
   <data name="DafRejectedSuccess" xml:space="preserve">
     <value>billing/solfac.dafRejectedSuccess</value>
   </data>
+  <data name="DetailsRequired" xml:space="preserve">
+    <value>billing/solfac.detailsRequired</value>
+  </data>
 </root>

@@ -222,6 +222,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.detailsRequired.
+        /// </summary>
+        public static string DetailsRequired {
+            get {
+                return ResourceManager.GetString("DetailsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/solfac.errorSaveOnHitos.
         /// </summary>
         public static string ErrorSaveOnHitos {

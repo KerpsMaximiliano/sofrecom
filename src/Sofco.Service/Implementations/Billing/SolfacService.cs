@@ -361,6 +361,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<Solfac>();
 
             SolfacValidationHelper.ValidateProvincePercentage(solfac, response);
+            SolfacValidationHelper.ValidateDetails(solfac.Hitos, response);
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);

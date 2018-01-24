@@ -6,6 +6,7 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
@@ -46,6 +47,8 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var response = new Response();
+
+            SolfacValidationHelper.ValidateDetails(solfac.Hitos, response);
 
             if (solfac.Status == SolfacStatus.SendPending || solfac.Status == SolfacStatus.ManagementControlRejected || solfac.Status == SolfacStatus.RejectedByDaf)
             {
