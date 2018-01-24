@@ -246,7 +246,9 @@
             "particularSteps": "Particular steps",
             "addComments": "Enter Reasons for Rejection",
             "addUpdateComments": "Enter the changes that were made",
-            "cannotUpdateSolfac": "Can not modify the request in the current state"
+            "cannotUpdateSolfac": "Can not modify the request in the current state",
+            "integrator": "Integrator",
+            "customers": "Customers"
         },
         "invoice":{
             "title": "Invoice",

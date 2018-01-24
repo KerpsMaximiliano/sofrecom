@@ -52,6 +52,7 @@ import { StatusRejectDafComponent } from 'app/views/billing/solfac/workflow/reje
 import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rightbar/project-rightbar.component';
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { HitosByProjectComponent } from 'app/views/billing/projects/bill-multiple-projects/hitos-by-project/hitos-by-project.component';
+import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-account-control/solfac-account-control.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -60,7 +61,7 @@ import { HitosByProjectComponent } from 'app/views/billing/projects/bill-multipl
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
-                 BillMultipleProjectsComponent, HitosByProjectComponent],
+                 BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
