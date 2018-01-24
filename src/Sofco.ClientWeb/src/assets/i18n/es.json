@@ -107,6 +107,8 @@
             "management": "Listado de Proyectos",
             "edit": "Editar Proyecto",
             "add": "Agregar Proyecto",
+            "createSolfac": "Crear solicitud",
+            "billMultipleProjects": "Facturar multiples proyectos",
             "grid": {
                 "name": "Nombre",
                 "analytic": "Analítica",
@@ -214,6 +216,7 @@
             "invoicesRelated": "Remitos Asociados",
             "hito": "Hito",
             "pdfViewer": "Visualización de PDF",
+            "activity": "Actividad",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"

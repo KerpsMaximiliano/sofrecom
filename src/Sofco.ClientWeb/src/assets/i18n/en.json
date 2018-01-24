@@ -107,6 +107,8 @@
             "management": "List of Projects",
             "edit": "Edit Project",
             "add": "Add Project",
+            "createSolfac": "Create solfac",
+            "billMultipleProjects": "Bill multiple projects",
             "grid": {
                 "name": "Name",
                 "analytic": "Analytic",
@@ -214,6 +216,7 @@
             "invoicesRelated": "Invoices Related",
             "hito": "Milestone",
             "pdfViewer": "PDF Viewer",
+            "activity": "Activity",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"

@@ -32,7 +32,6 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public paymentTerms: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
-    private projectId: string = "";
 
     public solfacId: number;
     public invoices: any[] = new Array<any>();
@@ -276,8 +275,13 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       }
     }
 
-    goToProject(){
-      this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]);
+    goBack(){
+      if(this.model.isMultiple){
+        this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects`]);
+      }
+      else{
+        this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.model.projectId}`]);
+      }
     }
 
     exportPdf(invoice){

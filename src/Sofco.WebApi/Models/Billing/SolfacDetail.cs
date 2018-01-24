@@ -50,10 +50,12 @@ namespace Sofco.WebApi.Models.Billing
             {
                 var split = domain.ProjectId.Split(';');
                 ProjectId = split[0];
+                IsMultiple = true;
             }
             else
             {
                 ProjectId = domain.ProjectId;
+                IsMultiple = false;
             }
 
             if (domain.ImputationNumber != null)
@@ -185,6 +187,8 @@ namespace Sofco.WebApi.Models.Billing
         public bool WithTax { get; set; }
 
         public bool InvoiceRequired { get; set; }
+
+        public bool IsMultiple { get; set; }
 
         public Model.Models.Billing.Solfac CreateDomain()
         {

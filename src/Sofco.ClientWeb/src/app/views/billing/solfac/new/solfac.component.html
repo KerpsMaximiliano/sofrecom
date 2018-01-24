@@ -111,19 +111,19 @@
 
                     <!-- Numero de imputacion-->
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-8">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.imputationNumber' | translate }}</label>
-                                <div class="row">
-                                    <div class="col-lg-7 col-md-7 col-sm-7">
-                                        <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control"> 
-                                    </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-5">
-                                        <select class="form-control m-b" [(ngModel)]="model.imputationNumber3">
-                                            <option *ngFor="let impNumber of imputationNumbers" [value]="impNumber?.value">{{impNumber?.text}}</option>
-                                        </select>
-                                    </div> 
-                                </div>
+                                <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control"> 
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.solfac.activity' | translate }}</label>
+                                <select class="form-control m-b" [(ngModel)]="model.imputationNumber3">
+                                    <option *ngFor="let impNumber of imputationNumbers" [value]="impNumber?.value">{{impNumber?.text}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
