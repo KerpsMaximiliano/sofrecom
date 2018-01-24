@@ -76,5 +76,9 @@ namespace Sofco.Model.Models.Billing
         public ICollection<SolfacAttachment> Attachments { get; set; }
 
         public bool InvoiceRequired { get; set; }
+
+        public string Integrator { get; set; }
+
+        public string IntegratorId { get; set; }
     }
 }
