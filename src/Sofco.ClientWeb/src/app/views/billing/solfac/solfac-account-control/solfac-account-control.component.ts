@@ -95,7 +95,8 @@ export class SolfacAccountControlComponent implements OnInit {
     
         data.forEach(s => {
             let text = s[this.textKey];
-            if(this.integratorProject.integrator != text) {
+            if(this.integratorProject == null 
+                || this.integratorProject.integrator != text) {
                 let selected:boolean = text == selectedOption;
                 result.push({
                     id: s[this.idKey],
