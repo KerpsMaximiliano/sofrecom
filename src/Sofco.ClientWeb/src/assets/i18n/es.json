@@ -355,6 +355,7 @@
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
             "list": "Listado",
+            "recipients": "Destinatarios extra",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
             "grid": {
                 "name": "Nombre",

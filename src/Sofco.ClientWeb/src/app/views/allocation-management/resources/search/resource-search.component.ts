@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router } from "@angular/router";
@@ -6,6 +6,10 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { UserService } from "app/services/admin/user.service";
+
+declare var $: any;
 
 @Component({
     selector: 'resource-search',
@@ -14,9 +18,21 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 
 export class ResourceSearchComponent implements OnInit, OnDestroy {
 
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    ); 
+
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
+    public users: any[] = new Array<any>();
     public resource: any;
+    public resourceSelected: any;
 
     public searchModel = {
         name: "",
@@ -28,17 +44,24 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     getAllEmployeesSubscrip: Subscription;
     searchSubscrip: Subscription;
+    getUsersSubscrip: Subscription;
 
     constructor(private router: Router,
                 private menuService: MenuService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
+                private usersService: UserService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
     }
 
     ngOnInit(): void {
         this.initGrid();
+
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+            this.users = data;
+        },
+        error => this.errorHandlerService.handleErrors(error));
     }
 
     ngOnDestroy(): void {
@@ -55,10 +78,16 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
 
-    sendUnsubscribeNotification(resource){
-        this.messageService.showLoading();
+    openModal(resource){
+        this.resourceSelected = resource;
+        this.confirmModal.show();
+    }
 
-        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(resource.name).subscribe(data => {
+    sendUnsubscribeNotification(){
+        this.messageService.showLoading();
+        var users = $('#userId').val();
+
+        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, users).subscribe(data => {
             this.messageService.closeLoading();
             if(data.messages) this.messageService.showMessages(data.messages);
         },

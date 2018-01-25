@@ -32,7 +32,7 @@ export class EmployeeService {
     return this.http.delete(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }
 
-  sendUnsubscribeNotification(employeeName){
-    return this.http.post(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, {}).map((res:Response) => res.json());
+  sendUnsubscribeNotification(employeeName, users){
+    return this.http.post(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, users).map((res:Response) => res.json());
   }
 }

@@ -73,7 +73,7 @@
                         <td>{{ resource.profile}}</td>
                         <td>{{ resource.technology}}</td>
                         <td>
-                            <button class="btn btn-primary btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="sendUnsubscribeNotification(resource)">{{'ACTIONS.notifyUnsubscribe' | translate }}</button>
+                            <button class="btn btn-primary btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openModal(resource)">{{'ACTIONS.notifyUnsubscribe' | translate }}</button>
                             <button class="btn btn-success btn-xs" (click)="goToAssignAnalytics(resource)">{{'ACTIONS.assign' | translate }}</button>
                         </td>
                     </tr>
@@ -83,3 +83,11 @@
     </div>
 </div>
 
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="sendUnsubscribeNotification()">
+    <div class="form-group">
+        <label class="control-label"> {{'allocationManagement.resources.recipients' | translate }} </label>
+        <select select2 class="form-control" id="userId" multiple>
+            <option *ngFor="let user of users" [value]="user?.email">{{ user.text }} - {{ user.email}}</option>
+        </select>
+    </div>
+</ng2-modal> 
