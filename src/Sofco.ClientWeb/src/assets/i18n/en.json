@@ -355,6 +355,7 @@
             "listTitle": "Resources´s List",
             "title": "Resources",
             "list": "List",
+            "recipients": "Extra Recipients",
             "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
             "grid": {
                 "name": "Name",

@@ -171,7 +171,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.EmployeeRepository.Search(parameters);
         }
 
-        public Response SendUnsubscribeNotification(string employeeName)
+        public Response SendUnsubscribeNotification(string employeeName, IList<string> receipents)
         {
             var response = new Response();
 
@@ -192,10 +192,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                                         "</span>" +
                                     "</font>";
 
+            receipents.Add(mailRrhh);
+            
             try
             {
                 var body = string.Format(mailBody, employeeName);
-                mailSender.Send(mailRrhh, subject, body);
+                mailSender.Send(string.Join(";", receipents), subject, body);
                 response.AddSuccess(Resources.Common.MailSent);
             }
             catch (Exception e)

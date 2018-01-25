@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
@@ -67,9 +68,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]
-        public IActionResult SendUnsubscribeNotification(string employeeName)
+        public IActionResult SendUnsubscribeNotification(string employeeName, [FromBody] IList<string> receipents)
         {
-            var response = employeeService.SendUnsubscribeNotification(employeeName);
+            var response = employeeService.SendUnsubscribeNotification(employeeName, receipents);
 
             if (response.HasErrors()) return BadRequest(response);
 
