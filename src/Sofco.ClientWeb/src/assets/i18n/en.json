@@ -107,6 +107,8 @@
             "management": "List of Projects",
             "edit": "Edit Project",
             "add": "Add Project",
+            "createSolfac": "Create solfac",
+            "billMultipleProjects": "Bill multiple projects",
             "grid": {
                 "name": "Name",
                 "analytic": "Analytic",
@@ -214,6 +216,7 @@
             "invoicesRelated": "Invoices Related",
             "hito": "Milestone",
             "pdfViewer": "PDF Viewer",
+            "activity": "Activity",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -352,6 +355,7 @@
             "listTitle": "Resources´s List",
             "title": "Resources",
             "list": "List",
+            "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
             "grid": {
                 "name": "Name",
                 "senority": "Senority",
@@ -457,7 +461,8 @@
         "unsubscribe": "Unsubscribe",
         "searchAll": "Search All",
         "changeDates": "Change Dates",
-        "notifyUnsubscribe": "Notify unsubscribe"
+        "notifyUnsubscribe": "Notify unsubscribe",
+        "goHere": "Enter Here"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",

@@ -40,6 +40,7 @@ import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
+import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -86,6 +87,7 @@ export const ROUTES:Routes = [
         { path:"", component: CustomersComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
         { path:":customerId/services", children: [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
+          { path: ":serviceId/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/projects", children: [
             { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },
             { path: "billMultiple", component: BillMultipleProjectsComponent, canActivate: [AuthGuard] },

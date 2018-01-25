@@ -107,6 +107,8 @@
             "management": "Listado de Proyectos",
             "edit": "Editar Proyecto",
             "add": "Agregar Proyecto",
+            "createSolfac": "Crear solicitud",
+            "billMultipleProjects": "Facturar multiples proyectos",
             "grid": {
                 "name": "Nombre",
                 "analytic": "Analítica",
@@ -214,6 +216,7 @@
             "invoicesRelated": "Remitos Asociados",
             "hito": "Hito",
             "pdfViewer": "Visualización de PDF",
+            "activity": "Actividad",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -352,6 +355,7 @@
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
             "list": "Listado",
+            "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
             "grid": {
                 "name": "Nombre",
                 "senority": "Senority",
@@ -457,7 +461,8 @@
         "unsubscribe": "Dar de baja",
         "searchAll": "Buscar Todo",
         "changeDates": "Cambiar Fechas",
-        "notifyUnsubscribe": "Notifcar baja"
+        "notifyUnsubscribe": "Notifcar baja",
+        "goHere": "Ingrese Aqui"
     },
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

@@ -12,7 +12,6 @@ declare var jQuery:any;
 export class ProjectRightBarComponent {
 
   constructor(private router: Router, public menuService: MenuService) {
-      
   }
 
   toggleNavigation(): void {
@@ -22,5 +21,11 @@ export class ProjectRightBarComponent {
   goToCreateAnalytic(){
     sessionStorage.setItem('analyticWithProject', 'yes');
     this.router.navigate(['/allocationManagement/analytics/new']);
+  }
+
+  goToResources(){
+    var customerId = sessionStorage.getItem('customerId');
+    var serviceId = sessionStorage.getItem('serviceId');
+    this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/resources`]);
   }
 }

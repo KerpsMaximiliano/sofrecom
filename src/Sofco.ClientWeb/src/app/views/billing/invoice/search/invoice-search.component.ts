@@ -65,10 +65,18 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getStatuses();
 
-        var data = JSON.parse(sessionStorage.getItem('lastInvoiceQuery'))
-        if(data && data.length > 0){
-            this.data = data;
-            this.initGrid();
+        var data = JSON.parse(sessionStorage.getItem('lastInvoiceQuery'));
+        if(data){
+            this.customerId = data.customerId;
+            this.serviceId = data.serviceId;
+            this.projectId = data.projectId;
+            this.userApplicantId = data.userApplicantId;
+            $('#invoiceNumber').val(data.invoiceNumber);
+            this.status = data.status,
+            this.dateSince = data.dateSince;
+            this.dateTo = data.dateTo;
+
+            this.search();
         }
     }
 
@@ -164,7 +172,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 }      
                 else{
                     this.data = data;
-                    sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(this.data));
+                    sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(parameters));
                 }      
 
                this.initGrid();

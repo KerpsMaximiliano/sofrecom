@@ -7,20 +7,26 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public EmployeeViewModel(Employee domain)
         {
             Id = domain.Id;
-            Name = $"{domain.EmployeeNumber} - {domain.Name}";
+            Name = domain.Name;
+            EmployeeNumber = domain.EmployeeNumber;
             Senority = domain.Seniority;
             Profile = domain.Profile;
             Technology = domain.Technology;
+            Percentage = domain.BillingPercentage;
         }
 
         public int Id { get; set; }
 
         public string Name { get; set; }
 
+        public string EmployeeNumber { get; set; }
+
         public string Senority { get; set; }
 
         public string Profile { get; set; }
 
         public string Technology { get; set; }
+
+        public decimal Percentage { get; set; }
     }
 }

@@ -194,5 +194,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.Solfac.BusinessNameRequired);
             }
         }
+
+        public static void ValidateDetails(ICollection<Hito> solfacHitos, Response response)
+        {
+            var details = solfacHitos.Sum(x => x.Details.Count);
+
+            if (details == 0)
+            {
+                response.AddError(Resources.Billing.Solfac.DetailsRequired);
+            }
+        }
     }
 }

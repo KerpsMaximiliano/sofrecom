@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180124165759_AddedServiceIdToAnalytic")]
+    partial class AddedServiceIdToAnalytic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -634,12 +635,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("ImputationNumber3Id");
-
-                    b.Property<string>("Integrator")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("IntegratorId")
-                        .HasMaxLength(50);
 
                     b.Property<string>("InvoiceCode")
                         .HasMaxLength(50);

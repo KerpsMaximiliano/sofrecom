@@ -26,6 +26,8 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public string Service { get; set; }
 
+        public string ServiceId { get; set; }
+
         public int? ActivityId { get; set; }
         public ImputationNumber Activity { get; set; }
 

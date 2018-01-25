@@ -65,9 +65,17 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.getStatuses();
 
         var data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'))
-        if(data && data.length > 0){
-            this.data = data;
-            this.initGrid();
+        if(data){
+            this.customerId = data.customerId;
+            this.serviceId = data.serviceId;
+            this.projectId = data.projectId;
+            this.userApplicantId = data.userApplicantId;
+            this.analytic = data.analytic;
+            this.status = data.status;
+            this.dateSince = data.dateSince;
+            this.dateTo = data.dateTo;
+
+            this.search();
         }
     }
 
@@ -182,7 +190,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
                 }      
                 else{
                     this.data = data;
-                    sessionStorage.setItem('lastSolfacQuery', JSON.stringify(data));
+                    sessionStorage.setItem('lastSolfacQuery', JSON.stringify(parameters));
                 }      
 
                 this.initGrid();

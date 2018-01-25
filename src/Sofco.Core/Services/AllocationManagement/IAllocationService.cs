@@ -1,6 +1,7 @@
 ﻿using Sofco.Model.DTO;
 using Sofco.Model.Utils;
 using System;
+using System.Collections.Generic;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
@@ -9,5 +10,6 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         Response<Allocation> Add(AllocationDto allocation);
         AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
+        ICollection<Employee> GetByService(string serviceId);
     }
 }

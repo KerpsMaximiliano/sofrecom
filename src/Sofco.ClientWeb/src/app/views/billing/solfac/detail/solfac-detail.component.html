@@ -86,7 +86,8 @@
                             <dl class="dl-horizontal ">
                                 <dt>{{'billing.solfac.documentType' | translate }}: </dt><dd>{{model.documentType}}</dd>
                                 <dt>{{'billing.solfac.currency' | translate }}: </dt><dd>{{model.currencyName}}</dd>
-                                <dt>{{'billing.solfac.imputationNumber' | translate }}: </dt><dd>{{model.imputationNumber1 }} {{model.imputationNumber3 }}</dd>
+                                <dt>{{'billing.solfac.imputationNumber' | translate }}: </dt><dd>{{model.imputationNumber1 }}</dd>
+                                <dt>{{'billing.solfac.activity' | translate }}: </dt><dd>{{ model.imputationNumber3 }}</dd>
                                 <dt>{{'billing.solfac.timeLimit' | translate }}: </dt><dd>{{ model.paymentTermName }}</dd>
                             </dl>
                         </div>
@@ -150,7 +151,7 @@
                                 <div class="panel-body">
                                     <ol class="dd-list">
                                         <li *ngFor="let hito of model.hitos" class="dd-item">
-                                            <div class="dd-handle">{{ hito.description }}</div>
+                                            <div class="dd-handle text-ellipsis">{{ hito.description }}</div>
                                         </li>
                                     </ol>
                                 </div>
