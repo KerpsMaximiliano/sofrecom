@@ -21,6 +21,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Name { get; private set; }
 
         public string Title { get; private set; }
+
         public string ServiceName { get; private set; }
 
         public string ClientExternalName { get; private set; }

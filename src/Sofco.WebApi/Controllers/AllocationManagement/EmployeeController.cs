@@ -46,7 +46,6 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
-
         [HttpPost("{newsId}")]
         public IActionResult Post(int newsId)
         {
