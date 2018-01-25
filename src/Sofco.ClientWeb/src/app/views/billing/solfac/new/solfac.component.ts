@@ -33,7 +33,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public paymentTerms: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
-    private integratorProject: any;
+    public integratorProject: any;
 
     public solfacId: number = 0;
     public multipleProjects: boolean = false;
