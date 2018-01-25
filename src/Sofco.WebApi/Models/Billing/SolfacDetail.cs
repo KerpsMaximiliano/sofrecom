@@ -45,6 +45,8 @@ namespace Sofco.WebApi.Models.Billing
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
             ServiceName = domain.Service;
+            Integrator = domain.Integrator;
+            IntegratorId = domain.IntegratorId;
 
             if (domain.ProjectId.Contains(";"))
             {
@@ -189,6 +191,10 @@ namespace Sofco.WebApi.Models.Billing
         public bool InvoiceRequired { get; set; }
 
         public bool IsMultiple { get; set; }
+
+        public string Integrator { get; set; }
+
+        public string IntegratorId { get; set; }
 
         public Model.Models.Billing.Solfac CreateDomain()
         {

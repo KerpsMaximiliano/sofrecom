@@ -40,6 +40,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public updateComments: string;
 
     private detailSelected: any;
+    private integratorProject: any;
+    public showAccountControl: boolean = false;
 
     @ViewChild('pdfViewer') pdfViewer: any;
  
@@ -120,8 +122,17 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
             this.messageService.showError("billing.solfac.cannotUpdateSolfac");
             this.router.navigate([`/billing/customers/${d.customerId}/services/${d.serviceId}/projects/${d.projectId}`]);
         }
+        this.setIntegrator();
       },
       err => this.errorHandlerService.handleErrors(err));
+    }
+
+    setIntegrator(){
+      this.integratorProject = {
+        integrator:this.model.integrator,
+        integratorId:this.model.integratorId
+      }
+      this.showAccountControl = true;
     }
 
     getUserOptions(){

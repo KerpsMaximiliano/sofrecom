@@ -29,6 +29,7 @@ namespace Sofco.Domain.Crm.Billing
         public decimal TotalAmmount { get; set; }
 
         public string ServiceType { get; set; }
+
         public int ServiceTypeId { get; set; }
 
         public string SolutionType { get; set; }
@@ -49,5 +50,9 @@ namespace Sofco.Domain.Crm.Billing
         public string ManagerId { get; set; }
 
         public string OwnerId { get; set; }
+
+        public string Integrator { get; set; }
+
+        public string IntegratorId { get; set; }
     }
 }

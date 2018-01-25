@@ -33,6 +33,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public paymentTerms: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
+    public integratorProject: any;
 
     public solfacId: number = 0;
     public multipleProjects: boolean = false;
@@ -108,12 +109,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setDataForSingleProject(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+      this.integratorProject = project;
 
       this.getInvoicesOptions(project.id);
       this.projectId = project.id;
       this.model.contractNumber = project.purchaseOrder;
       this.model.project = project.nombre;
       this.model.projectId = project.id;
+      this.model.integrator = project.integrator;
+      this.model.integratorId = project.integratorId;
       this.model.imputationNumber1 = project.analytic; 
       this.model.currencyId = this.getCurrencyId(project.currency);
       this.model.analytic = project.analytic;
@@ -350,5 +354,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       {
         this.model.documentType = Number(allowedValues[0]);
       }
+    }
+
+    hasIntegrator():Boolean {
+      return false;
     }
 }

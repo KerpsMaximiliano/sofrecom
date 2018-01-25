@@ -5,14 +5,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sofco.WebApi.Migrations
 {
-    public partial class AddedCreatedByUserInEmployee : Migration
+    public partial class SolfacIntegrator : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "CreatedByUser",
+                name: "Integrator",
                 schema: "app",
-                table: "Employees",
+                table: "Solfacs",
+                maxLength: 300,
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IntegratorId",
+                schema: "app",
+                table: "Solfacs",
                 maxLength: 50,
                 nullable: true);
         }
@@ -20,9 +27,14 @@ namespace Sofco.WebApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CreatedByUser",
+                name: "Integrator",
                 schema: "app",
-                table: "Employees");
+                table: "Solfacs");
+
+            migrationBuilder.DropColumn(
+                name: "IntegratorId",
+                schema: "app",
+                table: "Solfacs");
         }
     }
 }

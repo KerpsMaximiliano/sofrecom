@@ -199,7 +199,9 @@
              },
              "attachedParts": "Pièces Adjointes",
              "particularSteps": "Instructions Particulaires",
-             "addComments": "Inclure les commentaires du rejet"
+             "addComments": "Inclure les commentaires du rejet",
+             "integrator": "Intégrateur",
+             "customers": "Clients"
          },
          "invoice":{
              "title": "Accusés de Réception",
