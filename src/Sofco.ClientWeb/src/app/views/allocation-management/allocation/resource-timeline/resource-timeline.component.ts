@@ -26,7 +26,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void { 
-        self = this;
+        self.this = this;
     }
 
     ngOnDestroy(): void {
@@ -62,19 +62,17 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn({ type: 'string', id: 'title'});
         dataTable.addColumn({ type: 'string', id: 'name', p: { html: true } });
-        dataTable.addColumn({ type: 'string', role: 'tooltip', p: { html: true }});
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
 
         var rows = [];
         var resourcesName = [];
 
-        self.model.forEach(function(item, index){
+        self.this.model.forEach(function(item, index){
             var startDate = new Date(item.startDate);
             var endDate = new Date(item.endDate);
-            var releaseDate = new Date(item.releaseDate);
 
-            var row = [ item.resource, `${item.percentage}%`, getTooltipHtml(item.resource, item.percentage, startDate, endDate, releaseDate), startDate, endDate ] 
+            var row = [ item.resource, `${item.percentage}%`, startDate, endDate ] 
             rows.push(row);
 
             if(!resourcesName.includes(item.resource)){
@@ -92,40 +90,11 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
 
         var options = {
             timeline: { colorByRowLabel: true },
+            enableInteractivity: false,
             height: height
         };
     
         chart.draw(dataTable, options);
-        
-        function getTooltipHtml(resource, percentage, startDate, endDate, releaseDate){
-            return `
-                <div class="google-visualization-tooltip" style="width: 250px; height: 200px">
-                    <ul class="google-visualization-tooltip-item-list" style="">
-                        <li class="google-visualization-tooltip-item" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">${resource}</span>
-                        </li>
-                    </ul>
-                    <div class="google-visualization-tooltip-separator" style=""></div>
-                    <ul class="google-visualization-tooltip-action-list" style="">
-                        <li class="google-visualization-tooltip-action" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha Inicio:</span>
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${startDate.toLocaleDateString()}</span>
-                        </li>
-                        <li class="google-visualization-tooltip-action" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha Fin:</span>
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${endDate.toLocaleDateString()}</span>
-                        </li>
-                        <li class="google-visualization-tooltip-action" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Porcentaje:</span>
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${percentage}%</span>
-                        </li>
-                        <li class="google-visualization-tooltip-action" style="">
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none; font-weight: bold;">Fecha de Liberación:</span>
-                            <span style="font-family: Arial; font-size: 12px; color: rgb(0, 0, 0); opacity: 1; margin: 0px; text-decoration: none;">${releaseDate.toLocaleDateString()}</span>
-                        </li>
-                    </ul>
-            </div>`;
-        }
     }
 }
 
