@@ -104,6 +104,10 @@ namespace Sofco.WebApi.Models.Billing
 
         public bool Remito { get; set; }
 
+        public string Integrator { get; set; }
+
+        public string IntegratorId { get; set; }
+
         public Solfac CreateDomain()
         {
             var solfac = new Solfac();
@@ -137,6 +141,8 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Service = Service;
             solfac.WithTax = WithTax;
             solfac.InvoiceRequired = Remito;
+            solfac.Integrator = Integrator;
+            solfac.IntegratorId = IntegratorId;
 
             foreach (var hitoViewModel in Hitos)
             {

@@ -43,9 +43,10 @@
                     <!-- Datos CRM -->
                     <div class="row">
                         <div class="col-sm-6">
+
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.businessName' | translate }}</label>
-                                <input type="text" class="form-control" [(ngModel)]="model.businessName">
+                                <solfac-account-control [integratorProject]="integratorProject" [(model)]="model.businessName"></solfac-account-control>
                             </div>
 
                             <div class="form-group">

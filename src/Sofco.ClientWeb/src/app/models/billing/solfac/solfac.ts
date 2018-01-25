@@ -37,6 +37,8 @@ export class Solfac {
         public serviceId: string,
         public service: string,
         public analytic: string,
-        public remito: boolean
+        public remito: boolean,
+        public integrator: string,
+        public integratorId: string
     ){}
 }

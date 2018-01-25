@@ -249,7 +249,9 @@
             "particularSteps": "Instrucciones Particulares",
             "addComments": "Ingrese los motivos del rechazo",
             "addUpdateComments": "Ingrese los cambios que se realizaron",
-            "cannotUpdateSolfac": "No se puede modificar la solicitud en el estado actual"
+            "cannotUpdateSolfac": "No se puede modificar la solicitud en el estado actual",
+            "integrator": "Integrador",
+            "customers": "Clientes"
         },
         "invoice":{
             "title": "Remitos",

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180123195940_SolfacIntegrator")]
+    partial class SolfacIntegrator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -250,8 +251,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Service")
                         .HasMaxLength(50);
-
-                    b.Property<string>("ServiceId");
 
                     b.Property<int?>("ServiceTypeId");
 
@@ -622,7 +621,7 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("ContractNumber")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(50);
 
                     b.Property<int>("CurrencyId");
 
@@ -657,12 +656,12 @@ namespace Sofco.WebApi.Migrations
                     b.Property<decimal>("OtherProvince3Percentage");
 
                     b.Property<string>("ParticularSteps")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(500);
 
                     b.Property<int>("PaymentTermId");
 
                     b.Property<string>("Project")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(100);
 
                     b.Property<string>("ProjectId");
 
@@ -713,7 +712,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<byte[]>("File");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(500);
+                        .HasMaxLength(200);
 
                     b.Property<int>("SolfacId");
 

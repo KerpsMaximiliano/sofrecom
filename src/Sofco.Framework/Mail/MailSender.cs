@@ -107,9 +107,16 @@ namespace Sofco.Framework.Mail
             SendMessages(new List<MimeMessage> { message });
         }
 
+        private bool IsDevelopment()
+        {
+            return environment.IsDevelopment()
+                   || environment.IsEnvironment("localhost")
+                   || environment.IsEnvironment("frosales");
+        }
+
         private void SendMessages(List<MimeMessage> messages)
         {
-            if (environment.IsDevelopment() || environment.IsEnvironment("localhost"))
+            if (IsDevelopment())
             {
                 foreach(var message in messages)
                 {
