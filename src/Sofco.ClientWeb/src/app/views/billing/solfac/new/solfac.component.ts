@@ -199,6 +199,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
           this.model.userApplicantName = userApplicant.name;
         }
       }
+      
+      this.setCurrencySymbol(this.model.currencyId.toString());
     }
 
     getInvoicesOptions(projectId){

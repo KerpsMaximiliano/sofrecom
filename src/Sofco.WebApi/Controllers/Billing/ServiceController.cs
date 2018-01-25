@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.Billing
             try
             {
                 var customers = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
-                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
+                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
 
                 return Ok(model);
             }

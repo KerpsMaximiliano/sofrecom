@@ -111,7 +111,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
             d.statusName == SolfacStatus[SolfacStatus.RejectedByDaf])){
 
             this.model = d;
-            this.setCurrencySymbol(this.model.currencyId);
+            this.setCurrencySymbol(this.model.currencyId.toString());
 
             this.getInvoicesOptions(this.model.projectId);
 

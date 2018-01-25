@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.Crm.Billing;
 using Sofco.Model.DTO;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -37,7 +34,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 var customers = respone.Data;
 
-                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre });
+                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
 
                 return Ok(model);
             }
