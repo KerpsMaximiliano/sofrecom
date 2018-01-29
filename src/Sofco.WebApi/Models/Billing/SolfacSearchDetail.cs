@@ -27,6 +27,16 @@ namespace Sofco.WebApi.Models.Billing
 
             InvoiceDate = domain.InvoiceDate;
             InvoiceCode = domain.InvoiceCode;
+
+            if (domain.ProjectId.Contains(";"))
+            {
+                var split = domain.ProjectId.Split(';');
+                ProjectQuantity = split.Length;
+            }
+            else
+            {
+                ProjectQuantity = 1;
+            }
         }
 
         public int Id { get; set; }
@@ -56,6 +66,8 @@ namespace Sofco.WebApi.Models.Billing
         public string Manager { get; set; }
 
         public string InvoiceCode { get; set; }
+
+        public int ProjectQuantity { get; set; }
     }
 
     public class InvoiceSearchDetail
