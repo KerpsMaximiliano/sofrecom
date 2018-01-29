@@ -14,6 +14,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<EmployeeSyncAction> Add(int newsId, string userName);
         Response<EmployeeSyncAction> Delete(int newsId, string userName);
         ICollection<Employee> Search(EmployeeSearchParams parameters);
-        Response SendUnsubscribeNotification(string employeeName, IList<string> receipents);
+        Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
     }
 }

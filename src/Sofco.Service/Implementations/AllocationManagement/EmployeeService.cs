@@ -171,7 +171,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.EmployeeRepository.Search(parameters);
         }
 
-        public Response SendUnsubscribeNotification(string employeeName, IList<string> receipents)
+        public Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters)
         {
             var response = new Response();
 
@@ -181,23 +181,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
+            var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(parameters.UserName));
+
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
             const string subject = "NOTIFICACION DE BAJA";
 
             const string mailBody = "<font size='3'>" +
                                         "<span style='font-size:12pt'>" +
                                             "Estimados, </br></br>" +
-                                            "El recurso <strong>{0}</strong> ha informado la solicitud de desvinculación de la empresa </br></br>" +
+                                            "El recurso <strong>{0}</strong> ha informado a <strong>{1}</strong> la solicitud de desvinculación de la empresa, " +
+                                            "a partir del dia {2} </br></br>" +
                                             "Muchas Gracias" +
                                         "</span>" +
                                     "</font>";
 
-            receipents.Add(mailRrhh);
+            parameters.Receipents.Add(mailRrhh);
             
             try
             {
-                var body = string.Format(mailBody, employeeName);
-                mailSender.Send(string.Join(";", receipents), subject, body);
+                var body = string.Format(mailBody, employeeName, manager.Name, parameters.EndDate.ToString("D"));
+                mailSender.Send(string.Join(";", parameters.Receipents), subject, body);
                 response.AddSuccess(Resources.Common.MailSent);
             }
             catch (Exception e)

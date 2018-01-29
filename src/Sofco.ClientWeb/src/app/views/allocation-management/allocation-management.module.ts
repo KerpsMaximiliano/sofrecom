@@ -31,6 +31,7 @@ import { NewsComponent } from 'app/views/allocation-management/news/news.compone
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 import { NewsService } from 'app/services/allocation-management/news.service';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
+import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ResourceByServiceComponent } from 'app/views/allocation-management/reso
     DateRangePickerModule,
     IboxtoolsModule,
     ICheckModule,
+    NumbersOnlyModule,
     Ng2ModalModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, NewsService ],

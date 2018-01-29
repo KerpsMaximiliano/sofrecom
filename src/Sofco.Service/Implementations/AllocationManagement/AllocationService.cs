@@ -137,7 +137,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         if (month.Updated)
                         {
-                            allocation.Percentage = month.Percentage;
+                            allocation.Percentage = month.Percentage.GetValueOrDefault();
                             unitOfWork.AllocationRepository.UpdatePercentage(allocation);
                         }
 
@@ -148,7 +148,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     {
                         allocation.AnalyticId = allocationDto.AnalyticId;
                         allocation.StartDate = month.Date.Date;
-                        allocation.Percentage = month.Percentage;
+                        allocation.Percentage = month.Percentage.GetValueOrDefault();
                         allocation.EmployeeId = allocationDto.EmployeeId;
                         allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
 

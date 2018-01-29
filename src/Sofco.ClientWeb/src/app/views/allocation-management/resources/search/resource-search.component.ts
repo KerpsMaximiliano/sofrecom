@@ -40,18 +40,23 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         technology: ""
     };
 
+    public options: any;
+    public endDate: Date = new Date();
+
     getAllSubscrip: Subscription;
     getAllEmployeesSubscrip: Subscription;
     searchSubscrip: Subscription;
     getUsersSubscrip: Subscription;
 
     constructor(private router: Router,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
                 private usersService: UserService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
+
+                this.options = this.menuService.getDatePickerOptions();
     }
  
     ngOnInit(): void {
@@ -61,9 +66,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(data){
             this.searchModel = data;
             this.search();
-            this.initGrid();
-        }
-        else{
             this.initGrid();
         }
 
@@ -94,9 +96,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     sendUnsubscribeNotification(){
         this.messageService.showLoading();
-        var users = $('#userId').val();
 
-        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, users).subscribe(data => {
+        var json = {
+            receipents: $('#userId').val(),
+            endDate: this.endDate
+        }
+
+        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
             this.messageService.closeLoading();
             if(data.messages) this.messageService.showMessages(data.messages);
         },

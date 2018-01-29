@@ -356,6 +356,7 @@
             "title": "Resources",
             "list": "List",
             "recipients": "Copy to",
+            "recipient": "Recipient",
             "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
             "grid": {
                 "name": "Name",

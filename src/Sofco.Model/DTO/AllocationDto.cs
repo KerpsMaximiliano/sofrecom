@@ -29,7 +29,7 @@ namespace Sofco.Model.DTO
 
         public DateTime Date { get; set; }
 
-        public decimal Percentage { get; set; }
+        public decimal? Percentage { get; set; }
 
         public bool Updated { get; set; }
 

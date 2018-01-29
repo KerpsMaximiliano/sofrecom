@@ -356,6 +356,7 @@
             "title": "Recursos",
             "list": "Listado",
             "recipients": "Con Copia (CC)",
+            "recipient": "Destinatario",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
             "grid": {
                 "name": "Nombre",
@@ -460,7 +461,7 @@
         "print": "Imprimir",
         "export": "Exportar",
         "unsubscribe": "Dar de baja",
-        "searchAll": "Buscar Todo",
+        "searchAll": "Ver Todo",
         "changeDates": "Cambiar Fechas",
         "notifyUnsubscribe": "Notifcar baja",
         "goHere": "Ingrese Aqui"

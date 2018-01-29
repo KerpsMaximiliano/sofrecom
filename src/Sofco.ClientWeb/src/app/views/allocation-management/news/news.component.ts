@@ -11,7 +11,8 @@ import { NewsService } from "app/services/allocation-management/news.service";
 
 @Component({
     selector: 'employee-news',
-    templateUrl: './news.component.html'
+    templateUrl: './news.component.html',
+    styleUrls: ['./news.component.scss']
 })
 
 export class NewsComponent implements OnInit, OnDestroy {
