@@ -22,6 +22,7 @@ namespace Sofco.DAL.Repositories.Admin
                 .Where(x => roleIds.Contains(x.RoleId))
                 .Include(x => x.Functionality)
                     .ThenInclude(x => x.Module)
+                .Distinct()
                 .ToList();
         }
     }

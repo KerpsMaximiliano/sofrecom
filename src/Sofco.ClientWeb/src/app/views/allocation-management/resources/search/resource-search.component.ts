@@ -15,7 +15,6 @@ declare var $: any;
     selector: 'resource-search',
     templateUrl: './resource-search.component.html'
 })
-
 export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
@@ -54,11 +53,21 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
     }
-
+ 
     ngOnInit(): void {
-        this.initGrid();
 
-        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+        var data = JSON.parse(sessionStorage.getItem('lastResourceQuery'));
+
+        if(data){
+            this.searchModel = data;
+            this.search();
+            this.initGrid();
+        }
+        else{
+            this.initGrid();
+        }
+
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
             this.users = data;
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -122,6 +131,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             this.resources = data;
             this.initGrid();
             this.messageService.closeLoading();
+
+            sessionStorage.setItem('lastResourceQuery', JSON.stringify(this.searchModel));
         },
         error => {
             this.messageService.closeLoading();

@@ -64,7 +64,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getStatuses();
 
-        var data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'))
+        var data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'));
         if(data){
             this.customerId = data.customerId;
             this.serviceId = data.serviceId;
@@ -72,8 +72,16 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             this.userApplicantId = data.userApplicantId;
             this.analytic = data.analytic;
             this.status = data.status;
-            this.dateSince = data.dateSince;
-            this.dateTo = data.dateTo;
+            this.filterByDates = data.filterByDates;
+
+            if(this.filterByDates){
+                this.dateSince = data.dateSince;
+                this.dateTo = data.dateTo;
+            }
+            else{
+                this.dateSince = new Date();
+                this.dateTo = new Date();
+            }
 
             this.search();
         }
@@ -175,7 +183,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             analytic: this.analytic,
             status: this.status,
             dateSince: this.filterByDates ? this.dateSince : null,
-            dateTo: this.filterByDates ? this.dateTo : null
+            dateTo: this.filterByDates ? this.dateTo : null,
+            filterByDates: this.filterByDates
         }
 
         this.getAllSubscrip = this.service.search(parameters).subscribe(data => {

@@ -48,6 +48,11 @@ namespace Sofco.WebApi.Controllers.Admin
             response.IsDirector = userService.HasDirectorGroup(this.GetUserMail());
             response.IsDaf = userService.HasDafGroup(this.GetUserMail(), emailConfig.DafCode);
             response.IsCdg = userService.HasCdgGroup(this.GetUserMail(), emailConfig.CdgCode);
+            response.DafMail = menuService.GetGroupMail(emailConfig.DafCode);
+            response.CdgMail = menuService.GetGroupMail(emailConfig.CdgCode);
+            response.PmoMail = menuService.GetGroupMail(emailConfig.PmoCode);
+            response.RrhhMail = menuService.GetGroupMail(emailConfig.RrhhCode);
+            response.SellerMail = menuService.GetGroupMail(emailConfig.SellerCode);
 
             return Ok(response);
         }

@@ -355,11 +355,11 @@
             "listTitle": "Resources´s List",
             "title": "Resources",
             "list": "List",
-            "recipients": "Extra Recipients",
+            "recipients": "Copy to",
             "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
             "grid": {
                 "name": "Name",
-                "senority": "Senority",
+                "senority": "Seniority",
                 "profile": "Profile",
                 "technology": "Technology"
             }

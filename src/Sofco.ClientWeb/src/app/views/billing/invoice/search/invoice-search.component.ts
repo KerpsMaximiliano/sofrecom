@@ -73,8 +73,16 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             this.userApplicantId = data.userApplicantId;
             $('#invoiceNumber').val(data.invoiceNumber);
             this.status = data.status,
-            this.dateSince = data.dateSince;
-            this.dateTo = data.dateTo;
+            this.filterByDates = data.filterByDates;
+
+            if(this.filterByDates){
+                this.dateSince = data.dateSince;
+                this.dateTo = data.dateTo;
+            }
+            else{
+                this.dateSince = new Date();
+                this.dateTo = new Date();
+            }
 
             this.search();
         }
@@ -157,7 +165,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             invoiceNumber: $('#invoiceNumber').val(),
             status: this.status,
             dateSince: this.filterByDates ? this.dateSince : null,
-            dateTo: this.filterByDates ? this.dateTo : null
+            dateTo: this.filterByDates ? this.dateTo : null,
+            filterByDates: this.filterByDates
         }
 
         this.getAllSubscrip = this.service.search(parameters).subscribe(data => {

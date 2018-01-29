@@ -17,6 +17,12 @@ export class MenuService {
     public currentUser: any;
     public user: any;
 
+    public dafMail: string;
+    public cdgMail: string;
+    public pmoMail: string;
+    public rrhhMail: string;
+    public sellerMail: string;
+
     constructor(private http: HttpAuth, private service: Service) {
         this.baseUrl = this.service.UrlApi;
         
@@ -28,6 +34,12 @@ export class MenuService {
                 this.userIsDirector = menu.isDirector;
                 this.userIsDaf = menu.isDaf;
                 this.userIsCdg = menu.isCdg;
+
+                this.dafMail = menu.dafMail;
+                this.cdgMail = menu.cdgMail;
+                this.pmoMail = menu.pmoMail;
+                this.rrhhMail = menu.rrhhMail;
+                this.sellerMail = menu.sellerMail;
             }
         }
 

@@ -21,6 +21,12 @@
 <div class="wrapper wrapper-content animated fadeInRight">
  
     <div class="row">
+        <div class="col-md-12">
+            <resource-timeline #resourceTimeline></resource-timeline>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
@@ -56,10 +62,4 @@
     </div>
 
     <allocation-assignment-table [resourceId]="resourceId" [analytic]="analytic" [monthQuantity]="monthQuantity" #allocations (reloadTimeline)="getTimeline(analytic.id)"></allocation-assignment-table> 
-    
-    <div class="row">
-        <div class="col-md-12">
-            <resource-timeline #resourceTimeline></resource-timeline>
-        </div>
-    </div>
 </div> 

@@ -26,5 +26,15 @@ namespace Sofco.WebApi.Models.Admin
         public bool IsDaf { get; set; }
 
         public bool IsCdg { get; set; }
+
+        public string DafMail { get; set; }
+
+        public string CdgMail { get; set; }
+
+        public string PmoMail { get; set; }
+
+        public string RrhhMail { get; set; }
+
+        public string SellerMail { get; set; }
     }
 }

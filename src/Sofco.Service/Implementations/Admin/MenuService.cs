@@ -25,5 +25,10 @@ namespace Sofco.Service.Implementations.Admin
 
             return modules;
         }
+
+        public string GetGroupMail(string code)
+        {
+            return unitOfWork.GroupRepository.GetEmail(code);
+        }
     }
 }

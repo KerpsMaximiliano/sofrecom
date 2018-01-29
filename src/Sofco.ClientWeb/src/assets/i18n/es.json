@@ -355,11 +355,11 @@
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
             "list": "Listado",
-            "recipients": "Destinatarios extra",
+            "recipients": "Con Copia (CC)",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
             "grid": {
                 "name": "Nombre",
-                "senority": "Senority",
+                "senority": "Seniority",
                 "profile": "Perfil",
                 "technology": "Tecnologia"
             }

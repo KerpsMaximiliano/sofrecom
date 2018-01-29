@@ -70,7 +70,16 @@ export class LoginComponent implements OnInit {
                 Cookie.set("currentUserMail", this.model.username);
 
                 this.menuService.menu = data.menus;
-                this.menuService.userIsDirector = data.isDirector;
+                this.menuService.userIsDirector = data.isDirector; 
+                this.menuService.userIsDaf = data.isDaf;
+                this.menuService.userIsCdg = data.isCdg;
+
+                this.menuService.dafMail = data.dafMail;
+                this.menuService.cdgMail = data.cdgMail;
+                this.menuService.pmoMail = data.pmoMail;
+                this.menuService.rrhhMail = data.rrhhMail;
+                this.menuService.sellerMail = data.sellerMail;
+
                 this.router.navigate([this.returnUrl]);
             },
             error => {
