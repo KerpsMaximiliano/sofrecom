@@ -24,14 +24,6 @@ export class EmployeeService {
     return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
   }
 
-  add(id){
-    return this.http.post(`${this.baseUrl}/employees/${id}`, {}).map((res:Response) => res.json());
-  }
-
-  delete(id){
-    return this.http.delete(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
-  }
-
   sendUnsubscribeNotification(employeeName, json){
     return this.http.post(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json).map((res:Response) => res.json());
   }

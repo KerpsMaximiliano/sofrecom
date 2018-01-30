@@ -9,17 +9,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     [Route("api/employeenews")]
     public class EmployeeNewsController : Controller
     {
-        private readonly IEmployeeService employeeService;
+        private readonly IEmployeeNewsService employeeNewsService;
 
-        public EmployeeNewsController(IEmployeeService employeeServ)
+        public EmployeeNewsController(IEmployeeNewsService employeeNewsService)
         {
-            employeeService = employeeServ;
+            this.employeeNewsService = employeeNewsService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var response = employeeService.GetEmployeeNews();
+            var response = employeeNewsService.GetEmployeeNews();
 
             return this.CreateResponse(response);
         }
@@ -27,9 +27,20 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var response = employeeService.DeleteNews(id);
+            var response = employeeNewsService.Delete(id, this.GetUserName());
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("{id}")]
+        public IActionResult Post(int id)
+        {
+            var response = employeeNewsService.Add(id, this.GetUserName());
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(response);
+        }
+
     }
 }

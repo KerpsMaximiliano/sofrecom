@@ -74,7 +74,8 @@ namespace Sofco.WebApi
 
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterModule(new DefaultModule() { Configuration = Configuration });
+            containerBuilder.RegisterModule(new DefaultModule { Configuration = Configuration });
+            containerBuilder.RegisterModule(new AutoMapperModule());
 
             containerBuilder.Populate(services);
 

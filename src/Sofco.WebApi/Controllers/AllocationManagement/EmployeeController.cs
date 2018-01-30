@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
@@ -45,26 +44,6 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var model = employeeService.Search(parameters).Select(x => new EmployeeViewModel(x));
 
             return Ok(model);
-        }
-
-        [HttpPost("{newsId}")]
-        public IActionResult Post(int newsId)
-        {
-            var response = employeeService.Add(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpDelete("{newsId}")]
-        public IActionResult Delete(int newsId)
-        {
-            var response = employeeService.Delete(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]

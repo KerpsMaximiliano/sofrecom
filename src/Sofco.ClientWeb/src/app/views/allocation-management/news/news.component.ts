@@ -37,7 +37,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     constructor(private employeeService: EmployeeService,
                 private router: Router,
-                private newsService: EmployeeNewsService,
+                private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
@@ -47,7 +47,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.newsService.getAll().subscribe(response => {
+        this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
             this.model = response.data;
             this.dataTableService.init('#newsTable', false);
             this.messageService.closeLoading();
@@ -89,7 +89,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     add(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeService.add(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.add(this.newsToDelete.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToDelete, 1);
@@ -106,7 +106,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.newsService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToDelete.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToDelete, 1);
@@ -123,7 +123,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     delete(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToDelete.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToDelete, 1);
