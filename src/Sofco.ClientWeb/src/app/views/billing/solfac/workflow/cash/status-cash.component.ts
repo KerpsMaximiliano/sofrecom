@@ -38,6 +38,8 @@ export class StatusCashComponent implements OnDestroy  {
 
   public options;
 
+  public isLoading: boolean = false;
+
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
@@ -66,9 +68,12 @@ export class StatusCashComponent implements OnDestroy  {
             cashedDate: this.cashedDate
         }
 
+        this.isLoading = true;
+
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.cashModal.hide();
+                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
 
                 if(this.history.observers.length > 0){
@@ -85,6 +90,7 @@ export class StatusCashComponent implements OnDestroy  {
                 }
             },
             error => {
+                this.isLoading = false;
                 this.errorHandlerService.handleErrors(error);
             });
     }

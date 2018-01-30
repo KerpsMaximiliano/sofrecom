@@ -3,7 +3,7 @@
     <i class="fa fa-save"></i>
 </button>
 
-<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()">
+<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()" [isLoading]="isLoading">
     <div class="row">
             <div class="col-lg-12">
                 <div class="form-group">

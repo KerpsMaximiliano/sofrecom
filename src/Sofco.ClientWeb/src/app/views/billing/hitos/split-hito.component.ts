@@ -31,6 +31,7 @@ export class SplitHitoComponent implements OnDestroy  {
   public hito: NewHito = new NewHito();
   public hitoSelected: any;
   public options;
+  public btnDisabled: boolean = false;
 
   constructor(private messageService: MessageService,
     private menuService: MenuService,
@@ -62,15 +63,20 @@ export class SplitHitoComponent implements OnDestroy  {
     this.hito.moneyId = this.hitoSelected.currencyId;
     this.hito.ammountFirstHito = this.hitoSelected.ammount;
 
+    this.btnDisabled = true;
+
     this.subscrip = this.projectService.createNewHito(this.hito).subscribe(data => {
+        this.btnDisabled = false;
+
         if(data.messages) this.messageService.showMessages(data.messages);
         this.spliHitoModal.hide();
 
         if(this.hitosReload.observers.length > 0){
           this.hitosReload.emit();
-      }
+        }
     },
     err =>  {
+        this.btnDisabled = false;
         this.errorHandlerService.handleErrors(err)
     });
   }

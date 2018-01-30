@@ -36,6 +36,7 @@ export class UpdateSolfacCashComponent implements OnDestroy  {
     subscrip: Subscription;
 
     public options;
+    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
@@ -62,8 +63,11 @@ export class UpdateSolfacCashComponent implements OnDestroy  {
     updateCash(){
         var json = { cashedDate: this.cashedDate }
 
+        this.isLoading = true;
+
         this.subscrip = this.solfacService.updateCash(this.solfacId, json).subscribe(
             data => {
+                this.isLoading = false;
                 this.updateCashModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 
@@ -78,6 +82,7 @@ export class UpdateSolfacCashComponent implements OnDestroy  {
                 }
             },
             error => {
+                this.isLoading = false;
                 this.updateCashModal.hide();
                 this.errorHandlerService.handleErrors(error);
             });

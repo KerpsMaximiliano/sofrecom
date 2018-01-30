@@ -37,6 +37,7 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 
 import { HttpAuth } from "app/services/common/http-auth";
 import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
+import { LaddaModule } from 'angular2-ladda';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -58,6 +59,12 @@ export function HttpLoaderFactory(http: Http) {
     AdminModule,
     BillingModule,
     ChartsModule,
+    LaddaModule.forRoot({
+      style: "zoom-in",
+      spinnerSize: 30,
+      spinnerColor: "white",
+      spinnerLines: 12
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
