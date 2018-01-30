@@ -2,11 +2,11 @@
 using Newtonsoft.Json;
 using Sofco.Model.Models.AllocationManagement;
 
-namespace Sofco.WebApi.Models.AllocationManagement
+namespace Sofco.Core.Models.AllocationManagement
 {
-    public class NewsViewModel
+    public class EmployeeNewsViewModel
     {
-        public NewsViewModel(EmployeeSyncAction domain)
+        public EmployeeNewsViewModel(EmployeeSyncAction domain)
         {
             Id = domain.Id;
             EmployeeNumber = domain.EmployeeNumber;
@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Name { get; set; }
 
         public string EmployeeData { get; set; }
-         
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }

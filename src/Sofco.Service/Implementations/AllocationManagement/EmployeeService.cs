@@ -8,6 +8,7 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
@@ -57,9 +58,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public ICollection<EmployeeSyncAction> GetNews()
+        public Response<IList<EmployeeNewsViewModel>> GetEmployeeNews()
         {
-            return unitOfWork.EmployeeSyncActionRepository.GetAll();
+            var employeeSyncActions = unitOfWork.EmployeeSyncActionRepository.GetAll();
+
+            var data = employeeSyncActions.Select(x => new EmployeeNewsViewModel(x)).ToList();
+
+            var response = new Response<IList<EmployeeNewsViewModel>> {Data = data};
+
+            return response;
         }
 
         public Response<EmployeeSyncAction> DeleteNews(int id)

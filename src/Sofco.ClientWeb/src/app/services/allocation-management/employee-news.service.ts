@@ -4,7 +4,7 @@ import { Service } from "app/services/common/service";
 import { HttpAuth } from "app/services/common/http-auth";
 
 @Injectable()
-export class NewsService {
+export class EmployeeNewsService {
 
   private baseUrl: string;
 
@@ -13,10 +13,10 @@ export class NewsService {
   }
 
   getAll() {
-    return this.http.get(`${this.baseUrl}/news`).map((res:Response) => res.json());
+    return this.http.get(`${this.baseUrl}/employeenews`).map((res:Response) => res.json());
   }
 
   delete(id){
-    return this.http.delete(`${this.baseUrl}/news/${id}`).map((res:Response) => res.json());
+    return this.http.delete(`${this.baseUrl}/employeenews/${id}`).map((res:Response) => res.json());
   }
 }
