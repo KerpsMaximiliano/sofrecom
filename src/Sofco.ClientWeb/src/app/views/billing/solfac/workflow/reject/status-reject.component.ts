@@ -33,6 +33,7 @@ export class StatusRejectComponent implements OnDestroy  {
     subscrip: Subscription;
 
     public rejectComments: string;
+    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
@@ -64,9 +65,12 @@ export class StatusRejectComponent implements OnDestroy  {
             comment: this.rejectComments
         }
 
+        this.isLoading = true;
+
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.rejectModal.hide();
+                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
                 
                 if(this.history.observers.length > 0){
@@ -83,6 +87,7 @@ export class StatusRejectComponent implements OnDestroy  {
             },
             error => {
                 this.rejectModal.hide();
+                this.isLoading = false;
                 this.errorHandlerService.handleErrors(error);
             });
     }

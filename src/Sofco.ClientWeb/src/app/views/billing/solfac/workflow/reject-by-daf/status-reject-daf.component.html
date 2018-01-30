@@ -2,7 +2,7 @@
     {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i>
 </button>
     
-<ng2-modal [config]="rejectByDafModalConfig" #rejectByDafModal (accept)="rejectByCDG()">
+<ng2-modal [config]="rejectByDafModalConfig" #rejectByDafModal (accept)="rejectByCDG()" [isLoading]="isLoading">
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">

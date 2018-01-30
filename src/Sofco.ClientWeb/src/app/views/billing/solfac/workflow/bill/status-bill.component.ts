@@ -38,6 +38,7 @@ export class StatusBillComponent implements OnDestroy  {
     invoiceCode: string;
 
     public options;
+    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
@@ -72,9 +73,13 @@ export class StatusBillComponent implements OnDestroy  {
                 invoiceDate: this.invoiceDate
               }
 
+            this.isLoading = true;
+            
             this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
                 data => {
+                    this.isLoading = false;
                     this.billModal.hide();
+                    
                     if(data.messages) this.messageService.showMessages(data.messages);
                  
                     if(this.history.observers.length > 0){
@@ -90,6 +95,7 @@ export class StatusBillComponent implements OnDestroy  {
                     this.updateStatus.emit(toModif);
                 },
                 error => {
+                    this.isLoading = false;
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{

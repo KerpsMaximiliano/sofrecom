@@ -21,7 +21,7 @@
       <!-- footer-->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.cancelButton">{{config.cancelButtonText | translate}}</button>
-        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="acceptEvent($event)" *ngIf="config.acceptButton">{{config.acceptButtonText | translate}}</button>
+        <button type="button" [ladda]="isLoading" class="btn btn-success" data-dismiss="modal" (click)="acceptEvent($event)" *ngIf="config.acceptButton">{{config.acceptButtonText | translate}}</button>
       </div>
     </div>
 

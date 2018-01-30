@@ -28,6 +28,7 @@
     "@angular/router": "^4.0.1",
     "@ngx-translate/core": "^7.1.0",
     "@ngx-translate/http-loader": "^0.1.0",
+    "angular2-ladda": "^1.2.3",
     "animate.css": "3.1.1",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.5.0",

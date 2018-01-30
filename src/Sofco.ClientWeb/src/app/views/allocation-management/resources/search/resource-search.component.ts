@@ -95,19 +95,17 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     sendUnsubscribeNotification(){
-        this.messageService.showLoading();
-
         var json = {
             receipents: $('#userId').val(),
             endDate: this.endDate
         }
 
         this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
-            this.messageService.closeLoading();
+            this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
         },
         error => {
-            this.messageService.closeLoading();
+            this.confirmModal.hide();
             this.errorHandlerService.handleErrors(error)
         });
     }

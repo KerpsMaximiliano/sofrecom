@@ -33,6 +33,8 @@ export class StatusDeleteComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
+  public isLoading: boolean = false;
+
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
@@ -54,17 +56,21 @@ export class StatusDeleteComponent implements OnDestroy  {
   }
 
   delete(){
-      this.solfacService.delete(this.solfacId).subscribe(data => {
-          this.deleteModal.hide();
-          if(data.messages) this.messageService.showMessages(data.messages);
+    this.isLoading = true;
 
-          setTimeout(() => { 
-            this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${this.projectId}`]); 
-          }, 500)
-      },
-      err => {
-          this.deleteModal.hide();
-          this.errorHandlerService.handleErrors(err);
-      });
+    this.solfacService.delete(this.solfacId).subscribe(data => {
+        this.deleteModal.hide();
+        this.isLoading = false;
+        if(data.messages) this.messageService.showMessages(data.messages);
+
+        setTimeout(() => { 
+        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${this.projectId}`]); 
+        }, 500)
+    },
+    err => {
+        this.deleteModal.hide();
+        this.isLoading = false;
+        this.errorHandlerService.handleErrors(err);
+    });
   }
 }

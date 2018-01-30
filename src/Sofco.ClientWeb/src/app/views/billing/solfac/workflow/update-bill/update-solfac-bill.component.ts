@@ -38,6 +38,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
     subscrip: Subscription;
 
     public options;
+    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
@@ -80,8 +81,11 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                 invoiceDate: this.invoiceDate
               }
 
+            this.isLoading = true;
+
             this.subscrip = this.solfacService.updateBill(this.solfacId, json).subscribe(
                 data => {
+                    this.isLoading = false;
                     this.updateBillModal.hide();
                     if(data.messages) this.messageService.showMessages(data.messages);
                  
@@ -99,6 +103,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     }
                 },
                 error => {
+                    this.isLoading = false;
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{

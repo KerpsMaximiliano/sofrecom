@@ -32,6 +32,7 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 
     subscrip: Subscription;
     public comments: string;
+    public isLoading: boolean = false;
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
@@ -43,8 +44,11 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
     }
 
     sendToDAF(){
+        this.isLoading = true;
+        
         this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Sent, this.comments, "").subscribe(data => {
             this.sendToDafModal.hide();
+            this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.history.observers.length > 0){
@@ -62,6 +66,7 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
         },
         err => {
             this.sendToDafModal.hide();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(err)
         });
     }
