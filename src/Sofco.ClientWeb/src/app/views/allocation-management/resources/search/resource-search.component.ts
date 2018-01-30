@@ -115,6 +115,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.profile = "";
         this.searchModel.seniority = "";
         this.searchModel.technology = "";
+        this.resources = [];
+        sessionStorage.removeItem('lastResourceQuery');
     }
 
     searchDisable(){
