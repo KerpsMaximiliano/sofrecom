@@ -358,11 +358,22 @@
             "recipients": "Copy to",
             "recipient": "Recipient",
             "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
+            "generalInfo": "General Info",
+            "allocations": "Allocations",
+            "licenses": "Licenses",
+            "timeSheet": "Time Sheet",
+            "homeOffice": "Home Office",
             "grid": {
                 "name": "Name",
                 "senority": "Seniority",
                 "profile": "Profile",
-                "technology": "Technology"
+                "employeeNumber": "Employee Number",
+                "office": "Office",
+                "manager": "Manager",
+                "technology": "Technology",
+                "startDate" :"Start",
+                "releaseDate": "Release",
+                "percentage": "Percentage"
             }
         },
         "news": {

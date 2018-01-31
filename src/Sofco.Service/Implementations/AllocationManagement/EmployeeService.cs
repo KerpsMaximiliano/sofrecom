@@ -212,6 +212,46 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<EmployeeProfileDto> GetProfile(int id)
+        {
+            var response = new Response<EmployeeProfileDto> { Data = new EmployeeProfileDto() };
+
+            var employee = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
+
+            if (response.HasErrors()) return response;
+
+            var employeeAllocations = unitOfWork.AllocationRepository.GetByEmployee(id);
+
+            var analitycs = employeeAllocations.Select(x => x.Analytic).Distinct();
+
+            response.Data.Id = employee.Id;
+            response.Data.EmployeeNumber = employee.EmployeeNumber;
+            response.Data.Manager = "Diego O. Miguel";
+            response.Data.Name = employee.Name;
+            response.Data.Office = "Reconquista";
+            response.Data.Percentage = employee.BillingPercentage;
+            response.Data.Profile = employee.Profile;
+            response.Data.Seniority = employee.Seniority;
+            response.Data.Technology = employee.Technology;
+
+            foreach (var analityc in analitycs)
+            {
+                var firstAllocation = analityc.Allocations.FirstOrDefault();
+
+                response.Data.Allocations.Add(new EmployeeAllocationDto
+                {
+                    Title = analityc.Title,
+                    Name = analityc.Name,
+                    Client = analityc.ClientExternalName,
+                    Service = analityc.Service,
+                    StartDate = firstAllocation?.StartDate,
+                    ReleaseDate = firstAllocation?.ReleaseDate,
+                });
+            }
+
+            return response;
+        }
+
         private void SendMailForUnsubscribe(Response<EmployeeSyncAction> response, Employee employeeToChange)
         {
             try

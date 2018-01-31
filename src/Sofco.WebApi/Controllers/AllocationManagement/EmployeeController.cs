@@ -28,6 +28,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("{id}/profile")]
+        public IActionResult GetProfile(int id)
+        {
+            var response = employeeService.GetProfile(id);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

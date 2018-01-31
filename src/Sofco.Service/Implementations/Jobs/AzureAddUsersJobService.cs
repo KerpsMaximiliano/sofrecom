@@ -25,18 +25,21 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var user in response.Data.Value)
             {
-                if (!unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName))
+                if (user.UserPrincipalName.Contains("@sofrecom.com.ar"))
                 {
-                    var domain = new User
+                    if (!unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName))
                     {
-                        Email = user.UserPrincipalName,
-                        Name = user.DisplayName,
-                        UserName = user.DisplayName,
-                        Active = true,
-                        StartDate = DateTime.Now
-                    };
+                        var domain = new User
+                        {
+                            Email = user.UserPrincipalName,
+                            Name = user.DisplayName,
+                            UserName = user.UserPrincipalName.Split('@')[0],
+                            Active = true,
+                            StartDate = DateTime.Now
+                        };
 
-                    unitOfWork.UserRepository.Insert(domain);
+                        unitOfWork.UserRepository.Insert(domain);
+                    }
                 }
             }
 

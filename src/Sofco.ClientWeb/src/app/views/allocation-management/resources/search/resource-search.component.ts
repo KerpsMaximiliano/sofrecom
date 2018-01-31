@@ -66,7 +66,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(data){
             this.searchModel = data;
             this.search();
-            this.initGrid();
         }
 
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
@@ -164,5 +163,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         var options = { selector: "#resourcesTable" };
         this.dataTableService.destroy(options.selector);
         this.dataTableService.init2(options);
+    }
+
+    goToProfile(resource){
+        this.router.navigate([`/allocationManagement/resources/${resource.id}`]);
+    }
+
+    canViewProfile(){
+        return this.menuService.hasFunctionality('ALLOC', 'VWPRO');
     }
 }

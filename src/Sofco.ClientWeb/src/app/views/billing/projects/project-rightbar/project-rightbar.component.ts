@@ -20,7 +20,7 @@ export class ProjectRightBarComponent {
 
   goToCreateAnalytic(){
     sessionStorage.setItem('analyticWithProject', 'yes');
-    this.router.navigate(['/allocationManagement/analytics/new']);
+    this.router.navigate(['/contracts/analytics/new']);
   }
 
   goToResources(){

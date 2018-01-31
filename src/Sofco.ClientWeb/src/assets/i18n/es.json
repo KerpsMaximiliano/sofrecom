@@ -355,14 +355,26 @@
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
             "list": "Listado",
+            "profile": "Perfil del empleado",
             "recipients": "Con Copia (CC)",
             "recipient": "Destinatario",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
+            "generalInfo": "Informacion general",
+            "allocations": "Asignaciones",
+            "licenses": "Licencias",
+            "timeSheet": "Carga de Horas",
+            "homeOffice": "Home Office",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
+                "employeeNumber": "Legajo",
                 "profile": "Perfil",
-                "technology": "Tecnologia"
+                "office": "Oficina",
+                "manager": "Superior",
+                "technology": "Tecnologia",
+                "startDate" :"Inicio",
+                "releaseDate": "Liberación",
+                "percentage": "Porcentaje"
             }
         },
         "news": {
