@@ -72,7 +72,6 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                     this.getTimeline(params['id']);
                 },
                 error => this.errorHandlerService.handleErrors(error));
-
             });
         } 
 

@@ -3,5 +3,6 @@
     "added": "Empleado creado exitosamente",
     "wrongStatus": "No se puede realizar la acción con el estado actual del registro",
     "deleted": "El empleado ha sido de baja correctamente",
-    "nameRequired": "El nombre del recurso es requerido"
+    "nameRequired": "El nombre del recurso es requerido",
+    "employeesNotFound": "No se han encontrado resultados con los parametros seleccionados"
 }

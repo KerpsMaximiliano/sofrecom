@@ -9,7 +9,7 @@
                 {{'allocationManagement.title' | translate }}
             </li>
             <li>
-                <a [routerLink]="['/allocationManagement/analytics']"> {{ 'allocationManagement.analytics.title' | translate }} </a>
+                <a [routerLink]="['/contracts/analytics']"> {{ 'allocationManagement.analytics.title' | translate }} </a>
             </li>
             <li class="active">
                 <strong> {{ 'allocationManagement.allocation.assignResources' | translate }} </strong>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="ibox-footer">
                     <a class="btn btn-primary pointer" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></a>
-                    <a class="btn btn-success" [routerLink]="['/allocationManagement/analytics']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    <a class="btn btn-success" [routerLink]="['/contracts/analytics']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                 </div>
             </div>
         </div>

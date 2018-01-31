@@ -32,11 +32,13 @@ import { EditAnalyticComponent } from 'app/views/allocation-management/analytics
 import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
+import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
 
 @NgModule({
   declarations: [
-    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent, AddCostCenterComponent,
-    ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, EditAnalyticComponent, ResourceByServiceComponent
+    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, 
+    ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, 
+    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,7 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
     NgDatepickerModule,
     DateRangePickerModule,
     IboxtoolsModule,
-    ICheckModule,
+    ICheckModule, 
     NumbersOnlyModule,
     Ng2ModalModule
   ],

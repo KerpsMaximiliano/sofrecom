@@ -37,7 +37,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         name: "",
         seniority: "",
         profile: "",
-        technology: ""
+        technology: "",
+        percentage: null
     };
 
     public options: any;
@@ -66,7 +67,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(data){
             this.searchModel = data;
             this.search();
-            this.initGrid();
         }
 
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
@@ -115,6 +115,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.profile = "";
         this.searchModel.seniority = "";
         this.searchModel.technology = "";
+        this.searchModel.percentage = null;
         this.resources = [];
         sessionStorage.removeItem('lastResourceQuery');
     }
@@ -123,7 +124,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(!this.searchModel.name && this.searchModel.name == "" &&
            !this.searchModel.profile && this.searchModel.profile == "" &&
            !this.searchModel.seniority && this.searchModel.seniority == "" &&
-           !this.searchModel.technology && this.searchModel.technology == ""){
+           !this.searchModel.technology && this.searchModel.technology == "" && 
+           !this.searchModel.percentage && this.searchModel.percentage == null){
                return true;
            }
 
@@ -133,9 +135,14 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     search(){
         this.messageService.showLoading();
 
-        this.getAllEmployeesSubscrip = this.employeeService.search(this.searchModel).subscribe(data => {
-            this.resources = data;
-            this.initGrid();
+        this.getAllEmployeesSubscrip = this.employeeService.search(this.searchModel).subscribe(response => {
+            this.resources = response.data;
+            
+            if(response.messages) {
+                this.initGrid();
+                this.messageService.showMessages(response.messages);
+            }
+           
             this.messageService.closeLoading();
 
             sessionStorage.setItem('lastResourceQuery', JSON.stringify(this.searchModel));
@@ -164,5 +171,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         var options = { selector: "#resourcesTable" };
         this.dataTableService.destroy(options.selector);
         this.dataTableService.init2(options);
+    }
+
+    goToProfile(resource){
+        this.router.navigate([`/allocationManagement/resources/${resource.id}`]);
+    }
+
+    canViewProfile(){
+        return this.menuService.hasFunctionality('ALLOC', 'VWPRO');
     }
 }

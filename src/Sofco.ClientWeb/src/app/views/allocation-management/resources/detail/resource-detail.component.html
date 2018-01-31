@@ -1,0 +1,139 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'allocationManagement.resources.profile' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'allocationManagement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'allocationManagement.resources.title' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row m-b-md m-t-md">
+        <div class="col-md-5">
+            <div class="profile-image">
+                <img src="assets/images/user_default_m.png" class="img-circle circle-border m-b-md" alt="profile">
+            </div>
+            <div class="profile-info">
+                <h2 class="no-margins"> {{ model?.name }} </h2>
+                <br>
+                <h4>{{ model?.profile }}</h4>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <table class="table table-font-md">
+                <tbody>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
+                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.office }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.senority' | translate }}: </strong> {{ model?.seniority }} </td>
+                        <td><strong>{{'allocationManagement.resources.grid.manager' | translate }}: </strong> {{ model?.manager }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
+                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-9">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                     <div class="panel-body">
+                            <strong>Lorem ipsum dolor sit amet, consectetuer adipiscing</strong>
+
+                            <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of
+                                existence in this spot, which was created for the bliss of souls like mine.</p>
+
+                            <p>I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at
+                                the present moment; and yet I feel that I never was a greater artist than now. When.</p>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="analyticsTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'allocationManagement.analytics.grid.title' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
+                                        <th>{{'allocationManagement.resources.grid.startDate' | translate }}</th>
+                                        <th>{{'allocationManagement.resources.grid.releaseDate' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let allocation of model?.allocations">
+                                        <td> {{ allocation.title }} </td>
+                                        <td> {{ allocation.name }} </td>
+                                        <td> {{ allocation.client }} </td>
+                                        <td> {{ allocation.service }} </td>
+                                        <td> {{ allocation.startDate | date:'dd/MM/yyyy' }} </td>
+                                        <td> {{ allocation.releaseDate | date:'dd/MM/yyyy' }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3" style="margin-top: 40px">
+            <div class="row widget-custom lazur-bg">
+                <div class="col-sm-2">
+                    <i class="fa fa-plane fa-2x"></i>
+                </div>
+                <div class="col-sm-10">
+                    <div class="vertical-align">
+                        <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row widget-custom lazur-bg">
+                <div class="col-sm-2">
+                    <i class="fa fa-clock-o fa-2x"></i>
+                </div>
+                <div class="col-sm-10">
+                    <div class="vertical-align">
+                        <h4 class="font-bold">{{'allocationManagement.resources.timeSheet' | translate }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row widget-custom lazur-bg">
+                <div class="col-sm-2">
+                    <i class="fa fa-home fa-2x"></i>
+                </div>
+                <div class="col-sm-10">
+                    <div class="vertical-align">
+                        <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

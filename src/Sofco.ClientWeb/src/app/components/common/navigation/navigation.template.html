@@ -40,6 +40,7 @@
         <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'contracts.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('contracts')}">
             <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('ALLOC', 'CCLST')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/contracts/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
         </ul>
       </li> 
 
@@ -47,7 +48,6 @@
       <li [ngClass]="{active: activeRoute('allocationManagement')}" *ngIf="menuService.hasAllocationManagementMenu()">
         <a href="#"><i class="fa fa-users"></i> <span class="nav-label">{{'allocationManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('allocationManagement')}">
-            <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('resources')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/resources']">{{'allocationManagement.resources.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('employees')}" *ngIf="menuService.hasFunctionality('ALLOC', 'NEWSQ')"><a [routerLink]="['/allocationManagement/employees/news']">{{'allocationManagement.news.title' | translate }}</a></li>
         </ul>

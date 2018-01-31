@@ -11,8 +11,9 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<Employee> GetById(int id);
 
-        ICollection<Employee> Search(EmployeeSearchParams parameters);
+        Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);
 
         Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
+        Response<EmployeeProfileDto> GetProfile(int id);
     }
 }

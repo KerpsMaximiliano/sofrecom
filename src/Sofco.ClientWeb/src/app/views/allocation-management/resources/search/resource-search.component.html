@@ -19,28 +19,36 @@
     <div class="ibox">
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
                         <input class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
                         <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'allocationManagement.resources.grid.profile' | translate }}</label>
                         <input class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
                     </div>
                 </div>
-                <div class="col-sm-3">
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
                         <input class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'allocationManagement.resources.grid.percentage' | translate }}</label>
+                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" myNumberOnly [(ngModel)]="searchModel.percentage">
                     </div>
                 </div>
             </div>
@@ -73,8 +81,9 @@
                         <td>{{ resource.profile}}</td>
                         <td>{{ resource.technology}}</td>
                         <td>
-                            <button class="btn btn-primary btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openModal(resource)">{{'ACTIONS.notifyUnsubscribe' | translate }}</button>
-                            <button class="btn btn-success btn-xs" (click)="goToAssignAnalytics(resource)">{{'ACTIONS.assign' | translate }}</button>
+                            <button title="{{'ACTIONS.notifyUnsubscribe' | translate }}" class="btn btn-danger btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openModal(resource)"><i class="fa fa-user-times"></i></button>
+                            <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)"><i class="fa fa-user-plus"></i></button>
+                            <button title="{{'allocationManagement.resources.profile' | translate }}" class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()"><i class="fa fa-eye"></i></button>
                         </td>
                     </tr>
                 </tbody>

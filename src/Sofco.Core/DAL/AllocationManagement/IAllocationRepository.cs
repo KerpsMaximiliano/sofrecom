@@ -11,5 +11,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdatePercentage(Allocation allocation);
         void UpdateReleaseDate(Allocation allocation);
         ICollection<Employee> GetByService(string serviceId);
+        ICollection<Allocation> GetByEmployee(int id);
     }
 }

@@ -41,6 +41,7 @@ import { NewsComponent } from 'app/views/allocation-management/news/news.compone
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
+import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -115,17 +116,6 @@ export const ROUTES:Routes = [
   {
     path: 'contracts', component: BasicLayoutComponent,
     children: [
-    {
-      path: "costCenter",
-      children: [
-        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
-      ]
-    }]
-  },
-  {
-    path: 'allocationManagement', component: BasicLayoutComponent,
-    children: [
       { path:"analytics", 
       children: [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
@@ -134,9 +124,21 @@ export const ROUTES:Routes = [
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {
+        path: "costCenter",
+        children: [
+          { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
+          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+        ]
+      }]
+  },
+  {
+    path: 'allocationManagement', component: BasicLayoutComponent,
+    children: [
+      {
         path: "resources", 
         children: [
-          { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } } ,
+          { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
+          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },

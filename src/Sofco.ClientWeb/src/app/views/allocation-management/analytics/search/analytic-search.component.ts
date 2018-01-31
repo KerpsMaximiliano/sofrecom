@@ -45,13 +45,13 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     gotToEdit(analytic){
-        this.router.navigate([`/allocationManagement/analytics/${analytic.id}/edit`]);
+        this.router.navigate([`/contracts/analytics/${analytic.id}/edit`]);
     }
 
     goToAssignResource(analytic){
         if(this.menuService.hasFunctionality('ALLOC', 'ADRES')){
             sessionStorage.setItem("analytic", JSON.stringify(analytic));
-            this.router.navigate([`/allocationManagement/analytics/${analytic.id}/allocations`]);
+            this.router.navigate([`/contracts/analytics/${analytic.id}/allocations`]);
         }
         else{
             this.messageService.showError("allocationManagement.allocation.forbidden");
@@ -60,6 +60,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     goToAdd(){
         sessionStorage.setItem('analyticWithProject', 'no');
-        this.router.navigate(['/allocationManagement/analytics/new']);
+        this.router.navigate(['/contracts/analytics/new']);
     }
 }

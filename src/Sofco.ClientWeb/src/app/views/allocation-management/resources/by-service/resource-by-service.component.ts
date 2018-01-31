@@ -43,7 +43,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
-        if(this.paramsSubscrip) this.getAllSubscrip.unsubscribe();
+        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
     }
 
     getAll(){

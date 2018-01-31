@@ -40,6 +40,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Allocation> GetByEmployee(int id)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Where(x => x.EmployeeId == id)
+                .ToList();
+        }
+
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;

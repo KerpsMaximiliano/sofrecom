@@ -59,7 +59,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             data => {
                 this.messageService.closeLoading();
                 if(data.messages) this.messageService.showMessages(data.messages);
-                this.router.navigate(['allocationManagement/analytics']);
+                this.router.navigate(['contracts/analytics']);
             },
             err => {
                 this.messageService.closeLoading();

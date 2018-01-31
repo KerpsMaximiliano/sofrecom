@@ -64,6 +64,10 @@ export class DataTableService {
                     options.aoColumnDefs = params.columnDefs;
                 }
 
+                if(params.order){
+                    options.order = params.order;
+                }
+
                 if(params.withExport){
                     options.dom = '<"html5buttons"B>lTfgitp';
                     options.buttons = [

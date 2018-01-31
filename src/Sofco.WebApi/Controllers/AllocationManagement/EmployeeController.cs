@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
@@ -27,6 +29,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("{id}/profile")]
+        public IActionResult GetProfile(int id)
+        {
+            var response = employeeService.GetProfile(id);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -41,9 +54,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPost("search")]
         public IActionResult Search([FromBody] EmployeeSearchParams parameters)
         {
-            var model = employeeService.Search(parameters).Select(x => new EmployeeViewModel(x));
+            var searchResponse = employeeService.Search(parameters);
 
-            return Ok(model);
+            var response =
+                new Response<IEnumerable<EmployeeViewModel>>
+                {
+                    Data = searchResponse.Data.Select(x => new EmployeeViewModel(x)),
+                    Messages = searchResponse.Messages
+                };
+
+            return Ok(response);
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]

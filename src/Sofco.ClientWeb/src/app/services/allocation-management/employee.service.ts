@@ -20,6 +20,10 @@ export class EmployeeService {
     return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }
 
+  getProfile(id) {
+    return this.http.get(`${this.baseUrl}/employees/${id}/profile`).map((res:Response) => res.json());
+  }
+
   search(model) {
     return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
   }

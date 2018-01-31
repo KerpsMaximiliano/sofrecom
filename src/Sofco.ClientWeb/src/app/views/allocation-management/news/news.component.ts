@@ -25,6 +25,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     newsToConfirm: any;
     indexToConfirm: number;
 
+    public isLoading: boolean = false;
+
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -87,52 +89,52 @@ export class NewsComponent implements OnInit, OnDestroy {
     confirm(){ }
 
     add(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
         this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     cancel(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
         this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     delete(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
         this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
