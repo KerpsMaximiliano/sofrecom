@@ -34,7 +34,8 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.LicenseTypeNumber, s => s.MapFrom(x => x.Tdnro))
                 .ForMember(d => d.Description, s => s.MapFrom(x => x.Tddesc));
 
-            CreateMap<Employee, EmployeeSyncAction>()
+            CreateMap<Employee, EmployeeHistory>()
+                .ForMember(d => d.Id, s => s.Ignore())
                 .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
         }
     }

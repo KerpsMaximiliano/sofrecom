@@ -22,8 +22,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     deleteSubscrip: Subscription;
 
-    newsToDelete: any;
-    indexToDelete: number;
+    newsToConfirm: any;
+    indexToConfirm: number;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -64,22 +64,22 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
 
     showConfirmCancel(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.cancel;
     }
 
     showConfirmAdd(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
     }
 
     showConfirmDelete(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.delete;
     }
@@ -89,10 +89,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     add(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeNewsService.add(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.messageService.closeLoading();
             this.confirmModal.hide();
@@ -106,10 +106,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.messageService.closeLoading();
             this.confirmModal.hide();
@@ -123,10 +123,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     delete(){
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.messageService.closeLoading();
             this.confirmModal.hide();

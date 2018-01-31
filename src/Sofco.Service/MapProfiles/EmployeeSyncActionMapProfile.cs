@@ -9,6 +9,9 @@ namespace Sofco.Service.MapProfiles
     {
         public EmployeeSyncActionMapProfile()
         {
+            CreateMap<Employee, EmployeeSyncAction>()
+                .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
+
             CreateMap<EmployeeSyncAction, EmployeeNewsModel>()
                 .ForMember(d => d.Name, s => s.ResolveUsing(x =>
                 {

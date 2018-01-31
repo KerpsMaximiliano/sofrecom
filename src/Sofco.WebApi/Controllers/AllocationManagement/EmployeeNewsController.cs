@@ -6,7 +6,7 @@ using Sofco.WebApi.Extensions;
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
     [Authorize]
-    [Route("api/employeenews")]
+    [Route("api/employees/news")]
     public class EmployeeNewsController : Controller
     {
         private readonly IEmployeeNewsService employeeNewsService;
@@ -37,9 +37,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = employeeNewsService.Add(id, this.GetUserName());
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
     }

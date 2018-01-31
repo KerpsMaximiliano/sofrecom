@@ -294,6 +294,10 @@
      "None": "Vide",
      "comments": "Commentaires",
      "selectAnOption": "Sélectionner une option",
+     "name": "Nom",
+     "New": "Nouveau",
+     "Delete": "Baisse",
+     "Reincorporation": "Reincorporation",
      "report":{
         "title": "Rapport",
         "solfacs": {

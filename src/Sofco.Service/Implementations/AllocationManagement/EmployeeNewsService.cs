@@ -11,6 +11,7 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
@@ -56,9 +57,27 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var data = Translate(employeeSyncActions.ToList());
 
+            MatchReincorporation(data);
+
             var response = new Response<IList<EmployeeNewsModel>> { Data = data };
 
             return response;
+        }
+
+        private void MatchReincorporation(List<EmployeeNewsModel> data)
+        {
+            var employeeNumbers = data
+                .Where(s => s.Status == EmployeeSyncActionStatus.New)
+                .Select(s => s.EmployeeNumber).ToArray();
+
+            var storedNewEmployee = unitOfWork.EmployeeRepository.GetByEmployeeNumber(employeeNumbers);
+
+            foreach (var employee in storedNewEmployee)
+            {
+                var employeeNews = data.First(s => s.EmployeeNumber == employee.EmployeeNumber);
+
+                employeeNews.IsReincorporation = true;
+            }
         }
 
         public Response<EmployeeSyncAction> Add(int newsId, string userName)
@@ -77,6 +96,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.Modified = DateTime.UtcNow;
                 employee.CreatedByUser = userName;
 
+                SetEmployeeHistory(employee);
+
                 // Add new employee
                 unitOfWork.EmployeeRepository.Insert(employee);
 
@@ -90,11 +111,25 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             catch (Exception e)
             {
-                this.logger.LogError(e);
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
+        }
+
+        private void SetEmployeeHistory(Employee employee)
+        {
+            var storedEmployee =
+                unitOfWork.EmployeeRepository.GetSingle(s => s.EmployeeNumber == employee.EmployeeNumber);
+
+            if (storedEmployee == null) return;
+
+            var employeeHistory = Translate(storedEmployee);
+
+            unitOfWork.EmployeeHistoryRepository.Save(employeeHistory);
+
+            unitOfWork.EmployeeRepository.Delete(storedEmployee);
         }
 
         public Response<EmployeeSyncAction> Delete(int newsId, string userName)
@@ -167,6 +202,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private List<EmployeeNewsModel> Translate(List<EmployeeSyncAction> employeeSyncActions)
         {
             return mapper.Map<List<EmployeeSyncAction>, List<EmployeeNewsModel>>(employeeSyncActions);
+        }
+
+        private EmployeeHistory Translate(Employee employee)
+        {
+            return mapper.Map<Employee, EmployeeHistory>(employee);
         }
     }
 }

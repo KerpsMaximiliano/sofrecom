@@ -13,7 +13,6 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Repository.Rh.Settings;
-using Sofco.Service.Implementations.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -189,7 +188,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                logger.LogError(ex);
             }
         }
     }

@@ -35,9 +35,10 @@
                         <td>{{ news.name}}</td>
                         <td>{{ news.startDate | date:'dd/MM/yyyy'}}</td>
                         <td>{{ news.endDate | date:'dd/MM/yyyy'}}</td>
-                        <td> <span class="label label-{{news.status}} span-status-center">{{ news.status | translate }}</span></td>
+                        <td> <span class="label label-{{news.status}}{{news.isReincorporation?'-Reincorporation':''}} span-status-center">{{ news.status != 'New' || !news.isReincorporation ? (news.status | translate):'' }} {{ news.isReincorporation ? ("Reincorporation" | translate) : "" }}</span></td>
                         <td>
-                            <button class="btn btn-primary btn-xs" *ngIf="news.status == 'New'" (click)="showConfirmAdd(news, i)">{{'ACTIONS.confirm' | translate }}</button>
+                            <button class="btn btn-primary btn-xs" *ngIf="news.status == 'New' && !news.isReincorporation" (click)="showConfirmAdd(news, i)">{{'ACTIONS.confirm' | translate }}</button>
+                            <button class="btn btn-info btn-xs" *ngIf="news.status == 'New' && news.isReincorporation" (click)="showConfirmAdd(news, i)">{{'ACTIONS.confirm' | translate }}</button>
                             <button class="btn btn-danger btn-xs" *ngIf="news.status == 'Delete'" (click)="showConfirmDelete(news, i)">{{'ACTIONS.confirm' | translate }}</button>
                             <button class="btn btn-success btn-xs" (click)="showConfirmCancel(news, i)">{{'ACTIONS.cancel' | translate }}</button>
                         </td>

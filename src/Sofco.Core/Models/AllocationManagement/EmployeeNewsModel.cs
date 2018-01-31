@@ -17,5 +17,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public bool IsReincorporation { get; set; }
     }
 }

@@ -493,6 +493,7 @@
     "name": "Nombre",
     "New": "Alta",
     "Delete": "Baja",
+    "Reincorporation": "Reincorporación",
     "report":{
         "title": "Reporte",
         "solfacs": {
