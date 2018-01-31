@@ -2,7 +2,7 @@
     {{ 'ACTIONS.updateBill' | translate }}  <i class="fa fa-money"></i>
 </button>
 
-<ng2-modal [config]="updateBillModalConfig" #updateBillModal (accept)="updateBill()">
+<ng2-modal [config]="updateBillModalConfig" #updateBillModal (accept)="updateBill()" [isLoading]="isLoading">
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
         <input type="text" class="form-control" id="updateInvoiceCode" data-mask="9999-99999999">

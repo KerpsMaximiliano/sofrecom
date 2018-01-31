@@ -3,6 +3,6 @@
     <i class="fa fa-times"></i>
 </button>
 
-<ng2-modal [config]="annulmentModalConfig" #annulmentModal (accept)="annulment()">
+<ng2-modal [config]="annulmentModalConfig" #annulmentModal (accept)="annulment()" [isLoading]="isLoading">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

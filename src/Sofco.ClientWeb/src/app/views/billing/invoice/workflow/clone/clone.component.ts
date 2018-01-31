@@ -26,6 +26,7 @@ export class CloneInvoiceComponent implements OnDestroy  {
   @Input() invoiceId: number;
 
   subscrip: Subscription;
+  public isLoading: boolean = false;
 
   constructor(private invoiceService: InvoiceService,
     private messageService: MessageService,
@@ -43,20 +44,24 @@ export class CloneInvoiceComponent implements OnDestroy  {
   }
 
   clone(){
-      this.subscrip = this.invoiceService.clone(this.invoiceId).subscribe(data => {
-          this.cloneModal.hide();
-          if(data.messages) this.messageService.showMessages(data.messages);
+    this.isLoading = true;
 
-          setTimeout(() => { 
-            this.router.navigate([`/billing/invoice/${data.data.id}/project/${data.data.projectId}`]); 
-          }, 500)
-      },
-      err => {
-          this.cloneModal.hide();
-          
-          setTimeout(() => { 
-            this.errorHandlerService.handleErrors(err);
-          }, 500)
-      });
+    this.subscrip = this.invoiceService.clone(this.invoiceId).subscribe(data => {
+        this.cloneModal.hide();
+        this.isLoading = false;
+        if(data.messages) this.messageService.showMessages(data.messages);
+
+        setTimeout(() => { 
+          this.router.navigate([`/billing/invoice/${data.data.id}/project/${data.data.projectId}`]); 
+        }, 500)
+    },
+    err => {
+      this.isLoading = false;
+      this.cloneModal.hide();
+      
+      setTimeout(() => { 
+        this.errorHandlerService.handleErrors(err);
+      }, 500)
+    });
   }
 }

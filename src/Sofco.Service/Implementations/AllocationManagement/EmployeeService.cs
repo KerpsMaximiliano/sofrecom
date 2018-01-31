@@ -76,7 +76,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             
             try
             {
-                var body = string.Format(mailBody, employeeName, manager.Name, parameters.EndDate.ToString("D"));
+                var body = string.Format(mailBody, employeeName, manager.Name, parameters.EndDate.ToString("d"));
 
                 mailSender.Send(string.Join(";", parameters.Receipents), subject, body);
 

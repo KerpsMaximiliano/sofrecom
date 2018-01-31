@@ -2,6 +2,6 @@
     {{ 'ACTIONS.sendToCDG' | translate }} <i class="fa fa-envelope"></i>
 </button>
 
-<ng2-modal [config]="sendToCdgModalConfig" #sendToCdgModal (accept)="sendToCDG()">
+<ng2-modal [config]="sendToCdgModalConfig" #sendToCdgModal (accept)="sendToCDG()" [isLoading]="isLoading">
     <h4>{{ message | translate }}</h4>
 </ng2-modal>

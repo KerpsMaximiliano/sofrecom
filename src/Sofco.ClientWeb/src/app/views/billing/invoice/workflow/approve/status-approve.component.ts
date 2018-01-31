@@ -34,6 +34,7 @@ export class StatusApproveComponent implements OnDestroy  {
 
     subscrip: Subscription;
     invoiceNumber;
+    public isLoading: boolean = false;
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
@@ -58,8 +59,11 @@ export class StatusApproveComponent implements OnDestroy  {
 
         if(this.invoiceNumber && this.invoiceNumber != "" && this.invoiceNumber.length == 13){
 
+            this.isLoading = true;
+
             this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
                 this.approveConfirmModal.hide();
+                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
 
                 if(this.history.observers.length > 0){
@@ -77,6 +81,7 @@ export class StatusApproveComponent implements OnDestroy  {
                 }
             },
             err => {
+                this.isLoading = false;
                 this.errorHandlerService.handleErrors(err);
             });
         }

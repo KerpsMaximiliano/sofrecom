@@ -2,6 +2,6 @@
     <i class="fa fa-clone"></i> {{'ACTIONS.clone' | translate }} 
 </button>
 
-<ng2-modal [config]="cloneModalConfig" #cloneModal (accept)="clone()">
+<ng2-modal [config]="cloneModalConfig" #cloneModal (accept)="clone()" [isLoading]="isLoading">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
