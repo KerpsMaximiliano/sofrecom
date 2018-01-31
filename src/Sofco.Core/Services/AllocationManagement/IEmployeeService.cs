@@ -13,7 +13,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<EmployeeSyncAction> DeleteNews(int id);
         Response<EmployeeSyncAction> Add(int newsId, string userName);
         Response<EmployeeSyncAction> Delete(int newsId, string userName);
-        ICollection<Employee> Search(EmployeeSearchParams parameters);
+        Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);
         Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
         Response<EmployeeProfileDto> GetProfile(int id);
     }

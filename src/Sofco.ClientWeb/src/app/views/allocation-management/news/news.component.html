@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()" [isLoading]="isLoading">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
 

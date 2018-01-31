@@ -51,7 +51,7 @@ import { ResourceDetailComponent } from 'app/views/allocation-management/resourc
     NgDatepickerModule,
     DateRangePickerModule,
     IboxtoolsModule,
-    ICheckModule,
+    ICheckModule, 
     NumbersOnlyModule,
     Ng2ModalModule
   ],

@@ -60,6 +60,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!string.IsNullOrWhiteSpace(parameters.Technology))
                 query = query.Where(x => x.Technology != null && x.Technology.ToLowerInvariant().Contains(parameters.Technology.ToLowerInvariant()));
 
+            if (parameters.Percentage.HasValue)
+                query = query.Where(x => x.BillingPercentage == parameters.Percentage);
+
             return query.ToList();
         }
 

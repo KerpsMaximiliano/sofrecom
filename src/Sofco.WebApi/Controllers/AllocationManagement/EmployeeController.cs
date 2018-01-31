@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
@@ -53,9 +54,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPost("search")]
         public IActionResult Search([FromBody] EmployeeSearchParams parameters)
         {
-            var model = employeeService.Search(parameters).Select(x => new EmployeeViewModel(x));
+            var searchResponse = employeeService.Search(parameters);
 
-            return Ok(model);
+            var response = new Response<IEnumerable<EmployeeViewModel>>();
+            response.Data = searchResponse.Data.Select(x => new EmployeeViewModel(x));
+            response.Messages = searchResponse.Messages;
+
+            return Ok(response);
         }
 
         [HttpPost("{newsId}")]

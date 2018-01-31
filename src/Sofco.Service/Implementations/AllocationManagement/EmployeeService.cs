@@ -166,9 +166,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public ICollection<Employee> Search(EmployeeSearchParams parameters)
+        public Response<ICollection<Employee>> Search(EmployeeSearchParams parameters)
         {
-            return unitOfWork.EmployeeRepository.Search(parameters);
+            var response = new Response<ICollection<Employee>>();
+            response.Data = unitOfWork.EmployeeRepository.Search(parameters);
+
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.AllocationManagement.Employee.EmployeesNotFound);
+            }
+
+            return response;
         }
 
         public Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters)

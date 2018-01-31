@@ -185,6 +185,9 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
             this.getAllocations(this.resourceId, this.dateSince);
 
+            this.rowEditing = [];
+            this.totalsAux = [];
+
             if(this.reloadTimeline.observers.length > 0){
                 this.reloadTimeline.emit();
             }
