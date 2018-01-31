@@ -10,6 +10,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
@@ -24,31 +25,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
-
-        private const string MailSubject = "BAJA DE RECURSO";
-
-        private const string MailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "RRHH ha confirmado la baja del siguiente recurso: </br></br>" +
-                                                "Legajo: {0}</br>" +
-                                                "Nombre: {1}</br>" +
-                                                "Fecha de baja: {2} </br></br>" +
-                                                "Muchas Gracias" +
-                                            "</span>" +
-                                        "</font>";
+        private readonly IMailBuilder mailBuilder;
 
         public EmployeeNewsService(IUnitOfWork unitOfWork, 
             ILogMailer<EmployeeNewsService> logger, 
             IMailSender mailSender, 
             IOptions<EmailConfig> emailOptions,
-            IMapper mapper)
+            IMapper mapper, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
             emailConfig = emailOptions.Value;
             this.mapper = mapper;
+            this.mailBuilder = mailBuilder;
         }
 
         public Response<IList<EmployeeNewsModel>> GetEmployeeNews()
@@ -188,9 +178,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var recipients = string.Join(";", mails.Distinct());
 
-                var body = string.Format(MailBody, employeeToChange.EmployeeNumber, employeeToChange.Name, employeeToChange.EndDate.GetValueOrDefault().ToString("d"));
+                var data = new EmployeeEndConfirmationData
+                {
+                    Recipients = recipients,
+                    EmployeeNumber = employeeToChange.EmployeeNumber,
+                    Name = employeeToChange.Name,
+                    EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("d")
+                };
 
-                mailSender.Send(recipients, MailSubject, body);
+                var mail = mailBuilder.GetEmail(data);
+
+                mailSender.Send(mail);
             }
             catch (Exception e)
             {

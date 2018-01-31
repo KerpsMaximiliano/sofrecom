@@ -6,10 +6,12 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -18,13 +20,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<EmployeeService> logger;
         private readonly IMailSender mailSender;
+        private readonly IMailBuilder mailBuilder;
         private readonly EmailConfig emailConfig;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
+            this.mailBuilder = mailBuilder;
             emailConfig = emailOptions.Value;
         }
 
@@ -61,24 +65,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-            const string subject = "NOTIFICACION DE BAJA";
-
-            const string mailBody = "<font size='3'>" +
-                                        "<span style='font-size:12pt'>" +
-                                            "Estimados, </br></br>" +
-                                            "El recurso <strong>{0}</strong> ha informado a <strong>{1}</strong> la solicitud de desvinculación de la empresa, " +
-                                            "a partir del dia {2} </br></br>" +
-                                            "Muchas Gracias" +
-                                        "</span>" +
-                                    "</font>";
-
             parameters.Receipents.Add(mailRrhh);
             
             try
             {
-                var body = string.Format(mailBody, employeeName, manager.Name, parameters.EndDate.ToString("d"));
+                var body = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("d"));
 
-                mailSender.Send(string.Join(";", parameters.Receipents), subject, body);
+                var data = new DefaultMailData
+                {
+                    Title = MailSubjectResource.EmployeeEndNotification,
+                    Recipients = string.Join(";", parameters.Receipents),
+                    Message = body
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
 
                 response.AddSuccess(Resources.Common.MailSent);
             }

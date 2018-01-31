@@ -35,6 +35,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IMailSender> mailSender;
 
+        private Mock<IMailBuilder> mailBuilder;
+
         private Mock<IOptions<EmailConfig>> emailOptionMock;
 
         [SetUp]
@@ -54,6 +56,8 @@ namespace Sofco.UnitTest.Services.Jobs
 
             mailSender = new Mock<IMailSender>();
 
+            mailBuilder = new Mock<IMailBuilder>();
+
             emailOptionMock = new Mock<IOptions<EmailConfig>>();
 
             unitOfWork.SetupGet(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
@@ -66,7 +70,8 @@ namespace Sofco.UnitTest.Services.Jobs
                 mapperMock.Object,
                 logger.Object,
                 mailSender.Object,
-                emailOptionMock.Object);
+                emailOptionMock.Object,
+                mailBuilder.Object);
         }
 
         [Test]

@@ -74,9 +74,8 @@ namespace Sofco.Service.Implementations.Jobs
                 content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.EmployeeNumber} - {item.EndDate?.ToString(DateFormat)}</a>");
             }
 
-            data.Add("content", $"<ul>{content}</ul>");
+            data.Add("message", $"<ul>{content}</ul>");
             data.Add("title", Subject);
-            data.Add("message", string.Empty);
 
             var mail = mailBuilder.GetEmail(MailType.Default, mailTos, Subject, data);
 

@@ -9,10 +9,12 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
+using Sofco.Framework.MailData;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Repository.Rh.Settings;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -34,30 +36,22 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly ILogMailer<EmployeeSyncJobService> logger;
 
-        private const string MailSubject = "NOVEDADES RECURSOS";
-
-        private const string MailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "Existen novedades que necesitan su confirmacion, por favor acceder a la lista " +
-                                                "a traves del siguiente <a href='{0}' target='_blank'>link</a></br></br>" +
-                                                "Saludos" +
-                                            "</span>" +
-                                        "</font>";
+        private readonly IMailBuilder mailBuilder;
 
         public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILogMailer<EmployeeSyncJobService> logger,
             IMailSender mailSender,
-            IOptions<EmailConfig> emailOptions)
+            IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
         {
             this.tigerEmployeeRepository = tigerEmployeeRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             startDate = DateTime.UtcNow.AddMonths(FromLastMonth);
             this.mailSender = mailSender;
-            this.emailConfig = emailOptions.Value;
+            this.mailBuilder = mailBuilder;
+            emailConfig = emailOptions.Value;
             this.logger = logger;
         }
 
@@ -180,11 +174,17 @@ namespace Sofco.Service.Implementations.Jobs
         {
             try
             {
-                var body = string.Format(MailBody, $"{emailConfig.SiteUrl}allocationManagement/employees/news");
-
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-                mailSender.Send(mailRrhh, MailSubject, body);
+                var mailData = new EmployeeNewsData
+                {
+                    Recipients = mailRrhh,
+                    Message = string.Format(MailMessageResource.EmployeeNews, $"{emailConfig.SiteUrl}allocationManagement/employees/news")
+                };
+
+                var email = mailBuilder.GetEmail(mailData);
+
+                mailSender.Send(email);
             }
             catch (Exception ex)
             {

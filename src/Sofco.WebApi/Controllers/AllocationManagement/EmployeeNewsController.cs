@@ -39,6 +39,5 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
-
     }
 }
