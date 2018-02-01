@@ -8,6 +8,7 @@ import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { EmployeeNewsService } from "app/services/allocation-management/employee-news.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
     selector: 'employee-news',
@@ -24,6 +25,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     newsToConfirm: any;
     indexToConfirm: number;
+    confirmBodyAction: string;
 
     public isLoading: boolean = false;
 
@@ -41,6 +43,7 @@ export class NewsComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
+                private i18nService: I18nService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
@@ -70,6 +73,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.cancel;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.annulment') +" "+ this.i18nService.translateByKey(news.status)
     }
 
     showConfirmAdd(news, index){
@@ -77,6 +81,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
     }
 
     showConfirmDelete(news, index){
@@ -84,6 +89,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.delete;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
     }
 
     confirm(){ }

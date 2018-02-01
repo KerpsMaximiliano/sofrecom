@@ -40,7 +40,7 @@
                             <button class="btn btn-primary btn-xs" *ngIf="news.status == 'New' && !news.isReincorporation" (click)="showConfirmAdd(news, i)">{{'ACTIONS.confirm' | translate }}</button>
                             <button class="btn btn-info btn-xs" *ngIf="news.status == 'New' && news.isReincorporation" (click)="showConfirmAdd(news, i)">{{'ACTIONS.confirm' | translate }}</button>
                             <button class="btn btn-danger btn-xs" *ngIf="news.status == 'Delete'" (click)="showConfirmDelete(news, i)">{{'ACTIONS.confirm' | translate }}</button>
-                            <button class="btn btn-success btn-xs" (click)="showConfirmCancel(news, i)">{{'ACTIONS.cancel' | translate }}</button>
+                            <button class="btn btn-success btn-xs" (click)="showConfirmCancel(news, i)">{{'ACTIONS.annulment' | translate }}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -50,6 +50,6 @@
 </div>
 
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()" [isLoading]="isLoading">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+    <h4>{{'allocationManagement.confirmBody' | translate }} <b>{{ confirmBodyAction }}</b> ?</h4>
 </ng2-modal>
 
