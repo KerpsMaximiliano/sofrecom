@@ -81,8 +81,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to 
-        ///Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
+        ///    Looks up a localized string similar to Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
         ///&lt;/div&gt;
         ///&lt;div class=&quot;contentResult&quot;&gt;{content}.
         /// </summary>

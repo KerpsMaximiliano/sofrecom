@@ -42,11 +42,11 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     public options;
 
     public allocationSelected: any;
-
     public isEditingAnyRow: boolean = false;
     public rowEditing: any[] = new Array<any>();
 
     dateSince: Date = new Date();
+    monthLastAllocation: number;
 
     public loading: boolean = false;
 
@@ -85,7 +85,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
         var todayPlus12Months = new Date(dateSince.getFullYear(), dateSince.getMonth()+this.monthQuantity-1, 1);
 
-        this.loading = true;
+        this.messageService.showLoading();
 
         this.getAllAllocationsSubscrip = this.allocationsService.getAllocations(resourceId, dateSince.toUTCString(), todayPlus12Months.toUTCString()).subscribe(data => {
             this.model = data;
@@ -104,12 +104,12 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
                 this.updateTotal(0, index);
             });
 
-            this.loading = false;
+            this.messageService.closeLoading();
         },
         error => {
-                this.loading = false;
-                this.errorHandlerService.handleErrors(error);
-            });
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
  
     updateMonth(value, monthIndex, month){
@@ -165,18 +165,26 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
                 }
 
                 date = new Date(element.date.getFullYear(), element.date.getMonth()+1, 0);
+                this.monthLastAllocation = element.date.getMonth();
             }
         });
 
         this.releaseDate = date;
-
+        
         this.confirmModal.show();
     }
 
     save(){
+        if(this.releaseDate.getMonth() != this.monthLastAllocation){
+            this.messageService.showErrorByFolder("allocationManagement/allocation", "monthDifferent");
+            return;
+        }   
+
         this.allocationSelected.releaseDate = this.releaseDate;
+        this.loading = true;
 
         this.addSubscrip = this.allocationsService.add(this.allocationSelected).subscribe(data => {
+            this.loading = false;
             this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
 
@@ -193,6 +201,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             }
         },
         error => {
+            this.loading = false;
             this.allocationSelected.releaseDate = null;
             this.confirmModal.hide();
             this.errorHandlerService.handleErrors(error);
