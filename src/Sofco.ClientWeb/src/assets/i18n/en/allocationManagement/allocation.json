@@ -8,5 +8,6 @@
     "dateToOutOfRange": "End date out of analytical range",
     "dateToRequired": "Date to is required",
     "releaseDateIsRequired": "Release date is required.",
-    "wrongPercentage": "Percentage is incorrect"
+    "wrongPercentage": "Percentage is incorrect",
+    "monthDifferent": "The release date can not be different from the current month of the last assignment"
 }

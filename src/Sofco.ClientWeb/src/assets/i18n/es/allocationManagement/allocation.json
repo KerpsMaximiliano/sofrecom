@@ -8,5 +8,6 @@
     "dateToOutOfRange": "Fecha de fin fuera del rango de la analitica",
     "dateToRequired": "Fecha hasta es requerida",
     "releaseDateIsRequired": "Fecha de liberación es requerida.",
-    "wrongPercentage": "Porcentaje ingresado es incorrecto"
+    "wrongPercentage": "Porcentaje ingresado es incorrecto",
+    "monthDifferent": "La fecha ingresada no puede ser diferente a la del mes en curso de la última asignación"
 }
