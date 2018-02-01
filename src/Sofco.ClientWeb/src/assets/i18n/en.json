@@ -363,6 +363,7 @@
             "licenses": "Licenses",
             "timeSheet": "Time Sheet",
             "homeOffice": "Home Office",
+            "history": "History",
             "grid": {
                 "name": "Name",
                 "senority": "Seniority",

@@ -55,6 +55,7 @@
                     <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -97,6 +98,32 @@
                     <div id="tab-3" class="tab-pane">
                         <div class="panel-body">
 
+                        </div>
+                    </div>
+                    <div id="tab-4" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="analyticsTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'allocationManagement.analytics.grid.title' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
+                                        <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
+                                        <th>{{'allocationManagement.resources.grid.startDate' | translate }}</th>
+                                        <th>{{'allocationManagement.resources.grid.releaseDate' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let allocation of model?.allocations">
+                                        <td> {{ allocation.title }} </td>
+                                        <td> {{ allocation.name }} </td>
+                                        <td> {{ allocation.client }} </td>
+                                        <td> {{ allocation.service }} </td>
+                                        <td> {{ allocation.startDate | date:'dd/MM/yyyy' }} </td>
+                                        <td> {{ allocation.releaseDate | date:'dd/MM/yyyy' }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

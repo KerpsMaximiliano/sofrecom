@@ -34,19 +34,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = employeeService.GetProfile(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var response = employeeService.GetById(id);
-
-            if (response.HasErrors())
-                return BadRequest(response);
 
             return Ok(new EmployeeViewModel(response.Data));
         }
@@ -63,7 +57,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
                     Messages = searchResponse.Messages
                 };
 
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]
@@ -73,9 +67,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
     }
 }
