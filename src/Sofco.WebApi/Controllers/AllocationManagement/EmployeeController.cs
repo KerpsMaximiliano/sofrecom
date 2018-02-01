@@ -56,29 +56,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var searchResponse = employeeService.Search(parameters);
 
-            var response = new Response<IEnumerable<EmployeeViewModel>>();
-            response.Data = searchResponse.Data.Select(x => new EmployeeViewModel(x));
-            response.Messages = searchResponse.Messages;
-
-            return Ok(response);
-        }
-
-        [HttpPost("{newsId}")]
-        public IActionResult Post(int newsId)
-        {
-            var response = employeeService.Add(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpDelete("{newsId}")]
-        public IActionResult Delete(int newsId)
-        {
-            var response = employeeService.Delete(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
+            var response =
+                new Response<IEnumerable<EmployeeViewModel>>
+                {
+                    Data = searchResponse.Data.Select(x => new EmployeeViewModel(x)),
+                    Messages = searchResponse.Messages
+                };
 
             return Ok(response);
         }

@@ -29,7 +29,7 @@ import { AnalyticFormComponent } from 'app/views/allocation-management/analytics
 import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
-import { NewsService } from 'app/services/allocation-management/news.service';
+import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
@@ -55,7 +55,7 @@ import { ResourceDetailComponent } from 'app/views/allocation-management/resourc
     NumbersOnlyModule,
     Ng2ModalModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, NewsService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, EmployeeNewsService ],
   exports: [],
 })
 

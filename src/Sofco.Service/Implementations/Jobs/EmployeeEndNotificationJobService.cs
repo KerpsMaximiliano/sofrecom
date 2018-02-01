@@ -7,6 +7,7 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
+using Sofco.Framework.MailData;
 using Sofco.Model;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Service.Settings.Jobs;
@@ -16,8 +17,6 @@ namespace Sofco.Service.Implementations.Jobs
     public class EmployeeEndNotificationJobService : IEmployeeEndNotificationJobService
     {
         const string DateFormat = "dd/MM/yyyy";
-
-        const string Subject = "Empleados con baja";
 
         private readonly IUnitOfWork unitOfWork;
 
@@ -61,10 +60,6 @@ namespace Sofco.Service.Implementations.Jobs
 
         private Email GetEmail(List<Employee> employeeEnds)
         {
-            var mailTos = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-
-            var data = new Dictionary<string, string>();
-
             var content = new StringBuilder();
 
             foreach (var item in employeeEnds)
@@ -74,13 +69,11 @@ namespace Sofco.Service.Implementations.Jobs
                 content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.EmployeeNumber} - {item.EndDate?.ToString(DateFormat)}</a>");
             }
 
-            data.Add("content", $"<ul>{content}</ul>");
-            data.Add("title", Subject);
-            data.Add("message", string.Empty);
-
-            var mail = mailBuilder.GetEmail(MailType.Default, mailTos, Subject, data);
-
-            return mail;
+            return mailBuilder.GetEmail(new EmployeeEndNotificationListData
+            {
+                Recipients = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode),
+                Message = $"<ul>{content}</ul>"
+            });
         }
     }
 }

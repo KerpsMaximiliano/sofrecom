@@ -7,7 +7,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { NewsService } from "app/services/allocation-management/news.service";
+import { EmployeeNewsService } from "app/services/allocation-management/employee-news.service";
 
 @Component({
     selector: 'employee-news',
@@ -22,8 +22,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     deleteSubscrip: Subscription;
 
-    newsToDelete: any;
-    indexToDelete: number;
+    newsToConfirm: any;
+    indexToConfirm: number;
 
     public isLoading: boolean = false;
 
@@ -39,7 +39,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     constructor(private employeeService: EmployeeService,
                 private router: Router,
-                private newsService: NewsService,
+                private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
@@ -49,8 +49,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.newsService.getAll().subscribe(data => {
-            this.model = data;
+        this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
+            this.model = response.data;
             this.dataTableService.init('#newsTable', false);
             this.messageService.closeLoading();
         },
@@ -66,22 +66,22 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
 
     showConfirmCancel(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.cancel;
     }
 
     showConfirmAdd(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
     }
 
     showConfirmDelete(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.delete;
     }
@@ -91,10 +91,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     add(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeService.add(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.isLoading = false;
             this.confirmModal.hide();
@@ -108,10 +108,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.newsService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.isLoading = false;
             this.confirmModal.hide();
@@ -125,10 +125,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     delete(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
             this.isLoading = false;
             this.confirmModal.hide();
