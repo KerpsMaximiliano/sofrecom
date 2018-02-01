@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Model;
-using Sofco.Resources;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Mail
@@ -24,15 +22,15 @@ namespace Sofco.Framework.Mail
 
             templatesDicts = new Dictionary<MailType, string>
             {
-                { MailType.Default, MailResource.DefaultTemplate },
+                { MailType.Default, MailResource.Default },
                 { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac },
                 { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
         }
 
-        public Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
+        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
         {
-            var template = MailResource.Generic.Replace("{content}", templatesDicts[mailType]);
+            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
 
             var body = template;
 

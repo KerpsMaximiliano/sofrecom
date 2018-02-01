@@ -80,16 +80,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             
             try
             {
-                var body = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("d"));
-
-                var data = new DefaultMailData
+                var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
-                    Title = MailSubjectResource.EmployeeEndNotification,
                     Recipients = string.Join(";", parameters.Receipents),
-                    Message = body
-                };
-
-                var email = mailBuilder.GetEmail(data);
+                    Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("d"))
+                });
 
                 mailSender.Send(email);
 

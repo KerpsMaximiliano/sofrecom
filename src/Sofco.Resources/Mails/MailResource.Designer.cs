@@ -62,9 +62,9 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///    Looks up a localized string similar to {message}&lt;br&gt;&lt;br&gt;.
         /// </summary>
-        public static string DefaultTemplate {
+        public static string Default {
             get {
-                return ResourceManager.GetString("DefaultTemplate", resourceCulture);
+                return ResourceManager.GetString("Default", resourceCulture);
             }
         }
         
@@ -77,6 +77,18 @@ namespace Sofco.Resources.Mails {
         public static string EmployeeEndConfirmation {
             get {
                 return ResourceManager.GetString("EmployeeEndConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to 
+        ///Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
+        ///&lt;/div&gt;
+        ///&lt;div class=&quot;contentResult&quot;&gt;{content}.
+        /// </summary>
+        public static string HitosWithoutSolfac {
+            get {
+                return ResourceManager.GetString("HitosWithoutSolfac", resourceCulture);
             }
         }
         
@@ -99,21 +111,9 @@ namespace Sofco.Resources.Mails {
         ///	.footer { margin-top:10px;height:40px;color:#818080;font-size:9pt;text-align:center }
         ///	u [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Generic {
+        public static string Template {
             get {
-                return ResourceManager.GetString("Generic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Looks up a localized string similar to 
-        ///Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
-        ///&lt;/div&gt;
-        ///&lt;div class=&quot;contentResult&quot;&gt;{content}.
-        /// </summary>
-        public static string HitosWithoutSolfac {
-            get {
-                return ResourceManager.GetString("HitosWithoutSolfac", resourceCulture);
+                return ResourceManager.GetString("Template", resourceCulture);
             }
         }
     }

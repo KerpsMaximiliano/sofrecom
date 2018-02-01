@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultTemplate" xml:space="preserve">
+  <data name="Default" xml:space="preserve">
     <value>{message}&lt;br&gt;&lt;br&gt;</value>
   </data>
   <data name="EmployeeEndConfirmation" xml:space="preserve">
@@ -126,7 +126,13 @@
     Nombre: {name}&lt;br/&gt;
     Fecha de baja: {endDate} &lt;br/&gt;&lt;br/&gt;</value>
   </data>
-  <data name="Generic" xml:space="preserve">
+  <data name="HitosWithoutSolfac" xml:space="preserve">
+    <value>
+Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
+&lt;/div&gt;
+&lt;div class="contentResult"&gt;{content}</value>
+  </data>
+  <data name="Template" xml:space="preserve">
     <value>&lt;html&gt;&lt;head&gt;&lt;style&gt;
 	body { font-family:Sans-serif;font-size:10pt; }
 	.panel {
@@ -155,11 +161,5 @@
 Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href="{homeLink}"&gt;portal&lt;/a&gt;.&lt;br/&gt;
 &lt;/div&gt;
 &lt;/body&gt;&lt;/html&gt;</value>
-  </data>
-  <data name="HitosWithoutSolfac" xml:space="preserve">
-    <value>
-Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
-&lt;/div&gt;
-&lt;div class="contentResult"&gt;{content}</value>
   </data>
 </root>
