@@ -35,7 +35,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IMailSender> mailSenderMock;
 
-        private Mock<IOptions<JobSetting>> JobSettingOptionMock;
+        private Mock<IOptions<JobSetting>> jobSettingOptionMock;
 
         private Mock<IOptions<EmailConfig>> emailOptionMock;
 
@@ -48,7 +48,7 @@ namespace Sofco.UnitTest.Services.Jobs
             groupRepositoryMock = new Mock<IGroupRepository>();
             mailBuilderMock = new Mock<IMailBuilder>();
             mailSenderMock = new Mock<IMailSender>();
-            JobSettingOptionMock = new Mock<IOptions<JobSetting>>();
+            jobSettingOptionMock = new Mock<IOptions<JobSetting>>();
             emailOptionMock = new Mock<IOptions<EmailConfig>>();
 
             unitOfWork = new Mock<IUnitOfWork>();
@@ -56,7 +56,7 @@ namespace Sofco.UnitTest.Services.Jobs
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
 
-            JobSettingOptionMock.SetupGet(s => s.Value).Returns(
+            jobSettingOptionMock.SetupGet(s => s.Value).Returns(
                 new JobSetting
                 {
                     EmployeeEndJob = new EmployeeEndJobSetting
@@ -79,7 +79,7 @@ namespace Sofco.UnitTest.Services.Jobs
             sut = new EmployeeEndNotificationJobService(unitOfWork.Object,
                 mailBuilderMock.Object,
                 mailSenderMock.Object,
-                JobSettingOptionMock.Object,
+                jobSettingOptionMock.Object,
                 emailOptionMock.Object);
         }
 

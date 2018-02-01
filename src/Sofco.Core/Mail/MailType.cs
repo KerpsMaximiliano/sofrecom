@@ -4,6 +4,12 @@
     {
         Default,
 
-        HitosWithoutSolfac
+        HitosWithoutSolfac,
+
+        EmployeeEndConfirmation,
+
+        EmployeeEndNotification,
+
+        EmployeeNews
     }
 }

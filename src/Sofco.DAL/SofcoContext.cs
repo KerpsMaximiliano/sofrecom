@@ -89,6 +89,7 @@ namespace Sofco.DAL
             builder.MapGlobalSetting();
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
+            builder.MapEmployeeHistoryMapping();
         }
     }
 }

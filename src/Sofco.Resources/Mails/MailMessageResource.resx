@@ -117,72 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultTemplate" xml:space="preserve">
-    <value>&lt;html&gt;&lt;head&gt;&lt;style&gt;
-	body { font-family:Sans-serif;font-size:10pt; }
-	.panel {
-		border-top:solid 2px #edf0f3;
-		border-left:solid 2px #e7ebef;
-		border-right:solid 1px #919498;
-		border-bottom:solid 1px #8A8A8A;
-		padding:10px;
-	}
-	.title {
-		font-size:12pt; font-weight:bold; color:#242F89;
-		margin-bottom:10px
-	}
-	.content { margin-bottom:10px }
-	.contentResult { margin-left:10px; margin-bottom:10px }
-	.footer { margin-top:10px;height:40px;color:#818080;font-size:9pt;text-align:center }
-	ul li { margin: 0px 0px 8px 0px; }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;div class="panel"&gt;
-	&lt;div class="title"&gt;{title}&lt;/div&gt;
-	&lt;div class="content"&gt;
-		{message}&lt;br&gt;&lt;br&gt;
-	&lt;/div&gt;
-	&lt;div class="contentResult"&gt;{content}&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="footer"&gt;
-Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href="{homeLink}"&gt;portal&lt;/a&gt;.&lt;br/&gt;
-&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</value>
+  <data name="EmployeeEndNotification" xml:space="preserve">
+    <value>El recurso &lt;strong&gt;{0}&lt;/strong&gt; ha informado a &lt;strong&gt;{1}&lt;/strong&gt; la solicitud de desvinculación de la empresa, a partir del dia {2} &lt;br/&gt;&lt;br/&gt;</value>
   </data>
-  <data name="HitosWithoutSolfac" xml:space="preserve">
-    <value>&lt;html&gt;&lt;head&gt;&lt;style&gt;
-	body { font-family:Sans-serif;font-size:10pt; }
-	.panel {
-		border-top:solid 2px #edf0f3;
-		border-left:solid 2px #e7ebef;
-		border-right:solid 1px #919498;
-		border-bottom:solid 1px #8A8A8A;
-		padding:10px;
-	}
-	.title {
-		font-size:12pt; font-weight:bold; color:#242F89;
-		margin-bottom:5px
-	}
-	.content { margin-bottom:10px }
-	.contentResult { margin-left:10px; margin-bottom:10px }
-	.footer { margin-top:10px;height:40px;color:#818080;font-size:9pt;text-align:center }
-	ul li { margin: 0px 0px 8px 0px; }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;div class="panel"&gt;
-	&lt;div class="title"&gt;
-		&lt;font color="#38A43A"&gt;Hitos&lt;/font&gt;
-	&lt;/div&gt;
-	&lt;div class="content"&gt;
-		Se han detectado Hitos sin Solfac que requiere revisión:&lt;br&gt;&lt;br&gt;
-	&lt;/div&gt;
-	&lt;div class="contentResult"&gt;{content}&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="footer"&gt;
-Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href="{homeLink}"&gt;portal&lt;/a&gt;.&lt;br/&gt;
-&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</value>
+  <data name="EmployeeNews" xml:space="preserve">
+    <value>Existen novedades que necesitan su confirmacion, por favor acceder a la lista a traves del siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;</value>
   </data>
 </root>

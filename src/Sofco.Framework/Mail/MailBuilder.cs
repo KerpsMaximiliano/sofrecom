@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Model;
-using Sofco.Resources;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Mail
 {
@@ -20,14 +22,15 @@ namespace Sofco.Framework.Mail
 
             templatesDicts = new Dictionary<MailType, string>
             {
-                { MailType.Default, MailResource.DefaultTemplate },
-                { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac }
+                { MailType.Default, MailResource.Default },
+                { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac },
+                { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
         }
 
-        public Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
+        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
         {
-            var template = templatesDicts[mailType];
+            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
 
             var body = template;
 
@@ -44,6 +47,20 @@ namespace Sofco.Framework.Mail
                 Recipient = recipients,
                 Body = body
             };
+        }
+
+        public Email GetEmail(IMailData mailData)
+        {
+            var mailContents = mailData.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .ToDictionary(prop => prop.Name, prop =>
+                {
+                    var data = prop.GetValue(mailData, null);
+
+                    return data == null ? string.Empty : data.ToString();
+                });
+
+            return GetEmail(mailData.MailType, mailData.Recipients, mailData.Title, mailContents);
         }
 
         public Email GetSupportEmail(string subject, string message)
@@ -87,7 +104,17 @@ namespace Sofco.Framework.Mail
     {
         internal static string ReplaceKeyValue(this string text, string key, string value)
         {
-            return text.Replace("{" + key + "}", value);
+            var keyTxt = ToLowerFirst(key);
+
+            return text.Replace("{" + keyTxt + "}", value);
+        }
+
+        private static string ToLowerFirst(string source)
+        {
+            if (string.IsNullOrEmpty(source) || char.IsLower(source, 0))
+                return source;
+
+            return char.ToLowerInvariant(source[0]) + source.Substring(1);
         }
 
         internal static string ReplaceKeyValue(this string text, KeyValuePair<string, string> item)

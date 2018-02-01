@@ -39,6 +39,7 @@ namespace Sofco.Core.DAL
         IEmployeeRepository EmployeeRepository { get; }
         ILicenseTypeRepository LicenseTypeRepository { get; }
         IEmployeeSyncActionRepository EmployeeSyncActionRepository { get; }
+        IEmployeeHistoryRepository EmployeeHistoryRepository { get; }
 
         #endregion
 
