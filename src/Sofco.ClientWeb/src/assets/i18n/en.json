@@ -393,6 +393,7 @@
             "list": "List",
             "new": "New Analytic",
             "edit": "Edit Analytic",
+            "assigned": "Analytics Assigned",
             "add": {
                 "title": "Title",
                 "startDate":"Start Date",
