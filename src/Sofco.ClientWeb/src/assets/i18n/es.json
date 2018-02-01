@@ -394,6 +394,7 @@
             "list": "Listado",
             "new": "Alta de Analitica",
             "edit": "Editar Analitica",
+            "assigned": "Analíticas Asignadas",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",
