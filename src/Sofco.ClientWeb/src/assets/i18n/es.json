@@ -429,7 +429,8 @@
                 "client": "Cliente",
                 "commercialManager": "Manager Comercial"
             }
-        }
+        },
+        "confirmBody": "Esta seguro que desea seguir con la acción de "
     },
     "ACTIONS":{
         "ADD": "Agregar",

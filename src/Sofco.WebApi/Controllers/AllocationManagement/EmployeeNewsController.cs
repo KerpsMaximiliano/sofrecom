@@ -39,5 +39,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("cancel/{id}")]
+        public IActionResult Cancel(int id)
+        {
+            var response = employeeNewsService.Cancel(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

@@ -165,6 +165,31 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<EmployeeSyncAction> Cancel(int newsId)
+        {
+            var response = new Response<EmployeeSyncAction>();
+
+            EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.EmployeeSyncActionRepository.Delete(response.Data);
+                unitOfWork.Save();
+
+                response.Data = null;
+                response.AddSuccess(Resources.AllocationManagement.EmployeeSyncAction.Deleted);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void SendMailForUnsubscribe(Response<EmployeeSyncAction> response, Employee employeeToChange)
         {
             try

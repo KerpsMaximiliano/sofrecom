@@ -23,4 +23,8 @@ export class EmployeeNewsService {
   add(id){
     return this.http.post(`${this.apiUrl}/${id}`, {}).map((res:Response) => res.json());
   }
+
+  cancel(id){
+    return this.http.post(`${this.apiUrl}/cancel/${id}`, {}).map((res:Response) => res.json());
+  }
 }
