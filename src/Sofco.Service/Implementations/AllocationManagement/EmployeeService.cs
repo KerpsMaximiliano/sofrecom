@@ -2,11 +2,13 @@
 using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Framework.MailData;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
@@ -23,13 +25,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailSender mailSender;
         private readonly IMailBuilder mailBuilder;
         private readonly EmailConfig emailConfig;
+        private readonly IMapper mapper;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
             this.mailBuilder = mailBuilder;
+            this.mapper = mapper;
             emailConfig = emailOptions.Value;
         }
 
@@ -38,13 +42,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.EmployeeRepository.GetAll();
         }
 
-        public Response<Employee> GetById(int id)
+        public Response<EmployeeModel> GetById(int id)
         {
-            var response = new Response<Employee>();
+            var response = new Response<EmployeeModel>();
 
-            response.Data = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
+            var result = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
+
+            response.Data = Translate(result);
 
             return response;
+        }
+
+        private EmployeeModel Translate(Employee employee)
+        {
+            return mapper.Map<Employee, EmployeeModel>(employee);
         }
 
         public Response<ICollection<Employee>> Search(EmployeeSearchParams parameters)

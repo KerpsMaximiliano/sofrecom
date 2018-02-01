@@ -42,7 +42,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = employeeService.GetById(id);
 
-            return Ok(new EmployeeViewModel(response.Data));
+            return this.CreateResponse(response);
         }
 
         [HttpPost("search")]
