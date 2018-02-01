@@ -114,7 +114,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
