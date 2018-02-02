@@ -310,6 +310,11 @@
             "amount": "Montant"
         },
         "dateRange": "Début - fin"
+    },
+    "allocationManagement": {
+        "resources": {
+            "history": "Histoire"
+        }
     }
 }
  

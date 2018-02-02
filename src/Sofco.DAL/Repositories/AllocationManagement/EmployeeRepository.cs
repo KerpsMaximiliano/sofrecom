@@ -3,10 +3,8 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
-using Microsoft.EntityFrameworkCore;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

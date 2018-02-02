@@ -364,6 +364,7 @@
             "licenses": "Licencias",
             "timeSheet": "Carga de Horas",
             "homeOffice": "Home Office",
+            "history": "Historial",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",

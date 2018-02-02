@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Model.Models.AllocationManagement;
@@ -37,6 +38,18 @@ namespace Sofco.Service.MapProfiles
             CreateMap<Employee, EmployeeHistory>()
                 .ForMember(d => d.Id, s => s.Ignore())
                 .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
+
+            CreateMap<Employee, EmployeeModel>();
+
+            CreateMap<EmployeeHistory, EmployeeHistoryModel>()
+                .AfterMap((src, dest) =>
+                {
+                    var data = JsonConvert.DeserializeObject<Employee>(src.EmployeeData);
+
+                    dest.Profile = data.Profile;
+                    dest.Seniority = data.Seniority;
+                    dest.Technology = data.Technology;
+                });
         }
     }
 }
