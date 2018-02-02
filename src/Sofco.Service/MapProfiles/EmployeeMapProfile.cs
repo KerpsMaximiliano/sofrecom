@@ -40,6 +40,16 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
 
             CreateMap<Employee, EmployeeModel>();
+
+            CreateMap<EmployeeHistory, EmployeeHistoryModel>()
+                .AfterMap((src, dest) =>
+                {
+                    var data = JsonConvert.DeserializeObject<Employee>(src.EmployeeData);
+
+                    dest.Profile = data.Profile;
+                    dest.Seniority = data.Seniority;
+                    dest.Technology = data.Technology;
+                });
         }
     }
 }

@@ -102,25 +102,25 @@
                     </div>
                     <div id="tab-4" class="tab-pane">
                         <div class="panel-body">
-                            <table class="table table-striped dataTable" role="grid" id="analyticsTable">
+                            <table class="table table-striped dataTable" role="grid" id="historyTable">
                                 <thead>
                                     <tr>
-                                        <th>{{ 'allocationManagement.analytics.grid.title' | translate }}</th>
-                                        <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
-                                        <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
-                                        <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
-                                        <th>{{'allocationManagement.resources.grid.startDate' | translate }}</th>
-                                        <th>{{'allocationManagement.resources.grid.releaseDate' | translate }}</th>
+                                        <th>{{ 'allocationManagement.news.grid.name' | translate }}</th>
+                                        <th>{{ 'allocationManagement.news.grid.startDate' | translate }}</th>
+                                        <th>{{ 'allocationManagement.news.grid.endDate' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.grid.senority' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.grid.profile' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.grid.technology' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let allocation of model?.allocations">
-                                        <td> {{ allocation.title }} </td>
-                                        <td> {{ allocation.name }} </td>
-                                        <td> {{ allocation.client }} </td>
-                                        <td> {{ allocation.service }} </td>
-                                        <td> {{ allocation.startDate | date:'dd/MM/yyyy' }} </td>
-                                        <td> {{ allocation.releaseDate | date:'dd/MM/yyyy' }} </td>
+                                    <tr *ngFor="let item of model?.history">
+                                        <td> {{ item.name }} </td>
+                                        <td> {{ item.startDate | date:'dd/MM/yyyy' }} </td>
+                                        <td> {{ item.endDate | date:'dd/MM/yyyy' }} </td>
+                                        <td> {{ item.seniority }} </td>
+                                        <td> {{ item.profile }} </td>
+                                        <td> {{ item.technology }} </td>
                                     </tr>
                                 </tbody>
                             </table>

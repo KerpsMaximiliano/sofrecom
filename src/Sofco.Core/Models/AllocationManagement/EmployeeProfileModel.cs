@@ -1,0 +1,34 @@
+﻿using System.Collections.Generic;
+
+namespace Sofco.Core.Models.AllocationManagement
+{
+    public class EmployeeProfileModel
+    {
+        public EmployeeProfileModel()
+        {
+            Allocations = new List<EmployeeAllocationModel>();
+        }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string EmployeeNumber { get; set; }
+
+        public string Seniority { get; set; }
+
+        public string Profile { get; set; }
+
+        public string Technology { get; set; }
+
+        public decimal Percentage { get; set; }
+
+        public string Office { get; set; }
+
+        public string Manager { get; set; }
+
+        public IList<EmployeeAllocationModel> Allocations { get; set; }
+
+        public IList<EmployeeHistoryModel> History { get; set; }
+    }
+}

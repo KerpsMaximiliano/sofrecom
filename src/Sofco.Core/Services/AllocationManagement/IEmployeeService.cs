@@ -16,6 +16,6 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
 
-        Response<EmployeeProfileDto> GetProfile(int id);
+        Response<EmployeeProfileModel> GetProfile(int id);
     }
 }

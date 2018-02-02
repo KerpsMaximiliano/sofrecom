@@ -111,9 +111,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<EmployeeProfileDto> GetProfile(int id)
+        public Response<EmployeeProfileModel> GetProfile(int id)
         {
-            var response = new Response<EmployeeProfileDto> { Data = new EmployeeProfileDto() };
+            var response = new Response<EmployeeProfileModel> { Data = new EmployeeProfileModel() };
 
             var employee = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
 
@@ -137,7 +137,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var firstAllocation = analityc.Allocations.FirstOrDefault();
 
-                response.Data.Allocations.Add(new EmployeeAllocationDto
+                response.Data.Allocations.Add(new EmployeeAllocationModel
                 {
                     Title = analityc.Title,
                     Name = analityc.Name,
@@ -148,7 +148,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 });
             }
 
+            response.Data.History =
+                Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));
+
             return response;
+        }
+
+        private List<EmployeeHistoryModel> Translate(List<EmployeeHistory> employeeHistories)
+        {
+            return mapper.Map<List<EmployeeHistory>, List<EmployeeHistoryModel>>(employeeHistories);
         }
     }
 }
