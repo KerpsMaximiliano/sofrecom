@@ -361,7 +361,7 @@
                 "boss": "Boss",
                 "manager":"Manager",
                 "office": "Office",
-                "billeability": "Billeability"
+                "billeability": "Billeability (%)"
             }
         },
         "resources": {

@@ -83,7 +83,7 @@
                                 <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
                                 <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
 
-                                <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }}</th>
+                                <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }} (%)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,9 +96,9 @@
                                 <td class="column-lg">{{ resource.manager}}</td>
                                 <td class="column-lg">{{ resource.projectManager}}</td>
                                 <td class="column-md">{{ resource.office}}</td>
-                                <td class="column-sm">{{ resource.percentage}} %</td>
+                                <td class="column-sm">{{ resource.percentage}}</td>
 
-                                <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }} %</td>
+                                <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }}</td>
                             </tr>
                         </tbody>
                     </table>       

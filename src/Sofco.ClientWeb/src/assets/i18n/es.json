@@ -361,7 +361,7 @@
                 "boss": "Superior",
                 "manager":"Gerente",
                 "office": "Dirección",
-                "billeability": "Facturabilidad"
+                "billeability": "Facturabilidad (%)"
             }
         },
         "resources": {
