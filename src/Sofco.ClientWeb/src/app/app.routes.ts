@@ -42,6 +42,7 @@ import { EditAnalyticComponent } from 'app/views/allocation-management/analytics
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
+import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -134,6 +135,7 @@ export const ROUTES:Routes = [
   {
     path: 'allocationManagement', component: BasicLayoutComponent,
     children: [
+      { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
       {
         path: "resources", 
         children: [

@@ -1,0 +1,108 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'allocationManagement.report.title' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'allocationManagement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'allocationManagement.report.report' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
+                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+                        <select select2 class="form-control" id="analyticId">
+                            <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
+                        <select select2 class="form-control" id="employeeId">
+                            <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.text }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label"> {{ 'allocationManagement.allocation.percentages' | translate }} </label>
+                        <select select2 class="form-control" id="percentageId">
+                            <option *ngFor="let percentage of percentages" [value]="percentage?.value">{{ percentage?.text }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="model?.rows.length > 0"> 
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+                        <thead>
+                            <tr>
+                                <th class="column-sm">{{'allocationManagement.report.grid.analytic' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.report.grid.employee' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.resources.grid.senority' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.resources.grid.technology' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
+                                <th class="column-lg">{{'allocationManagement.report.grid.manager' | translate }}</th>
+                                <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
+                                <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
+
+                                <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let resource of model?.rows">
+                                <td class="column-sm">{{ resource.analytic }}</td>
+                                <td class="column-lg">{{ resource.resourceName }}</td>
+                                <td class="column-lg">{{ resource.seniority}}</td>
+                                <td class="column-lg">{{ resource.profile}}</td>
+                                <td class="column-lg">{{ resource.technology}}</td>
+                                <td class="column-lg">{{ resource.manager}}</td>
+                                <td class="column-lg">{{ resource.projectManager}}</td>
+                                <td class="column-md">{{ resource.office}}</td>
+                                <td class="column-sm">{{ resource.percentage}} %</td>
+
+                                <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }} %</td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+</div>

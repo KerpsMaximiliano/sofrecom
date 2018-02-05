@@ -38,7 +38,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.getOptionsSubscrip = this.analyticService.getOptions().subscribe(
+        this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
               this.options = data;
             },

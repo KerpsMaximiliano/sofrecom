@@ -16,6 +16,10 @@ export class AllocationService {
     return this.http.get(`${this.baseUrl}/allocations/${employeeId}/${startDate}/${endDate}`).map((res:Response) => res.json());
   }
 
+  getAllPercentages() {
+    return this.http.get(`${this.baseUrl}/allocations/percentages`).map((res:Response) => res.json());
+  }
+
   getAllocations(employeeId, startDate, endDate) {
     return this.http.get(`${this.baseUrl}/allocations/analytics/${employeeId}/${startDate}/${endDate}`).map((res:Response) => res.json());
   }
@@ -26,5 +30,9 @@ export class AllocationService {
 
   getAllocationsByService(serviceId) {
     return this.http.get(`${this.baseUrl}/allocations/service/${serviceId}`).map((res:Response) => res.json());
+  }
+
+  createReport(parameters){
+    return this.http.post(`${this.baseUrl}/allocations/report`, parameters).map((res:Response) => res.json());
   }
 }
