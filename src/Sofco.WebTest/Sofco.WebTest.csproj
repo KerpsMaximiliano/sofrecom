@@ -72,6 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <!--
   <ItemGroup>
     <Content Include="..\..\packages\WebDriverChromeDriver.2.10\tools\chromedriver.exe">
       <Link>chromedriver.exe</Link>
@@ -80,7 +81,7 @@
     <Content Include="chromedriver-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
