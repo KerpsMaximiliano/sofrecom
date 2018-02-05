@@ -63,6 +63,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var options = new List<SelectListItem>();
 
+            options.Add(new SelectListItem { Value = "", Text = "Seleccione una opcion" });
             options.Add(new SelectListItem { Value = "999", Text = "<> 100%" });
 
             var percentages = allocationService.GetAllPercentages();
