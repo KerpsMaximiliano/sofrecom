@@ -31,7 +31,9 @@ export class Ng2ModalComponent implements OnInit {
 
   show(){
     setTimeout(() => {
-      $('#' + this.config.id).modal('toggle');
+      $('#' + this.config.id).modal({
+        backdrop: this.config.closeIcon ? 'true' : 'static'
+      });
     });
   }
 
@@ -53,5 +55,4 @@ export class Ng2ModalComponent implements OnInit {
     $event.stopPropagation();
     this.accept.emit();
   }
-
 }
