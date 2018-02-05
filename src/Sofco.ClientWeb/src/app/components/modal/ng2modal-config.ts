@@ -5,7 +5,8 @@ export class Ng2ModalConfig{
         public acceptButton: boolean = true,
         public cancelButton: boolean = true,
         public acceptButtonText: string = "Accept",
-        public cancelButtonText: string = "Cancel"
+        public cancelButtonText: string = "Cancel",
+        public closeIcon: boolean = true
     ){}
     
 }
