@@ -7,7 +7,7 @@
 
       <!-- header-->
       <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" (click)="closeEvent($event)">&times;</button>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.closeIcon">&times;</button>
           <h3 class="modal-title">{{config.title | translate}}</h3>
       </div>
 
@@ -20,7 +20,7 @@
 
       <!-- footer-->
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.cancelButton">{{config.cancelButtonText | translate}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.cancelButton" [disabled]="isLoading">{{config.cancelButtonText | translate}}</button>
         <button type="button" [ladda]="isLoading" class="btn btn-success" data-dismiss="modal" (click)="acceptEvent($event)" *ngIf="config.acceptButton">{{config.acceptButtonText | translate}}</button>
       </div>
     </div>
