@@ -148,6 +148,14 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
         this.dataTableService.destroy(options.selector);
         this.dataTableService.init2(options);
+
+        setTimeout(() => {
+            $("#resourcesTable_wrapper").css("float","left");
+            $("#resourcesTable_wrapper").css("padding-bottom","50px");
+            $("#resourcesTable_filter label").addClass('search-filter');
+            $(".html5buttons").addClass('export-buttons');
+            $("#resourcesTable_paginate").addClass('table-pagination');
+        }, 500);
     }
 
     clean(){
