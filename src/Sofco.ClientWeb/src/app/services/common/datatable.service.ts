@@ -78,10 +78,12 @@ export class DataTableService {
                             }
                         },
                         {
-                          extend: 'pdfHtml5', title: params.title,
-                            exportOptions: {
-                                columns: params.columns
-                            }
+                          extend: 'pdfHtml5', 
+                          title: params.title,
+                          orientation: 'landscape',
+                          exportOptions: {
+                            columns: params.columns
+                          }
                         }
                       ];
                 }
