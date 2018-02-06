@@ -62,6 +62,7 @@
         </div> 
         <div class="ibox-footer">
             <div class="text-right">
+                <button class="btn btn-warning" (click)="clean()">{{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                 <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
             </div>
         </div>
@@ -75,9 +76,9 @@
                             <tr>
                                 <th class="column-sm">{{'allocationManagement.report.grid.analytic' | translate }}</th>
                                 <th class="column-lg">{{'allocationManagement.report.grid.employee' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.resources.grid.senority' | translate }}</th>
+                                <th class="column-md">{{'allocationManagement.resources.grid.senority' | translate }}</th>
                                 <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.resources.grid.technology' | translate }}</th>
+                                <th class="column-md">{{'allocationManagement.resources.grid.technology' | translate }}</th>
                                 <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
                                 <th class="column-lg">{{'allocationManagement.report.grid.manager' | translate }}</th>
                                 <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
@@ -90,9 +91,9 @@
                             <tr *ngFor="let resource of model?.rows">
                                 <td class="column-sm">{{ resource.analytic }}</td>
                                 <td class="column-lg">{{ resource.resourceName }}</td>
-                                <td class="column-lg">{{ resource.seniority}}</td>
+                                <td class="column-md">{{ resource.seniority}}</td>
                                 <td class="column-lg">{{ resource.profile}}</td>
-                                <td class="column-lg">{{ resource.technology}}</td>
+                                <td class="column-md">{{ resource.technology}}</td>
                                 <td class="column-lg">{{ resource.manager}}</td>
                                 <td class="column-lg">{{ resource.projectManager}}</td>
                                 <td class="column-md">{{ resource.office}}</td>

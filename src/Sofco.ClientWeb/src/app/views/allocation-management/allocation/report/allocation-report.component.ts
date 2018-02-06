@@ -32,6 +32,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateTo: Date = new Date();
     public dateOptions;
 
+    private lastQuery: any;
+
     constructor(private allocationService: AllocationService,
                 private router: Router,
                 private employeeService: EmployeeService,
@@ -48,6 +50,14 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         this.getAllocationResources();
         this.getAnalytics();
         this.getPercentages();
+
+        var data = JSON.parse(sessionStorage.getItem('lastReportQuery'));
+
+        if(data){
+            this.lastQuery = data;
+            this.dateSince = data.startDate
+            this.dateTo = data.endDate
+        }
     }
 
     ngOnDestroy(): void {
@@ -59,6 +69,12 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     getAllocationResources(){
         this.getAllocationResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
+
+            if(this.lastQuery){
+                setTimeout(() => {
+                    $('#employeeId').val(this.lastQuery.employeeId).trigger('change');
+                }, 0);
+            }
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -66,6 +82,12 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     getAnalytics(){
         this.getAnalyticsSubscrip = this.analyticService.getOptions().subscribe(data => {
             this.analytics = data;
+
+            if(this.lastQuery){
+                setTimeout(() => {
+                    $('#analyticId').val(this.lastQuery.analyticId == null ? 0 : this.lastQuery.analyticId).trigger('change');
+                }, 0);
+            }
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -73,6 +95,12 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     getPercentages(){
         this.getAnalyticsSubscrip = this.allocationService.getAllPercentages().subscribe(data => {
             this.percentages = data;
+
+            if(this.lastQuery){
+                setTimeout(() => {
+                    $('#percentageId').val(this.lastQuery.percentage).trigger('change');
+                }, 0);
+            }
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -82,8 +110,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             startDate: this.dateSince,
             endDate: this.dateTo,
             analyticId: $('#analyticId').val() == 0 ? null : $('#analyticId').val(),
-            employeeId: $('#employeeId').val()== 0 ? null : $('#employeeId').val(),
-            percentage: $('#percentageId').val()== 0 ? null : $('#percentageId').val(),
+            employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
+            percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),
         }
 
         this.messageService.showLoading();
@@ -93,6 +121,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             if(response.messages) this.messageService.showMessages(response.messages);
             this.model = response.data;
             this.initGrid();
+
+            sessionStorage.setItem('lastReportQuery', JSON.stringify(parameters));
         },
         error => {
             this.errorHandlerService.handleErrors(error);
@@ -118,5 +148,14 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
         this.dataTableService.destroy(options.selector);
         this.dataTableService.init2(options);
+    }
+
+    clean(){
+        this.dateSince = new Date();
+        this.dateTo = new Date();
+        $('#analyticId').val(0).trigger('change');
+        $('#employeeId').val(0).trigger('change');
+        $('#percentageId').val('').trigger('change');
+        sessionStorage.removeItem('lastReportQuery')
     }
 }
