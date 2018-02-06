@@ -331,6 +331,7 @@
             "allocations": "Asignaciones",
             "resources": "Recursos",
             "percentage": "Porcentaje",
+            "percentages": "Porcentajes",
             "startDate": "Fecha Inicio",
             "endDate": "Fecha Fin",
             "forbidden": "No tiene los permisos suficientes para asignar recursos",
@@ -349,6 +350,18 @@
                 "since": "Desde",
                 "to": "Hasta",
                 "percentage": "Porcentaje"
+            }
+        },
+        "report": { 
+            "title": "Reporte de Recursos",
+            "report": "Reporte",
+            "grid": {
+                "analytic": "Analítica",
+                "employee": "Empleado",
+                "boss": "Superior",
+                "manager":"Gerente",
+                "office": "Dirección",
+                "billeability": "Facturabilidad (%)"
             }
         },
         "resources": {

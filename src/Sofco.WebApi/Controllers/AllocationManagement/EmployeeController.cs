@@ -29,6 +29,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("options")]
+        public IActionResult GetOptions()
+        {
+            var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
+
+            options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
+
+            return Ok(options);
+        }
+
         [HttpGet("{id}/profile")]
         public IActionResult GetProfile(int id)
         {

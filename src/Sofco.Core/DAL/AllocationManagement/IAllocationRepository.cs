@@ -1,7 +1,9 @@
 ﻿using System;
 using Sofco.Core.DAL.Common;
 using System.Collections.Generic;
+using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -12,5 +14,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateReleaseDate(Allocation allocation);
         ICollection<Employee> GetByService(string serviceId);
         ICollection<Allocation> GetByEmployee(int id);
+        ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
+        IList<decimal> GetAllPercentages();
     }
 }

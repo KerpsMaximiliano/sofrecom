@@ -25,6 +25,10 @@ export class AnalyticService {
   }
 
   getOptions(){
+    return this.http.get(`${this.baseUrl}/analytics/options`).map((res:Response) => res.json());
+  }
+
+  getFormOptions(){
     return this.http.get(`${this.baseUrl}/analytics/formOptions`).map((res:Response) => res.json());
   }
 
