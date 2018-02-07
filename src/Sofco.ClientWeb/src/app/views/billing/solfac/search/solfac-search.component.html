@@ -117,10 +117,11 @@
                         <thead>
                             <tr>
                                 <th>{{'billing.solfac.businessName' | translate }}</th>
-                                <th>{{'billing.solfac.project' | translate }}</th>
+                                <th class="column-lg">{{'billing.solfac.project' | translate }}</th>
                                 <th>{{'billing.project.grid.manager' | translate }}</th>
                                 <th>{{'billing.solfac.documentType' | translate }}</th>
                                 <th>{{'billing.solfac.date' | translate }}</th>
+                                <th>{{'billing.solfac.currency' | translate }}</th>
                                 <th>{{'billing.solfac.milestone.total' | translate }}</th>
                                 <th class="text-center">{{'billing.solfac.status' | translate }}</th>
                             </tr>
@@ -128,11 +129,12 @@
                         <tbody>
                             <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" class="pointer">
                                 <td>{{ solfac.businessName}}</td>
-                                <td> <span class="badge badge-primary">{{ solfac.projectQuantity }}</span> {{ solfac.project}}</td>
+                                <td class="column-lg text-ellipsis" title="{{ solfac.project}}"> <span *ngIf="solfac.projectQuantity > 1" class="badge badge-primary"> <i class="fa fa-plus"></i> </span> {{ solfac.project}}</td>
                                 <td>{{ solfac.manager}}</td>
                                 <td>{{ solfac.documentTypeName}}</td>
                                 <td>{{ solfac.startDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
+                                <td class="text-center">{{ setCurrencySymbol(solfac.currencyId) }}</td>
+                                <td>{{solfac.totalAmount | number: '1.2-2' }}</td>
                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                             </tr>
                         </tbody>

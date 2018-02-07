@@ -48,6 +48,10 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/contracts/analytics/${analytic.id}/edit`]);
     }
 
+    gotToView(analytic){
+        this.router.navigate([`/contracts/analytics/${analytic.id}/view`]);
+    }
+
     goToAssignResource(analytic){
         if(this.menuService.hasFunctionality('ALLOC', 'ADRES')){
             sessionStorage.setItem("analytic", JSON.stringify(analytic));

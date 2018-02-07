@@ -115,34 +115,34 @@ export class NewsComponent implements OnInit, OnDestroy {
     cancel(){
         this.isLoading = true;
 
-        // this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
-        //     if(data.messages) this.messageService.showMessages(data.messages);
+        this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
 
-        //     this.model.splice(this.indexToConfirm, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
-        //     this.isLoading = false;
-        //     this.confirmModal.hide();
-        // },
-        // error => {
-        //     this.isLoading = false;
-        //     this.errorHandlerService.handleErrors(error);
-        // });
+            this.isLoading = false;
+            this.confirmModal.hide();
+        },
+        error => {
+            this.isLoading = false;
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     delete(){
         this.isLoading = true;
 
-        // this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
-        //     if(data.messages) this.messageService.showMessages(data.messages);
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
 
-        //     this.model.splice(this.indexToConfirm, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
-        //     this.isLoading = false;
-        //     this.confirmModal.hide();
-        // },
-        // error => {
-        //     this.isLoading = false;
-        //     this.errorHandlerService.handleErrors(error);
-        // });
+            this.isLoading = false;
+            this.confirmModal.hide();
+        },
+        error => {
+            this.isLoading = false;
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 }
