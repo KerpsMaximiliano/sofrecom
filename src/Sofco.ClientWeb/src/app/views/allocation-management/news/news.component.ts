@@ -82,7 +82,8 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
-        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
+        let statusText = news.isReincorporation ? "Reincorporation" : "New";
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(statusText)
     }
 
     showConfirmDelete(news, index){
