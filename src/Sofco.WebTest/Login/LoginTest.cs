@@ -13,10 +13,15 @@ namespace Sofco.WebTest.Login
         [SetUp]
         public void Setup()
         {
-            driver = new FirefoxDriver
+            var options = new FirefoxOptions();
+
+            options.SetPreference("security.sandbox.content.level", 5);
+
+            driver = new FirefoxDriver(options)
             {
                 Url = "http://azsof01wd:8000"
             };
+
 
             driver.Manage().Window.Maximize();
         }
