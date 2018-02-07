@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 namespace Sofco.WebTest.Login
 {
@@ -13,7 +13,7 @@ namespace Sofco.WebTest.Login
         [SetUp]
         public void Setup()
         {
-            driver = new ChromeDriver
+            driver = new FirefoxDriver
             {
                 Url = "http://azsof01wd:8000"
             };
