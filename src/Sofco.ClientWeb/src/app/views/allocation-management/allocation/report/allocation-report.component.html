@@ -76,41 +76,41 @@
     </div>
 
     <div class="ibox" *ngIf="loaded == true"> 
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <table class="table table-striped dataTable" role="grid" id="resourcesTable">
-                        <thead>
-                            <tr>
-                                <th class="column-sm">{{'allocationManagement.report.grid.analytic' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.report.grid.employee' | translate }}</th>
-                                <th class="column-md">{{'allocationManagement.resources.grid.senority' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
-                                <th class="column-md">{{'allocationManagement.resources.grid.technology' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
-                                <th class="column-lg">{{'allocationManagement.report.grid.manager' | translate }}</th>
-                                <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
-                                <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+                    <thead>
+                        <tr>
+                            <th class="column-sm">{{'allocationManagement.report.grid.analytic' | translate }}</th>
+                            <th class="column-lg">{{'allocationManagement.report.grid.employee' | translate }}</th>
+                            <th class="column-md">{{'allocationManagement.resources.grid.senority' | translate }}</th>
+                            <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
+                            <th class="column-md">{{'allocationManagement.resources.grid.technology' | translate }}</th>
+                            <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
+                            <th class="column-lg">{{'allocationManagement.report.grid.manager' | translate }}</th>
+                            <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
+                            <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
 
-                                <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }} (%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let resource of model?.rows">
-                                <td class="column-sm">{{ resource.analytic }}</td>
-                                <td class="column-lg">{{ resource.resourceName }}</td>
-                                <td class="column-md">{{ resource.seniority}}</td>
-                                <td class="column-lg">{{ resource.profile}}</td>
-                                <td class="column-md">{{ resource.technology}}</td>
-                                <td class="column-lg">{{ resource.manager}}</td>
-                                <td class="column-lg">{{ resource.projectManager}}</td>
-                                <td class="column-md">{{ resource.office}}</td>
-                                <td class="column-sm">{{ resource.percentage}}</td>
+                            <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }} (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let resource of model?.rows">
+                            <td class="column-sm">{{ resource.analytic }}</td>
+                            <td class="column-lg">{{ resource.resourceName }}</td>
+                            <td class="column-md">{{ resource.seniority}}</td>
+                            <td class="column-lg">{{ resource.profile}}</td>
+                            <td class="column-md">{{ resource.technology}}</td>
+                            <td class="column-lg">{{ resource.manager}}</td>
+                            <td class="column-lg">{{ resource.projectManager}}</td>
+                            <td class="column-md">{{ resource.office}}</td>
+                            <td class="column-sm">{{ resource.percentage}}</td>
 
-                                <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }}</td>
-                            </tr>
-                        </tbody>
-                    </table>       
-                </div>
+                            <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }}</td>
+                        </tr>
+                    </tbody>
+                </table>       
             </div>
         </div>
+    </div>
 </div>

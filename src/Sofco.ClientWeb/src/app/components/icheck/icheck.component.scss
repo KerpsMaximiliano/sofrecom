@@ -21,6 +21,7 @@
     :host > div > div.disabled {
         background-position: -72px 0;
         cursor: default;
+        background-color: #eee;
     }    
 
     :host > div > div.checked {

@@ -407,7 +407,10 @@
             "title": "Analytics",
             "list": "List",
             "new": "New Analytic",
-            "edit": "Edit Analytic",
+            "edit": "Edit",
+            "editTitle": "Edit Analytic",
+            "view": "View",
+            "viewTitle": "View Analytic",
             "assigned": "Analytics Assigned",
             "add": {
                 "title": "Title",

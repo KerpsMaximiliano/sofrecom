@@ -43,6 +43,7 @@ import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-m
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
 import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
+import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -121,7 +122,8 @@ export const ROUTES:Routes = [
       children: [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
-        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
+        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {

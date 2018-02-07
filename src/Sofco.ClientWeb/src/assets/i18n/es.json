@@ -408,7 +408,10 @@
             "title": "Analiticas",
             "list": "Listado",
             "new": "Alta de Analitica",
-            "edit": "Editar Analitica",
+            "edit": "Editar",
+            "editTitle": "Editar Analitica",
+            "view": "Ver",
+            "viewTitle": "Ver Analitica",
             "assigned": "Analíticas Asignadas",
             "add": {
                 "title": "Titulo",
