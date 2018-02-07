@@ -22,7 +22,6 @@ namespace Sofco.WebTest.Login
                 Url = "http://azsof01wd:8000"
             };
 
-
             driver.Manage().Window.Maximize();
         }
 
