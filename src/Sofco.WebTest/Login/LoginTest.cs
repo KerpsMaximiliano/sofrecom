@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 namespace Sofco.WebTest.Login
 {
@@ -13,10 +13,15 @@ namespace Sofco.WebTest.Login
         [SetUp]
         public void Setup()
         {
-            driver = new ChromeDriver
+            var options = new FirefoxOptions();
+
+            options.SetPreference("security.sandbox.content.level", 5);
+
+            driver = new FirefoxDriver(options)
             {
                 Url = "http://azsof01wd:8000"
             };
+
 
             driver.Manage().Window.Maximize();
         }
