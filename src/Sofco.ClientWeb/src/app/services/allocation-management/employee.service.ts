@@ -16,6 +16,10 @@ export class EmployeeService {
     return this.http.get(`${this.baseUrl}/employees`).map((res:Response) => res.json());
   }
 
+  getOptions() {
+    return this.http.get(`${this.baseUrl}/employees/options`).map((res:Response) => res.json());
+  }
+
   getById(id) {
     return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }

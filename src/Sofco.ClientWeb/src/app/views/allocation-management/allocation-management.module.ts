@@ -33,12 +33,14 @@ import { EmployeeNewsService } from 'app/services/allocation-management/employee
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
+import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
+import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, 
     ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, 
-    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent
+    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent, AllocationReportComponent, ViewAnalyticComponent
   ],
   imports: [
     BrowserModule,

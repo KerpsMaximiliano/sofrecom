@@ -331,6 +331,7 @@
             "allocations": "Allocations",
             "resources": "Resources",
             "percentage": "Percentage",
+            "percentages": "Percentages",
             "startDate": "Start Date",
             "endDate": "End Date",
             "forbidden": "You do not have sufficient permissions to allocate resources",
@@ -349,6 +350,19 @@
                 "since": "Since",
                 "to": "To",
                 "percentage": "Percentage"
+            }
+        },
+        "report": { 
+            "title": "Resource's report",
+            "report": "Report",
+            "includeStaff": "Include Staff",
+            "grid": {
+                "analytic": "Analytic",
+                "employee": "employee",
+                "boss": "Boss",
+                "manager":"Manager",
+                "office": "Office",
+                "billeability": "Billeability (%)"
             }
         },
         "resources": {
@@ -393,7 +407,10 @@
             "title": "Analytics",
             "list": "List",
             "new": "New Analytic",
-            "edit": "Edit Analytic",
+            "edit": "Edit",
+            "editTitle": "Edit Analytic",
+            "view": "View",
+            "viewTitle": "View Analytic",
             "assigned": "Analytics Assigned",
             "add": {
                 "title": "Title",
