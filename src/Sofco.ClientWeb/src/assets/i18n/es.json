@@ -355,6 +355,7 @@
         "report": { 
             "title": "Reporte de Recursos",
             "report": "Reporte",
+            "includeStaff": "Incluir Staff",
             "grid": {
                 "analytic": "Analítica",
                 "employee": "Empleado",
