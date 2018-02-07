@@ -30,9 +30,11 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
+    public includeStaff: boolean = false;
     public dateOptions;
 
     private lastQuery: any;
+    public loaded: boolean = false;
 
     constructor(private allocationService: AllocationService,
                 private router: Router,
@@ -57,6 +59,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             this.lastQuery = data;
             this.dateSince = data.startDate
             this.dateTo = data.endDate
+            this.includeStaff = data.includeStaff;
         }
     }
 
@@ -72,7 +75,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
             if(this.lastQuery){
                 setTimeout(() => {
-                    $('#employeeId').val(this.lastQuery.employeeId).trigger('change');
+                    $('#employeeId').val(this.lastQuery.employeeId == null ? 0 : this.lastQuery.employeeId).trigger('change');
                 }, 0);
             }
         },
@@ -109,16 +112,19 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         var parameters = {
             startDate: this.dateSince,
             endDate: this.dateTo,
+            includeStaff: this.includeStaff,
             analyticId: $('#analyticId').val() == 0 ? null : $('#analyticId').val(),
             employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
             percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),
         }
 
         this.messageService.showLoading();
+        this.loaded = false;
 
         this.createReportSubscrip = this.allocationService.createReport(parameters).subscribe(response => {
-            this.messageService.closeLoading();
+          
             if(response.messages) this.messageService.showMessages(response.messages);
+
             this.model = response.data;
             this.initGrid();
 
@@ -146,16 +152,21 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             withExport: true
         };
 
-        this.dataTableService.destroy(options.selector);
-        this.dataTableService.init2(options);
+        setTimeout(() => {
+            this.messageService.closeLoading();
+            this.loaded = true;
 
+            this.dataTableService.destroy(options.selector);
+            this.dataTableService.init2(options);
+        }, 500);
+       
         setTimeout(() => {
             $("#resourcesTable_wrapper").css("float","left");
             $("#resourcesTable_wrapper").css("padding-bottom","50px");
             $("#resourcesTable_filter label").addClass('search-filter');
             $(".html5buttons").addClass('export-buttons');
             $("#resourcesTable_paginate").addClass('table-pagination');
-        }, 500);
+        }, 1000);
     }
 
     clean(){

@@ -13,5 +13,7 @@ namespace Sofco.Model.DTO
         public int? EmployeeId { get; set; }
 
         public decimal? Percentage { get; set; }
+
+        public bool IncludeStaff { get; set; }
     }
 }

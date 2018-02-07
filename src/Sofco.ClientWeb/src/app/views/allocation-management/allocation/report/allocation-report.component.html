@@ -31,6 +31,13 @@
                         <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
                     </div>
                 </div>
+                <div class="col-sm-4">
+                    <div class="form-group checkbox-center">
+                        <icheck [(checked)]="includeStaff">
+                            <label class="control-label">Incluir Staff</label> 
+                        </icheck>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -68,7 +75,7 @@
         </div>
     </div>
 
-    <div class="ibox" *ngIf="model?.rows.length > 0"> 
+    <div class="ibox" *ngIf="loaded == true"> 
             <div class="ibox-content">
                 <div class="table-responsive">
                     <table class="table table-striped dataTable" role="grid" id="resourcesTable">

@@ -41,7 +41,7 @@ export class DataTableService {
                 }
 
                 // if(scroll) options.scrollX = true;
-                this.tableRef = $(selector).DataTable(options);
+                $(selector).DataTable(options);
             });
         });
     }
@@ -88,7 +88,7 @@ export class DataTableService {
                       ];
                 }
 
-                this.tableRef = $(params.selector).DataTable(options);
+                $(params.selector).DataTable(options);
             });
         });
     }
@@ -109,7 +109,7 @@ export class DataTableService {
                 }
 
                 // if(scroll) options.scrollX = true;
-                this.tableRef = $(selector).DataTable(options);
+                $(selector).DataTable(options);
             });
         });
     }

@@ -62,6 +62,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (parameters.EmployeeId.HasValue)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
 
+            if (!parameters.IncludeStaff)
+                query = query.Where(x => x.Employee.BillingPercentage != 0);
+
             if (parameters.Percentage.HasValue)
             {
                 if (parameters.Percentage == 999)
