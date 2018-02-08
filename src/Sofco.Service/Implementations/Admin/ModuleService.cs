@@ -4,7 +4,6 @@ using Sofco.Core.DAL;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
 using Sofco.Core.Services.Admin;
-using Sofco.DAL;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Service.Implementations.Admin
@@ -31,11 +30,11 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.Admin.Module.Enabled : Resources.Admin.Module.Disabled, MessageType.Success));
+                response.AddSuccess(active ? Resources.Admin.Module.Enabled : Resources.Admin.Module.Disabled);
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Module.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Module.NotFound);
             return response;
         }
 
@@ -58,7 +57,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Module.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Module.NotFound);
             return response;
         }
 
@@ -70,11 +69,11 @@ namespace Sofco.Service.Implementations.Admin
             {
                 unitOfWork.ModuleRepository.Update(data);
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Module.Updated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Module.Updated);
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

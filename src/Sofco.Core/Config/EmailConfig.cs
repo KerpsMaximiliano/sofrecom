@@ -24,6 +24,8 @@
 
         public string SellerCode { get; set; }
 
+        public string ComercialCode { get; set; }
+
         public string MailDevFolder { get; set; }
 
         public string SupportMailTo { get; set; }
