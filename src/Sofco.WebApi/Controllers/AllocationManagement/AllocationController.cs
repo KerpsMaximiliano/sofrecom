@@ -28,10 +28,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = allocationService.Add(allocation);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("analytics/{employeeId}/{startDate}/{endDate}")]

@@ -52,10 +52,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             var response = costCenterService.Add(domain);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -63,10 +60,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = costCenterService.Edit(model.Id, model.Description);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
