@@ -217,6 +217,7 @@
             "hito": "Milestone",
             "pdfViewer": "PDF Viewer",
             "activity": "Activity",
+            "amount": "Amount",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -311,6 +312,9 @@
         "costCenter": {
             "title": "Cost Center",
             "list": "Cost Center´s List",
+            "edit": {
+                "title": "Edit cost center"
+            },
             "add": {
                 "title": "New cost center",
                 "code": "Code",

@@ -5,7 +5,6 @@ using Sofco.Model.Utils;
 using Sofco.Model.Enums;
 using Sofco.Model.Relationships;
 using Sofco.Core.Services.Admin;
-using Sofco.DAL;
 using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Models.Admin;
 
@@ -43,11 +42,11 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.Admin.Role.Enabled : Resources.Admin.Role.Disabled, MessageType.Success));
+                response.AddSuccess(active ? Resources.Admin.Role.Enabled : Resources.Admin.Role.Disabled);
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Functionality.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Functionality.NotFound);
             return response;
         }
 
@@ -70,7 +69,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Role.NotFound);
             return response;
         }
 
@@ -85,7 +84,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Role.NotFound);
             return response;
         }
 
@@ -105,11 +104,11 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.RoleRepository.Save();
 
                 response.Data = role;
-                response.Messages.Add(new Message(Resources.Admin.Role.Created, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.Created);
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -129,11 +128,11 @@ namespace Sofco.Service.Implementations.Admin
 
                 unitOfWork.RoleRepository.Update(role);
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Role.Updated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.Updated);
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
            
             return response;
@@ -152,11 +151,11 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(Resources.Admin.Role.Deleted, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.Deleted);
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Role.NotFound);
             return response;
         }
 
@@ -173,7 +172,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Role.NotFound);
                 return response;
             }
 
@@ -192,11 +191,11 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -210,7 +209,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Role.NotFound);
                 return response;
             }
 
@@ -218,7 +217,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!functionalityExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Module.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Module.NotFound);
                 return response;
             }
 
@@ -226,14 +225,14 @@ namespace Sofco.Service.Implementations.Admin
 
             if (rolefunctionalityExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.RoleModuleAlreadyCreated, MessageType.Error));
+                response.AddError(Resources.Admin.Role.RoleModuleAlreadyCreated);
             }
             else
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
                 unitOfWork.RoleFunctionalityRepository.Insert(entity);
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
 
             return response;
@@ -247,7 +246,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Role.NotFound);
                 return response;
             }
 
@@ -255,7 +254,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!functionalityExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Module.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Module.NotFound);
                 return response;
             }
 
@@ -263,14 +262,14 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!rolefunctionalityExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.RoleModuleAlreadyRemoved, MessageType.Error));
+                response.AddError(Resources.Admin.Role.RoleModuleAlreadyRemoved);
             }
             else
             {
                 var entity = new RoleFunctionality { RoleId = roleId, FunctionalityId = functionalityId };
                 unitOfWork.RoleFunctionalityRepository.Delete(entity);
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
 
             return response;
@@ -284,7 +283,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!roleExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Role.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Role.NotFound);
                 return response;
             }
 
@@ -303,11 +302,11 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.Role.ModulesUpdated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
             catch (Exception)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
+using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -26,6 +27,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(list.Select(x => new CostCenterViewModel(x)));
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = costCenterService.GetById(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return Ok(new CostCenterViewModel(response.Data));
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
@@ -45,6 +56,26 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
                 return BadRequest(response);
 
             return Ok(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] EditCostCenterViewModel model)
+        {
+            var response = costCenterService.Edit(model.Id, model.Description);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        [Route("{id}/active/{active}")]
+        public IActionResult Active(int id, bool active)
+        {
+            var response = costCenterService.Active(id, active);
+
+            return this.CreateResponse(response);
         }
     }
 }

@@ -1,37 +1,56 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { CostCenterService } from "app/services/allocation-management/cost-center.service";
 import { CostCenter } from "app/models/allocation-management/costCenter";
 
 @Component({
-    selector: 'add-cost-center',
-    templateUrl: './add-cost-center.component.html'
+    selector: 'edit-cost-center',
+    templateUrl: './edit-cost-center.component.html'
 })
-export class AddCostCenterComponent implements OnDestroy {
-
+export class EditCostCenterComponent implements OnInit, OnDestroy {
     public model: CostCenter = new CostCenter();
 
     addSubscrip: Subscription;
+    paramsSubscrip: Subscription;
+    getByIdSubscrip: Subscription;
 
     constructor(private costCenterService: CostCenterService,
                 private router: Router,
                 private menuService: MenuService,
+                private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
     }
 
-    ngOnDestroy(): void {
-        if(this.addSubscrip) this.addSubscrip.unsubscribe();
+    ngOnInit(): void {
+        this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+            this.messageService.showLoading();
+
+            this.getByIdSubscrip = this.costCenterService.getById(params['id']).subscribe(data => {
+                this.messageService.closeLoading();
+                this.model = data;
+            },
+            error => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(error);
+            });
+        });
     }
 
-    add(){
+    ngOnDestroy(): void {
+        if(this.addSubscrip) this.addSubscrip.unsubscribe();
+        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+        if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
+    }
+
+    save(){
         this.messageService.showLoading();
 
-        this.addSubscrip = this.costCenterService.add(this.model).subscribe(
+        this.addSubscrip = this.costCenterService.edit(this.model).subscribe(
             data => {
               this.messageService.closeLoading();
               if(data.messages) this.messageService.showMessages(data.messages);

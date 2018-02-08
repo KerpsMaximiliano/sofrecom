@@ -21,27 +21,38 @@
             <h4 class="pull-left">{{ 'contracts.costCenter.title' | translate }}</h4>
             
             <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+                <div class="btn-group">
+                    <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-primary':'btn-white'" (click)="filterActives(true)">Activos</button>
+                    <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-white':'btn-primary'" (click)="filterActives(false)">Todos</button>
+                </div>
+
                 <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>
-        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
-            <spinner></spinner>
-
+        <div class="ibox-content">
             <table class="table table-striped dataTable" role="grid" id="costCentersTable">
                 <thead>
                     <tr>
-                        <th class="text-center">{{ 'contracts.costCenter.add.code' | translate }}</th>
-                        <th class="text-center">{{ 'contracts.costCenter.add.letter' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'contracts.costCenter.add.code' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'contracts.costCenter.add.letter' | translate }}</th>
                         <th>{{ 'contracts.costCenter.add.description' | translate }}</th>
-                        <th class="text-center">{{ 'contracts.costCenter.add.active' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'contracts.costCenter.add.active' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let costCenter of model" class="pointer">
-                        <td class="text-center">{{ costCenter.code }}</td>
-                        <td class="text-center">{{ costCenter.letter }}</td>
+                    <tr *ngFor="let costCenter of costCentersFiltered; let i = index" class="pointer">
+                        <td class="text-center column-xs">{{ costCenter.code }}</td>
+                        <td class="text-center column-xs">{{ costCenter.letter }}</td>
                         <td>{{ costCenter.description }}</td>
-                        <td class="text-center"><span class="fa" [ngClass]="costCenter.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td class="text-center column-xs"><span class="fa" [ngClass]="costCenter.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td class="text-center column-xs">
+                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'CCADD')" (click)="gotToEdit(costCenter)"><i class="fa fa-edit"></i></button>
+
+                            <button class="btn btn-xs" [ngClass]="(costCenter.active)?'btn-danger':'btn-success'" (click)="habInhabClick(costCenter, i)" >
+                                <span [ngClass]="(costCenter.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>       
@@ -49,3 +60,6 @@
     </div>
 </div>
 
+<ng2-modal [config]="modalConfig" #confirmModal (accept)="confirm()" [isLoading]="loading">
+    <h4>{{ modalMessage | translate }}</h4>
+</ng2-modal>
