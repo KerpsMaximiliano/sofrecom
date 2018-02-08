@@ -26,7 +26,7 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
 
     private costCenterSelected: any;
     private index;
-    private modalMessage: string;
+    public modalMessage: string;
     
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle", //title
