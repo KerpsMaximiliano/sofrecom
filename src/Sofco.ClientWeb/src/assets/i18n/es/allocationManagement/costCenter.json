@@ -1,9 +1,12 @@
 {
-    "save": "Centro de costos creado exitosamente",
+    "save": "Centro de costos guardado exitosamente",
     "codeIsRequired": "El código es requerido",
     "codeWrongLength": "El código debe tener 3 digitos",
     "letterIsRequired": "La letra es requerida",
     "letterWrong": "La letra no debe ser un caracter especial",
     "descriptionRequired": "La descripción es requerida",
+    "disabled": "Centro de costos deshabilitado correctamente",
+    "enabled": "Centro de costos habilitado correctamente",
+    "notFound": "Centro de costos no encontrado",
     "codeAlreadyExist": "Código ya existe"
-}
+} 

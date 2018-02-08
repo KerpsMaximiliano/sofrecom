@@ -217,6 +217,7 @@
             "hito": "Hito",
             "pdfViewer": "Visualización de PDF",
             "activity": "Actividad",
+            "amount": "Monto",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -311,6 +312,9 @@
         "costCenter": {
             "title": "Centro de Costos",
             "list": "Listado de centro de costos",
+            "edit": {
+                "title": "Editar centro de costos"
+            },
             "add": {
                 "title": "Nuevo centro de costos",
                 "code": "Código",
@@ -480,8 +484,8 @@
         "confirmBody": "¿Esta seguro que desea confirmar la acción?",
         "confirmDelete": "Confirmación de baja",
         "confirmAdd": "Confirmación de alta",
-        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
-        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "areYouSureConfirmAdd": "¿Está seguro de dar de alta?",
+        "areYouSureConfirmDelete": "¿Está seguro de dar de baja?",
         "clone": "Clonar",
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",

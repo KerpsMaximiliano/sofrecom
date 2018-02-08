@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
@@ -53,6 +54,19 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             {
                 response.Messages.Add(new Message(Resources.AllocationManagement.CostCenter.DescriptionRequired, MessageType.Error));
             }
+        }
+
+        public static CostCenter Exist(Response response, int id, IUnitOfWork unitOfWork)
+        {
+            var costCenter = unitOfWork.CostCenterRepository.GetSingle(x => x.Id == id);
+
+            if (costCenter == null)
+            {
+                response.AddError(Resources.AllocationManagement.CostCenter.NotFound);
+                return null;
+            }
+
+            return costCenter;
         }
     }
 }

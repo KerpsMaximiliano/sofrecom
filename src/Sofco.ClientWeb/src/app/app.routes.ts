@@ -44,6 +44,7 @@ import { ResourceByServiceComponent } from 'app/views/allocation-management/reso
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
 import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
 import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
+import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -130,7 +131,8 @@ export const ROUTES:Routes = [
         path: "costCenter",
         children: [
           { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } },
+          { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
         ]
       }]
   },
