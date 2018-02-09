@@ -117,10 +117,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.Validate(domain);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -133,12 +130,9 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var result = solfacService.Post(domain, model.InvoicesId);
+            var response = solfacService.Post(domain, model.InvoicesId);
 
-            if (result.HasErrors())
-                return BadRequest(result);
-
-            return Ok(result);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -153,10 +147,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.Update(domain, model.Comments);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -196,10 +187,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.ChangeStatus(id, solfacStatusParams, emailConfig);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -210,10 +198,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateBill(id, solfacStatusParams);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -224,10 +209,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateCashedDate(id, solfacStatusParams);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -236,10 +218,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.Delete(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -248,10 +227,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteDetail(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -260,10 +236,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteInvoice(id, invoiceId);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}/histories")]
@@ -380,10 +353,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteFile(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet]
@@ -404,10 +374,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.AddInvoices(id, invoices);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         private IEnumerable<SelectListItem> GetStatuses()

@@ -91,10 +91,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = await solfacService.SplitHito(hito);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
     }
 }

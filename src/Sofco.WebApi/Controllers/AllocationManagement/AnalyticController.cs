@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
+using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -73,9 +74,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = analyticService.Add(model.CreateDomain());
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -83,9 +82,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = analyticService.Update(model.CreateDomain());
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("title/costcenter/{costCenterId}")]
@@ -93,9 +90,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = analyticService.GetNewTitle(costCenterId);
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
     }
 }
