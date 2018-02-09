@@ -8,6 +8,7 @@ using Sofco.Model.Enums;
 using Sofco.Framework.Helpers;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -16,10 +17,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
     public class AllocationService : IAllocationService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<AllocationService> logger;
 
-        public AllocationService(IUnitOfWork unitOfWork)
+        public AllocationService(IUnitOfWork unitOfWork, ILogMailer<AllocationService> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -217,11 +220,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 unitOfWork.Save();
 
-                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.Added, MessageType.Success));
+                response.AddSuccess(Resources.AllocationManagement.Allocation.Added);
             }
             catch (Exception ex)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(ex);
             }
         }
     }

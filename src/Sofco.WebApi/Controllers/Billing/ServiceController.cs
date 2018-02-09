@@ -31,7 +31,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return Ok(model);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -46,7 +46,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
                 return Ok(services);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest(new List<CrmService>());
             }
