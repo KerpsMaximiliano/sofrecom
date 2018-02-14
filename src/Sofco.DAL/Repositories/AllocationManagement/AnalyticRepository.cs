@@ -50,5 +50,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 })
                 .ToList();
         }
+
+        public void Close(Analytic analytic)
+        {
+            context.Entry(analytic).Property("Status").IsModified = true;
+        }
     }
 }

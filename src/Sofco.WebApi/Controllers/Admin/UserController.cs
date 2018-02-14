@@ -48,7 +48,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<UserSelectListItem>();
 
             foreach (var user in users)
-                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email });
+                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email, ExternalId = user.ExternalManagerId });
 
             return Ok(model);
         }

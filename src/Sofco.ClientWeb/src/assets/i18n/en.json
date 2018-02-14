@@ -448,6 +448,11 @@
                 "name": "Name",
                 "client": "Cliet",
                 "commercialManager": "Commercial Manager"
+            },
+            "status": {
+                "open": "Open",
+                "closeForExpenses": "Close for expenses",
+                "close": "Close"
             }
         }
     },

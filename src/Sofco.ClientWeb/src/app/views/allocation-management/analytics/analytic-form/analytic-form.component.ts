@@ -38,9 +38,14 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        let service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+        let analyticWithProject = sessionStorage.getItem('analyticWithProject');
+        let project = JSON.parse(sessionStorage.getItem('projectDetail'));
+
         this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
-              this.options = data;
+                this.options = data;
+                this.model.managerId = service.managerId;                
             },
             err => this.errorHandlerService.handleErrors(err));
 
@@ -50,9 +55,6 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
 
-        let analyticWithProject = sessionStorage.getItem('analyticWithProject');
-        let project = JSON.parse(sessionStorage.getItem('projectDetail'));
-
         if(analyticWithProject == 'yes'){
             this.model.clientExternalId = sessionStorage.getItem('customerId');
             this.model.clientExternalName = sessionStorage.getItem('customerName');
@@ -61,9 +63,9 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.contractNumber = project.purchaseOrder;
             this.model.amountEarned = project.totalAmmount; 
             this.model.currencyId = this.getCurrencyId(project.currency);
-            this.model.solutionId = project.solutionTypeId;
-            this.model.technologyId = project.technologyTypeId;
-            this.model.serviceTypeId = project.serviceTypeId;
+            this.model.solutionId = service.solutionTypeId;
+            this.model.technologyId = service.technologyTypeId;
+            this.model.serviceTypeId = service.serviceTypeId;
         }
         else{
             this.model.clientExternalName = 'No Aplica';

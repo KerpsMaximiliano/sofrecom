@@ -51,5 +51,24 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(new List<CrmService>());
             }
         }
+
+        [HttpGet("{serviceId}/account/{customerId}")]
+        public IActionResult GetById(string serviceId, string customerId)
+        {
+            try
+            {
+                var services = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
+
+                var service = services.FirstOrDefault(x => x.Id.Equals(serviceId));
+
+                if (service == null) return BadRequest();
+
+                return Ok(service);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

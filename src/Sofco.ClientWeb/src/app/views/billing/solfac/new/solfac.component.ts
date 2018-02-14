@@ -14,6 +14,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { Hito } from 'app/models/billing/solfac/hito';
+import { ServiceService } from 'app/services/billing/service.service';
 
 declare var $:any;
 
@@ -61,6 +62,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private solfacService: SolfacService,
                 private menuService: MenuService,
                 private customerService: CustomerService,
+                private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
@@ -109,6 +111,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setDataForSingleProject(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+      
       this.integratorProject = project;
 
       this.getInvoicesOptions(project.id);
@@ -118,10 +121,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.projectId = project.id;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-      this.model.imputationNumber1 = project.analytic; 
       this.model.currencyId = this.getCurrencyId(project.currency);
-      this.model.analytic = project.analytic;
       this.model.remito = project.remito;
+      this.model.analytic = project.analytic;
+      this.model.imputationNumber1 = project.analytic;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
@@ -145,7 +148,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setNewModel(){
       var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
-
+      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
       this.model.totalAmount = 0;
       this.model.documentType = 1;
 
@@ -157,6 +160,23 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
     
       var customer = JSON.parse(sessionStorage.getItem("customer"));
+      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+
+      if(service){
+        // this.model.imputationNumber1 = service.analytic; 
+        // this.model.analytic = service.analytic;
+        this.model.manager = service.manager;
+        this.model.managerId = service.managerId;
+      }
+      else{
+        this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
+          // this.model.imputationNumber1 = data.analytic; 
+          // this.model.analytic = data.analytic;
+          this.model.manager = data.manager;
+          this.model.managerId = data.managerId;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+      }
 
       if(customer){
         this.model.businessName = customer.nombre;

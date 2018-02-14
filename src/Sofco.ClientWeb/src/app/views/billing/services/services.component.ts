@@ -66,6 +66,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     goToProjects(service){
       sessionStorage.setItem("serviceName", service.nombre);
       sessionStorage.setItem("serviceId", service.id);
+      sessionStorage.setItem("serviceDetail", JSON.stringify(service));
       
       this.router.navigate([`/billing/customers/${this.customerId}/services/${service.id}/projects`]);
     }

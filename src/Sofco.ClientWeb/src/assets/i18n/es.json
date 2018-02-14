@@ -449,6 +449,11 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Manager Comercial"
+            },
+            "status": {
+                "open": "Abierta",
+                "closeForExpenses": "Cerrada para costos",
+                "close": "Cerrada"
             }
         },
         "confirmBody": "Esta seguro que desea seguir con la acción de "

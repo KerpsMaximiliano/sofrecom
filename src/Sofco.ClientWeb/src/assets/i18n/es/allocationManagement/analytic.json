@@ -1,15 +1,16 @@
 {
-    "notFound": "Analitica no encontrada",
+    "notFound": "Analítica no encontrada",
     "resourcesNotFound": "La analítica seleccionada no contiene recursos asignados.",
     "titleInvalid": "El formato del titulo no es correcto",
     "nameIsRequired": "El nombre es requerido",
     "descriptionIsRequired": "La descripcion es requerida",
     "directorIsRequired": "El director es requerido",
     "currencyIsRequired": "La moneda es requerida",
-    "saveSuccess": "Analitica creada exitosamente",
+    "saveSuccess": "Analítica creada exitosamente",
     "costCenterIsRequired": "Centro de costos es requerido",
     "titleAlreadyExist": "EL titulo ya existe",
     "wrongDates": "La fecha de inicio no puede ser mayor a la fecha de fin",
     "titleIsRequired": "El titulo es requerido",
-    "updateSuccess": "Analitica actualizada exitosamente"
+    "updateSuccess": "Analítica actualizada exitosamente",
+    "closeSuccess": "Se ha cerrado la analítica exitosamente" 
 }

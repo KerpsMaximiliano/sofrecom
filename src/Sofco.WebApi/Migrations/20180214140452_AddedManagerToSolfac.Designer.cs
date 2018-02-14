@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180214140452_AddedManagerToSolfac")]
+    partial class AddedManagerToSolfac
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -150,9 +151,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(150);
 
                     b.Property<DateTime?>("EndDate");
-
-                    b.Property<string>("ExternalManagerId")
-                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()

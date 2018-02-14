@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
@@ -70,9 +71,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] AnalyticViewModel model)
+        public async Task<IActionResult> Post([FromBody] AnalyticViewModel model)
         {
-            var response = analyticService.Add(model.CreateDomain());
+            var response = await analyticService.Add(model.CreateDomain());
 
             return this.CreateResponse(response);
         }
@@ -89,6 +90,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetNewTitle(int costCenterId)
         {
             var response = analyticService.GetNewTitle(costCenterId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/close")]
+        public IActionResult Close(int id)
+        {
+            var response = analyticService.Close(id);
 
             return this.CreateResponse(response);
         }

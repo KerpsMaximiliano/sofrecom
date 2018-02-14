@@ -60,6 +60,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Cierre analítica {0}.
+        /// </summary>
+        public static string CloseAnalytic {
+            get {
+                return ResourceManager.GetString("CloseAnalytic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Baja de recurso.
         /// </summary>
         public static string EmployeeEndConfirmation {
