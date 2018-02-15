@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Domain.Crm.Billing;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
 {

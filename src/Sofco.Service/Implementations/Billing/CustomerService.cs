@@ -16,20 +16,23 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICustomerData customerData;
         private readonly ICrmHttpClient client;
         private readonly CrmConfig crmConfig;
+        private readonly EmailConfig emailConfig;
 
-        public CustomerService(IUnitOfWork unitOfWork, ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
+        public CustomerService(IUnitOfWork unitOfWork, ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailConfig)
         {
             this.unitOfWork = unitOfWork;
             this.customerData = customerData;
             this.client = client;
             this.crmConfig = crmOptions.Value;
+            this.emailConfig = emailConfig.Value;
         }
 
         public IList<CrmCustomer> GetCustomers(string userMail, string identityName)
         {
             var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            var hasCommercialGroup = this.unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
 
-            return customerData.GetCustomers(identityName, userMail, hasDirectorGroup);
+            return customerData.GetCustomers(identityName, userMail, hasDirectorGroup || hasCommercialGroup);
         }
 
         public Response<CrmCustomer> GetCustomerById(string customerId)
@@ -42,7 +45,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                response.Messages.Add(new Message(Resources.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
+                response.AddError(Resources.Billing.Customer.NotFound);
                 return response;
             }
 

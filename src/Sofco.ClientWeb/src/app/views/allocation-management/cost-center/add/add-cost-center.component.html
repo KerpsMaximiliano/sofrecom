@@ -8,9 +8,6 @@
             <li>
                 {{'contracts.title' | translate }}
             </li>
-            <!-- <li>
-                <a [routerLink]="['/contracts/analytics']"> {{ 'allocationManagement.analytics.title' | translate }} </a>
-            </li> -->
             <li class="active">
                 <strong> {{ 'contracts.costCenter.title' | translate }} </strong>
             </li>
@@ -52,7 +49,7 @@
                     </div>
                 </div>
                 <div class="ibox-footer">
-                    <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }} <i class="fa fa-plus"></i> </button>
+                    <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
                     <a class="btn btn-link btn-success text-white" [routerLink]="['/contracts/costCenter']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                 </div>
             </div>

@@ -44,7 +44,8 @@
                         <td>{{ analytic.clientExternalName}}</td>
                         <td>{{ analytic.serviceName}}</td>
                         <td>
-                            <button class="btn btn-primary btn-xs" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT')" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-primary btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANVIW')" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
                             <button class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)"><i class="fa fa-user-plus"></i></button>
                         </td>
                     </tr>

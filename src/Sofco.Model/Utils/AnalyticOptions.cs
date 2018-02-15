@@ -6,7 +6,7 @@ namespace Sofco.Model.Utils
     {
         public IList<Option> Activities { get; set; }
         public IList<Option> Directors { get; set; }
-        public IList<Option> Managers { get; set; }
+        public IList<ListItem<string>> Managers { get; set; }
         public IList<Option> Currencies { get; set; }
         public IList<Option> Solutions { get; set; }
         public IList<Option> Technologies { get; set; }

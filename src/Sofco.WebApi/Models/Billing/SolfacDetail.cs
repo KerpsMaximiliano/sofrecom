@@ -47,6 +47,8 @@ namespace Sofco.WebApi.Models.Billing
             ServiceName = domain.Service;
             Integrator = domain.Integrator;
             IntegratorId = domain.IntegratorId;
+            ManagerId = domain.ManagerId;
+            Manager = domain.Manager;
 
             if (domain.ProjectId.Contains(";"))
             {
@@ -196,6 +198,10 @@ namespace Sofco.WebApi.Models.Billing
 
         public string IntegratorId { get; set; }
 
+        public string Manager { get; set; }
+
+        public string ManagerId { get; set; }
+
         public Model.Models.Billing.Solfac CreateDomain()
         {
             var solfac = new Model.Models.Billing.Solfac();
@@ -230,6 +236,8 @@ namespace Sofco.WebApi.Models.Billing
             solfac.Service = ServiceName;
             solfac.WithTax = WithTax;
             solfac.InvoiceRequired = InvoiceRequired;
+            solfac.ManagerId = ManagerId;
+            solfac.Manager = Manager;
 
             foreach (var hitoViewModel in Hitos)
             {

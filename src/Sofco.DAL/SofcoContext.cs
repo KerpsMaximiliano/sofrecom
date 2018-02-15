@@ -49,6 +49,7 @@ namespace Sofco.DAL
         public DbSet<EmployeeLicense> EmployeeLicenses { get; set; }
         public DbSet<CostCenter> CostCenters { get; set; }
         public DbSet<EmployeeSyncAction> EmployeeSyncActions { get; set; }
+        public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }

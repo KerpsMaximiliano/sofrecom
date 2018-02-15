@@ -29,11 +29,17 @@ export class AddCostCenterComponent implements OnDestroy {
     }
 
     add(){
+        this.messageService.showLoading();
+
         this.addSubscrip = this.costCenterService.add(this.model).subscribe(
             data => {
+              this.messageService.closeLoading();
               if(data.messages) this.messageService.showMessages(data.messages);
               this.router.navigate(['/contracts/costCenter']);
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 }

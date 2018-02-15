@@ -20,8 +20,8 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
+            <div class="col-sm-5">
+                <div class="ibox">
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-md-6" *ngIf="pmoUser">
@@ -39,12 +39,12 @@
                         </div>
                     </div>
                     <div class="ibox-footer">
-                        <a class="btn btn-primary pointer" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></a>
+                        <a class="btn btn-primary pointer btn-sm" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
+            <div class="col-sm-5">
+                <div class="ibox">
                     <div class="ibox-content">
                         <div class="form-group">
                             <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
@@ -54,8 +54,8 @@
                         </div>
                     </div>
                     <div class="ibox-footer">
-                        <a class="btn btn-primary pointer" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
-                        <a class="btn btn-success" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                        <a class="btn btn-primary pointer btn-sm" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
+                        <a class="btn btn-success btn-sm" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                     </div>
                 </div>
             </div>

@@ -31,11 +31,11 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.FunctionalityRepository.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.Admin.Functionality.Enabled : Resources.Admin.Functionality.Disabled, MessageType.Success));
+                response.AddSuccess(active ? Resources.Admin.Functionality.Enabled : Resources.Admin.Functionality.Disabled);
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Functionality.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Functionality.NotFound);
             return response;
         }
 
@@ -59,7 +59,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.Functionality.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.Functionality.NotFound);
             return response;
         }
 

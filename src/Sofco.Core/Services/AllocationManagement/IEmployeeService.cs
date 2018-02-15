@@ -1,5 +1,6 @@
 ﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -9,11 +10,12 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         ICollection<Employee> GetAll();
 
-        Response<Employee> GetById(int id);
+        Response<EmployeeModel> GetById(int id);
 
         Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);
 
         Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
-        Response<EmployeeProfileDto> GetProfile(int id);
+
+        Response<EmployeeProfileModel> GetProfile(int id);
     }
 }

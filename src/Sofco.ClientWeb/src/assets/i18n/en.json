@@ -217,6 +217,7 @@
             "hito": "Milestone",
             "pdfViewer": "PDF Viewer",
             "activity": "Activity",
+            "amount": "Amount",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -311,6 +312,9 @@
         "costCenter": {
             "title": "Cost Center",
             "list": "Cost Center´s List",
+            "edit": {
+                "title": "Edit cost center"
+            },
             "add": {
                 "title": "New cost center",
                 "code": "Code",
@@ -331,6 +335,7 @@
             "allocations": "Allocations",
             "resources": "Resources",
             "percentage": "Percentage",
+            "percentages": "Percentages",
             "startDate": "Start Date",
             "endDate": "End Date",
             "forbidden": "You do not have sufficient permissions to allocate resources",
@@ -351,6 +356,19 @@
                 "percentage": "Percentage"
             }
         },
+        "report": { 
+            "title": "Resource's report",
+            "report": "Report",
+            "includeStaff": "Include Staff",
+            "grid": {
+                "analytic": "Analytic",
+                "employee": "employee",
+                "boss": "Boss",
+                "manager":"Manager",
+                "office": "Office",
+                "billeability": "Billeability (%)"
+            }
+        },
         "resources": {
             "listTitle": "Resources´s List",
             "title": "Resources",
@@ -363,6 +381,7 @@
             "licenses": "Licenses",
             "timeSheet": "Time Sheet",
             "homeOffice": "Home Office",
+            "history": "History",
             "grid": {
                 "name": "Name",
                 "senority": "Seniority",
@@ -392,7 +411,10 @@
             "title": "Analytics",
             "list": "List",
             "new": "New Analytic",
-            "edit": "Edit Analytic",
+            "edit": "Edit",
+            "editTitle": "Edit Analytic",
+            "view": "View",
+            "viewTitle": "View Analytic",
             "assigned": "Analytics Assigned",
             "add": {
                 "title": "Title",
@@ -426,6 +448,11 @@
                 "name": "Name",
                 "client": "Cliet",
                 "commercialManager": "Commercial Manager"
+            },
+            "status": {
+                "open": "Open",
+                "closeForExpenses": "Close for expenses",
+                "close": "Close"
             }
         }
     },

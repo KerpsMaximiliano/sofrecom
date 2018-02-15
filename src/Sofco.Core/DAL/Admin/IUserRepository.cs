@@ -21,5 +21,6 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetDirectors();
         IList<User> GetManagers();
         IList<User> GetSellers(string sellerCode);
+        bool HasComercialGroup(string comercialCode, string email);
     }
 }

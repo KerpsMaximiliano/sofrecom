@@ -217,6 +217,7 @@
             "hito": "Hito",
             "pdfViewer": "Visualización de PDF",
             "activity": "Actividad",
+            "amount": "Monto",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -311,6 +312,9 @@
         "costCenter": {
             "title": "Centro de Costos",
             "list": "Listado de centro de costos",
+            "edit": {
+                "title": "Editar centro de costos"
+            },
             "add": {
                 "title": "Nuevo centro de costos",
                 "code": "Código",
@@ -331,6 +335,7 @@
             "allocations": "Asignaciones",
             "resources": "Recursos",
             "percentage": "Porcentaje",
+            "percentages": "Porcentajes",
             "startDate": "Fecha Inicio",
             "endDate": "Fecha Fin",
             "forbidden": "No tiene los permisos suficientes para asignar recursos",
@@ -351,6 +356,19 @@
                 "percentage": "Porcentaje"
             }
         },
+        "report": { 
+            "title": "Reporte de Recursos",
+            "report": "Reporte",
+            "includeStaff": "Incluir Staff",
+            "grid": {
+                "analytic": "Analítica",
+                "employee": "Empleado",
+                "boss": "Superior",
+                "manager":"Gerente",
+                "office": "Dirección",
+                "billeability": "Facturabilidad (%)"
+            }
+        },
         "resources": {
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
@@ -364,6 +382,7 @@
             "licenses": "Licencias",
             "timeSheet": "Carga de Horas",
             "homeOffice": "Home Office",
+            "history": "Historial",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
@@ -393,7 +412,10 @@
             "title": "Analiticas",
             "list": "Listado",
             "new": "Alta de Analitica",
-            "edit": "Editar Analitica",
+            "edit": "Editar",
+            "editTitle": "Editar Analitica",
+            "view": "Ver",
+            "viewTitle": "Ver Analitica",
             "assigned": "Analíticas Asignadas",
             "add": {
                 "title": "Titulo",
@@ -427,6 +449,11 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Manager Comercial"
+            },
+            "status": {
+                "open": "Abierta",
+                "closeForExpenses": "Cerrada para costos",
+                "close": "Cerrada"
             }
         },
         "confirmBody": "Esta seguro que desea seguir con la acción de "
@@ -462,8 +489,8 @@
         "confirmBody": "¿Esta seguro que desea confirmar la acción?",
         "confirmDelete": "Confirmación de baja",
         "confirmAdd": "Confirmación de alta",
-        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
-        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "areYouSureConfirmAdd": "¿Está seguro de dar de alta?",
+        "areYouSureConfirmDelete": "¿Está seguro de dar de baja?",
         "clone": "Clonar",
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",

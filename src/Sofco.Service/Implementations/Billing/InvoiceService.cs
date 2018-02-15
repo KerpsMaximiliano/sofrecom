@@ -295,8 +295,9 @@ namespace Sofco.Service.Implementations.Billing
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
             var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail, emailConfig.DafCode);
             var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
+            var isComercial = unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
 
-            if (isDirector || isDaf || isCdg)
+            if (isDirector || isDaf || isCdg || isComercial)
             {
                 return unitOfWork.InvoiceRepository.SearchByParams(parameters);
             }

@@ -62,10 +62,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = invoiceService.Add(domain, User.Identity.Name);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("project/{projectId}")]
@@ -240,10 +237,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = invoiceService.Delete(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -252,10 +246,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = invoiceService.ChangeStatus(id, model.Status, emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber, UserId = model.UserId });
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -288,10 +279,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = invoiceService.Clone(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}/histories")]

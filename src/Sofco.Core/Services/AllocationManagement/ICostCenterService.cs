@@ -9,5 +9,8 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         Response Add(CostCenter domain);
         ICollection<CostCenter> GetAll();
+        Response Active(int id, bool active);
+        Response<CostCenter> GetById(int id);
+        Response Edit(int id, string description);
     }
 }

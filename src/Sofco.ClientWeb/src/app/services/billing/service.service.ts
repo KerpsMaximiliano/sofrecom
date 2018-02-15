@@ -19,4 +19,8 @@ export class ServiceService {
   getOptions(customerId) {  
     return this.http.get(`${this.baseUrl}/services/${customerId}/options`).map((res:Response) => res.json());
   }
+
+  getById(customerId, serviceId) {
+    return this.http.get(`${this.baseUrl}/services/${serviceId}/account/${customerId}`).map((res:Response) => res.json()); 
+  }
 }

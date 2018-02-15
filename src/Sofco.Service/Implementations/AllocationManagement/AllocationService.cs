@@ -8,6 +8,8 @@ using Sofco.Model.Enums;
 using Sofco.Framework.Helpers;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -15,10 +17,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
     public class AllocationService : IAllocationService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<AllocationService> logger;
 
-        public AllocationService(IUnitOfWork unitOfWork)
+        public AllocationService(IUnitOfWork unitOfWork, ILogMailer<AllocationService> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -37,7 +41,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 
-            if(allocationsBetweenDays.Count > 0)
+            if (allocationsBetweenDays.Count > 0)
             {
                 AllocationValidationHelper.ValidatePercentageRange(response, allocationsBetweenDays, allocation);
 
@@ -123,6 +127,64 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.AllocationRepository.GetByService(serviceId);
         }
 
+        public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
+        {
+            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
+
+            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
+
+            parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
+            parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
+
+            if (employees.Any())
+            {
+                foreach (var employee in employees)
+                {
+                    var allocationResponse = GetAllocationsBetweenDays(employee.Id, parameters.StartDate, parameters.EndDate);
+
+                    foreach (var allocation in allocationResponse.Allocations)
+                    {
+
+                        if (parameters.AnalyticId.HasValue && parameters.AnalyticId != allocation.AnalyticId) continue;
+                        if (parameters.Percentage.HasValue && parameters.Percentage != 999 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
+                        if (parameters.Percentage.HasValue && parameters.Percentage == 999 && allocation.Months.All(x => x.Percentage == 100)) continue;
+
+                        var reportRow = new AllocationReportRow();
+
+                        reportRow.Manager = "Diego O. Miguel";
+                        reportRow.Office = "Dirección de Soluciones IT";
+                        reportRow.Percentage = employee.BillingPercentage;
+                        reportRow.ProjectManager = "Juan J. Larenze";
+                        reportRow.Profile = employee.Profile;
+                        reportRow.ResourceName = employee.Name;
+                        reportRow.Seniority = employee.Seniority;
+                        reportRow.Technology = employee.Technology;
+                        reportRow.Analytic = allocation.AnalyticTitle;
+
+                        for (int i = 0; i < allocation.Months.Count; i++)
+                        {
+                            reportRow.Months.Add(new AllocationMonthReport { MonthYear = allocationResponse.MonthsHeader[i].Display, Percentage = allocation.Months[i].Percentage.GetValueOrDefault() });
+                        }
+
+                        response.Data.Rows.Add(reportRow);
+                    }
+                }
+
+                response.Data.MonthsHeader = response.Data.Rows.FirstOrDefault()?.Months.Select(x => x.MonthYear).ToList();
+            }
+            else
+            {
+                response.AddWarning(Resources.AllocationManagement.Employee.EmployeesNotFound);
+            }
+
+            return response;
+        }
+
+        public IList<decimal> GetAllPercentages()
+        {
+            return unitOfWork.AllocationRepository.GetAllPercentages();
+        }
+
         private void SaveAllocation(AllocationDto allocationDto, Response response)
         {
             try
@@ -158,11 +220,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 unitOfWork.Save();
 
-                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.Added, MessageType.Success));
+                response.AddSuccess(Resources.AllocationManagement.Allocation.Added);
             }
             catch (Exception ex)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(ex);
             }
         }
     }

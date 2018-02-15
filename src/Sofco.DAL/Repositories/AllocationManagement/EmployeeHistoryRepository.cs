@@ -1,4 +1,6 @@
-﻿using Sofco.Core.DAL.AllocationManagement;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -15,6 +17,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             Insert(employeeHistory);
 
             context.SaveChanges();
+        }
+
+        public List<EmployeeHistory> GetByEmployeeNumber(string employeeNumber)
+        {
+            return context.EmployeeHistory
+                .Where(s => employeeNumber.Contains(s.EmployeeNumber))
+                .ToList();
         }
     }
 }

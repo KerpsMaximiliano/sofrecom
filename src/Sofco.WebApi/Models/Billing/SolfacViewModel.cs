@@ -108,6 +108,10 @@ namespace Sofco.WebApi.Models.Billing
 
         public string IntegratorId { get; set; }
 
+        public string Manager { get; set; }
+
+        public string ManagerId { get; set; }
+
         public Solfac CreateDomain()
         {
             var solfac = new Solfac();
@@ -143,6 +147,8 @@ namespace Sofco.WebApi.Models.Billing
             solfac.InvoiceRequired = Remito;
             solfac.Integrator = Integrator;
             solfac.IntegratorId = IntegratorId;
+            solfac.Manager = Manager;
+            solfac.ManagerId = ManagerId;
 
             foreach (var hitoViewModel in Hitos)
             {

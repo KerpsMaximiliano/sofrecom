@@ -42,6 +42,9 @@ import { EditAnalyticComponent } from 'app/views/allocation-management/analytics
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
+import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
+import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
+import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -120,20 +123,23 @@ export const ROUTES:Routes = [
       children: [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
-        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
+        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {
         path: "costCenter",
         children: [
           { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } },
+          { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
         ]
       }]
   },
   {
     path: 'allocationManagement', component: BasicLayoutComponent,
     children: [
+      { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
       {
         path: "resources", 
         children: [

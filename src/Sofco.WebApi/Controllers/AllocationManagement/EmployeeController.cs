@@ -29,15 +29,22 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("options")]
+        public IActionResult GetOptions()
+        {
+            var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
+
+            options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
+
+            return Ok(options);
+        }
+
         [HttpGet("{id}/profile")]
         public IActionResult GetProfile(int id)
         {
             var response = employeeService.GetProfile(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}")]
@@ -45,10 +52,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = employeeService.GetById(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(new EmployeeViewModel(response.Data));
+            return this.CreateResponse(response);
         }
 
         [HttpPost("search")]
@@ -63,7 +67,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
                     Messages = searchResponse.Messages
                 };
 
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]
@@ -73,9 +77,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
     }
 }

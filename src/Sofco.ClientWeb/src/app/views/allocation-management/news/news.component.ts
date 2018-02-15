@@ -36,7 +36,8 @@ export class NewsComponent implements OnInit, OnDestroy {
         true,
         true,
         "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
+        "ACTIONS.cancel",
+        false
     );
 
     constructor(private employeeService: EmployeeService,
@@ -73,7 +74,8 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.cancel;
-        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.annulment') +" "+ this.i18nService.translateByKey(news.status)
+        let statusText = news.isReincorporation ? "Reincorporation" : news.status;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.annulment') +" "+ this.i18nService.translateByKey(statusText)
     }
 
     showConfirmAdd(news, index){
@@ -81,7 +83,8 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
-        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
+        let statusText = news.isReincorporation ? "Reincorporation" : news.status;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(statusText)
     }
 
     showConfirmDelete(news, index){

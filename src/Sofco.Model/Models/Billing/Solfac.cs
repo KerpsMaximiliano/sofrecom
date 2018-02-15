@@ -80,5 +80,9 @@ namespace Sofco.Model.Models.Billing
         public string Integrator { get; set; }
 
         public string IntegratorId { get; set; }
+
+        public string Manager { get; set; }
+
+        public string ManagerId { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Sofco.Model.DTO
         public string ProjectId { get; set; }
         public string Analytic { get; set; }
         public SolfacStatus Status { get; set; }
-        public int UserApplicantId { get; set; }
+        public string ManagerId { get; set; }
         public DateTime? DateSince { get; set; }
         public DateTime? DateTo { get; set; }
     }

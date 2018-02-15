@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.DAL;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -19,6 +20,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<IAllocationRepository> allocationRepositoryMock;
         private Mock<IAnalyticRepository> analyticRepositoryMock;
         private Mock<IEmployeeRepository> employeeRepositoryMock;
+        private Mock<ILogMailer<AllocationService>> loggerMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -35,11 +37,13 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             unitOfWork = new Mock<IUnitOfWork>();
 
+            loggerMock = new Mock<ILogMailer<AllocationService>>();
+
             unitOfWork.Setup(x => x.AllocationRepository).Returns(allocationRepositoryMock.Object);
             unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
 
-            sut = new AllocationService(unitOfWork.Object);
+            sut = new AllocationService(unitOfWork.Object, loggerMock.Object);
         }
 
         [TestCase]
