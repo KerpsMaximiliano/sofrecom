@@ -81,6 +81,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Select(x => x.Percentage).Distinct().ToList();
         }
 
+        public void RemoveAllocationByAnalytic(int analyticId, DateTime today)
+        {
+            var allocations = context.Allocations.Where(x => x.AnalyticId == analyticId && x.StartDate.Date > today.Date);
+            context.Allocations.RemoveRange(allocations);
+        }
+
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;

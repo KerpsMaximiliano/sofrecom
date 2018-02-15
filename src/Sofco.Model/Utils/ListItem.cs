@@ -2,8 +2,10 @@
 {
     public class ListItem<T> where T : class 
     {
-        public T Id { get; set; }
+        public int Id { get; set; }
 
         public string Text { get; set; }
+
+        public T ExtraValue { get; set; }
     }
 }

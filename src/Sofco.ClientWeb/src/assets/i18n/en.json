@@ -447,7 +447,8 @@
                 "title": "Title",
                 "name": "Name",
                 "client": "Cliet",
-                "commercialManager": "Commercial Manager"
+                "commercialManager": "Commercial Manager",
+                "status": "Status"
             },
             "status": {
                 "open": "Open",

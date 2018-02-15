@@ -45,7 +45,16 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
                 this.options = data;
-                this.model.managerId = service.managerId;                
+
+                if(this.mode == 'new'){
+                    var manager = this.options.managers.filter(element => {
+                        element.extraValue = service.managerId;
+                    });
+    
+                    if(manager && manager.length > 0){
+                        this.model.managerId = manager[0].id;  
+                    }
+                }
             },
             err => this.errorHandlerService.handleErrors(err));
 

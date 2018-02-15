@@ -16,5 +16,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Allocation> GetByEmployee(int id);
         ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
         IList<decimal> GetAllPercentages();
+        void RemoveAllocationByAnalytic(int analyticId, DateTime today);
     }
 }

@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
 import { I18nService } from "../../../../services/common/i18n.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -18,6 +19,18 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    public isLoading: boolean = false;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -61,11 +74,18 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     close(){
+        this.isLoading = true;
+
         this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+            this.isLoading = false;
+            this.confirmModal.hide();
             if(response.messages) this.messageService.showMessages(response.messages);
             this.form.model.status = 2;
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.errorHandlerService.handleErrors(err);
+            this.isLoading = false;
+        });
     }
 
     getStatus(){
