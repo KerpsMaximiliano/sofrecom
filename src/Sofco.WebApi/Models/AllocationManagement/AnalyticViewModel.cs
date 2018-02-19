@@ -46,6 +46,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             UsersQv = domain.UsersQv;
             CostCenterId = domain.CostCenterId;
             Status = domain.Status;
+            CreationDate = domain.CreationDate;
         }
 
         public string Title { get; set; }

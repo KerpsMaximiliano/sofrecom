@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
@@ -14,6 +15,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
             ServiceName = domain.Service;
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
+            Status = domain.Status;
         }
 
         public int Id { get; private set; }
@@ -23,6 +25,8 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Title { get; private set; }
 
         public string ServiceName { get; private set; }
+
+        public AnalyticStatus Status { get; set; }
 
         public string ClientExternalName { get; private set; }
 

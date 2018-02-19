@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CloseAnalytic" xml:space="preserve">
-    <value>Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;,del servicio {1} &lt;/br&gt;&lt;/br&gt;
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt; &lt;/br&gt;&lt;/br&gt;
 Saludos</value>
   </data>
   <data name="EmployeeEndNotification" xml:space="preserve">

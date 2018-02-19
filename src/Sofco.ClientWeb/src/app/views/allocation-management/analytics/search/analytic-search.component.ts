@@ -6,6 +6,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
+import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'analytic-search',
@@ -25,6 +26,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
+                private i18nService: I18nService,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
@@ -65,5 +67,13 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     goToAdd(){
         sessionStorage.setItem('analyticWithProject', 'no');
         this.router.navigate(['/contracts/analytics/new']);
+    }
+
+    getStatus(analytic){
+        switch(analytic.status){
+            case 1: return this.i18nService.translateByKey("allocationManagement.analytics.status.open");
+            case 2: return this.i18nService.translateByKey("allocationManagement.analytics.status.close");
+            case 3: return this.i18nService.translateByKey("allocationManagement.analytics.status.closeForExpenses");
+        }
     }
 }

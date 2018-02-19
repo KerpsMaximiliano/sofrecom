@@ -15,5 +15,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<string> GetNewTitle(int costCenterId);
         Response<Analytic> Update(Analytic domain);
         Response Close(int analyticId);
+        ICollection<Analytic> GetAllActives();
     }
 }

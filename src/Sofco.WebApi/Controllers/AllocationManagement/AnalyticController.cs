@@ -34,7 +34,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
 
-            options.AddRange(analyticService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }));
+            options.AddRange(analyticService.GetAllActives().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }));
 
             return Ok(options);
         }

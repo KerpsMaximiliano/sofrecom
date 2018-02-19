@@ -60,7 +60,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;,del servicio {1} &lt;/br&gt;&lt;/br&gt;
+        ///    Looks up a localized string similar to Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt; &lt;/br&gt;&lt;/br&gt;
         ///Saludos.
         /// </summary>
         public static string CloseAnalytic {

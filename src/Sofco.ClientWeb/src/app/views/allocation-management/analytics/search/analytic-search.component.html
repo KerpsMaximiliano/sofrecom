@@ -34,6 +34,7 @@
                         <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
+                        <th>{{ 'allocationManagement.analytics.grid.status' | translate }}</th>
                         <th>{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
@@ -43,10 +44,11 @@
                         <td>{{ analytic.name}}</td>
                         <td>{{ analytic.clientExternalName}}</td>
                         <td>{{ analytic.serviceName}}</td>
+                        <td><label class="label" [ngClass]="(analytic.status) == 1 ? 'label-primary':'label-success'">{{ getStatus(analytic) }}</label></td>
                         <td>
-                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT')" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic.status == 1" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
                             <button class="btn btn-primary btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANVIW')" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
-                            <button class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)"><i class="fa fa-user-plus"></i></button>
+                            <button class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)" *ngIf="analytic.status == 1"><i class="fa fa-user-plus"></i></button>
                         </td>
                     </tr>
                 </tbody>

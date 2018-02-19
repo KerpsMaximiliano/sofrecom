@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Config;
+﻿using System;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Framework.MailData;
@@ -12,8 +13,11 @@ namespace Sofco.Framework.StatusHandlers.Analytic
     {
         public static void Save(Model.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response)
         {
+            unitOfWork.AllocationRepository.RemoveAllocationByAnalytic(analytic.Id, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
+
             analytic.Status = AnalyticStatus.Close;
             unitOfWork.AnalyticRepository.Close(analytic);
+
             unitOfWork.Save();
 
             response.AddSuccess(Resources.AllocationManagement.Analytic.CloseSuccess);
