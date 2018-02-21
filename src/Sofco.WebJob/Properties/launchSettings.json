@@ -16,15 +16,23 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express - azsof01wd": {
+    "azsof01wd-dev": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "panel",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "azsof01wd"
+        "ASPNETCORE_ENVIRONMENT": "azsof01wd-dev"
       }
     },
-    "IIS Express - frosales": {
+    "azsof01wd-qa": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "panel",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "azsof01wd-qa"
+      }
+    },
+    "frosales": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "panel",
@@ -32,7 +40,7 @@
         "ASPNETCORE_ENVIRONMENT": "frosales"
       }
     },
-    "IIS Express - azgap01wp - Prod": {
+    "azgap01wp-Prod": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "panel",
