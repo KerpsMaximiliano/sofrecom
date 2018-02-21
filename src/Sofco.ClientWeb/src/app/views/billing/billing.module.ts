@@ -53,6 +53,12 @@ import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rig
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { HitosByProjectComponent } from 'app/views/billing/projects/bill-multiple-projects/hitos-by-project/hitos-by-project.component';
 import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-account-control/solfac-account-control.component';
+import { NewPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/add/add-purchaseOrder.component';
+import { PurchaseOrderFormComponent } from 'app/views/billing/purchaseOrder/form/purchaseOrder-form.component';
+import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
+import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
+import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -61,14 +67,15 @@ import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-a
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
-                 BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent],
+                 BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
 
-  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService],
+  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService],
   
   exports     : []
 })
 
-export class BillingModule {}
+export class BillingModule {} 

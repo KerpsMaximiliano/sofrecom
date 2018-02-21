@@ -172,6 +172,27 @@
             "edit": "Edit Milestone",
             "add": "Add Milestone"
         },
+        "purchaseOrder": {
+            "addTitle": "New Purchase Order",
+            "editTitle":"Edit Purchase Order",
+            "searchTitle": "Search Purchase Order",
+            "title": "Purchase's Orders",
+            "add": "New",
+            "edit": "Edit", 
+            "search": "Search",
+            "parameters": "Search Parameters",
+            "noOrdersFound": "There are no purchase orders loaded",
+            "fields": {
+                "title": "Title",
+                "number": "Numer",
+                "client": "Client",
+                "receptionDate": "Reception Date",
+                "year": "Year",
+                "area": "Area",
+                "status": "Status",
+                "analytic": "Analytic" 
+            }
+        },
         "solfac":{
             "title": "Invoice Request",
             "new": "New",
@@ -534,6 +555,8 @@
     "New": "New",
     "Delete": "Deleted",
     "Reincorporation": "Reincoporation",
+    "Valid": "Valid",
+    "Consumed": "Consumed",
     "report":{
         "title": "Report",
         "solfacs": {

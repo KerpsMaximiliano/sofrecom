@@ -45,6 +45,10 @@ import { ResourceDetailComponent } from 'app/views/allocation-management/resourc
 import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
 import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
 import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
+import { NewPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/add/add-purchaseOrder.component';
+import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
+import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
+import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -92,6 +96,7 @@ export const ROUTES:Routes = [
         { path:":customerId/services", children: [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
+          { path: ":serviceId/purchaseOrders", component: PurchaseOrdersByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/projects", children: [
             { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },
             { path: "billMultiple", component: BillMultipleProjectsComponent, canActivate: [AuthGuard] },
@@ -107,6 +112,13 @@ export const ROUTES:Routes = [
          { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
          { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
       ]},
+
+      { path: "purchaseOrders",
+          children: [
+          { path: "", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
+          { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+          { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+        ]},
 
       { path: "invoice",
         children: [

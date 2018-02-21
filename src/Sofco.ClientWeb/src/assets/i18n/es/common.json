@@ -14,5 +14,6 @@
     "exportFileError": "Ocurrio un error al exportar el archivo",
     "fileNotFound": "Archivo no encontrado",
     "saveFileError": "Ocurrio un error al guardar el archivo",
-    "mailSent": "El Email fue enviado correctamente"
+    "mailSent": "El Email fue enviado correctamente",
+    "fileDeleted": "Archivo eliminado correctamente"
 }

@@ -28,4 +28,10 @@ export class ProjectRightBarComponent {
     var serviceId = sessionStorage.getItem('serviceId');
     this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/resources`]);
   }
+
+  goToPurchaseOrders(){
+    var customerId = sessionStorage.getItem('customerId');
+    var serviceId = sessionStorage.getItem('serviceId');
+    this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/purchaseOrders`]);
+  }
 }

@@ -1,0 +1,53 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.purchaseOrder.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                <a [routerLink]="['/billing/customers/']">{{'billing.customer.title' | translate }}</a>
+            </li>
+            <li>
+                <a>{{customerName}}</a>
+            </li>
+            <li>
+                <a (click)="goToServices()">{{'billing.service.title' | translate }}</a>
+            </li>
+            <li>
+                <a (click)="goToProjects()">{{serviceName}}</a>
+            </li>
+            <li class="active">
+                <strong>{{'billing.purchaseOrder.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="alert alert-info" *ngIf="purchaseOrders && purchaseOrders.length == 0">
+        {{'billing.purchaseOrder.noOrdersFound' | translate }}
+    </div>
+
+    <div class="row" *ngIf="purchaseOrders && purchaseOrders.length > 0">
+        <div class="col-sm-12" >
+            <div class="file-box" *ngFor="let item of purchaseOrders">
+                <div class="file">
+                    <div class="icon"><i class="fa fa-file"></i></div>
+                    <div class="file-name text-word-break">
+                        {{ item.fileName }} 
+                        <br>
+                        <small>{{'billing.invoice.createdAt' | translate }}: {{ item.creationDate }}</small>
+                    </div>
+                    <div class="file-name export-file text-center pointer" (click)="exportExcel(item)">
+                        <i class="fa fa-download"></i>
+                        {{ 'ACTIONS.export' | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

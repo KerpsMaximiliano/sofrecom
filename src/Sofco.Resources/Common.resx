@@ -126,6 +126,9 @@
   <data name="ExportFileError" xml:space="preserve">
     <value>common.exportFileError</value>
   </data>
+  <data name="FileDeleted" xml:space="preserve">
+    <value>common.fileDeleted</value>
+  </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>common.fileNotFound</value>
   </data>

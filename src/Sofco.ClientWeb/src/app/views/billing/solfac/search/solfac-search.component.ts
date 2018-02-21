@@ -27,7 +27,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public customers: Option[] = new Array<Option>();
     public services: Option[] = new Array<Option>();
     public projects: Option[] = new Array<Option>();
-    public userApplicants: Option[] = new Array<Option>();
+    public userApplicants: any[] = new Array();
     public statuses: Option[] = new Array<Option>();
 
     customerId: string = "0";
@@ -175,10 +175,20 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
         this.messageService.showLoading();
 
+        let managerId = "";
+        if(this.userApplicantId != '0'){
+            let manager = this.userApplicants.filter(item => item.value == this.userApplicantId);
+
+            if(manager && manager.length > 0){
+                managerId = manager[0].externalId;
+            }
+        }
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
             projectId: this.projectId,
+            managerId: managerId,
             userApplicantId: this.userApplicantId,
             analytic: this.analytic,
             status: this.status,

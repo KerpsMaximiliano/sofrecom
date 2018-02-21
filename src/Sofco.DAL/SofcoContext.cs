@@ -2,12 +2,14 @@
 using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
+using Sofco.DAL.Mappings.Common;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.Common;
 
 namespace Sofco.DAL
 {
@@ -40,6 +42,7 @@ namespace Sofco.DAL
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
+        public DbSet<Model.Models.Billing.PurchaseOrder> PurchaseOrderFiles { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -50,6 +53,9 @@ namespace Sofco.DAL
         public DbSet<CostCenter> CostCenters { get; set; }
         public DbSet<EmployeeSyncAction> EmployeeSyncActions { get; set; }
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
+
+        // Common
+        public DbSet<File> Files { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -63,7 +69,7 @@ namespace Sofco.DAL
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
-        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<Model.Utils.PurchaseOrder> PurchaseOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -91,6 +97,8 @@ namespace Sofco.DAL
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
             builder.MapEmployeeHistoryMapping();
+            builder.MapFile();
+            builder.MapPurchaseOrder();
         }
     }
 }
