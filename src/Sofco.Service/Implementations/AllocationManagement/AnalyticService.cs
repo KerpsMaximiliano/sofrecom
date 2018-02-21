@@ -129,7 +129,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 response.AddError(Resources.Common.ErrorSave);
             }
 
-            await UpdateAnalyticOnCrm(response, analytic.Title, analytic.ServiceId);
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+            {
+                await UpdateAnalyticOnCrm(response, analytic.Title, analytic.ServiceId);
+            }
+            
             SendMail(analytic, response);
 
             return response;
