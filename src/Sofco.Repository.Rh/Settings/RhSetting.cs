@@ -9,7 +9,5 @@ namespace Sofco.Repository.Rh.Settings
         public string TigerSchema { get; set; }
 
         public string RhproSchema { get; set; }
-
-        public string TigerEmployeeTable { get; set; }
     }
 }

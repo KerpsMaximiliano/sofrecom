@@ -113,7 +113,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<EmployeeProfileModel> GetProfile(int id)
         {
-            var response = new Response<EmployeeProfileModel> { Data = new EmployeeProfileModel() };
+            var response = new Response<EmployeeProfileModel>();
 
             var employee = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
 
@@ -123,21 +123,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var analitycs = employeeAllocations.Select(x => x.Analytic).Distinct();
 
-            response.Data.Id = employee.Id;
-            response.Data.EmployeeNumber = employee.EmployeeNumber;
-            response.Data.Manager = "Diego O. Miguel";
-            response.Data.Name = employee.Name;
-            response.Data.Office = "Reconquista";
-            response.Data.Percentage = employee.BillingPercentage;
-            response.Data.Profile = employee.Profile;
-            response.Data.Seniority = employee.Seniority;
-            response.Data.Technology = employee.Technology;
+            var model = TranslateToProfile(employee);
 
             foreach (var analityc in analitycs)
             {
                 var firstAllocation = analityc.Allocations.FirstOrDefault();
 
-                response.Data.Allocations.Add(new EmployeeAllocationModel
+                model.Allocations.Add(new EmployeeAllocationModel
                 {
                     Title = analityc.Title,
                     Name = analityc.Name,
@@ -148,8 +140,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 });
             }
 
-            response.Data.History =
+            model.History =
                 Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));
+
+            model.HealthInsurance = unitOfWork.HealthInsuranceRepository.GetByCode(employee.HealthInsuranceCode);
+
+            model.PrepaidHealth = unitOfWork.PrepaidHealthRepository.GetByCode(employee.HealthInsuranceCode, employee.PrepaidHealthCode);
+
+            response.Data = model;
 
             return response;
         }
@@ -157,6 +155,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private List<EmployeeHistoryModel> Translate(List<EmployeeHistory> employeeHistories)
         {
             return mapper.Map<List<EmployeeHistory>, List<EmployeeHistoryModel>>(employeeHistories);
+        }
+
+        private EmployeeProfileModel TranslateToProfile(Employee employee)
+        {
+            return mapper.Map<Employee, EmployeeProfileModel>(employee);
         }
     }
 }

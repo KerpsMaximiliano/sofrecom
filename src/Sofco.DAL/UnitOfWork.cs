@@ -48,6 +48,8 @@ namespace Sofco.DAL
         private ILicenseTypeRepository licenseTypeRepository;
         private IEmployeeSyncActionRepository employeeSyncActionRepository;
         private IEmployeeHistoryRepository employeeHistoryRepository;
+        private IHealthInsuranceRepository healthInsuranceRepository;
+        private IPrepaidHealthRepository prepaidHealthRepository;
 
         #endregion
 
@@ -98,6 +100,12 @@ namespace Sofco.DAL
 
         public IEmployeeHistoryRepository EmployeeHistoryRepository =>
             employeeHistoryRepository ?? (employeeHistoryRepository = new EmployeeHistoryRepository(context));
+
+        public IHealthInsuranceRepository HealthInsuranceRepository =>
+            healthInsuranceRepository ?? (healthInsuranceRepository = new HealthInsuranceRepository(context));
+
+        public IPrepaidHealthRepository PrepaidHealthRepository =>
+            prepaidHealthRepository ?? (prepaidHealthRepository = new PrepaidHealthRepository(context));
 
         #endregion
 

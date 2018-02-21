@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL.Mappings.AllocationManagement
@@ -14,6 +15,10 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.Seniority).HasMaxLength(100);
             builder.Entity<Employee>().Property(x => x.Technology).HasMaxLength(300);
             builder.Entity<Employee>().Property(x => x.CreatedByUser).HasMaxLength(50);
+            builder.Entity<Employee>().Property(x => x.Address).HasMaxLength(400);
+            builder.Entity<Employee>().Property(x => x.Location).HasMaxLength(200);
+            builder.Entity<Employee>().Property(x => x.Province).HasMaxLength(200);
+            builder.Entity<Employee>().Property(x => x.Country).HasMaxLength(200);
         }
     }
 }
