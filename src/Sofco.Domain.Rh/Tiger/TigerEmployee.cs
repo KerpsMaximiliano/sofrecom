@@ -35,5 +35,7 @@ namespace Sofco.Domain.Rh.Tiger
         public int Obsoc { get; set; }
 
         public int Ospla { get; set; }
+
+        public string OfficeAddress { get; set; }
     }
 }

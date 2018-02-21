@@ -43,5 +43,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public int HealthInsuranceCode { get; set; }
 
         public int PrepaidHealthCode { get; set; }
+
+        public string OfficeAddress { get; set; }
     }
 }
