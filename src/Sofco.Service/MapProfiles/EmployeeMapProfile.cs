@@ -61,8 +61,6 @@ namespace Sofco.Service.MapProfiles
                 });
 
             CreateMap<Employee, EmployeeProfileModel>()
-                .ForMember(d => d.Manager, s => s.ResolveUsing(x => "Diego O. Miguel"))
-                .ForMember(d => d.Office, s => s.ResolveUsing(x => "Reconquista"))
                 .ForMember(d => d.Percentage, s => s.MapFrom(x => x.BillingPercentage));
         }
 

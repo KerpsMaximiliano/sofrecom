@@ -30,7 +30,8 @@ SELECT
 	a001.obsoc,
 	tb031.dobso,
 	a001.ospla,
-	tb032.dospl
+	tb032.dospl,
+    tb012.domif as officeaddress
 FROM
 	a001 
 	LEFT JOIN a051 ON a001.empre = a051.empre AND a001.legaj = a051.legaj 
@@ -40,6 +41,7 @@ FROM
     LEFT JOIN tb021 ON a001.prov = tb021.prov
 	LEFT JOIN tb031 ON a001.obsoc = tb031.obsoc
 	LEFT JOIN tb032 ON a001.ospla = tb032.ospla AND a001.obsoc = tb032.obsoc
+	LEFT JOIN tb012 ON a001.empre = tb012.empre AND a001.flial = tb012.flial
 ";
 
         private DbSet<TigerEmployee> TigerEmployeeSet { get; }

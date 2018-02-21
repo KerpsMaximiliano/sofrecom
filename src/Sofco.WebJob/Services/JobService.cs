@@ -13,7 +13,7 @@ namespace Sofco.WebJob.Services
 
         private const string AzureJobName = "UpdateAzureUsers";
 
-        private const string TigerHealthInsuranceJobName = "TigerHealthInsurance"; 
+        private const string TigerHealthInsuranceJobName = "TigerHealthInsurance";
 
         public static void Init(string timeZoneName)
         {

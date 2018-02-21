@@ -24,7 +24,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public decimal Percentage { get; set; }
 
-        public string Office { get; set; }
+        public string OfficeAddress { get; set; }
 
         public string Manager { get; set; }
 
