@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL.Mappings.AllocationManagement

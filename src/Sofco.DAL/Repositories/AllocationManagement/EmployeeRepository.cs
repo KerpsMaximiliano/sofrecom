@@ -96,6 +96,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.Profile = data.Profile;
             storedData.Technology = data.Technology;
             storedData.Seniority = storedData.Seniority;
+            storedData.Address = storedData.Address;
+            storedData.Location = storedData.Location;
+            storedData.Province = storedData.Province;
+            storedData.Country = storedData.Country;
+            storedData.HealthInsuranceCode = storedData.HealthInsuranceCode;
+            storedData.PrepaidHealthCode = storedData.PrepaidHealthCode;
 
             Update(storedData);
         }

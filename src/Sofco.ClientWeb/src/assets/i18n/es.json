@@ -383,6 +383,12 @@
             "timeSheet": "Carga de Horas",
             "homeOffice": "Home Office",
             "history": "Historial",
+            "address": "Dirección",
+            "location": "Localidad/Barrio",
+            "province": "Estado/Provincia",
+            "healtInsurance": "Obra social",
+            "prepaidHealth": "Plan",
+            "prepaidHealthAmount": "Valor",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",

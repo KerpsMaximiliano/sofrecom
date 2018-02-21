@@ -33,6 +33,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public PrepaidHealth GetByCode(int healthInsuranceCode, int prepaidHealthCode)
+        {
+            return context.PrepaidHealths
+                .FirstOrDefault(s => s.HealthInsuranceCode == healthInsuranceCode
+                                     && s.PrepaidHealthCode == prepaidHealthCode);
+        }
+
         private PrepaidHealth GetItemToUpdate(List<PrepaidHealth> storedItems, PrepaidHealth item)
         {
             return storedItems.FirstOrDefault(s =>

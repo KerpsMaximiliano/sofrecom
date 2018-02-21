@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Sofco.Common.Domains;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -13,8 +14,10 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public int Amount { get; set; }
 
+        [JsonIgnore]
         public DateTime? Created { get; set; }
 
+        [JsonIgnore]
         public DateTime? Modified { get; set; }
     }
 }

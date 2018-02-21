@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
 {
@@ -30,5 +31,17 @@ namespace Sofco.Core.Models.AllocationManagement
         public IList<EmployeeAllocationModel> Allocations { get; set; }
 
         public IList<EmployeeHistoryModel> History { get; set; }
+
+        public string Address { get; set; }
+
+        public string Location { get; set; }
+
+        public string Province { get; set; }
+
+        public string Country { get; set; }
+
+        public HealthInsurance HealthInsurance { get; set; }
+
+        public PrepaidHealth PrepaidHealth { get; set; }
     }
 }

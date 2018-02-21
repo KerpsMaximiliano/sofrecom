@@ -36,6 +36,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public HealthInsurance GetByCode(int code)
+        {
+            return context.HealthInsurances.FirstOrDefault(s => s.Code == code);
+        }
+
         private List<HealthInsurance> GetByCode(int[] codes)
         {
             return context.HealthInsurances
