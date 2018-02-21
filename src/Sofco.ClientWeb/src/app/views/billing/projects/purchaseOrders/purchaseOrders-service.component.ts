@@ -62,7 +62,7 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
       });
     }
 
-    goToProjects(project){
+    goToProjects(){
       sessionStorage.setItem("customerId", this.customerId);
       sessionStorage.setItem("serviceId", this.serviceId);
       
