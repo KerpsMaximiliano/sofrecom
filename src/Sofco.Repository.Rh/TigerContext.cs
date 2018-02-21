@@ -20,7 +20,7 @@ namespace Sofco.Repository.Rh
 
             builder.HasDefaultSchema(setting.TigerSchema);
 
-            builder.AddEntityConfigurationsFromAssembly(GetType().GetTypeInfo().Assembly, setting);
+            builder.AddEntityConfigurationsFromAssembly(GetType().GetTypeInfo().Assembly);
         }
     }
 }

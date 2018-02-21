@@ -59,14 +59,23 @@
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
-                     <div class="panel-body">
-                            <strong>Lorem ipsum dolor sit amet, consectetuer adipiscing</strong>
+                        <div class="panel-body">
 
-                            <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of
-                                existence in this spot, which was created for the bliss of souls like mine.</p>
-
-                            <p>I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at
-                                the present moment; and yet I feel that I never was a greater artist than now. When.</p>
+                            <dl class="dl-horizontal">
+                                <dt>{{'allocationManagement.resources.address' | translate }}</dt>
+                                <dd>{{ model?.address }}</dd>
+                                <dt>{{'allocationManagement.resources.location' | translate }}</dt>
+                                <dd>{{ model?.location }}</dd>
+                                <dt>{{'allocationManagement.resources.province' | translate }}</dt>
+                                <dd>{{ model?.province }}</dd>
+                                <dt>{{'allocationManagement.resources.healtInsurance' | translate }}</dt>
+                                <dd>{{ model?.healthInsurance?.name }}</dd>
+                                <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
+                                <dd>{{ model?.prepaidHealth?.name }}</dd>
+                                <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
+                                <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+                            </dl>
+                          
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">

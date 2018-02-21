@@ -31,5 +31,17 @@ namespace Sofco.Model.Models.AllocationManagement
         public DateTime? Modified { get; set; }
 
         public string CreatedByUser { get; set; }
+
+        public string Address { get; set; }
+
+        public string Location { get; set; }
+
+        public string Province { get; set; }
+
+        public string Country { get; set; }
+
+        public int HealthInsuranceCode { get; set; }
+
+        public int PrepaidHealthCode { get; set; }
     }
 }

@@ -9,7 +9,8 @@ import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
     selector: 'resource-detail',
-    templateUrl: './resource-detail.component.html'
+    templateUrl: './resource-detail.component.html',
+    styleUrls: ['./resource-detail.component.scss']
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
 

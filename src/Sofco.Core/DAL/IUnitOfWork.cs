@@ -42,6 +42,9 @@ namespace Sofco.Core.DAL
         ILicenseTypeRepository LicenseTypeRepository { get; }
         IEmployeeSyncActionRepository EmployeeSyncActionRepository { get; }
         IEmployeeHistoryRepository EmployeeHistoryRepository { get; }
+        IHealthInsuranceRepository HealthInsuranceRepository { get; }
+        IPrepaidHealthRepository PrepaidHealthRepository { get; }
+
 
         #endregion
 

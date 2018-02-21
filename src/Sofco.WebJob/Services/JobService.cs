@@ -13,6 +13,8 @@ namespace Sofco.WebJob.Services
 
         private const string AzureJobName = "UpdateAzureUsers";
 
+        private const string TigerHealthInsuranceJobName = "TigerHealthInsurance"; 
+
         public static void Init(string timeZoneName)
         {
             ClearJobs();
@@ -24,6 +26,8 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<IAzureJob>(AzureJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeSyncJob>(TigerEmployeeSyncJobName, j => j.Execute(), Cron.Daily(7), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(TigerHealthInsuranceJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
         }
 
         private static void ClearJobs()

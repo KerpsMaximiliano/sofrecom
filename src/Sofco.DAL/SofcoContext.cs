@@ -53,6 +53,8 @@ namespace Sofco.DAL
         public DbSet<CostCenter> CostCenters { get; set; }
         public DbSet<EmployeeSyncAction> EmployeeSyncActions { get; set; }
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
+        public DbSet<HealthInsurance> HealthInsurances { get; set; }
+        public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }
@@ -96,9 +98,11 @@ namespace Sofco.DAL
             builder.MapGlobalSetting();
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
-            builder.MapEmployeeHistoryMapping();
+            builder.MapEmployeeHistory();
             builder.MapFile();
             builder.MapPurchaseOrder();
+            builder.MapHealthInsurance();
+            builder.MapPrepaidHealth();
         }
     }
 }
