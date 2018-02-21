@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -15,10 +16,12 @@ namespace Sofco.WebApi.Controllers.Billing
     public class ServiceController : Controller
     {
         private readonly IServicesService servicesService;
+        private readonly IPurchaseOrderService purchaseOrderService;
 
-        public ServiceController(IServicesService servicesService)
+        public ServiceController(IServicesService servicesService, IPurchaseOrderService purchaseOrderService)
         {
             this.servicesService = servicesService;
+            this.purchaseOrderService = purchaseOrderService;
         }
 
         [HttpGet("{customerId}/options")]
@@ -69,6 +72,14 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet("{serviceId}/purchaseOrders")]
+        public IActionResult GetPurchaseOrders(string serviceId)
+        {
+            var purchaseOrders = this.purchaseOrderService.GetByService(serviceId);
+
+            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
         }
     }
 }

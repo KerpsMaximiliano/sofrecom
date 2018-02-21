@@ -90,5 +90,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public SoftwareLaw SoftwareLaw { get; set; }
 
         public ICollection<Allocation> Allocations { get; set; }
+
+        public ICollection<Billing.PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

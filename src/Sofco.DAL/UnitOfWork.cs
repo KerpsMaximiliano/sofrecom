@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.Services.Billing;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
@@ -35,6 +36,7 @@ namespace Sofco.DAL
         private IInvoiceRepository invoiceRepository;
         private ISolfacRepository solfacRepository;
         private ISolfacReportRepository solfacReportRepository;
+        private IPurchaseOrderRepository purchaseOrderRepository;
 
         #endregion
 
@@ -56,6 +58,7 @@ namespace Sofco.DAL
         #region Common
 
         private IUtilsRepository utilsRepository;
+        private IFileRepository fileRepository;
 
         #endregion
 
@@ -83,6 +86,7 @@ namespace Sofco.DAL
         public IInvoiceRepository InvoiceRepository => invoiceRepository ?? (invoiceRepository = new InvoiceRepository(context));
         public ISolfacRepository SolfacRepository => solfacRepository ?? (solfacRepository = new SolfacRepository(context));
         public ISolfacReportRepository SolfacReportRepository => solfacReportRepository ?? (solfacReportRepository = new SolfacReportRepository(context));
+        public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
 
         #endregion
 
@@ -112,6 +116,7 @@ namespace Sofco.DAL
         #region Common
 
         public IUtilsRepository UtilsRepository => utilsRepository ?? (utilsRepository = new UtilsRepository(context));
+        public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
 
         #endregion
 

@@ -33,5 +33,8 @@ namespace Sofco.Model.Models.Admin
         public ICollection<Analytic> Analytics1 { get; set; }
         public ICollection<Analytic> Analytics2 { get; set; }
         public ICollection<Analytic> Analytics3 { get; set; }
+
+        public ICollection<PurchaseOrder> PurchaseOrder1 { get; set; }
+        public ICollection<PurchaseOrder> PurchaseOrder2 { get; set; }
     }
 }

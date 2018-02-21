@@ -23,4 +23,8 @@ export class ServiceService {
   getById(customerId, serviceId) {
     return this.http.get(`${this.baseUrl}/services/${serviceId}/account/${customerId}`).map((res:Response) => res.json()); 
   }
+
+  getPurchaseOrders(serviceId){
+    return this.http.get(`${this.baseUrl}/services/${serviceId}/purchaseOrders`).map((res:Response) => res.json());
+  }
 }

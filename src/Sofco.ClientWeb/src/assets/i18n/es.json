@@ -172,6 +172,27 @@
             "edit": "Editar Hito",
             "add": "Agregar Hito"
         },
+        "purchaseOrder": {
+            "addTitle": "Alta orden de compra",
+            "editTitle": "Editar orden de compra",
+            "searchTitle": "Busqueda Ordenes de Compra",
+            "title": "Ordenes de Compra",
+            "add": "Alta",
+            "edit": "Editar",
+            "search": "Busqueda",
+            "parameters": "Parametros de busqueda",
+            "noOrdersFound": "No hay ordenes de compra cargadas",
+            "fields": {
+                "title": "Titulo",
+                "number": "Numero",
+                "client": "Cliente",
+                "receptionDate": "Fecha Recepcion",
+                "year": "Año",
+                "area": "Area",
+                "status": "Estado",
+                "analytic": "Analítica" 
+            }
+        },
         "solfac":{
             "title": "Solicitud Facturación",
             "new": "Generación",
@@ -417,7 +438,7 @@
             "listTitle": "Listado de Analiticas",
             "title": "Analiticas",
             "list": "Listado",
-            "new": "Alta de Analitica",
+            "new": "Crear de Analitica",
             "edit": "Editar",
             "editTitle": "Editar Analitica",
             "view": "Ver",
@@ -513,7 +534,7 @@
         "changeDates": "Cambiar Fechas",
         "notifyUnsubscribe": "Notifcar baja",
         "goHere": "Ingrese Aqui"
-    },
+    }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
     "ManagementControlRejected": "Rechazado Control Gestión",
@@ -542,6 +563,8 @@
     "New": "Alta",
     "Delete": "Baja",
     "Reincorporation": "Reincorporación",
+    "Valid": "Vigente",
+    "Consumed": "Consumida",
     "report":{
         "title": "Reporte",
         "solfacs": {

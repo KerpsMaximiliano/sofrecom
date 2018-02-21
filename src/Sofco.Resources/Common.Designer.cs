@@ -87,6 +87,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to common.fileDeleted.
+        /// </summary>
+        public static string FileDeleted {
+            get {
+                return ResourceManager.GetString("FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to common.fileNotFound.
         /// </summary>
         public static string FileNotFound {
