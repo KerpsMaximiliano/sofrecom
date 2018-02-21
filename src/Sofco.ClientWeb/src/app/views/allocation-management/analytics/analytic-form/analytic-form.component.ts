@@ -40,7 +40,6 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         let service = JSON.parse(sessionStorage.getItem('serviceDetail'));
         let analyticWithProject = sessionStorage.getItem('analyticWithProject');
-        let project = JSON.parse(sessionStorage.getItem('projectDetail'));
 
         this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
@@ -69,9 +68,9 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.clientExternalName = sessionStorage.getItem('customerName');
             this.model.serviceId = sessionStorage.getItem('serviceId');
             this.model.service = sessionStorage.getItem('serviceName');
-            this.model.contractNumber = project.purchaseOrder;
-            this.model.amountEarned = project.totalAmmount; 
-            this.model.currencyId = this.getCurrencyId(project.currency);
+            // this.model.contractNumber = project.purchaseOrder;
+            // this.model.amountEarned = project.totalAmmount; 
+            // this.model.currencyId = this.getCurrencyId(project.currency);
             this.model.solutionId = service.solutionTypeId;
             this.model.technologyId = service.technologyTypeId;
             this.model.serviceTypeId = service.serviceTypeId;
