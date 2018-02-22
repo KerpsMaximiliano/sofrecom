@@ -126,7 +126,8 @@ namespace Sofco.WebApi.Models.Billing
             domain.Area = Area;
             domain.Year = Year;
             domain.Status = Status;
-            domain.FileId = FileId;
+
+            if (FileId > 0) domain.FileId = FileId;
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;

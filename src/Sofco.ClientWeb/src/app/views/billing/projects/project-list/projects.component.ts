@@ -20,6 +20,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     serviceName: string;
     customerName: string;
     public loading:  boolean = true;
+
+    @ViewChild('rightbar') rightbar;
  
     constructor(
         private router: Router,
@@ -36,12 +38,20 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.customerName = sessionStorage.getItem('customerName');
         this.serviceName = sessionStorage.getItem('serviceName');
         this.getAll();
+        this.getIfIsRelated();
       });
     }
 
     ngOnDestroy(){
       if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
       if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+    }
+
+    getIfIsRelated(){
+      this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(data => {
+        this.rightbar.hasAnalytic = data;
+      },
+      err => this.errorHandlerService.handleErrors(err));
     }
 
     getAll(){

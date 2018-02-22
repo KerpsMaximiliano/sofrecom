@@ -81,5 +81,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
         }
+
+        [HttpGet("{serviceId}/hasAnalytic")]
+        public IActionResult HasAnalyticRelated(string serviceId)
+        {
+            var isRelated = servicesService.HasAnalyticRelated(serviceId);
+
+            return Ok(isRelated);
+        }
     }
 }

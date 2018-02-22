@@ -5,7 +5,7 @@
         </div>
         <div class="skin-settings">
             <div class="title">{{'ACTIONS.title' | translate }}</div>
-            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD') && hasAnalytic == false">
                 <span class="skin-name ">
                     <a (click)="goToCreateAnalytic()" class="s-skin-0">
                         {{'allocationManagement.analytics.new' | translate }}

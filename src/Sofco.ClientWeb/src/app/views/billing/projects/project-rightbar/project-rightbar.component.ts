@@ -11,6 +11,8 @@ declare var jQuery:any;
 
 export class ProjectRightBarComponent {
 
+  public hasAnalytic: boolean = false;
+
   constructor(private router: Router, public menuService: MenuService) {
   }
 

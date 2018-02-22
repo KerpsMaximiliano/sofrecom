@@ -7,5 +7,6 @@ namespace Sofco.Core.Services.Billing
     public interface IServicesService
     {
         IList<CrmService> GetServices(string customerId, string userMail, string userName);
+        bool HasAnalyticRelated(string serviceId);
     }
 }

@@ -51,7 +51,8 @@ namespace Sofco.WebApi.Models.Billing
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
             domain.Year = Year;
-            domain.FileId = FileId;
+
+            if (FileId > 0) domain.FileId = FileId;
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
