@@ -117,49 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CloseSuccess" xml:space="preserve">
-    <value>allocationManagement/analytic.closeSuccess</value>
+  <data name="ClientIsRequired" xml:space="preserve">
+    <value>billing/certificate.clientIsRequired</value>
   </data>
-  <data name="CostCenterIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.costCenterIsRequired</value>
-  </data>
-  <data name="CurrencyIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.currencyIsRequired</value>
-  </data>
-  <data name="DescriptionIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.descriptionIsRequired</value>
-  </data>
-  <data name="DirectorIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.directorIsRequired</value>
+  <data name="FileAdded" xml:space="preserve">
+    <value>billing/certificate.fileAdded</value>
   </data>
   <data name="NameIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.nameIsRequired</value>
+    <value>billing/certificate.nameIsRequired</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>allocationManagement/analytic.notFound</value>
-  </data>
-  <data name="ResourcesNotFound" xml:space="preserve">
-    <value>allocationManagement/analytic.resourcesNotFound</value>
+    <value>billing/certificate.notFound</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>allocationManagement/analytic.saveSuccess</value>
+    <value>billing/certificate.saveSuccess</value>
   </data>
-  <data name="ServiceAlreadyRelated" xml:space="preserve">
-    <value>allocationManagement/analytic.serviceAlreadyRelated</value>
-  </data>
-  <data name="TitleAlreadyExist" xml:space="preserve">
-    <value>allocationManagement/analytic.titleAlreadyExist</value>
-  </data>
-  <data name="TitleInvalid" xml:space="preserve">
-    <value>allocationManagement/analytic.titleInvalid</value>
-  </data>
-  <data name="TitleIsRequired" xml:space="preserve">
-    <value>allocationManagement/analytic.titleIsRequired</value>
-  </data>
-  <data name="UpdateSuccess" xml:space="preserve">
-    <value>allocationManagement/analytic.updateSuccess</value>
-  </data>
-  <data name="WrongDates" xml:space="preserve">
-    <value>allocationManagement/analytic.wrongDates</value>
+  <data name="YearIsRequired" xml:space="preserve">
+    <value>billing/certificate.yearIsRequired</value>
   </data>
 </root>

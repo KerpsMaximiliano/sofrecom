@@ -59,6 +59,11 @@ import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service
 import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
 import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
 import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
+import { CertificateSearchComponent } from 'app/views/billing/certificates/search/search-certificate.component';
+import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
+import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
+import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
+import { CertificatesService } from 'app/services/billing/certificates.service';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
@@ -68,14 +73,15 @@ import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/pur
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent],
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, CertificateSearchComponent,
+                 CertificateFormComponent, EditCertificateComponent, NewCertificateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
 
-  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService],
+  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService],
   
   exports     : []
 })
-
+ 
 export class BillingModule {} 

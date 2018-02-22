@@ -1,0 +1,8 @@
+{
+    "clientIsRequired": "Client is required",
+    "saveSuccess": "Certificate has been created succesfully",
+    "nameIsRequired": "Name is required",
+    "yearIsRequired": "Year is required",
+    "notFound": "Certificate not found",
+    "fileAdded": "File has been uploaded succesfully"
+}

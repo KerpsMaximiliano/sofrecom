@@ -14,11 +14,6 @@ namespace Sofco.DAL.Mappings.Common
             builder.Entity<File>().Property(_ => _.InternalFileName).HasMaxLength(100);
             builder.Entity<File>().Property(_ => _.FileType).HasMaxLength(10);
             builder.Entity<File>().Property(_ => _.CreatedUser).HasMaxLength(50);
-
-            builder.Entity<File>()
-                .HasOne(a => a.PurchaseOrder)
-                .WithOne(b => b.File)
-                .HasForeignKey<PurchaseOrder>(b => b.FileId);
         }
     }
 }

@@ -117,5 +117,13 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Analytic.WrongDates);
             }
         }
+
+        public static void CheckService(Response<Analytic> response, Analytic analytic, IAnalyticRepository analyticRepository)
+        {
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId) && analyticRepository.ExistWithService(analytic.ServiceId))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.ServiceAlreadyRelated);
+            }
+        }
     }
 }

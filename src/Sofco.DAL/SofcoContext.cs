@@ -43,6 +43,7 @@ namespace Sofco.DAL
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
         public DbSet<Model.Models.Billing.PurchaseOrder> PurchaseOrderFiles { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -103,6 +104,7 @@ namespace Sofco.DAL
             builder.MapPurchaseOrder();
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
+            builder.MapCertificate();
         }
     }
 }

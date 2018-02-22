@@ -172,6 +172,22 @@
             "edit": "Edit Milestone",
             "add": "Add Milestone"
         },
+        "certificate": {
+            "addTitle": "New Certificate",
+            "editTitle":"Edit Certificate",
+            "searchTitle": "Search v",
+            "title": "Certificates",
+            "add": "New",
+            "edit": "Edit", 
+            "search": "Search",
+            "parameters": "Search Parameters",
+            "noOrdersFound": "There are no certificates loaded",
+            "fields": {
+                "name": "Name",
+                "client": "Client",
+                "year": "Year"
+            }
+        },
         "purchaseOrder": {
             "addTitle": "New Purchase Order",
             "editTitle":"Edit Purchase Order",

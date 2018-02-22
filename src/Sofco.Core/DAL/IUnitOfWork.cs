@@ -3,7 +3,6 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
-using Sofco.Core.Services.Billing;
 
 namespace Sofco.Core.DAL
 {
@@ -29,6 +28,7 @@ namespace Sofco.Core.DAL
         ISolfacRepository SolfacRepository { get; }
         ISolfacReportRepository SolfacReportRepository { get; }
         IPurchaseOrderRepository PurchaseOrderRepository { get; }
+        ICertificateRepository CertificateRepository { get; }
 
         #endregion
 

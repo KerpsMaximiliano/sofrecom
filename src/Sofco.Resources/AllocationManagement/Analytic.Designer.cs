@@ -141,6 +141,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.serviceAlreadyRelated.
+        /// </summary>
+        public static string ServiceAlreadyRelated {
+            get {
+                return ResourceManager.GetString("ServiceAlreadyRelated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to allocationManagement/analytic.titleAlreadyExist.
         /// </summary>
         public static string TitleAlreadyExist {

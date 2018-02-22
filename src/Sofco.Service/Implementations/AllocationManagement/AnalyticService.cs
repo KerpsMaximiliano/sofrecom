@@ -113,6 +113,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
+            AnalyticValidationHelper.CheckService(response, analytic, unitOfWork.AnalyticRepository);
 
             if (response.HasErrors()) return response;
 

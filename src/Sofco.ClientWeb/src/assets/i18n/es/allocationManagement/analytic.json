@@ -12,5 +12,6 @@
     "wrongDates": "La fecha de inicio no puede ser mayor a la fecha de fin",
     "titleIsRequired": "El titulo es requerido",
     "updateSuccess": "Analítica actualizada exitosamente",
-    "closeSuccess": "Se ha cerrado la analítica exitosamente" 
+    "closeSuccess": "Se ha cerrado la analítica exitosamente" ,
+    "serviceAlreadyRelated": "Ya hay una analítica relacionada al servicio"
 }
