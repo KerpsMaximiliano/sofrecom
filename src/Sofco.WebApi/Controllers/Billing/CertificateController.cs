@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -100,9 +101,15 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchCertificateParams parameters)
         {
-            var purchaseOrders = certificateService.Search(parameters);
+            var certificates = certificateService.Search(parameters);
 
-            return Ok(purchaseOrders.Select(x => new CertificateListItem(x)));
+            var response = new Response<List<CertificateListItem>>();
+            response.Data = certificates.Select(x => new CertificateListItem(x)).ToList();
+
+            if (!certificates.Any())
+                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
+
+            return Ok(response);
         }
     }
 }

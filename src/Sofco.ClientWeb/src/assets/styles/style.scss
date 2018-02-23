@@ -199,7 +199,12 @@ ul.indented{
   color: black;
 }
 
-.label-SendPending, .label-PendingByManagementControl {
+.label-SendPending {
+  background-color: gray;
+  color: #FFFFFF;
+}
+
+.label-PendingByManagementControl {
   background-color: #f8ac59;
   color: #FFFFFF;
 }

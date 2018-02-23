@@ -84,12 +84,13 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             year: this.year
         }
 
-        this.getAllSubscrip = this.purchaseOrderService.search(parameters).subscribe(data => {
+        this.getAllSubscrip = this.purchaseOrderService.search(parameters).subscribe(response => {
 
             setTimeout(() => {
                 this.messageService.closeLoading();
+                if(response.messages) this.messageService.showMessages(response.messages);
 
-                this.data = data;
+                this.data = response.data;
 
                this.initGrid();
             }, 500)

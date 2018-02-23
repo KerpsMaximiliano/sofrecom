@@ -144,6 +144,9 @@
   <data name="SaveSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.saveSuccess</value>
   </data>
+  <data name="SearchEmpty" xml:space="preserve">
+    <value>billing/purchaseOrder.searchEmpty</value>
+  </data>
   <data name="TitleIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.titleIsRequired</value>
   </data>

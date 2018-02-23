@@ -111,7 +111,13 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var purchaseOrders = purchaseOrderService.Search(parameters);
 
-            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
+            var response = new Response<List<PurchaseOrderListItem>>();
+            response.Data = purchaseOrders.Select(x => new PurchaseOrderListItem(x)).ToList();
+
+            if (!purchaseOrders.Any())
+                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
+
+            return Ok(response);
         }
 
         [HttpGet("status")]
