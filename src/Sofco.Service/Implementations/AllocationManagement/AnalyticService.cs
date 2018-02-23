@@ -237,11 +237,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+
+                var recipientsList = new List<string>();
+
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+
                 var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                var recipients = $"{mailPmo};{mailDaf};{director.Email};{manager.Email};{seller.Email};{mailRrhh}";
+                if(director != null) recipientsList.Add(director.Email);
+                if(manager != null) recipientsList.Add(manager.Email);
+                if(seller != null) recipientsList.Add(seller.Email);
+
+                var recipients = string.Join(";", recipientsList.Distinct());
 
                 mailSender.Send(recipients, subject, body);
             }
