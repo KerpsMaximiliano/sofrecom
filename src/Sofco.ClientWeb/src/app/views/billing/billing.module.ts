@@ -67,15 +67,15 @@ import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-
 import { CertificatesService } from 'app/services/billing/certificates.service';
 
 @NgModule({
-  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
+  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, CertificateSearchComponent],
-                 CertificateFormComponent, EditCertificateComponent, NewCertificateComponent],
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
+                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
