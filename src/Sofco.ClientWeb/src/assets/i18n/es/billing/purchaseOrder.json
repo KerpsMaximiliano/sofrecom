@@ -9,5 +9,6 @@
     "titleIsRequired": "Titulo es requerido",
     "yearIsRequired": "Año es requerido",
     "notFound": "Orden de Compra no encontrada",
-    "fileAdded": "Archivo subido exitosamente"
+    "fileAdded": "Archivo subido exitosamente",
+    "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados"
 }

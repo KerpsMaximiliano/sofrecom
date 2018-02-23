@@ -32,8 +32,9 @@
             <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.searchTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('searchInvoice')}" *ngIf="menuService.hasFunctionality('REM', 'QUERY')"><a [routerLink]="['/billing/invoice/search']">{{'billing.invoice.searchTitle' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('purchaseOrders')}"><a [routerLink]="['/billing/purchaseOrders']">{{'billing.purchaseOrder.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('purchaseOrders')}" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"><a [routerLink]="['/billing/purchaseOrders']">{{'billing.purchaseOrder.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('solfacDelegate')}"><a [routerLink]="['/billing/solfac/delegate']">{{'billing.solfac.delegate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('certificates')}" *ngIf="menuService.hasFunctionality('CERT', 'QUERY')"><a [routerLink]="['/billing/certificates']">{{'billing.certificate.title' | translate }}</a></li>
         </ul>
       </li> 
 

@@ -43,4 +43,8 @@ export class ProjectService {
   closeHito(id){
     return this.http.put(`${this.baseUrl}/hitos/${id}/close`, {}).map((res:Response) => res.json());
   }
+
+  getIfIsRelated(serviceId){
+    return this.http.get(`${this.baseUrl}/services/${serviceId}/hasAnalytic`).map((res:Response) => res.json());
+  }
 }

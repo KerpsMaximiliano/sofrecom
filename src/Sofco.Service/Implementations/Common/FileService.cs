@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Common;
@@ -13,16 +11,14 @@ namespace Sofco.Service.Implementations.Common
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<PurchaseOrderService> logger;
-        private readonly FileConfig fileConfig;
 
-        public FileService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<FileConfig> fileOptions)
+        public FileService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.fileConfig = fileOptions.Value;
         }
 
-        public Response<byte[]> ExportFile(int id)
+        public Response<byte[]> ExportFile(int id, string path)
         {
             var response = new Response<byte[]>();
 
@@ -36,7 +32,7 @@ namespace Sofco.Service.Implementations.Common
 
             try
             {
-                var bytes = System.IO.File.ReadAllBytes($"{fileConfig.GapsFilesPath}\\{file.InternalFileName}{file.FileType}");
+                var bytes = System.IO.File.ReadAllBytes($"{path}\\{file.InternalFileName}{file.FileType}");
                 response.Data = bytes;
             }
             catch (Exception e)

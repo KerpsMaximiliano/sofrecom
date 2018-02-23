@@ -2,6 +2,7 @@
 {
     public class FileConfig
     {
-        public string GapsFilesPath { get; set; }
+        public string PurchaseOrdersPath { get; set; }
+        public string CertificatesPath { get; set; }
     }
 }

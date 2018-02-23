@@ -141,6 +141,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/purchaseOrder.searchEmpty.
+        /// </summary>
+        public static string SearchEmpty {
+            get {
+                return ResourceManager.GetString("SearchEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/purchaseOrder.titleIsRequired.
         /// </summary>
         public static string TitleIsRequired {

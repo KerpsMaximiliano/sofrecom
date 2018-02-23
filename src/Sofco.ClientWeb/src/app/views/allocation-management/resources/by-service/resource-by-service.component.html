@@ -30,7 +30,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="alert alert-info" *ngIf="resources && resources.length == 0">
-        {{'allocationManagement.resources.empty' | translate }} <a style="color: black" [routerLink]="['/contracts/analytics']">{{'ACTIONS.goHere' | translate }}</a>
+        {{'allocationManagement.resources.empty' | translate }}
     </div>
 
     <div class="row">
@@ -46,7 +46,7 @@
                 <div class="col-sm-8">
                     <h3><strong>{{ resource.name }}</strong></h3>
                     <div class="resource-data">
-                        <div>Legajo: {{ resource.employeeNumber }}</div>
+                        <div>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: {{ resource.employeeNumber }}</div>
                         <div>{{ resource.profile }}</div>
                         <div>{{ resource.technology }}</div>
                     </div>

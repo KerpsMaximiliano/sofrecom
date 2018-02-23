@@ -14,7 +14,5 @@ namespace Sofco.Model.Models.Common
         public DateTime CreationDate { get; set; }
 
         public string CreatedUser { get; set; }
-
-        public PurchaseOrder PurchaseOrder { get; set; }
     }
 }

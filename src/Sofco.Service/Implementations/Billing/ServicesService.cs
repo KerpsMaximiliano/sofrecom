@@ -28,5 +28,10 @@ namespace Sofco.Service.Implementations.Billing
 
             return serviceData.GetServices(customerId, userName, userMail, hasDirectorGroup || hasCommercialGroup);
         }
+
+        public bool HasAnalyticRelated(string serviceId)
+        {
+            return unitOfWork.AnalyticRepository.ExistWithService(serviceId);
+        }
     }
 }

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
@@ -21,11 +23,13 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly IPurchaseOrderService purchaseOrderService;
         private readonly IFileService fileService;
+        private readonly FileConfig fileConfig;
 
-        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, IFileService fileService)
+        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, IFileService fileService, IOptions<FileConfig> fileOptions)
         {
             this.purchaseOrderService = purchaseOrderService;
             this.fileService = fileService;
+            this.fileConfig = fileOptions.Value;
         }
 
         [HttpGet("formOptions")]
@@ -95,7 +99,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("export/{id}")]
         public IActionResult ExportFile(int id)
         {
-            var response = fileService.ExportFile(id);
+            var response = fileService.ExportFile(id, fileConfig.PurchaseOrdersPath);
 
             if (response.HasErrors()) return BadRequest(response);
 
@@ -107,7 +111,13 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var purchaseOrders = purchaseOrderService.Search(parameters);
 
-            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
+            var response = new Response<List<PurchaseOrderListItem>>();
+            response.Data = purchaseOrders.Select(x => new PurchaseOrderListItem(x)).ToList();
+
+            if (!purchaseOrders.Any())
+                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
+
+            return Ok(response);
         }
 
         [HttpGet("status")]

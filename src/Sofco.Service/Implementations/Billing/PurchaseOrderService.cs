@@ -82,19 +82,21 @@ namespace Sofco.Service.Implementations.Billing
             fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
             fileToAdd.InternalFileName = Guid.NewGuid();
             fileToAdd.CreationDate = DateTime.UtcNow;
-            fileToAdd.PurchaseOrder = purchaseOrder;
             fileToAdd.CreatedUser = userName;
+
+            purchaseOrder.File = fileToAdd;
 
             try
             {
                 var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
 
-                using (var fileStream = new FileStream(Path.Combine(fileConfig.GapsFilesPath, fileName), FileMode.Create))
+                using (var fileStream = new FileStream(Path.Combine(fileConfig.PurchaseOrdersPath, fileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
 
                 unitOfWork.FileRepository.Insert(fileToAdd);
+                unitOfWork.PurchaseOrderRepository.Update(purchaseOrder);
                 unitOfWork.Save();
 
                 response.Data = fileToAdd;
@@ -175,7 +177,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.FileRepository.Delete(file);
 
                 var fileName = $"{file.InternalFileName.ToString()}{file.FileType}";
-                var path = Path.Combine(fileConfig.GapsFilesPath, fileName);
+                var path = Path.Combine(fileConfig.PurchaseOrdersPath, fileName);
 
                 if (System.IO.File.Exists(path))
                 {

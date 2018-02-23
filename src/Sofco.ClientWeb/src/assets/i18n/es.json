@@ -172,6 +172,22 @@
             "edit": "Editar Hito",
             "add": "Agregar Hito"
         },
+        "certificate": {
+            "addTitle": "Alta Certificado",
+            "editTitle": "Editar Certificado",
+            "searchTitle": "Busqueda Certificados",
+            "title": "Certificados",
+            "add": "Alta",
+            "edit": "Editar",
+            "search": "Busqueda",
+            "parameters": "Parametros de busqueda",
+            "noOrdersFound": "No hay certificados cargados",
+            "fields": {
+                "name": "Nombre",
+                "client": "Cliente",
+                "year": "Año"
+            }
+        },
         "purchaseOrder": {
             "addTitle": "Alta orden de compra",
             "editTitle": "Editar orden de compra",

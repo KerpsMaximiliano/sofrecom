@@ -61,5 +61,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open).ToList();
         }
+
+        public bool ExistWithService(string serviceId)
+        {
+            return context.Analytics.Any(x => x.ServiceId.Equals(serviceId));
+        }
     }
 }

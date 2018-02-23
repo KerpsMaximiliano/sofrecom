@@ -35,10 +35,19 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private purchaseOrderService: PurchaseOrderService,
         private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) {
-         }
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
+        var data = JSON.parse(sessionStorage.getItem('lastPurchaseOrderQuery'));
+
+        if(data){
+            this.statusId = data.statusId;
+            this.year = data.year;
+            this.customerId = data.clientId;
+
+            this.search();
+        }
+
         this.getCustomers();
         this.getStatuses();
     }
@@ -79,17 +88,19 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         var parameters = {
-            customerId: this.customerId,
+            clientId: this.customerId,
             statusId: this.statusId,
-            year: this.year
+            year: this.year | 0
         }
 
-        this.getAllSubscrip = this.purchaseOrderService.search(parameters).subscribe(data => {
+        this.getAllSubscrip = this.purchaseOrderService.search(parameters).subscribe(response => {
 
             setTimeout(() => {
                 this.messageService.closeLoading();
+                if(response.messages) this.messageService.showMessages(response.messages);
 
-                this.data = data;
+                this.data = response.data;
+                sessionStorage.setItem('lastPurchaseOrderQuery', JSON.stringify(parameters));
 
                this.initGrid();
             }, 500)
@@ -112,6 +123,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         this.datatableService.destroy('#purchaseOrderTable');
         this.data = new Array();
+
+        sessionStorage.removeItem('lastPurchaseOrderQuery');
     }
 
     export(purchaseOrder){

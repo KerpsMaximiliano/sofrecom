@@ -43,7 +43,7 @@
                             <label class="control-label" for="status">{{'billing.purchaseOrder.fields.status' | translate }}</label>
                             <select class="form-control m-b" [(ngModel)]="statusId">
                                 <option value="0">{{'selectAnOption' | translate }}</option>
-                                <option *ngFor="let status of statuses" [value]="status?.value">{{status?.text}}</option>
+                                <option *ngFor="let status of statuses" [value]="status?.value">{{status?.text | translate }}</option>
                             </select>
                         </div>
                     </div>

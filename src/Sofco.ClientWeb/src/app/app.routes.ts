@@ -50,6 +50,10 @@ import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit
 import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
 import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
 import { SolfacDelegateComponent } from 'app/views/billing/solfac/solfac-delegate/solfac-delegate.component';
+import { CertificateSearchComponent } from 'app/views/billing/certificates/search/search-certificate.component';
+import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
+import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
+import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -122,7 +126,14 @@ export const ROUTES:Routes = [
           { path: "", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
           { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
           { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
-        ]},
+      ]},
+
+      { path: "certificates",
+          children: [
+          { path: "", component: CertificateSearchComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "QUERY" } },
+          { path: "new", component: NewCertificateComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "ALTA" } },
+          { path: ":id", component: EditCertificateComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "ALTA" } },
+      ]},
 
       { path: "invoice",
         children: [

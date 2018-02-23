@@ -144,6 +144,9 @@
   <data name="SaveSuccess" xml:space="preserve">
     <value>allocationManagement/analytic.saveSuccess</value>
   </data>
+  <data name="ServiceAlreadyRelated" xml:space="preserve">
+    <value>allocationManagement/analytic.serviceAlreadyRelated</value>
+  </data>
   <data name="TitleAlreadyExist" xml:space="preserve">
     <value>allocationManagement/analytic.titleAlreadyExist</value>
   </data>
