@@ -36,6 +36,15 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
+        var data = JSON.parse(sessionStorage.getItem('lastCertificateQuery'));
+
+        if(data){
+            this.year = data.year;
+            this.customerId = data.clientId;
+
+            this.search();
+        }
+
         this.getCustomers();
     }
 
@@ -69,7 +78,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
 
         var parameters = {
             clientId: this.customerId,
-            year: this.year
+            year: this.year | 0
         }
 
         this.getAllSubscrip = this.certificateService.search(parameters).subscribe(response => {
@@ -79,6 +88,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
                 if(response.messages) this.messageService.showMessages(response.messages);
 
                 this.data = response.data;
+                sessionStorage.setItem('lastCertificateQuery', JSON.stringify(parameters));
 
                this.initGrid();
             }, 500)
@@ -100,6 +110,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
 
         this.datatableService.destroy('#certificateTable');
         this.data = new Array();
+        sessionStorage.removeItem('lastCertificateQuery');
     }
 
     export(certificate){
