@@ -5,6 +5,7 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { MessageService } from '../../../services/common/message.service';
 
 @Component({
   selector: 'app-customers',
@@ -19,6 +20,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private service: CustomerService,
+        private messageService: MessageService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
@@ -31,15 +33,18 @@ export class CustomersComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
+      this.messageService.showLoading();
+
       this.getAllSubscrip = this.service.getAll(Cookie.get("currentUserMail")).subscribe(d => {
-        this.loading = false;
         this.customers = d;
 
         this.datatableService.init('#customerTable', true);
+
+        this.messageService.closeLoading();
       },
       err => {
-        this.loading = false;
-        this.errorHandlerService.handleErrors(err)
+        this.messageService.closeLoading();
+        this.errorHandlerService.handleErrors(err);
       });
     }
 

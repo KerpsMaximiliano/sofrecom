@@ -5,6 +5,7 @@ import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from 'app/services/admin/menu.service';
+import { MessageService } from '../../../../services/common/message.service';
 
 @Component({
   selector: 'app-projects',
@@ -28,6 +29,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
         private menuService: MenuService,
+        private messageService: MessageService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
@@ -55,17 +57,18 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
-      this.loading = true;
+      this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(this.serviceId).subscribe(d => {
-        this.loading = false;
         this.projects = d;
 
         this.initGrid();
+
+        this.messageService.closeLoading();
       },
       err => {
-        this.loading = false;
         this.initGrid();
+        this.messageService.closeLoading();
         this.errorHandlerService.handleErrors(err)
       });
     }

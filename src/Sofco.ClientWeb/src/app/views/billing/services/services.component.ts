@@ -4,6 +4,7 @@ import { Subscription } from "rxjs/Subscription";
 import { ServiceService } from "app/services/billing/service.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { MessageService } from 'app/services/common/message.service';
 
 @Component({
   selector: 'app-services',
@@ -21,6 +22,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
+        private messageService: MessageService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
 
@@ -30,7 +32,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
         this.customerName = sessionStorage.getItem("customerName");
         this.getAll(this.customerId);
       });
-      
     }
 
     ngOnDestroy(){
@@ -39,16 +40,17 @@ export class ServicesComponent implements OnInit, OnDestroy {
     }
 
     getAll(customerId){
-      this.loading = true;
+      this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(customerId).subscribe(d => {
-        this.loading = false;
         this.services = d;
 
         this.initGrid();
+
+        this.messageService.closeLoading();
       },
       err => {
-        this.loading = false;
+        this.messageService.closeLoading();
         this.datatableService.init('#serviceTable', true);
         this.errorHandlerService.handleErrors(err)
       });
