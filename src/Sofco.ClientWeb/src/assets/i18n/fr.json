@@ -201,7 +201,10 @@
              "particularSteps": "Instructions Particulaires",
              "addComments": "Inclure les commentaires du rejet",
              "integrator": "Intégrateur",
-             "customers": "Clients"
+             "customers": "Clients",
+            "delegate": {
+                "title": "Déléguer Solfac"
+            }
          },
          "invoice":{
              "title": "Accusés de Réception",
