@@ -203,7 +203,9 @@
              "integrator": "Intégrateur",
              "customers": "Clients",
             "delegate": {
-                "title": "Déléguer Solfac"
+                "title": "Déléguer Solfac",
+                "users": "Utilisateurs",
+                "saveSuccess": "Utilisateur ajouté correctement."
             }
          },
          "invoice":{

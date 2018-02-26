@@ -11,6 +11,8 @@ namespace Sofco.DAL.Repositories.Admin
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
+        private const string ManagerDescription = "Gerentes";
+
         public UserRepository(SofcoContext context) : base(context)
         {
         }
@@ -52,7 +54,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals("Gerentes"))
+                .Where(x => x.Group.Description.Equals(ManagerDescription))
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -128,6 +130,16 @@ namespace Sofco.DAL.Repositories.Admin
         public bool IsActive(string userMail)
         {
             return context.Users.Any(x => x.Email == userMail && x.Active);
+        }
+
+        public bool HasManagerGroup(string userName)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => 
+                x.UserName.Equals(userName) 
+                && x.UserGroups.Any(s => s.Group.Description.Equals(ManagerDescription)));
         }
     }
 }

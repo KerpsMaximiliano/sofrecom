@@ -53,5 +53,6 @@
     "solfacHasNoInvoices": "No se puede enviar la solicitud. Se necesita adjuntar un remito",
     "closeHito": "Hito cerrado correctamente",
     "businessNameRequired": "La razón social es requerida",
-    "detailsRequired": "Se debe ingresar al menos un detalle"
+    "detailsRequired": "Se debe ingresar al menos un detalle",
+    "delegateSaveMangerOnlyError": "Solo los gerentes estan autorizados a delegar."
 }

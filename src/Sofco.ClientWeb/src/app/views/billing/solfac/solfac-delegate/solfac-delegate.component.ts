@@ -1,10 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ServiceService } from 'app/services/billing/service.service';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { MessageService } from 'app/services/common/message.service';
 import { I18nService } from 'app/services/common/i18n.service';
 import { UserService } from 'app/services/admin/user.service';
+import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
+import { Subscription } from 'rxjs';
 declare var $:any;
 
 @Component({
@@ -12,9 +15,11 @@ declare var $:any;
     templateUrl: './solfac-delegate.component.html'
   })
 
-export class SolfacDelegateComponent implements OnInit {
+export class SolfacDelegateComponent implements OnInit, OnDestroy {
 
     private nullId = '';
+
+    subscription: Subscription;
 
     @Input()
     public model: any;
@@ -34,7 +39,9 @@ export class SolfacDelegateComponent implements OnInit {
     constructor(private serviceService: ServiceService,
         private customerService: CustomerService,
         private usersService: UserService,
+        private solfacDelegateService: SolfacDelegateService,
         private errorHandlerService: ErrorHandlerService,
+        private messageService: MessageService,
         private i18nService: I18nService) {
 
     }
@@ -45,8 +52,14 @@ export class SolfacDelegateComponent implements OnInit {
         this.getUsers();
     }
 
-    getCustomers(){
-        this.customerService.getOptions(Cookie.get('currentUserMail')).subscribe(data => {
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
+    getCustomers() {
+        this.subscription = this.customerService.getOptions(Cookie.get('currentUserMail')).subscribe(data => {
             this.customers = this.sortCustomers(data);
             this.setCustomerSelect();
         },
@@ -97,7 +110,7 @@ export class SolfacDelegateComponent implements OnInit {
 
     getServices(): void {
         if (this.customerId === null) { return; }
-        this.serviceService.getOptions(this.customerId).subscribe(services => {
+        this.subscription = this.serviceService.getOptions(this.customerId).subscribe(services => {
             this.services = services;
             this.updateServiceControl();
         },
@@ -113,7 +126,7 @@ export class SolfacDelegateComponent implements OnInit {
     }
 
     getUsers(): void {
-        this.usersService.getOptions().subscribe(users => {
+        this.subscription = this.usersService.getOptions().subscribe(users => {
             this.users = users;
             this.initUserControl();
         },
@@ -170,6 +183,15 @@ export class SolfacDelegateComponent implements OnInit {
     }
 
     save(): void {
-        console.log('>save > userId[' + this.userId + '] - serviceId[' + this.serviceId + ']')
+        const item = {
+            serviceId: this.serviceId,
+            userId: parseInt(this.userId)
+        }
+        this.subscription = this.solfacDelegateService.save(item).subscribe(users => {
+            this.messageService.succes('billing.solfac.delegate.saveSuccess');
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }

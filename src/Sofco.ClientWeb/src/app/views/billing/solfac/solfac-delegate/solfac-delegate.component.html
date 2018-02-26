@@ -42,8 +42,11 @@
                 </div>
             </div>
 
-            <div class="ibox-footer" [hidden]="!showSave()">
-                <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+            <div class="ibox-footer">
+                <div style="float:left;margin-right:10px" [hidden]="!showSave()">
+                    <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                </div>
+                <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/solfac/delegate']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
             </div>
 
         </div>

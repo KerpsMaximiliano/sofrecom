@@ -292,7 +292,8 @@
             "customers": "Clientes",
             "delegate": {
                 "title": "Delegar Solfac",
-                "users": "Usuarios"
+                "users": "Usuarios",
+                "saveSuccess": "Usuario agregado correctamente."
             }
         },
         "invoice":{
