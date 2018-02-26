@@ -23,13 +23,15 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
+        private readonly EmailConfig emailConfig;
 
         public ProjectService(ISolfacService solfacService, 
             IOptions<CrmConfig> crmOptions, 
             IUnitOfWork unitOfWork,
             IProjectData projectData, 
             ICrmHttpClient client,
-            ILogMailer<ProjectService> logger)
+            ILogMailer<ProjectService> logger, 
+            IOptions<EmailConfig> emailOptions)
         {
             this.solfacService = solfacService;
             this.unitOfWork = unitOfWork;
@@ -37,6 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             this.projectData = projectData;
             this.client = client;
             this.logger = logger;
+            this.emailConfig = emailOptions.Value;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)
@@ -76,8 +79,9 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(userMail);
+                var hasCommercialGroup = this.unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
 
-                var result = projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup);
+                var result = projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup || hasCommercialGroup);
 
                 response.Data = result;
             }

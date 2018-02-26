@@ -120,5 +120,13 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.Users.Any(x => x.Email == userMail && x.Active);
         }
+
+        public bool HasComercialGroup(string comercialCode, string email)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(email) && x.UserGroups.Any(s => s.Group.Code.Equals(comercialCode)));
+        }
     }
 }
