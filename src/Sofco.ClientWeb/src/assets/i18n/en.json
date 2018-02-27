@@ -60,14 +60,14 @@
             "EDIT": "Edit Functionality",
             "ADD": "Add Functionality",
             "select": "Select functionalities",
-            "deleteConfirm": "¿Are you sure you want to delete the functionality?"
+            "deleteConfirm": "Are you sure you want to delete the functionality?"
         },
         "module": {
             "title": "Modules",
             "management": "Modules Management",
             "edit": "Edit Module",
             "add": "Add Module",
-            "deleteConfirm": "¿Are you sure you want to delete the module?"
+            "deleteConfirm": "Are you sure you want to delete the module?"
         },
         "settings": {
             "title": "Configs",
@@ -298,7 +298,8 @@
                 "manager": "Manager",
                 "user": "User",
                 "createdUser": "Created by",
-                "createdDate": "Created Date"
+                "createdDate": "Created Date",
+                "deleteConfirm": "Are you sure you want to delete the delegate."
             }
         },
         "invoice":{

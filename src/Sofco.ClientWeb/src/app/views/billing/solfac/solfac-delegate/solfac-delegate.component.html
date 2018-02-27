@@ -32,6 +32,7 @@
                             <th>{{'billing.solfac.delegate.user' | translate }}</th>
                             <th>{{'billing.solfac.delegate.createdUser' | translate }}</th>
                             <th>{{'billing.solfac.delegate.createdDate' | translate }}</th>
+                            <th>{{'ACTIONS.title' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,6 +42,11 @@
                             <td>{{ item.userName }}</td>
                             <td>{{ item.createdUser }}</td>
                             <td>{{ item.created | date:'dd/MM/yyyy hh:mm' }}</td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)" >
+                                    <span class="fa-trash fa"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>                        
@@ -49,3 +55,7 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="modalConfig" #confirmModal (accept)="processDelete()" [isLoading]="loading">
+    <h4>{{ 'billing.solfac.delegate.deleteConfirm' | translate }}</h4>
+</ng2-modal>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
@@ -66,6 +65,13 @@ namespace Sofco.Service.Implementations.Billing
             response.Data = unitOfWork.SolfacDelegateRepository.Save(solfacDelegate);
 
             return response;
+        }
+
+        public Response Delete(int solfacDeletegateId)
+        {
+            unitOfWork.SolfacDelegateRepository.Delete(solfacDeletegateId);
+
+            return new Response();
         }
 
         private Response<SolfacDelegate> ValidateSave()

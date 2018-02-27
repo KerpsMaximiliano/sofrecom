@@ -35,14 +35,14 @@
              "EDIT": "Éditer Fonctionnalité",
              "ADD": "Ajouter Fonctionnalité",
              "select": "Sélectionner Fonctionnalités",
-             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer la fonctionnalité?"
+             "deleteConfirm": "Vous-êtes sûr de vouloir éliminer la fonctionnalité?"
          },
          "module": {
              "title": "Modules",
              "management": "Administration de Modules",
              "edit": "Éditer Module",
              "add": "Ajouter Module",
-             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer le module?"
+             "deleteConfirm": "Vous-êtes sûr de vouloir éliminer le module?"
          },
          "settings": {
             "title": "Configs",
@@ -210,7 +210,8 @@
                 "manager": "Gérant",
                 "user": "Utilisateur",
                 "createdUser": "Crée par",
-                "createdDate": "Date de Création"
+                "createdDate": "Date de Création",
+                "deleteConfirm": "Etes vous sûr de vouloir éliminer le déléguer?"
             }
          },
          "invoice":{

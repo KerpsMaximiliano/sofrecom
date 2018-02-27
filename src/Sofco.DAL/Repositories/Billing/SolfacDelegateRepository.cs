@@ -40,6 +40,15 @@ namespace Sofco.DAL.Repositories.Billing
             return solfacDelegate;
         }
 
+        public void Delete(int solfacDelegateId)
+        {
+            var solfacDelegate = new SolfacDelegate { Id = solfacDelegateId };
+
+            context.Entry(solfacDelegate).State = EntityState.Deleted;
+
+            context.SaveChanges();
+        }
+
         private SolfacDelegate GetByServiceIdAndUserId(Guid serviceId, int userId)
         {
             return SolfacDelegateSet

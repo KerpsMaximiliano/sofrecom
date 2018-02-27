@@ -18,4 +18,8 @@ export class SolfacDelegateService {
   getAll() {
     return this.http.get(this.apiUrl).map((res: Response) => res.json());
   }
+
+  delete(id: number) {
+    return this.http.delete(this.apiUrl + '/' + id).map((res: Response) => res.json());
+  }
 }

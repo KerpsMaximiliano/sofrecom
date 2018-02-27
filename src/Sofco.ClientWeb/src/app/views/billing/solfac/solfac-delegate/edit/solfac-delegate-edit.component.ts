@@ -7,6 +7,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { I18nService } from 'app/services/common/i18n.service';
 import { UserService } from 'app/services/admin/user.service';
 import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 declare var $: any;
 
@@ -42,7 +43,8 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
         private solfacDelegateService: SolfacDelegateService,
         private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService,
-        private i18nService: I18nService) {
+        private i18nService: I18nService,
+        private router: Router) {
 
     }
 
@@ -59,11 +61,14 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
     }
 
     getCustomers() {
+        this.messageService.showLoading();
         this.subscription = this.customerService.getOptions(Cookie.get('currentUserMail')).subscribe(data => {
+            this.messageService.closeLoading();
             this.customers = this.sortCustomers(data);
             this.setCustomerSelect();
         },
         err => {
+            this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
     }
@@ -186,11 +191,16 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
         const item = {
             serviceId: this.serviceId,
             userId: parseInt(this.userId)
-        }
+        };
+
+        this.messageService.showLoading();
         this.subscription = this.solfacDelegateService.save(item).subscribe(users => {
+            this.messageService.closeLoading();
             this.messageService.succes('billing.solfac.delegate.saveSuccess');
+            this.router.navigate(['/billing/solfac/delegate']);
         },
         err => {
+            this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
     }

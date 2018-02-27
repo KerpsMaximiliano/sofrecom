@@ -8,5 +8,7 @@ namespace Sofco.Core.DAL.Billing
         List<SolfacDelegate> GetAll();
 
         SolfacDelegate Save(SolfacDelegate solfacDelegate);
+
+        void Delete(int solfacDelegateId);
     }
 }

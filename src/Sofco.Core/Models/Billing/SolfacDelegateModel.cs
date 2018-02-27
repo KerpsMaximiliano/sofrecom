@@ -4,6 +4,8 @@ namespace Sofco.Core.Models.Billing
 {
     public class SolfacDelegateModel
     {
+        public int Id { get; set; }
+
         public string ManagerName { get; set; }
 
         public string ServiceName { get; set; }
