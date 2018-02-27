@@ -40,6 +40,10 @@ export class CertificatesService {
     return this.http.delete(`${this.baseUrl}/certificates/${id}/file`).map((res:Response) => res.json()); 
   }
 
+  getByClient(client) {
+    return this.http.get(`${this.baseUrl}/certificates/client/${client}`).map((res:Response) => res.json()); 
+  }
+
   exportFile(id){
     return this.http.get(`${this.baseUrl}/certificates/export/${id}`,
      {

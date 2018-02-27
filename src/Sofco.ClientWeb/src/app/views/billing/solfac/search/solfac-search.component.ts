@@ -101,7 +101,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     goToDetail(solfac) {
         if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
-        (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+        (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || 
+         solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf] ||
+         solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
         {
             this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
         }

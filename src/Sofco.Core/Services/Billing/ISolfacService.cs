@@ -9,7 +9,7 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ISolfacService
     {
-        Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId);
+        Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId);
         IList<Solfac> Search(SolfacParams parameter, string userMail, EmailConfig emailConfig);
         IList<Hito> GetHitosByProject(string projectId);
         IList<Solfac> GetByProject(string projectId);
@@ -32,6 +32,8 @@ namespace Sofco.Core.Services.Billing
         Response DeleteDetail(int id);
         Task<Response> SplitHito(HitoSplittedParams hito);
 
-        Response<Solfac> Post(Solfac solfac, IList<int> invoicesId);
+        Response<Solfac> Post(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId);
+        Response DeleteSolfacCertificate(int id, int certificateId);
+        Response<IList<Certificate>> AddCertificates(int id, IList<int> certificates);
     }
 }

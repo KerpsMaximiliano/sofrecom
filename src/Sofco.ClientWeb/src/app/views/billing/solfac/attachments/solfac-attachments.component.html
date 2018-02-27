@@ -74,10 +74,52 @@
                 </div>
             </div>
         </div>
+
+        <div class="hr-line-dashed"></div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label">Certificados</label>
+                    <select id="certificate" select2 multiple class="form-control">
+                        <option *ngFor="let certificate of certificates" [value]="certificate?.value">{{certificate?.text}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-invoice-add" (click)="addCertificate()" *ngIf="certificates.length > 0">{{'ACTIONS.ADD' | translate }}</button>
+            </div>
+        </div>
+
+        <div class="row attachments-scroll">
+            <div class="col-lg-3 col-sm-6 col" *ngFor="let certificate of certificatesRelated; let i = index">
+                <div class="file-box">
+                    <div class="file">
+                        <div class="icon"><i class="fa fa-file"></i></div>
+                        <div class="file-name text-word-break">
+                            {{ certificate.name }}
+                            <br>
+                            <small>{{'billing.invoice.createdAt' | translate }}: {{ certificate.creationDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                        </div>
+                        <div class="file-buttons">
+                            <div class="file-name export-file text-center pointer" (click)="exportCertificate(certificate)" *ngIf="certificate.fileId > 0">
+                                <i class="fa fa-download"></i>
+                                {{ 'ACTIONS.export' | translate }}
+                            </div>
+                            <div class="file-name remove-file text-center pointer" (click)="showConfirmDeleteCertificate(certificate, i)">
+                                <i class="fa fa-trash"></i>
+                                {{ 'ACTIONS.DELETE' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
+<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
 

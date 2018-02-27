@@ -26,13 +26,14 @@ namespace Sofco.DAL
         public DbSet<Group> Groups { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
+        public DbSet<UserGroup> UserGroup { get; set; }
+        public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -105,6 +106,7 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
+            builder.MapSolfacCertificates();
         }
     }
 }

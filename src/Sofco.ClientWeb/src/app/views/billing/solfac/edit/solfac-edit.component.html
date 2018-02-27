@@ -151,7 +151,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12" *ngIf="model.invoiceRequired">
 
@@ -174,7 +174,7 @@
                                             <i class="fa fa-info-circle"></i> {{'billing.solfac.invoicesRelated' | translate }}
                                         </div>
                                         <div class="panel-body">
-                                            <ul class="todo-list m-t small-list">
+                                            <ul class="todo-list small-list">
                                                 <li *ngFor="let invoice of invoicesRelated; let i = index">
                                                     <span (click)="pdfViewer.getPdf(invoice.id)" class="m-l-xs pointer">{{invoice.pdfFileName}}</span>
                                                     <span (click)="deleteInvoiceOfSolfac(invoice.id, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>

@@ -48,6 +48,7 @@ export class StatusDeleteComponent implements OnDestroy  {
 
   canDelete(){
       if(this.solfacId > 0 && (this.status == SolfacStatus[SolfacStatus.SendPending] || 
+                               this.status == SolfacStatus[SolfacStatus.RejectedByDaf] || 
                                this.status == SolfacStatus[SolfacStatus.ManagementControlRejected])){
           return true;
       }

@@ -14,6 +14,7 @@ namespace Sofco.WebApi.Models.Billing
             Hitos = new List<HitoViewModel>();
             Details = new List<HitoDetailViewModel>();
             InvoicesId = new List<int>();
+            CertificatesId = new List<int>();
         }
 
         public int Id { get; set; }
@@ -89,6 +90,8 @@ namespace Sofco.WebApi.Models.Billing
         public DateTime UpdatedDate { get; set; }
 
         public IList<int> InvoicesId { get; set; }
+
+        public IList<int> CertificatesId { get; set; }
 
         public string CustomerId { get; set; }
 

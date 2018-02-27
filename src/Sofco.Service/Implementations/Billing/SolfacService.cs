@@ -18,6 +18,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -44,7 +45,7 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
         }
 
-        public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId)
+        public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
         {
             var response = Validate(solfac);
 
@@ -68,21 +69,14 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
 
                 // Update Invoice Status to Related
-                foreach (var invoiceId in invoicesId)
-                {
-                    var invoiceToModif = new Invoice
-                    {
-                        Id = invoiceId,
-                        SolfacId = solfac.Id,
-                        InvoiceStatus = InvoiceStatus.Related
-                    };
-                    unitOfWork.InvoiceRepository.UpdateSolfacId(invoiceToModif);
-                    unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
-                }
+                LoadInvoices(solfac, invoicesId);
 
-                if (invoicesId.Any())
+                // Add Certificates
+                LoadCertificates(solfac, certificatesId);
+
+                if (invoicesId.Any() || certificatesId.Any())
                 {
-                    // Save Invoices related
+                    // Save Invoices or Certificates related
                     unitOfWork.Save();
                 }
 
@@ -103,6 +97,35 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        private void LoadInvoices(Solfac solfac, IList<int> invoicesId)
+        {
+            foreach (var invoiceId in invoicesId)
+            {
+                var invoiceToModif = new Invoice
+                {
+                    Id = invoiceId,
+                    SolfacId = solfac.Id,
+                    InvoiceStatus = InvoiceStatus.Related
+                };
+                unitOfWork.InvoiceRepository.UpdateSolfacId(invoiceToModif);
+                unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
+            }
+        }
+
+        private void LoadCertificates(Solfac solfac, IList<int> certificatesId)
+        {
+            foreach (var certificateId in certificatesId)
+            {
+                var solfacCertificate = new SolfacCertificate
+                {
+                    CertificateId = certificateId,
+                    SolfacId = solfac.Id
+                };
+
+                unitOfWork.CertificateRepository.RelateToSolfac(solfacCertificate);
+            }
         }
 
         public IList<Solfac> Search(SolfacParams parameter, string userMail, EmailConfig emailConfig)
@@ -697,9 +720,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Solfac> Post(Solfac solfac, IList<int> invoicesId)
+        public Response<Solfac> Post(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
         {
-            var result = CreateSolfac(solfac, invoicesId);
+            var result = CreateSolfac(solfac, invoicesId, certificatesId);
 
             if (result.HasErrors())
                 return result;
@@ -710,6 +733,72 @@ namespace Sofco.Service.Implementations.Billing
             crmInvoiceService.UpdateHitoStatus(result.Data.Hitos.ToList(), HitoStatus.Pending);
 
             return result;
+        }
+
+        public Response DeleteSolfacCertificate(int id, int certificateId)
+        {
+            var response = new Response();
+
+            SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
+            CertificateValidationHandler.Exist(response, certificateId, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var solfacCertificate = new SolfacCertificate {SolfacId = id, CertificateId = certificateId};
+                unitOfWork.SolfacCertificateRepository.Delete(solfacCertificate);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.Certificate.SolfacCertificateDeleted);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Certificate>> AddCertificates(int id, IList<int> certificates)
+        {
+            var response = new Response<IList<Certificate>> { Data = new List<Certificate>() };
+
+            SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                foreach (var certificateId in certificates)
+                {
+                    var certificate = unitOfWork.CertificateRepository.GetById(certificateId);
+
+                    if (certificate != null)
+                    {
+                        var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
+                        unitOfWork.SolfacCertificateRepository.Insert(solfacCertificate);
+
+                        response.Data.Add(certificate);
+                    }
+                    else
+                    {
+                        response.AddWarning(Resources.Billing.Certificate.NotFound);
+                    }
+                }
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.Certificate.SolfacCertificateRelated);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         private void CreateHitoOnCrm(Solfac solfac)

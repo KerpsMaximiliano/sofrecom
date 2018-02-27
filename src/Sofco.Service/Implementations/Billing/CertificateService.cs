@@ -11,6 +11,7 @@ using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using File = Sofco.Model.Models.Common.File;
 
@@ -106,11 +107,21 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public ICollection<Certificate> GetByClient(string client)
+        {
+            return unitOfWork.CertificateRepository.GetByClients(client);
+        }
+
+        public ICollection<SolfacCertificate> GetBySolfac(int id)
+        {
+            return unitOfWork.CertificateRepository.GetBySolfacs(id);
+        }
+
         public Response Update(Certificate domain)
         {
             var response = new Response<Certificate>();
 
-            CertificateValidationHandler.Exist(response, domain, unitOfWork);
+            CertificateValidationHandler.Exist(response, domain.Id, unitOfWork);
 
             if (response.HasErrors()) return response;
 

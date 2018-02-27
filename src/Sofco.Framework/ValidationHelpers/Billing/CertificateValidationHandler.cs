@@ -44,9 +44,9 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             return certificate;
         }
 
-        public static void Exist(Response<Certificate> response, Certificate domain, IUnitOfWork unitOfWork)
+        public static void Exist(Response response, int certificateId, IUnitOfWork unitOfWork)
         {
-            var exist = unitOfWork.CertificateRepository.Exist(domain.Id);
+            var exist = unitOfWork.CertificateRepository.Exist(certificateId);
 
             if (!exist)
             {

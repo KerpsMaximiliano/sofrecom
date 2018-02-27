@@ -5,6 +5,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.Billing
 {
@@ -39,6 +40,27 @@ namespace Sofco.DAL.Repositories.Billing
             }
 
             return query.ToList();
+        }
+
+        public ICollection<Certificate> GetByClients(string client)
+        {
+            var certificatesInUse = context.SolfacCertificates.Select(x => x.CertificateId).Distinct().ToList();
+
+            return context.Certificates.Where(x => x.ClientExternalId.Equals(client) && !certificatesInUse.Contains(x.Id)).ToList();
+        }
+
+        public void RelateToSolfac(SolfacCertificate solfacCertificate)
+        {
+            context.SolfacCertificates.Add(solfacCertificate);
+        }
+
+        public ICollection<SolfacCertificate> GetBySolfacs(int id)
+        {
+            return context.SolfacCertificates
+                .Include(x => x.Certificate)
+                .ThenInclude(x => x.File)
+                .Where(x => x.SolfacId == id)
+                .ToList();
         }
     }
 }
