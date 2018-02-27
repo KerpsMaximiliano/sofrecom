@@ -66,6 +66,7 @@ import { CertificateFormComponent } from 'app/views/billing/certificates/form/ce
 import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 import { CertificatesService } from 'app/services/billing/certificates.service';
+import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -76,7 +77,7 @@ import { CertificatesService } from 'app/services/billing/certificates.service';
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
-                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent],
+                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],

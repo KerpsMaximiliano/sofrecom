@@ -293,7 +293,12 @@
             "delegate": {
                 "title": "Solfac Delegate",
                 "users": "Users",
-                "saveSuccess": "User added succesfully."
+                "saveSuccess": "User added succesfully.",
+                "service": "Service",
+                "manager": "Manager",
+                "user": "User",
+                "createdUser": "Created by",
+                "createdDate": "Created Date"
             }
         },
         "invoice":{

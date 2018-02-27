@@ -54,6 +54,7 @@ import { CertificateSearchComponent } from 'app/views/billing/certificates/searc
 import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
 import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
+import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -114,6 +115,7 @@ export const ROUTES:Routes = [
         children: [
          { path: "", component: SolfacComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
          { path: "delegate", component: SolfacDelegateComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
+         { path: "delegate/edit", component: SolfacDelegateEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
          { path: ":solfacId/edit", component: SolfacEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
          { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
          { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } }

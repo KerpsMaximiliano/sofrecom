@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -11,19 +15,41 @@ namespace Sofco.Service.Implementations.Billing
     public class SolfacDelegateService : ISolfacDelegateService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IServiceData serviceData;
+        private readonly IUserData userData;
         private readonly ISessionManager sessionManager;
+        private readonly IMapper mapper;
 
-        public SolfacDelegateService(IUnitOfWork unitOfWork, ISessionManager sessionManager)
+        public SolfacDelegateService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IServiceData serviceData, IMapper mapper, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
+            this.serviceData = serviceData;
+            this.mapper = mapper;
+            this.userData = userData;
         }
 
-        public Response<List<SolfacDelegate>> GetByServiceId(Guid serviceId)
+        public Response<List<SolfacDelegateModel>> GetAll()
         {
-            var response = new Response<List<SolfacDelegate>>
+            var data = unitOfWork.SolfacDelegateRepository.GetAll();
+
+            var items = new List<SolfacDelegateModel>();
+            foreach (var solfacDelegate in data)
             {
-                Data = unitOfWork.SolfacDelegateRepository.GetByServiceId(serviceId)
+                var model = Translate(solfacDelegate);
+                var service = serviceData.GetService(solfacDelegate.ServiceId);
+                var user = userData.GetById(solfacDelegate.UserId);
+
+                model.ManagerName = service.Manager;
+                model.ServiceName = service.Nombre;
+                model.UserName = user.Name;
+
+                items.Add(model);
+            }
+
+            var response = new Response<List<SolfacDelegateModel>>
+            {
+                Data = items
             };
 
             return response;
@@ -56,6 +82,11 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return respone;
+        }
+
+        private SolfacDelegateModel Translate(SolfacDelegate solfacDelegate)
+        {
+            return mapper.Map<SolfacDelegate, SolfacDelegateModel>(solfacDelegate);
         }
     }
 }

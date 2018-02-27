@@ -205,7 +205,12 @@
             "delegate": {
                 "title": "Déléguer Solfac",
                 "users": "Utilisateurs",
-                "saveSuccess": "Utilisateur ajouté correctement."
+                "saveSuccess": "Utilisateur ajouté correctement.",
+                "service": "Service",
+                "manager": "Gérant",
+                "user": "Utilisateur",
+                "createdUser": "Crée par",
+                "createdDate": "Date de Création"
             }
          },
          "invoice":{

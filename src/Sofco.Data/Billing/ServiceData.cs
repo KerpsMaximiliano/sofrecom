@@ -12,6 +12,8 @@ namespace Sofco.Data.Billing
     public class ServiceData : IServiceData
     {
         private const string ServicesCacheKey = "urn:customers:{0}:services:{1}:all";
+        private const string ServiceByIdCacheKey = "urn:services:{0}";
+
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
@@ -22,7 +24,7 @@ namespace Sofco.Data.Billing
         {
             this.cacheManager = cacheManager;
             this.client = client;
-            this.crmConfig = crmOptions.Value;
+            crmConfig = crmOptions.Value;
         }
 
         public IList<CrmService> GetServices(string customerId, string identityName, string userMail, bool hasDirectorGroup)
@@ -39,6 +41,22 @@ namespace Sofco.Data.Billing
                     return result.Data;
                 },
                 x => x.Id,
+                cacheExpire);
+        }
+
+        public CrmService GetService(Guid serviceId)
+        {
+            var cacheKey = string.Format(ServiceByIdCacheKey, serviceId);
+
+            return cacheManager.Get(cacheKey,
+                () =>
+                {
+                    var url = $"{crmConfig.Url}/api/service?id={serviceId}";
+
+                    var result = client.Get<CrmService>(url);
+
+                    return result.Data;
+                },
                 cacheExpire);
         }
     }

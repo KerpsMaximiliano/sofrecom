@@ -16,37 +16,34 @@
  
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
         <div class="ibox-content">
 
             <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'billing.solfac.customers' | translate }}</label>
-                        <select id="customerControl" class="form-control"></select>
-                    </div>
-                </div>
-                <div class="col-sm-4" [hidden]="!showService()">
-                    <div class="form-group">
-                        <label class="control-label">{{'billing.service.title' | translate }}</label>
-                        <select id="serviceControl" class="form-control"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" [hidden]="!showUser()">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'billing.solfac.delegate.users' | translate }}</label>
-                        <select id="userControl" class="form-control"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ibox-footer">
-                <div style="float:left;margin-right:10px" [hidden]="!showSave()">
-                    <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-                </div>
-                <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/solfac/delegate']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                <table class="table table-striped" width="100%" role="grid" id="delegateTable">
+                    <thead>
+                        <tr>
+                            <th>{{'billing.solfac.delegate.service' | translate }}</th>
+                            <th>{{'billing.solfac.delegate.manager' | translate }}</th>
+                            <th>{{'billing.solfac.delegate.user' | translate }}</th>
+                            <th>{{'billing.solfac.delegate.createdUser' | translate }}</th>
+                            <th>{{'billing.solfac.delegate.createdDate' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of delegates">
+                            <td>{{ item.serviceName }}</td>
+                            <td>{{ item.managerName }}</td>
+                            <td>{{ item.userName }}</td>
+                            <td>{{ item.createdUser }}</td>
+                            <td>{{ item.created | date:'dd/MM/yyyy hh:mm' }}</td>
+                        </tr>
+                    </tbody>
+                </table>                        
             </div>
 
         </div>

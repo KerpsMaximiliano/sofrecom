@@ -14,4 +14,8 @@ export class SolfacDelegateService {
   save(model) {
     return this.http.post(this.apiUrl, model).map((res: Response) => res.json());
   }
+
+  getAll() {
+    return this.http.get(this.apiUrl).map((res: Response) => res.json());
+  }
 }

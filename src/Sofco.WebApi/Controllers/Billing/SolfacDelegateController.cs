@@ -18,10 +18,10 @@ namespace Sofco.WebApi.Controllers.Billing
             this.solfacDelegateService = solfacDelegateService;
         }
 
-        [HttpGet("{serviceId}")]
-        public IActionResult Get(Guid serviceId)
+        [HttpGet]
+        public IActionResult Get()
         {
-            var response = solfacDelegateService.GetByServiceId(serviceId);
+            var response = solfacDelegateService.GetAll();
 
             return this.CreateResponse(response);
         }

@@ -17,9 +17,9 @@ namespace Sofco.DAL.Repositories.Billing
             SolfacDelegateSet = context.Set<SolfacDelegate>();
         }
 
-        public List<SolfacDelegate> GetByServiceId(Guid serviceId)
+        public new List<SolfacDelegate> GetAll()
         {
-            return SolfacDelegateSet.Where(s => s.ServiceId == serviceId).ToList();
+            return base.GetAll().ToList();
         }
 
         public SolfacDelegate Save(SolfacDelegate solfacDelegate)

@@ -12,7 +12,6 @@ namespace Sofco.Model.Models.Billing
 
         public string CreatedUser { get; set; }
 
-        [JsonIgnore]
         public DateTime? Created { get; set; }
 
         [JsonIgnore]

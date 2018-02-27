@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
@@ -7,7 +8,7 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ISolfacDelegateService
     {
-        Response<List<SolfacDelegate>> GetByServiceId(Guid serviceId);
+        Response<List<SolfacDelegateModel>> GetAll();
 
         Response<SolfacDelegate> Save(SolfacDelegate solfacDelegate);
     }
