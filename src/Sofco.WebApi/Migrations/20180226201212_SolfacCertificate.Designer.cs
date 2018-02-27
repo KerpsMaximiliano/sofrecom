@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180226201212_SolfacCertificate")]
+    partial class SolfacCertificate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -905,30 +906,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("SolfacId");
 
                     b.ToTable("SolfacAttachments");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacDelegate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<string>("CreatedUser")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("Modified");
-
-                    b.Property<Guid>("ServiceId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("SolfacDelegate");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacHistory", b =>

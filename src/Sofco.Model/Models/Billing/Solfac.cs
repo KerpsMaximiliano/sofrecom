@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Billing
 {
@@ -84,5 +85,7 @@ namespace Sofco.Model.Models.Billing
         public string Manager { get; set; }
 
         public string ManagerId { get; set; }
+
+        public ICollection<SolfacCertificate> SolfacCertificates { get; set; }
     }
 }

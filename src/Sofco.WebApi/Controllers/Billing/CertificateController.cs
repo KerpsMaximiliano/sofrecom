@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
@@ -38,6 +39,14 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors()) return BadRequest(response);
 
             return Ok(new CertificateEditViewModel(response.Data));
+        }
+
+        [HttpGet("client/{client}")]
+        public IActionResult GetByClients(string client)
+        {
+            var certificates = certificateService.GetByClient(client);
+
+            return Ok(certificates.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }));
         }
 
 

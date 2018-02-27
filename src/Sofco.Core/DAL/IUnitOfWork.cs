@@ -30,6 +30,7 @@ namespace Sofco.Core.DAL
         IPurchaseOrderRepository PurchaseOrderRepository { get; }
         ICertificateRepository CertificateRepository { get; }
         ISolfacDelegateRepository SolfacDelegateRepository { get; }
+        ISolfacCertificateRepository SolfacCertificateRepository { get; }
 
         #endregion
 

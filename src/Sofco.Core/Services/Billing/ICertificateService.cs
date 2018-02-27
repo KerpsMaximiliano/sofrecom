@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Models.Common;
+using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -16,5 +17,7 @@ namespace Sofco.Core.Services.Billing
         Response Update(Certificate domain);
         ICollection<Certificate> Search(SearchCertificateParams parameters);
         Response DeleteFile(int id);
+        ICollection<Certificate> GetByClient(string client);
+        ICollection<SolfacCertificate> GetBySolfac(int id);
     }
 }

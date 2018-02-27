@@ -36,6 +36,10 @@ export class SolfacService {
     return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/files`).map((res:Response) => res.json());
   }
 
+  getCertificatesRelated(solfacId) {
+    return this.http.get(`${this.baseUrl}/solfacs/${solfacId}/certificates`).map((res:Response) => res.json());
+  }
+
   add(model){
      return this.http.post(`${this.baseUrl}/solfacs`, model).map((res:Response) => res.json());
   }
@@ -74,6 +78,10 @@ export class SolfacService {
      return this.http.delete(`${this.baseUrl}/solfacs/${id}`).map((res:Response) => res.json());
   }
 
+  deleteCertificate(id, certificateId){
+    return this.http.delete(`${this.baseUrl}/solfacs/${id}/certificate/${certificateId}`).map((res:Response) => res.json());
+  }
+
   deleteDetail(id){
     return this.http.delete(`${this.baseUrl}/solfacs/details/${id}`).map((res:Response) => res.json());
  }
@@ -96,6 +104,10 @@ export class SolfacService {
 
   addInvoices(id, invoices){
     return this.http.post(`${this.baseUrl}/solfacs/${id}/invoices`, invoices).map((res:Response) => res.json());
+  }
+
+  addCertificates(id, certificates){
+    return this.http.post(`${this.baseUrl}/solfacs/${id}/certificates`, certificates).map((res:Response) => res.json());
   }
 
   downloadFile(id){

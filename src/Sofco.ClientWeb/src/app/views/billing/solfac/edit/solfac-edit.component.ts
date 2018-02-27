@@ -14,6 +14,7 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import * as FileSaver from "file-saver";
+import { CertificatesService } from '../../../../services/billing/certificates.service';
 
 declare var $:any;
 
@@ -53,6 +54,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     deleteSubscrip: Subscription;
 
     @ViewChild('history') history: any;
+    @ViewChild('solfacAttachments') solfacAttachments: any;
 
     @ViewChild('updateModal') updateModal;
     public updateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -123,6 +125,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
             this.router.navigate([`/billing/customers/${d.customerId}/services/${d.serviceId}/projects/${d.projectId}`]);
         }
         this.setIntegrator();
+        this.solfacAttachments.getCertificatesAvailable(this.model.customerId);
       },
       err => this.errorHandlerService.handleErrors(err));
     }

@@ -105,6 +105,24 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/certificate.solfacCertificateDeleted.
+        /// </summary>
+        public static string SolfacCertificateDeleted {
+            get {
+                return ResourceManager.GetString("SolfacCertificateDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to billing/certificate.solfacCertificateRelated.
+        /// </summary>
+        public static string SolfacCertificateRelated {
+            get {
+                return ResourceManager.GetString("SolfacCertificateRelated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/certificate.yearIsRequired.
         /// </summary>
         public static string YearIsRequired {

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Model.Models.Common;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Billing
 {
@@ -19,5 +21,7 @@ namespace Sofco.Model.Models.Billing
 
         public int? FileId { get; set; }
         public File File { get; set; }
+
+        public ICollection<SolfacCertificate> SolfacCertificates { get; set; }
     }
 }

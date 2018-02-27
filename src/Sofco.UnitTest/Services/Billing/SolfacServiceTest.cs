@@ -74,7 +74,7 @@ namespace Sofco.UnitTest.Services.Billing
         {
             var solfac = GetSolfacData();
 
-            var actual = sut.CreateSolfac(solfac, new[] { 1, 2 });
+            var actual = sut.CreateSolfac(solfac, new[] { 1, 2 }, new List<int>());
 
             Assert.False(actual.HasErrors());
 
@@ -94,7 +94,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             solfac.DocumentTypeId = documentTypeId;
 
-            var actual = sut.CreateSolfac(solfac, new List<int>());
+            var actual = sut.CreateSolfac(solfac, new List<int>(), new List<int>());
 
             Assert.False(actual.HasErrors());
 
@@ -112,7 +112,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             solfac.DocumentTypeId = SolfacDocumentType.DebitNote;
 
-            var actual = sut.CreateSolfac(solfac, new List<int>());
+            var actual = sut.CreateSolfac(solfac, new List<int>(), new List<int>());
 
             Assert.False(actual.HasErrors());
 

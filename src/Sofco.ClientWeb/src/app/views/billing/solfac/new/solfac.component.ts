@@ -15,6 +15,7 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { Hito } from 'app/models/billing/solfac/hito';
 import { ServiceService } from 'app/services/billing/service.service';
+import { CertificatesService } from 'app/services/billing/certificates.service';
 
 declare var $:any;
 
@@ -32,6 +33,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
+    public certificates: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
     public integratorProject: any;
@@ -44,6 +46,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    getCertificateAvailableSubscrip: Subscription;
 
     public test;
 
@@ -61,6 +64,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private menuService: MenuService,
+                private certificateService: CertificatesService,
                 private customerService: CustomerService,
                 private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
@@ -78,6 +82,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
        if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+       if(this.getCertificateAvailableSubscrip) this.getCertificateAvailableSubscrip.unsubscribe();
     }
 
     setDataForMultipleProjects(multipleProjects){
@@ -221,6 +226,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
       
       this.setCurrencySymbol(this.model.currencyId.toString());
+      this.getCertificatesAvailable();
     }
 
     getInvoicesOptions(projectId){
@@ -281,6 +287,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.messageService.showLoading();
 
       this.model.invoicesId = <any>$('#invoices').val();
+      this.model.certificatesId = <any>$('#certificates').val();
 
       this.solfacService.add(this.model).subscribe(
         data => {
@@ -380,5 +387,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     hasIntegrator():Boolean {
       return false;
+    }
+
+    getCertificatesAvailable(){
+      this.getCertificateAvailableSubscrip = this.certificateService.getByClient(this.model.customerId).subscribe(data => {
+        this.certificates = data;
+      },
+      err => this.errorHandlerService.handleErrors(err));
     }
 }
