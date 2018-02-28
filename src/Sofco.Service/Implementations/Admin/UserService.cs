@@ -196,11 +196,13 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public Response<User> GetByMail(string mail)
+        public Response<User> GetByMail()
         {
+            var email = sessionManager.GetUserMail();
+
             var response = new Response<User>();
 
-            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(mail));
+            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(email));
 
             if(user == null)
             {
