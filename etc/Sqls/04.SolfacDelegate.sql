@@ -1,17 +1,16 @@
-IF (NOT EXISTS (SELECT 1 FROM app.GlobalSettings WHERE [Key] = 'AllocationManagement_Months'))
+DECLARE @SolfacModuleId Int = (SELECT id FROM app.Modules WHERE Code = 'SOLFA');
+
+IF (NOT EXISTS (SELECT 1 FROM app.Functionalities WHERE Code = 'SOLDE'))
 BEGIN
-	INSERT app.GlobalSettings ([Key], Value, Type) VALUES ('AllocationManagement_Months', 12, 1)
+	INSERT INTO app.Functionalities  (Active, [Description], Code, ModuleId) 
+	VALUES (1, 'Delegar Solfac', 'SOLDE', @SolfacModuleId);
 END
 
-IF (NOT EXISTS (SELECT 1 FROM app.Modules WHERE Code = 'PARMS'))
+DECLARE @FuncId Int = (SELECT Id FROM app.Functionalities WHERE Code = 'SOLDE')
+DECLARE @RoleId Int = (SELECT Id from app.Roles WHERE Description = 'Gerente')
+
+IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @RoleId AND FunctionalityId = @FuncId))
 BEGIN
-	INSERT INTO app.Modules  (Active, [Description], Code) 
-	VALUES (1, 'Parámetros', 'PARMS');
-
-	IF (NOT EXISTS (SELECT 1 FROM app.Functionalities WHERE [Description] = 'Parámetros'))
-	BEGIN
-		INSERT INTO app.Functionalities  (Active, [Description], Code, ModuleId) 
-		VALUES (1, 'Parámetros', 'UPDAT', @@IDENTITY);
-	END
+	INSERT INTO app.RoleFunctionality  (RoleId, FunctionalityId) 
+	VALUES (@RoleId, @FuncId);
 END
-
