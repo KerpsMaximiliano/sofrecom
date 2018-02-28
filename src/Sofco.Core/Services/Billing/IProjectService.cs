@@ -9,7 +9,7 @@ namespace Sofco.Core.Services.Billing
     {
         IList<CrmProjectHito> GetHitosByProject(string projectId);
 
-        Response<IList<CrmProject>> GetProjects(string serviceId, string getUserMail, string getUserName);
+        Response<IList<CrmProject>> GetProjects(string serviceId);
 
         Response<CrmProject> GetProjectById(string projectId);
     }

@@ -28,7 +28,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var respone = projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
+                var respone = projectService.GetProjects(serviceId);
 
                 if (respone.HasErrors()) return BadRequest(respone);
 
@@ -64,7 +64,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("service/{serviceId}")]
         public IActionResult Get(string serviceId)
         {
-            var response = projectService.GetProjects(serviceId, this.GetUserMail(), this.GetUserName());
+            var response = projectService.GetProjects(serviceId);
 
             if (response.HasErrors()) return BadRequest(response);
 

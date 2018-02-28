@@ -253,7 +253,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] InvoiceParams parameters)
         {
-            var invoices = invoiceService.Search(parameters, this.GetUserMail(), emailConfig);
+            var invoices = invoiceService.Search(parameters);
 
             if (!invoices.Any())
             {

@@ -5,14 +5,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
+using Sofco.Model.Models.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.Billing;
-using Sofco.Model.Models.Common;
+
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -23,11 +25,13 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly ICertificateService certificateService;
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
+        private readonly ISessionManager sessionManager;
 
-        public CertificateController(ICertificateService certificateService, IFileService fileService, IOptions<FileConfig> fileOptions)
+        public CertificateController(ICertificateService certificateService, IFileService fileService, IOptions<FileConfig> fileOptions, ISessionManager sessionManager)
         {
             this.certificateService = certificateService;
             this.fileService = fileService;
+            this.sessionManager = sessionManager;
             this.fileConfig = fileOptions.Value;
         }
 
@@ -53,7 +57,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPost]
         public IActionResult Post([FromBody] CertificateViewModel model)
         {
-            var domain = model.CreateDomain(this.GetUserName());
+            var domain = model.CreateDomain(sessionManager.GetUserName());
 
             var response = certificateService.Add(domain);
 
@@ -63,7 +67,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPut]
         public IActionResult Put([FromBody] CertificateEditViewModel model)
         {
-            var domain = model.CreateDomain(this.GetUserName());
+            var domain = model.CreateDomain(sessionManager.GetUserName());
 
             var response = certificateService.Update(domain);
 
@@ -87,7 +91,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var file = Request.Form.Files.First();
 
-                await certificateService.AttachFile(certificateId, response, file, this.GetUserName());
+                await certificateService.AttachFile(certificateId, response, file, sessionManager.GetUserName());
             }
             else
             {

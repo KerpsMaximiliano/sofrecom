@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -26,14 +27,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
+        private readonly ISessionManager sessionManager;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
             this.mailBuilder = mailBuilder;
             this.mapper = mapper;
+            this.sessionManager = sessionManager;
             emailConfig = emailOptions.Value;
         }
 
@@ -75,6 +78,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters)
         {
+            parameters.UserName = sessionManager.GetUserName();
+
             var response = new Response();
 
             if (string.IsNullOrWhiteSpace(employeeName))

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
@@ -24,12 +25,14 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly IPurchaseOrderService purchaseOrderService;
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
+        private readonly ISessionManager sessionManager;
 
-        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, IFileService fileService, IOptions<FileConfig> fileOptions)
+        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, IFileService fileService, IOptions<FileConfig> fileOptions, ISessionManager sessionManager)
         {
             this.purchaseOrderService = purchaseOrderService;
             this.fileService = fileService;
-            this.fileConfig = fileOptions.Value;
+            this.sessionManager = sessionManager;
+            fileConfig = fileOptions.Value;
         }
 
         [HttpGet("formOptions")]
@@ -52,7 +55,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPost]
         public IActionResult Post([FromBody] PurchaseOrderViewModel model)
         {
-            var domain = model.CreateDomain(this.GetUserName());
+            var domain = model.CreateDomain(sessionManager.GetUserName());
 
             var response = purchaseOrderService.Add(domain);
 
@@ -62,7 +65,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPut]
         public IActionResult Put([FromBody] PurchaseOrderEditViewModel model)
         {
-            var domain = model.CreateDomain(this.GetUserName());
+            var domain = model.CreateDomain(sessionManager.GetUserName());
 
             var response = purchaseOrderService.Update(domain);
 
@@ -86,7 +89,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var file = Request.Form.Files.First();
 
-                await purchaseOrderService.AttachFile(purchaseOrderId, response, file, this.GetUserName());
+                await purchaseOrderService.AttachFile(purchaseOrderId, response, file, sessionManager.GetUserName());
             }
             else
             {
