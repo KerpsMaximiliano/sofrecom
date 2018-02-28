@@ -3,27 +3,28 @@ import { RouterModule } from '@angular/router';
 import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ICheckModule } from "app/components/icheck/icheck.module";
-import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
-import { TranslateModule } from "@ngx-translate/core";
+import { ICheckModule } from 'app/components/icheck/icheck.module';
+import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
 
-import { CustomerService } from "app/services/billing/customer.service";
+import { CustomerService } from 'app/services/billing/customer.service';
 import { ProjectService } from 'app/services/billing/project.service';
 import { ServiceService } from 'app/services/billing/service.service';
 import { SolfacService } from 'app/services/billing/solfac.service';
+import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
 
 import { CustomersComponent } from './customers/customers.component';
 import { ServicesComponent } from './services/services.component';
 import { ProjectsComponent } from './projects/project-list/projects.component';
-import { SolfacComponent } from "./solfac/new/solfac.component";
-import { ProjectDetailComponent } from "app/views/billing/projects/project-detail/project-detail.component";
-import { SolfacDetailComponent } from "app/views/billing/solfac/detail/solfac-detail.component";
-import { SpinnerModule } from "app/components/spinner/spinner.module";
-import { SolfacSearchComponent } from "app/views/billing/solfac/search/solfac-search.component";
-import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.component";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
+import { SolfacComponent } from './solfac/new/solfac.component';
+import { ProjectDetailComponent } from 'app/views/billing/projects/project-detail/project-detail.component';
+import { SolfacDetailComponent } from 'app/views/billing/solfac/detail/solfac-detail.component';
+import { SpinnerModule } from 'app/components/spinner/spinner.module';
+import { SolfacSearchComponent } from 'app/views/billing/solfac/search/solfac-search.component';
+import { InvoiceComponent } from 'app/views/billing/invoice/new/invoice.component';
+import { InvoiceService } from 'app/services/billing/invoice.service';
+import { InvoiceDetailComponent } from 'app/views/billing/invoice/detail/invoice-detail.component';
 import { SolfacHistoryComponent } from 'app/views/billing/solfac/history/solfac-history.component';
 import { SolfacEditComponent } from 'app/views/billing/solfac/edit/solfac-edit.component';
 import { InvoiceSearchComponent } from 'app/views/billing/invoice/search/invoice-search.component';
@@ -59,29 +60,32 @@ import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service
 import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
 import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
 import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
+import { SolfacDelegateComponent } from 'app/views/billing/solfac/solfac-delegate/solfac-delegate.component'
 import { CertificateSearchComponent } from 'app/views/billing/certificates/search/search-certificate.component';
 import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
 import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 import { CertificatesService } from 'app/services/billing/certificates.service';
+import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 
 @NgModule({
-  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent, 
+  declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
                  SolfacDetailComponent, InvoiceComponent, InvoiceDetailComponent, SolfacHistoryComponent, SolfacEditComponent, InvoiceSearchComponent,
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, CertificateSearchComponent,
-                 CertificateFormComponent, EditCertificateComponent, NewCertificateComponent],
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
+                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
 
-  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService],
-  
+  providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
+                SolfacDelegateService],
+
   exports     : []
 })
- 
-export class BillingModule {} 
+
+export class BillingModule {}

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
@@ -12,21 +11,18 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IServiceData serviceData;
-        private readonly EmailConfig emailConfig;
+        private readonly ISessionManager sessionManager;
 
-        public ServicesService(IUnitOfWork unitOfWork, IServiceData serviceData, IOptions<EmailConfig> emailConfig)
+        public ServicesService(IUnitOfWork unitOfWork, IServiceData serviceData, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.serviceData = serviceData;
-            this.emailConfig = emailConfig.Value;
+            this.sessionManager = sessionManager;
         }
 
-        public IList<CrmService> GetServices(string customerId, string userMail, string userName)
+        public IList<CrmService> GetServices(string customerId)
         {
-            var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var hasCommercialGroup = this.unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
-
-            return serviceData.GetServices(customerId, userName, userMail, hasDirectorGroup || hasCommercialGroup);
+            return serviceData.GetServices(customerId, sessionManager.GetUserMail());
         }
 
         public bool HasAnalyticRelated(string serviceId)

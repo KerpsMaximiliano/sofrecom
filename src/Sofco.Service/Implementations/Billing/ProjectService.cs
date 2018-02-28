@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
@@ -23,15 +24,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
-        private readonly EmailConfig emailConfig;
+        private readonly SessionManager sessionManager;
 
         public ProjectService(ISolfacService solfacService, 
             IOptions<CrmConfig> crmOptions, 
             IUnitOfWork unitOfWork,
             IProjectData projectData, 
             ICrmHttpClient client,
-            IOptions<EmailConfig> emailConfig,
-            ILogMailer<ProjectService> logger)
+            ILogMailer<ProjectService> logger, SessionManager sessionManager)
         {
             this.solfacService = solfacService;
             this.unitOfWork = unitOfWork;
@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             this.projectData = projectData;
             this.client = client;
             this.logger = logger;
-            this.emailConfig = emailConfig.Value;
+            this.sessionManager = sessionManager;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)
@@ -72,14 +72,16 @@ namespace Sofco.Service.Implementations.Billing
             return crmProjectHitos;
         }
 
-        public Response<IList<CrmProject>> GetProjects(string serviceId, string userMail, string userName)
+        public Response<IList<CrmProject>> GetProjects(string serviceId)
         {
+            var userMail = sessionManager.GetUserMail();
+            var userName = sessionManager.GetUserName();
             var response = new Response<IList<CrmProject>>();
 
             try
             {
                 var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-                var hasCommercialGroup = this.unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
+                var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(userMail);
 
                 var result = projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup || hasCommercialGroup);
 

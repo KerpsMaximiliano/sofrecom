@@ -37,7 +37,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("search")]
         public IActionResult Search([FromBody] SolfacParams parameters)
         {
-            var solfacs = solfacService.Search(parameters, this.GetUserMail(), emailConfig);
+            var solfacs = solfacService.Search(parameters);
 
             if (!solfacs.Any())
             {

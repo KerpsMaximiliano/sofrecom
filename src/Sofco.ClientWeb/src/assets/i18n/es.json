@@ -289,7 +289,18 @@
             "addUpdateComments": "Ingrese los cambios que se realizaron",
             "cannotUpdateSolfac": "No se puede modificar la solicitud en el estado actual",
             "integrator": "Integrador",
-            "customers": "Clientes"
+            "customers": "Clientes",
+            "delegate": {
+                "title": "Delegar Solfac",
+                "users": "Usuarios",
+                "saveSuccess": "Usuario agregado correctamente.",
+                "service": "Servicio",
+                "manager": "Gerente",
+                "user": "Usuario",
+                "createdUser": "Creado por",
+                "createdDate": "Fecha creación",
+                "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?"
+            }
         },
         "invoice":{
             "title": "Remitos",

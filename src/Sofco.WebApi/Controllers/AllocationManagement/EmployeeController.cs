@@ -73,8 +73,6 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]
         public IActionResult SendUnsubscribeNotification(string employeeName, [FromBody] UnsubscribeNotificationParams parameters)
         {
-            parameters.UserName = this.GetUserName();
-
             var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
 
             return this.CreateResponse(response);

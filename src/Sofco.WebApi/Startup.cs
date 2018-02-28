@@ -8,6 +8,7 @@ using log4net.Config;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,8 @@ namespace Sofco.WebApi
             services.Configure<FileConfig>(Configuration.GetSection("File"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var containerBuilder = new ContainerBuilder();
 

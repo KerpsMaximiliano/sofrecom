@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -26,12 +27,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
         private readonly IMailBuilder mailBuilder;
+        private readonly ISessionManager sessionManager;
 
         public EmployeeNewsService(IUnitOfWork unitOfWork, 
             ILogMailer<EmployeeNewsService> logger, 
             IMailSender mailSender, 
             IOptions<EmailConfig> emailOptions,
-            IMapper mapper, IMailBuilder mailBuilder)
+            IMapper mapper, IMailBuilder mailBuilder, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -39,6 +41,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             emailConfig = emailOptions.Value;
             this.mapper = mapper;
             this.mailBuilder = mailBuilder;
+            this.sessionManager = sessionManager;
         }
 
         public Response<IList<EmployeeNewsModel>> GetEmployeeNews()
@@ -70,8 +73,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
         }
 
-        public Response<EmployeeSyncAction> Add(int newsId, string userName)
+        public Response<EmployeeSyncAction> Add(int newsId)
         {
+            var userName = sessionManager.GetUserName();
+
             var response = new Response<EmployeeSyncAction>();
 
             EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);
@@ -122,8 +127,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             unitOfWork.EmployeeRepository.Delete(storedEmployee);
         }
 
-        public Response<EmployeeSyncAction> Delete(int newsId, string userName)
+        public Response<EmployeeSyncAction> Delete(int newsId)
         {
+            var userName = sessionManager.GetUserName();
+
             var response = new Response<EmployeeSyncAction>();
 
             EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);

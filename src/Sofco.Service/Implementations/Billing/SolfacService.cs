@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
@@ -30,12 +32,13 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
+        private readonly ISessionManager sessionManager;
 
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IOptions<CrmConfig> crmOptions,
             IMailSender mailSender,
-            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger)
+            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger, ISessionManager sessionManager)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
@@ -43,6 +46,7 @@ namespace Sofco.Service.Implementations.Billing
             this.mailSender = mailSender;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;
+            this.sessionManager = sessionManager;
         }
 
         public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
@@ -128,21 +132,20 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        public IList<Solfac> Search(SolfacParams parameter, string userMail, EmailConfig emailConfig)
+        public IList<Solfac> Search(SolfacParams parameter)
         {
+            var userMail = sessionManager.GetUserMail();
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail, emailConfig.DafCode);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
-            var isComercial = unitOfWork.UserRepository.HasCdgGroup(userMail, emailConfig.ComercialCode);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+            var isComercial = unitOfWork.UserRepository.HasCdgGroup(userMail);
 
             if (isDirector || isDaf || isCdg || isComercial)
             {
                 return unitOfWork.SolfacRepository.SearchByParams(parameter);
             }
-            else
-            {
-                return unitOfWork.SolfacRepository.SearchByParamsAndUser(parameter, userMail);
-            }
+
+            return unitOfWork.SolfacRepository.SearchByParamsAndUser(parameter, userMail);
         }
 
         public IList<Hito> GetHitosByProject(string projectId)

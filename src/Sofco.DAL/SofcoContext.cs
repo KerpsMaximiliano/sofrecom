@@ -106,6 +106,7 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
+            builder.MapSolfacDelegate();
             builder.MapSolfacCertificates();
         }
     }

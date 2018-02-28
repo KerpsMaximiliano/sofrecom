@@ -21,14 +21,12 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<PurchaseOrderService> logger;
-        private readonly EmailConfig emailConfig;
         private readonly FileConfig fileConfig;
 
-        public PurchaseOrderService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<EmailConfig> emailOptions, IOptions<FileConfig> fileOptions)
+        public PurchaseOrderService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<FileConfig> fileOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.emailConfig = emailOptions.Value;
             this.fileConfig = fileOptions.Value;
         }
 
@@ -36,7 +34,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var options = new PurchaseOrderOptions();
 
-            options.Sellers = unitOfWork.UserRepository.GetSellers(this.emailConfig.SellerCode).Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
             options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
             options.Analytics = unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 

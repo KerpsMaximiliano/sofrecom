@@ -6,7 +6,8 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ICustomerService
     {
-        IList<CrmCustomer> GetCustomers(string userMail, string identityName);
+        IList<CrmCustomer> GetCustomers(string userName);
+
         Response<CrmCustomer> GetCustomerById(string customerId);
     }
 }

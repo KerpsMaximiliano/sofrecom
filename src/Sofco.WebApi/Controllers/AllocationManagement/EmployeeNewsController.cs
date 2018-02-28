@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var response = employeeNewsService.Delete(id, this.GetUserName());
+            var response = employeeNewsService.Delete(id);
 
             return this.CreateResponse(response);
         }
@@ -35,7 +35,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPost("{id}")]
         public IActionResult Post(int id)
         {
-            var response = employeeNewsService.Add(id, this.GetUserName());
+            var response = employeeNewsService.Add(id);
 
             return this.CreateResponse(response);
         }

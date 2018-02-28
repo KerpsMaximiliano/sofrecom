@@ -64,7 +64,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Directors = unitOfWork.UserRepository.GetDirectors().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Sellers = unitOfWork.UserRepository.GetSellers(this.emailConfig.SellerCode).Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
             options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
