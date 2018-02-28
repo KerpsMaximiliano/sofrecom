@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
@@ -24,14 +24,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
-        private readonly SessionManager sessionManager;
+        private readonly ISessionManager sessionManager;
 
         public ProjectService(ISolfacService solfacService, 
             IOptions<CrmConfig> crmOptions, 
             IUnitOfWork unitOfWork,
             IProjectData projectData, 
             ICrmHttpClient client,
-            ILogMailer<ProjectService> logger, SessionManager sessionManager)
+            ILogMailer<ProjectService> logger, ISessionManager sessionManager)
         {
             this.solfacService = solfacService;
             this.unitOfWork = unitOfWork;
