@@ -62,6 +62,8 @@ namespace Sofco.Service.MapProfiles
 
             CreateMap<Employee, EmployeeProfileModel>()
                 .ForMember(d => d.Percentage, s => s.MapFrom(x => x.BillingPercentage));
+
+            CreateMap<Allocation, EmployeeAllocationModel>();
         }
 
         private string MapAddress(TigerEmployee item)
