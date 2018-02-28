@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
@@ -14,23 +15,42 @@ namespace Sofco.Service.Implementations.Billing
     public class SolfacDelegateService : ISolfacDelegateService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IServiceData serviceData;
         private readonly IUserData userData;
+        private readonly IServiceData serviceData;
+        private readonly ICustomerData customerData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
 
-        public SolfacDelegateService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IServiceData serviceData, IMapper mapper, IUserData userData)
+        public SolfacDelegateService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IServiceData serviceData, IMapper mapper, IUserData userData, ICustomerData customerData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.serviceData = serviceData;
             this.mapper = mapper;
             this.userData = userData;
+            this.customerData = customerData;
+        }
+
+        private IEnumerable<SolfacDelegate> GetSolfacDelegatesByUser()
+        {
+            var userMail = sessionManager.GetUserMail();
+
+            var customers = customerData.GetCustomers(userMail);
+
+            var serviceIds = new List<string>();
+            foreach (var crmCustomer in customers)
+            {
+                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail);
+
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+            }
+
+            return unitOfWork.SolfacDelegateRepository.GetByServiceIds(serviceIds);
         }
 
         public Response<List<SolfacDelegateModel>> GetAll()
         {
-            var data = unitOfWork.SolfacDelegateRepository.GetAll();
+            var data = GetSolfacDelegatesByUser();
 
             var items = new List<SolfacDelegateModel>();
             foreach (var solfacDelegate in data)

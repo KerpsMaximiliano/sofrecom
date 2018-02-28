@@ -3,5 +3,7 @@
     public interface ISessionManager
     {
         string GetUserName();
+
+        string GetUserMail();
     }
 }

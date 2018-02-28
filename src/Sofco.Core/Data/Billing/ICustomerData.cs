@@ -5,6 +5,6 @@ namespace Sofco.Core.Data.Billing
 {
     public interface ICustomerData
     {
-        IList<CrmCustomer> GetCustomers(string identityName, string userMail, bool hasDirectorGroup);
+        IList<CrmCustomer> GetCustomers(string userMail);
     }
 }

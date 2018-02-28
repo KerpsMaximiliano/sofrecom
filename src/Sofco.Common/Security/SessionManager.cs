@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Sofco.Common.Security.Interfaces;
 
 namespace Sofco.Common.Security
@@ -21,6 +19,11 @@ namespace Sofco.Common.Security
             var identityName = contextAccessor.HttpContext.User.Identity.Name;
 
             return identityName.Split('@')[0];
+        }
+
+        public string GetUserMail()
+        {
+            return $"{GetUserName()}@sofrecom.com.ar";
         }
     }
 }

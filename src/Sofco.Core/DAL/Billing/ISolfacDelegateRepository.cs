@@ -5,7 +5,7 @@ namespace Sofco.Core.DAL.Billing
 {
     public interface ISolfacDelegateRepository
     {
-        List<SolfacDelegate> GetAll();
+        List<SolfacDelegate> GetByServiceIds(List<string> serviceIds);
 
         SolfacDelegate Save(SolfacDelegate solfacDelegate);
 

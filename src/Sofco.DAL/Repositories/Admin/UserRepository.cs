@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Admin;
@@ -13,8 +15,11 @@ namespace Sofco.DAL.Repositories.Admin
     {
         private const string ManagerDescription = "Gerentes";
 
-        public UserRepository(SofcoContext context) : base(context)
+        private readonly EmailConfig emailConfig;
+
+        public UserRepository(SofcoContext context, IOptions<EmailConfig> emailConfig) : base(context)
         {
+            this.emailConfig = emailConfig.Value;
         }
 
         public bool ExistById(int id)
@@ -60,8 +65,10 @@ namespace Sofco.DAL.Repositories.Admin
             return userGroups.Select(x => x.User).ToList();
         }
 
-        public IList<User> GetSellers(string sellerCode)
+        public IList<User> GetSellers()
         {
+            var sellerCode = emailConfig.SellerCode;
+
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
@@ -71,8 +78,9 @@ namespace Sofco.DAL.Repositories.Admin
             return userGroups.Select(x => x.User).ToList();
         }
 
-        public bool HasComercialGroup(string comercialCode, string email)
+        public bool HasComercialGroup(string email)
         {
+            var comercialCode = emailConfig.ComercialCode;
             return context.Users
                 .Include(x => x.UserGroups)
                     .ThenInclude(x => x.Group)

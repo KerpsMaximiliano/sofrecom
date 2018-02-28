@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL.Admin;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Service.Http.Interfaces;
 
@@ -19,20 +21,30 @@ namespace Sofco.Data.Billing
         private readonly ICacheManager cacheManager;
         private readonly ICrmHttpClient client;
         private readonly CrmConfig crmConfig;
+        private readonly ISessionManager sessionManager;
+        private readonly IUserRepository userRepository;
 
-        public ServiceData(ICacheManager cacheManager, ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
+        public ServiceData(ICacheManager cacheManager, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, ISessionManager sessionManager, IUserRepository userRepository)
         {
             this.cacheManager = cacheManager;
             this.client = client;
+            this.sessionManager = sessionManager;
+            this.userRepository = userRepository;
             crmConfig = crmOptions.Value;
         }
 
-        public IList<CrmService> GetServices(string customerId, string identityName, string userMail, bool hasDirectorGroup)
+        public IList<CrmService> GetServices(string customerId, string userMail)
         {
+            var identityName = sessionManager.GetUserName();
+
             return cacheManager.GetHashList(string.Format(ServicesCacheKey, identityName, customerId),
                 () =>
                 {
-                    var url = hasDirectorGroup
+                    var hasDirectorGroup = userRepository.HasDirectorGroup(userMail);
+                    var hasCommercialGroup = userRepository.HasComercialGroup(userMail);
+                    var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
+
+                    var url = hasAllAccess
                         ? $"{crmConfig.Url}/api/service?idAccount={customerId}"
                         : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={userMail}";
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
-using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -29,7 +27,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var customers = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
+                var customers = servicesService.GetServices(customerId);
                 var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
 
                 return Ok(model);
@@ -45,7 +43,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var services = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
+                var services = servicesService.GetServices(customerId);
 
                 return Ok(services);
             }
@@ -60,7 +58,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var services = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
+                var services = servicesService.GetServices(customerId);
 
                 var service = services.FirstOrDefault(x => x.Id.Equals(serviceId));
 

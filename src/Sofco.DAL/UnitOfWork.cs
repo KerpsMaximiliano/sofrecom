@@ -1,4 +1,6 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
@@ -16,6 +18,8 @@ namespace Sofco.DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SofcoContext context;
+
+        private readonly IOptions<EmailConfig> emailConfig;
 
         #region Admin
 
@@ -65,14 +69,15 @@ namespace Sofco.DAL
 
         #endregion
 
-        public UnitOfWork(SofcoContext context)
+        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig)
         {
             this.context = context;
+            this.emailConfig = emailConfig;
         }
 
         #region Admin
 
-        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context));
+        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
         public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));
