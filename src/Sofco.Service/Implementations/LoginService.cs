@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Common.Domains;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Services;
 using Sofco.Framework.Helpers;
@@ -24,11 +25,14 @@ namespace Sofco.Service.Implementations
 
         private readonly IBaseHttpClient client;
 
-        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUnitOfWork unitOfWork)
+        private readonly AppSetting appSetting;
+
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
             this.unitOfWork = unitOfWork;
+            this.appSetting = appSetting.Value;
         }
 
         public Response<string> Login(UserLogin userLogin)
@@ -56,7 +60,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            if (unitOfWork.UserRepository.IsActive($"{userLogin.UserName}@sofrecom.com.ar"))
+            if (unitOfWork.UserRepository.IsActive($"{userLogin.UserName}@{appSetting.Domain}"))
             {
                 response.Data = result.Data;
                 return response;
@@ -82,7 +86,6 @@ namespace Sofco.Service.Implementations
 
             return client.Post<string>(uri, new FormUrlEncodedContent(pairs));
         }
-
 
         public Response<AzureAdUserListResponse> GetUsersFromAzureADBySurname(string surname)
         {
