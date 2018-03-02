@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sofco.WebApi.Models.Admin
+namespace Sofco.Core.Models.Admin
 {
     public class RolesModel
     {

@@ -59,6 +59,12 @@ namespace Sofco.DAL.Repositories.Billing
             context.SaveChanges();
         }
 
+        public bool HasSolfacDelegate(string userName)
+        {
+            return SolfacDelegateSet
+                .Any(s => s.UserId == context.Users.Single(x => x.UserName == userName).Id);
+        }
+
         private SolfacDelegate GetByServiceIdAndUserId(Guid serviceId, int userId)
         {
             return SolfacDelegateSet

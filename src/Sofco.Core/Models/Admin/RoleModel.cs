@@ -5,7 +5,7 @@ using Sofco.Model;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Models.Admin;
 
-namespace Sofco.WebApi.Models.Admin
+namespace Sofco.Core.Models.Admin
 {
     public class RoleModel : BaseEntity, IAuditDates, IEquatable<RoleModel>
     {
@@ -48,7 +48,7 @@ namespace Sofco.WebApi.Models.Admin
 
         public bool Equals(RoleModel other)
         {
-            return this.Id == other.Id;
+            return Id == other.Id;
         }
     }
 }
