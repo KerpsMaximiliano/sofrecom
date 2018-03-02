@@ -20,6 +20,8 @@ namespace Sofco.Model.Models.Admin
 
         public DateTime? EndDate { get; set; }
 
+        public string Code { get; set; }
+
         public void ApplyTo(Role role)
         {
             role.Id = Id;

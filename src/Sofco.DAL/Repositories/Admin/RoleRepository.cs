@@ -31,6 +31,11 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Roles.Any(x => x.Description.Equals(roleDescription) && x.Id != roleId);
         }
 
+        public Role GetByCode(string code)
+        {
+            return context.Roles.FirstOrDefault(s => s.Code == code);
+        }
+
         public Role GetDetail(int id)
         {
             return context.Set<Role>()

@@ -12,9 +12,9 @@ namespace Sofco.Core.Models.Admin
         public string Module { get; set; }
     }
 
-    public class MenuResponse
+    public class MenuResponseModel
     {
-        public MenuResponse()
+        public MenuResponseModel()
         {
             Menus = new Collection<MenuModel>();
         }
