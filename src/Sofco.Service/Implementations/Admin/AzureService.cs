@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Core.DAL;
+using Sofco.Common.Settings;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Enums;
@@ -19,12 +16,15 @@ namespace Sofco.Service.Implementations.Admin
     {
         private readonly AzureAdConfig azureAdOptions;
 
+        private readonly AppSetting appSetting;
+
         private readonly IBaseHttpClient client;
 
-        public AzureService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client)
+        public AzureService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IOptions<AppSetting> appSetting)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
+            this.appSetting = appSetting.Value;
         }
 
         public Response<AzureAdUserListResponse> GetAllUsersActives()
@@ -54,7 +54,7 @@ namespace Sofco.Service.Implementations.Admin
 
                 foreach (var azureAdUserResponse in data.Value)
                 {
-                    if (azureAdUserResponse.UserPrincipalName.Contains("@sofrecom.com.ar"))
+                    if (azureAdUserResponse.UserPrincipalName.Contains($"@{appSetting.Domain}"))
                     {
                         response.Data.Value.Add(azureAdUserResponse);
                     }
