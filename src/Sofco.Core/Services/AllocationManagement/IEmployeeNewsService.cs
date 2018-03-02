@@ -9,9 +9,9 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         Response<IList<EmployeeNewsModel>> GetEmployeeNews();
 
-        Response<EmployeeSyncAction> Add(int newsId, string userName);
+        Response<EmployeeSyncAction> Add(int newsId);
 
-        Response<EmployeeSyncAction> Delete(int newsId, string userName);
+        Response<EmployeeSyncAction> Delete(int newsId);
 
         Response<EmployeeSyncAction> Cancel(int newsId);
     }

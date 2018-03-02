@@ -38,7 +38,7 @@ export class CertificateFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
-        this.getOptionsSubscrip = this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+        this.getOptionsSubscrip = this.customerService.getOptions().subscribe(data => {
             this.customers = data;
         },
         err => {

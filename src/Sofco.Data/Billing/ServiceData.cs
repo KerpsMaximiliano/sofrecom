@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL.Admin;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Service.Http.Interfaces;
 
@@ -12,33 +14,63 @@ namespace Sofco.Data.Billing
     public class ServiceData : IServiceData
     {
         private const string ServicesCacheKey = "urn:customers:{0}:services:{1}:all";
+        private const string ServiceByIdCacheKey = "urn:services:id:{0}";
+
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
         private readonly ICrmHttpClient client;
         private readonly CrmConfig crmConfig;
+        private readonly ISessionManager sessionManager;
+        private readonly IUserRepository userRepository;
 
-        public ServiceData(ICacheManager cacheManager, ICrmHttpClient client, IOptions<CrmConfig> crmOptions)
+        public ServiceData(ICacheManager cacheManager, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, ISessionManager sessionManager, IUserRepository userRepository)
         {
             this.cacheManager = cacheManager;
             this.client = client;
-            this.crmConfig = crmOptions.Value;
+            this.sessionManager = sessionManager;
+            this.userRepository = userRepository;
+            crmConfig = crmOptions.Value;
         }
 
-        public IList<CrmService> GetServices(string customerId, string identityName, string userMail, bool hasDirectorGroup)
+        public IList<CrmService> GetServices(string customerId, string userMail)
         {
+            var email = sessionManager.GetUserEmail(userMail);
+
+            var identityName = email.Split('@')[0];
+
             return cacheManager.GetHashList(string.Format(ServicesCacheKey, identityName, customerId),
                 () =>
                 {
-                    var url = hasDirectorGroup
+                    var hasDirectorGroup = userRepository.HasDirectorGroup(email);
+                    var hasCommercialGroup = userRepository.HasComercialGroup(email);
+                    var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
+
+                    var url = hasAllAccess
                         ? $"{crmConfig.Url}/api/service?idAccount={customerId}"
-                        : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={userMail}";
+                        : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={email}";
 
                     var result = client.GetMany<CrmService>(url);
 
                     return result.Data;
                 },
                 x => x.Id,
+                cacheExpire);
+        }
+
+        public CrmService GetService(Guid serviceId)
+        {
+            var cacheKey = string.Format(ServiceByIdCacheKey, serviceId);
+
+            return cacheManager.Get(cacheKey,
+                () =>
+                {
+                    var url = $"{crmConfig.Url}/api/service?id={serviceId}";
+
+                    var result = client.Get<CrmService>(url);
+
+                    return result.Data;
+                },
                 cacheExpire);
         }
     }

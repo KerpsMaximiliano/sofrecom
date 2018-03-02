@@ -74,7 +74,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     getCustomers(){
         this.messageService.showLoading();
 
-        this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+        this.customerService.getOptions().subscribe(data => {
             this.messageService.closeLoading();
             this.customers = data;
         },

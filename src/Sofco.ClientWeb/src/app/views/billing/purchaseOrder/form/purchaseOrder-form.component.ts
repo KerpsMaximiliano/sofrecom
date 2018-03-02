@@ -52,7 +52,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
-        this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+        this.customerService.getOptions().subscribe(data => {
             this.customers = data;
         },
         err => {

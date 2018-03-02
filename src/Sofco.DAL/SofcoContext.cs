@@ -113,6 +113,7 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
+            builder.MapSolfacDelegate();
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();

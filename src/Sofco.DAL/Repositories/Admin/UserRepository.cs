@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Admin;
@@ -11,8 +13,13 @@ namespace Sofco.DAL.Repositories.Admin
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(SofcoContext context) : base(context)
+        private const string ManagerDescription = "Gerentes";
+
+        private readonly EmailConfig emailConfig;
+
+        public UserRepository(SofcoContext context, IOptions<EmailConfig> emailConfig) : base(context)
         {
+            this.emailConfig = emailConfig.Value;
         }
 
         public bool ExistById(int id)
@@ -52,14 +59,16 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals("Gerentes"))
+                .Where(x => x.Group.Description.Equals(ManagerDescription))
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
         }
 
-        public IList<User> GetSellers(string sellerCode)
+        public IList<User> GetSellers()
         {
+            var sellerCode = emailConfig.SellerCode;
+
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
@@ -69,8 +78,9 @@ namespace Sofco.DAL.Repositories.Admin
             return userGroups.Select(x => x.User).ToList();
         }
 
-        public bool HasComercialGroup(string comercialCode, string email)
+        public bool HasComercialGroup(string email)
         {
+            var comercialCode = emailConfig.ComercialCode;
             return context.Users
                 .Include(x => x.UserGroups)
                     .ThenInclude(x => x.Group)
@@ -109,16 +119,20 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users.Any(x => x.Email == mail);
         }
 
-        public bool HasDafGroup(string userMail, string dafCode)
+        public bool HasDafGroup(string userMail)
         {
+            var dafCode = emailConfig.DafCode;
+
             return context.Users
                 .Include(x => x.UserGroups)
                     .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == dafCode));
         }
 
-        public bool HasCdgGroup(string userMail, string cdgCode)
+        public bool HasCdgGroup(string userMail)
         {
+            var cdgCode = emailConfig.CdgCode;
+
             return context.Users
                  .Include(x => x.UserGroups)
                     .ThenInclude(x => x.Group)
@@ -128,6 +142,16 @@ namespace Sofco.DAL.Repositories.Admin
         public bool IsActive(string userMail)
         {
             return context.Users.Any(x => x.Email == userMail && x.Active);
+        }
+
+        public bool HasManagerGroup(string userName)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => 
+                x.UserName.Equals(userName) 
+                && x.UserGroups.Any(s => s.Group.Description.Equals(ManagerDescription)));
         }
     }
 }

@@ -49,11 +49,13 @@ import { NewPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/add/a
 import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
 import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
 import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
+import { SolfacDelegateComponent } from 'app/views/billing/solfac/solfac-delegate/solfac-delegate.component';
 import { CertificateSearchComponent } from 'app/views/billing/certificates/search/search-certificate.component';
 import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
 import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
+import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -114,9 +116,11 @@ export const ROUTES:Routes = [
       { path: "solfac",
         children: [
          { path: "", component: SolfacComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
+         { path: "delegate", component: SolfacDelegateComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "SOLDE" } },
+         { path: "delegate/edit", component: SolfacDelegateEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "SOLDE" } },
          { path: ":solfacId/edit", component: SolfacEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
          { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
-         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
+         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } }
       ]},
 
       { path: "purchaseOrders",

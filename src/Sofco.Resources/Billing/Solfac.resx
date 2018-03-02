@@ -261,4 +261,7 @@
   <data name="DetailsRequired" xml:space="preserve">
     <value>billing/solfac.detailsRequired</value>
   </data>
+  <data name="SolfacDelegateMangerOnlyError" xml:space="preserve">
+    <value>billing/solfac.delegateSaveMangerOnlyError</value>
+  </data>
 </root>

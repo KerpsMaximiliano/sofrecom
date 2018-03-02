@@ -1,4 +1,6 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
@@ -18,6 +20,8 @@ namespace Sofco.DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SofcoContext context;
+
+        private readonly IOptions<EmailConfig> emailConfig;
 
         #region Admin
 
@@ -40,6 +44,7 @@ namespace Sofco.DAL
         private ISolfacReportRepository solfacReportRepository;
         private IPurchaseOrderRepository purchaseOrderRepository;
         private ICertificateRepository certificateRepository;
+        private ISolfacDelegateRepository solfacDelegateRepository;
         private ISolfacCertificateRepository solfacCertificateRepository;
 
         #endregion
@@ -72,14 +77,15 @@ namespace Sofco.DAL
 
         #endregion
 
-        public UnitOfWork(SofcoContext context)
+        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig)
         {
             this.context = context;
+            this.emailConfig = emailConfig;
         }
 
         #region Admin
 
-        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context));
+        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
         public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));
@@ -98,6 +104,7 @@ namespace Sofco.DAL
         public ISolfacReportRepository SolfacReportRepository => solfacReportRepository ?? (solfacReportRepository = new SolfacReportRepository(context));
         public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
         public ICertificateRepository CertificateRepository => certificateRepository ?? (certificateRepository = new CertificateRepository(context));
+        public ISolfacDelegateRepository SolfacDelegateRepository => solfacDelegateRepository ?? (solfacDelegateRepository = new SolfacDelegateRepository(context));
         public ISolfacCertificateRepository SolfacCertificateRepository => solfacCertificateRepository ?? (solfacCertificateRepository = new SolfacCertificateRepository(context));
 
         #endregion

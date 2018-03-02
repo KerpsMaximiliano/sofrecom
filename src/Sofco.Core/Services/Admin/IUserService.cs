@@ -12,12 +12,12 @@ namespace Sofco.Core.Services.Admin
         Response<User> AddUserGroup(int userId, int userGroupId);
         Response<User> RemoveUserGroup(int userId, int userGroupId);
         Response<User> ChangeUserGroups(int userId, List<int> groupsToAdd, List<int> groupsToRemove);
-        Response<User> GetByMail(string mail);
-        bool HasDirectorGroup(string userMail);
+        Response<User> GetByMail();
+        bool HasDirectorGroup();
         Response Add(User domain);
         Response CheckIfExist(string mail);
-        bool HasDafGroup(string v, string dafCode);
-        bool HasCdgGroup(string v, string cdgCode);
+        bool HasDafGroup();
+        bool HasCdgGroup();
         ICollection<User> GetManagers();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
@@ -18,14 +19,16 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUnitOfWork unitOfWork;
         private readonly IInvoiceStatusFactory invoiceStatusFactory;
         private readonly IMailSender mailSender;
+        private readonly ISessionManager sessionManager;
 
         public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
-            IMailSender mailSender)
+            IMailSender mailSender, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.invoiceStatusFactory = invoiceStatusFactory;
             this.mailSender = mailSender;
+            this.sessionManager = sessionManager;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -290,21 +293,20 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public ICollection<Invoice> Search(InvoiceParams parameters, string userMail, EmailConfig emailConfig)
+        public ICollection<Invoice> Search(InvoiceParams parameters)
         {
+            var userMail = sessionManager.GetUserMail();
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail, emailConfig.DafCode);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail, emailConfig.CdgCode);
-            var isComercial = unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+            var isComercial = unitOfWork.UserRepository.HasComercialGroup(userMail);
 
             if (isDirector || isDaf || isCdg || isComercial)
             {
                 return unitOfWork.InvoiceRepository.SearchByParams(parameters);
             }
-            else
-            {
-                return unitOfWork.InvoiceRepository.SearchByParamsAndUser(parameters, userMail);
-            }
+
+            return unitOfWork.InvoiceRepository.SearchByParamsAndUser(parameters, userMail);
         }
 
         public Response<Invoice> Clone(int id)

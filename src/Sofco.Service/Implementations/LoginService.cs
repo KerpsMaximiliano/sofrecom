@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Common.Domains;
 using Sofco.Core.DAL;
 using Sofco.Core.Services;
-using Sofco.DAL;
 using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Enums;

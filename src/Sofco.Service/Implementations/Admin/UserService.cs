@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Model.Utils;
@@ -14,11 +15,13 @@ namespace Sofco.Service.Implementations.Admin
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<UserService> logger;
+        private readonly ISessionManager sessionManager;
 
-        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger)
+        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.sessionManager = sessionManager;
         }
 
         public Response<User> Active(int id, bool active)
@@ -193,11 +196,13 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public Response<User> GetByMail(string mail)
+        public Response<User> GetByMail()
         {
+            var email = sessionManager.GetUserMail();
+
             var response = new Response<User>();
 
-            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(mail));
+            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(email));
 
             if(user == null)
             {
@@ -209,9 +214,9 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public bool HasDirectorGroup(string userMail)
+        public bool HasDirectorGroup()
         {
-            return unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserMail());
         }
 
         public Response Add(User domain)
@@ -246,14 +251,14 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public bool HasDafGroup(string userMail, string dafCode)
+        public bool HasDafGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(userMail, dafCode);
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
         }
 
-        public bool HasCdgGroup(string userMail, string cdgCode)
+        public bool HasCdgGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(userMail, cdgCode);
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
         }
 
         public ICollection<User> GetManagers()
