@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult Get()
         {
             var users = userService.GetAllReadOnly(false);
-
+            
             var model = new List<UserModel>();
 
             foreach (var user in users)
@@ -39,7 +39,6 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model.OrderBy(x => x.Name));
         }
 
-        // GET: api/user/options
         [HttpGet]
         [Route("options")]
         public IActionResult GetOptions()
@@ -53,7 +52,15 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model);
         }
 
-        // GET api/role/5
+        [HttpGet]
+        [Route("managers")]
+        public IActionResult GetManagers()
+        {
+            var users = userService.GetManagers();
+
+            return Ok(users.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }));
+        }
+
         [HttpGet("{id}/detail")]
         public IActionResult Detail(int id)
         {

@@ -3,6 +3,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.Rrhh;
 
 namespace Sofco.Core.DAL
 {
@@ -47,6 +48,12 @@ namespace Sofco.Core.DAL
         IHealthInsuranceRepository HealthInsuranceRepository { get; }
         IPrepaidHealthRepository PrepaidHealthRepository { get; }
 
+
+        #endregion
+
+        #region HumanResources
+
+        ILicenseRepository LicenseRepository { get; }
 
         #endregion
 

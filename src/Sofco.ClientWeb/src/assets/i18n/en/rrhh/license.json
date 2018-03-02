@@ -1,0 +1,17 @@
+{
+    "employeeRequired": "The employee is required",
+    "employeeNotFound": "Employee not foud",
+    "managerRequired": "The manager is required",
+    "managerNotFound": "Manager not found",
+    "datesRequired": "The dates are required",
+    "endDateLessThanStartDate": "End date cannot less than Start date",
+    "sectorRequired": "The sector is required",
+    "typeRequired": "The license type is required",
+    "saveSuccess": "License has been successfully loaded into the system",
+    "daysWrong": "The dates entered exceed the number of days allowed according to the type of license selected",
+    "examDaysTakenExceeded": "The days per annual examination were exceeded",
+    "examDescriptionRequired": "The subject to submit is required",
+    "commentsRequired": "The comments are required",
+    "notFound": "License not found",
+    "fileAdded": "File has been loaded successfully"
+}

@@ -21,6 +21,8 @@ namespace Sofco.DAL.Mappings.Admin
 
             builder.Entity<User>().HasMany(x => x.PurchaseOrder1).WithOne(x => x.Manager).HasForeignKey(x => x.ManagerId);
             builder.Entity<User>().HasMany(x => x.PurchaseOrder2).WithOne(x => x.CommercialManager).HasForeignKey(x => x.CommercialManagerId);
+
+            builder.Entity<User>().HasMany(x => x.Licenses).WithOne(x => x.Manager).HasForeignKey(x => x.ManagerId);
         }
     }
 }

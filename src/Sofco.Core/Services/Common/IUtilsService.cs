@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.Common
         IList<DocumentType> GetDocumentTypes();
         IList<Currency> GetCurrencies();
         IList<PaymentTerm> GetPaymentTerms();
+        IList<Sector> GetSectors();
     }
 }

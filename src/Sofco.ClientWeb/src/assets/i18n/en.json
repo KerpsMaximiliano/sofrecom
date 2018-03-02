@@ -505,6 +505,26 @@
             }
         }
     },
+    "rrhh":{
+        "title": "Human Resources",
+        "licenses": "Licenses",
+        "license": {
+            "addTitle": "New License",
+            "add": "New",
+            "employee": "Applicant",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "withPayment": "With Payment",
+            "reason": "Reason",
+            "comments": "Comments",
+            "examDescription": "Subject's Name",
+            "parcial": "Parcial",
+            "final": "Final",
+            "manager":"Manager",
+            "sector": "Sector",
+            "attachments": "Attachments"
+        }
+    },
     "ACTIONS":{
         "ADD": "Add",
         "EDIT": "Edit",

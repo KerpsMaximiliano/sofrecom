@@ -56,6 +56,11 @@ namespace Sofco.DAL.Repositories.Common
             return _context.ServiceTypes.ToList().AsReadOnly();
         }
 
+        public IList<Sector> GetSectors()
+        {
+            return _context.Sectors.ToList().AsReadOnly();
+        }
+
         public IList<SoftwareLaw> GetSoftwareLaws()
         {
             return _context.SoftwareLaws.ToList().AsReadOnly();

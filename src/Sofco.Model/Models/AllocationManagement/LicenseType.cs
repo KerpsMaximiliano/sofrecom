@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.Model.Models.AllocationManagement
 {
-    public class LicenseType : BaseEntity, IEntityDate
+    public class LicenseType : BaseEntity
     {
-        public int LicenseTypeNumber { get; set; }
-
         public string Description { get; set; }
 
-        public DateTime? Created { get; set; }
+        public int Days { get; set; }
 
-        public DateTime? Modified { get; set; }
+        public bool WithPayment { get; set; }
+
+        public ICollection<License> Licenses { get; set; }
     }
 }

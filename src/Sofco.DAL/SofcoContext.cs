@@ -3,6 +3,7 @@ using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Common;
+using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
@@ -10,6 +11,7 @@ using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Common;
+using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.DAL
 {
@@ -34,6 +36,7 @@ namespace Sofco.DAL
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
+        public DbSet<LicenseFile> LicenseFiles { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -58,6 +61,9 @@ namespace Sofco.DAL
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
 
+        // Human Resources
+        public DbSet<License> Licenses { get; set; }
+
         // Common
         public DbSet<File> Files { get; set; }
 
@@ -74,6 +80,7 @@ namespace Sofco.DAL
         public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<Model.Utils.PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<Sector> Sectors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -108,6 +115,8 @@ namespace Sofco.DAL
             builder.MapCertificate();
             builder.MapSolfacDelegate();
             builder.MapSolfacCertificates();
+            builder.MapLicense();
+            builder.MapLicenseFiles();
         }
     }
 }

@@ -262,5 +262,10 @@ namespace Sofco.Service.Implementations.Admin
         {
             return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
         }
+
+        public ICollection<User> GetManagers()
+        {
+            return unitOfWork.UserRepository.GetManagers();
+        }
     }
 }
