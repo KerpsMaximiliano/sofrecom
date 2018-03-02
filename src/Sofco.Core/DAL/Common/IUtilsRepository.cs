@@ -17,5 +17,6 @@ namespace Sofco.Core.DAL.Common
         IList<PurchaseOrder> GetPurchaseOrders();
         IList<SoftwareLaw> GetSoftwareLaws();
         IList<ServiceType> GetServiceTypes();
+        IList<Sector> GetSectors();
     }
 }

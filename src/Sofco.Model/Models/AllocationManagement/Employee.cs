@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.Model.Models.AllocationManagement
 {
@@ -45,5 +46,15 @@ namespace Sofco.Model.Models.AllocationManagement
         public int PrepaidHealthCode { get; set; }
 
         public string OfficeAddress { get; set; }
+
+        public int ExtraHolidaysQuantity { get; set; }
+
+        public bool HasExtraHolidays { get; set; }
+
+        public int HolidaysPending { get; set; }
+
+        public int ExamDaysTaken { get; set; }
+
+        public ICollection<License> Licenses { get; set; }
     }
 }

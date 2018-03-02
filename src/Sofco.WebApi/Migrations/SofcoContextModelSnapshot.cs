@@ -352,7 +352,15 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
+                    b.Property<int>("ExamDaysTaken");
+
+                    b.Property<int>("ExtraHolidaysQuantity");
+
+                    b.Property<bool>("HasExtraHolidays");
+
                     b.Property<int>("HealthInsuranceCode");
+
+                    b.Property<int>("HolidaysPending");
 
                     b.Property<string>("Location")
                         .HasMaxLength(200);
@@ -491,14 +499,12 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("Created");
+                    b.Property<int>("Days");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300);
 
-                    b.Property<int>("LicenseTypeNumber");
-
-                    b.Property<DateTime?>("Modified");
+                    b.Property<bool>("WithPayment");
 
                     b.HasKey("Id");
 
@@ -957,6 +963,67 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.Rrhh.License", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("DaysQuantity");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("ExamDescription")
+                        .HasMaxLength(200);
+
+                    b.Property<bool>("Final");
+
+                    b.Property<bool>("HasCertificate");
+
+                    b.Property<int>("ManagerId");
+
+                    b.Property<bool>("Parcial");
+
+                    b.Property<int>("SectorId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("TypeId");
+
+                    b.Property<bool>("WithPayment");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.HasIndex("SectorId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Licenses");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Relationships.LicenseFile", b =>
+                {
+                    b.Property<int>("LicenseId");
+
+                    b.Property<int>("FileId");
+
+                    b.HasKey("LicenseId", "FileId");
+
+                    b.HasIndex("FileId");
+
+                    b.ToTable("LicenseFiles");
+                });
+
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
                 {
                     b.Property<int>("RoleId");
@@ -1098,6 +1165,19 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.Sector", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sectors");
                 });
 
             modelBuilder.Entity("Sofco.Model.Utils.ServiceType", b =>
@@ -1353,6 +1433,42 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Rrhh.License", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
+                        .WithMany("Licenses")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
+                        .WithMany("Licenses")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Utils.Sector", "Sector")
+                        .WithMany("Licenses")
+                        .HasForeignKey("SectorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.LicenseType", "Type")
+                        .WithMany("Licenses")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Relationships.LicenseFile", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Common.File", "File")
+                        .WithMany("LicenseFiles")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.Rrhh.License", "License")
+                        .WithMany("LicenseFiles")
+                        .HasForeignKey("LicenseId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

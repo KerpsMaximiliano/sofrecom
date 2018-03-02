@@ -54,6 +54,10 @@ namespace Sofco.DAL.Mappings.Utils
             // Primary Key
             builder.Entity<PurchaseOrder>().HasKey(_ => _.Id);
             builder.Entity<PurchaseOrder>().Property(_ => _.Text).HasMaxLength(60);
+
+            // Primary Key
+            builder.Entity<Sector>().HasKey(_ => _.Id);
+            builder.Entity<Sector>().Property(_ => _.Text).HasMaxLength(100);
         }
     }
 }

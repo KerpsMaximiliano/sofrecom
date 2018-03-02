@@ -49,6 +49,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService,
                 private appSetting: AppSetting){
+                    
                 this.dateOptions = this.menuService.getDatePickerOptions();
     }
 

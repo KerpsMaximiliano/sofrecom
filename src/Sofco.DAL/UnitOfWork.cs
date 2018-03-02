@@ -4,12 +4,14 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.Services.Billing;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.Report;
+using Sofco.DAL.Repositories.Rrhh;
 
 namespace Sofco.DAL
 {
@@ -54,6 +56,12 @@ namespace Sofco.DAL
         private IEmployeeHistoryRepository employeeHistoryRepository;
         private IHealthInsuranceRepository healthInsuranceRepository;
         private IPrepaidHealthRepository prepaidHealthRepository;
+
+        #endregion
+
+        #region HumanResource
+
+        private ILicenseRepository licenseRepository;
 
         #endregion
 
@@ -114,6 +122,12 @@ namespace Sofco.DAL
 
         public IPrepaidHealthRepository PrepaidHealthRepository =>
             prepaidHealthRepository ?? (prepaidHealthRepository = new PrepaidHealthRepository(context));
+
+        #endregion
+
+        #region HumanResource
+
+        public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
 
         #endregion
 

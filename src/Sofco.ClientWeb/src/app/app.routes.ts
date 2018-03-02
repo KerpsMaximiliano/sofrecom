@@ -53,6 +53,7 @@ import { CertificateSearchComponent } from 'app/views/billing/certificates/searc
 import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
 import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
+import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -92,6 +93,7 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
+
   {
     path: 'billing', component: BasicLayoutComponent,
     children: [
@@ -139,6 +141,7 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
+
   {
     path: 'contracts', component: BasicLayoutComponent,
     children: [
@@ -159,6 +162,7 @@ export const ROUTES:Routes = [
         ]
       }]
   },
+
   {
     path: 'allocationManagement', component: BasicLayoutComponent,
     children: [
@@ -175,6 +179,23 @@ export const ROUTES:Routes = [
         path: "employees", 
         children: [
           { path:"news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
+        ]
+      },
+      {
+        path:"licenses",
+        children: [
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "ALTA" } } ,
+        ]
+      }]
+  },
+
+  {
+    path: 'profile', component: BasicLayoutComponent,
+    children: [
+      { 
+        path:"licenses",
+        children: [
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "ALLOC", functionality: "ALTA" } } ,
         ]
       }]
   },

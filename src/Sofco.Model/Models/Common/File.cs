@@ -1,5 +1,6 @@
 ﻿using System;
-using Sofco.Model.Models.Billing;
+using System.Collections.Generic;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Common
 {
@@ -14,5 +15,7 @@ namespace Sofco.Model.Models.Common
         public DateTime CreationDate { get; set; }
 
         public string CreatedUser { get; set; }
+
+        public ICollection<LicenseFile> LicenseFiles { get; set; }
     }
 }

@@ -502,6 +502,26 @@
         },
         "confirmBody": "Esta seguro que desea seguir con la acción de "
     },
+    "rrhh":{
+        "title": "Recursos Humanos",
+        "licenses": "Licencias",
+        "license": {
+            "addTitle": "Cargar Licencia",
+            "add": "Alta",
+            "employee": "Solicitante",
+            "startDate": "Fecha de Inicio",
+            "endDate": "Fecha de Fin",
+            "withPayment": "Con Goce de sueldo",
+            "reason": "Motivo",
+            "comments": "Comentarios",
+            "examDescription": "Asignatura a rendir",
+            "parcial": "Parcial",
+            "final": "Final",
+            "manager":"Superior",
+            "sector": "Sector",
+            "attachments": "Archivos Adjuntos"
+        }
+    },
     "ACTIONS":{
         "ADD": "Agregar",
         "EDIT": "Editar",

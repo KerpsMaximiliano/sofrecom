@@ -53,6 +53,7 @@
             <li [ngClass]="{active: activeRoute('resources')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/resources']">{{'allocationManagement.resources.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('employees')}" *ngIf="menuService.hasFunctionality('ALLOC', 'NEWSQ')"><a [routerLink]="['/allocationManagement/employees/news']">{{'allocationManagement.news.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('allocationsReport')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/allocationsReport']">{{'allocationManagement.report.report' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('licenses')}"><a [routerLink]="['/allocationManagement/licenses/add']">{{'rrhh.licenses' | translate }}</a></li>
         </ul>
       </li> 
 

@@ -40,9 +40,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.EndDate, s => s.MapFrom(x => x.Elfechahasta))
                 .ForMember(d => d.LicenseTypeNumber, s => s.MapFrom(x => x.Tdnro));
 
-            CreateMap<RhproLicenseType, LicenseType>()
-                .ForMember(d => d.LicenseTypeNumber, s => s.MapFrom(x => x.Tdnro))
-                .ForMember(d => d.Description, s => s.MapFrom(x => x.Tddesc));
+            //CreateMap<RhproLicenseType, LicenseType>()
+            //    .ForMember(d => d.LicenseTypeNumber, s => s.MapFrom(x => x.Tdnro))
+            //    .ForMember(d => d.Description, s => s.MapFrom(x => x.Tddesc));
 
             CreateMap<Employee, EmployeeHistory>()
                 .ForMember(d => d.Id, s => s.Ignore())

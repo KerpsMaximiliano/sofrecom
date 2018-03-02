@@ -32,6 +32,11 @@ namespace Sofco.DAL.Repositories.Admin
             context.SaveChanges();
         }
 
+        public GlobalSetting GetByKey(string examdaysallowtogether)
+        {
+            return context.GlobalSettings.SingleOrDefault(x => x.Key.Equals(examdaysallowtogether));
+        }
+
         private void Update(GlobalSetting storedData, GlobalSetting data)
         {
             storedData.Value = data.Value;

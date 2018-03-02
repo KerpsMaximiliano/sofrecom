@@ -18,5 +18,6 @@ namespace Sofco.Core.Services.Admin
         Response CheckIfExist(string mail);
         bool HasDafGroup(string v, string dafCode);
         bool HasCdgGroup(string v, string cdgCode);
+        ICollection<User> GetManagers();
     }
 }

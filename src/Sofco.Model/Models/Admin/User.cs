@@ -4,6 +4,7 @@ using Sofco.Common.Domains;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Admin
@@ -36,5 +37,7 @@ namespace Sofco.Model.Models.Admin
 
         public ICollection<PurchaseOrder> PurchaseOrder1 { get; set; }
         public ICollection<PurchaseOrder> PurchaseOrder2 { get; set; }
+
+        public ICollection<License> Licenses { get; set; }
     }
 }

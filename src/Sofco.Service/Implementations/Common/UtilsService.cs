@@ -24,6 +24,11 @@ namespace Sofco.Service.Implementations.Common
             return unitOfWork.UtilsRepository.GetPaymentTerms();
         }
 
+        public IList<Sector> GetSectors()
+        {
+            return unitOfWork.UtilsRepository.GetSectors();
+        }
+
         public IList<DocumentType> GetDocumentTypes()
         {
             return unitOfWork.UtilsRepository.GetDocumentTypes();

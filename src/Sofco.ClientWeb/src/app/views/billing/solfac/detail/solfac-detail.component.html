@@ -199,6 +199,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row print" style="display:none">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i> {{ 'billing.certificate.title' | translate }}
+                            </div>
+                            <div class="panel-body">
+                                <ol class="dd-list">
+                                    <li *ngFor="let item of attachments.certificatesRelated" class="dd-item">
+                                        <div class="dd-handle"><i class="fa fa-file"></i> {{ item.name }}</div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
  
