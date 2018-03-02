@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Sofco.WebApi.Models.Admin
+namespace Sofco.Core.Models.Admin
 {
     public class MenuModel
     {
@@ -9,12 +9,12 @@ namespace Sofco.WebApi.Models.Admin
 
         public string Functionality { get; set; }
 
-        public string Module { get; internal set; }
+        public string Module { get; set; }
     }
 
-    public class MenuResponse
+    public class MenuResponseModel
     {
-        public MenuResponse()
+        public MenuResponseModel()
         {
             Menus = new Collection<MenuModel>();
         }

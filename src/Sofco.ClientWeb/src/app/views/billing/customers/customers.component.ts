@@ -40,7 +40,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
         this.datatableService.init('#customerTable', true);
 
-        this.errorHandlerService.showMessages(d);
         this.messageService.closeLoading();
       },
       err => {

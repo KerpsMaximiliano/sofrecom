@@ -14,3 +14,10 @@ BEGIN
 	INSERT INTO app.RoleFunctionality  (RoleId, FunctionalityId) 
 	VALUES (@RoleId, @FuncId);
 END
+
+DECLARE @RoleSolfacDelegateCode NVARCHAR(100) = 'SOLFACGENERATOR'
+IF (NOT EXISTS (SELECT 1 FROM app.Roles WHERE Code = @RoleSolfacDelegateCode))
+BEGIN
+	INSERT INTO app.Roles  (Active, Description, Code, StartDate) 
+	VALUES (1, 'Generador de Solfac', @RoleSolfacDelegateCode, GetUtcDate());
+END

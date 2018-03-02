@@ -3,5 +3,7 @@
     public class AppSetting
     {
         public string Domain { get; set; }
+
+        public string SolfacGeneratorCode { get; set; }
     }
 }

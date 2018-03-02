@@ -12,5 +12,7 @@ namespace Sofco.Core.DAL.Billing
         SolfacDelegate Save(SolfacDelegate solfacDelegate);
 
         void Delete(int solfacDelegateId);
+
+        bool HasSolfacDelegate(string userName);
     }
 }

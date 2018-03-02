@@ -35,8 +35,4 @@ export class ErrorHandlerService {
         const err = new Message('common', 'generalError', 1);
         this.messageService.showMessages([err]);
     }
-
-    public showMessages(response) {
-        this.messageService.showMessages(response.messages);
-    }
 }

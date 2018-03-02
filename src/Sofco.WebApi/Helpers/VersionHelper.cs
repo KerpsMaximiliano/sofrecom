@@ -6,7 +6,7 @@
 
         private const int Major = 1;
 
-        private const int Minor = 10;
+        private const int Minor = 11;
 
         private const int Revision = 108;
 
