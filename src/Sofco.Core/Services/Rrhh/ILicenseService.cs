@@ -9,6 +9,6 @@ namespace Sofco.Core.Services.Rrhh
     public interface ILicenseService
     {
         Response<string> Add(License createDomain);
-        Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file, string userName);
+        Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file);
     }
 }

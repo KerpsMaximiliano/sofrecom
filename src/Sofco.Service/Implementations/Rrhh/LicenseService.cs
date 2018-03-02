@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -20,12 +21,14 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<LicenseService> logger;
         private readonly FileConfig fileConfig;
+        private readonly ISessionManager sessionManager;
 
-        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions)
+        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.fileConfig = fileOptions.Value;
+            this.sessionManager = sessionManager;
         }
 
         public Response<string> Add(License domain)
@@ -61,7 +64,7 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public async Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file, string userName)
+        public async Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file)
         {
             LicenseValidationHandler.Find(id, response, unitOfWork);
 
@@ -74,7 +77,7 @@ namespace Sofco.Service.Implementations.Rrhh
             fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
             fileToAdd.InternalFileName = Guid.NewGuid();
             fileToAdd.CreationDate = DateTime.UtcNow;
-            fileToAdd.CreatedUser = userName;
+            fileToAdd.CreatedUser = sessionManager.GetUserName();
 
             try
             {

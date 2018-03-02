@@ -56,7 +56,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
             {
                 var file = Request.Form.Files.First();
 
-                await licenseService.AttachFile(id, response, file, this.GetUserName());
+                await licenseService.AttachFile(id, response, file);
             }
             else
             {
