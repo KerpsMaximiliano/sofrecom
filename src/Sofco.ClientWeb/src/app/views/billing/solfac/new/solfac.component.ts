@@ -229,14 +229,14 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.getCertificatesAvailable();
     }
 
-    getInvoicesOptions(projectId){
+    getInvoicesOptions(projectId) {
       this.getInvoiceOptionsSubs = this.invoiceService.getOptions(projectId).subscribe(data => {
         this.invoices = data;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    getOptions(){
+    getOptions() {
       this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
@@ -248,10 +248,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    addDetail(){
-      var externalHitoId = "";
+    addDetail() {
+      let externalHitoId = '';
 
-      if(this.model.hitos.length > 0){
+      if (this.model.hitos.length > 0){
         externalHitoId = this.model.hitos[0].externalHitoId;
       }
 

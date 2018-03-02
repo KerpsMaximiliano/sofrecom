@@ -15,5 +15,6 @@
     "fileNotFound": "Archivo no encontrado",
     "saveFileError": "Ocurrio un error al guardar el archivo",
     "mailSent": "El Email fue enviado correctamente",
-    "fileDeleted": "Archivo eliminado correctamente"
+    "fileDeleted": "Archivo eliminado correctamente",
+    "crmGeneralError": "Error interno de CRM"
 }

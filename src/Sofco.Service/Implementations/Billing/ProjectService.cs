@@ -5,8 +5,8 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
@@ -19,27 +19,24 @@ namespace Sofco.Service.Implementations.Billing
     public class ProjectService : IProjectService
     {
         private readonly ISolfacService solfacService;
-        private readonly IUnitOfWork unitOfWork;
         private readonly CrmConfig crmConfig;
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
         private readonly ISessionManager sessionManager;
+        private readonly ISolfacDelegateData solfacDelegateData;
 
-        public ProjectService(ISolfacService solfacService, 
-            IOptions<CrmConfig> crmOptions, 
-            IUnitOfWork unitOfWork,
-            IProjectData projectData, 
-            ICrmHttpClient client,
-            ILogMailer<ProjectService> logger, ISessionManager sessionManager)
+        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, 
+            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, 
+            ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData)
         {
             this.solfacService = solfacService;
-            this.unitOfWork = unitOfWork;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
             this.logger = logger;
             this.sessionManager = sessionManager;
+            this.solfacDelegateData = solfacDelegateData;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)
@@ -74,16 +71,16 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<IList<CrmProject>> GetProjects(string serviceId)
         {
-            var userMail = sessionManager.GetUserMail();
-            var userName = sessionManager.GetUserName();
             var response = new Response<IList<CrmProject>>();
 
             try
             {
-                var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-                var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(userMail);
-
-                var result = projectData.GetProjects(serviceId, userName, userMail, hasDirectorGroup || hasCommercialGroup);
+                var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+                var result = new List<CrmProject>();
+                foreach (var item in userNames)
+                {
+                    result.AddRange(projectData.GetProjects(serviceId, item));
+                }
 
                 response.Data = result;
             }
@@ -94,6 +91,19 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        public Response<IList<SelectListModel>> GetProjectsOptions(string serviceId)
+        {
+            var result = GetProjects(serviceId).Data;
+
+            return new Response<IList<SelectListModel>>
+            {
+                Data = result
+                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
         }
 
         public Response<CrmProject> GetProjectById(string projectId)

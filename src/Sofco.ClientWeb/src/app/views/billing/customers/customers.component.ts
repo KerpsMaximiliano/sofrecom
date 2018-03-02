@@ -15,7 +15,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     getAllSubscrip: Subscription;
     customers: any[];
-    public loading:  boolean = true;
+    public loading = true;
 
     constructor(
         private router: Router,
@@ -29,17 +29,18 @@ export class CustomersComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(){
-      if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
 
     getAll(){
       this.messageService.showLoading();
 
-      this.getAllSubscrip = this.service.getAll(Cookie.get("currentUserMail")).subscribe(d => {
-        this.customers = d;
+      this.getAllSubscrip = this.service.getAll().subscribe(d => {
+        this.customers = d.data;
 
         this.datatableService.init('#customerTable', true);
 
+        this.errorHandlerService.showMessages(d);
         this.messageService.closeLoading();
       },
       err => {

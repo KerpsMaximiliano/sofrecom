@@ -14,7 +14,7 @@ namespace Sofco.Data.Billing
     public class ServiceData : IServiceData
     {
         private const string ServicesCacheKey = "urn:customers:{0}:services:{1}:all";
-        private const string ServiceByIdCacheKey = "urn:services:{0}";
+        private const string ServiceByIdCacheKey = "urn:services:id:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
@@ -35,18 +35,20 @@ namespace Sofco.Data.Billing
 
         public IList<CrmService> GetServices(string customerId, string userMail)
         {
-            var identityName = sessionManager.GetUserName();
+            var email = sessionManager.GetUserEmail(userMail);
+
+            var identityName = email.Split('@')[0];
 
             return cacheManager.GetHashList(string.Format(ServicesCacheKey, identityName, customerId),
                 () =>
                 {
-                    var hasDirectorGroup = userRepository.HasDirectorGroup(userMail);
-                    var hasCommercialGroup = userRepository.HasComercialGroup(userMail);
+                    var hasDirectorGroup = userRepository.HasDirectorGroup(email);
+                    var hasCommercialGroup = userRepository.HasComercialGroup(email);
                     var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
 
                     var url = hasAllAccess
                         ? $"{crmConfig.Url}/api/service?idAccount={customerId}"
-                        : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={userMail}";
+                        : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={email}";
 
                     var result = client.GetMany<CrmService>(url);
 

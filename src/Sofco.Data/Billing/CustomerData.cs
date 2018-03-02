@@ -33,9 +33,9 @@ namespace Sofco.Data.Billing
 
         public IList<CrmCustomer> GetCustomers(string userMail)
         {
-            var email = userMail.IndexOf('@') > -1 ? userMail : $"{userMail}@sofrecom.com.ar";
+            var email = sessionManager.GetUserEmail(userMail);
 
-            var identityName = sessionManager.GetUserName();
+            var identityName = email.Split('@')[0];
 
             return cacheManager.GetHashList(string.Format(CustomersCacheKey, identityName),
                 () =>

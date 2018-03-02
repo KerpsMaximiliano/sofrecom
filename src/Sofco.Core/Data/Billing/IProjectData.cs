@@ -6,7 +6,7 @@ namespace Sofco.Core.Data.Billing
 {
     public interface IProjectData
     {
-        IList<CrmProject> GetProjects(string serviceId, string userName, string userMail, bool hasDirectorGroup);
+        IList<CrmProject> GetProjects(string serviceId, string userMail);
 
         IList<CrmProjectHito> GetHitos(string projectId);
     }

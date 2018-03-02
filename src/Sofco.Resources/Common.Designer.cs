@@ -60,6 +60,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to common.crmGeneralError.
+        /// </summary>
+        public static string CrmGeneralError {
+            get {
+                return ResourceManager.GetString("CrmGeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to common.errorSave.
         /// </summary>
         public static string ErrorSave {

@@ -15,5 +15,6 @@
     "fileNotFound": "File not found",
     "saveFileError": "An error occurred while saving the file",
     "mailSent": "The Email has been sent successfully",
-    "fileDeleted": "File has been deleted successfully"
+    "fileDeleted": "File has been deleted successfully",
+    "crmGeneralError": "Internal error in CRM"
 }

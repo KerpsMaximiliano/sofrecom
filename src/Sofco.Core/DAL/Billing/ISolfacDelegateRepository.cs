@@ -7,6 +7,8 @@ namespace Sofco.Core.DAL.Billing
     {
         List<SolfacDelegate> GetByServiceIds(List<string> serviceIds);
 
+        List<SolfacDelegate> GetByUserId(int userId);
+
         SolfacDelegate Save(SolfacDelegate solfacDelegate);
 
         void Delete(int solfacDelegateId);
