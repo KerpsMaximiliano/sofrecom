@@ -37,6 +37,11 @@ namespace Sofco.DAL.Repositories.Admin
             return context.GlobalSettings.SingleOrDefault(x => x.Key.Equals(examdaysallowtogether));
         }
 
+        public ICollection<GlobalSetting> GetHolidaysValues()
+        {
+            return context.GlobalSettings.Where(x => x.Key.Contains("Holidays")).ToList();
+        }
+
         private void Update(GlobalSetting storedData, GlobalSetting data)
         {
             storedData.Value = data.Value;
