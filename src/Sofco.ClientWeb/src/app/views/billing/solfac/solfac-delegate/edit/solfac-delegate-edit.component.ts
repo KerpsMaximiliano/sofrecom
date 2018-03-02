@@ -62,7 +62,7 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
 
     getCustomers() {
         this.messageService.showLoading();
-        this.subscription = this.customerService.getOptions(Cookie.get('currentUserMail')).subscribe(data => {
+        this.subscription = this.customerService.getOptions().subscribe(data => {
             this.messageService.closeLoading();
             this.customers = this.sortCustomers(data);
             this.setCustomerSelect();

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.DTO;
 using Sofco.WebApi.Extensions;
@@ -26,22 +24,9 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{serviceId}/options")]
         public IActionResult GetOptions(string serviceId)
         {
-            try
-            {
-                var respone = projectService.GetProjects(serviceId);
+            var respone = projectService.GetProjectsOptions(serviceId);
 
-                if (respone.HasErrors()) return BadRequest(respone);
-
-                var customers = respone.Data;
-
-                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
-
-                return Ok(model);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            return this.CreateResponse(respone);
         }
 
         [HttpGet("{projectId}")]
@@ -49,7 +34,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             try
             {
-                var response = this.projectService.GetProjectById(projectId);
+                var response = projectService.GetProjectById(projectId);
 
                 if (response.HasErrors()) return BadRequest(response);
 
@@ -66,9 +51,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = projectService.GetProjects(serviceId);
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response.Data);
+            return this.CreateResponse(response);
         }
 
         [HttpGet]

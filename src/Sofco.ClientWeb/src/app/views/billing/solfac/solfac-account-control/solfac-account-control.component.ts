@@ -43,7 +43,7 @@ export class SolfacAccountControlComponent implements OnInit {
     }
 
     getCustomers(){
-        this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+        this.customerService.getOptions().subscribe(data => {
             this.customers = this.sortCustomers(data);
             this.setSelect();
         },

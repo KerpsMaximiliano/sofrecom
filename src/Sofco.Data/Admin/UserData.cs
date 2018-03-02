@@ -8,7 +8,9 @@ namespace Sofco.Data.Admin
 {
     public class UserData : IUserData
     {
-        private const string UserByIdCacheKey = "urn:users:{0}";
+        private const string UserByIdCacheKey = "urn:users:id:{0}";
+        private const string UserByUserNamCacheKey = "urn:users:userName:{0}";
+        private const string UserByMangerIdCacheKey = "urn:users:managerId:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
@@ -22,10 +24,24 @@ namespace Sofco.Data.Admin
             this.unitOfWork = unitOfWork;
         }
 
+        public User GetByManagerId(string managerId)
+        {
+            return cacheManager.Get(string.Format(UserByMangerIdCacheKey, managerId),
+                () => unitOfWork.UserRepository.GetSingle(user => user.ExternalManagerId == managerId),
+                cacheExpire);
+        }
+
         public User GetById(int userId)
         {
             return cacheManager.Get(string.Format(UserByIdCacheKey, userId),
                 () => unitOfWork.UserRepository.GetSingle(user => user.Id == userId),
+                cacheExpire);
+        }
+
+        public User GetByUserName(string userName)
+        {
+            return cacheManager.Get(string.Format(UserByUserNamCacheKey, userName),
+                () => unitOfWork.UserRepository.GetSingle(user => user.UserName == userName),
                 cacheExpire);
         }
     }

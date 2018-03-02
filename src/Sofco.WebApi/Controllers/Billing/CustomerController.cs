@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.Crm.Billing;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -19,53 +16,28 @@ namespace Sofco.WebApi.Controllers.Billing
             this.customerService = customerService;
         }
 
-        [HttpGet("{userName}/options")]
-        public IActionResult GetOptions(string userName)
+        [HttpGet("options")]
+        public IActionResult GetOptions()
         {
-            try
-            {
-                var customers = customerService.GetCustomers(userName);
+            var response = customerService.GetCustomersOptions();
 
-                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
-
-                return Ok(model);
-            }
-            catch
-            {
-                return BadRequest(new List<CrmCustomer>());
-            }
+            return this.CreateResponse(response);
         }
 
-        [HttpGet("user/{userName}")]
-        public IActionResult Get(string userName)
+        [HttpGet]
+        public IActionResult Get()
         {
-            try
-            {
-                var customers = customerService.GetCustomers(userName);
+            var response = customerService.GetCustomers();
 
-                return Ok(customers);
-            }
-            catch
-            {
-                return BadRequest(new List<CrmCustomer>());
-            }
+            return this.CreateResponse(response);
         }
-        
+
         [HttpGet("{customerId}")]
         public IActionResult GetById(string customerId)
         {
-            try
-            {
-                var response = this.customerService.GetCustomerById(customerId);
+            var response = customerService.GetCustomerById(customerId);
 
-                if (response.HasErrors()) return BadRequest(response);
-
-                return Ok(response.Data);
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            return this.CreateResponse(response);
         }
     }
 }

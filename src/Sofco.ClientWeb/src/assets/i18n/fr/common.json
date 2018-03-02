@@ -13,5 +13,6 @@
     "errorSendMail": "Error al enviar el mail",
     "exportFileError": "Ocurrio un error al exportar el archivo",
     "fileNotFound": "Archivo no encontrado",
-    "saveFileError": "Ocurrio un error al guardar el archivo"
+    "saveFileError": "Ocurrio un error al guardar el archivo",
+    "crmGeneralError": "Erreur interne du CRM"
 }

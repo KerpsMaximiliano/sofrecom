@@ -5,5 +5,7 @@
         string GetUserName();
 
         string GetUserMail();
+
+        string GetUserEmail(string text);
     }
 }

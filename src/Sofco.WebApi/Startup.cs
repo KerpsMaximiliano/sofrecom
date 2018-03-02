@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.DAL;
 using Sofco.Service.Settings;
@@ -71,6 +72,7 @@ namespace Sofco.WebApi
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
             services.Configure<FileConfig>(Configuration.GetSection("File"));
+            services.Configure<AppSetting>(Configuration.GetSection("App"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -24,6 +24,14 @@ namespace Sofco.DAL.Repositories.Billing
                 .ToList();
         }
 
+        public List<SolfacDelegate> GetByUserId(int userId)
+        {
+            return SolfacDelegateSet
+                .Where(s => s.UserId == userId)
+                .ToList();
+
+        }
+
         public SolfacDelegate Save(SolfacDelegate solfacDelegate)
         {
             var storedItem = GetByServiceIdAndUserId(solfacDelegate.ServiceId, solfacDelegate.UserId);
