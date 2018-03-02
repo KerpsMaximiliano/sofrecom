@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Service } from "app/services/common/service";
-import { Menu } from "app/models/admin/menu";
-import { HttpAuth } from "app/services/common/http-auth";
+import { Service } from 'app/services/common/service';
+import { Menu } from 'app/models/admin/menu';
+import { HttpAuth } from 'app/services/common/http-auth';
 import { DatepickerOptions } from 'ng2-datepicker';
 
 @Injectable()
@@ -25,10 +25,10 @@ export class MenuService {
 
     constructor(private http: HttpAuth, private service: Service) {
         this.baseUrl = this.service.UrlApi;
-        
-        if(!this.menu){
-            var menu = JSON.parse(localStorage.getItem('menu'));
-            if(menu != null)
+
+        if (!this.menu) {
+            const menu = JSON.parse(localStorage.getItem('menu'));
+            if (menu != null)
             {
                 this.menu = menu.menus;
                 this.userIsDirector = menu.isDirector;
@@ -43,7 +43,7 @@ export class MenuService {
             }
         }
 
-        if(!this.currentUser){
+        if (!this.currentUser){
             this.currentUser = Cookie.get('currentUser')
         }
 
@@ -56,12 +56,8 @@ export class MenuService {
         }
     }
 
-    get(userName: string) {
-       return this.http.get(`${this.baseUrl}/menu/${userName}`)
-                       .map((res:Response) => {
-                           var rpta = res.json();
-                           return rpta;
-                        });
+    get() {
+       return this.http.get(`${this.baseUrl}/menu/`).map((res: Response) => res.json());
     }
 
     hasModule(module: string){

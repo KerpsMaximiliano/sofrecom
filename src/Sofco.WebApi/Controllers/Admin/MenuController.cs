@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
-using Sofco.WebApi.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -14,17 +15,21 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly IMenuService menuService;
         private readonly IUserService userService;
         private readonly EmailConfig emailConfig;
+        private readonly ISessionManager sessionManager;
 
-        public MenuController(IMenuService menuService, IUserService userService, IOptions<EmailConfig> emailConfig)
+        public MenuController(IMenuService menuService, IUserService userService, IOptions<EmailConfig> emailConfig, ISessionManager sessionManager)
         {
             this.menuService = menuService;
             this.userService = userService;
+            this.sessionManager = sessionManager;
             this.emailConfig = emailConfig.Value;
         }
 
-        [HttpGet("{userName}")]
-        public IActionResult Get(string userName)
+        [HttpGet]
+        public IActionResult Get()
         {
+            var userName = sessionManager.GetUserName();
+
             var roleFunctionalities = menuService.GetFunctionalitiesByUserName(userName);
 
             var response = new MenuResponse();

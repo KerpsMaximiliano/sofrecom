@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
 using Sofco.Model.Utils;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Enums;
@@ -196,11 +197,11 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public Response<User> GetByMail()
+        public Response<UserModel> GetByMail()
         {
             var email = sessionManager.GetUserMail();
 
-            var response = new Response<User>();
+            var response = new Response<UserModel>();
 
             var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(email));
 
@@ -210,7 +211,8 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Data = user;
+            response.Data = new UserModel(user);
+
             return response;
         }
 

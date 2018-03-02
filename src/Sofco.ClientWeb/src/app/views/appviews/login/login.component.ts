@@ -50,18 +50,19 @@ export class LoginComponent implements OnInit {
 
     onLoginSucces(data){
         Cookie.set('access_token', data.access_token);
-        Cookie.set('refresh_token', data.refresh_token);  
+        Cookie.set('refresh_token', data.refresh_token);
 
-        this.userSubscrip = this.userService.getByEmail(this.model.username).subscribe(
-            userData => {
-                Cookie.set('userInfo', JSON.stringify(userData));  
+        this.userSubscrip = this.userService.getByEmail().subscribe(
+            response => {
+                const userData = response.data;
+                Cookie.set('userInfo', JSON.stringify(userData));
                 this.menuService.currentUser = userData.name;
                 this.menuService.user = userData;
             },
             error => this.errorHandlerService.handleErrors(error)
         );
 
-        this.menuSubscrip = this.menuService.get(this.model.username).subscribe(
+        this.menuSubscrip = this.menuService.get().subscribe(
             data => {
                 this.messageService.closeLoading();
 

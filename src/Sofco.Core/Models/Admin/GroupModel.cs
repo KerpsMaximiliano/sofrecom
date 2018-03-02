@@ -5,7 +5,7 @@ using Sofco.Model;
 using Sofco.Model.Interfaces;
 using Sofco.Model.Models.Admin;
 
-namespace Sofco.WebApi.Models.Admin
+namespace Sofco.Core.Models.Admin
 {
     public class GroupModel : BaseEntity, IAuditDates
     {
