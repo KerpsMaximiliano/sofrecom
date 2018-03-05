@@ -1,5 +1,6 @@
 ﻿using System;
 using Hangfire;
+using Sofco.Core.DAL;
 using Sofco.WebJob.Helpers;
 using Sofco.WebJob.Jobs.Interfaces;
 
@@ -16,6 +17,7 @@ namespace Sofco.WebJob.Services
         private const string TigerHealthInsuranceJobName = "TigerHealthInsurance";
 
         private const string LicenseDaysUpdateJobName = "LicenseDaysUpdate";
+
 
         public static void Init(string timeZoneName)
         {
