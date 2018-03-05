@@ -13,5 +13,6 @@
     "examDescriptionRequired": "La asignatura a rendir es requerida",
     "commentsRequired": "Los comentarios son requeridos",
     "notFound": "Licencia no encontrada",
-    "fileAdded": "Archivo cargado exitosamente"
+    "fileAdded": "Archivo cargado exitosamente",
+    "licenseTypeUpdate": "Licencias actualizadas"
 }

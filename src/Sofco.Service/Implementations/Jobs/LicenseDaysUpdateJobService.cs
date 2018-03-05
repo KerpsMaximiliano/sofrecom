@@ -4,6 +4,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -132,7 +133,10 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var globalSetting in settings)
             {
-                holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
+                if (globalSetting.Type == GlobalSettingType.Number)
+                {
+                    holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
+                }
             }
         }
 
