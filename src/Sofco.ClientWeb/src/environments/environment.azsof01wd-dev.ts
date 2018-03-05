@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  urlApi:  "http://azsof01wd:8001/api",
-  crmCloseStatusCode: "717620004"
+  urlApi:  'http://azsof01wd:8001/api',
+  crmCloseStatusCode: '717620004'
 };
-  
