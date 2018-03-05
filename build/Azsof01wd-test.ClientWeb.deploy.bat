@@ -7,7 +7,7 @@ SET WORKSPACE_PATH=%~1
 SET DEPLOY_PATH=%~2
 
 IF [%1] == [] SET WORKSPACE_PATH=C:\Projects\Sofcoar
-IF [%2] == [] SET DEPLOY_PATH=\\AZSOF01WT\Sofco.ClientWeb
+IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys.Test\Sofco.ClientWeb
 
 cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
@@ -16,7 +16,7 @@ cmd /c npm install
 cmd /c DEL /F /Q "%PUBLISH_PATH%"
 cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
 
-cmd /c ng build --prod --env=azsof01wt -op "%PUBLISH_PATH%"
+cmd /c ng build --prod --env=azsof01wd-test -op "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 

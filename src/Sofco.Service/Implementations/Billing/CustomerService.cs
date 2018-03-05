@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
@@ -47,7 +48,7 @@ namespace Sofco.Service.Implementations.Billing
                     response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }
-            response.Data = result;
+            response.Data = result.DistinctBy(x => x.Id);
 
             return response;
         }

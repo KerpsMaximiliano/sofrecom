@@ -18,6 +18,8 @@ cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
 
 cmd /c ng build --prod --env=azsof01wd-dev -op "%PUBLISH_PATH%"
 
+@if %errorlevel% neq 0 exit /b %errorlevel%
+
 cmd /c DEL /F /Q "%DEPLOY_PATH%"
 cmd /c FOR /D %%p IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%p" /s /q
 

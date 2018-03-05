@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
@@ -33,7 +34,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 result.AddRange(serviceData.GetServices(customerId, item));
             }
-            return new Response<List<CrmService>> {Data = result};
+            return new Response<List<CrmService>> {Data = result.DistinctBy(x => x.Id) };
         }
 
         public Response<List<SelectListModel>> GetServicesOptions(string customerId)
