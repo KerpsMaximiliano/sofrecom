@@ -72,7 +72,14 @@
         "settings": {
             "title": "Configs",
             "saveSuccess": "Save successfully",
-            "AllocationManagement_Months": "Allocations - Months"
+            "AllocationManagement_Months": "Allocations - Months",
+            "ExamDaysAllowTogether": "Maximum consecutive examination days",
+            "Holidays10Days": "Holidays. Antiguedad 6 months to 5 years",
+            "Holidays15Days": "Holidays. More than 5 years, up to 10 years",
+            "Holidays20Days": "Holidays. More than 10 years, up to 20 years",
+            "Holidays25Days": "Holidays. Age more than 20 years",
+            "StartDateUpdateHolidays": "Date process update VAP days",
+            "StartDateHolidays": "Start date holiday period"
         }
     },
     "billing":{

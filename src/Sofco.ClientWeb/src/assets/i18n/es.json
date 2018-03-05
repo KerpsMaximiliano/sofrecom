@@ -72,7 +72,14 @@
         "settings": {
             "title": "Configuración",
             "saveSuccess": "Datos actualizados exitosamente",
-            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar"
+            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
+            "ExamDaysAllowTogether": "Máximo días de examen consecutivos",
+            "Holidays10Days": "Días de Vacaciones. Antiguedad 6 meses a 5 años",
+            "Holidays15Days": "Días de Vacaciones. Más de 5 años, hasta 10 años",
+            "Holidays20Days": "Días de Vacaciones. Más de 10 años, hasta 20 años",
+            "Holidays25Days": "Días de Vacaciones. Antiguedad mas de 20 años",
+            "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
+            "StartDateHolidays": "Fecha de inicio período vacacional"
         }
     },
     "billing":{
