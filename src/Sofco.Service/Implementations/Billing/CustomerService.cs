@@ -47,9 +47,17 @@ namespace Sofco.Service.Implementations.Billing
                     response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }
-            response.Data = result;
+            response.Data = Distinct(result);
 
             return response;
+        }
+
+        private static List<CrmCustomer> Distinct(List<CrmCustomer> list)
+        {
+            return list
+                .GroupBy(x => x.Id)
+                .Select(x => x.FirstOrDefault())
+                .ToList();
         }
 
         public Response<List<SelectListModel>> GetCustomersOptions()

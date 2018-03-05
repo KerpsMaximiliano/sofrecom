@@ -82,7 +82,7 @@ namespace Sofco.Service.Implementations.Billing
                     result.AddRange(projectData.GetProjects(serviceId, item));
                 }
 
-                response.Data = result;
+                response.Data = Distinct(result);
             }
             catch (Exception ex)
             {
@@ -91,6 +91,14 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        private List<CrmProject> Distinct(List<CrmProject> list)
+        {
+            return list
+                .GroupBy(x => x.Id)
+                .Select(x => x.FirstOrDefault())
+                .ToList();
         }
 
         public Response<IList<SelectListModel>> GetProjectsOptions(string serviceId)

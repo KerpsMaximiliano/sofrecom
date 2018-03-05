@@ -33,7 +33,15 @@ namespace Sofco.Service.Implementations.Billing
             {
                 result.AddRange(serviceData.GetServices(customerId, item));
             }
-            return new Response<List<CrmService>> {Data = result};
+            return new Response<List<CrmService>> {Data = Distinct(result) };
+        }
+
+        private List<CrmService> Distinct(List<CrmService> list)
+        {
+            return list
+                .GroupBy(x => x.Id)
+                .Select(x => x.FirstOrDefault())
+                .ToList();
         }
 
         public Response<List<SelectListModel>> GetServicesOptions(string customerId)
