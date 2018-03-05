@@ -298,6 +298,7 @@
             "integrator": "Integrador",
             "customers": "Clientes",
             "delegate": {
+                "delegateAction": "Delegar",
                 "title": "Delegar Solfac",
                 "users": "Usuarios",
                 "saveSuccess": "Usuario agregado correctamente.",
