@@ -14,6 +14,8 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { Hito } from 'app/models/billing/solfac/hito';
+import { ServiceService } from 'app/services/billing/service.service';
+import { CertificatesService } from 'app/services/billing/certificates.service';
 
 declare var $:any;
 
@@ -31,6 +33,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
+    public certificates: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
     public integratorProject: any;
@@ -43,6 +46,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    getCertificateAvailableSubscrip: Subscription;
 
     public test;
 
@@ -60,7 +64,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
                 private solfacService: SolfacService,
                 private menuService: MenuService,
+                private certificateService: CertificatesService,
                 private customerService: CustomerService,
+                private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
@@ -76,6 +82,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
        if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+       if(this.getCertificateAvailableSubscrip) this.getCertificateAvailableSubscrip.unsubscribe();
     }
 
     setDataForMultipleProjects(multipleProjects){
@@ -109,6 +116,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setDataForSingleProject(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+      
       this.integratorProject = project;
 
       this.getInvoicesOptions(project.id);
@@ -118,10 +126,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.projectId = project.id;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-      this.model.imputationNumber1 = project.analytic; 
       this.model.currencyId = this.getCurrencyId(project.currency);
-      this.model.analytic = project.analytic;
       this.model.remito = project.remito;
+      this.model.analytic = project.analytic;
+      this.model.imputationNumber1 = project.analytic;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
@@ -145,7 +153,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setNewModel(){
       var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
-
+      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
       this.model.totalAmount = 0;
       this.model.documentType = 1;
 
@@ -157,6 +165,23 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
     
       var customer = JSON.parse(sessionStorage.getItem("customer"));
+      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+
+      if(service){
+        // this.model.imputationNumber1 = service.analytic; 
+        // this.model.analytic = service.analytic;
+        this.model.manager = service.manager;
+        this.model.managerId = service.managerId;
+      }
+      else{
+        this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
+          // this.model.imputationNumber1 = data.analytic; 
+          // this.model.analytic = data.analytic;
+          this.model.manager = data.manager;
+          this.model.managerId = data.managerId;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+      }
 
       if(customer){
         this.model.businessName = customer.nombre;
@@ -201,16 +226,17 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
       
       this.setCurrencySymbol(this.model.currencyId.toString());
+      this.getCertificatesAvailable();
     }
 
-    getInvoicesOptions(projectId){
+    getInvoicesOptions(projectId) {
       this.getInvoiceOptionsSubs = this.invoiceService.getOptions(projectId).subscribe(data => {
         this.invoices = data;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    getOptions(){
+    getOptions() {
       this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
@@ -222,10 +248,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       err => this.errorHandlerService.handleErrors(err));
     }
 
-    addDetail(){
-      var externalHitoId = "";
+    addDetail() {
+      let externalHitoId = '';
 
-      if(this.model.hitos.length > 0){
+      if (this.model.hitos.length > 0){
         externalHitoId = this.model.hitos[0].externalHitoId;
       }
 
@@ -261,6 +287,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.messageService.showLoading();
 
       this.model.invoicesId = <any>$('#invoices').val();
+      this.model.certificatesId = <any>$('#certificates').val();
 
       this.solfacService.add(this.model).subscribe(
         data => {
@@ -360,5 +387,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     hasIntegrator():Boolean {
       return false;
+    }
+
+    getCertificatesAvailable(){
+      this.getCertificateAvailableSubscrip = this.certificateService.getByClient(this.model.customerId).subscribe(data => {
+        this.certificates = data;
+      },
+      err => this.errorHandlerService.handleErrors(err));
     }
 }

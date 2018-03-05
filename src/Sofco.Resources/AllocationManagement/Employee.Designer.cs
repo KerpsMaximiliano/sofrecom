@@ -78,6 +78,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/employee.employeesNotFound.
+        /// </summary>
+        public static string EmployeesNotFound {
+            get {
+                return ResourceManager.GetString("EmployeesNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to allocationManagement/employee.nameRequired.
         /// </summary>
         public static string NameRequired {

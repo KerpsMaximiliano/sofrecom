@@ -2,12 +2,16 @@
 using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
+using Sofco.DAL.Mappings.Common;
+using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.Common;
+using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.DAL
 {
@@ -24,13 +28,15 @@ namespace Sofco.DAL
         public DbSet<Group> Groups { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
+        public DbSet<UserGroup> UserGroup { get; set; }
+        public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
+        public DbSet<LicenseFile> LicenseFiles { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -40,6 +46,8 @@ namespace Sofco.DAL
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
+        public DbSet<Model.Models.Billing.PurchaseOrder> PurchaseOrderFiles { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -49,6 +57,15 @@ namespace Sofco.DAL
         public DbSet<EmployeeLicense> EmployeeLicenses { get; set; }
         public DbSet<CostCenter> CostCenters { get; set; }
         public DbSet<EmployeeSyncAction> EmployeeSyncActions { get; set; }
+        public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
+        public DbSet<HealthInsurance> HealthInsurances { get; set; }
+        public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
+
+        // Human Resources
+        public DbSet<License> Licenses { get; set; }
+
+        // Common
+        public DbSet<File> Files { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -62,7 +79,8 @@ namespace Sofco.DAL
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
-        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<Model.Utils.PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<Sector> Sectors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -89,6 +107,16 @@ namespace Sofco.DAL
             builder.MapGlobalSetting();
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
+            builder.MapEmployeeHistory();
+            builder.MapFile();
+            builder.MapPurchaseOrder();
+            builder.MapHealthInsurance();
+            builder.MapPrepaidHealth();
+            builder.MapCertificate();
+            builder.MapSolfacDelegate();
+            builder.MapSolfacCertificates();
+            builder.MapLicense();
+            builder.MapLicenseFiles();
         }
     }
 }

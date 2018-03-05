@@ -1,5 +1,6 @@
 ﻿using System;
 using Hangfire;
+using Sofco.Core.DAL;
 using Sofco.WebJob.Helpers;
 using Sofco.WebJob.Jobs.Interfaces;
 
@@ -13,6 +14,11 @@ namespace Sofco.WebJob.Services
 
         private const string AzureJobName = "UpdateAzureUsers";
 
+        private const string TigerHealthInsuranceJobName = "TigerHealthInsurance";
+
+        private const string LicenseDaysUpdateJobName = "LicenseDaysUpdate";
+
+
         public static void Init(string timeZoneName)
         {
             ClearJobs();
@@ -24,6 +30,10 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<IAzureJob>(AzureJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeSyncJob>(TigerEmployeeSyncJobName, j => j.Execute(), Cron.Daily(7), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(TigerHealthInsuranceJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
+
+            RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(LicenseDaysUpdateJobName, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
         }
 
         private static void ClearJobs()

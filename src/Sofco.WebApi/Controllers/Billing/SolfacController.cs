@@ -22,20 +22,22 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly IUtilsService utilsService;
         private readonly ISolfacService solfacService;
+        private readonly ICertificateService certificateService;
         private readonly EmailConfig emailConfig;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, ICertificateService certificateService)
         {
             this.utilsService = utilsService;
             this.solfacService = solfacService;
             this.emailConfig = emailConfig.Value;
+            this.certificateService = certificateService;
         }
 
         [HttpPost]
         [Route("search")]
         public IActionResult Search([FromBody] SolfacParams parameters)
         {
-            var solfacs = solfacService.Search(parameters, this.GetUserMail(), emailConfig);
+            var solfacs = solfacService.Search(parameters);
 
             if (!solfacs.Any())
             {
@@ -117,10 +119,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.Validate(domain);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -133,12 +132,9 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var result = solfacService.Post(domain, model.InvoicesId);
+            var response = solfacService.Post(domain, model.InvoicesId, model.CertificatesId);
 
-            if (result.HasErrors())
-                return BadRequest(result);
-
-            return Ok(result);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -153,10 +149,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.Update(domain, model.Comments);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -170,7 +163,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var domain = model.CreateDomain();
 
-            var response = solfacService.CreateSolfac(domain, model.InvoicesId);
+            var response = solfacService.CreateSolfac(domain, model.InvoicesId, model.CertificatesId);
 
             if (response.HasErrors())
                 return BadRequest(response);
@@ -196,10 +189,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.ChangeStatus(id, solfacStatusParams, emailConfig);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -210,10 +200,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateBill(id, solfacStatusParams);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPut]
@@ -224,10 +211,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
             var response = solfacService.UpdateCashedDate(id, solfacStatusParams);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -236,10 +220,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.Delete(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -248,10 +229,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteDetail(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpDelete]
@@ -260,10 +238,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteInvoice(id, invoiceId);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}/histories")]
@@ -380,10 +355,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.DeleteFile(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet]
@@ -404,10 +376,43 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.AddInvoices(id, invoices);
 
-            if (response.HasErrors())
-                return BadRequest(response);
+            return this.CreateResponse(response);
+        }
 
-            return Ok(response);
+        [HttpGet]
+        [Route("{id}/certificates")]
+        public IActionResult GetCertificates(int id)
+        {
+            var certificates = certificateService.GetBySolfac(id);
+
+            return Ok(certificates.Select(x => new CertificateFileViewModel(x)));
+        }
+
+        [HttpDelete]
+        [Route("{id}/certificate/{certificateId}")]
+        public IActionResult DeleteSolfacCertificate(int id, int certificateId)
+        {
+            var response = solfacService.DeleteSolfacCertificate(id, certificateId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/certificates")]
+        public IActionResult AddCertificates(int id, [FromBody] IList<int> certificates)
+        {
+            var response = solfacService.AddCertificates(id, certificates);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var responseModel = new Response<IList<CertificateFileViewModel>> { Messages = response.Messages, Data = new List<CertificateFileViewModel>() };
+
+            foreach (var certificate in response.Data)
+            {
+                responseModel.Data.Add(new CertificateFileViewModel(certificate));
+            }
+
+            return Ok(responseModel);
         }
 
         private IEnumerable<SelectListItem> GetStatuses()
@@ -418,6 +423,7 @@ namespace Sofco.WebApi.Controllers.Billing
             yield return new SelectListItem { Value = ((int)SolfacStatus.InvoicePending).ToString(), Text = SolfacStatus.InvoicePending.ToString() };
             yield return new SelectListItem { Value = ((int)SolfacStatus.Invoiced).ToString(), Text = SolfacStatus.Invoiced.ToString() };
             yield return new SelectListItem { Value = ((int)SolfacStatus.AmountCashed).ToString(), Text = SolfacStatus.AmountCashed.ToString() };
+            yield return new SelectListItem { Value = ((int)SolfacStatus.RejectedByDaf).ToString(), Text = SolfacStatus.RejectedByDaf.ToString() };
         }
     }
 }

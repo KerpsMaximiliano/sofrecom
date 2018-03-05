@@ -50,35 +50,37 @@ export class LoginComponent implements OnInit {
 
     onLoginSucces(data){
         Cookie.set('access_token', data.access_token);
-        Cookie.set('refresh_token', data.refresh_token);  
+        Cookie.set('refresh_token', data.refresh_token);
 
-        this.userSubscrip = this.userService.getByEmail(this.model.username).subscribe(
-            userData => {
-                Cookie.set('userInfo', JSON.stringify(userData));  
+        this.userSubscrip = this.userService.getByEmail().subscribe(
+            response => {
+                const userData = response.data;
+                Cookie.set('userInfo', JSON.stringify(userData));
                 this.menuService.currentUser = userData.name;
                 this.menuService.user = userData;
             },
             error => this.errorHandlerService.handleErrors(error)
         );
 
-        this.menuSubscrip = this.menuService.get(this.model.username).subscribe(
-            data => {
+        this.menuSubscrip = this.menuService.get().subscribe(
+            response => {
+                const menu = response.data;
                 this.messageService.closeLoading();
 
-                localStorage.setItem('menu', JSON.stringify(data));
+                localStorage.setItem('menu', JSON.stringify(menu));
                 Cookie.set("currentUser", this.model.username);
                 Cookie.set("currentUserMail", this.model.username);
 
-                this.menuService.menu = data.menus;
-                this.menuService.userIsDirector = data.isDirector; 
-                this.menuService.userIsDaf = data.isDaf;
-                this.menuService.userIsCdg = data.isCdg;
+                this.menuService.menu = menu.menus;
+                this.menuService.userIsDirector = menu.isDirector;
+                this.menuService.userIsDaf = menu.isDaf;
+                this.menuService.userIsCdg = menu.isCdg;
 
-                this.menuService.dafMail = data.dafMail;
-                this.menuService.cdgMail = data.cdgMail;
-                this.menuService.pmoMail = data.pmoMail;
-                this.menuService.rrhhMail = data.rrhhMail;
-                this.menuService.sellerMail = data.sellerMail;
+                this.menuService.dafMail = menu.dafMail;
+                this.menuService.cdgMail = menu.cdgMail;
+                this.menuService.pmoMail = menu.pmoMail;
+                this.menuService.rrhhMail = menu.rrhhMail;
+                this.menuService.sellerMail = menu.sellerMail;
 
                 this.router.navigate([this.returnUrl]);
             },

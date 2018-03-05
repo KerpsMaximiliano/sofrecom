@@ -5,7 +5,8 @@
     "Sofco.Model": "1.0.0-*",
     "EPPlus.Core": "1.1.0",
     "Sofco.Common": "1.0.0-*",
-    "Sofco.Domain.Crm": "1.0.0-*"
+    "Sofco.Domain.Crm": "1.0.0-*",
+    "Microsoft.AspNetCore.Http.Features": "1.1.2"
   },
   "frameworks": {
     "netstandard1.6": {

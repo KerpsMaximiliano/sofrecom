@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Jobs;
@@ -11,12 +13,16 @@ namespace Sofco.Service.Implementations.Jobs
     public class AzureAddUsersJobService : IAzureAddUsersJobService
     {
         private readonly IAzureService azureService;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public AzureAddUsersJobService(IAzureService azureService, IUnitOfWork unitOfWork)
+        private readonly AppSetting appSetting;
+
+        public AzureAddUsersJobService(IAzureService azureService, IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting)
         {
             this.unitOfWork = unitOfWork;
             this.azureService = azureService;
+            this.appSetting = appSetting.Value;
         }
 
         public void UpdateUsersFromAzureAd()
@@ -25,18 +31,21 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var user in response.Data.Value)
             {
-                if (!unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName))
+                if (user.UserPrincipalName.Contains($"@{appSetting.Domain}"))
                 {
-                    var domain = new User
+                    if (!unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName))
                     {
-                        Email = user.UserPrincipalName,
-                        Name = user.DisplayName,
-                        UserName = user.DisplayName,
-                        Active = true,
-                        StartDate = DateTime.Now
-                    };
+                        var domain = new User
+                        {
+                            Email = user.UserPrincipalName,
+                            Name = user.DisplayName,
+                            UserName = user.UserPrincipalName.Split('@')[0],
+                            Active = true,
+                            StartDate = DateTime.Now
+                        };
 
-                    unitOfWork.UserRepository.Insert(domain);
+                        unitOfWork.UserRepository.Insert(domain);
+                    }
                 }
             }
 

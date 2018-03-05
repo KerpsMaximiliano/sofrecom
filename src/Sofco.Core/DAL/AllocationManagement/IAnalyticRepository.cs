@@ -15,5 +15,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         bool ExistTitle(string analyticTitle);
 
         IList<Analytic> GetAnalyticsByEmployee(int employeeId);
+
+        void Close(Analytic analytic);
+        ICollection<Analytic> GetAllOpenReadOnly();
+        bool ExistWithService(string serviceId);
     }
 }

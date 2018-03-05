@@ -10,6 +10,7 @@ using Sofco.Domain.Crm;
 using Sofco.Model;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Framework.MailData;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -17,8 +18,6 @@ namespace Sofco.Service.Implementations.Jobs
     public class SolfacJobService : ISolfacJobService
     {
         private const string DateFormat = "dd/MM/yyyy";
-
-        private const string Subject = "HITOS sin Solfac";
 
         private readonly int daysToExpire;
 
@@ -83,10 +82,16 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (item.Key == null) continue;
 
+
                 var mailContent = GetContent(item.Value);
 
-                result.Add(mailBuilder.GetEmail(
-                    MailType.HitosWithoutSolfac, item.Key, Subject, mailContent));
+                var mailData = new HitosWithoutSolfac
+                {
+                    Recipients = item.Key,
+                    Content = mailContent
+                };
+
+                result.Add(mailBuilder.GetEmail(mailData));
             }
 
             return result;
@@ -112,7 +117,7 @@ namespace Sofco.Service.Implementations.Jobs
             return list;
         }
 
-        private Dictionary<string, string> GetContent(List<CrmHito> hitos)
+        private string GetContent(List<CrmHito> hitos)
         {
             var content = new StringBuilder();
 
@@ -126,10 +131,7 @@ namespace Sofco.Service.Implementations.Jobs
                 content.AppendLine($"<li><a href='{link}'>{item.Name} - {item.ProjectName} - {item.ScheduledDate.ToString(DateFormat)}</a>");
             }
 
-            return new Dictionary<string, string>
-            {
-                {MailContentKey.Content, $"<ul>{content}</ul>"}
-            };
+            return $"<ul>{content}</ul>";
         }
     }
 }

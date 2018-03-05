@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+﻿using Sofco.Core.Models.Admin;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Admin
 {
     public interface IMenuService
     {
-        IList<RoleFunctionality> GetFunctionalitiesByUserName(string userId);
+        Response<MenuResponseModel> GetFunctionalitiesByUserName();
+
         string GetGroupMail(string emailConfigDafCode);
     }
 }

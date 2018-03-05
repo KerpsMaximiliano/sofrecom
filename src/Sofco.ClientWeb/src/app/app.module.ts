@@ -38,6 +38,7 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 import { HttpAuth } from "app/services/common/http-auth";
 import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
 import { LaddaModule } from 'angular2-ladda';
+import { HumanResourcesModule } from 'app/views/human-resources/human-resources.module';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -58,6 +59,7 @@ export function HttpLoaderFactory(http: Http) {
     RouterModule.forRoot(ROUTES),
     AdminModule,
     BillingModule,
+    HumanResourcesModule,
     ChartsModule,
     LaddaModule.forRoot({
       style: "zoom-in",

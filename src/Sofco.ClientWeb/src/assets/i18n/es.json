@@ -72,7 +72,14 @@
         "settings": {
             "title": "Configuración",
             "saveSuccess": "Datos actualizados exitosamente",
-            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar"
+            "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
+            "ExamDaysAllowTogether": "Máximo días de examen consecutivos",
+            "Holidays10Days": "Días de Vacaciones. Antiguedad 6 meses a 5 años",
+            "Holidays15Days": "Días de Vacaciones. Más de 5 años, hasta 10 años",
+            "Holidays20Days": "Días de Vacaciones. Más de 10 años, hasta 20 años",
+            "Holidays25Days": "Días de Vacaciones. Antiguedad mas de 20 años",
+            "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
+            "StartDateHolidays": "Fecha de inicio período vacacional"
         }
     },
     "billing":{
@@ -172,6 +179,43 @@
             "edit": "Editar Hito",
             "add": "Agregar Hito"
         },
+        "certificate": {
+            "addTitle": "Alta Certificado",
+            "editTitle": "Editar Certificado",
+            "searchTitle": "Busqueda Certificados",
+            "title": "Certificados",
+            "add": "Alta",
+            "edit": "Editar",
+            "search": "Busqueda",
+            "parameters": "Parametros de busqueda",
+            "noOrdersFound": "No hay certificados cargados",
+            "fields": {
+                "name": "Nombre",
+                "client": "Cliente",
+                "year": "Año"
+            }
+        },
+        "purchaseOrder": {
+            "addTitle": "Alta orden de compra",
+            "editTitle": "Editar orden de compra",
+            "searchTitle": "Busqueda Ordenes de Compra",
+            "title": "Ordenes de Compra",
+            "add": "Alta",
+            "edit": "Editar",
+            "search": "Busqueda",
+            "parameters": "Parametros de busqueda",
+            "noOrdersFound": "No hay ordenes de compra cargadas",
+            "fields": {
+                "title": "Titulo",
+                "number": "Numero",
+                "client": "Cliente",
+                "receptionDate": "Fecha Recepcion",
+                "year": "Año",
+                "area": "Area",
+                "status": "Estado",
+                "analytic": "Analítica" 
+            }
+        },
         "solfac":{
             "title": "Solicitud Facturación",
             "new": "Generación",
@@ -217,6 +261,7 @@
             "hito": "Hito",
             "pdfViewer": "Visualización de PDF",
             "activity": "Actividad",
+            "amount": "Monto",
             "grid": {
                 "invoiceDate": "Facturación",
                 "invoiceCode": "Factura"
@@ -251,7 +296,18 @@
             "addUpdateComments": "Ingrese los cambios que se realizaron",
             "cannotUpdateSolfac": "No se puede modificar la solicitud en el estado actual",
             "integrator": "Integrador",
-            "customers": "Clientes"
+            "customers": "Clientes",
+            "delegate": {
+                "title": "Delegar Solfac",
+                "users": "Usuarios",
+                "saveSuccess": "Usuario agregado correctamente.",
+                "service": "Servicio",
+                "manager": "Gerente",
+                "user": "Usuario",
+                "createdUser": "Creado por",
+                "createdDate": "Fecha creación",
+                "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?"
+            }
         },
         "invoice":{
             "title": "Remitos",
@@ -311,6 +367,9 @@
         "costCenter": {
             "title": "Centro de Costos",
             "list": "Listado de centro de costos",
+            "edit": {
+                "title": "Editar centro de costos"
+            },
             "add": {
                 "title": "Nuevo centro de costos",
                 "code": "Código",
@@ -331,6 +390,7 @@
             "allocations": "Asignaciones",
             "resources": "Recursos",
             "percentage": "Porcentaje",
+            "percentages": "Porcentajes",
             "startDate": "Fecha Inicio",
             "endDate": "Fecha Fin",
             "forbidden": "No tiene los permisos suficientes para asignar recursos",
@@ -351,18 +411,50 @@
                 "percentage": "Porcentaje"
             }
         },
+        "report": { 
+            "title": "Reporte de Recursos",
+            "report": "Reporte",
+            "includeStaff": "Incluir Staff",
+            "grid": {
+                "analytic": "Analítica",
+                "employee": "Empleado",
+                "boss": "Superior",
+                "manager":"Gerente",
+                "office": "Dirección",
+                "billeability": "Facturabilidad (%)"
+            }
+        },
         "resources": {
             "listTitle": "Listado de Recursos",
             "title": "Recursos",
             "list": "Listado",
+            "profile": "Perfil del empleado",
             "recipients": "Con Copia (CC)",
             "recipient": "Destinatario",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
+            "generalInfo": "Informacion general",
+            "allocations": "Asignaciones",
+            "licenses": "Licencias",
+            "timeSheet": "Carga de Horas",
+            "homeOffice": "Home Office",
+            "history": "Historial",
+            "address": "Dirección",
+            "location": "Localidad/Barrio",
+            "province": "Estado/Provincia",
+            "healtInsurance": "Obra social",
+            "prepaidHealth": "Plan",
+            "prepaidHealthAmount": "Valor",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
+                "employeeNumber": "Legajo",
                 "profile": "Perfil",
-                "technology": "Tecnologia"
+                "office": "Oficina",
+                "manager": "Superior",
+                "technology": "Tecnologia",
+                "startDate" :"Inicio",
+                "releaseDate": "Liberación",
+                "percentage": "Porcentaje"
             }
         },
         "news": {
@@ -380,8 +472,12 @@
             "listTitle": "Listado de Analiticas",
             "title": "Analiticas",
             "list": "Listado",
-            "new": "Alta de Analitica",
-            "edit": "Editar Analitica",
+            "new": "Crear de Analitica",
+            "edit": "Editar",
+            "editTitle": "Editar Analitica",
+            "view": "Ver",
+            "viewTitle": "Ver Analitica",
+            "assigned": "Analíticas Asignadas",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",
@@ -413,8 +509,35 @@
                 "title": "Título",
                 "name": "Nombre",
                 "client": "Cliente",
-                "commercialManager": "Manager Comercial"
+                "commercialManager": "Manager Comercial",
+                "status": "Estado"
+            },
+            "status": {
+                "open": "Abierta",
+                "closeForExpenses": "Cerrada para costos",
+                "close": "Cerrada"
             }
+        },
+        "confirmBody": "Esta seguro que desea seguir con la acción de "
+    },
+    "rrhh":{
+        "title": "Recursos Humanos",
+        "licenses": "Licencias",
+        "license": {
+            "addTitle": "Cargar Licencia",
+            "add": "Alta",
+            "employee": "Solicitante",
+            "startDate": "Fecha de Inicio",
+            "endDate": "Fecha de Fin",
+            "withPayment": "Con Goce de sueldo",
+            "reason": "Motivo",
+            "comments": "Comentarios",
+            "examDescription": "Asignatura a rendir",
+            "parcial": "Parcial",
+            "final": "Final",
+            "manager":"Superior",
+            "sector": "Sector",
+            "attachments": "Archivos Adjuntos"
         }
     },
     "ACTIONS":{
@@ -448,8 +571,8 @@
         "confirmBody": "¿Esta seguro que desea confirmar la acción?",
         "confirmDelete": "Confirmación de baja",
         "confirmAdd": "Confirmación de alta",
-        "areYouSureConfirmAdd": "Está seguro de dar de alta ",
-        "areYouSureConfirmDelete": "Está seguro de dar de baja ",
+        "areYouSureConfirmAdd": "¿Está seguro de dar de alta?",
+        "areYouSureConfirmDelete": "¿Está seguro de dar de baja?",
         "clone": "Clonar",
         "clean": "Limpiar",
         "updateBill": "Actualizar Factura",
@@ -465,7 +588,7 @@
         "changeDates": "Cambiar Fechas",
         "notifyUnsubscribe": "Notifcar baja",
         "goHere": "Ingrese Aqui"
-    },
+    }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
     "ManagementControlRejected": "Rechazado Control Gestión",
@@ -493,6 +616,9 @@
     "name": "Nombre",
     "New": "Alta",
     "Delete": "Baja",
+    "Reincorporation": "Reincorporación",
+    "Valid": "Vigente",
+    "Consumed": "Consumida",
     "report":{
         "title": "Reporte",
         "solfacs": {

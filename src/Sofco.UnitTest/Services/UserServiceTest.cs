@@ -3,9 +3,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.DAL;
+using Sofco.Core.Logger;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
@@ -17,6 +18,8 @@ namespace Sofco.UnitTest.Services
     {
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<IUnitOfWork> unitOfWork;
+        private Mock<ILogMailer<UserService>> loggerMock;
+        private Mock<ISessionManager> sessionManagerMock;
 
         private UserService sut;
 
@@ -28,10 +31,13 @@ namespace Sofco.UnitTest.Services
             unitOfWork = new Mock<IUnitOfWork>();
 
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
+            loggerMock = new Mock<ILogMailer<UserService>>();
 
             userRepositoryMock.Setup(s => s.Update(It.IsAny<User>()));
 
-            sut = new UserService(unitOfWork.Object);
+            sessionManagerMock = new Mock<ISessionManager>();
+
+            sut = new UserService(unitOfWork.Object, loggerMock.Object, sessionManagerMock.Object);
         }
 
         [TestCase(true)]

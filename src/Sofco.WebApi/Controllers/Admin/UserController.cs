@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Core.Models;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Core.Services.Admin;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Admin;
 
 namespace Sofco.WebApi.Controllers.Admin
 {
@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult Get()
         {
             var users = userService.GetAllReadOnly(false);
-
+            
             var model = new List<UserModel>();
 
             foreach (var user in users)
@@ -39,7 +39,6 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model.OrderBy(x => x.Name));
         }
 
-        // GET: api/user/options
         [HttpGet]
         [Route("options")]
         public IActionResult GetOptions()
@@ -48,12 +47,20 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<UserSelectListItem>();
 
             foreach (var user in users)
-                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email });
+                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email, ExternalId = user.ExternalManagerId });
 
             return Ok(model);
         }
 
-        // GET api/role/5
+        [HttpGet]
+        [Route("managers")]
+        public IActionResult GetManagers()
+        {
+            var users = userService.GetManagers();
+
+            return Ok(users.Select(x => new SelectListModel { Value = x.Id.ToString(), Text = x.Name }));
+        }
+
         [HttpGet("{id}/detail")]
         public IActionResult Detail(int id)
         {
@@ -70,7 +77,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     if (userGroup.Group.Active)
                     {
-                        model.Groups.Add(new SelectListItem { Value = userGroup.Group.Id.ToString(), Text = userGroup.Group.Description });
+                        model.Groups.Add(new SelectListModel { Value = userGroup.Group.Id.ToString(), Text = userGroup.Group.Description });
                     }
                 }
 
@@ -80,7 +87,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     if (rol != null)
                     {
-                        var roleModel = new SelectListItem { Value = rol.Id.ToString(), Text = rol.Description };
+                        var roleModel = new SelectListModel { Value = rol.Id.ToString(), Text = rol.Description };
 
                         if (!model.Roles.Any(x => x.Value.Equals(roleModel.Value)) && rol.Active)
                         {
@@ -96,7 +103,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     var moduleModel = new ModuleModelDetail(module);
 
-                    moduleModel.Functionalities = module.Functionalities.Select(x => new SelectListItem { Value = x.Code, Text = x.Description }).ToList();
+                    moduleModel.Functionalities = module.Functionalities.Select(x => new SelectListModel { Value = x.Code, Text = x.Description }).ToList();
 
                     model.Modules.Add(moduleModel);
                 }
@@ -124,17 +131,12 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(model);
         }
 
-        [HttpGet("email/{mail}")]
-        public IActionResult Get(string username)
+        [HttpGet("email")]
+        public IActionResult GetByMail()
         {
-            var response = userService.GetByMail(this.GetUserMail());
+            var response = userService.GetByMail();
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            var model = new UserModel(response.Data);
-
-            return Ok(model);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("ad/email/{mail}")]

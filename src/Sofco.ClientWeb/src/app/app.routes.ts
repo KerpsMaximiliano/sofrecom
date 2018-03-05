@@ -41,6 +41,21 @@ import { NewsComponent } from 'app/views/allocation-management/news/news.compone
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
+import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
+import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
+import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
+import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
+import { NewPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/add/add-purchaseOrder.component';
+import { EditPurchaseOrderComponent } from 'app/views/billing/purchaseOrder/edit/edit-purchaseOrder.component';
+import { PurchaseOrderSearchComponent } from 'app/views/billing/purchaseOrder/search/search-purchaseOrder.component';
+import { PurchaseOrdersByServiceComponent } from 'app/views/billing/projects/purchaseOrders/purchaseOrders-service.component';
+import { SolfacDelegateComponent } from 'app/views/billing/solfac/solfac-delegate/solfac-delegate.component';
+import { CertificateSearchComponent } from 'app/views/billing/certificates/search/search-certificate.component';
+import { CertificateFormComponent } from 'app/views/billing/certificates/form/certificate-form.component';
+import { EditCertificateComponent } from 'app/views/billing/certificates/edit/edit-certificate.component';
+import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
+import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
+import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -80,6 +95,7 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
+
   {
     path: 'billing', component: BasicLayoutComponent,
     children: [
@@ -88,6 +104,7 @@ export const ROUTES:Routes = [
         { path:":customerId/services", children: [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
+          { path: ":serviceId/purchaseOrders", component: PurchaseOrdersByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/projects", children: [
             { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },
             { path: "billMultiple", component: BillMultipleProjectsComponent, canActivate: [AuthGuard] },
@@ -99,9 +116,25 @@ export const ROUTES:Routes = [
       { path: "solfac",
         children: [
          { path: "", component: SolfacComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
+         { path: "delegate", component: SolfacDelegateComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "SOLDE" } },
+         { path: "delegate/edit", component: SolfacDelegateEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "SOLDE" } },
          { path: ":solfacId/edit", component: SolfacEditComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
          { path: "search", component: SolfacSearchComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
-         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } },
+         { path: ":solfacId", component: SolfacDetailComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "QUERY" } }
+      ]},
+
+      { path: "purchaseOrders",
+          children: [
+          { path: "", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
+          { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+          { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+      ]},
+
+      { path: "certificates",
+          children: [
+          { path: "", component: CertificateSearchComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "QUERY" } },
+          { path: "new", component: NewCertificateComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "ALTA" } },
+          { path: ":id", component: EditCertificateComponent, canActivate: [AuthGuard], data: { module: "CERT", functionality: "ALTA" } },
       ]},
 
       { path: "invoice",
@@ -112,31 +145,37 @@ export const ROUTES:Routes = [
       ]},
     ]
   },
+
   {
     path: 'contracts', component: BasicLayoutComponent,
-    children: [
-    {
-      path: "costCenter",
-      children: [
-        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
-      ]
-    }]
-  },
-  {
-    path: 'allocationManagement', component: BasicLayoutComponent,
     children: [
       { path:"analytics", 
       children: [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
-        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
+        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {
+        path: "costCenter",
+        children: [
+          { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
+          { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } },
+          { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+        ]
+      }]
+  },
+
+  {
+    path: 'allocationManagement', component: BasicLayoutComponent,
+    children: [
+      { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
+      {
         path: "resources", 
         children: [
-          { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } } ,
+          { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
+          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
@@ -144,6 +183,23 @@ export const ROUTES:Routes = [
         path: "employees", 
         children: [
           { path:"news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
+        ]
+      },
+      {
+        path:"licenses",
+        children: [
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "ALTA" } } ,
+        ]
+      }]
+  },
+
+  {
+    path: 'profile', component: BasicLayoutComponent,
+    children: [
+      { 
+        path:"licenses",
+        children: [
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "ALLOC", functionality: "ALTA" } } ,
         ]
       }]
   },

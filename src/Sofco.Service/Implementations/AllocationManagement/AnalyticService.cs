@@ -2,11 +2,15 @@
 using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
@@ -20,6 +24,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailSender mailSender;
         private readonly ILogMailer<AnalyticService> logger;
         private readonly EmailConfig emailConfig;
+        private readonly CrmConfig crmConfig;
+        private readonly IMailBuilder mailBuilder;
 
         private const string MailSubject = "Apertura analítica {0}";
 
@@ -31,12 +37,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
                                             "</span>" +
                                         "</font>";
 
-        public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, IOptions<EmailConfig> emailOptions)
+        public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
             this.logger = logger;
+            crmConfig = crmOptions.Value;
             this.emailConfig = emailOptions.Value;
+            this.mailBuilder = mailBuilder;
+        }
+
+        public ICollection<Analytic> GetAllActives()
+        {
+            return unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
         }
 
         public ICollection<Analytic> GetAll()
@@ -50,8 +64,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Directors = unitOfWork.UserRepository.GetDirectors().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Sellers = unitOfWork.UserRepository.GetSellers(this.emailConfig.SellerCode).Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Technologies = unitOfWork.UtilsRepository.GetTechnologies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
@@ -89,7 +103,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<Analytic> Add(Analytic analytic)
+        public async Task<Response<Analytic>> Add(Analytic analytic)
         {
             var response = new Response<Analytic>();
 
@@ -99,6 +113,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
+            AnalyticValidationHelper.CheckService(response, analytic, unitOfWork.AnalyticRepository);
 
             if (response.HasErrors()) return response;
 
@@ -115,6 +130,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 response.AddError(Resources.Common.ErrorSave);
             }
 
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+            {
+                await UpdateAnalyticOnCrm(response, analytic.Title, analytic.ServiceId);
+            }
+            
             SendMail(analytic, response);
 
             return response;
@@ -174,6 +194,39 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response Close(int analyticId)
+        {
+            var response = new Response();
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, analyticId);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                AnalyticStatusClose.Save(analytic, unitOfWork, response);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.ErrorSave);
+                return response;
+            }
+
+            try
+            {
+                AnalyticStatusClose.SendMail(response, analytic, emailConfig, mailSender, unitOfWork, mailBuilder);
+            }
+            catch (Exception ex)
+            {
+                response.AddWarning(Resources.Common.ErrorSendMail);
+                this.logger.LogError(ex);
+            }
+
+            //todo: inhabilitar el servicio en crm
+
+            return response;
+        }
+
         private void SendMail(Analytic analytic, Response response)
         {
             try
@@ -184,11 +237,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+
+                var recipientsList = new List<string>();
+
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+
                 var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                var recipients = $"{mailPmo};{mailDaf};{director.Email};{manager.Email};{seller.Email};{mailRrhh}";
+                if(director != null) recipientsList.Add(director.Email);
+                if(manager != null) recipientsList.Add(manager.Email);
+                if(seller != null) recipientsList.Add(seller.Email);
+
+                var recipients = string.Join(";", recipientsList.Distinct());
 
                 mailSender.Send(recipients, subject, body);
             }
@@ -196,6 +258,32 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 response.AddWarning(Resources.Common.ErrorSendMail);
                 this.logger.LogError(ex);
+            }
+        }
+
+        private async Task UpdateAnalyticOnCrm(Response response, string analytic, string serviceId)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(crmConfig.Url);
+
+                var data = $"Analytic={analytic}";
+
+                var urlPath = $"/api/Service/{serviceId}/";
+
+                try
+                {
+                    var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    var httpResponse = await client.PutAsync(urlPath, stringContent);
+
+                    httpResponse.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(urlPath + "; data: " + data, ex);
+                    response.AddError(Resources.Common.ErrorSave);
+                }
             }
         }
     }

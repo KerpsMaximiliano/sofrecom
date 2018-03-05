@@ -38,9 +38,22 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.getOptionsSubscrip = this.analyticService.getOptions().subscribe(
+        let service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+        let analyticWithProject = sessionStorage.getItem('analyticWithProject');
+
+        this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
-              this.options = data;
+                this.options = data;
+
+                if(this.mode == 'new' && analyticWithProject == 'yes'){
+                    var manager = this.options.managers.filter(element => {
+                        if(element.extraValue == service.managerId) return element;
+                    });
+    
+                    if(manager && manager.length > 0){
+                        this.model.managerId = manager[0].id;  
+                    }
+                }
             },
             err => this.errorHandlerService.handleErrors(err));
 
@@ -50,30 +63,31 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
 
-        let analyticWithProject = sessionStorage.getItem('analyticWithProject');
-        let project = JSON.parse(sessionStorage.getItem('projectDetail'));
-
-        if(analyticWithProject == 'yes'){
-            this.model.clientExternalId = sessionStorage.getItem('customerId');
-            this.model.clientExternalName = sessionStorage.getItem('customerName');
-            this.model.serviceId = sessionStorage.getItem('serviceId');
-            this.model.service = sessionStorage.getItem('serviceName');
-            this.model.contractNumber = project.purchaseOrder;
-            this.model.amountEarned = project.totalAmmount; 
-            this.model.currencyId = this.getCurrencyId(project.currency);
-            this.model.solutionId = project.solutionTypeId;
-            this.model.technologyId = project.technologyTypeId;
-            this.model.serviceTypeId = project.serviceTypeId;
-        }
-        else{
-            this.model.clientExternalName = 'No Aplica';
-            this.model.service = 'No Aplica';
-            this.model.contractNumber = 'No Aplica';
+        if(this.mode == 'new'){
+            this.model.activityId = 1;
             this.model.currencyId = 1;
+
+            if(analyticWithProject == 'yes'){
+                this.model.clientExternalId = sessionStorage.getItem('customerId');
+                this.model.clientExternalName = sessionStorage.getItem('customerName');
+                this.model.serviceId = sessionStorage.getItem('serviceId');
+                this.model.service = sessionStorage.getItem('serviceName');
+                // this.model.contractNumber = project.purchaseOrder;
+                // this.model.amountEarned = project.totalAmmount; 
+                // this.model.currencyId = this.getCurrencyId(service.currency);
+                this.model.solutionId = service.solutionTypeId;
+                this.model.technologyId = service.technologyTypeId;
+                this.model.serviceTypeId = service.serviceTypeId;
+            }
+            else{
+                this.model.clientExternalName = 'No Aplica';
+                this.model.service = 'No Aplica';
+                this.model.contractNumber = 'No Aplica';
+            }
+           
+            this.model.startDateContract = new Date();
+            this.model.endDateContract = new Date();
         }
-        
-        this.model.startDateContract = new Date();
-        this.model.endDateContract = new Date();
     }
 
     ngOnDestroy(): void {

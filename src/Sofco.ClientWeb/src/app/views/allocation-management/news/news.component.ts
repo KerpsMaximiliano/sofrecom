@@ -7,7 +7,8 @@ import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { NewsService } from "app/services/allocation-management/news.service";
+import { EmployeeNewsService } from "app/services/allocation-management/employee-news.service";
+import { I18nService } from 'app/services/common/i18n.service';
 
 @Component({
     selector: 'employee-news',
@@ -22,8 +23,11 @@ export class NewsComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     deleteSubscrip: Subscription;
 
-    newsToDelete: any;
-    indexToDelete: number;
+    newsToConfirm: any;
+    indexToConfirm: number;
+    confirmBodyAction: string;
+
+    public isLoading: boolean = false;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -32,13 +36,15 @@ export class NewsComponent implements OnInit, OnDestroy {
         true,
         true,
         "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
+        "ACTIONS.cancel",
+        false
     );
 
     constructor(private employeeService: EmployeeService,
                 private router: Router,
-                private newsService: NewsService,
+                private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
+                private i18nService: I18nService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){
@@ -47,8 +53,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getAllSubscrip = this.newsService.getAll().subscribe(data => {
-            this.model = data;
+        this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
+            this.model = response.data;
             this.dataTableService.init('#newsTable', false);
             this.messageService.closeLoading();
         },
@@ -64,75 +70,80 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
 
     showConfirmCancel(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.cancel;
+        let statusText = news.isReincorporation ? "Reincorporation" : news.status;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.annulment') +" "+ this.i18nService.translateByKey(statusText)
     }
 
     showConfirmAdd(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.add;
+        let statusText = news.isReincorporation ? "Reincorporation" : news.status;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(statusText)
     }
 
     showConfirmDelete(news, index){
-        this.newsToDelete = news;
-        this.indexToDelete = index;
+        this.newsToConfirm = news;
+        this.indexToConfirm = index;
         this.confirmModal.show();
         this.confirm = this.delete;
+        this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
     }
 
     confirm(){ }
 
     add(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeService.add(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     cancel(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
-        this.getAllSubscrip = this.newsService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     delete(){
-        this.messageService.showLoading();
+        this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeService.delete(this.newsToDelete.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.model.splice(this.indexToDelete, 1);
+            this.model.splice(this.indexToConfirm, 1);
 
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.messageService.closeLoading();
+            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

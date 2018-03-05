@@ -39,33 +39,33 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Sync()
         {
-            SyncLicenseType();
+            //SyncLicenseType();
 
-            SyncEmployee();
+            //SyncEmployee();
         }
 
-        private void SyncLicenseType()
-        {
-            var licenseTypes = Translate(rhproEmployeeRepository.GetLicenseTypes().ToList());
+        //private void SyncLicenseType()
+        //{
+        //    var licenseTypes = Translate(rhproEmployeeRepository.GetLicenseTypes().ToList());
 
-            unitOfWork.LicenseTypeRepository.Save(licenseTypes);
-        }
+        //    unitOfWork.LicenseTypeRepository.Save(licenseTypes);
+        //}
 
-        private void SyncEmployee()
-        {
-            var employees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
+        //private void SyncEmployee()
+        //{
+        //    var employees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
 
-            unitOfWork.EmployeeRepository.Save(employees);
-        }
+        //    unitOfWork.EmployeeRepository.Save(employees);
+        //}
 
-        private List<Employee> Translate(List<TigerEmployee> tigerEmployees)
-        {
-            return mapper.Map<List<TigerEmployee>, List<Employee>>(tigerEmployees);
-        }
+        //private List<Employee> Translate(List<TigerEmployee> tigerEmployees)
+        //{
+        //    return mapper.Map<List<TigerEmployee>, List<Employee>>(tigerEmployees);
+        //}
 
-        private List<LicenseType> Translate(List<RhproLicenseType> rhproLicenseType)
-        {
-            return mapper.Map<List<RhproLicenseType>, List<LicenseType>>(rhproLicenseType);
-        }
+        //private List<LicenseType> Translate(List<RhproLicenseType> rhproLicenseType)
+        //{
+        //    return mapper.Map<List<RhproLicenseType>, List<LicenseType>>(rhproLicenseType);
+        //}
     }
 }

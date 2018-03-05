@@ -1,0 +1,146 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'rrhh.license.addTitle' | translate }} </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li> {{'rrhh.title' | translate }} </li>
+            <li> {{'rrhh.licenses' | translate }} </li>
+            <li class="active"><strong> {{'rrhh.license.add' | translate }} </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="form-group" *ngIf="fromProfile == false">
+                        <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
+                        <select select2 class="form-control" id="employeeId">
+                            <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" *ngIf="fromProfile == true">
+                        <label style="font-size: 16px"> {{'rrhh.license.employee' | translate }} : </label>
+                        <span style="font-size: 16px">{{ userApplicantName }}</span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
+                                <ng-datepicker [(ngModel)]="model.startDate" [options]="dateOptions"></ng-datepicker>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
+                                <ng-datepicker [(ngModel)]="model.endDate" [options]="dateOptions"></ng-datepicker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <icheck [(checked)]="model.withPayment" (checkedChange)="withPaymentChange($event)">
+                                    <label class="control-label">{{'rrhh.license.withPayment' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> {{'rrhh.license.reason' | translate }} </label>
+                        <select select2 class="form-control" id="licensesTypeId">
+                            <option *ngFor="let licensesType of licensesTypes" [value]="licensesType?.id">{{ licensesType?.text }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" [hidden]="model.typeId != '13'">
+                        <label class="control-label">{{'rrhh.license.comments' | translate }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.comments">
+                    </div>
+
+                    <div class="row" [hidden]="model.typeId != '7'">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">{{'rrhh.license.examDescription' | translate }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="model.examDescription">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group m-t-lg">
+                                <icheck  [(checked)]="model.parcial">
+                                    <label class="control-label">{{'rrhh.license.parcial' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group m-t-lg">
+                                <icheck  [(checked)]="model.final">
+                                    <label class="control-label">{{'rrhh.license.final' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> {{'rrhh.license.manager' | translate }} </label>
+                        <select select2 class="form-control" id="managerId">
+                            <option *ngFor="let manager of managers" [value]="manager?.value">{{ manager?.text }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> {{'rrhh.license.sector' | translate }} </label>
+                        <select select2 class="form-control" id="sectorId">
+                            <option *ngFor="let sector of sectors" [value]="sector?.id">{{ sector?.text }}</option>
+                        </select>
+                    </div>
+                 
+                </div>
+                <div class="ibox-footer" *ngIf="model.id == null">
+                    <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5" *ngIf="model.id > 0">
+            <h3>{{'billing.solfac.import' | translate }}</h3>
+
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+    
+            <div class="uploader-margin-top">
+                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+    
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length || files.length >= 5">
+                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                </button>
+                
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                </button>
+            </div>
+
+            <div class="panel panel-primary m-t-lg" *ngIf="files.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list small-list">
+                        <li *ngFor="let file of files; let i = index">
+                            <span class="m-l-xs pointer">{{file.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

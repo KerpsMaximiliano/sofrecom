@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Repository.Rh.Extensions;
-using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Repository.Rh.Maps
 {
@@ -10,7 +9,7 @@ namespace Sofco.Repository.Rh.Maps
     {
         const string TableName = "tipdia";
 
-        public override void Map(EntityTypeBuilder<RhproLicenseType> builder, RhSetting setting)
+        public override void Map(EntityTypeBuilder<RhproLicenseType> builder)
         {
             builder.ToTable(TableName);
 

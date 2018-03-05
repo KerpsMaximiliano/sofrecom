@@ -27,22 +27,6 @@ namespace Sofco.WebApi.Extensions
             return response;
         }
 
-        public static string GetUserMail(this Controller controller)
-        {
-            var username = controller.User.Identity.Name.Split('@');
-
-            var mail = $"{username[0]}@sofrecom.com.ar";
-
-            return mail;
-        }
-
-        public static string GetUserName(this Controller controller)
-        {
-            var username = controller.User.Identity.Name.Split('@');
-
-            return username[0];
-        }
-
         public static IActionResult CreateResponse(this Controller controller, Response response)
         {
             if (response.HasErrors()) return controller.BadRequest(response);

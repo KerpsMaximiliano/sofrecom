@@ -3,6 +3,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.Rrhh;
 
 namespace Sofco.Core.DAL
 {
@@ -27,6 +28,10 @@ namespace Sofco.Core.DAL
         IInvoiceRepository InvoiceRepository { get; }
         ISolfacRepository SolfacRepository { get; }
         ISolfacReportRepository SolfacReportRepository { get; }
+        IPurchaseOrderRepository PurchaseOrderRepository { get; }
+        ICertificateRepository CertificateRepository { get; }
+        ISolfacDelegateRepository SolfacDelegateRepository { get; }
+        ISolfacCertificateRepository SolfacCertificateRepository { get; }
 
         #endregion
 
@@ -39,12 +44,23 @@ namespace Sofco.Core.DAL
         IEmployeeRepository EmployeeRepository { get; }
         ILicenseTypeRepository LicenseTypeRepository { get; }
         IEmployeeSyncActionRepository EmployeeSyncActionRepository { get; }
+        IEmployeeHistoryRepository EmployeeHistoryRepository { get; }
+        IHealthInsuranceRepository HealthInsuranceRepository { get; }
+        IPrepaidHealthRepository PrepaidHealthRepository { get; }
+
+
+        #endregion
+
+        #region HumanResources
+
+        ILicenseRepository LicenseRepository { get; }
 
         #endregion
 
         #region Common
 
         IUtilsRepository UtilsRepository { get; }
+        IFileRepository FileRepository { get; }
 
         #endregion
 

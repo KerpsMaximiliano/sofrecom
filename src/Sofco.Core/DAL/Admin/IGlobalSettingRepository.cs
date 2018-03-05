@@ -8,5 +8,8 @@ namespace Sofco.Core.DAL.Admin
         List<GlobalSetting> GetAll();
 
         void Save(List<GlobalSetting> globalSettings);
+
+        GlobalSetting GetByKey(string examdaysallowtogether);
+        ICollection<GlobalSetting> GetHolidaysValues();
     }
 }

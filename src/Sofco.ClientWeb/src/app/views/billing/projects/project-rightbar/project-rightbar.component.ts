@@ -11,6 +11,8 @@ declare var jQuery:any;
 
 export class ProjectRightBarComponent {
 
+  public hasAnalytic: boolean = false;
+
   constructor(private router: Router, public menuService: MenuService) {
   }
 
@@ -20,12 +22,18 @@ export class ProjectRightBarComponent {
 
   goToCreateAnalytic(){
     sessionStorage.setItem('analyticWithProject', 'yes');
-    this.router.navigate(['/allocationManagement/analytics/new']);
+    this.router.navigate(['/contracts/analytics/new']);
   }
 
   goToResources(){
     var customerId = sessionStorage.getItem('customerId');
     var serviceId = sessionStorage.getItem('serviceId');
     this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/resources`]);
+  }
+
+  goToPurchaseOrders(){
+    var customerId = sessionStorage.getItem('customerId');
+    var serviceId = sessionStorage.getItem('serviceId');
+    this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/purchaseOrders`]);
   }
 }

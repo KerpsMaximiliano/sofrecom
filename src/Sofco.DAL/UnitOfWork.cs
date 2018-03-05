@@ -1,20 +1,26 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.Rrhh;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.Report;
+using Sofco.DAL.Repositories.Rrhh;
 
 namespace Sofco.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SofcoContext context;
+
+        private readonly IOptions<EmailConfig> emailConfig;
 
         #region Admin
 
@@ -35,6 +41,10 @@ namespace Sofco.DAL
         private IInvoiceRepository invoiceRepository;
         private ISolfacRepository solfacRepository;
         private ISolfacReportRepository solfacReportRepository;
+        private IPurchaseOrderRepository purchaseOrderRepository;
+        private ICertificateRepository certificateRepository;
+        private ISolfacDelegateRepository solfacDelegateRepository;
+        private ISolfacCertificateRepository solfacCertificateRepository;
 
         #endregion
 
@@ -47,23 +57,34 @@ namespace Sofco.DAL
         private IEmployeeRepository employeeRepository;
         private ILicenseTypeRepository licenseTypeRepository;
         private IEmployeeSyncActionRepository employeeSyncActionRepository;
+        private IEmployeeHistoryRepository employeeHistoryRepository;
+        private IHealthInsuranceRepository healthInsuranceRepository;
+        private IPrepaidHealthRepository prepaidHealthRepository;
+
+        #endregion
+
+        #region HumanResource
+
+        private ILicenseRepository licenseRepository;
 
         #endregion
 
         #region Common
 
         private IUtilsRepository utilsRepository;
+        private IFileRepository fileRepository;
 
         #endregion
 
-        public UnitOfWork(SofcoContext context)
+        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig)
         {
             this.context = context;
+            this.emailConfig = emailConfig;
         }
 
         #region Admin
 
-        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context));
+        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
         public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));
@@ -80,6 +101,10 @@ namespace Sofco.DAL
         public IInvoiceRepository InvoiceRepository => invoiceRepository ?? (invoiceRepository = new InvoiceRepository(context));
         public ISolfacRepository SolfacRepository => solfacRepository ?? (solfacRepository = new SolfacRepository(context));
         public ISolfacReportRepository SolfacReportRepository => solfacReportRepository ?? (solfacReportRepository = new SolfacReportRepository(context));
+        public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
+        public ICertificateRepository CertificateRepository => certificateRepository ?? (certificateRepository = new CertificateRepository(context));
+        public ISolfacDelegateRepository SolfacDelegateRepository => solfacDelegateRepository ?? (solfacDelegateRepository = new SolfacDelegateRepository(context));
+        public ISolfacCertificateRepository SolfacCertificateRepository => solfacCertificateRepository ?? (solfacCertificateRepository = new SolfacCertificateRepository(context));
 
         #endregion
 
@@ -95,11 +120,27 @@ namespace Sofco.DAL
         public IEmployeeSyncActionRepository EmployeeSyncActionRepository =>
             employeeSyncActionRepository ?? (employeeSyncActionRepository = new EmployeeSyncActionRepository(context));
 
+        public IEmployeeHistoryRepository EmployeeHistoryRepository =>
+            employeeHistoryRepository ?? (employeeHistoryRepository = new EmployeeHistoryRepository(context));
+
+        public IHealthInsuranceRepository HealthInsuranceRepository =>
+            healthInsuranceRepository ?? (healthInsuranceRepository = new HealthInsuranceRepository(context));
+
+        public IPrepaidHealthRepository PrepaidHealthRepository =>
+            prepaidHealthRepository ?? (prepaidHealthRepository = new PrepaidHealthRepository(context));
+
+        #endregion
+
+        #region HumanResource
+
+        public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
+
         #endregion
 
         #region Common
 
         public IUtilsRepository UtilsRepository => utilsRepository ?? (utilsRepository = new UtilsRepository(context));
+        public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
 
         #endregion
 

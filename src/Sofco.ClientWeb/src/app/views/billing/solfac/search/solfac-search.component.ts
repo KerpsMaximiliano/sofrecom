@@ -27,7 +27,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public customers: Option[] = new Array<Option>();
     public services: Option[] = new Array<Option>();
     public projects: Option[] = new Array<Option>();
-    public userApplicants: Option[] = new Array<Option>();
+    public userApplicants: any[] = new Array();
     public statuses: Option[] = new Array<Option>();
 
     customerId: string = "0";
@@ -101,7 +101,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     goToDetail(solfac) {
         if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
-        (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+        (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || 
+         solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf] ||
+         solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
         {
             this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
         }
@@ -127,7 +129,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     getCustomers(){
         this.messageService.showLoading();
 
-        this.customerService.getOptions(Cookie.get("currentUserMail")).subscribe(data => {
+        this.customerService.getOptions().subscribe(data => {
             this.messageService.closeLoading();
             this.customers = data;
         },
@@ -175,10 +177,20 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
         this.messageService.showLoading();
 
+        let managerId = "";
+        if(this.userApplicantId != '0'){
+            let manager = this.userApplicants.filter(item => item.value == this.userApplicantId);
+
+            if(manager && manager.length > 0){
+                managerId = manager[0].externalId;
+            }
+        }
+
         var parameters = {
             customerId: this.customerId,
             serviceId: this.serviceId,
             projectId: this.projectId,
+            managerId: managerId,
             userApplicantId: this.userApplicantId,
             analytic: this.analytic,
             status: this.status,

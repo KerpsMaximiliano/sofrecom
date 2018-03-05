@@ -42,5 +42,6 @@
     "userApplicantIdRequired": "El solicitante es requerido",
     "imputationNumber3Required": "El número de imputacion es requerido",
     "currencyRequired": "La moneda es requerida",
-    "creditNoteTotalExceeded": "La suma total no puede superar el importe del hito."
+    "creditNoteTotalExceeded": "La suma total no puede superar el importe del hito.",
+    "delegateSaveMangerOnlyError": "Seulement les gérants peuvent déléguer."
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
 
@@ -28,55 +29,53 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("options")]
+        public IActionResult GetOptions()
+        {
+            var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
+
+            options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
+
+            return Ok(options);
+        }
+
+        [HttpGet("{id}/profile")]
+        public IActionResult GetProfile(int id)
+        {
+            var response = employeeService.GetProfile(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var response = employeeService.GetById(id);
 
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            return Ok(new EmployeeViewModel(response.Data));
+            return this.CreateResponse(response);
         }
 
         [HttpPost("search")]
         public IActionResult Search([FromBody] EmployeeSearchParams parameters)
         {
-            var model = employeeService.Search(parameters).Select(x => new EmployeeViewModel(x));
+            var searchResponse = employeeService.Search(parameters);
 
-            return Ok(model);
-        }
+            var response =
+                new Response<IEnumerable<EmployeeViewModel>>
+                {
+                    Data = searchResponse.Data.Select(x => new EmployeeViewModel(x)),
+                    Messages = searchResponse.Messages
+                };
 
-        [HttpPost("{newsId}")]
-        public IActionResult Post(int newsId)
-        {
-            var response = employeeService.Add(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
-        }
-
-        [HttpDelete("{newsId}")]
-        public IActionResult Delete(int newsId)
-        {
-            var response = employeeService.Delete(newsId, this.GetUserName());
-
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpPost("sendUnsubscribeNotification/{employeeName}")]
         public IActionResult SendUnsubscribeNotification(string employeeName, [FromBody] UnsubscribeNotificationParams parameters)
         {
-            parameters.UserName = this.GetUserName();
-
             var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
 
-            if (response.HasErrors()) return BadRequest(response);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
     }
 }

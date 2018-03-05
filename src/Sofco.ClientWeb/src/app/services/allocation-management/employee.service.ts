@@ -16,20 +16,24 @@ export class EmployeeService {
     return this.http.get(`${this.baseUrl}/employees`).map((res:Response) => res.json());
   }
 
+  getManagers() {
+    return this.http.get(`${this.baseUrl}/users/managers`).map((res:Response) => res.json());
+  }
+
+  getOptions() {
+    return this.http.get(`${this.baseUrl}/employees/options`).map((res:Response) => res.json());
+  }
+
   getById(id) {
     return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }
 
+  getProfile(id) {
+    return this.http.get(`${this.baseUrl}/employees/${id}/profile`).map((res:Response) => res.json());
+  }
+
   search(model) {
     return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
-  }
-
-  add(id){
-    return this.http.post(`${this.baseUrl}/employees/${id}`, {}).map((res:Response) => res.json());
-  }
-
-  delete(id){
-    return this.http.delete(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
   }
 
   sendUnsubscribeNotification(employeeName, json){

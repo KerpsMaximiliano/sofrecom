@@ -151,8 +151,8 @@ namespace Sofco.DAL.Repositories.Billing
             if (!string.IsNullOrWhiteSpace(parameters.Analytic))
                 query = query.Where(x => x.Analytic.ToLowerInvariant().Equals(parameters.Analytic.ToLowerInvariant()));
 
-            if (parameters.UserApplicantId > 0)
-                query = query.Where(x => x.UserApplicantId == parameters.UserApplicantId);
+            if (!string.IsNullOrWhiteSpace(parameters.ManagerId))
+                query = query.Where(x => x.ManagerId == parameters.ManagerId);
 
             if (parameters.Status != SolfacStatus.None)
                 query = query.Where(x => x.Status == parameters.Status);

@@ -6,9 +6,9 @@ using Sofco.Model.Users;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 using Sofco.Common.Domains;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.DAL;
 using Sofco.Service.Implementations;
 
 namespace Sofco.UnitTest.Services
@@ -21,6 +21,8 @@ namespace Sofco.UnitTest.Services
         private Mock<IBaseHttpClient> clientMock;
 
         private Mock<IOptions<AzureAdConfig>> azureAdOptionsMock;
+
+        private Mock<IOptions<AppSetting>> appSettingMock;
 
         private Mock<IUserRepository> userRepository;
 
@@ -52,9 +54,16 @@ namespace Sofco.UnitTest.Services
                 GrantType = "sec"
             };
             azureAdOptionsMock = new Mock<IOptions<AzureAdConfig>>();
-            azureAdOptionsMock.SetupGet<AzureAdConfig>(s => s.Value).Returns(azureConfig);
+            azureAdOptionsMock.SetupGet(s => s.Value).Returns(azureConfig);
 
-            sut = new LoginService(azureAdOptionsMock.Object, clientMock.Object, unitOfWork.Object);
+            var appSetting = new AppSetting
+            {
+                Domain = "spawn.com.ar"
+            };
+            appSettingMock = new Mock<IOptions<AppSetting>>();
+            appSettingMock.SetupGet(s => s.Value).Returns(appSetting);
+
+            sut = new LoginService(azureAdOptionsMock.Object, clientMock.Object, unitOfWork.Object, appSettingMock.Object);
         }
 
         [Test]

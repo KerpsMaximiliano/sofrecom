@@ -11,5 +11,7 @@
     "costCenterIsRequired": "Cost Center is required",
     "titleAlreadyExist": "Title already exists",
     "wrongDates": "Start Date cannot be greater than End Date",
-    "titleIsRequired": "The Title is required"
+    "titleIsRequired": "The Title is required",
+    "closeSuccess": "Analytic successfully close",
+    "serviceAlreadyRelated": "There is already an analytic related to service"
 }

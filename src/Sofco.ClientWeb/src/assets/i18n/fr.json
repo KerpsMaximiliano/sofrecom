@@ -35,14 +35,14 @@
              "EDIT": "Éditer Fonctionnalité",
              "ADD": "Ajouter Fonctionnalité",
              "select": "Sélectionner Fonctionnalités",
-             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer la fonctionnalité?"
+             "deleteConfirm": "Vous-êtes sûr de vouloir éliminer la fonctionnalité?"
          },
          "module": {
              "title": "Modules",
              "management": "Administration de Modules",
              "edit": "Éditer Module",
              "add": "Ajouter Module",
-             "deleteConfirm": "¿Vous-êtes sûr de vouloir éliminer le module?"
+             "deleteConfirm": "Vous-êtes sûr de vouloir éliminer le module?"
          },
          "settings": {
             "title": "Configs",
@@ -201,7 +201,18 @@
              "particularSteps": "Instructions Particulaires",
              "addComments": "Inclure les commentaires du rejet",
              "integrator": "Intégrateur",
-             "customers": "Clients"
+             "customers": "Clients",
+            "delegate": {
+                "title": "Déléguer Solfac",
+                "users": "Utilisateurs",
+                "saveSuccess": "Utilisateur ajouté correctement.",
+                "service": "Service",
+                "manager": "Gérant",
+                "user": "Utilisateur",
+                "createdUser": "Crée par",
+                "createdDate": "Date de Création",
+                "deleteConfirm": "Etes vous sûr de vouloir éliminer le déléguer?"
+            }
          },
          "invoice":{
              "title": "Accusés de Réception",
@@ -294,6 +305,10 @@
      "None": "Vide",
      "comments": "Commentaires",
      "selectAnOption": "Sélectionner une option",
+     "name": "Nom",
+     "New": "Nouveau",
+     "Delete": "Baisse",
+     "Reincorporation": "Reincorporation",
      "report":{
         "title": "Rapport",
         "solfacs": {
@@ -306,6 +321,11 @@
             "amount": "Montant"
         },
         "dateRange": "Début - fin"
+    },
+    "allocationManagement": {
+        "resources": {
+            "history": "Histoire"
+        }
     }
 }
  

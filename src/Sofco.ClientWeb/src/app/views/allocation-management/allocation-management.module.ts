@@ -29,14 +29,19 @@ import { AnalyticFormComponent } from 'app/views/allocation-management/analytics
 import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
-import { NewsService } from 'app/services/allocation-management/news.service';
+import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
 import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
+import { ResourceDetailComponent } from 'app/views/allocation-management/resources/detail/resource-detail.component';
+import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
+import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
+import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
 
 @NgModule({
   declarations: [
-    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, ResourceSearchComponent, AddCostCenterComponent,
-    ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, EditAnalyticComponent, ResourceByServiceComponent
+    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, 
+    ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, 
+    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent, AllocationReportComponent, ViewAnalyticComponent, EditCostCenterComponent
   ],
   imports: [
     BrowserModule,
@@ -49,11 +54,11 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
     NgDatepickerModule,
     DateRangePickerModule,
     IboxtoolsModule,
-    ICheckModule,
+    ICheckModule, 
     NumbersOnlyModule,
     Ng2ModalModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, NewsService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, EmployeeNewsService ],
   exports: [],
 })
 

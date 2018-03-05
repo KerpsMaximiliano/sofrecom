@@ -18,6 +18,8 @@ export class AuthGuard implements CanActivate {
             if(route.data && JSON.stringify(route.data) !== JSON.stringify({})){
                 var data = <any>route.data;
 
+                if(!data.module && !data.functionality) return true;
+
                 if(this.menuService.hasFunctionality(data.module, data.functionality)){
                     return true;
                 }

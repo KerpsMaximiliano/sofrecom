@@ -33,12 +33,15 @@ export class Solfac {
         public userApplicantName: string,
         public projectId: string,
         public invoicesId: string[],
+        public certificatesId: string[],
         public customerId: string,
         public serviceId: string,
         public service: string,
         public analytic: string,
         public remito: boolean,
         public integrator: string,
-        public integratorId: string
+        public integratorId: string,
+        public manager: string,
+        public managerId: string
     ){}
 }

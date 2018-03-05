@@ -60,19 +60,26 @@
             "EDIT": "Edit Functionality",
             "ADD": "Add Functionality",
             "select": "Select functionalities",
-            "deleteConfirm": "¿Are you sure you want to delete the functionality?"
+            "deleteConfirm": "Are you sure you want to delete the functionality?"
         },
         "module": {
             "title": "Modules",
             "management": "Modules Management",
             "edit": "Edit Module",
             "add": "Add Module",
-            "deleteConfirm": "¿Are you sure you want to delete the module?"
+            "deleteConfirm": "Are you sure you want to delete the module?"
         },
         "settings": {
             "title": "Configs",
             "saveSuccess": "Save successfully",
-            "AllocationManagement_Months": "Allocations - Months"
+            "AllocationManagement_Months": "Allocations - Months",
+            "ExamDaysAllowTogether": "Maximum consecutive examination days",
+            "Holidays10Days": "Holidays. Antiguedad 6 months to 5 years",
+            "Holidays15Days": "Holidays. More than 5 years, up to 10 years",
+            "Holidays20Days": "Holidays. More than 10 years, up to 20 years",
+            "Holidays25Days": "Holidays. Age more than 20 years",
+            "StartDateUpdateHolidays": "Date process update VAP days",
+            "StartDateHolidays": "Start date holiday period"
         }
     },
     "billing":{
@@ -172,6 +179,43 @@
             "edit": "Edit Milestone",
             "add": "Add Milestone"
         },
+        "certificate": {
+            "addTitle": "New Certificate",
+            "editTitle":"Edit Certificate",
+            "searchTitle": "Search v",
+            "title": "Certificates",
+            "add": "New",
+            "edit": "Edit", 
+            "search": "Search",
+            "parameters": "Search Parameters",
+            "noOrdersFound": "There are no certificates loaded",
+            "fields": {
+                "name": "Name",
+                "client": "Client",
+                "year": "Year"
+            }
+        },
+        "purchaseOrder": {
+            "addTitle": "New Purchase Order",
+            "editTitle":"Edit Purchase Order",
+            "searchTitle": "Search Purchase Order",
+            "title": "Purchase's Orders",
+            "add": "New",
+            "edit": "Edit", 
+            "search": "Search",
+            "parameters": "Search Parameters",
+            "noOrdersFound": "There are no purchase orders loaded",
+            "fields": {
+                "title": "Title",
+                "number": "Numer",
+                "client": "Client",
+                "receptionDate": "Reception Date",
+                "year": "Year",
+                "area": "Area",
+                "status": "Status",
+                "analytic": "Analytic" 
+            }
+        },
         "solfac":{
             "title": "Invoice Request",
             "new": "New",
@@ -217,6 +261,7 @@
             "hito": "Milestone",
             "pdfViewer": "PDF Viewer",
             "activity": "Activity",
+            "amount": "Amount",
             "grid": {
                 "invoiceDate": "Billing",
                 "invoiceCode": "Invoice"
@@ -251,7 +296,18 @@
             "addUpdateComments": "Enter the changes that were made",
             "cannotUpdateSolfac": "Can not modify the request in the current state",
             "integrator": "Integrator",
-            "customers": "Customers"
+            "customers": "Customers",
+            "delegate": {
+                "title": "Solfac Delegate",
+                "users": "Users",
+                "saveSuccess": "User added succesfully.",
+                "service": "Service",
+                "manager": "Manager",
+                "user": "User",
+                "createdUser": "Created by",
+                "createdDate": "Created Date",
+                "deleteConfirm": "Are you sure you want to delete the delegate."
+            }
         },
         "invoice":{
             "title": "Invoice",
@@ -311,6 +367,9 @@
         "costCenter": {
             "title": "Cost Center",
             "list": "Cost Center´s List",
+            "edit": {
+                "title": "Edit cost center"
+            },
             "add": {
                 "title": "New cost center",
                 "code": "Code",
@@ -331,6 +390,7 @@
             "allocations": "Allocations",
             "resources": "Resources",
             "percentage": "Percentage",
+            "percentages": "Percentages",
             "startDate": "Start Date",
             "endDate": "End Date",
             "forbidden": "You do not have sufficient permissions to allocate resources",
@@ -351,6 +411,19 @@
                 "percentage": "Percentage"
             }
         },
+        "report": { 
+            "title": "Resource's report",
+            "report": "Report",
+            "includeStaff": "Include Staff",
+            "grid": {
+                "analytic": "Analytic",
+                "employee": "employee",
+                "boss": "Boss",
+                "manager":"Manager",
+                "office": "Office",
+                "billeability": "Billeability (%)"
+            }
+        },
         "resources": {
             "listTitle": "Resources´s List",
             "title": "Resources",
@@ -358,11 +431,23 @@
             "recipients": "Copy to",
             "recipient": "Recipient",
             "empty": "The project does not have assigned resources. To assign new resources, go to the analytic.",
+            "generalInfo": "General Info",
+            "allocations": "Allocations",
+            "licenses": "Licenses",
+            "timeSheet": "Time Sheet",
+            "homeOffice": "Home Office",
+            "history": "History",
             "grid": {
                 "name": "Name",
                 "senority": "Seniority",
                 "profile": "Profile",
-                "technology": "Technology"
+                "employeeNumber": "Employee Number",
+                "office": "Office",
+                "manager": "Manager",
+                "technology": "Technology",
+                "startDate" :"Start",
+                "releaseDate": "Release",
+                "percentage": "Percentage"
             }
         },
         "news": {
@@ -381,7 +466,11 @@
             "title": "Analytics",
             "list": "List",
             "new": "New Analytic",
-            "edit": "Edit Analytic",
+            "edit": "Edit",
+            "editTitle": "Edit Analytic",
+            "view": "View",
+            "viewTitle": "View Analytic",
+            "assigned": "Analytics Assigned",
             "add": {
                 "title": "Title",
                 "startDate":"Start Date",
@@ -413,8 +502,34 @@
                 "title": "Title",
                 "name": "Name",
                 "client": "Cliet",
-                "commercialManager": "Commercial Manager"
+                "commercialManager": "Commercial Manager",
+                "status": "Status"
+            },
+            "status": {
+                "open": "Open",
+                "closeForExpenses": "Close for expenses",
+                "close": "Close"
             }
+        }
+    },
+    "rrhh":{
+        "title": "Human Resources",
+        "licenses": "Licenses",
+        "license": {
+            "addTitle": "New License",
+            "add": "New",
+            "employee": "Applicant",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "withPayment": "With Payment",
+            "reason": "Reason",
+            "comments": "Comments",
+            "examDescription": "Subject's Name",
+            "parcial": "Parcial",
+            "final": "Final",
+            "manager":"Manager",
+            "sector": "Sector",
+            "attachments": "Attachments"
         }
     },
     "ACTIONS":{
@@ -493,6 +608,9 @@
     "name": "Name",
     "New": "New",
     "Delete": "Deleted",
+    "Reincorporation": "Reincoporation",
+    "Valid": "Valid",
+    "Consumed": "Consumed",
     "report":{
         "title": "Report",
         "solfacs": {

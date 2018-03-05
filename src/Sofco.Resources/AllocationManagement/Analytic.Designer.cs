@@ -60,6 +60,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.closeSuccess.
+        /// </summary>
+        public static string CloseSuccess {
+            get {
+                return ResourceManager.GetString("CloseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to allocationManagement/analytic.costCenterIsRequired.
         /// </summary>
         public static string CostCenterIsRequired {
@@ -128,6 +137,15 @@ namespace Sofco.Resources.AllocationManagement {
         public static string SaveSuccess {
             get {
                 return ResourceManager.GetString("SaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.serviceAlreadyRelated.
+        /// </summary>
+        public static string ServiceAlreadyRelated {
+            get {
+                return ResourceManager.GetString("ServiceAlreadyRelated", resourceCulture);
             }
         }
         

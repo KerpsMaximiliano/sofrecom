@@ -6,8 +6,6 @@ namespace Sofco.Repository.Rh.Repositories.Interfaces
 {
     public interface ITigerEmployeeRepository
     {
-        IList<TigerEmployee> GetAll();
-
         IList<TigerEmployee> GetWithStartDate(DateTime startDate);
 
         IList<TigerEmployee> GetWithEndDate(DateTime endDate);

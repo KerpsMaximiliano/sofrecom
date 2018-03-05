@@ -11,7 +11,7 @@
         background: url('https://cdn.rawgit.com/fronteed/icheck/1.x/skins/square/green.png') no-repeat left;
         background-position: 0 0;
         cursor: pointer;
-        margin-left:15px;
+        // margin-left:15px;
     }
 
     :host > div > div:hover {
@@ -21,6 +21,7 @@
     :host > div > div.disabled {
         background-position: -72px 0;
         cursor: default;
+        background-color: #eee;
     }    
 
     :host > div > div.checked {

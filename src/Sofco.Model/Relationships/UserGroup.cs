@@ -1,5 +1,4 @@
-﻿using Sofco.Model.Models;
-using Sofco.Model.Models.Admin;
+﻿using Sofco.Model.Models.Admin;
 
 namespace Sofco.Model.Relationships
 {

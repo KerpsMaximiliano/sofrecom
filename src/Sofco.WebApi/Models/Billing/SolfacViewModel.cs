@@ -14,6 +14,7 @@ namespace Sofco.WebApi.Models.Billing
             Hitos = new List<HitoViewModel>();
             Details = new List<HitoDetailViewModel>();
             InvoicesId = new List<int>();
+            CertificatesId = new List<int>();
         }
 
         public int Id { get; set; }
@@ -90,6 +91,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public IList<int> InvoicesId { get; set; }
 
+        public IList<int> CertificatesId { get; set; }
+
         public string CustomerId { get; set; }
 
         public string ServiceId { get; set; }
@@ -107,6 +110,10 @@ namespace Sofco.WebApi.Models.Billing
         public string Integrator { get; set; }
 
         public string IntegratorId { get; set; }
+
+        public string Manager { get; set; }
+
+        public string ManagerId { get; set; }
 
         public Solfac CreateDomain()
         {
@@ -143,6 +150,8 @@ namespace Sofco.WebApi.Models.Billing
             solfac.InvoiceRequired = Remito;
             solfac.Integrator = Integrator;
             solfac.IntegratorId = IntegratorId;
+            solfac.Manager = Manager;
+            solfac.ManagerId = ManagerId;
 
             foreach (var hitoViewModel in Hitos)
             {

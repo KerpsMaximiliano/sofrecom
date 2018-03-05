@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Domains;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
@@ -31,6 +32,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IMailSender> mailSenderMock;
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
+        private Mock<ISessionManager> sessionManagerMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -45,6 +47,7 @@ namespace Sofco.UnitTest.Services.Billing
             mailSenderMock = new Mock<IMailSender>();
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
+            sessionManagerMock = new Mock<ISessionManager>();
 
             var optionsMock = new Mock<IOptions<CrmConfig>>();
             optionsMock.SetupGet(s => s.Value).Returns(crmConfigMock.Object);
@@ -66,7 +69,8 @@ namespace Sofco.UnitTest.Services.Billing
                 optionsMock.Object,
                 mailSenderMock.Object,
                 crmInvoiceServiceMock.Object,
-                loggerMock.Object);
+                loggerMock.Object,
+                sessionManagerMock.Object);
         }
 
         [Test]
@@ -74,7 +78,7 @@ namespace Sofco.UnitTest.Services.Billing
         {
             var solfac = GetSolfacData();
 
-            var actual = sut.CreateSolfac(solfac, new[] { 1, 2 });
+            var actual = sut.CreateSolfac(solfac, new[] { 1, 2 }, new List<int>());
 
             Assert.False(actual.HasErrors());
 
@@ -94,7 +98,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             solfac.DocumentTypeId = documentTypeId;
 
-            var actual = sut.CreateSolfac(solfac, new List<int>());
+            var actual = sut.CreateSolfac(solfac, new List<int>(), new List<int>());
 
             Assert.False(actual.HasErrors());
 
@@ -112,7 +116,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             solfac.DocumentTypeId = SolfacDocumentType.DebitNote;
 
-            var actual = sut.CreateSolfac(solfac, new List<int>());
+            var actual = sut.CreateSolfac(solfac, new List<int>(), new List<int>());
 
             Assert.False(actual.HasErrors());
 

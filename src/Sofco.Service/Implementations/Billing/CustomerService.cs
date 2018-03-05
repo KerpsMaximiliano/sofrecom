@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL;
+using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Model.Utils;
@@ -12,27 +15,56 @@ namespace Sofco.Service.Implementations.Billing
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IUnitOfWork unitOfWork;
         private readonly ICustomerData customerData;
         private readonly ICrmHttpClient client;
         private readonly CrmConfig crmConfig;
-        private readonly EmailConfig emailConfig;
+        private readonly ISessionManager sessionManager;
+        private readonly ISolfacDelegateData solfacDelegateData;
 
-        public CustomerService(IUnitOfWork unitOfWork, ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions)
+        public CustomerService(ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData)
         {
-            this.unitOfWork = unitOfWork;
             this.customerData = customerData;
             this.client = client;
-            this.crmConfig = crmOptions.Value;
-            this.emailConfig = emailOptions.Value;
+            this.sessionManager = sessionManager;
+            this.solfacDelegateData = solfacDelegateData;
+            crmConfig = crmOptions.Value;
         }
 
-        public IList<CrmCustomer> GetCustomers(string userMail, string identityName)
+        public Response<List<CrmCustomer>> GetCustomers()
         {
-            var hasDirectorGroup = this.unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var hasCommercialGroup = this.unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
+            var response = new Response<List<CrmCustomer>>();
+            var result = new List<CrmCustomer>();
 
-            return customerData.GetCustomers(identityName, userMail, hasDirectorGroup || hasCommercialGroup);
+            var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+            foreach (var item in userNames)
+            {
+                try
+                {
+                    result.AddRange(customerData.GetCustomers(item).ToList());
+                }
+                catch (Exception)
+                {
+                    response.AddWarning(Resources.Common.CrmGeneralError);
+                }
+            }
+            response.Data = result;
+
+            return response;
+        }
+
+        public Response<List<SelectListModel>> GetCustomersOptions()
+        {
+            var result = GetCustomers();
+
+            var response = new Response<List<SelectListModel>>
+            {
+                Data = result.Data
+                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
         }
 
         public Response<CrmCustomer> GetCustomerById(string customerId)
@@ -45,7 +77,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                response.Messages.Add(new Message(Resources.Billing.Customer.NotFound, Model.Enums.MessageType.Error));
+                response.AddError(Resources.Billing.Customer.NotFound);
                 return response;
             }
 

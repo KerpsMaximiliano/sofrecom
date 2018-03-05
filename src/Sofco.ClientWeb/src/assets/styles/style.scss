@@ -199,7 +199,12 @@ ul.indented{
   color: black;
 }
 
-.label-SendPending, .label-PendingByManagementControl {
+.label-SendPending {
+  background-color: gray;
+  color: #FFFFFF;
+}
+
+.label-PendingByManagementControl {
   background-color: #f8ac59;
   color: #FFFFFF;
 }
@@ -266,6 +271,12 @@ ul.indented{
   font-size: 12px!important;
 }
 
+.label-New-Reincorporation {
+  background-color: #24C6C8;
+  color: #FFFFFF;
+  font-size: 12px!important;
+}
+
 .error-desc{
   font-size: 14px;
 }
@@ -323,4 +334,61 @@ pre {
 
 .select2-dropdown {
   z-index: 9001!important;
+}
+
+.table-font-md {
+  font-size: 13px;
+}
+
+.widget-custom {
+  border-radius: 5px;
+  padding: 5px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.search-filter {
+  position: fixed;
+  right: 0;
+  margin-right: 120px!important;
+}
+
+.export-buttons {
+  position: fixed;
+  right: 0;
+  padding-right: 30px;
+}
+
+.table-pagination {
+  position: fixed;
+  right: 0;
+  padding-right: 30px;
+}
+
+.checkbox-center {
+  margin-top: 25px;
+}
+
+.column-xs {
+  width: 80px!important;
+  max-width: 80px!important;
+}
+
+.column-lg {
+  width: 200px!important;
+  max-width: 200px!important;
+}
+
+.column-md {
+  width: 140px!important;
+  max-width: 140px!important;
+}
+
+.column-sm {
+  width: 110px!important;
+  max-width: 110px!important;
+}
+
+.uploader-margin-top{
+  margin-top: 10px;
 }

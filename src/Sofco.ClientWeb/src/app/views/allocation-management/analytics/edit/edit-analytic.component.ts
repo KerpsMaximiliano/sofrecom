@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
+import { I18nService } from "app/services/common/i18n.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -17,10 +19,24 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     addSubscrip: Subscription;
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
+    closeSubscrip: Subscription;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    public isLoading: boolean = false;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
                 private messageService: MessageService,
+                private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService){
     }
@@ -33,6 +49,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         if(this.addSubscrip) this.addSubscrip.unsubscribe();
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
+        if(this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
     getAnalytic(){
@@ -59,11 +76,38 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             data => {
                 this.messageService.closeLoading();
                 if(data.messages) this.messageService.showMessages(data.messages);
-                this.router.navigate(['allocationManagement/analytics']);
+                this.router.navigate(['contracts/analytics']);
             },
             err => {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
     }
-}
+
+    back(){
+        this.router.navigate(['/contracts/analytics']);
+    }
+
+    getStatus(){
+        switch(this.form.model.status){
+            case 1: return this.i18nService.translateByKey("allocationManagement.analytics.status.open");
+            case 2: return this.i18nService.translateByKey("allocationManagement.analytics.status.close");
+            case 3: return this.i18nService.translateByKey("allocationManagement.analytics.status.closeForExpenses");
+        }
+    }
+
+    close(){
+        this.isLoading = true;
+
+        this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+            this.isLoading = false;
+            this.confirmModal.hide();
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.form.model.status = 2;
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+            this.isLoading = false;
+        });
+    }
+} 

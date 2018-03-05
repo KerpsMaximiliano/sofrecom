@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.Crm.Billing;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -15,41 +12,52 @@ namespace Sofco.WebApi.Controllers.Billing
     public class ServiceController : Controller
     {
         private readonly IServicesService servicesService;
+        private readonly IPurchaseOrderService purchaseOrderService;
 
-        public ServiceController(IServicesService servicesService)
+        public ServiceController(IServicesService servicesService, IPurchaseOrderService purchaseOrderService)
         {
             this.servicesService = servicesService;
+            this.purchaseOrderService = purchaseOrderService;
         }
 
         [HttpGet("{customerId}/options")]
         public IActionResult GetOptions(string customerId)
         {
-            try
-            {
-                var customers = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
-                var model = customers.Select(x => new SelectListItem { Value = x.Id, Text = x.Nombre }).OrderBy(x => x.Text);
+            var response = servicesService.GetServicesOptions(customerId);
 
-                return Ok(model);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{customerId}")]
         public IActionResult Get(string customerId)
         {
-            try
-            {
-                var services = this.servicesService.GetServices(customerId, this.GetUserMail(), this.GetUserName());
+            var response = servicesService.GetServices(customerId);
 
-                return Ok(services);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new List<CrmService>());
-            }
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{serviceId}/account/{customerId}")]
+        public IActionResult GetById(string serviceId, string customerId)
+        {
+            var response = servicesService.GetService(serviceId, customerId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{serviceId}/purchaseOrders")]
+        public IActionResult GetPurchaseOrders(string serviceId)
+        {
+            var purchaseOrders = purchaseOrderService.GetByService(serviceId);
+
+            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
+        }
+
+        [HttpGet("{serviceId}/hasAnalytic")]
+        public IActionResult HasAnalyticRelated(string serviceId)
+        {
+            var isRelated = servicesService.HasAnalyticRelated(serviceId);
+
+            return Ok(isRelated);
         }
     }
 }

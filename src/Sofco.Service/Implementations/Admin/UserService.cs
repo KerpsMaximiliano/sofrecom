@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
 using Sofco.Model.Utils;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Enums;
@@ -12,10 +15,14 @@ namespace Sofco.Service.Implementations.Admin
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<UserService> logger;
+        private readonly ISessionManager sessionManager;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
+            this.sessionManager = sessionManager;
         }
 
         public Response<User> Active(int id, bool active)
@@ -41,7 +48,7 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
 
                 response.Data = entity;
-                response.Messages.Add(new Message(active ? Resources.Admin.User.Enabled : Resources.Admin.User.Disabled, MessageType.Success));
+                response.AddSuccess(active ? Resources.Admin.User.Enabled : Resources.Admin.User.Disabled);
                 return response;
             }
 
@@ -57,7 +64,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (user == null)
             {
-                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.User.NotFound);
                 return response;
             }
 
@@ -65,7 +72,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (userGroup == null)
             {
-                response.Messages.Add(new Message(Resources.Admin.Group.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Group.NotFound);
                 return response;
             }
 
@@ -74,7 +81,7 @@ namespace Sofco.Service.Implementations.Admin
             unitOfWork.UserGroupRepository.Insert(entity);
             unitOfWork.Save();
 
-            response.Messages.Add(new Message(Resources.Admin.User.GroupAssigned, MessageType.Success));
+            response.AddSuccess(Resources.Admin.User.GroupAssigned);
 
             return response;
         }
@@ -98,7 +105,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
+            response.AddError(Resources.Admin.User.NotFound);
             return response;
         }
 
@@ -110,7 +117,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.User.NotFound);
                 return response;
             }
 
@@ -118,7 +125,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!groupExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.Group.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.Group.NotFound);
                 return response;
             }
 
@@ -129,11 +136,12 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.UserGroupRepository.Delete(entity);
                 unitOfWork.Save();
 
-                response.Messages.Add(new Message(Resources.Admin.User.GroupRemoved, MessageType.Success));
+                response.AddSuccess(Resources.Admin.User.GroupRemoved);
             }
             catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
             }
 
             return response;
@@ -147,7 +155,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (!userExist)
             {
-                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.User.NotFound);
                 return response;
             }
 
@@ -178,35 +186,39 @@ namespace Sofco.Service.Implementations.Admin
                 }
 
                 unitOfWork.Save();
-                response.Messages.Add(new Message(Resources.Admin.User.UserGroupsUpdated, MessageType.Success));
+                response.AddSuccess(Resources.Admin.User.UserGroupsUpdated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
             }
 
             return response;
         }
 
-        public Response<User> GetByMail(string mail)
+        public Response<UserModel> GetByMail()
         {
-            var response = new Response<User>();
+            var email = sessionManager.GetUserMail();
 
-            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(mail));
+            var response = new Response<UserModel>();
+
+            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(email));
 
             if(user == null)
             {
-                response.Messages.Add(new Message(Resources.Admin.User.NotFound, MessageType.Error));
+                response.AddError(Resources.Admin.User.NotFound);
                 return response;
             }
 
-            response.Data = user;
+            response.Data = new UserModel(user);
+
             return response;
         }
 
-        public bool HasDirectorGroup(string userMail)
+        public bool HasDirectorGroup()
         {
-            return unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserMail());
         }
 
         public Response Add(User domain)
@@ -218,11 +230,12 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.UserRepository.Insert(domain);
                 unitOfWork.Save();
 
-                response.Messages.Add(new Message(Resources.Admin.User.Created, MessageType.Success));
+                response.AddSuccess(Resources.Admin.User.Created);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
             }
 
             return response;
@@ -234,20 +247,25 @@ namespace Sofco.Service.Implementations.Admin
 
             if (unitOfWork.UserRepository.ExistByMail(mail))
             {
-                response.Messages.Add(new Message(Resources.Admin.User.AlreadyExist, MessageType.Error));
+                response.AddError(Resources.Admin.User.AlreadyExist);
             }
 
             return response;
         }
 
-        public bool HasDafGroup(string userMail, string dafCode)
+        public bool HasDafGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(userMail, dafCode);
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
         }
 
-        public bool HasCdgGroup(string userMail, string cdgCode)
+        public bool HasCdgGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(userMail, cdgCode);
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
+        }
+
+        public ICollection<User> GetManagers()
+        {
+            return unitOfWork.UserRepository.GetManagers();
         }
     }
 }

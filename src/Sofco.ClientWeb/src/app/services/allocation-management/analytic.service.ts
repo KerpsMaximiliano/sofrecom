@@ -25,6 +25,10 @@ export class AnalyticService {
   }
 
   getOptions(){
+    return this.http.get(`${this.baseUrl}/analytics/options`).map((res:Response) => res.json());
+  }
+
+  getFormOptions(){
     return this.http.get(`${this.baseUrl}/analytics/formOptions`).map((res:Response) => res.json());
   }
 
@@ -38,5 +42,9 @@ export class AnalyticService {
 
   update(model){
     return this.http.put(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
+  }
+
+  close(id){
+    return this.http.put(`${this.baseUrl}/analytics/${id}/close`, {}).map((res:Response) => res.json());
   }
 }

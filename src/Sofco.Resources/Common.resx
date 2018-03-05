@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CrmGeneralError" xml:space="preserve">
+    <value>common.crmGeneralError</value>
+  </data>
   <data name="ErrorSave" xml:space="preserve">
     <value>common.errorSave</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="ExportFileError" xml:space="preserve">
     <value>common.exportFileError</value>
+  </data>
+  <data name="FileDeleted" xml:space="preserve">
+    <value>common.fileDeleted</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>common.fileNotFound</value>

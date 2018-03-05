@@ -30,8 +30,8 @@
                     <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
                         <spinner></spinner>
                         <div class="form-group row" *ngFor="let item of data; let dataIndex = index">
-                            <label for="example-text-input" class="col-sm-6 col-form-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
-                            <div class="col-sm-6">
+                            <label for="example-text-input" class="col-sm-8 col-form-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
+                            <div class="col-sm-4">
                                 <input class="form-control" [type]="item.type" [(ngModel)]="item.value">
                             </div>
                         </div>

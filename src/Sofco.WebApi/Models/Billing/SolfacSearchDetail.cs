@@ -17,8 +17,7 @@ namespace Sofco.WebApi.Models.Billing
                 DocumentTypeName = domain.DocumentType.Text;
             }
 
-            if (domain.UserApplicant != null)
-                Manager = domain.UserApplicant.Name;
+            Manager = domain.Manager;
 
             StartDate = domain.StartDate;
             TotalAmount = domain.TotalAmount;

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -49,6 +50,21 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     }
                 })
                 .ToList();
+        }
+
+        public void Close(Analytic analytic)
+        {
+            context.Entry(analytic).Property("Status").IsModified = true;
+        }
+
+        public ICollection<Analytic> GetAllOpenReadOnly()
+        {
+            return context.Analytics.Where(x => x.Status == AnalyticStatus.Open).ToList();
+        }
+
+        public bool ExistWithService(string serviceId)
+        {
+            return context.Analytics.Any(x => x.ServiceId.Equals(serviceId));
         }
     }
 }

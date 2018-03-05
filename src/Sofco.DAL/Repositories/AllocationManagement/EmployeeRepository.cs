@@ -3,10 +3,8 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
-using Microsoft.EntityFrameworkCore;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -60,6 +58,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!string.IsNullOrWhiteSpace(parameters.Technology))
                 query = query.Where(x => x.Technology != null && x.Technology.ToLowerInvariant().Contains(parameters.Technology.ToLowerInvariant()));
 
+            if (parameters.Percentage.HasValue)
+                query = query.Where(x => x.BillingPercentage == parameters.Percentage);
+
             return query.ToList();
         }
 
@@ -94,7 +95,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.Name = data.Name;
             storedData.Profile = data.Profile;
             storedData.Technology = data.Technology;
-            storedData.Seniority = storedData.Seniority;
+            storedData.Seniority = data.Seniority;
+            storedData.Address = data.Address;
+            storedData.Location = data.Location;
+            storedData.Province = data.Province;
+            storedData.Country = data.Country;
+            storedData.HealthInsuranceCode = data.HealthInsuranceCode;
+            storedData.PrepaidHealthCode = data.PrepaidHealthCode;
+            storedData.OfficeAddress = data.OfficeAddress;
 
             Update(storedData);
         }

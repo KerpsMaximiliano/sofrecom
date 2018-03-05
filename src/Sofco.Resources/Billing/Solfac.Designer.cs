@@ -447,6 +447,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/solfac.delegateSaveMangerOnlyError.
+        /// </summary>
+        public static string SolfacDelegateMangerOnlyError {
+            get {
+                return ResourceManager.GetString("SolfacDelegateMangerOnlyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/solfac.solfacHasNoAttachments.
         /// </summary>
         public static string SolfacHasNoAttachments {
