@@ -56,25 +56,23 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
 
     initTable() {
         this.dataTableService.destroy('#delegateTable');
-        this.dataTableService.init('#delegateTable', false);
+        this.dataTableService.init2({
+            selector: '#delegateTable',
+            order: [[ 0, 'asc' ]]
+        });
     }
 
     getDelegates() {
         this.messageService.showLoading();
         this.subscription = this.solfacDelegateService.getAll().subscribe(response => {
             this.messageService.closeLoading();
-            this.delegates = this.sortDelegate(response.data);
+            this.delegates = response.data;
+            this.initTable();
         },
         err => {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
-    }
-
-    sortDelegate(data: Array<any>) {
-        return data.sort(function (a, b) {
-            return a.serviceName.localeCompare(b.serviceName);
-          });
     }
 
     goToAdd() {
