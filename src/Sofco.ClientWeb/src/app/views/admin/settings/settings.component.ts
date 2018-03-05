@@ -14,7 +14,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   
     data:Array<any>;
     serviceSubscrip: Subscription;
+    licenseTypesSubscrip: Subscription;
     public loading: boolean = false;
+
+    licenseTypes: Array<any> = new Array();
 
   constructor(
       private service: SettingsService,
@@ -26,10 +29,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.getAll();
+    this.getLicenseTypes();
   }
 
   ngOnDestroy() {
     if(this.serviceSubscrip) this.serviceSubscrip.unsubscribe();
+    if(this.licenseTypesSubscrip) this.licenseTypesSubscrip.unsubscribe();
   }
 
   getAll() {
@@ -40,12 +45,35 @@ export class SettingsComponent implements OnInit, OnDestroy {
       () => { this.loading = false; });
   }
 
+  getLicenseTypes(){
+    this.messageService.showLoading();
+
+    this.licenseTypesSubscrip = this.service.getLicenseTypes().subscribe(
+      response => {
+        this.licenseTypes = response;
+      },
+      err => {},
+      () => this.messageService.closeLoading()
+    )
+  }
+
   save() {
     this.loading = true;
     this.serviceSubscrip = this.service.save(this.data).subscribe(
       d => { this.data = d.data; this.saveHandler(); },
       err => this.errorHandlerService.handleErrors(err),
       () => { this.loading = false; });
+  }
+
+  updateLicenseType(item){
+    this.messageService.showLoading();
+    
+    this.licenseTypesSubscrip = this.service.saveLicenseType(item).subscribe(
+      response => { 
+        if(response.messages) this.messageService.showMessages(response.messages);
+      },
+      err => this.errorHandlerService.handleErrors(err),
+      () => this.messageService.closeLoading());
   }
 
   saveHandler() {

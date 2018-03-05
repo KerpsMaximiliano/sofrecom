@@ -141,6 +141,24 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.licenseTypeNotFound.
+        /// </summary>
+        public static string LicenseTypeNotFound {
+            get {
+                return ResourceManager.GetString("LicenseTypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.licenseTypeUpdate.
+        /// </summary>
+        public static string LicenseTypeUpdate {
+            get {
+                return ResourceManager.GetString("LicenseTypeUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to rrhh/license.managerNotFound.
         /// </summary>
         public static string ManagerNotFound {

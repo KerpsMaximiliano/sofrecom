@@ -47,6 +47,15 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return this.CreateResponse(response);
         }
 
+        [HttpPut]
+        [Route("type/{typeId}/days/{value}")]
+        public IActionResult UpdateTypeValue(int typeId, int value)
+        {
+            var response = licenseTypeService.UpdateLicenseTypeDays(typeId, value);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("{id}/file")]
         public async Task<IActionResult> File(int id)
         {

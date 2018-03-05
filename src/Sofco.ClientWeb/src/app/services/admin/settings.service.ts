@@ -19,4 +19,12 @@ export class SettingsService {
     save(data:any) {
         return this.http.post(`${this.baseUrl}/settings`, data).map((res:Response) => res.json());
     }
+
+    getLicenseTypes() {
+        return this.http.get(`${this.baseUrl}/settings/licenseTypes`).map((res:Response) => res.json());
+    }
+
+    saveLicenseType(item){
+        return this.http.put(`${this.baseUrl}/licenses/type/${item.typeId}/days/${item.value}`, {}).map((res:Response) => res.json());
+    }
 }

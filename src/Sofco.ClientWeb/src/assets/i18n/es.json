@@ -71,6 +71,7 @@
         },
         "settings": {
             "title": "Configuración",
+            "licenseTitle": "Configuración de licencias",
             "saveSuccess": "Datos actualizados exitosamente",
             "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
             "ExamDaysAllowTogether": "Máximo días de examen consecutivos",
@@ -537,7 +538,12 @@
             "final": "Final",
             "manager":"Superior",
             "sector": "Sector",
-            "attachments": "Archivos Adjuntos"
+            "attachments": "Archivos Adjuntos",
+            "exam": "Días por examen",
+            "marrige": "Días por Matrimonio",
+            "born": "Días por Nacimiento",
+            "deadParent": "Días por fallecimiento familiar directo",
+            "deadBrother": "Días por fallecimiento hermano"
         }
     },
     "ACTIONS":{

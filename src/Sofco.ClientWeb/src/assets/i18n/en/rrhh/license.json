@@ -13,5 +13,6 @@
     "examDescriptionRequired": "The subject to submit is required",
     "commentsRequired": "The comments are required",
     "notFound": "License not found",
-    "fileAdded": "File has been loaded successfully"
+    "fileAdded": "File has been loaded successfully",
+    "licenseTypeUpdate": "Licenses has been updated"
 }

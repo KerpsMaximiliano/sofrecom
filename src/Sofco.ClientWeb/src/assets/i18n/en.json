@@ -71,6 +71,7 @@
         },
         "settings": {
             "title": "Configs",
+            "licenseTitle": "Licenses's Configuration",
             "saveSuccess": "Save successfully",
             "AllocationManagement_Months": "Allocations - Months",
             "ExamDaysAllowTogether": "Maximum consecutive examination days",
@@ -529,7 +530,12 @@
             "final": "Final",
             "manager":"Manager",
             "sector": "Sector",
-            "attachments": "Attachments"
+            "attachments": "Attachments",
+            "exam": "Days for exam",
+            "marrige": "Days for marrige",
+            "born": "Days for born",
+            "deadParent": "Days for direct family death",
+            "deadBrother": "Days for brother's death"
         }
     },
     "ACTIONS":{

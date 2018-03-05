@@ -144,6 +144,12 @@
   <data name="FileAdded" xml:space="preserve">
     <value>rrhh/license.fileAdded</value>
   </data>
+  <data name="LicenseTypeNotFound" xml:space="preserve">
+    <value>rrhh/license.licenseTypeNotFound</value>
+  </data>
+  <data name="LicenseTypeUpdate" xml:space="preserve">
+    <value>rrhh/license.licenseTypeUpdate</value>
+  </data>
   <data name="ManagerNotFound" xml:space="preserve">
     <value>rrhh/license.managerNotFound</value>
   </data>
