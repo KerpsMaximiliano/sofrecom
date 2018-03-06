@@ -32,7 +32,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var response = costCenterService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new CostCenterViewModel(response.Data));
         }
@@ -42,7 +43,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var list = costCenterService.GetAll();
 
-            return Ok(list.Select(x => new Option { Id = x.Id, Text = $"{x.Code}-{x.Letter} {x.Description}"}));
+            return Ok(list.Select(x => new Option { Id = x.Id, Text = $"{x.Code}-{x.Letter} {x.Description}" }));
         }
 
         [HttpPost]

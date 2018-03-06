@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult Get()
         {
             var users = userService.GetAllReadOnly(false);
-            
+
             var model = new List<UserModel>();
 
             foreach (var user in users)

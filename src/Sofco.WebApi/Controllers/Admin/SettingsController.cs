@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Admin;
-using Sofco.Core.Services.Rrhh;
 using Sofco.Model.Models.Admin;
 using Sofco.WebApi.Extensions;
 
@@ -12,7 +11,7 @@ namespace Sofco.WebApi.Controllers.Admin
     public class SettingsController : Controller
     {
         private readonly ISettingService settingService;
-        
+
         public SettingsController(ISettingService settingService)
         {
             this.settingService = settingService;
