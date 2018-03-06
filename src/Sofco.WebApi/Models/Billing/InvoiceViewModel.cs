@@ -104,11 +104,4 @@ namespace Sofco.WebApi.Models.Billing
             return domain;
         }
     }
-
-    public class InvoiceDetailViewModel
-    {
-        public string Description { get; set; }
-
-        public int Quantity { get; set; }
-    }
 }

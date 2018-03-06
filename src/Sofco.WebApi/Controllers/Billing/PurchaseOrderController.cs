@@ -46,11 +46,11 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = purchaseOrderService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new PurchaseOrderEditViewModel(response.Data));
         }
-
 
         [HttpPost]
         public IActionResult Post([FromBody] PurchaseOrderViewModel model)
@@ -104,11 +104,12 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = fileService.ExportFile(id, fileConfig.PurchaseOrdersPath);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
-        
+
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
         {

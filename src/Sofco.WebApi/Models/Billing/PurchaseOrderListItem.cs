@@ -24,13 +24,21 @@ namespace Sofco.WebApi.Models.Billing
         }
 
         public int Id { get; set; }
+
         public string Title { get; set; }
+
         public string Client { get; set; }
+
         public int Year { get; set; }
+
         public string Status { get; set; }
+
         public string Analytic { get; set; }
+
         public int FileId { get; set; }
+
         public string FileName { get; set; }
+
         public string CreationDate { get; set; }
     }
 }

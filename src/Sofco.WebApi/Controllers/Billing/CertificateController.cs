@@ -9,12 +9,11 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
-using Sofco.Model.Models.Common;
 using Sofco.Model.DTO;
+using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.Billing;
-
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -40,7 +39,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = certificateService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new CertificateEditViewModel(response.Data));
         }
@@ -52,7 +52,6 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return Ok(certificates.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }));
         }
-
 
         [HttpPost]
         public IActionResult Post([FromBody] CertificateViewModel model)
@@ -106,7 +105,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = fileService.ExportFile(id, fileConfig.CertificatesPath);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }

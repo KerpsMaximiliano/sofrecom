@@ -2,11 +2,9 @@
 {
     public class VersionHelper
     {
-        public static string Version { get; }
-
         private const int Major = 1;
 
-        private const int Minor = 11;
+        private const int Minor = 12;
 
         private const int Revision = 109;
 
@@ -16,5 +14,7 @@
         {
             Version = string.Format(AppVersionFormat, Major, Minor, Revision);
         }
+
+        public static string Version { get; }
     }
 }
