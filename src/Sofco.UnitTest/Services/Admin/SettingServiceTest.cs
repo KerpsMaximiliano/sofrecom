@@ -3,7 +3,6 @@ using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.DAL;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 
@@ -40,7 +39,7 @@ namespace Sofco.UnitTest.Services.Admin
         {
             var actual = sut.GetAll();
 
-            Assert.False(actual.HasErrors);
+            Assert.False(actual.HasErrors());
 
             Assert.NotNull(actual.Data);
 
@@ -54,7 +53,7 @@ namespace Sofco.UnitTest.Services.Admin
 
             var actual = sut.Save(globalSettings);
 
-            Assert.False(actual.HasErrors);
+            Assert.False(actual.HasErrors());
 
             globalSettingRepository.Verify(s => s.Save(It.IsAny<List<GlobalSetting>>()), Times.Once);
         }

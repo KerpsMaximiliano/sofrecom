@@ -193,5 +193,14 @@ namespace Sofco.Resources.AllocationManagement {
                 return ResourceManager.GetString("WrongDates", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to allocationManagement/analytic.wrongMonthQuantity.
+        /// </summary>
+        public static string WrongMonthQuantity {
+            get {
+                return ResourceManager.GetString("WrongMonthQuantity", resourceCulture);
+            }
+        }
     }
 }

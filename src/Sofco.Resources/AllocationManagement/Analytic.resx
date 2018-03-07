@@ -162,4 +162,7 @@
   <data name="WrongDates" xml:space="preserve">
     <value>allocationManagement/analytic.wrongDates</value>
   </data>
+  <data name="WrongMonthQuantity" xml:space="preserve">
+    <value>allocationManagement/analytic.wrongMonthQuantity</value>
+  </data>
 </root>
