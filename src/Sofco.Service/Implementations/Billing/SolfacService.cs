@@ -133,7 +133,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<Solfac> Search(SolfacParams parameter)
         {
-            var userMail = sessionManager.GetUserMail();
+            var userMail = sessionManager.GetUserEmail();
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
             var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
             var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);

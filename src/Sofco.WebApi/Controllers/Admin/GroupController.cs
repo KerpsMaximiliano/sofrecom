@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,9 +17,12 @@ namespace Sofco.WebApi.Controllers.Admin
     {
         private readonly IGroupService groupService;
 
-        public GroupController(IGroupService groupsService)
+        private readonly IMapper mapper;
+
+        public GroupController(IGroupService groupsService, IMapper mapper)
         {
             groupService = groupsService;
+            this.mapper = mapper;
         }
 
         // GET: api/group
@@ -63,7 +67,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 groupModel.Role = new RoleModel(response.Data.Role);
 
             foreach (var userGroup in response.Data.UserGroups)
-                groupModel.Users.Add(new UserModel(userGroup.User));
+                groupModel.Users.Add(Translate(userGroup.User));
 
             return Ok(groupModel);
         }
@@ -126,6 +130,11 @@ namespace Sofco.WebApi.Controllers.Admin
                 return BadRequest(response);
 
             return Ok(response);
+        }
+
+        private UserModel Translate(User user)
+        {
+            return mapper.Map<User, UserModel>(user);
         }
     }
 }

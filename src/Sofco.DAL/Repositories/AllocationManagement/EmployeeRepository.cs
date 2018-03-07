@@ -109,6 +109,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.HealthInsuranceCode = data.HealthInsuranceCode;
             storedData.PrepaidHealthCode = data.PrepaidHealthCode;
             storedData.OfficeAddress = data.OfficeAddress;
+            storedData.Email = data.Email;
 
             Update(storedData);
         }
@@ -125,6 +126,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Employee GetById(int id)
         {
             return context.Employees.SingleOrDefault(x => x.Id == id);
+        }
+
+        public Employee GetByEmail(string email)
+        {
+            return context.Employees.SingleOrDefault(x => x.Email == email);
         }
     }
 }

@@ -14,6 +14,7 @@ using Sofco.Framework.MailData;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
@@ -124,11 +125,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
-            var employeeAllocations = unitOfWork.AllocationRepository.GetByEmployee(id);
+            response.Data = GetEmployeeModel(employee);
+
+            return response;
+        }
+
+        private EmployeeProfileModel GetEmployeeModel(Employee employee)
+        {
+            var model = TranslateToProfile(employee);
+
+            var employeeAllocations = unitOfWork.AllocationRepository.GetByEmployee(employee.Id);
 
             var analitycs = employeeAllocations.Select(x => x.Analytic).Distinct();
-
-            var model = TranslateToProfile(employee);
 
             foreach (var analityc in analitycs)
             {
@@ -152,9 +160,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             model.PrepaidHealth = unitOfWork.PrepaidHealthRepository.GetByCode(employee.HealthInsuranceCode, employee.PrepaidHealthCode);
 
-            response.Data = model;
-
-            return response;
+            return model;
         }
 
         private List<EmployeeHistoryModel> Translate(List<EmployeeHistory> employeeHistories)

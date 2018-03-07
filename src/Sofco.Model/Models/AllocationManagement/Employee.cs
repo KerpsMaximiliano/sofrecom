@@ -56,5 +56,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public int ExamDaysTaken { get; set; }
 
         public ICollection<License> Licenses { get; set; }
+
+        public string Email { get; set; }
     }
 }

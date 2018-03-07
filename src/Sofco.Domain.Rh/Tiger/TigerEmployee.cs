@@ -37,5 +37,7 @@ namespace Sofco.Domain.Rh.Tiger
         public int Ospla { get; set; }
 
         public string OfficeAddress { get; set; }
+
+        public string Email { get; set; }
     }
 }

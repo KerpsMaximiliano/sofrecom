@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.Models.Admin
 {
     public class UserDetailModel : UserModel
     {
-        public UserDetailModel(User user)
-            : base(user)
+        public UserDetailModel()
         {
             Roles = new List<SelectListModel>();
             Modules = new List<ModuleModelDetail>();

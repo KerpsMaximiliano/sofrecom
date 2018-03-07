@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -15,14 +16,19 @@ namespace Sofco.Service.Implementations.Admin
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+
         private readonly ILogMailer<UserService> logger;
+
         private readonly ISessionManager sessionManager;
 
-        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager)
+        private readonly IMapper mapper;
+
+        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.sessionManager = sessionManager;
+            this.mapper = mapper;
         }
 
         public Response<User> Active(int id, bool active)
@@ -199,7 +205,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public Response<UserModel> GetByMail()
         {
-            var email = sessionManager.GetUserMail();
+            var email = sessionManager.GetUserEmail();
 
             var response = new Response<UserModel>();
 
@@ -211,14 +217,20 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Data = new UserModel(user);
+            var model = Translate(user);
+
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+            model.EmployeeId = employee?.Id ?? 0;
+
+            response.Data = model;
 
             return response;
         }
 
         public bool HasDirectorGroup()
         {
-            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserEmail());
         }
 
         public Response Add(User domain)
@@ -255,17 +267,22 @@ namespace Sofco.Service.Implementations.Admin
 
         public bool HasDafGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserEmail());
         }
 
         public bool HasCdgGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserEmail());
         }
 
         public ICollection<User> GetManagers()
         {
             return unitOfWork.UserRepository.GetManagers();
+        }
+
+        private UserModel Translate(User user)
+        {
+            return mapper.Map<User, UserModel>(user);
         }
     }
 }

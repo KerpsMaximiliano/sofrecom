@@ -4,7 +4,7 @@
     {
         string GetUserName();
 
-        string GetUserMail();
+        string GetUserEmail();
 
         string GetUserEmail(string text);
     }

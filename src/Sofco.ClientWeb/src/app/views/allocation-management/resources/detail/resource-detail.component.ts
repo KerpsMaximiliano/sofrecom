@@ -49,12 +49,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getSubscrip) this.getSubscrip.unsubscribe();
-        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+        if (this.getSubscrip) { this.getSubscrip.unsubscribe(); }
+        if (this.paramsSubscrip) { this.paramsSubscrip.unsubscribe(); }
     }
 
     initGrid(){
-        var options = { selector: "#analyticsTable", columnDefs: [ {"aTargets": [4, 5], "sType": "date-uk"} ], order: [[ 5, "desc" ]] };
+        const options = { selector: '#analyticsTable', columnDefs: [ {'aTargets': [4, 5], "sType": "date-uk"} ], order: [[ 5, "desc" ]] };
         this.dataTableService.init2(options);
     }
 
