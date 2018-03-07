@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -15,14 +16,19 @@ namespace Sofco.Service.Implementations.Admin
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+
         private readonly ILogMailer<UserService> logger;
+
         private readonly ISessionManager sessionManager;
 
-        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager)
+        private readonly IMapper mapper;
+
+        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.sessionManager = sessionManager;
+            this.mapper = mapper;
         }
 
         public Response<User> Active(int id, bool active)
@@ -211,7 +217,7 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var model = new UserModel(user);
+            var model = Translate(user);
 
             var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
 
@@ -272,6 +278,11 @@ namespace Sofco.Service.Implementations.Admin
         public ICollection<User> GetManagers()
         {
             return unitOfWork.UserRepository.GetManagers();
+        }
+
+        private UserModel Translate(User user)
+        {
+            return mapper.Map<User, UserModel>(user);
         }
     }
 }
