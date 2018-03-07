@@ -33,9 +33,9 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var model = new LicenseTypeOptions
             {
                 OptionsWithPayment = options.Where(x => x.WithPayment)
-                    .Select(x => new Option {Id = x.Id, Text = x.Description}).ToList(),
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList(),
                 OptionsWithoutPayment = options.Where(x => !x.WithPayment)
-                    .Select(x => new Option {Id = x.Id, Text = x.Description}).ToList()
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList()
             };
 
             return Ok(model);

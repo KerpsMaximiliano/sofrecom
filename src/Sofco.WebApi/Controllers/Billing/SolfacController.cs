@@ -403,7 +403,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.AddCertificates(id, certificates);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var responseModel = new Response<IList<CertificateFileViewModel>> { Messages = response.Messages, Data = new List<CertificateFileViewModel>() };
 

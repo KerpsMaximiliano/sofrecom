@@ -9,7 +9,6 @@ namespace Sofco.WebApi.Models.AllocationManagement
     {
         public AnalyticViewModel()
         {
-            
         }
 
         public AnalyticViewModel(Analytic domain)
@@ -110,7 +109,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public bool BugsAccess { get; set; }
 
         public string UsersQv { get; set; }
-        
+
         public AnalyticStatus Status { get; set; }
 
         public virtual Analytic CreateDomain()
@@ -158,21 +157,6 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.BugsAccess = BugsAccess;
             domain.UsersQv = UsersQv;
             domain.CostCenterId = CostCenterId;
-        }
-    }
-
-    public class AnalyticEditViewModel : AnalyticViewModel
-    {
-        public override Analytic CreateDomain()
-        {
-            var domain = new Analytic();
-
-            FillData(domain);
-
-            domain.CreationDate = CreationDate;
-            domain.Status = Status;
-
-            return domain;
         }
     }
 }

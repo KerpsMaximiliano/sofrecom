@@ -3,6 +3,7 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -62,6 +63,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 
             return query.ToList();
+        }
+
+        public void ResetAllExamDays()
+        {
+            context.Database.ExecuteSqlCommand("UPDATE app.Employees SET ExamDaysTaken = 0");
         }
 
         public void Save(List<Employee> employees)

@@ -7,7 +7,6 @@ namespace Sofco.WebApi.Models.Billing
     {
         public CertificateEditViewModel()
         {
-            
         }
 
         public CertificateEditViewModel(Certificate domain)
@@ -52,7 +51,8 @@ namespace Sofco.WebApi.Models.Billing
             domain.ClientExternalName = ClientExternalName;
             domain.Year = Year;
 
-            if (FileId > 0) domain.FileId = FileId;
+            if (FileId > 0)
+                domain.FileId = FileId;
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;

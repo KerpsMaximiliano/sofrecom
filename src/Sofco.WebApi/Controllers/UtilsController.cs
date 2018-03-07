@@ -6,7 +6,6 @@ using Sofco.Model.Utils;
 
 namespace Sofco.WebApi.Controllers
 {
-
     [Route("api/utils")]
     [Authorize]
     public class UtilsController : Controller

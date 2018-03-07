@@ -36,7 +36,8 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var response = projectService.GetProjectById(projectId);
 
-                if (response.HasErrors()) return BadRequest(response);
+                if (response.HasErrors())
+                    return BadRequest(response);
 
                 return Ok(response.Data);
             }

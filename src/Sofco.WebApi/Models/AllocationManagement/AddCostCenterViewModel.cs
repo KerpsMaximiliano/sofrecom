@@ -23,10 +23,4 @@ namespace Sofco.WebApi.Models.AllocationManagement
             return domain;
         }
     }
-
-    public class EditCostCenterViewModel
-    {
-        public int Id { get; set; }
-        public string Description { get; set; }
-    }
 }

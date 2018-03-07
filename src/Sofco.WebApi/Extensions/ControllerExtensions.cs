@@ -29,7 +29,8 @@ namespace Sofco.WebApi.Extensions
 
         public static IActionResult CreateResponse(this Controller controller, Response response)
         {
-            if (response.HasErrors()) return controller.BadRequest(response);
+            if (response.HasErrors())
+                return controller.BadRequest(response);
 
             return controller.Ok(response);
         }
