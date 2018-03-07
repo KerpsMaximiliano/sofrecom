@@ -7,7 +7,7 @@
     "numberIsRequired": "Numero es requerido",
     "saveSuccess": "Orden de Compra creada exitosamente",
     "titleIsRequired": "Titulo es requerido",
-    "yearIsRequired": "Año es requerido",
+    "yearIsRequired": "Año invalido",
     "notFound": "Orden de Compra no encontrada",
     "fileAdded": "Archivo subido exitosamente",
     "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados"

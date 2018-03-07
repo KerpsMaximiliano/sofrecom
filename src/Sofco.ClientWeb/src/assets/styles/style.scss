@@ -199,6 +199,31 @@ ul.indented{
   color: black;
 }
 
+.label-license-Draft {
+  background-color: gray;
+  color: #FFFFFF;
+}
+
+.label-license-Rejected {
+  background-color: #ED5565;
+  color: #FFFFFF;
+}
+
+.label-license-Pending {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-license-AuthPending {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-license-Approved {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
 .label-SendPending {
   background-color: gray;
   color: #FFFFFF;
@@ -293,6 +318,10 @@ ul.indented{
   font-size: 18px;
 }
 
+.font-9 {
+  font-size: 9px;
+}
+
 .select2 {
   width: 100%;
 }
@@ -375,13 +404,13 @@ pre {
 }
 
 .column-lg {
-  width: 200px!important;
-  max-width: 200px!important;
+  width: 220px!important;
+  max-width: 220px!important;
 }
 
 .column-md {
-  width: 140px!important;
-  max-width: 140px!important;
+  width: 150px!important;
+  max-width: 150px!important;
 }
 
 .column-sm {

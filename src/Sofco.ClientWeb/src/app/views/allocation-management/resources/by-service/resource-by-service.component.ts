@@ -58,8 +58,15 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(error)
         });
     }
-
+ 
     goToServices(){
         this.router.navigate([`/billing/customers/${this.customerId}/services`]);
     }
+
+    goToProjects(){
+        sessionStorage.setItem("customerId", this.customerId);
+        sessionStorage.setItem("serviceId", this.serviceId);
+        
+        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects`]);
+      }
 }

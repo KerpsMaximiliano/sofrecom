@@ -536,7 +536,19 @@
             "marrige": "Days for marrige",
             "born": "Days for born",
             "deadParent": "Days for direct family death",
-            "deadBrother": "Days for brother's death"
+            "deadBrother": "Days for brother's death",
+            "type": "License",
+            "start": "Start",
+            "end": "End",
+            "days": "Days (Business)",
+            "goce": "Goce",
+            "status": "Status",
+            "managed": "Managed Licenses",
+            "authPending": "Authorization Pending Licenses",
+            "approved": "Approved Licenses",
+            "pending": "Pending Licenses",
+            "load": "Load License",
+            "report": "Generate Report"
         }
     },
     "ACTIONS":{
@@ -618,6 +630,9 @@
     "Reincorporation": "Reincoporation",
     "Valid": "Valid",
     "Consumed": "Consumed",
+    "Draft": "Draft",
+    "Pending": "Pending",
+    "AuthPending": "Authorization Pending", 
     "report":{
         "title": "Report",
         "solfacs": {

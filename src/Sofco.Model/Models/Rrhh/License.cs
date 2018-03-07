@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Relationships;
@@ -40,6 +41,8 @@ namespace Sofco.Model.Models.Rrhh
         public string Comments { get; set; }
 
         public string ExamDescription { get; set; }
+
+        public LicenseStatus Status { get; set; }
 
         public ICollection<LicenseFile> LicenseFiles { get; set; }
     }

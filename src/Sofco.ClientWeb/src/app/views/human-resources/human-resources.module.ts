@@ -14,12 +14,16 @@ import { Select2Module } from 'app/components/select2/select2';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { LicenseService } from 'app/services/human-resources/licenses.service';
 import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
+import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
+import { LicenseListWidget } from 'app/views/human-resources/licenses/license-list-widget/license-list-widget.component';
+import { SpinnerModule } from 'app/components/spinner/spinner.module';
+import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
 
 @NgModule({
-  declarations: [AddLicenseComponent],
+  declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule],
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule],
 
   providers   : [LicenseService],
   

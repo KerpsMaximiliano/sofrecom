@@ -64,7 +64,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateYear(Response response, PurchaseOrder domain)
         {
-            if (domain.Year <= 0)
+            if (domain.Year >= 2015 && domain.Year < 2099)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.YearIsRequired);
             }

@@ -1,0 +1,31 @@
+<div class="panel panel-{{color}}">
+    <div class="panel-heading">
+        {{ label | translate }}
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped" id="licenseStatus-{{statusId}}" width="100%">
+            <thead>
+                <tr>
+                    <th class="column-lg"> {{ 'rrhh.license.employee' | translate }} </th>
+                    <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+                    <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                    <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
+                    <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
+                    <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
+                    <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of data" (click)="goToDetail(item)" class="pointer">
+                    <td class="column-lg"> {{ item.employeeName }} </td>
+                    <td class="column-lg"> {{ item.managerName }} </td>
+                    <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                    <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
+                    <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
+                    <td class="column-sm text-center"> {{ item.days }} </td>
+                    <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
+                </tr>
+            </tbody>
+        </table>       
+    </div>
+</div>

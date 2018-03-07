@@ -1,0 +1,49 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'rrhh.licenses' | translate }} </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li> {{'rrhh.title' | translate }} </li>
+            <li class="active"><strong> {{'rrhh.licenses' | translate }} </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <license-list-widget [managerId]="managerId" [statusId]="authPending" [label]="'rrhh.license.authPending'" [color]="'warning'"></license-list-widget>
+
+    <div class="panel panel-primary" *ngIf="data.length > 0">
+        <div class="panel-heading">
+            {{ 'rrhh.license.managed' | translate }}
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped" id="allLicenses" width="100%">
+                <thead>
+                    <tr>
+                        <th class="column-lg"> {{ 'rrhh.license.employee' | translate }} </th>
+                        <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+                        <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                        <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
+                        <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
+                        <th class="column-sm"> {{ 'rrhh.license.status' | translate }} </th>
+                        <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
+                        <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data" class="pointer">
+                        <td class="column-lg"> {{ item.employeeName }} </td>
+                        <td class="column-lg"> {{ item.managerName }} </td>
+                        <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                        <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
+                        <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
+                        <td class="column-sm"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
+                        <td class="column-sm text-center"> {{ item.days }} </td>
+                        <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</div>    

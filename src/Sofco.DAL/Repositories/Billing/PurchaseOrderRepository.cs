@@ -34,7 +34,7 @@ namespace Sofco.DAL.Repositories.Billing
 
             if (parameters != null)
             {
-                if (!string.IsNullOrWhiteSpace(parameters.ClientId))
+                if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
                     query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
 
                 if (parameters.Year > 0)
