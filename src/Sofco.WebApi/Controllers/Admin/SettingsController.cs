@@ -20,18 +20,18 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet]
         public IActionResult Get()
         {
-            var result = settingService.GetAll();
+            var respone = settingService.GetAll();
 
-            return result.CreateResponse(this);
+            return this.CreateResponse(respone);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Post([FromBody] List<GlobalSetting> globalSettings)
         {
-            var result = settingService.Save(globalSettings);
+            var response = settingService.Save(globalSettings);
 
-            return result.CreateResponse(this);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("licenseTypes")]

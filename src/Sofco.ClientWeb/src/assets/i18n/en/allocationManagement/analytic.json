@@ -13,5 +13,6 @@
     "wrongDates": "Start Date cannot be greater than End Date",
     "titleIsRequired": "The Title is required",
     "closeSuccess": "Analytic successfully close",
-    "serviceAlreadyRelated": "There is already an analytic related to service"
+    "serviceAlreadyRelated": "There is already an analytic related to service",
+    "wrongMonthQuantity": "Months to show must be greater than or equal to 1 and less than or equal to 36"
 }

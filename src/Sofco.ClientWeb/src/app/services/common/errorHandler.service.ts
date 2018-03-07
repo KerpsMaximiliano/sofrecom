@@ -10,7 +10,7 @@ export class ErrorHandlerService {
                 private authenticationService: AuthenticationService,
                 private router: Router){}
 
-    public handleErrors(response){
+    public handleErrors(response) {
         this.messageService.closeLoading();
 
         switch (response.status){
@@ -28,7 +28,7 @@ export class ErrorHandlerService {
 
     private handle400(response) {
         const json = JSON.parse(response._body)
-        if (json.messages) this.messageService.showMessages(json.messages);
+        if (json.messages) { this.messageService.showMessages(json.messages); }
     }
 
     private handle500(){
