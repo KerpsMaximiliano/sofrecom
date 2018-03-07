@@ -177,7 +177,7 @@ export const ROUTES:Routes = [
         path: "resources", 
         children: [
           { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
-          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
+          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PROFI" } },
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
@@ -190,9 +190,9 @@ export const ROUTES:Routes = [
       {
         path:"licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "ALTA" } } ,
-          { path:"rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
-          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "AUTH" } } 
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
+          { path:"rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
+          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } } 
         ]
       }]
   },
@@ -203,7 +203,7 @@ export const ROUTES:Routes = [
       { 
         path:"licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "ALLOC", functionality: "ALTA" } } ,
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "CTRLI", functionality: "ALTA" } } ,
         ]
       }]
   },
