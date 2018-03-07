@@ -16,7 +16,7 @@ declare var jQuery: any;
 export class TopNavbarComponent {
 
   public userName: string;
-  public userid: number;
+  public employeeId: number;
 
   constructor(
         public configService: Configuration, 
@@ -37,11 +37,11 @@ export class TopNavbarComponent {
 
       this.userName = this.menuService.currentUser;
 
-      if(Cookie.get('userInfo')){
-        var userApplicant = JSON.parse(Cookie.get('userInfo'));
+      if (Cookie.get('userInfo')){
+        const userApplicant = JSON.parse(Cookie.get('userInfo'));
 
-        if(userApplicant && userApplicant.id && userApplicant.name){
-            this.userid = userApplicant.id;
+        if (userApplicant && userApplicant.employeeId && userApplicant.name){
+            this.employeeId = userApplicant.employeeId;
         }
     }
   }
@@ -67,6 +67,6 @@ export class TopNavbarComponent {
   }
 
   goToProfile(){
-    this.router.navigate([`/allocationManagement/resources/${this.userid}`]);
+    this.router.navigate([`/allocationManagement/resources/${this.employeeId}`]);
   }
 }

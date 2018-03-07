@@ -39,6 +39,8 @@ namespace Sofco.Core.Models.Admin
 
         public IList<GroupModel> Groups { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public User CreateDomain()
         {
             var user = new User

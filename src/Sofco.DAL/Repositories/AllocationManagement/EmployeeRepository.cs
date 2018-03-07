@@ -127,5 +127,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Employees.SingleOrDefault(x => x.Id == id);
         }
+
+        public Employee GetByEmail(string email)
+        {
+            return context.Employees.SingleOrDefault(x => x.Email == email);
+        }
     }
 }

@@ -199,7 +199,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public Response<UserModel> GetByMail()
         {
-            var email = sessionManager.GetUserMail();
+            var email = sessionManager.GetUserEmail();
 
             var response = new Response<UserModel>();
 
@@ -211,14 +211,20 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            response.Data = new UserModel(user);
+            var model = new UserModel(user);
+
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+            model.EmployeeId = employee?.Id ?? 0;
+
+            response.Data = model;
 
             return response;
         }
 
         public bool HasDirectorGroup()
         {
-            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDirectorGroup(sessionManager.GetUserEmail());
         }
 
         public Response Add(User domain)
@@ -255,12 +261,12 @@ namespace Sofco.Service.Implementations.Admin
 
         public bool HasDafGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserEmail());
         }
 
         public bool HasCdgGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserMail());
+            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserEmail());
         }
 
         public ICollection<User> GetManagers()

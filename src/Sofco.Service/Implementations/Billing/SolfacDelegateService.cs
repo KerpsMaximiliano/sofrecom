@@ -33,7 +33,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private IEnumerable<SolfacDelegate> GetSolfacDelegatesByUser()
         {
-            var userMail = sessionManager.GetUserMail();
+            var userMail = sessionManager.GetUserEmail();
 
             var customers = customerData.GetCustomers(userMail);
 
