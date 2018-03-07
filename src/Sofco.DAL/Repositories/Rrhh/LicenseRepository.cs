@@ -23,7 +23,11 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public ICollection<License> GetByEmployee(int employeeId)
         {
-            return context.Licenses.Where(x => x.EmployeeId == employeeId).ToList();
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => x.EmployeeId == employeeId).ToList();
         }
 
         public ICollection<License> GetByStatus(LicenseStatus statusId)

@@ -556,7 +556,8 @@
             "approved": "Licencias Aprobadas",
             "pending": "Licencias Pendientes",
             "load": "Cargar Licencia",
-            "report": "Generar Reporte"
+            "report": "Generar Reporte",
+            "holidaysPending": "Vacaciones Pendientes"
         }
     },
     "ACTIONS":{

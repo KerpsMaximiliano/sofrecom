@@ -43,5 +43,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public HealthInsurance HealthInsurance { get; set; }
 
         public PrepaidHealth PrepaidHealth { get; set; }
+
+        public int HolidaysPending { get; set; }
     }
 }

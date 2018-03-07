@@ -139,5 +139,12 @@ namespace Sofco.Service.Implementations.Rrhh
 
             return licenses.Select(x => new LicenseListItem(x)).ToList();
         }
+
+        public IList<LicenseListItem> GetByEmployee(int employeeId)
+        {
+            var licenses = unitOfWork.LicenseRepository.GetByEmployee(employeeId);
+
+            return licenses.Select(x => new LicenseListItem(x)).ToList();
+        }
     }
 }

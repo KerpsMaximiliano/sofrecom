@@ -63,8 +63,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             if(Cookie.get('userInfo')){
                 var userApplicant = JSON.parse(Cookie.get('userInfo'));
         
-                if(userApplicant && userApplicant.id && userApplicant.name){
-                    this.model.employeeId = userApplicant.id;
+                if(userApplicant && userApplicant.employeeId && userApplicant.name){
+                    this.model.employeeId = userApplicant.employeeId;
                     this.userApplicantName = userApplicant.name;
                 }
             }

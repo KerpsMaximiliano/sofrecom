@@ -79,6 +79,13 @@ namespace Sofco.WebApi.Controllers.Rrhh
         }
 
         [HttpGet]
+        [Route("employee/{employeeId}")]
+        public IActionResult GetByEmployee(int employeeId)
+        {
+            return Ok(licenseService.GetByEmployee(employeeId));
+        }
+
+        [HttpGet]
         [Route("status/{statusId}/manager/{managerId}")]
         public IActionResult GetByManagerAndStatus(LicenseStatus statusId, int managerId)
         {

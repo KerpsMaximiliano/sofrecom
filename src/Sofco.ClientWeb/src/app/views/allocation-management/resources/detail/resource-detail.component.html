@@ -40,7 +40,7 @@
                     </tr>
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td></td>
+                        <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -74,6 +74,7 @@
                                 <dd>{{ model?.prepaidHealth?.name }}</dd>
                                 <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+                    
                             </dl>
                           
                         </div>
@@ -106,7 +107,26 @@
                     </div>
                     <div id="tab-3" class="tab-pane">
                         <div class="panel-body">
-
+                            <table class="table table-striped" id="licenses" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+                                        <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                                        <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
+                                        <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
+                                        <th class="column-sm text-center"> {{ 'rrhh.license.status' | translate }} </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of licenses" class="pointer">
+                                        <td class="column-lg"> {{ item.managerName }} </td>
+                                        <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                                        <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
+                                        <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
+                                        <td class="column-sm"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
+                                    </tr>
+                                </tbody>
+                            </table>    
                         </div>
                     </div>
                     <div id="tab-4" class="tab-pane">

@@ -23,6 +23,10 @@ export class LicenseService {
     return this.http.get(`${this.baseUrl}/licenses/manager/${managerId}`).map((res:Response) => res.json());
   }
 
+  getByEmployee(employeeId) {
+    return this.http.get(`${this.baseUrl}/licenses/employee/${employeeId}`).map((res:Response) => res.json());
+  }
+
   getByManagerAndStatus(managerId, statusId) {
     return this.http.get(`${this.baseUrl}/licenses/status/${statusId}/manager/${managerId}`).map((res:Response) => res.json());
   }

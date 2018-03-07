@@ -548,7 +548,8 @@
             "approved": "Approved Licenses",
             "pending": "Pending Licenses",
             "load": "Load License",
-            "report": "Generate Report"
+            "report": "Generate Report",
+            "holidaysPending": "Holidays Pending"
         }
     },
     "ACTIONS":{
