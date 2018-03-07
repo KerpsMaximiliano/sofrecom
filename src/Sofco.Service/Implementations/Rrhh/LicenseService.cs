@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -7,8 +9,11 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Framework.ValidationHelpers.Rrhh;
+using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
@@ -105,6 +110,34 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        public IList<LicenseListItem> GetById(LicenseStatus statusId)
+        {
+            var licenses = unitOfWork.LicenseRepository.GetByStatus(statusId);
+
+            return licenses.Select(x => new LicenseListItem(x)).ToList();
+        }
+
+        public IList<LicenseListItem> Search(LicenseSearchParams parameters)
+        {
+            var licenses = unitOfWork.LicenseRepository.Search(parameters);
+
+            return licenses.Select(x => new LicenseListItem(x)).ToList();
+        }
+
+        public IList<LicenseListItem> GetByManager(int managerId)
+        {
+            var licenses = unitOfWork.LicenseRepository.GetByManager(managerId);
+
+            return licenses.Select(x => new LicenseListItem(x)).ToList();
+        }
+
+        public IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId)
+        {
+            var licenses = unitOfWork.LicenseRepository.GetByManagerAndStatus(statusId, managerId);
+
+            return licenses.Select(x => new LicenseListItem(x)).ToList();
         }
     }
 }

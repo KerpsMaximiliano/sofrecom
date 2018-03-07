@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Rrhh;
+using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
@@ -47,6 +49,12 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return this.CreateResponse(response);
         }
 
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] LicenseSearchParams parameters)
+        {
+            return Ok(licenseService.Search(parameters));
+        }
+
         [HttpPut]
         [Route("type/{typeId}/days/{value}")]
         public IActionResult UpdateTypeValue(int typeId, int value)
@@ -54,6 +62,27 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var response = licenseTypeService.UpdateLicenseTypeDays(typeId, value);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet]
+        [Route("status/{statusId}")]
+        public IActionResult GetByStatus(LicenseStatus statusId)
+        {
+            return Ok(licenseService.GetById(statusId));
+        }
+
+        [HttpGet]
+        [Route("manager/{managerId}")]
+        public IActionResult GetByManager(int managerId)
+        {
+            return Ok(licenseService.GetByManager(managerId));
+        }
+
+        [HttpGet]
+        [Route("status/{statusId}/manager/{managerId}")]
+        public IActionResult GetByManagerAndStatus(LicenseStatus statusId, int managerId)
+        {
+            return Ok(licenseService.GetByManagerAndStatus(statusId, managerId));
         }
 
         [HttpPost("{id}/file")]

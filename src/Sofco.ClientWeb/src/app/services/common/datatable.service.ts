@@ -60,6 +60,10 @@ export class DataTableService {
                     language: lang,
                 }
 
+                if(params.scrollX && params.scrollX == true){
+                    options.scrollX = true;
+                }
+
                 if(params.columnDefs){
                     options.aoColumnDefs = params.columnDefs;
                 }

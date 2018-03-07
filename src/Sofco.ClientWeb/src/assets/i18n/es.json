@@ -544,7 +544,19 @@
             "marrige": "Días por Matrimonio",
             "born": "Días por Nacimiento",
             "deadParent": "Días por fallecimiento familiar directo",
-            "deadBrother": "Días por fallecimiento hermano"
+            "deadBrother": "Días por fallecimiento hermano",
+            "type": "Licencia",
+            "start": "Inicio",
+            "end": "Fin",
+            "days": "Días (habiles)",
+            "goce": "Goce",
+            "status": "Estado",
+            "managed": "Licencias Gestionadas",
+            "authPending": "Licencias Pendientes Autorizacion",
+            "approved": "Licencias Aprobadas",
+            "pending": "Licencias Pendientes",
+            "load": "Cargar Licencia",
+            "report": "Generar Reporte"
         }
     },
     "ACTIONS":{
@@ -626,6 +638,9 @@
     "Reincorporation": "Reincorporación",
     "Valid": "Vigente",
     "Consumed": "Consumida",
+    "Draft": "Borrador",
+    "Pending": "Pendiente",
+    "AuthPending": "Pendiente Autorización", 
     "report":{
         "title": "Reporte",
         "solfacs": {

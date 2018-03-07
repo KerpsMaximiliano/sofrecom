@@ -43,7 +43,7 @@ export class TopNavbarComponent {
         if (userApplicant && userApplicant.employeeId && userApplicant.name){
             this.employeeId = userApplicant.employeeId;
         }
-    }
+      }
   }
 
   toggleNavigation(): void {

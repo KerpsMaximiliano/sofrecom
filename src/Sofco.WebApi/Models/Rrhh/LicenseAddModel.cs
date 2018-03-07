@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.WebApi.Models.Rrhh
@@ -49,6 +50,7 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;
             domain.CreationDate = DateTime.UtcNow;
+            domain.Status = LicenseStatus.Draft;
 
             return domain;
         }

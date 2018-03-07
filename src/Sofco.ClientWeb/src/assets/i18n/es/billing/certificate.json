@@ -2,9 +2,9 @@
     "clientIsRequired": "Cliente es requerido",
     "saveSuccess": "Certificado creado exitosamente",
     "nameIsRequired": "Nombre es requerido",
-    "yearIsRequired": "Año es requerido",
+    "yearIsRequired": "Año invalido",
     "notFound": "Certificado no encontrada",
     "fileAdded": "Archivo subido exitosamente",
     "solfacCertificateDeleted": "El certificado se removio de la solicitud exitosamente",
-    "solfacCertificateRelated": "El certificado se agregado a la solicitud exitosamente"
+    "solfacCertificateRelated": "El certificado se agregó a la solicitud exitosamente"
 }

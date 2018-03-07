@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180306133258_LicenseStatus")]
+    partial class LicenseStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -350,9 +351,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("CreatedByUser")
                         .HasMaxLength(50);
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(150);
 
                     b.Property<string>("EmployeeNumber");
 
