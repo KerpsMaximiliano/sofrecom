@@ -6,5 +6,6 @@
     "notFound": "Certificado no encontrada",
     "fileAdded": "Archivo subido exitosamente",
     "solfacCertificateDeleted": "El certificado se removio de la solicitud exitosamente",
-    "solfacCertificateRelated": "El certificado se agregó a la solicitud exitosamente"
+    "solfacCertificateRelated": "El certificado se agregó a la solicitud exitosamente",
+    "updated": "Certificado actualizado exitosamente"
 }

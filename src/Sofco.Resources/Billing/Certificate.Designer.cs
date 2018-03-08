@@ -123,6 +123,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to billing/certificate.updated.
+        /// </summary>
+        public static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to billing/certificate.yearIsRequired.
         /// </summary>
         public static string YearIsRequired {
