@@ -29,6 +29,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     getAllSubscrip: Subscription;
 
+    @ViewChild('pdfViewer') pdfViewer;
+
     constructor(
         private router: Router,
         private customerService: CustomerService,
@@ -132,5 +134,14 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             FileSaver.saveAs(file, purchaseOrder.fileName);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    viewFile(purchaseOrder){
+        if(purchaseOrder.fileName.endsWith('.pdf')){
+            this.purchaseOrderService.getFile(purchaseOrder.fileId).subscribe(file => {
+                this.pdfViewer.renderFile(file);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 }

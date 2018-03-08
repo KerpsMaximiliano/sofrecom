@@ -19,6 +19,7 @@ declare var $: any;
 export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     @ViewChild('form') form;
+    @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
 
     updateSubscrip: Subscription;
@@ -144,5 +145,14 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    viewFile(){
+        if(this.form.model.fileName.endsWith('.pdf')){
+            this.purchaseOrderService.getFile(this.form.model.id).subscribe(file => {
+                this.pdfViewer.renderFile(file);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 }  

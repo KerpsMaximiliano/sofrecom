@@ -50,7 +50,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">{{'billing.purchaseOrder.fields.year' | translate }}</label>
-                            <input type="number" class="form-control" [(ngModel)]="year" >
+                            <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="year" >
                         </div>
                     </div>
                 </div>
@@ -92,6 +92,10 @@
                                         <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
                                             <i class="fa fa-download"></i>
                                         </button>
+
+                                        <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -102,4 +106,4 @@
         </div>
     </div>
     
-    
+    <pdf-viewer #pdfViewer></pdf-viewer>
