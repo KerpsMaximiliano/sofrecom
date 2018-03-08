@@ -177,7 +177,7 @@ export const ROUTES:Routes = [
         path: "resources", 
         children: [
           { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
-          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "VWPRO" } },
+          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWPRO" } },
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
@@ -200,6 +200,7 @@ export const ROUTES:Routes = [
   {
     path: 'profile', component: BasicLayoutComponent,
     children: [
+      { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: false } },
       { 
         path:"licenses",
         children: [

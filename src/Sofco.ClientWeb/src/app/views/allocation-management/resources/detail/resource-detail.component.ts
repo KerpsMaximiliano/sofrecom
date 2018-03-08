@@ -7,6 +7,7 @@ import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
+import { Cookie } from "ng2-cookies/ng2-cookies";
 
 @Component({
     selector: 'resource-detail',
@@ -37,6 +38,22 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.resourceId = params['id'];
+
+            var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
+            var dataJson = JSON.parse(data);
+
+            if(!dataJson.fromRrhh){
+                if(Cookie.get('userInfo')){
+                    var userApplicant = JSON.parse(Cookie.get('userInfo'));
+            
+                    if(userApplicant && userApplicant.employeeId){
+                        if(userApplicant.employeeId != this.resourceId){
+                            this.router.navigate([`/403`]);
+                            return;
+                        }
+                    }
+                }
+            }
 
             this.messageService.showLoading();
 

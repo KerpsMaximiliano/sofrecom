@@ -67,6 +67,6 @@ export class TopNavbarComponent {
   }
 
   goToProfile(){
-    this.router.navigate([`/allocationManagement/resources/${this.employeeId}`]);
+    this.router.navigate([`/profile/${this.employeeId}`]);
   }
 }
