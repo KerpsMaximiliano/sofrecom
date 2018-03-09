@@ -65,9 +65,15 @@
         </div>
     </div>
     <div class="col-sm-3">
-        <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.area' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="model.area">
+        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
+
+        <div class="radio radio-info radio-inline">
+            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
+            <label for="area"> Comercial </label>
+        </div>
+        <div class="radio radio-inline radio-info">
+            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
+            <label for="area2"> Compañia </label>
         </div>
     </div>
 </div>
