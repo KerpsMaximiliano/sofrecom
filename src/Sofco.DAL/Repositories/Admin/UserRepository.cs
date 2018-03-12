@@ -153,5 +153,15 @@ namespace Sofco.DAL.Repositories.Admin
                 x.UserName.Equals(userName) 
                 && x.UserGroups.Any(s => s.Group.Description.Equals(ManagerDescription)));
         }
+
+        public bool HasRrhhGroup(string userMail)
+        {
+            var rrhhCode = emailConfig.RrhhCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == rrhhCode));
+        }
     }
 }

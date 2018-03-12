@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -15,5 +16,6 @@ namespace Sofco.Core.DAL.Rrhh
         ICollection<License> Search(LicenseSearchParams parameters);
         ICollection<License> GetByManager(int managerId);
         ICollection<License> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
+        ICollection<License> GetByEmployeeAndDates(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

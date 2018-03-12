@@ -61,5 +61,13 @@
         </div>
     </div>
 
+    <div class="alert alert-warning" *ngIf="allocations.model && allocations.model?.licenses.length > 0">
+        <ul>
+            <li *ngFor="let license of allocations.model?.licenses">
+                {{ 'allocationManagement.allocation.resourceWithLicense' | translate }} {{ license.licenseTypeName }} {{ 'allocationManagement.allocation.betweenDays' | translate }} {{ license.startDate | date: 'dd/MM/yyyy' }} {{ 'allocationManagement.allocation.and' | translate }} {{ license.endDate | date: 'dd/MM/yyyy' }}
+            </li>
+        </ul>
+    </div>
+
     <allocation-assignment-table [resourceId]="resourceId" [analytic]="analytic" [monthQuantity]="monthQuantity" #allocations (reloadTimeline)="getTimeline(analytic.id)"></allocation-assignment-table> 
 </div> 

@@ -86,6 +86,15 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
     }
 
+    back(){
+        if(this.menuService.userIsRrhh){
+            this.router.navigate(['/allocationManagement/licenses/rrhh']);
+        }
+        else{
+            this.router.navigate(['/profile/' + this.model.employeeId]);
+        }
+    }
+
     configUploader(){
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 

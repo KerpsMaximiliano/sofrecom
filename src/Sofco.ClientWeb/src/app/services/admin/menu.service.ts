@@ -14,6 +14,7 @@ export class MenuService {
     public userIsDirector: boolean;
     public userIsDaf: boolean;
     public userIsCdg: boolean;
+    public userIsRrhh: boolean;
     public currentUser: any;
     public user: any;
 
@@ -34,6 +35,7 @@ export class MenuService {
                 this.userIsDirector = menu.isDirector;
                 this.userIsDaf = menu.isDaf;
                 this.userIsCdg = menu.isCdg;
+                this.userIsRrhh = menu.isRrhh;
 
                 this.dafMail = menu.dafMail;
                 this.cdgMail = menu.cdgMail;

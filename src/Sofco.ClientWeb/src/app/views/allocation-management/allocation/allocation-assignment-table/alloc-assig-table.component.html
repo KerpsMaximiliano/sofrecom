@@ -9,7 +9,7 @@
                 <thead>
                     <tr>
                         <th class="analytic-column headcol"> {{ 'allocationManagement.allocation.analytic' | translate  }}</th>
-                        <th *ngFor="let month of model.monthsHeader">{{ month.display }}</th>
+                        <th *ngFor="let month of model.monthsHeader" [ngClass]="(month.employeeHasLicense == true) ? 'month-with-license ' : ''">{{ month.display }}</th>
                         <th class="analytic-column">{{ 'allocationManagement.allocation.releaseDateShortDesc' | translate }}</th>
                         <th class="buttons-column"></th>
                     </tr>

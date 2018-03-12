@@ -42,11 +42,14 @@ namespace Sofco.Model.DTO
         {
             this.MonthsHeader = new List<MonthHeader>();
             this.Allocations = new List<AllocationDto>();
+            this.Licenses = new List<LicenseItemDto>();
         }
 
         public IList<AllocationDto> Allocations { get; set; }
 
         public IList<MonthHeader> MonthsHeader { get; set; }
+
+        public IList<LicenseItemDto> Licenses { get; set; }
     }
 
     public class MonthHeader
@@ -54,5 +57,6 @@ namespace Sofco.Model.DTO
         public string Display { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
+        public bool EmployeeHasLicense { get; set; }
     }
 }

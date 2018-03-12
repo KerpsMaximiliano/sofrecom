@@ -404,6 +404,9 @@
             "wrongMonthQuantity": "Months to show must be greater than or equal to 1 and less than or equal to 36",
             "monthQuantity": "Months to show",
             "releaseDateShortDesc": "Release",
+            "resourceWithLicense": "Resource with license",
+            "betweenDays": "between days",
+            "and": "and",
             "grid": {
                 "title": "Title",
                 "name": "Name",

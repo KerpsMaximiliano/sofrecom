@@ -60,6 +60,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+            var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, startDate, endDate);
 
             var allocationResponse = new AllocationResponse();
 
@@ -70,8 +71,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Month = date.Month;
                 monthHeader.Year = date.Year;
+                monthHeader.EmployeeHasLicense = licenses.Any(x => x.StartDate.Month == date.Month || x.EndDate.Month == date.Month);
 
                 allocationResponse.MonthsHeader.Add(monthHeader);
+            }
+
+            if (licenses.Any())
+            {
+                allocationResponse.Licenses = licenses.Select(x => new LicenseItemDto(x)).ToList();
             }
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();

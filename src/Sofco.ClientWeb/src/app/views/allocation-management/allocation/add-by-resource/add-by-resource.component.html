@@ -17,7 +17,7 @@
             </ol>
         </div>
     </div>
-
+ 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-5">
@@ -49,7 +49,7 @@
                         <div class="form-group">
                             <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
                             <select select2 class="form-control" id="analyticId">
-                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
+                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
                             </select>
                         </div>
                     </div>
@@ -59,6 +59,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="alert alert-warning" *ngIf="allocations.model && allocations.model?.licenses.length > 0">
+            <ul>
+                <li *ngFor="let license of allocations.model?.licenses">
+                    {{ 'allocationManagement.allocation.resourceWithLicense' | translate }} {{ license.licenseTypeName }} {{ 'allocationManagement.allocation.betweenDays' | translate }} {{ license.startDate | date: 'dd/MM/yyyy' }} {{ 'allocationManagement.allocation.and' | translate }} {{ license.endDate | date: 'dd/MM/yyyy' }}
+                </li>
+            </ul>
         </div>
 
         <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 

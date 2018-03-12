@@ -280,6 +280,11 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.GetManagers();
         }
 
+        public bool HasRrhhGroup()
+        {
+            return unitOfWork.UserRepository.HasRrhhGroup(sessionManager.GetUserEmail());
+        }
+
         private UserModel Translate(User user)
         {
             return mapper.Map<User, UserModel>(user);

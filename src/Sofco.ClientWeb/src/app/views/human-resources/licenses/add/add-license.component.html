@@ -103,8 +103,9 @@
                     </div>
                  
                 </div>
-                <div class="ibox-footer" *ngIf="model.id == null">
-                    <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                <div class="ibox-footer">
+                    <button (click)="back()" class="btn btn-success" type="button"> <i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+                    <button (click)="add()" *ngIf="model.id == null" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
                 </div>
             </div>
         </div>
