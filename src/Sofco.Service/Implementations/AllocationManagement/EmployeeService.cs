@@ -14,7 +14,6 @@ using Sofco.Framework.MailData;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
-using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
@@ -153,8 +152,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 });
             }
 
-            model.History =
-                Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));
+            model.History = Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));
 
             model.HealthInsurance = unitOfWork.HealthInsuranceRepository.GetByCode(employee.HealthInsuranceCode);
 

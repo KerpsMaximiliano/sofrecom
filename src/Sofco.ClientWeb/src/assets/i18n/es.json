@@ -87,6 +87,7 @@
         "title": "Aseg. Ingresos y Costos",
         "customer":{
             "title": "Gestión Facturación",
+            "client": "Cliente",
             "management": "Listado de Clientes",
             "edit": "Editar Cliente",
             "add": "Agregar Cliente",
@@ -459,7 +460,7 @@
                 "technology": "Tecnologia",
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
-                "percentage": "Porcentaje"
+                "percentage": "Facturabilidad"
             }
         },
         "news": {

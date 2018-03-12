@@ -19,6 +19,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     resourceId: number;
     public model: any;
 
+    public isRrhh: boolean = false;
+
     public licenses: any[] = new Array();
 
     getSubscrip: Subscription;
@@ -38,6 +40,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.resourceId = params['id'];
+
+            this.isRrhh = this.menuService.userIsRrhh && this.menuService.user.employeeId != this.resourceId;
 
             var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
             var dataJson = JSON.parse(data);

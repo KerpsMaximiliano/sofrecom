@@ -25,6 +25,7 @@
                 <h2 class="no-margins"> {{ model?.name }} </h2>
                 <br>
                 <h4>{{ model?.profile }}</h4>
+                <p><strong>Ingreso:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</p>
             </div>
         </div>
         <div class="col-md-7">
@@ -40,6 +41,10 @@
                     </tr>
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
+                        <td><strong>Vacaciones por ley: </strong> {{ model?.holidaysByLaw }} {{'rrhh.license.days' | translate }}</td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="model?.hasExtraHolidays"><strong>Vacaciones extra acordadas: </strong> {{ model?.extraHolidaysQuantity }} {{'rrhh.license.days' | translate }}</td>
                         <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
@@ -55,12 +60,11 @@
                     <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
+                    <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-
                             <dl class="dl-horizontal">
                                 <dt>{{'allocationManagement.resources.address' | translate }}</dt>
                                 <dd>{{ model?.address }}</dd>
@@ -74,9 +78,7 @@
                                 <dd>{{ model?.prepaidHealth?.name }}</dd>
                                 <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
-                    
                             </dl>
-                          
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">
@@ -129,7 +131,7 @@
                             </table>    
                         </div>
                     </div>
-                    <div id="tab-4" class="tab-pane">
+                    <div id="tab-4" class="tab-pane" *ngIf="model?.history.length > 0">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="historyTable">
                                 <thead>
@@ -159,7 +161,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3" style="margin-top: 40px">
+        <div class="col-sm-3" style="margin-top: 40px" *ngIf="!isRrhh">
             <div class="row widget-custom lazur-bg" (click)="goToLicenses()">
                 <div class="col-sm-2">
                     <i class="fa fa-plane fa-2x"></i>

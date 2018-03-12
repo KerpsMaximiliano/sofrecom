@@ -24,6 +24,8 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
     serviceName: string;
     customerName: string;
 
+    @ViewChild('pdfViewer') pdfViewer;
+
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -79,4 +81,13 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
     goToServices(){
         this.router.navigate([`/billing/customers/${this.customerId}/services`]);
     }
+
+    viewFile(item){
+      if(item.fileName.endsWith('.pdf')){
+          this.purchaseOrderService.getFile(item.fileId).subscribe(file => {
+              this.pdfViewer.renderFile(file);
+          },
+          err => this.errorHandlerService.handleErrors(err));
+      }
+  }
 }

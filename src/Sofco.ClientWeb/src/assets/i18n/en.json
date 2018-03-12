@@ -87,6 +87,7 @@
         "title": "Billing",
         "customer":{
             "title": "Customers",
+            "client": "Client",
             "management": "List of Customers",
             "edit": "Customer Edit",
             "add": "Add Customer",

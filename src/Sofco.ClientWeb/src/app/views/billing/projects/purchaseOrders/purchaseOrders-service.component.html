@@ -37,7 +37,7 @@
             <div class="file-box" *ngFor="let item of purchaseOrders">
                 <div class="file">
                     <div class="icon"><i class="fa fa-file"></i></div>
-                    <div class="file-name text-word-break">
+                    <div class="file-name text-word-break" [ngClass]="item.fileName.endsWith('.pdf') ? 'pdf-file' : ''" (click)="viewFile(item)">
                         {{ item.fileName }} 
                         <br>
                         <small>{{'billing.invoice.createdAt' | translate }}: {{ item.creationDate }}</small>
@@ -50,4 +50,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
+
+<pdf-viewer #pdfViewer></pdf-viewer>
