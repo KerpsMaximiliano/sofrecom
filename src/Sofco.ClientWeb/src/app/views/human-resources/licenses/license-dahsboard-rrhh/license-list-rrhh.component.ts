@@ -46,6 +46,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getEmployees();
         this.getLicenceTypes();
+        this.initGrid();
     }
 
     ngOnDestroy(): void {
@@ -78,7 +79,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     search(){
         var params = {
             employeeId: $( "#employeeId" ).val(),
-            licensesTypeId: $( "#licensesTypeId" ).val(),
+            licenseTypeId: $( "#licensesTypeId" ).val(),
         }
 
         this.messageService.showLoading();

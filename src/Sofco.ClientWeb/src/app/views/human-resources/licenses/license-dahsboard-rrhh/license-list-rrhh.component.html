@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="m-t-md" *ngIf="data.length > 0">
+            <div class="m-t-md">
                 <table class="table table-striped" id="licenseStatusApproved" width="100%">
                     <thead>
                         <tr>
@@ -56,6 +56,7 @@
                             <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
                             <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
                             <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
+                            <th class="column-xs text-center"> {{ 'rrhh.license.hasCertificate' | translate }} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,6 +68,7 @@
                             <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
                             <td class="column-sm text-center"> {{ item.days }} </td>
                             <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
+                            <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.hasCertificate) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
                         </tr>
                     </tbody>
                 </table>   

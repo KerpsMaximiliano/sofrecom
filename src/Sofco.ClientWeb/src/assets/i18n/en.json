@@ -554,7 +554,8 @@
             "pending": "Pending Licenses",
             "load": "Load License",
             "report": "Generate Report",
-            "holidaysPending": "Holidays Pending"
+            "holidaysPending": "Holidays Pending",
+            "hasCertificate": "Certificate"
         }
     },
     "ACTIONS":{
