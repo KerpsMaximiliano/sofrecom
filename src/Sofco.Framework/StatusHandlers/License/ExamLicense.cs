@@ -19,6 +19,11 @@ namespace Sofco.Framework.StatusHandlers.License
                 response.AddError(Resources.Rrhh.License.ExamDescriptionRequired);
             }
 
+            if (!domain.Final && !domain.Parcial)
+            {
+                response.AddError(Resources.Rrhh.License.ExamTypeRequired);
+            }
+
             if (days > Convert.ToInt32(examDaysAllowTogether.Value))
             {
                 response.AddError(Resources.Rrhh.License.DaysWrong);

@@ -141,6 +141,9 @@
   <data name="ExamDescriptionRequired" xml:space="preserve">
     <value>rrhh/license.examDescriptionRequired</value>
   </data>
+  <data name="ExamTypeRequired" xml:space="preserve">
+    <value>rrhh/license.examTypeRequired</value>
+  </data>
   <data name="FileAdded" xml:space="preserve">
     <value>rrhh/license.fileAdded</value>
   </data>

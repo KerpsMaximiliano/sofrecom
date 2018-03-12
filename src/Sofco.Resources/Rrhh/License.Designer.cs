@@ -132,6 +132,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.examTypeRequired.
+        /// </summary>
+        public static string ExamTypeRequired {
+            get {
+                return ResourceManager.GetString("ExamTypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to rrhh/license.fileAdded.
         /// </summary>
         public static string FileAdded {
