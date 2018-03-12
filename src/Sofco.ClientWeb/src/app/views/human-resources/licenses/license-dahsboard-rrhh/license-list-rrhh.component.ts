@@ -44,9 +44,11 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.getEmployees();
-        this.getLicenceTypes();
-        this.initGrid();
+        var data = JSON.parse(sessionStorage.getItem('lastLicenseQuery'));
+
+        this.getEmployees(data);
+        this.getLicenceTypes(data);
+        this.searchLastQuery(data);
     }
 
     ngOnDestroy(): void {
@@ -55,14 +57,20 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         if(this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe();
     }
 
-    getEmployees(){
+    getEmployees(lastQuery){
         this.getEmployeesSubscrip = this.employeeService.getAll().subscribe(data => {
             this.resources = data;
+
+            setTimeout(() => {
+                if(lastQuery){
+                    $( "#employeeId" ).val(lastQuery.employeeId).trigger('change');
+                }
+            }, 0)
         },
         error => this.errorHandlerService.handleErrors(error));
     }
 
-    getLicenceTypes(){
+    getLicenceTypes(lastQuery){
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
 
             data.optionsWithPayment.forEach(element => {
@@ -72,22 +80,43 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             data.optionsWithoutPayment.forEach(element => {
                 this.licensesTypes.push(element);
             });
+
+            setTimeout(() => {
+                if(lastQuery){
+                    $( "#licensesTypeId" ).val(lastQuery.licenseTypeId).trigger('change');
+                }
+            }, 0)
         },
         error => this.errorHandlerService.handleErrors(error));
     }
 
-    search(){
+    searchLastQuery(data){
+        var params = {
+            employeeId: data.employeeId,
+            licenseTypeId: data.licenseTypeId
+        }
+
+        this.search(params);
+    }
+
+    newSearch(){
         var params = {
             employeeId: $( "#employeeId" ).val(),
             licenseTypeId: $( "#licensesTypeId" ).val(),
         }
 
+        this.search(params);
+    }
+
+    search(params){
         this.messageService.showLoading();
 
         this.getDataSubscrip = this.licenseService.search(params).subscribe(data => {
             this.messageService.closeLoading();
             this.data = data;
-            this.initGrid()
+            this.initGrid();
+
+            sessionStorage.setItem('lastLicenseQuery', JSON.stringify(params));
         },
         error => {});
     }
@@ -103,6 +132,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     clean(){
+        sessionStorage.removeItem('lastLicenseQuery');
         $( "#employeeId" ).val(0).trigger('change');;
         $( "#licensesTypeId" ).val(0).trigger('change');;
     }
