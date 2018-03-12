@@ -453,7 +453,8 @@
                 "technology": "Technology",
                 "startDate" :"Start",
                 "releaseDate": "Release",
-                "percentage": "Percentage"
+                "percentage": "Percentage",
+                "start": "Start Date"
             }
         },
         "news": {

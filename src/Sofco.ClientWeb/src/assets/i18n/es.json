@@ -460,7 +460,8 @@
                 "technology": "Tecnologia",
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
-                "percentage": "Facturabilidad"
+                "percentage": "Facturabilidad",
+                "start": "Ingreso"
             }
         },
         "news": {
