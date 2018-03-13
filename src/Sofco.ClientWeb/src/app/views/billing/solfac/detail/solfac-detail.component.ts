@@ -21,10 +21,10 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('history') history: any;
     @ViewChild('pdfViewer') pdfViewer: any;
- 
+
     public model: any = {};
     public solfacId: any;
-    public currencySymbol: string = "$";
+    public currencySymbol = "$";
 
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
@@ -86,7 +86,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
             FileSaver.saveAs(file, invoice.pdfFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
-    } 
+    }
 
     getInvoices(){
         this.solfacService.getInvoices(this.solfacId).subscribe(data => {

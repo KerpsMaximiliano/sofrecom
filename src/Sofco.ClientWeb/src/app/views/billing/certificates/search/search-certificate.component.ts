@@ -36,9 +36,9 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
-        var data = JSON.parse(sessionStorage.getItem('lastCertificateQuery'));
+        const data = JSON.parse(sessionStorage.getItem('lastCertificateQuery'));
 
-        if(data){
+        if (data) {
             this.year = data.year;
             this.customerId = data.clientId;
 
@@ -48,24 +48,24 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
         this.getCustomers();
     }
 
-    ngOnDestroy(){
-      if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+    ngOnDestroy() {
+      if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
 
     gotToEdit(certificate) {
         this.router.navigate([`/billing/certificates/${certificate.id}`]);
     }
 
-    goToAdd(){
+    goToAdd() {
         this.router.navigate([`/billing/certificates/new`]);
     }
 
-    getCustomers(){
+    getCustomers() {
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(data => {
+        this.customerService.getOptions().subscribe(res => {
             this.messageService.closeLoading();
-            this.customers = data;
+            this.customers = res.data;
         },
         err => {
             this.messageService.closeLoading();
@@ -76,10 +76,10 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
     search(){
         this.messageService.showLoading();
 
-        var parameters = {
+        const parameters = {
             clientId: this.customerId,
             year: this.year | 0
-        }
+        };
 
         this.getAllSubscrip = this.certificateService.search(parameters).subscribe(response => {
 
@@ -91,20 +91,20 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
                 sessionStorage.setItem('lastCertificateQuery', JSON.stringify(parameters));
 
                this.initGrid();
-            }, 500)
+            }, 500);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    initGrid(){
-        var columns = [0, 1, 2];
-        var title = `Certificados-${moment(new Date()).format("YYYYMMDD")}`;
+    initGrid() {
+        const columns = [0, 1, 2];
+        const title = `Certificados-${moment(new Date()).format("YYYYMMDD")}`;
 
         this.datatableService.destroy('#certificateTable');
         this.datatableService.initWithExportButtons('#certificateTable', columns, title);
     }
 
-    clean(){
+    clean() {
         this.customerId = "0";
         this.year = null;
 
@@ -113,7 +113,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastCertificateQuery');
     }
 
-    export(certificate){
+    export(certificate) {
         this.certificateService.exportFile(certificate.fileId).subscribe(file => {
             FileSaver.saveAs(file, certificate.fileName);
         },

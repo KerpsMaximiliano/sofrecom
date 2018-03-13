@@ -1,4 +1,4 @@
 export class AppSetting {
-    AllocationManagement_Months: number = 3;
-    ApiVersion: string = "";
+    AllocationManagement_Months = 3;
+    ApiVersion = "";
 }

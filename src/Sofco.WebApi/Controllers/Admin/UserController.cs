@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models;
 using Sofco.Core.Models.Admin;
@@ -133,6 +134,7 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpGet("email")]
+        [Authorize]
         public IActionResult GetByMail()
         {
             var response = userService.GetByMail();

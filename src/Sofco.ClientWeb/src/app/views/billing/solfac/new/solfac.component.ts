@@ -300,9 +300,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.router.navigate([`/billing/solfac/${data.data.id}/edit`])
           }, 500);
-          
         },
-        err => { 
+        err => {
           this.messageService.closeLoading();
           this.errorHandlerService.handleErrors(err);
         });

@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class LicenseService {
   private baseUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.baseUrl = this.service.UrlApi;
   }
 
   getSectors() {
-    return this.http.get(`${this.baseUrl}/utils/sectors`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/utils/sectors`);
   }
 
   getByStatus(statusId) {
-    return this.http.get(`${this.baseUrl}/licenses/status/${statusId}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/licenses/status/${statusId}`);
   }
 
   getByManager(managerId) {
-    return this.http.get(`${this.baseUrl}/licenses/manager/${managerId}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/licenses/manager/${managerId}`);
   }
 
   getByEmployee(employeeId) {
@@ -28,19 +28,19 @@ export class LicenseService {
   }
 
   getByManagerAndStatus(managerId, statusId) {
-    return this.http.get(`${this.baseUrl}/licenses/status/${statusId}/manager/${managerId}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/licenses/status/${statusId}/manager/${managerId}`);
   }
 
   getLicenceTypes() {
-    return this.http.get(`${this.baseUrl}/licenses/types`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/licenses/types`);
   }
 
   add(model){
-    return this.http.post(`${this.baseUrl}/licenses`, model).map((res:Response) => res.json());
+    return this.http.post<any>(`${this.baseUrl}/licenses`, model);
   }
 
   search(params){
-    return this.http.post(`${this.baseUrl}/licenses/search`, params).map((res:Response) => res.json());
+    return this.http.post<any>(`${this.baseUrl}/licenses/search`, params);
   }
 
   getUrlForImportFile(id){

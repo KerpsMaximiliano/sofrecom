@@ -38,10 +38,10 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     status: string = "";
     dateSince: Date = new Date();
     dateTo: Date = new Date();
-    
+
     public dateOptions;
 
-    public filterByDates: boolean = true;
+    public filterByDates = true;
 
     constructor(
         private router: Router,
@@ -65,8 +65,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getStatuses();
 
-        var data = JSON.parse(sessionStorage.getItem('lastInvoiceQuery'));
-        if(data){
+        const data = JSON.parse(sessionStorage.getItem('lastInvoiceQuery'));
+        if (data) {
             this.customerId = data.customerId;
             this.serviceId = data.serviceId;
             this.projectId = data.projectId;
@@ -97,15 +97,15 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     }
 
     getUserOptions(){
-        this.userService.getOptions().subscribe(data => {
-          this.userApplicants = data;
+        this.userService.getOptions().subscribe(res => {
+          this.userApplicants = res;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
     getStatuses(){
-        this.service.getStatus().subscribe(data => {
-          this.statuses = data;
+        this.service.getStatus().subscribe(res => {
+          this.statuses = res;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -113,9 +113,9 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     getCustomers(){
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(data => {
+        this.customerService.getOptions().subscribe(res => {
             this.messageService.closeLoading();
-            this.customers = data;
+            this.customers = res.data;
         },
         err => {
             this.messageService.closeLoading();
@@ -130,8 +130,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.services = [];
 
         if(this.customerId != "0"){
-            this.serviceService.getOptions(this.customerId).subscribe(data => {
-                this.services = data;
+            this.serviceService.getOptions(this.customerId).subscribe(res => {
+                this.services = res.data;
             },
             err => this.errorHandlerService.handleErrors(err));
         }
@@ -142,8 +142,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         this.projects = [];
 
         if(this.serviceId != "0"){
-            this.projectService.getOptions(this.serviceId).subscribe(data => {
-                this.projects = data;
+            this.projectService.getOptions(this.serviceId).subscribe(res => {
+                this.projects = res.data;
             },
             err => this.errorHandlerService.handleErrors(err));
         }
@@ -169,23 +169,22 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             filterByDates: this.filterByDates
         }
 
-        this.getAllSubscrip = this.service.search(parameters).subscribe(data => {
+        this.getAllSubscrip = this.service.search(parameters).subscribe(res => {
 
             setTimeout(() => {
                 this.messageService.closeLoading();
 
                 this.data = [];
 
-                if(data.messages) {
-                    this.messageService.showMessages(data.messages);
-                }      
-                else{
-                    this.data = data;
+                if (res.messages) {
+                    this.messageService.showMessages(res.messages);
+                } else {
+                    this.data = res.data;
                     sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(parameters));
-                }      
+                }
 
                this.initGrid();
-            }, 500)
+            }, 500);
         },
         err => this.errorHandlerService.handleErrors(err));
     }

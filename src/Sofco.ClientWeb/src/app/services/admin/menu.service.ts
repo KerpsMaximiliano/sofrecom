@@ -3,7 +3,7 @@ import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/htt
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from 'app/services/common/service';
 import { Menu } from 'app/models/admin/menu';
-import { HttpAuth } from 'app/services/common/http-auth';
+import { HttpClient } from '@angular/common/http';
 import { DatepickerOptions } from 'ng2-datepicker';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class MenuService {
     public rrhhMail: string;
     public sellerMail: string;
 
-    constructor(private http: HttpAuth, private service: Service) {
+    constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
 
         if (!this.menu) {
@@ -59,7 +59,7 @@ export class MenuService {
     }
 
     get() {
-       return this.http.get(`${this.baseUrl}/menu/`).map((res: Response) => res.json());
+       return this.http.get<any>(`${this.baseUrl}/menu/`);
     }
 
     hasModule(module: string){

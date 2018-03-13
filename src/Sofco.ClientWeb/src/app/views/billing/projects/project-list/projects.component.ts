@@ -20,7 +20,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     serviceId: string;
     serviceName: string;
     customerName: string;
-    public loading:  boolean = true;
+    public loading = true;
 
     @ViewChild('rightbar') rightbar;
  
@@ -50,8 +50,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     getIfIsRelated(){
-      this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(data => {
-        this.rightbar.hasAnalytic = data;
+      this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(response => {
+        this.rightbar.hasAnalytic = response;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
@@ -60,7 +60,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(this.serviceId).subscribe(d => {
-        this.projects = d;
+        this.projects = d.data;
 
         this.initGrid();
 

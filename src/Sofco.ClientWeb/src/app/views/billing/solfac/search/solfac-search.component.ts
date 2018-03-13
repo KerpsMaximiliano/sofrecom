@@ -17,7 +17,7 @@ import { MenuService } from 'app/services/admin/menu.service';
 declare var moment: any;
 
 @Component({
-  selector: 'app-solfacSearch',
+  selector: 'app-solfac-search',
   templateUrl: './solfac-search.component.html'
 })
 export class SolfacSearchComponent implements OnInit, OnDestroy {
@@ -38,10 +38,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     status: string = "0";
     dateSince: Date = new Date();
     dateTo: Date = new Date();
-    
+
     public dateOptions;
 
-    public filterByDates: boolean = true;
+    public filterByDates = true;
 
     constructor(
         private router: Router,
@@ -64,8 +64,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getStatuses();
 
-        var data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'));
-        if(data){
+        const data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'));
+        if (data) {
             this.customerId = data.customerId;
             this.serviceId = data.serviceId;
             this.projectId = data.projectId;
@@ -74,11 +74,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             this.status = data.status;
             this.filterByDates = data.filterByDates;
 
-            if(this.filterByDates){
+            if (this.filterByDates) {
                 this.dateSince = data.dateSince;
                 this.dateTo = data.dateTo;
-            }
-            else{
+            } else {
                 this.dateSince = new Date();
                 this.dateTo = new Date();
             }
@@ -87,8 +86,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(){
-      if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+    ngOnDestroy() {
+      if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
 
     setCurrencySymbol(currencyId){
@@ -112,26 +111,26 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    getUserOptions(){
-        this.userService.getOptions().subscribe(data => {
-          this.userApplicants = data;
+    getUserOptions() {
+        this.userService.getOptions().subscribe(d => {
+          this.userApplicants = d;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    getStatuses(){
-        this.service.getStatus().subscribe(data => {
-          this.statuses = data;
+    getStatuses() {
+        this.service.getStatus().subscribe(d => {
+          this.statuses = d;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    getCustomers(){
+    getCustomers() {
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(data => {
+        this.customerService.getOptions().subscribe(d => {
             this.messageService.closeLoading();
-            this.customers = data;
+            this.customers = d.data;
         },
         err => {
             this.messageService.closeLoading();
@@ -146,8 +145,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.services = [];
 
         if(this.customerId != "0"){
-            this.serviceService.getOptions(this.customerId).subscribe(data => {
-                this.services = data;
+            this.serviceService.getOptions(this.customerId).subscribe(d => {
+                this.services = d.data;
             },
             err => this.errorHandlerService.handleErrors(err));
         }
@@ -158,8 +157,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.projects = [];
 
         if(this.serviceId != "0"){
-            this.projectService.getOptions(this.serviceId).subscribe(data => {
-                this.projects = data;
+            this.projectService.getOptions(this.serviceId).subscribe(d => {
+                this.projects = d.data;
             },
             err => this.errorHandlerService.handleErrors(err));
         }
@@ -199,30 +198,29 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             filterByDates: this.filterByDates
         }
 
-        this.getAllSubscrip = this.service.search(parameters).subscribe(data => {
+        this.getAllSubscrip = this.service.search(parameters).subscribe(response => {
 
             setTimeout(() => {
                 this.messageService.closeLoading();
 
                 this.data = [];
 
-                if(data.messages) {
-                    this.messageService.showMessages(data.messages);
-                }      
-                else{
-                    this.data = data;
+                if (response.messages) {
+                    this.messageService.showMessages(response.messages);
+                } else {
+                    this.data = response;
                     sessionStorage.setItem('lastSolfacQuery', JSON.stringify(parameters));
-                }      
+                }
 
                 this.initGrid();
-            }, 500)
+            }, 500);
         },
         err => {
             this.errorHandlerService.handleErrors(err)
         });
     }
 
-    initGrid(){
+    initGrid() {
         var columns = [0, 1, 2, 3, 4, 5, 6];
         var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
 
@@ -238,7 +236,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.datatableService.init2(params);
     }
 
-    clean(){
+    clean() {
         this.customerId = "0";
         this.serviceId = "0";
         this.projectId = "0";

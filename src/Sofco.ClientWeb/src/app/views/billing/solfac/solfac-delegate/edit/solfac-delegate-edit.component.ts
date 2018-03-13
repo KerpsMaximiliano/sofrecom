@@ -62,9 +62,9 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
 
     getCustomers() {
         this.messageService.showLoading();
-        this.subscription = this.customerService.getOptions().subscribe(data => {
+        this.subscription = this.customerService.getOptions().subscribe(res => {
             this.messageService.closeLoading();
-            this.customers = this.sortCustomers(data);
+            this.customers = this.sortCustomers(res.data);
             this.setCustomerSelect();
         },
         err => {
@@ -115,8 +115,8 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
 
     getServices(): void {
         if (this.customerId === null) { return; }
-        this.subscription = this.serviceService.getOptions(this.customerId).subscribe(services => {
-            this.services = services;
+        this.subscription = this.serviceService.getOptions(this.customerId).subscribe(res => {
+            this.services = res.data;
             this.updateServiceControl();
         },
         err => {
@@ -131,8 +131,8 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
     }
 
     getUsers(): void {
-        this.subscription = this.usersService.getOptions().subscribe(users => {
-            this.users = users;
+        this.subscription = this.usersService.getOptions().subscribe(res => {
+            this.users = res;
             this.initUserControl();
         },
         err => {
