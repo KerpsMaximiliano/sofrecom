@@ -132,7 +132,7 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
 
     getUsers(): void {
         this.subscription = this.usersService.getOptions().subscribe(res => {
-            this.users = res.data;
+            this.users = res;
             this.initUserControl();
         },
         err => {
