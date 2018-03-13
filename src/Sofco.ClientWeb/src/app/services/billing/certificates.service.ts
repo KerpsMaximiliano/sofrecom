@@ -1,60 +1,59 @@
 import { Injectable } from '@angular/core';
 import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CertificatesService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.baseUrl = this.service.UrlApi;
   }
 
   getAll() {
-    return this.http.get(`${this.baseUrl}/certificates`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/certificates`);
   }
 
   getById(id) {
-    return this.http.get(`${this.baseUrl}/certificates/${id}`).map((res:Response) => res.json()); 
-  }
- 
-  add(model){
-    return this.http.post(`${this.baseUrl}/certificates`, model).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/certificates/${id}`);
   }
 
-  search(params){
-    return this.http.post(`${this.baseUrl}/certificates/search`, params).map((res:Response) => res.json());
+  add(model) {
+    return this.http.post<any>(`${this.baseUrl}/certificates`, model);
   }
 
-  update(model){
-    return this.http.put(`${this.baseUrl}/certificates`, model).map((res:Response) => res.json());
+  search(params) {
+    return this.http.post<any>(`${this.baseUrl}/certificates/search`, params);
   }
 
-  getUrlForImportFile(id){
+  update(model) {
+    return this.http.put<any>(`${this.baseUrl}/certificates`, model);
+  }
+
+  getUrlForImportFile(id) {
     return `${this.baseUrl}/certificates/${id}/file`;
   }
 
   deleteFile(id) {
-    return this.http.delete(`${this.baseUrl}/certificates/${id}/file`).map((res:Response) => res.json()); 
+    return this.http.delete<any>(`${this.baseUrl}/certificates/${id}/file`);
   }
 
   getByClient(client) {
-    return this.http.get(`${this.baseUrl}/certificates/client/${client}`).map((res:Response) => res.json()); 
+    return this.http.get<any>(`${this.baseUrl}/certificates/client/${client}`);
   }
 
-  exportFile(id){
+  exportFile(id) {
     return this.http.get(`${this.baseUrl}/certificates/export/${id}`,
-     {
-       responseType: ResponseContentType.Blob
-     })
-     .map((res:any) => {
-       if(res.status >= 300 && res.status <= 500){
+    {
+      responseType: 'blob'
+    })
+    .map((res: any) => {
+       if (res.status >= 300 && res.status <= 500){
          return res.json();
-       }
-       else{
-         return new Blob([res._body],{ type: 'application/octet-stream' })
+       } else {
+         return new Blob([res._body], { type: 'application/octet-stream' });
        }
      });
  }

@@ -3,19 +3,20 @@ import { AppSetting } from 'app/services/common/app-setting'
 declare function require(name: string);
 
 @Component({
-  selector: 'footer',
+  selector: 'app-footer',
   templateUrl: 'footer.template.html',
   styleUrls: ['./footer.component.scss']
 })
 
-export class FooterComponent { 
+export class FooterComponent {
   public appVersion: string;
   public apiVersion: string;
 
-  constructor(private appSetting: AppSetting){
-    var appPackage = require(`../../../../../package.json`);
-    
+  constructor(private appSetting: AppSetting) {
+    const appPackage = require(`../../../../../package.json`);
+
     this.appVersion = appPackage.version;
+
     this.apiVersion = appSetting.ApiVersion;
   }
 }

@@ -1,42 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "app/services/common/service";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EmployeeService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.baseUrl = this.service.UrlApi;
   }
 
   getAll() {
-    return this.http.get(`${this.baseUrl}/employees`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/employees`);
   }
 
   getManagers() {
-    return this.http.get(`${this.baseUrl}/users/managers`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/users/managers`);
   }
 
   getOptions() {
-    return this.http.get(`${this.baseUrl}/employees/options`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
   getById(id) {
-    return this.http.get(`${this.baseUrl}/employees/${id}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}`);
   }
 
   getProfile(id) {
-    return this.http.get(`${this.baseUrl}/employees/${id}/profile`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/profile`);
   }
 
   search(model) {
-    return this.http.post(`${this.baseUrl}/employees/search`, model).map((res:Response) => res.json());
+    return this.http.post<any>(`${this.baseUrl}/employees/search`, model);
   }
 
   sendUnsubscribeNotification(employeeName, json){
-    return this.http.post(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json).map((res:Response) => res.json());
+    return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json);
   }
 }

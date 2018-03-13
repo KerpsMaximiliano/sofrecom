@@ -40,21 +40,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
   getAll() {
     this.loading = true;
     this.serviceSubscrip = this.service.getAll().subscribe(
-      d => { this.data = d.json().data; },
+      d => { this.data = d.body.data; },
       err => this.errorHandlerService.handleErrors(err),
       () => { this.loading = false; });
   }
 
-  getLicenseTypes(){
+  getLicenseTypes() {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.getLicenseTypes().subscribe(
-      response => {
-        this.licenseTypes = response;
-      },
+      response => { this.licenseTypes = response; },
       err => {},
       () => this.messageService.closeLoading()
-    )
+    );
   }
 
   save() {

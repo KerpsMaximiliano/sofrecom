@@ -41,8 +41,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         this.getCustomers();
 
         this.getOptionsSubscrip = this.purchaseOrderService.getFormOptions().subscribe(
-            data => {
-                this.options = data;
+            res => {
+                this.options = res;
             },
             err => this.errorHandlerService.handleErrors(err));
     }
@@ -52,8 +52,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
-        this.customerService.getOptions().subscribe(data => {
-            this.customers = data;
+        this.customerService.getOptions().subscribe(res => {
+            this.customers = res.data;
         },
         err => {
             this.errorHandlerService.handleErrors(err)

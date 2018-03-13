@@ -11,7 +11,7 @@ import { UserService } from "app/services/admin/user.service";
 import { CryptographyService } from 'app/services/common/cryptography.service';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: 'login.template.html'
 })
 export class LoginComponent implements OnInit {
@@ -33,18 +33,16 @@ export class LoginComponent implements OnInit {
         private cryptoService: CryptographyService,
         private errorHandlerService: ErrorHandlerService) { }
 
-    ngOnInit() { 
-        // get return url from route parameters or default to '/'
+    ngOnInit() {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
         this.messageService.showLoginLoading();
 
-        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
-            data => {
-                this.onLoginSucces(data);
-            },
+        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password)
+        .subscribe(
+            data => { this.onLoginSucces(data); },
             error => this.errorHandlerService.handleErrors(error));
     }
 
@@ -54,7 +52,7 @@ export class LoginComponent implements OnInit {
 
         this.userSubscrip = this.userService.getByEmail().subscribe(
             response => {
-                const userData = response.data;
+                const userData = response;
                 Cookie.set('userInfo', JSON.stringify(userData));
                 this.menuService.currentUser = userData.name;
                 this.menuService.user = userData;

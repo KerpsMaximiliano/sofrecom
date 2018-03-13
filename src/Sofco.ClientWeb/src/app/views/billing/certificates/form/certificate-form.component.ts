@@ -34,15 +34,15 @@ export class CertificateFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getOptionsSubscrip) this.getOptionsSubscrip.unsubscribe();
+        if (this.getOptionsSubscrip) this.getOptionsSubscrip.unsubscribe();
     }
 
-    getCustomers(){
-        this.getOptionsSubscrip = this.customerService.getOptions().subscribe(data => {
-            this.customers = data;
+    getCustomers() {
+        this.getOptionsSubscrip = this.customerService.getOptions().subscribe(res => {
+            this.customers = res.data;
         },
         err => {
-            this.errorHandlerService.handleErrors(err)
+            this.errorHandlerService.handleErrors(err);
         });
     }
 }
