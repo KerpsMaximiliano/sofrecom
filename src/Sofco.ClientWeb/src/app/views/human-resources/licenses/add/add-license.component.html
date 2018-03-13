@@ -129,7 +129,7 @@
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
             </div>
-
+ 
             <div class="panel panel-primary m-t-lg" *ngIf="files.length > 0">
                 <div class="panel-heading">
                     <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
@@ -138,6 +138,7 @@
                     <ul class="todo-list small-list">
                         <li *ngFor="let file of files; let i = index">
                             <span class="m-l-xs pointer">{{file.name}}</span>
+                            <a class="pull-right" (click)="openConfirmModal(file.id, i)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -145,3 +146,7 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

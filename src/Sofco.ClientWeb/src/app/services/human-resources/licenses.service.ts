@@ -46,4 +46,8 @@ export class LicenseService {
   getUrlForImportFile(id){
     return `${this.baseUrl}/licenses/${id}/file`;
   }
+
+  deleteFile(id){
+    return this.http.delete(`${this.baseUrl}/licenses/file/${id}`).map((res:Response) => res.json());
+  }
 }

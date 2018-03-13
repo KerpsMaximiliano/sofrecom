@@ -146,5 +146,41 @@ namespace Sofco.Service.Implementations.Rrhh
 
             return licenses.Select(x => new LicenseListItem(x)).ToList();
         }
+
+        public Response DeleteFile(int id)
+        {
+            var response = new Response();
+
+            var licenseFile = unitOfWork.FileRepository.GetSingle(x => x.Id == id);
+
+            if (licenseFile == null)
+            {
+                response.AddError(Resources.Common.FileNotFound);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.FileRepository.Delete(licenseFile);
+
+                var fileName = $"{licenseFile.InternalFileName.ToString()}{licenseFile.FileType}";
+                var path = Path.Combine(fileConfig.LicensesPath, fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Common.FileDeleted);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.GeneralError);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
     }
 }
