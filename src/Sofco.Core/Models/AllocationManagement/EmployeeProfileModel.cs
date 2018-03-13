@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
@@ -26,7 +27,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string OfficeAddress { get; set; }
 
-        public string Manager { get; set; }
+        public string Manager { get; set; } 
 
         public IList<EmployeeAllocationModel> Allocations { get; set; }
 
@@ -43,5 +44,15 @@ namespace Sofco.Core.Models.AllocationManagement
         public HealthInsurance HealthInsurance { get; set; }
 
         public PrepaidHealth PrepaidHealth { get; set; }
+
+        public int HolidaysPending { get; set; }
+
+        public int HolidaysByLaw { get; set; }
+
+        public int ExtraHolidaysQuantity { get; set; }
+
+        public bool HasExtraHolidays { get; set; }
+
+        public DateTime StartDate { get; set; }
     }
 }

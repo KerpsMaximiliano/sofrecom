@@ -60,6 +60,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Apertura analítica {0}.
+        /// </summary>
+        public static string AddAnalytic {
+            get {
+                return ResourceManager.GetString("AddAnalytic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Cierre analítica {0}.
         /// </summary>
         public static string CloseAnalytic {

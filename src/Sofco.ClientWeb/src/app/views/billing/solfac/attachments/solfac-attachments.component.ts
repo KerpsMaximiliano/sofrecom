@@ -32,6 +32,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     fileId: number;
     index: number;
     certificateId: number;
+    certificateName: string;
     
     getAttachmentsSubscrip: Subscription;
     getCertificateAvailableSubscrip: Subscription;
@@ -162,15 +163,19 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
 
     deleteCertificate(){
         this.getCertificateAvailableSubscrip = this.solfacService.deleteCertificate(this.solfacId, this.certificateId).subscribe(response => {
-            this.confirmModal.hide();
             if(response.messages) this.messageService.showMessages(response.messages);
             this.certificatesRelated.splice(this.index, 1);
+
+            this.certificates.push(new Option(this.certificateId.toString(), this.certificateName));
+            $("#certificate").select2('data', {value: this.certificateId.toString(), text: this.certificateName});   
           },
-          err => this.errorHandlerService.handleErrors(err));
+          err => this.errorHandlerService.handleErrors(err),
+        () => this.confirmModal.hide());
     }
 
     showConfirmDeleteCertificate(certificate, index){
         this.certificateId = certificate.id;
+        this.certificateName = certificate.name;
         this.index = index;
         this.confirm = this.deleteCertificate;
         this.confirmModal.show();
@@ -181,6 +186,8 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
   
         if(certificates && certificates.length == 0) return;
   
+        this.messageService.showLoading();
+
         this.solfacService.addCertificates(this.solfacId, certificates).subscribe(data => {
           if(data.messages) this.messageService.showMessages(data.messages);
       
@@ -197,6 +204,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             })
           }
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => this.errorHandlerService.handleErrors(err),
+        () => this.messageService.closeLoading());
       }
 }

@@ -72,13 +72,13 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
                 this.resourceId = params['id'];
 
                 this.getByIdSubscrip = this.employeeService.getById(params['id']).subscribe(data => {
-                    this.resource = data;
+                    this.resource = data.data;
                 },
                 error => this.errorHandlerService.handleErrors(error));
             });
         }
 
-        this.getAllSubscrip = this.analyticService.getAll().subscribe(data => {
+        this.getAllSubscrip = this.analyticService.getOptions().subscribe(data => {
             this.analytics = data;
         },
         error => this.errorHandlerService.handleErrors(error));

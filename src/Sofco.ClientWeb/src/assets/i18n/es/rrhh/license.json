@@ -14,5 +14,6 @@
     "commentsRequired": "Los comentarios son requeridos",
     "notFound": "Licencia no encontrada",
     "fileAdded": "Archivo cargado exitosamente",
-    "licenseTypeUpdate": "Licencias actualizadas"
+    "licenseTypeUpdate": "Licencias actualizadas",
+    "examTypeRequired": "Tipo de examen es requerido"
 }

@@ -41,7 +41,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
-                            <input type="number" class="form-control" [(ngModel)]="year" >
+                            <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="year" >
                         </div>
                     </div>
                 </div>

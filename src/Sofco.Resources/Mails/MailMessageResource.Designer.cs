@@ -60,6 +60,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Estimados, &lt;/br&gt;&lt;/br&gt; Se dio de alta la analítica &lt;strong&gt;{0}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;&lt;/br&gt;&lt;/br&gt; Saludos.
+        /// </summary>
+        public static string AddAnalytic {
+            get {
+                return ResourceManager.GetString("AddAnalytic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt; &lt;/br&gt;&lt;/br&gt;
         ///Saludos.
         /// </summary>

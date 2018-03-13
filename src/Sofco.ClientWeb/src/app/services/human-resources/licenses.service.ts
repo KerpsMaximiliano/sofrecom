@@ -23,6 +23,10 @@ export class LicenseService {
     return this.http.get<any>(`${this.baseUrl}/licenses/manager/${managerId}`);
   }
 
+  getByEmployee(employeeId) {
+    return this.http.get(`${this.baseUrl}/licenses/employee/${employeeId}`).map((res:Response) => res.json());
+  }
+
   getByManagerAndStatus(managerId, statusId) {
     return this.http.get<any>(`${this.baseUrl}/licenses/status/${statusId}/manager/${managerId}`);
   }
@@ -41,5 +45,9 @@ export class LicenseService {
 
   getUrlForImportFile(id){
     return `${this.baseUrl}/licenses/${id}/file`;
+  }
+
+  deleteFile(id){
+    return this.http.delete(`${this.baseUrl}/licenses/file/${id}`).map((res:Response) => res.json());
   }
 }

@@ -58,5 +58,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<License> Licenses { get; set; }
 
         public string Email { get; set; }
+
+        public int HolidaysByLaw { get; set; }
     }
 }

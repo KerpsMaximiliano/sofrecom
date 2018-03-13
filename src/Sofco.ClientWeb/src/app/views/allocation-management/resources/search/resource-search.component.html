@@ -68,19 +68,21 @@
                 <thead>
                     <tr>
                         <th>{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.start' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.technology' | translate }}</th>
-                        <th>{{ 'ACTIONS.title' | translate }}</th>
+                        <th class="column-sm">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let resource of resources" class="pointer">
                         <td>{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
                         <td>{{ resource.senority}}</td>
                         <td>{{ resource.profile}}</td>
                         <td>{{ resource.technology}}</td>
-                        <td>
+                        <td class="column-sm">
                             <button title="{{'ACTIONS.notifyUnsubscribe' | translate }}" class="btn btn-danger btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openModal(resource)"><i class="fa fa-user-times"></i></button>
                             <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)"><i class="fa fa-user-plus"></i></button>
                             <button title="{{'allocationManagement.resources.profile' | translate }}" class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()"><i class="fa fa-eye"></i></button>

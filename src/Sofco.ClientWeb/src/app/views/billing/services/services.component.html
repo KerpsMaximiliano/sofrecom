@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>{{'billing.service.title' | translate }}</h2>
+        <h2>{{'billing.customer.client' | translate }}: {{customerName}}</h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -30,6 +30,8 @@
                         <thead>
                             <tr>
                                 <th>{{"billing.service.grid.name" | translate}}</th>
+                                <th>{{"billing.project.grid.manager" | translate}}</th>
+                                <th>{{"billing.project.grid.analytic" | translate}}</th>
                                 <th>{{"billing.service.grid.startDate" | translate}}</th>
                                 <th>{{"billing.service.grid.endDate" | translate}}</th>
                             </tr>
@@ -37,11 +39,13 @@
                         <tbody>
                             <tr *ngFor="let service of services" class="pointer" (click)="goToProjects(service)">
                                 <td>{{service.nombre}}</td>
+                                <td>{{service.manager}}</td>
+                                <td>{{service.analytic}}</td>
                                 <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{service.endDate | date:'dd/MM/yyyy'}}</td>
                             </tr>
                         </tbody>
-                    </table>  
+                    </table>   
                 </div>
             </div>
         </div>

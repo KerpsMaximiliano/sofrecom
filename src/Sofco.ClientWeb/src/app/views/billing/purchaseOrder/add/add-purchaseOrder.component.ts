@@ -19,6 +19,7 @@ export class NewPurchaseOrderComponent implements OnDestroy {
 
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('pdfViewer') pdfViewer;
 
     addSubscrip: Subscription;
 
@@ -94,5 +95,14 @@ export class NewPurchaseOrderComponent implements OnDestroy {
             FileSaver.saveAs(file, this.fileName);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+    
+    viewFile(){
+        if(this.fileName.endsWith('.pdf')){
+            this.purchaseOrderService.getFile(this.fileId).subscribe(file => {
+                this.pdfViewer.renderFile(file);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 } 

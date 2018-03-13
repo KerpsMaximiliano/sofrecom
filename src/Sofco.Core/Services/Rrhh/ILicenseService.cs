@@ -18,5 +18,7 @@ namespace Sofco.Core.Services.Rrhh
         IList<LicenseListItem> Search(LicenseSearchParams parameters);
         IList<LicenseListItem> GetByManager(int managerId);
         IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
+        IList<LicenseListItem> GetByEmployee(int employeeId);
+        Response DeleteFile(int id);
     }
 }

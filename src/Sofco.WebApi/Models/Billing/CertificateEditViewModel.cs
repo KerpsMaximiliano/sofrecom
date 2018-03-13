@@ -35,7 +35,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public int Year { get; set; }
 
-        public int FileId { get; set; }
+        public int? FileId { get; set; }
 
         public string FileName { get; set; }
 

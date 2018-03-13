@@ -52,18 +52,25 @@
                             </div>
                         </div>
         
-                        <div class="col-sm-5" *ngIf="fileName && fileName !=''">
+                        <div class="col-sm-5" *ngIf="form.model.fileName && form.model.fileName !=''">
                             <div class="file-box">
                                 <div class="file">
                                     <div class="icon"><i class="fa fa-file"></i></div>
                                     <div class="file-name text-word-break">
-                                        {{ fileName }} 
+                                        {{ form.model.fileName }} 
                                         <br>
                                         <small>{{'billing.invoice.createdAt' | translate }}: {{ creationDate }}</small>
                                     </div>
-                                    <div class="file-name export-file text-center pointer" (click)="exportExcel()">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'ACTIONS.export' | translate }}
+                                    <div class="file-buttons"> 
+                                        <div class="file-name export-file text-center pointer" (click)="exportExcel()">
+                                            <i class="fa fa-download"></i>
+                                            {{ 'ACTIONS.export' | translate }}
+                                        </div>
+
+                                        <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()">
+                                            <i class="fa fa-trash"></i>
+                                            {{ 'ACTIONS.DELETE' | translate }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -75,4 +82,6 @@
     </div>
 </div>
 
-     
+<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal> 

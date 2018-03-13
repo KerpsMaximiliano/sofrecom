@@ -27,6 +27,8 @@ namespace Sofco.Core.Models.Admin
 
         public bool IsCdg { get; set; }
 
+        public bool IsRrhh { get; set; }
+
         public string DafMail { get; set; }
 
         public string CdgMail { get; set; }

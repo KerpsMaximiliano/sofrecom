@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.WithPayment = WithPayment;
             domain.DaysQuantity = DaysQuantity;
             domain.HasCertificate = HasCertificate;
-            domain.Parcial = domain.Parcial;
+            domain.Parcial = Parcial;
             domain.Final = Final;
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;

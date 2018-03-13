@@ -14,5 +14,6 @@
     "commentsRequired": "The comments are required",
     "notFound": "License not found",
     "fileAdded": "File has been loaded successfully",
-    "licenseTypeUpdate": "Licenses has been updated"
+    "licenseTypeUpdate": "Licenses has been updated",
+    "examTypeRequired": "The exam type is required"
 }

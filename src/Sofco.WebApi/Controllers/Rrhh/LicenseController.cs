@@ -79,6 +79,13 @@ namespace Sofco.WebApi.Controllers.Rrhh
         }
 
         [HttpGet]
+        [Route("employee/{employeeId}")]
+        public IActionResult GetByEmployee(int employeeId)
+        {
+            return Ok(licenseService.GetByEmployee(employeeId));
+        }
+
+        [HttpGet]
         [Route("status/{statusId}/manager/{managerId}")]
         public IActionResult GetByManagerAndStatus(LicenseStatus statusId, int managerId)
         {
@@ -94,12 +101,20 @@ namespace Sofco.WebApi.Controllers.Rrhh
             {
                 var file = Request.Form.Files.First();
 
-                await licenseService.AttachFile(id, response, file);
+                response = await licenseService.AttachFile(id, response, file);
             }
             else
             {
                 response.AddError(Resources.Common.SaveFileError);
             }
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("file/{id}")]
+        public IActionResult DeleteFile(int id)
+        {
+            var response = licenseService.DeleteFile(id);
 
             return this.CreateResponse(response);
         }

@@ -138,6 +138,9 @@
   <data name="SolfacCertificateRelated" xml:space="preserve">
     <value>billing/certificate.solfacCertificateRelated</value>
   </data>
+  <data name="Updated" xml:space="preserve">
+    <value>billing/certificate.updated</value>
+  </data>
   <data name="YearIsRequired" xml:space="preserve">
     <value>billing/certificate.yearIsRequired</value>
   </data>

@@ -87,6 +87,7 @@
         "title": "Aseg. Ingresos y Costos",
         "customer":{
             "title": "Gestión Facturación",
+            "client": "Cliente",
             "management": "Listado de Clientes",
             "edit": "Editar Cliente",
             "add": "Agregar Cliente",
@@ -404,6 +405,9 @@
             "wrongMonthQuantity": "Meses a mostrar debe ser mayor o igual a 1 y menor o igual a 36",
             "monthQuantity": "Meses a mostrar",
             "releaseDateShortDesc": "F. Liberación",
+            "resourceWithLicense": "Recurso con licencia",
+            "betweenDays": "entre los días",
+            "and": "y",
             "grid": {
                 "title": "Título",
                 "name": "Nombre",
@@ -456,7 +460,8 @@
                 "technology": "Tecnologia",
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
-                "percentage": "Porcentaje"
+                "percentage": "Facturabilidad",
+                "start": "Ingreso"
             }
         },
         "news": {
@@ -556,7 +561,9 @@
             "approved": "Licencias Aprobadas",
             "pending": "Licencias Pendientes",
             "load": "Cargar Licencia",
-            "report": "Generar Reporte"
+            "report": "Generar Reporte",
+            "holidaysPending": "Vacaciones Pendientes",
+            "hasCertificate": "Certificado"
         }
     },
     "ACTIONS":{

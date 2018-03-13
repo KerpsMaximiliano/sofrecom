@@ -1,20 +1,15 @@
 ﻿using System;
 using Sofco.Model.Models.Rrhh;
 
-namespace Sofco.Core.Models.Rrhh
+namespace Sofco.Model.DTO
 {
-    public class LicenseListItem
+    public class LicenseItemDto
     {
-        public LicenseListItem(License license)
+        public LicenseItemDto(License license)
         {
             Id = license.Id;
             StartDate = license.StartDate;
             EndDate = license.EndDate;
-            WithPayment = license.WithPayment;
-            Status = license.Status.ToString();
-            HasCertificate = license.HasCertificate;
-
-            Days = EndDate.Date.Subtract(StartDate.Date).Days + 1;
 
             if (license.Employee != null)
             {
@@ -34,8 +29,6 @@ namespace Sofco.Core.Models.Rrhh
             }
         }
 
-        public bool HasCertificate { get; set; }
-
         public int Id { get; set; }
 
         public int EmployeeId { get; set; }
@@ -51,11 +44,5 @@ namespace Sofco.Core.Models.Rrhh
         public DateTime EndDate { get; set; }
 
         public string LicenseTypeName { get; set; }
-
-        public int Days { get; set; }
-
-        public bool WithPayment { get; set; }
-
-        public string Status { get; set; }
     }
 }

@@ -10,11 +10,13 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -26,16 +28,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly EmailConfig emailConfig;
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
-
-        private const string MailSubject = "Apertura analítica {0}";
-
-        private const string MailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "Se dio de alta la analítica <strong>{0}</strong>, puede acceder a la misma desde el siguiente <a href='{1}' target='_blank'>link</a></br></br>" +
-                                                "Saludos" +
-                                            "</span>" +
-                                        "</font>";
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
@@ -226,13 +218,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             return response;
         }
-
+         
         private void SendMail(Analytic analytic, Response response)
         {
             try
             {
-                var subject = string.Format(MailSubject, analytic.ClientExternalName);
-                var body = string.Format(MailBody, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
+                var body = string.Format(MailMessageResource.AddAnalytic, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
@@ -252,7 +244,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var recipients = string.Join(";", recipientsList.Distinct());
 
-                mailSender.Send(recipients, subject, body);
+                var data = new AddAnalyticData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipients
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
             }
             catch (Exception ex)
             {

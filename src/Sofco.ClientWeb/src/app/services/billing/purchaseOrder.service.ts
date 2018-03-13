@@ -48,6 +48,10 @@ export class PurchaseOrderService {
     return this.http.delete<any>(`${this.baseUrl}/purchaseOrders/${id}/file`);
   }
 
+  getFile(id){
+    return this.http.get(`${this.baseUrl}/purchaseOrders/${id}/file`).map((res:any) =>  res.json());
+  }
+
   exportFile(id){
     return this.http.get(`${this.baseUrl}/purchaseOrders/export/${id}`,
      {

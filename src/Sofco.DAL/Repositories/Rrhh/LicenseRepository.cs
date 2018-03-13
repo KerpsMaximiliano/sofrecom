@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
@@ -23,7 +24,11 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public ICollection<License> GetByEmployee(int employeeId)
         {
-            return context.Licenses.Where(x => x.EmployeeId == employeeId).ToList();
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => x.EmployeeId == employeeId).ToList();
         }
 
         public ICollection<License> GetByStatus(LicenseStatus statusId)
@@ -68,6 +73,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
                 .Where(x => x.ManagerId == managerId && x.Status == statusId).ToList();
+        }
+
+        public ICollection<License> GetByEmployeeAndDates(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date >= startDate.Date && x.EndDate.Date <= endDate.Date).ToList();
         }
     }
 }
