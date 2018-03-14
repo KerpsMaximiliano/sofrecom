@@ -46,9 +46,9 @@ export class LoginComponent implements OnInit {
             error => this.errorHandlerService.handleErrors(error));
     }
 
-    onLoginSucces(data){
-        Cookie.set('access_token', data.access_token);
-        Cookie.set('refresh_token', data.refresh_token);
+    onLoginSucces(data) {
+        Cookie.set('access_token', data.accessToken);
+        Cookie.set('refresh_token', data.refreshToken);
 
         this.userSubscrip = this.userService.getByEmail().subscribe(
             response => {

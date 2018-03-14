@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Claims;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Sofco.Common.Domains;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Framework.Helpers;
 using Sofco.Model.AzureAd;
@@ -27,17 +27,20 @@ namespace Sofco.Service.Implementations
 
         private readonly AppSetting appSetting;
 
-        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting)
+        private readonly IMapper mapper;
+
+        public LoginService(IOptions<AzureAdConfig> azureAdOptions, IBaseHttpClient client, IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting, IMapper mapper)
         {
             this.azureAdOptions = azureAdOptions.Value;
             this.client = client;
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
             this.appSetting = appSetting.Value;
         }
 
-        public Response<string> Login(UserLogin userLogin)
+        public Response<UserTokenModel> Login(UserLogin userLogin)
         {
-            var response = new Response<string>();
+            var response = new Response<UserTokenModel>();
 
             var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
 
@@ -52,17 +55,19 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("password", password)
              };
 
-            var result = client.Post<string>(uri, new FormUrlEncodedContent(pairs));
+            var result = client.Post<AzureAdLoginResponse>(uri, new FormUrlEncodedContent(pairs));
 
             if (result.HasErrors)
             {
                 response.Messages.Add(new Message("common.loginFailed", MessageType.Error));
+
                 return response;
             }
 
             if (unitOfWork.UserRepository.IsActive($"{userLogin.UserName}@{appSetting.Domain}"))
             {
-                response.Data = result.Data;
+                response.Data = Translate(result.Data);
+
                 return response;
             }
 
@@ -71,7 +76,7 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Result Refresh(UserLoginRefresh userLoginRefresh)
+        public Response<UserTokenModel> Refresh(UserLoginRefresh userLoginRefresh)
         {
             var refreshToken = userLoginRefresh.RefreshToken;
 
@@ -84,10 +89,22 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("refresh_token", refreshToken)
              };
 
-            return client.Post<string>(uri, new FormUrlEncodedContent(pairs));
+            var azureLoginResult = client.Post<AzureAdLoginResponse>(uri, new FormUrlEncodedContent(pairs));
+
+            var response = new Response<UserTokenModel>();
+
+            if (azureLoginResult.HasErrors)
+            {
+                response.Messages.Add(new Message("common.loginFailed", MessageType.Error));
+                return response;
+            }
+
+            response.Data = Translate(azureLoginResult.Data);
+
+            return response;
         }
 
-        public Response<AzureAdUserListResponse> GetUsersFromAzureADBySurname(string surname)
+        public Response<AzureAdUserListResponse> GetUsersFromAzureAdBySurname(string surname)
         {
             var response = new Response<AzureAdUserListResponse>();
 
@@ -118,7 +135,7 @@ namespace Sofco.Service.Implementations
             return response;
         }
 
-        public Response<AzureAdUserResponse> GetUserFromAzureADByEmail(string email)
+        public Response<AzureAdUserResponse> GetUserFromAzureAdByEmail(string email)
         {
             var response = new Response<AzureAdUserResponse>();
 
@@ -173,6 +190,11 @@ namespace Sofco.Service.Implementations
             }
 
             return response;
+        }
+
+        private UserTokenModel Translate(AzureAdLoginResponse azureLogin)
+        {
+            return mapper.Map<UserTokenModel>(azureLogin);
         }
     }
 }
