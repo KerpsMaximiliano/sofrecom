@@ -7,7 +7,7 @@ SET WORKSPACE_PATH=%~1
 SET DEPLOY_PATH=%~2
 
 IF [%1] == [] SET WORKSPACE_PATH=C:\Projects\Sofcoar
-IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys.Dev\Sofco.ClientWeb
+IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys\Dev.Sofco.ClientWeb
 
 cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
@@ -21,9 +21,6 @@ cmd /c ng build --prod --env=azsof01wd-dev -op "%PUBLISH_PATH%"
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
 cmd /c DEL /F /Q "%DEPLOY_PATH%"
-cmd /c FOR /D %%p IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%p" /s /q
+cmd /c FOR /D %%d IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%d" /s /q
 
 cmd /c XCOPY /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
-
-cmd /c DEL /F /Q "%PUBLISH_PATH%"
-cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
