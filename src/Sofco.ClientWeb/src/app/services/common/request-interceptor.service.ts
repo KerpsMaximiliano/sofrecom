@@ -68,7 +68,7 @@ export class RequestInterceptorService implements HttpInterceptor {
                 })
                 .catch(error => {
                     // If there is an exception calling 'refreshToken', bad news so logout.
-                    return this.logoutUser();
+                    return this.logoutUser(error);
                 })
                 .finally(() => {
                     this.isRefreshingToken = false;
@@ -83,9 +83,7 @@ export class RequestInterceptorService implements HttpInterceptor {
         }
     }
 
-    logoutUser() {
-        // Route to the login page (implementation up to you)
-
-        return Observable.throw("");
+    logoutUser(err?) {
+        return Observable.throw(err);
     }
 }
