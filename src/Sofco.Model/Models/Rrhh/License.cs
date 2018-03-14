@@ -45,5 +45,7 @@ namespace Sofco.Model.Models.Rrhh
         public LicenseStatus Status { get; set; }
 
         public ICollection<LicenseFile> LicenseFiles { get; set; }
+
+        public ICollection<LicenseHistory> Histories { get; set; }
     }
 }

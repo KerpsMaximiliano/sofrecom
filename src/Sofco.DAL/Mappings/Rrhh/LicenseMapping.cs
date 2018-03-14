@@ -17,6 +17,8 @@ namespace Sofco.DAL.Mappings.Rrhh
             builder.Entity<License>().HasOne(x => x.Manager).WithMany(x => x.Licenses).HasForeignKey(x => x.ManagerId);
             builder.Entity<License>().HasOne(x => x.Employee).WithMany(x => x.Licenses).HasForeignKey(x => x.EmployeeId);
             builder.Entity<License>().HasOne(x => x.Type).WithMany(x => x.Licenses).HasForeignKey(x => x.TypeId);
+
+            builder.Entity<License>().HasMany(x => x.Histories).WithOne(x => x.License).HasForeignKey(x => x.LicenseId);
         }
     }
 }

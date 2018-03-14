@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApproveSuccess" xml:space="preserve">
+    <value>rrhh/license.approveSuccess</value>
+  </data>
+  <data name="AuthPendingSuccess" xml:space="preserve">
+    <value>rrhh/license.authPendingSuccess</value>
+  </data>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>rrhh/license.cannotChangeStatus</value>
+  </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>rrhh/license.commentsRequired</value>
   </data>
@@ -161,6 +170,12 @@
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>rrhh/license.notFound</value>
+  </data>
+  <data name="PendingSuccess" xml:space="preserve">
+    <value>rrhh/license.pendingSuccess</value>
+  </data>
+  <data name="RejectSuccess" xml:space="preserve">
+    <value>rrhh/license.rejectSuccess</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>rrhh/license.saveSuccess</value>

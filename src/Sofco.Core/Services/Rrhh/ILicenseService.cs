@@ -20,5 +20,6 @@ namespace Sofco.Core.Services.Rrhh
         IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
         IList<LicenseListItem> GetByEmployee(int employeeId);
         Response DeleteFile(int id);
+        Response ChangeStatus(int id, LicenseStatusChangeModel model);
     }
 }

@@ -60,6 +60,33 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.approveSuccess.
+        /// </summary>
+        public static string ApproveSuccess {
+            get {
+                return ResourceManager.GetString("ApproveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.authPendingSuccess.
+        /// </summary>
+        public static string AuthPendingSuccess {
+            get {
+                return ResourceManager.GetString("AuthPendingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.cannotChangeStatus.
+        /// </summary>
+        public static string CannotChangeStatus {
+            get {
+                return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to rrhh/license.commentsRequired.
         /// </summary>
         public static string CommentsRequired {
@@ -191,6 +218,24 @@ namespace Sofco.Resources.Rrhh {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.pendingSuccess.
+        /// </summary>
+        public static string PendingSuccess {
+            get {
+                return ResourceManager.GetString("PendingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to rrhh/license.rejectSuccess.
+        /// </summary>
+        public static string RejectSuccess {
+            get {
+                return ResourceManager.GetString("RejectSuccess", resourceCulture);
             }
         }
         

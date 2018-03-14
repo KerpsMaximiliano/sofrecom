@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -115,6 +116,15 @@ namespace Sofco.WebApi.Controllers.Rrhh
         public IActionResult DeleteFile(int id)
         {
             var response = licenseService.DeleteFile(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, LicenseStatusChangeModel model)
+        {
+            var response = licenseService.ChangeStatus(id, model);
 
             return this.CreateResponse(response);
         }

@@ -11,6 +11,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
+using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -27,13 +28,15 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly ILogMailer<LicenseService> logger;
         private readonly FileConfig fileConfig;
         private readonly ISessionManager sessionManager;
+        private readonly ILicenseStatusFactory licenseStatusFactory;
 
-        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, ISessionManager sessionManager)
+        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.fileConfig = fileOptions.Value;
             this.sessionManager = sessionManager;
+            this.licenseStatusFactory = licenseStatusFactory;
         }
 
         public Response<string> Add(License domain)
@@ -181,6 +184,55 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        public Response ChangeStatus(int id, LicenseStatusChangeModel model)
+        {
+            var response = new Response();
+
+            var license = LicenseValidationHandler.Find(id, response, unitOfWork);
+            var licenseStatusHandler = licenseStatusFactory.GetInstance(model.Status);
+
+            try
+            {
+                // Validate Status
+                licenseStatusHandler.Validate(response, unitOfWork, model, license);
+
+                if (response.HasErrors()) return response;
+
+                // Update Status
+                licenseStatusHandler.SaveStatus(license, model, unitOfWork);
+
+                // Add History
+                var history = GetHistory(license, model);
+                unitOfWork.LicenseRepository.AddHistory(history);
+
+                // Save
+                unitOfWork.Save();
+                response.AddSuccess(licenseStatusHandler.GetSuccessMessage());
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        private LicenseHistory GetHistory(License license, LicenseStatusChangeModel model)
+        {
+            var history = new LicenseHistory
+            {
+                LicenseStatusFrom = license.Status,
+                LicenseStatusTo = model.Status,
+                LicenseId = license.Id,
+                UserId = model.UserId,
+                CreatedDate = DateTime.UtcNow,
+                Comment = model.Comment
+            };
+
+            return history;
         }
     }
 }

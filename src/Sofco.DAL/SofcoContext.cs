@@ -63,6 +63,7 @@ namespace Sofco.DAL
 
         // Human Resources
         public DbSet<License> Licenses { get; set; }
+        public DbSet<LicenseHistory> LicenseHistories { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }
