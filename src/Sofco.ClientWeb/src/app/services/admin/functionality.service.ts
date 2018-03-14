@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from "app/services/common/service";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class FunctionalityService {
     private baseUrl: string;
 
-    constructor(private http: HttpAuth, private service: Service) {
+    constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
     }
 
     getAll() {
-        return this.http.get(`${this.baseUrl}/functionality`).map((res:Response) => res.json());
+        return this.http.get<any>(`${this.baseUrl}/functionality`);
     }
 
     get(id: number) {
-       return this.http.get(`${this.baseUrl}/functionality/${id}`).map((res:Response) => res.json());
+       return this.http.get<any>(`${this.baseUrl}/functionality/${id}`);
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/functionality/${id}/active/false`, {}).map((res:Response) => res.json());
+        return this.http.put<any>(`${this.baseUrl}/functionality/${id}/active/false`, {});
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/functionality/${id}/active/true`, {}).map((res:Response) => res.json());
+        return this.http.put<any>(`${this.baseUrl}/functionality/${id}/active/true`, {});
     }
 
     getOptions() {
-        return this.http.get(`${this.baseUrl}/functionality/options`).map((res:Response) => res.json());
+        return this.http.get<any>(`${this.baseUrl}/functionality/options`);
     }
 }

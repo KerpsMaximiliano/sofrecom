@@ -66,27 +66,27 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/billing/purchaseOrders/new`]);
     }
 
-    getStatuses(){
-        this.purchaseOrderService.getStatuses().subscribe(data => {
-          this.statuses = data;
+    getStatuses() {
+        this.purchaseOrderService.getStatuses().subscribe(res => {
+          this.statuses = res;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    getCustomers(){
+    getCustomers() {
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(data => {
+        this.customerService.getOptions().subscribe(res => {
             this.messageService.closeLoading();
-            this.customers = data;
+            this.customers = res.data;
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
+            this.errorHandlerService.handleErrors(err);
         });
     }
 
-    search(){
+    search() {
         this.messageService.showLoading();
 
         var parameters = {

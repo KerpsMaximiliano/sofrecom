@@ -21,13 +21,13 @@ export class SolfacAccountControlComponent implements OnInit {
     public integratorProject: any;
 
     @Input()
-    public callbackAccountDetail: boolean = false;
+    public callbackAccountDetail = false;
 
-    @Output() 
+    @Output()
     public modelChange: EventEmitter<any> = new EventEmitter<any>();
 
-    private idKey:string = "value";
-    private textKey:string = "text";
+    private idKey = "value";
+    private textKey = "text";
 
     private customers: any[] = new Array<any>();
     public selected: any;
@@ -35,7 +35,6 @@ export class SolfacAccountControlComponent implements OnInit {
     constructor(private customerService: CustomerService,
         private errorHandlerService: ErrorHandlerService,
         private i18nService: I18nService) {
-
     }
 
     ngOnInit() {
@@ -43,8 +42,8 @@ export class SolfacAccountControlComponent implements OnInit {
     }
 
     getCustomers(){
-        this.customerService.getOptions().subscribe(data => {
-            this.customers = this.sortCustomers(data);
+        this.customerService.getOptions().subscribe(response => {
+            this.customers = this.sortCustomers(response.data);
             this.setSelect();
         },
         err => {
@@ -62,7 +61,7 @@ export class SolfacAccountControlComponent implements OnInit {
         let data = this.getData();
         var self = this;
 
-        $("#accountControl").select2({data:data});
+        $("#accountControl").select2({data: data});
         $("#accountControl").on('select2:select', function(evt){
             var data = evt.params.data;
             self.model = data.text;

@@ -35,10 +35,12 @@ import { AppSettingService } from 'app/services/common/app-setting.service';
 import { AppSetting } from 'app/services/common/app-setting';
 import { CryptographyService } from 'app/services/common/cryptography.service';
 
-import { HttpAuth } from "app/services/common/http-auth";
 import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
 import { LaddaModule } from 'angular2-ladda';
 import { HumanResourcesModule } from 'app/views/human-resources/human-resources.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RequestInterceptorService } from './services/common/request-interceptor.service';
+import { AuthService } from './services/common/auth.service';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -75,7 +77,8 @@ export function HttpLoaderFactory(http: Http) {
       }
     }),
     ReportModule,
-    AllocationManagementModule
+    AllocationManagementModule,
+    HttpClientModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
@@ -88,30 +91,23 @@ export function HttpLoaderFactory(http: Http) {
     MessageService,
     AuthGuard,
     AuthenticationService,
-    {
-       provide: HttpAuth,
-       useFactory: getHttpAuth,
-       deps: [XHRBackend, RequestOptions, Service]
-    },
     AppSetting,
     AppSettingService,
     {
       provide: APP_INITIALIZER,
       useFactory: appSettingFactory,
-      deps: [AppSettingService], 
+      deps: [AppSettingService],
       multi: true
     },
-    CryptographyService
+    CryptographyService,
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
 
 export class AppModule { }
 
-export function getHttpAuth(backend: ConnectionBackend, defaultOptions: RequestOptions, service: Service) {
-  return new HttpAuth(backend, defaultOptions, service);
-}
-
 export function appSettingFactory(service: AppSettingService) {
-  return () => { return service.load() };
+  return () => { return service.load(); };
 }
