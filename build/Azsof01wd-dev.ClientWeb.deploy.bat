@@ -7,7 +7,7 @@ SET WORKSPACE_PATH=%~1
 SET DEPLOY_PATH=%~2
 
 IF [%1] == [] SET WORKSPACE_PATH=C:\Projects\Sofcoar
-IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys\Dev.Sofco.ClientWeb
+IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys.Dev\Sofco.ClientWeb
 
 cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
