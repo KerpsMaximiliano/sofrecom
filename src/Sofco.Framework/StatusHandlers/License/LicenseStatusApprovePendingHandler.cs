@@ -25,7 +25,7 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
-            if (license.Status != LicenseStatus.Pending)
+            if (license.Status != LicenseStatus.Pending && license.Status != LicenseStatus.Draft)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
             }

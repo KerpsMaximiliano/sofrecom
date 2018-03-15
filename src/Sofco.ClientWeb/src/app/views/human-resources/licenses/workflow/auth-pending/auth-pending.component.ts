@@ -48,6 +48,8 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
   }
 
   canAuthorize(){
+    if(this.menuService.hasFunctionality('ALLOC', 'AUTH')) return false;
+
     if(this.licenseId > 0 && this.menuService.userIsRrhh && this.status == LicenseStatus[LicenseStatus.AuthPending]){
         return true;
     }

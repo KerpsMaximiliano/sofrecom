@@ -50,6 +50,8 @@ export class LicenseRejectComponent implements OnDestroy  {
   }
 
   canReject(){
+    if(this.menuService.hasFunctionality('ALLOC', 'REJEC')) return false;
+
     if(this.licenseId > 0 && this.menuService.userIsRrhh && (this.status == LicenseStatus[LicenseStatus.AuthPending] || 
                               this.status == LicenseStatus[LicenseStatus.Pending] || 
                               this.status == LicenseStatus[LicenseStatus.ApprovePending])){

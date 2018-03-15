@@ -49,6 +49,8 @@ export class LicensePendingComponent implements OnDestroy  {
   }
 
   canApproveWithPendingDocumentation(){
+    if(this.menuService.hasFunctionality('ALLOC', 'APROB')) return false;
+
     if(this.licenseId > 0 && this.status == LicenseStatus[LicenseStatus.Pending]){
         return true;
     }
@@ -57,6 +59,8 @@ export class LicensePendingComponent implements OnDestroy  {
   }
 
   canApprove(){
+    if(this.menuService.hasFunctionality('ALLOC', 'APROB')) return false;
+    
     if(this.licenseId > 0 && this.menuService.userIsRrhh && (this.status == LicenseStatus[LicenseStatus.Pending] || this.status == LicenseStatus[LicenseStatus.ApprovePending])){
         return true;
     }
