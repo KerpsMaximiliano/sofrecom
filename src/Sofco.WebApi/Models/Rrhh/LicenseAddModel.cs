@@ -32,6 +32,10 @@ namespace Sofco.WebApi.Models.Rrhh
 
         public string ExamDescription { get; set; }
 
+        public int UserId { get; set; }
+
+        public bool IsRrhh { get; set; }
+
         public License CreateDomain()
         {
             var domain = new License();
@@ -50,7 +54,7 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;
             domain.CreationDate = DateTime.UtcNow;
-            domain.Status = LicenseStatus.AuthPending;
+            domain.Status = LicenseStatus.Draft;
 
             return domain;
         }

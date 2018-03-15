@@ -76,8 +76,6 @@ namespace Sofco.Service.Implementations.Rrhh
                 response.AddError(Resources.Common.ErrorSave);
             }
 
-            SendMail(domain, response, licenseStatusFactory.GetInstance(LicenseStatus.AuthPending), new LicenseStatusChangeModel { Status = LicenseStatus.AuthPending });
-
             return response;
         }
 

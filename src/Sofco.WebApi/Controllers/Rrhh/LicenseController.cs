@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,31 @@ namespace Sofco.WebApi.Controllers.Rrhh
         public IActionResult Post([FromBody] LicenseAddModel model)
         {
             var response = licenseService.Add(model.CreateDomain());
+
+            if (model.IsRrhh)
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.ApprovePending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
+            else
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.AuthPending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
 
             return this.CreateResponse(response);
         }
