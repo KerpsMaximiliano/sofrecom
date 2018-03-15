@@ -150,7 +150,7 @@ namespace Sofco.WebApi.Controllers.Admin
             if (response.HasErrors())
                 return BadRequest(response);
 
-            var azureResponse = loginService.GetUserFromAzureADByEmail(mail);
+            var azureResponse = loginService.GetUserFromAzureAdByEmail(mail);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);
@@ -161,7 +161,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("ad/surname/{surname}")]
         public IActionResult AdGetBySurname(string surname)
         {
-            var azureResponse = loginService.GetUsersFromAzureADBySurname(surname);
+            var azureResponse = loginService.GetUsersFromAzureAdBySurname(surname);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);
@@ -177,7 +177,7 @@ namespace Sofco.WebApi.Controllers.Admin
             if (errors.HasErrors())
                 return BadRequest(errors);
 
-            var azureResponse = loginService.GetUserFromAzureADByEmail(model.Email);
+            var azureResponse = loginService.GetUserFromAzureAdByEmail(model.Email);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);

@@ -26,14 +26,12 @@ export class AuthService {
        });
 
         return response.map(res => {
-            const dataJson = JSON.parse(res['_body']).data;
+            const data = JSON.parse(res['_body']).data;
 
-            const data = JSON.parse(dataJson);
+            Cookie.set('access_token', data.accessToken);
+            Cookie.set('refresh_token', data.refreshToken);
 
-            Cookie.set('access_token', data.access_token);
-            Cookie.set('refresh_token', data.refresh_token);
-
-            return data.access_token;
+            return data.accessToken;
         });
     }
 }

@@ -5,17 +5,17 @@ import { Configuration } from "app/services/common/configuration";
 @Injectable()
 export class  Service {
 
-    UrlApi : string;
+    UrlApi: string;
 
     constructor(private config: Configuration){
         this.UrlApi = config.UrlApi;
     }
 
-    getHeaders(){
+    getHeaders() {
         return this.config.getHeaders();
     }
 
-    getLoginHeaders(){
+    getLoginHeaders() {
         return this.config.getLoginHeaders();
     }
 }
