@@ -15,5 +15,11 @@
     "notFound": "License not found",
     "fileAdded": "File has been loaded successfully",
     "licenseTypeUpdate": "Licenses has been updated",
-    "examTypeRequired": "The exam type is required"
+    "examTypeRequired": "The exam type is required",
+    "rejectSuccess": "The license has been successfully rejected",
+    "pendingSuccess": "The license was left in Pending Approval correctly",
+    "cannotChangeStatus": "The state can not be changed",
+    "authPendingSuccess": "The license was left in Authorization Pending correctly",
+    "approveSuccess": "The license has been successfully approved",
+    "approvePendingSuccess": "The license was left in Approved / Documentation Pending correctly"
 }

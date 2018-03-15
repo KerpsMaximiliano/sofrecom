@@ -42,6 +42,14 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return Ok(model);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = licenseService.GetById(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] LicenseAddModel model)
         {
@@ -69,7 +77,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [Route("status/{statusId}")]
         public IActionResult GetByStatus(LicenseStatus statusId)
         {
-            return Ok(licenseService.GetById(statusId));
+            return Ok(licenseService.GetByStatus(statusId));
         }
 
         [HttpGet]
@@ -122,7 +130,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
         [HttpPost]
         [Route("{id}/status")]
-        public IActionResult ChangeStatus(int id, LicenseStatusChangeModel model)
+        public IActionResult ChangeStatus(int id, [FromBody]LicenseStatusChangeModel model)
         {
             var response = licenseService.ChangeStatus(id, model);
 

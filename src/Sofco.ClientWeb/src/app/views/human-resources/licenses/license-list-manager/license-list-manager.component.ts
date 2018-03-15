@@ -62,4 +62,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         this.datatableService.destroy(params.selector);
         this.datatableService.init2(params);
     }
+
+    goToDetail(item){
+        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+    }
 }

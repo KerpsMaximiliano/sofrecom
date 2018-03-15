@@ -18,9 +18,14 @@ import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahs
 import { LicenseListWidget } from 'app/views/human-resources/licenses/license-list-widget/license-list-widget.component';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
+import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detail/license-detail.component';
+import { LicenseAuthPendingComponent } from 'app/views/human-resources/licenses/workflow/auth-pending/auth-pending.component';
+import { LicensePendingComponent } from 'app/views/human-resources/licenses/workflow/pending/pending.component';
+import { LicenseRejectComponent } from 'app/views/human-resources/licenses/workflow/reject/reject.component';
 
 @NgModule({
-  declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager],
+  declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
+                LicensePendingComponent, LicenseRejectComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule],

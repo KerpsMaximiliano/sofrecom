@@ -555,7 +555,9 @@
             "load": "Load License",
             "report": "Generate Report",
             "holidaysPending": "Holidays Pending",
-            "hasCertificate": "Certificate"
+            "hasCertificate": "Certificate",
+            "detail": "License's Detail",
+            "detailTitle": "Detail"
         }
     },
     "ACTIONS":{
@@ -605,7 +607,9 @@
         "searchAll": "Search All",
         "changeDates": "Change Dates",
         "notifyUnsubscribe": "Notify unsubscribe",
-        "goHere": "Enter Here"
+        "goHere": "Enter Here",
+        "pendingDocumentation": "Pending Documentation",
+        "authorize": "Authorize"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
@@ -638,7 +642,8 @@
     "Valid": "Valid",
     "Consumed": "Consumed",
     "Draft": "Draft",
-    "Pending": "Pending",
+    "Pending": "Approve Pending",
+    "ApprovePending": "Approve / Missing Documentation",
     "AuthPending": "Authorization Pending", 
     "report":{
         "title": "Report",

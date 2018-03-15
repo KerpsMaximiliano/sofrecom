@@ -19,5 +19,6 @@ namespace Sofco.Core.DAL.Rrhh
         ICollection<License> GetByEmployeeAndDates(int employeeId, DateTime startDate, DateTime endDate);
         void UpdateStatus(License license);
         void AddHistory(LicenseHistory history);
+        License GetById(int id);
     }
 }

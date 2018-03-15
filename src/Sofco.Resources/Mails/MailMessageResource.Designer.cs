@@ -95,5 +95,69 @@ namespace Sofco.Resources.Mails {
                 return ResourceManager.GetString("EmployeeNews", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to RRHH, Autorizador, Recuros: &lt;/br&gt;
+        ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///.
+        /// </summary>
+        public static string LicenseApproveMessage {
+            get {
+                return ResourceManager.GetString("LicenseApproveMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to RRHH: &lt;/br&gt;
+        ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Recurso: &lt;/br&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH..
+        /// </summary>
+        public static string LicenseApprovePendingMessage {
+            get {
+                return ResourceManager.GetString("LicenseApprovePendingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to RRHH: &lt;/br&gt;
+        ///Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;/br&gt;&lt;/br&gt;
+        ///Autorizador: &lt;/br&gt;
+        ///El recurso: {1}, ha iniciado un proceso de autorización de licencia. Para autorizarla ingrese al siguiente  &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        /// </summary>
+        public static string LicenseAuthPendingMessage {
+            get {
+                return ResourceManager.GetString("LicenseAuthPendingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to RRHH: &lt;/br&gt;
+        ///Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Recurso: &lt;/br&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        /// </summary>
+        public static string LicensePendingMessage {
+            get {
+                return ResourceManager.GetString("LicensePendingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to RRHH: &lt;/br&gt;
+        ///Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///Motivo: {1}
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Recurso: &lt;/br&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt; Rechazada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///Motivo: {1}.
+        /// </summary>
+        public static string LicenseRejectMessage {
+            get {
+                return ResourceManager.GetString("LicenseRejectMessage", resourceCulture);
+            }
+        }
     }
 }

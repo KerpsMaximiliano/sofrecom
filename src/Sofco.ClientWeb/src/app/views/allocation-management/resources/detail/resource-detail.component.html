@@ -119,8 +119,8 @@
                                         <th class="column-sm text-center"> {{ 'rrhh.license.status' | translate }} </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of licenses" class="pointer">
+                                <tbody> 
+                                    <tr *ngFor="let item of licenses" class="pointer" (click)="goToDetail(item)">
                                         <td class="column-lg"> {{ item.managerName }} </td>
                                         <td class="column-lg"> {{ item.licenseTypeName }} </td>
                                         <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>

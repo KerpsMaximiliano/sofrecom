@@ -58,6 +58,7 @@ import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component';
 import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
 import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
+import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detail/license-detail.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -192,7 +193,8 @@ export const ROUTES:Routes = [
         children: [
           { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
           { path:"rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
-          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } } 
+          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
+          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] } 
         ]
       }]
   },

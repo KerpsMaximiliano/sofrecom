@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
+import { MenuService } from '../admin/menu.service';
 
 @Injectable()
 export class LicenseService {
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private service: Service) {
+  constructor(private http: HttpClient, private service: Service, private menuService: MenuService) {
     this.baseUrl = this.service.UrlApi;
+  }
+
+  getById(id) {
+    return this.http.get<any>(`${this.baseUrl}/licenses/${id}`);
   }
 
   getSectors() {
@@ -24,7 +29,7 @@ export class LicenseService {
   }
 
   getByEmployee(employeeId) {
-    return this.http.get(`${this.baseUrl}/licenses/employee/${employeeId}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/licenses/employee/${employeeId}`);
   }
 
   getByManagerAndStatus(managerId, statusId) {
@@ -39,6 +44,12 @@ export class LicenseService {
     return this.http.post<any>(`${this.baseUrl}/licenses`, model);
   }
 
+  changeStatus(id, json){
+    json.userId = this.menuService.user.id;
+    json.isRrhh = this.menuService.userIsRrhh;
+    return this.http.post<any>(`${this.baseUrl}/licenses/${id}/status`, json);
+  }
+
   search(params){
     return this.http.post<any>(`${this.baseUrl}/licenses/search`, params);
   }
@@ -48,6 +59,6 @@ export class LicenseService {
   }
 
   deleteFile(id){
-    return this.http.delete(`${this.baseUrl}/licenses/file/${id}`).map((res:Response) => res.json());
+    return this.http.delete<any>(`${this.baseUrl}/licenses/file/${id}`);
   }
 }

@@ -93,5 +93,16 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             context.LicenseHistories.Add(history);
         }
+
+        public License GetById(int id)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Include(x => x.Sector)
+                .Include(x => x.LicenseFiles).ThenInclude(x => x.File)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

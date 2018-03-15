@@ -14,12 +14,13 @@ namespace Sofco.Core.Services.Rrhh
     {
         Response<string> Add(License createDomain);
         Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file);
-        IList<LicenseListItem> GetById(LicenseStatus statusId);
+        IList<LicenseListItem> GetByStatus(LicenseStatus statusId);
         IList<LicenseListItem> Search(LicenseSearchParams parameters);
         IList<LicenseListItem> GetByManager(int managerId);
         IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
         IList<LicenseListItem> GetByEmployee(int employeeId);
         Response DeleteFile(int id);
         Response ChangeStatus(int id, LicenseStatusChangeModel model);
+        Response<LicenseDetailModel> GetById(int id);
     }
 }

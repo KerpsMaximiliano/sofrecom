@@ -563,7 +563,9 @@
             "load": "Cargar Licencia",
             "report": "Generar Reporte",
             "holidaysPending": "Vacaciones Pendientes",
-            "hasCertificate": "Certificado"
+            "hasCertificate": "Certificado",
+            "detail": "Detalle de la Licencia",
+            "detailTitle": "Detalle"
         }
     },
     "ACTIONS":{
@@ -613,7 +615,9 @@
         "searchAll": "Ver Todo",
         "changeDates": "Cambiar Fechas",
         "notifyUnsubscribe": "Notifcar baja",
-        "goHere": "Ingrese Aqui"
+        "goHere": "Ingrese Aqui",
+        "pendingDocumentation": "Documentación Pendiente",
+        "authorize": "Autorizar"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -646,8 +650,9 @@
     "Valid": "Vigente",
     "Consumed": "Consumida",
     "Draft": "Borrador",
-    "Pending": "Pendiente",
-    "AuthPending": "Pendiente Autorización", 
+    "Pending": "Pendiente Aprobación",
+    "ApprovePending": "Aprobada / Documentación pendiente",
+    "AuthPending": "Pendiente Autorización",
     "report":{
         "title": "Reporte",
         "solfacs": {

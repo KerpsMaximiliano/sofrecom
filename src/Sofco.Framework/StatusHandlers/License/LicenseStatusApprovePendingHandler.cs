@@ -12,18 +12,20 @@ using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
-    public class LicenseStatusAuthPendingHandler : ILicenseStatusHandler
+    public class LicenseStatusApprovePendingHandler : ILicenseStatusHandler
     {
-        private EmailConfig emailConfig;
+        private readonly EmailConfig emailConfig;
 
-        public LicenseStatusAuthPendingHandler(EmailConfig emailConfig)
+        public LicenseStatusApprovePendingHandler(EmailConfig emailConfig)
         {
             this.emailConfig = emailConfig;
         }
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Model.Models.Rrhh.License license)
         {
-            if (license.Status != LicenseStatus.Draft)
+            if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+
+            if (license.Status != LicenseStatus.Pending)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
             }
@@ -43,7 +45,7 @@ namespace Sofco.Framework.StatusHandlers.License
         public IMailData GetEmailData(Model.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
-            var body = string.Format(MailMessageResource.LicenseAuthPendingMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail", license.Employee.Name);
+            var body = string.Format(MailMessageResource.LicenseApprovePendingMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail");
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 

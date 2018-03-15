@@ -48,7 +48,10 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
         this.getEmployees(data);
         this.getLicenceTypes(data);
-        this.searchLastQuery(data);
+
+        if(data){
+            this.searchLastQuery(data);
+        }
     }
 
     ngOnDestroy(): void {
@@ -135,5 +138,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastLicenseQuery');
         $( "#employeeId" ).val(0).trigger('change');;
         $( "#licensesTypeId" ).val(0).trigger('change');;
+    }
+
+    goToDetail(item){
+        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
     }
 }

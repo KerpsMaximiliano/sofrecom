@@ -112,5 +112,14 @@ namespace Sofco.Resources.Mails {
                 return ResourceManager.GetString("HitosWithoutSolfac", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Aprobación de licencia - {0}.
+        /// </summary>
+        public static string LicenseWorkflowTitle {
+            get {
+                return ResourceManager.GetString("LicenseWorkflowTitle", resourceCulture);
+            }
+        }
     }
 }

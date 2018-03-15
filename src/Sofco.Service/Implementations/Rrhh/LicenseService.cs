@@ -9,6 +9,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
@@ -29,14 +30,20 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly FileConfig fileConfig;
         private readonly ISessionManager sessionManager;
         private readonly ILicenseStatusFactory licenseStatusFactory;
+        private readonly IMailBuilder mailBuilder;
+        private readonly IMailSender mailSender;
 
-        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory)
+        public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
+                              ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
+                              IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.fileConfig = fileOptions.Value;
             this.sessionManager = sessionManager;
             this.licenseStatusFactory = licenseStatusFactory;
+            this.mailBuilder = mailBuilder;
+            this.mailSender = mailSender;
         }
 
         public Response<string> Add(License domain)
@@ -115,7 +122,7 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public IList<LicenseListItem> GetById(LicenseStatus statusId)
+        public IList<LicenseListItem> GetByStatus(LicenseStatus statusId)
         {
             var licenses = unitOfWork.LicenseRepository.GetByStatus(statusId);
 
@@ -216,6 +223,36 @@ namespace Sofco.Service.Implementations.Rrhh
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
+
+            SendMail(license, response, licenseStatusHandler, model);
+
+            return response;
+        }
+
+        private void SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters)
+        {
+            try
+            {
+                var data = licenseStatusHandler.GetEmailData(license, unitOfWork, parameters);
+                var email = mailBuilder.GetEmail(data);
+                mailSender.Send(email);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.ErrorSendMail);
+            }
+        }
+
+        public Response<LicenseDetailModel> GetById(int id)
+        {
+            var response = new Response<LicenseDetailModel>();
+
+            var license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            response.Data = new LicenseDetailModel(license);
 
             return response;
         }

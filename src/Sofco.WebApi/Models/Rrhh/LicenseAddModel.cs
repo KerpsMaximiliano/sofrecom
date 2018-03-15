@@ -50,7 +50,7 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;
             domain.CreationDate = DateTime.UtcNow;
-            domain.Status = LicenseStatus.Draft;
+            domain.Status = LicenseStatus.AuthPending;
 
             return domain;
         }

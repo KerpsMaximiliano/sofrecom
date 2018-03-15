@@ -7,6 +7,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'license-list-widget',
@@ -27,6 +28,7 @@ export class LicenseListWidget implements OnInit, OnDestroy {
 
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
+        private router: Router,
         private menuService: MenuService,
         private datatableService: DataTableService,
         private messageService: MessageService,
@@ -61,5 +63,9 @@ export class LicenseListWidget implements OnInit, OnDestroy {
         };
 
         this.datatableService.init2(params);
+    }
+
+    goToDetail(item){
+        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
     }
 }

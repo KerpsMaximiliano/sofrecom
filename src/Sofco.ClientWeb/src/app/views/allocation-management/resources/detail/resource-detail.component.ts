@@ -103,4 +103,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         },
         error => {});
     }
+
+    goToDetail(item){
+        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+    }
 } 

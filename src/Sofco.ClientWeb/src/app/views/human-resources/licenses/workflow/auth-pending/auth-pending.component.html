@@ -1,0 +1,7 @@
+<button class="btn btn-success btn-outline dim" (click)="showModal()" *ngIf="canAuthorize()"> 
+    {{ 'ACTIONS.authorize' | translate }} <i class="fa fa-check"></i>
+</button>
+
+<ng2-modal [config]="authPendingModalConfig" #authPendingModal (accept)="authorize()" [isLoading]="isLoading">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal> 

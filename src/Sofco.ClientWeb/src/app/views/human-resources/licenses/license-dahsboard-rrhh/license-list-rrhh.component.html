@@ -60,7 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of data" class="pointer">
+                        <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item)">
                             <td class="column-lg"> {{ item.employeeName }} </td>
                             <td class="column-lg"> {{ item.managerName }} </td>
                             <td class="column-lg"> {{ item.licenseTypeName }} </td>
