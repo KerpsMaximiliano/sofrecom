@@ -70,6 +70,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("UPDATE app.Employees SET ExamDaysTaken = 0");
         }
 
+        public void UpdateHolidaysPending(Employee employeeToModif)
+        {
+            context.Entry(employeeToModif).Property("HolidaysPending").IsModified = true;
+        }
+
+        public void UpdateExamDaysTaken(Employee employeeToModif)
+        {
+            context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
+        }
+
         public void Save(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());
