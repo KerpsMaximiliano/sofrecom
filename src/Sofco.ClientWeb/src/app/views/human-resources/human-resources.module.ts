@@ -22,10 +22,11 @@ import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detai
 import { LicenseAuthPendingComponent } from 'app/views/human-resources/licenses/workflow/auth-pending/auth-pending.component';
 import { LicensePendingComponent } from 'app/views/human-resources/licenses/workflow/pending/pending.component';
 import { LicenseRejectComponent } from 'app/views/human-resources/licenses/workflow/reject/reject.component';
+import { LicenseHistoryComponent } from 'app/views/human-resources/licenses/history/license-history.component';
 
 @NgModule({
   declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
-                LicensePendingComponent, LicenseRejectComponent],
+                LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule],

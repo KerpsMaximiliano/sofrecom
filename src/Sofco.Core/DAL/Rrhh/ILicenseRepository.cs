@@ -20,5 +20,6 @@ namespace Sofco.Core.DAL.Rrhh
         void UpdateStatus(License license);
         void AddHistory(LicenseHistory history);
         License GetById(int id);
+        ICollection<LicenseHistory> GetHistories(int id);
     }
 }

@@ -16,6 +16,10 @@ export class LicenseService {
     return this.http.get<any>(`${this.baseUrl}/licenses/${id}`);
   }
 
+  getHistories(id){
+    return this.http.get<any>(`${this.baseUrl}/licenses/${id}/histories`);
+  }
+
   getSectors() {
     return this.http.get<any>(`${this.baseUrl}/utils/sectors`);
   }

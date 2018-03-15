@@ -257,6 +257,13 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
+        public ICollection<LicenseHistoryModel> GetHistories(int id)
+        {
+            var histories = unitOfWork.LicenseRepository.GetHistories(id);
+
+            return histories.Select(x => new LicenseHistoryModel(x)).ToList();
+        }
+
         private LicenseHistory GetHistory(License license, LicenseStatusChangeModel model)
         {
             var history = new LicenseHistory
