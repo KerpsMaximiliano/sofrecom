@@ -46,7 +46,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Employee)
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
-                .Where(x => x.Status == LicenseStatus.Approved);
+                .Where(x => x.Status == LicenseStatus.Approved || x.Status == LicenseStatus.ApprovePending);
 
             if (parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId);

@@ -23,16 +23,9 @@ namespace Sofco.Framework.StatusHandlers.License
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Model.Models.Rrhh.License license)
         {
-            if (!parameters.IsRrhh)
+            if (license.Status != LicenseStatus.AuthPending)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
-            }
-            else
-            {
-                if (license.Status != LicenseStatus.AuthPending)
-                {
-                    response.AddError(Resources.Rrhh.License.CannotChangeStatus);
-                }
             }
         }
 

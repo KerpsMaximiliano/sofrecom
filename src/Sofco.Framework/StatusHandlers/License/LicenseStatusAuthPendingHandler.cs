@@ -14,7 +14,7 @@ namespace Sofco.Framework.StatusHandlers.License
 {
     public class LicenseStatusAuthPendingHandler : ILicenseStatusHandler
     {
-        private EmailConfig emailConfig;
+        private readonly EmailConfig emailConfig;
 
         public LicenseStatusAuthPendingHandler(EmailConfig emailConfig)
         {
