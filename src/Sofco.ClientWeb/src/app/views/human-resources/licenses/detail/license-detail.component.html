@@ -55,12 +55,12 @@
                         <dt>{{'rrhh.license.reason' | translate }}: </dt>
                         <dd><i class="fa fa-file"></i> {{ model.typeName }}</dd>
 
-                        <div [hidden]="model.typeId != '13'">
+                        <div [hidden]="model.typeId != 13">
                             <dt>{{'rrhh.license.comments' | translate }}: </dt>
                             <dd>{{ model.comments }}</dd>
                         </div>
 
-                        <div [hidden]="model.typeId != '7'">
+                        <div [hidden]="model.typeId != 7">
                             <dt>{{'rrhh.license.examDescription' | translate }}: </dt>
                             <dd>{{ model.examDescription }}</dd>
 
