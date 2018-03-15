@@ -76,6 +76,8 @@ namespace Sofco.Service.Implementations.Rrhh
                 response.AddError(Resources.Common.ErrorSave);
             }
 
+            SendMail(domain, response, licenseStatusFactory.GetInstance(LicenseStatus.AuthPending), new LicenseStatusChangeModel { Status = LicenseStatus.AuthPending });
+
             return response;
         }
 
@@ -197,7 +199,7 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             var response = new Response();
 
-            var license = LicenseValidationHandler.Find(id, response, unitOfWork);
+            var license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
             var licenseStatusHandler = licenseStatusFactory.GetInstance(model.Status);
 
             try
