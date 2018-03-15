@@ -20,8 +20,6 @@ cmd /c ng build --prod --env=azsof01wd-dev -op "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
-cmd /c XCOPY /S "%WORKSPACE_PATH%\src\%PROJECT_NAME%\src\assets" "%PUBLISH_PATH%\assets\"
-
 cmd /c DEL /F /Q "%DEPLOY_PATH%"
 cmd /c FOR /D %%d IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%d" /s /q
 
