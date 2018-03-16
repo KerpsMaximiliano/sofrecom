@@ -36,21 +36,6 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             var licenseToModif = new Model.Models.Rrhh.License { Id = license.Id, Status = model.Status };
             unitOfWork.LicenseRepository.UpdateStatus(licenseToModif);
-
-            if (license.TypeId == 1)
-            {
-                var employeeToModif = new Employee { Id = license.EmployeeId, HolidaysPending = license.Employee.HolidaysPending + license.DaysQuantity };
-                unitOfWork.EmployeeRepository.UpdateHolidaysPending(employeeToModif);
-            }
-
-            if (license.TypeId == 7)
-            {
-                if (license.Employee.ExamDaysTaken - license.DaysQuantity >= 0)
-                {
-                    var employeeToModif = new Employee { Id = license.EmployeeId, ExamDaysTaken = license.Employee.ExamDaysTaken - license.DaysQuantity };
-                    unitOfWork.EmployeeRepository.UpdateExamDaysTaken(employeeToModif);
-                } 
-            }
         }
 
         public string GetSuccessMessage()
