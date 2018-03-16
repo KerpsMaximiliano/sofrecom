@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -28,16 +29,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly EmailConfig emailConfig;
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
+        private readonly ICrmService crmService;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
             this.logger = logger;
             crmConfig = crmOptions.Value;
-            this.emailConfig = emailOptions.Value;
+            emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
+            this.crmService = crmService;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -193,6 +196,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
+            var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
+            if (result.HasErrors)
+            {
+                response.AddError(Resources.Common.CrmGeneralError);
+                return response;
+            }
+
             try
             {
                 AnalyticStatusClose.Save(analytic, unitOfWork, response);
@@ -201,6 +211,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
+
+                result = crmService.ActivateService(new Guid(analytic.ServiceId));
+                if (result.HasErrors)
+                {
+                    response.AddError(Resources.Common.CrmGeneralError);
+                }
+
                 return response;
             }
 
@@ -211,10 +228,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             catch (Exception ex)
             {
                 response.AddWarning(Resources.Common.ErrorSendMail);
-                this.logger.LogError(ex);
+                logger.LogError(ex);
             }
-
-            //todo: inhabilitar el servicio en crm
 
             return response;
         }
