@@ -22,5 +22,6 @@ namespace Sofco.Core.Services.Rrhh
         Response DeleteFile(int id);
         Response ChangeStatus(int id, LicenseStatusChangeModel model);
         Response<LicenseDetailModel> GetById(int id);
+        ICollection<LicenseHistoryModel> GetHistories(int id);
     }
 }

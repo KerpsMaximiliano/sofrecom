@@ -17,9 +17,9 @@
             <button class="btn btn-success btn-outline dim" (click)="back()"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <status-auth-pending [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)"></status-auth-pending>
-                <status-pending [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)"></status-pending>
-                <status-reject [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)"></status-reject>
+                <status-auth-pending [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-auth-pending>
+                <status-pending [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-pending>
+                <status-reject [licenseId]="model.id" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-reject>
             </div>
         </div>
     </div>
@@ -116,6 +116,8 @@
             </div>
         </div>
     </div>
+
+    <license-history #history></license-history>
 </div>      
 
 <ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">

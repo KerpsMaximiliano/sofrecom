@@ -56,7 +56,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         {
             var response = licenseService.Add(model.CreateDomain());
 
-            if (model.IsRrhh)
+            if (model.IsRrhh && model.UserId != model.EmployeeId)
             {
                 var statusParams = new LicenseStatusChangeModel
                 {
@@ -161,6 +161,14 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var response = licenseService.ChangeStatus(id, model);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = licenseService.GetHistories(id);
+
+            return Ok(histories);
         }
     }
 }

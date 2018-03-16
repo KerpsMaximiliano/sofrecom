@@ -20,6 +20,7 @@ import { Option } from "../../../../models/option";
 export class LicenseDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('history') history: any;
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -59,6 +60,8 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
                 this.model = response.data;
 
                 this.configUploader();
+
+                this.history.getHistories(params['id']);
             },
             error => this.errorHandlerService.handleErrors(error),
             () => this.messageService.closeLoading());

@@ -104,5 +104,10 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.LicenseFiles).ThenInclude(x => x.File)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public ICollection<LicenseHistory> GetHistories(int id)
+        {
+            return context.LicenseHistories.Where(x => x.LicenseId == id).Include(x => x.User).ToList().AsReadOnly();
+        }
     }
 }

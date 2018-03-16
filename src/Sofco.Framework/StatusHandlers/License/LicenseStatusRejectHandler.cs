@@ -7,6 +7,7 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.Resources.Mails;
 
@@ -35,6 +36,18 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             var licenseToModif = new Model.Models.Rrhh.License { Id = license.Id, Status = model.Status };
             unitOfWork.LicenseRepository.UpdateStatus(licenseToModif);
+
+            if (license.TypeId == 1)
+            {
+                var employeeToModif = new Employee { Id = license.EmployeeId, HolidaysPending = license.Employee.HolidaysPending + license.DaysQuantity };
+                unitOfWork.EmployeeRepository.UpdateHolidaysPending(employeeToModif);
+            }
+
+            if (license.TypeId == 7)
+            {
+                var employeeToModif = new Employee { Id = license.EmployeeId, ExamDaysTaken = license.Employee.ExamDaysTaken - license.DaysQuantity };
+                unitOfWork.EmployeeRepository.UpdateExamDaysTaken(employeeToModif);
+            }
         }
 
         public string GetSuccessMessage()
