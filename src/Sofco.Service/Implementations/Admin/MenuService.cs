@@ -58,6 +58,9 @@ namespace Sofco.Service.Implementations.Admin
             foreach (var item in modules)
             {
                 if (!item.Functionality.Active || !item.Functionality.Module.Active) continue;
+
+                if(model.Menus.Any(x => x.Module == item.Functionality.Module.Code && x.Functionality == item.Functionality.Code)) continue;
+
                 var menu = new MenuModel
                 {
                     Description = item.Functionality.Description,

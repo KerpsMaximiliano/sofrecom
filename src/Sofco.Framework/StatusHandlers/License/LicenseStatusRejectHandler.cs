@@ -45,8 +45,11 @@ namespace Sofco.Framework.StatusHandlers.License
 
             if (license.TypeId == 7)
             {
-                var employeeToModif = new Employee { Id = license.EmployeeId, ExamDaysTaken = license.Employee.ExamDaysTaken - license.DaysQuantity };
-                unitOfWork.EmployeeRepository.UpdateExamDaysTaken(employeeToModif);
+                if (license.Employee.ExamDaysTaken - license.DaysQuantity >= 0)
+                {
+                    var employeeToModif = new Employee { Id = license.EmployeeId, ExamDaysTaken = license.Employee.ExamDaysTaken - license.DaysQuantity };
+                    unitOfWork.EmployeeRepository.UpdateExamDaysTaken(employeeToModif);
+                } 
             }
         }
 
