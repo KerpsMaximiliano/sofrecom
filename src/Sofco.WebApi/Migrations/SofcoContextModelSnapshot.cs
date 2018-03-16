@@ -1408,8 +1408,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany("Invoices")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceHistory", b =>
@@ -1421,8 +1420,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
@@ -1434,8 +1432,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "CommercialManager")
                         .WithMany("PurchaseOrder2")
-                        .HasForeignKey("CommercialManagerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CommercialManagerId");
 
                     b.HasOne("Sofco.Model.Models.Common.File", "File")
                         .WithMany()
@@ -1443,8 +1440,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
                         .WithMany("PurchaseOrder1")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ManagerId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
@@ -1492,8 +1488,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Rrhh.License", b =>

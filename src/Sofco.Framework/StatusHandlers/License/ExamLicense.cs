@@ -32,12 +32,12 @@ namespace Sofco.Framework.StatusHandlers.License
             {
                 if (response.HasErrors()) return;
 
-                user.ExamDaysTaken += days;
-                unitOfWork.EmployeeRepository.Update(user);
+                //user.ExamDaysTaken += days;
+                //unitOfWork.EmployeeRepository.Update(user);
 
                 domain.DaysQuantity = days;
 
-                if (user.ExamDaysTaken >= licenseType.Days)
+                if (user.ExamDaysTaken + days >= licenseType.Days)
                 {
                     response.AddWarning(Resources.Rrhh.License.ExamDaysTakenExceeded);
                 }
