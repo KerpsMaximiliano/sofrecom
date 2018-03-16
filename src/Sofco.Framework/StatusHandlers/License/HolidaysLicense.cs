@@ -18,8 +18,8 @@ namespace Sofco.Framework.StatusHandlers.License
             }
             else
             {
-                user.HolidaysPending -= days;
-                unitOfWork.EmployeeRepository.Update(user);
+                //user.HolidaysPending -= days;
+                //unitOfWork.EmployeeRepository.Update(user);
                 domain.DaysQuantity = days;
             }
         }

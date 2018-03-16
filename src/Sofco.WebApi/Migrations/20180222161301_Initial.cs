@@ -923,7 +923,7 @@ namespace Sofco.WebApi.Migrations
                         principalSchema: "app",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -995,8 +995,7 @@ namespace Sofco.WebApi.Migrations
                         column: x => x.CommercialManagerId,
                         principalSchema: "app",
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PurchaseOrderFiles_Files_FileId",
                         column: x => x.FileId,
@@ -1009,8 +1008,7 @@ namespace Sofco.WebApi.Migrations
                         column: x => x.ManagerId,
                         principalSchema: "app",
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1069,8 +1067,7 @@ namespace Sofco.WebApi.Migrations
                         column: x => x.UserId,
                         principalSchema: "app",
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
