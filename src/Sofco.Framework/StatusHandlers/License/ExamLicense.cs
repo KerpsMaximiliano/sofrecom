@@ -37,7 +37,7 @@ namespace Sofco.Framework.StatusHandlers.License
 
                 domain.DaysQuantity = days;
 
-                if (user.ExamDaysTaken + days >= licenseType.Days)
+                if (user.ExamDaysTaken + days > licenseType.Days)
                 {
                     response.AddWarning(Resources.Rrhh.License.ExamDaysTakenExceeded);
                 }

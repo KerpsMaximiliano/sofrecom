@@ -34,6 +34,8 @@ namespace Sofco.WebApi.Models.Rrhh
 
         public int UserId { get; set; }
 
+        public int EmployeeLoggedId { get; set; }
+
         public bool IsRrhh { get; set; }
 
         public License CreateDomain()

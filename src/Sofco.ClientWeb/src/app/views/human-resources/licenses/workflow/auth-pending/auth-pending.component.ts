@@ -26,6 +26,7 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
   );
 
   @Input() licenseId: number;
+  @Input() employeeId: number;
   @Input() status: string;
 
   @Output() history: EventEmitter<any> = new EventEmitter();
@@ -48,7 +49,7 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
   }
 
   canAuthorize(){
-    if(this.menuService.hasFunctionality('ALLOC', 'AUTH')) return false;
+    if(!this.menuService.hasFunctionality('CTRLI', 'AUTH') || this.menuService.user.employeeId == this.employeeId) return false;
 
     if(this.licenseId > 0 && this.status == LicenseStatus[LicenseStatus.AuthPending]){
         return true;

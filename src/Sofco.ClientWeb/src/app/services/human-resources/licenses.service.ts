@@ -47,6 +47,7 @@ export class LicenseService {
   add(model){
     model.userId = this.menuService.user.id;
     model.isRrhh = this.menuService.userIsRrhh;
+    model.employeeLoggedId = this.menuService.user.employeeId;
     return this.http.post<any>(`${this.baseUrl}/licenses`, model);
   }
 
