@@ -52,6 +52,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         if(data){
             this.searchLastQuery(data);
         }
+        else{
+            this.initGrid();
+        }
     }
 
     ngOnDestroy(): void {
