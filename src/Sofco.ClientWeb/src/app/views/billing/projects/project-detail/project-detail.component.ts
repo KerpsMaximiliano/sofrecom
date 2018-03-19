@@ -11,6 +11,7 @@ import { DocumentTypes } from 'app/models/enums/documentTypes';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';
+import { ServiceService } from '../../../../services/billing/service.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -34,7 +35,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     solfacs: any[] = new Array();
     invoices: any[] = new Array();
     public loading:  boolean = true;
-    
+    public service: any = { analytic: "", manager: "" }
+
+    public incomes: any[] = new Array({ currency: 1, symbol: "$", value: 0 });
+    public incomesPendingArray: any[] = new Array({ currency: 1, symbol: "$", value: 0 }, { currency: 2, symbol: "U$D", value: 0 }, { currency: 2, symbol: "€", value: 0 });
+    public incomesBilledArray: any[] = new Array({ currency: 1, symbol: "$", value: 0 }, { currency: 2, symbol: "U$D", value: 0 }, { currency: 2, symbol: "€", value: 0 });
+    public incomesCashedArray: any[] = new Array({ currency: 1, symbol: "$", value: 0 }, { currency: 2, symbol: "U$D", value: 0 }, { currency: 2, symbol: "€", value: 0 });
+
     incomesBilled: number = 0;
     incomesCashed: number = 0;
     incomesPending: number = 0;
@@ -62,13 +69,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private service: ProjectService,
+        private projectService: ProjectService,
         private datatableService: DataTableService,
         private messageService: MessageService,
         public menuService: MenuService,
+        private serviceService: ServiceService,
         private errorHandlerService: ErrorHandlerService,
         private config: Configuration) {}
-
+ 
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.projectId = params['projectId'];
@@ -83,6 +91,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('projectId', params['projectId']);
 
             this.getProject(params['projectId']);
+            this.getService();
             this.getSolfacs(this.projectId);
             this.getHitos();
             this.getInvoices(this.projectId);
@@ -105,6 +114,22 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
       this.router.navigate([`/billing/customers/${this.customerId}/services`]);
     }
 
+    getService(){
+        var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+
+        if(service){
+          this.service.analytic = service.analytic;
+          this.service.manager = service.manager;
+        }
+        else{
+          this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
+            this.service.analytic = data.analytic;
+            this.service.manager = data.manager;
+          },
+          err => this.errorHandlerService.handleErrors(err));
+        }
+    }
+
     getProject(projectId){
         var project = sessionStorage.getItem("projectDetail");
 
@@ -113,7 +138,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.loading = false;
         }
         else{
-            this.getProjectSubscrip = this.service.getById(projectId).subscribe(data => {
+            this.getProjectSubscrip = this.projectService.getById(projectId).subscribe(data => {
                 this.project = data;
                 sessionStorage.setItem("projectDetail", JSON.stringify(data));
                 this.loading = false;
@@ -126,13 +151,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     getHitos(){
-        this.getHitosSubscrip = this.service.getHitos(this.projectId).subscribe(d => {
+        this.getHitosSubscrip = this.projectService.getHitos(this.projectId).subscribe(d => {
             this.hitos = d.map(item => {
                 item.projectId = this.projectId;
                 return item;
             });
 
             this.initHitosGrid();
+            this.calculateIncomesPending();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -145,10 +171,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   
         this.datatableService.destroy(params.selector);
         this.datatableService.init2(params);
-      }
+    }
 
     getInvoices(projectId){
-        this.getInvoicesSubscrip = this.service.getInvoices(projectId).subscribe(d => {
+        this.getInvoicesSubscrip = this.projectService.getInvoices(projectId).subscribe(d => {
             this.invoices = d;
 
             this.initInvoicesGrid();
@@ -166,12 +192,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     getSolfacs(projectId){
-        this.getSolfacSubscrip = this.service.getSolfacs(projectId).subscribe(d => {
+        this.getSolfacSubscrip = this.projectService.getSolfacs(projectId).subscribe(d => {
             this.solfacs = d;
 
             this.initSolfacGrid();
 
-            //this.calculateIncomes();
+            this.calculateIncomes();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -185,43 +211,36 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.datatableService.init2(params);
     }
 
+    calculateIncomesPending(){
+        this.hitos.forEach((item, index) => {
+            if(item.statusCode == "1" || item.statusCode == '717620002'){
+                this.incomesPendingArray[this.getCurrencyId(item.money)-1].value += item.ammount;
+            }
+        });
+    }
+
     calculateIncomes() {
-        var incomesPending = this.project.incomes;
-
+        this.incomes[0].value = this.project.incomes;
+        
         this.solfacs.forEach((item, index) => {
-
             if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
-
                 if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesBilled -= item.totalAmount;
-                    incomesPending += item.totalAmount;
+                    this.incomesBilledArray[item.currencyId-1].value -= item.totalAmount;
                 }
                 else{
-                    this.incomesBilled += item.totalAmount;
-
-                    if(item.documentTypeId != DocumentTypes.DebitNote){
-                        incomesPending -= item.totalAmount;
-                    }
+                    this.incomesBilledArray[item.currencyId-1].value += item.totalAmount;
                 }
             }
 
             if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
-
                 if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesCashed -= item.totalAmount;
-                    incomesPending += item.totalAmount;
+                    this.incomesCashedArray[item.currencyId-1].value -= item.totalAmount;
                 }
                 else{
-                    this.incomesCashed += item.totalAmount;
-
-                    if(item.documentTypeId != DocumentTypes.DebitNote){
-                        incomesPending -= item.totalAmount;
-                    }
+                    this.incomesCashedArray[item.currencyId-1].value += item.totalAmount;
                 }
             }
         });
-
-        this.incomesPending = incomesPending;
     }
 
     generateSolfac() {
@@ -257,6 +276,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         case "Dolar": { return "U$D"; }
         case "Euro": { return "€"; }
       }
+    }
+
+    getCurrencyId(currency){
+        switch(currency){
+          case "Peso": { return 1; }
+          case "Dolar": { return 2; }
+          case "Euro": { return 3; }
+        }
     }
  
     goToSolfacDetail(solfac){
@@ -298,17 +325,26 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     canSeeSolfacs(){
         return this.menuService.hasFunctionality('SOLFA', 'QUERY');
     }
-
+ 
     generateSolfacVisible(){
+        var currencies = [];
         var hitos = this.getHitosSelected();
 
         let isValid = hitos.length > 0;
     
         hitos.forEach(item => {
+            if(!currencies.includes(item.moneyId)){
+                currencies.push(item.moneyId);
+            }
+
             if(item.billed || item.status == "Cerrado"){
                 isValid = false;
             }
         });
+
+        if(currencies.length > 1){
+            isValid = false;
+        }
 
         return isValid;
     }
@@ -355,7 +391,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     closeHito(){
         var hito = this.getHitosSelected()[0];
     
-        this.service.closeHito(hito.id).subscribe(data => {
+        this.projectService.closeHito(hito.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
             hito.status = "Cerrado";
             hito.statusCode = this.config.crmCloseStatusCode;
@@ -436,7 +472,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.projectId = this.projectId;
         hito.managerId = this.project.ownerId;
         hito.opportunityId = this.project.opportunityId;
-        hito.currencyId = this.project.currencyId;
         return hito;
     }
 }
