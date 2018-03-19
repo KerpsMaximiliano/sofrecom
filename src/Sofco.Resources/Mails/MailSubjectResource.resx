@@ -135,6 +135,9 @@
   <data name="HitosWithoutSolfac" xml:space="preserve">
     <value>HITOS sin Solfac</value>
   </data>
+  <data name="LicenseCertificatePending" xml:space="preserve">
+    <value>Recursos que tienen pendiente la entrega de certificado por licencia</value>
+  </data>
   <data name="LicenseWorkflowTitle" xml:space="preserve">
     <value>Aprobación de licencia - {0}</value>
   </data>
