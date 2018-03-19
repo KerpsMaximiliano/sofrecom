@@ -136,13 +136,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
         {
-            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
-
-            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
-
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
 
+            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
+
+            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
+         
             if (employees.Any())
             {
                 foreach (var employee in employees)

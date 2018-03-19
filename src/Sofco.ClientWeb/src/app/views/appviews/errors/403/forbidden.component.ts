@@ -5,4 +5,8 @@ import { Component, } from '@angular/core';
   templateUrl: 'forbidden.component.html'
 })
 export class ForbiddenComponent {
+
+  back(){
+    window.history.back();
+  }
 }

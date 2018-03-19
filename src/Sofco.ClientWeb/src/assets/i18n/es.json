@@ -485,6 +485,7 @@
             "view": "Ver",
             "viewTitle": "Ver Analitica",
             "assigned": "Analíticas Asignadas",
+            "close": "Cerrar Analitica",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",
