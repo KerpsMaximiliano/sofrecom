@@ -87,7 +87,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     }
 
     getAllocationResources(){
-        this.getAllocationResourcesSubscrip = this.employeeService.getAll().subscribe(data => {
+        this.getAllocationResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
         },
         error => this.errorHandlerService.handleErrors(error));

@@ -23,7 +23,7 @@
             <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
                 <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
-        </div>
+        </div> 
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
             <spinner></spinner>
 
@@ -46,9 +46,9 @@
                         <td>{{ analytic.serviceName}}</td>
                         <td><label class="label" [ngClass]="(analytic.status) == 1 ? 'label-primary':'label-success'">{{ getStatus(analytic) }}</label></td>
                         <td>
-                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic.status == 1" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
-                            <button class="btn btn-primary btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANVIW')" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
-                            <button class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)" *ngIf="analytic.status == 1"><i class="fa fa-user-plus"></i></button>
+                            <button title="{{ 'ACTIONS.EDIT' | translate }}" class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic.status == 1" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
+                            <button title="{{ 'allocationManagement.analytics.view' | translate }}" class="btn btn-primary btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'ANVIW')" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
+                            <button title="{{ 'ACTIONS.assign' | translate }}" class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)" *ngIf="analytic.status == 1"><i class="fa fa-user-plus"></i></button>
                         </td>
                     </tr>
                 </tbody>

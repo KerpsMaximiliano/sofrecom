@@ -478,6 +478,7 @@
             "view": "View",
             "viewTitle": "View Analytic",
             "assigned": "Analytics Assigned",
+            "close": "Close Analytic",
             "add": {
                 "title": "Title",
                 "startDate":"Start Date",

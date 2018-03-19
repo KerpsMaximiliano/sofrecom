@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                                 <select select2 class="form-control" id="employeeId">
-                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.employeeNumber }} - {{resource?.name}}</option>
+                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.text }}</option>
                                 </select>
                             </div>
                         </div>

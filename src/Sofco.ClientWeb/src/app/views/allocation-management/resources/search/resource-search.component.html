@@ -48,7 +48,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" myNumberOnly [(ngModel)]="searchModel.percentage">
+                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
                     </div>
                 </div>
             </div>
