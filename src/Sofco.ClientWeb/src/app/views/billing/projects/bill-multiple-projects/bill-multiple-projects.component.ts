@@ -78,6 +78,7 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
 
     canCreate(){
       var countSelected = 0;
+      var currencies = [];
 
       for(let i = 0; i < this.projects.length; i++){
 
@@ -88,8 +89,25 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
         }
       }
 
-      if(countSelected > 1) return true;
-      
+      if(countSelected > 1){
+
+        for(let i = 0; i < this.projects.length; i++){
+
+          this.hitosSelected['hito'+i].forEach(hito => {
+            if(!currencies.includes(hito.moneyId)){
+              currencies.push(hito.moneyId);
+            }
+          });
+        }
+        
+        if(currencies.length > 1){
+          return false;
+        }
+        else{
+          return true;
+        }
+      } 
+
       return false;
     }
 
@@ -114,18 +132,19 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
       for(let i = 0; i < this.projects.length; i++){
 
         if(this.hitosSelected['hito'+i]) {
+
           projectsSelected.purchaseOrders.push(this.projects[i].purchaseOrder);
           projectsSelected.names.push(this.projects[i].nombre);
           projectsSelected.ids.push(this.projects[i].id);
           projectsSelected.analytics.push(this.projects[i].analytic);
-
-          json.currency = this.projects[i].currency;
 
           if(this.projects[i].remito){
             json.remito = this.projects[i].remito;
           }
 
           this.hitosSelected['hito'+i].forEach(hito => {
+            json.currency = hito.money;
+
             json.hitos.push({
               name: hito.name,
               projectId: hito.projectId,
@@ -133,7 +152,6 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
               money: hito.money,
               ammount: hito.ammount,
               month: hito.month,
-              currencyId: this.projects[i].currencyId,
               opportunityId: this.projects[i].opportunityId,
               managerId: this.projects[i].managerId,
             });

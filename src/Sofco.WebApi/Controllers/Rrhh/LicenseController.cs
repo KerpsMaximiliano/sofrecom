@@ -56,7 +56,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         {
             var response = licenseService.Add(model.CreateDomain());
 
-            if (model.IsRrhh && model.UserId != model.EmployeeId)
+            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
             {
                 var statusParams = new LicenseStatusChangeModel
                 {

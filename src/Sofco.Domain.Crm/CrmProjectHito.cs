@@ -10,6 +10,8 @@ namespace Sofco.Domain.Crm
 
         public string Money { get; set; }
 
+        public string MoneyId { get; set; }
+
         public decimal Ammount { get; set; }
 
         public DateTime StartDate { get; set; }

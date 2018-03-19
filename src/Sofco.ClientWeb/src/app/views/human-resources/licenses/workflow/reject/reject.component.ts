@@ -26,6 +26,7 @@ export class LicenseRejectComponent implements OnDestroy  {
     );
 
     @Input() licenseId: number;
+    @Input() employeeId: number;
     @Input() status: string;
 
     @Output() history: EventEmitter<any> = new EventEmitter();
@@ -50,7 +51,7 @@ export class LicenseRejectComponent implements OnDestroy  {
   }
 
   canReject(){
-    if(this.menuService.hasFunctionality('ALLOC', 'REJEC')) return false;
+    if(!this.menuService.hasFunctionality('CTRLI', 'REJEC') || this.menuService.user.employeeId == this.employeeId) return false;
 
     if(this.licenseId > 0 && this.menuService.userIsRrhh && (this.status == LicenseStatus[LicenseStatus.AuthPending] || 
                               this.status == LicenseStatus[LicenseStatus.Pending] || 

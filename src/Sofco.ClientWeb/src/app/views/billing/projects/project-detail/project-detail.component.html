@@ -30,109 +30,21 @@
     </div>
 </div>
 
-<!-- <div class="wrapper wrapper-content-project-detail animated fadeInRight"> -->
-    <div class="wrapper wrapper-content animated fadeInRight">
-    <!-- <div class="row">
+<div class="wrapper wrapper-content-project-detail animated fadeInRight">
+    <div class="row">
         <div class="col-md-3">
-            <div class="widget-currency label-success">
-                <h3 class="text-center"> {{ 'billing.project.detail.incomes' | translate}} </h3>
-                <table class="table table-stripped small m-t-xs table-widget">
-                    <tbody>
-                        <tr>
-                            <td class="no-borders text-center">$</td>
-                            <td class="no-borders text-center">100.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">U$D</td>
-                            <td class="text-center">50.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">€</td>
-                            <td class="text-center">20.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [incomes]="incomes"></widget-currency>
         </div>
         <div class="col-md-3">
-            <div class="widget-currency label-warning">
-                <h3 class="text-center"> {{ 'billing.project.detail.incomesPending' | translate}} </h3>
-                <table class="table table-stripped small m-t-xs table-widget">
-                    <tbody>
-                        <tr>
-                            <td class="no-borders text-center">$</td>
-                            <td class="no-borders text-center">100.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">U$D</td>
-                            <td class="text-center">50.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">€</td>
-                            <td class="text-center">20.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [incomes]="incomesPendingArray"></widget-currency>
         </div>
         <div class="col-md-3">
-            <div class="widget-currency label-Facturado">
-                <h3 class="text-center"> {{ 'billing.project.detail.incomesBilled' | translate}} </h3>
-                <table class="table table-stripped small m-t-xs table-widget">
-                    <tbody>
-                        <tr>
-                            <td class="no-borders text-center">$</td>
-                            <td class="no-borders text-center">100.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">U$D</td>
-                            <td class="text-center">50.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">€</td>
-                            <td class="text-center">20.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [incomes]="incomesBilledArray"></widget-currency>
         </div>
         <div class="col-md-3">
-            <div class="widget-currency label-Pagado">
-                <h3 class="text-center"> {{ 'billing.project.detail.incomesCashed' | translate}} </h3>
-                <table class="table table-stripped small m-t-xs table-widget">
-                    <tbody>
-                        <tr>
-                            <td class="no-borders text-center">$</td>
-                            <td class="no-borders text-center">100.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">U$D</td>
-                            <td class="text-center">50.000</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">€</td>
-                            <td class="text-center">20.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [incomes]="incomesCashedArray"></widget-currency>
         </div>
-    </div> -->
-
-    <!-- <div class="row">
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [value]="project?.incomes" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [value]="incomesPending" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [value]="incomesBilled" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [value]="incomesCashed" [symbol]="getCurrencySymbol(project?.currency)"></widget-currency>
-        </div>
-    </div> -->
+    </div>
 
     <div class="ibox">
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
@@ -149,9 +61,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <dl class="dl-vertical">
-                        <dt><i class="fa fa-user"></i> {{'billing.project.grid.manager' | translate }}</dt> <dd> {{ project?.manager }} </dd>
+                        <dt><i class="fa fa-user"></i> {{'billing.project.grid.manager' | translate }}</dt> <dd> {{ service?.manager }} </dd>
                         <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.purchaseOrder' | translate }} </dt> <dd> {{ project?.purchaseOrder }} </dd>
-                        <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.analytic' | translate }}</dt> <dd> {{ project?.analytic }} </dd>
+                        <dt><i class="fa fa-file-text-o"></i> {{'billing.project.detail.analytic' | translate }}</dt> <dd> {{ service?.analytic }} </dd>
                     </dl>
                 </div>
                 <div class="col-md-4">

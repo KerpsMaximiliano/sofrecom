@@ -39,14 +39,14 @@ namespace Sofco.Framework.StatusHandlers.License
 
             if (license.TypeId == 1)
             {
-                var employeeToModif = new Employee { Id = license.EmployeeId, HolidaysPending = license.Employee.HolidaysPending - license.DaysQuantity };
-                unitOfWork.EmployeeRepository.UpdateHolidaysPending(employeeToModif);
+                license.Employee.HolidaysPending -= license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
             if (license.TypeId == 7)
             {
-                var employeeToModif = new Employee { Id = license.EmployeeId, ExamDaysTaken = license.Employee.ExamDaysTaken + license.DaysQuantity };
-                unitOfWork.EmployeeRepository.UpdateExamDaysTaken(employeeToModif);
+                license.Employee.ExamDaysTaken += license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
 
