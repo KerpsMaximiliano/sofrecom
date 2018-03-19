@@ -49,7 +49,7 @@ export class PurchaseOrderService {
   }
 
   getFile(id){
-    return this.http.get(`${this.baseUrl}/purchaseOrders/${id}/file`).map((res:any) =>  res.json());
+    return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}/file`);
   }
 
   exportFile(id){

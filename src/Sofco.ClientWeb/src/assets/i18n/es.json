@@ -560,7 +560,7 @@
             "managed": "Licencias Gestionadas",
             "authPending": "Licencias Pendientes Autorizacion",
             "approved": "Licencias Aprobadas",
-            "pending": "Licencias Pendientes",
+            "pending": "Licencias Pendientes de Aprobación",
             "load": "Cargar Licencia",
             "report": "Generar Reporte",
             "holidaysPending": "Vacaciones Pendientes",
