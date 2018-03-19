@@ -20,7 +20,6 @@ SELECT
 	tb058.dtitu, 
 	tb061.didio, 
 	tb040.dgrup, 
-	a001.remdi * 0 AS sueldo,
 	a001.calle,
 	a001.nro,
 	a001.piso,
