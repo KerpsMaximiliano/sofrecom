@@ -118,7 +118,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(response.Data);
+            return Ok(response);
         }
 
         [HttpPost("search")]
