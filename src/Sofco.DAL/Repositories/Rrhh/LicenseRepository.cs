@@ -109,5 +109,14 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             return context.LicenseHistories.Where(x => x.LicenseId == id).Include(x => x.User).ToList().AsReadOnly();
         }
+
+        public List<License> GetPendingCertificates()
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Type)
+                .Where(s => !s.HasCertificate && s.Status == LicenseStatus.ApprovePending)
+                .ToList();
+        }
     }
 }

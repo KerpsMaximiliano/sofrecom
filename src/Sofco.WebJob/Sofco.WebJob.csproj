@@ -10,6 +10,14 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>Sofco.WebJob.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>Sofco.WebJob.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Update="log4net.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -46,6 +54,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

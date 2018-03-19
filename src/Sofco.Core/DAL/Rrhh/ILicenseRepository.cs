@@ -21,5 +21,7 @@ namespace Sofco.Core.DAL.Rrhh
         void AddHistory(LicenseHistory history);
         License GetById(int id);
         ICollection<LicenseHistory> GetHistories(int id);
+
+        List<License> GetPendingCertificates();
     }
 }

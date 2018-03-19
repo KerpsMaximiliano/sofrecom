@@ -1,7 +1,7 @@
-﻿using Sofco.WebJob.Security;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Sofco.WebJob.Security
 {
     /// <summary>
     /// Extension methods to add Basic authentication capabilities to an HTTP application pipeline.
@@ -45,5 +45,3 @@ namespace Microsoft.AspNetCore.Builder
         }
     }
 }
-
-
