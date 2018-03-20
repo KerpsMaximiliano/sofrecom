@@ -7,9 +7,9 @@ namespace Sofco.Core.Services.Admin
 {
     public interface ISettingService
     {
-        Response<List<GlobalSetting>> GetAll();
+        Response<List<Setting>> GetAll();
 
-        Response<List<GlobalSetting>> Save(List<GlobalSetting> globalSettings);
+        Response<List<Setting>> Save(List<Setting> globalSettings);
 
         IList<LicenseTypeSettingItem> GetLicenseTypes();
     }

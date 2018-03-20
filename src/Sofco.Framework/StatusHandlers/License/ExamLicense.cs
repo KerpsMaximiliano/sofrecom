@@ -10,7 +10,7 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
-            var examDaysAllowTogether = unitOfWork.GlobalSettingRepository.GetByKey("ExamDaysAllowTogether");
+            var examDaysAllowTogether = unitOfWork.SettingRepository.GetByKey("ExamDaysAllowTogether");
 
             var days = domain.EndDate.Date.Subtract(domain.StartDate.Date).Days + 1;
 

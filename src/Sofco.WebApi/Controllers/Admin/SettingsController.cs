@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.Admin
 
         [HttpPost]
         [Authorize]
-        public IActionResult Post([FromBody] List<GlobalSetting> globalSettings)
+        public IActionResult Post([FromBody] List<Setting> globalSettings)
         {
             var response = settingService.Save(globalSettings);
 

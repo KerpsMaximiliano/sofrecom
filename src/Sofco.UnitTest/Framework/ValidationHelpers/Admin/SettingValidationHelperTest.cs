@@ -14,7 +14,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Admin
         [TestCase("36")]
         public void ShouldPassValidateAllocationManagementMonths(string monthValue)
         {
-            var setting = new GlobalSetting
+            var setting = new Setting
             {
                 Value = monthValue
             };
@@ -29,7 +29,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Admin
         [TestCase("45")]
         public void ShouldFailValidateAllocationManagementMonths(string monthValue)
         {
-            var setting = new GlobalSetting
+            var setting = new Setting
             {
                 Value = monthValue
             };

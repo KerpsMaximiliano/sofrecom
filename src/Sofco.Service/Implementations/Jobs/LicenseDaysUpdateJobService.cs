@@ -129,7 +129,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void GetHolidaysValues()
         {
-            var settings = unitOfWork.GlobalSettingRepository.GetHolidaysValues();
+            var settings = unitOfWork.SettingRepository.GetHolidaysValues();
 
             foreach (var globalSetting in settings)
             {

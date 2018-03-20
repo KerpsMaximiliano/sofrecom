@@ -6,7 +6,7 @@ using Sofco.Model.Enums;
 
 namespace Sofco.Model.Models.Admin
 {
-    public class GlobalSetting : IEntityDate
+    public class Setting : IEntityDate
     {
         public int Id { get; set; }
 
