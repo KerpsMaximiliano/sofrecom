@@ -133,7 +133,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var globalSetting in settings)
             {
-                if (globalSetting.Type == GlobalSettingType.Number)
+                if (globalSetting.Type == SettingValueType.Number)
                 {
                     holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
                 }

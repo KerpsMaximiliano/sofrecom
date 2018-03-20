@@ -15,7 +15,9 @@ namespace Sofco.Model.Models.Admin
         public string Value { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public GlobalSettingType Type { get; set; }
+        public SettingValueType Type { get; set; }
+
+        public SettingCategory Category { get; set; }
 
         public DateTime? Created { get; set; }
 
