@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
@@ -35,6 +36,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
 
             options.AddRange(analyticService.GetAllActives().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }));
+
+            return Ok(options);
+        }
+
+        [HttpGet("clients/{clientId}")]
+        public IActionResult GetByClient(string clientId)
+        {
+            var options = new List<AnalyticOptionForOcModel> { new AnalyticOptionForOcModel { Id = 0, Text = "Seleccione una opcion" } };
+
+            options.AddRange(analyticService.GetByClient(clientId));
 
             return Ok(options);
         }

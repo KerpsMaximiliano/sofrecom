@@ -60,6 +60,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.form.model = data;
 
                 this.uploaderConfig();
+                    
+                if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
+                    this.form.getAnalytics();
+                }
             },
             error => {
                 this.messageService.closeLoading();

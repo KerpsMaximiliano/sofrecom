@@ -1,6 +1,7 @@
 ﻿using Sofco.Model.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
@@ -16,5 +17,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<Analytic> Update(Analytic domain);
         Response Close(int analyticId);
         ICollection<Analytic> GetAllActives();
+        ICollection<AnalyticOptionForOcModel> GetByClient(string clientId);
     }
 }

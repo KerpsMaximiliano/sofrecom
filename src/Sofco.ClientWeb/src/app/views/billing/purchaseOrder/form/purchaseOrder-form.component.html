@@ -25,9 +25,9 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="form-group">
-            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
-            <select class="form-control" id="analyticId" [(ngModel)]="model.analyticId">
-                <option *ngFor="let analytic of options?.analytics" [value]="analytic?.id">{{analytic?.text}}</option>
+            <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
+            <select class="form-control m-b" id="clientExternalId" [(ngModel)]="model.clientExternalId" (ngModelChange)="getAnalytics()">
+                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
             </select>
         </div>
     </div>
@@ -36,9 +36,9 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="form-group">
-            <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
-            <select class="form-control m-b" id="clientExternalId" [(ngModel)]="model.clientExternalId">
-                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
+            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+            <select class="form-control" id="analyticId" [(ngModel)]="model.analyticId" (ngModelChange)="analyticChange()">
+                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
             </select>
         </div>
     </div>

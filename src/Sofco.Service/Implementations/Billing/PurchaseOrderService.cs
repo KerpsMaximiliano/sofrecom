@@ -32,11 +32,14 @@ namespace Sofco.Service.Implementations.Billing
 
         public PurchaseOrderOptions GetFormOptions()
         {
-            var options = new PurchaseOrderOptions();
+            var options = new PurchaseOrderOptions
+            {
+                Sellers = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } },
+                Managers = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } }
+            };
 
-            options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Analytics = unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            options.Sellers.AddRange(unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }));
+            options.Managers.AddRange(unitOfWork.UserRepository.GetManagers().Select(x => new Option { Id = x.Id, Text = x.Name }));
 
             return options;
         }
@@ -188,7 +191,7 @@ namespace Sofco.Service.Implementations.Billing
             catch (Exception e)
             {
                 response.AddError(Resources.Common.GeneralError);
-                logger.LogError(e);   
+                logger.LogError(e);
             }
 
             return response;

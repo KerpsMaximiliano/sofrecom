@@ -66,5 +66,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Analytics.Any(x => x.ServiceId.Equals(serviceId));
         }
+
+        public ICollection<Analytic> GetByClient(string clientId)
+        {
+            return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
+        }
     }
 }
