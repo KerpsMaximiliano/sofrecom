@@ -53,17 +53,12 @@ export class PurchaseOrderService {
   }
 
   exportFile(id){
-    return this.http.get(`${this.baseUrl}/purchaseOrders/export/${id}`,
-     {
-       responseType: 'blob'
-     })
-     .map((res: any) => {
-       if (res.status >= 300 && res.status <= 500){
-         return res.json();
-       } else {
-         return new Blob([res._body], { type: 'application/octet-stream' });
-       }
-     });
+    return this.http.get(`${this.baseUrl}/purchaseOrders/export/${id}`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+   }).map((res: any) => {
+     return new Blob([res.body], { type: 'application/octet-stream' });
+   });
  }
 }
 
