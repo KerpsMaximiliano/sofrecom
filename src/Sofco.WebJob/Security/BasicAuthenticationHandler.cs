@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.Extensions.Logging;
@@ -14,7 +12,7 @@ namespace Sofco.WebJob.Security
 {
     internal class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticationOptions>
     {
-        private const string _Scheme = "Basic";
+        private const string Scheme = "Basic";
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
@@ -24,12 +22,12 @@ namespace Sofco.WebJob.Security
                 return AuthenticateResult.Fail("No authorization header.");
             }
 
-            if (!authorizationHeader.StartsWith(_Scheme + ' ', StringComparison.OrdinalIgnoreCase))
+            if (!authorizationHeader.StartsWith(Scheme + ' ', StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticateResult.Success(ticket: null);
             }
 
-            string encodedCredentials = encodedCredentials = authorizationHeader.Substring(_Scheme.Length).Trim();
+            string encodedCredentials = encodedCredentials = authorizationHeader.Substring(Scheme.Length).Trim();
             
             if (string.IsNullOrEmpty(encodedCredentials))
             {
@@ -40,7 +38,7 @@ namespace Sofco.WebJob.Security
 
             try
             {
-                string decodedCredentials = string.Empty;
+                string decodedCredentials;
                 try
                 {
                     decodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(encodedCredentials));
@@ -105,7 +103,7 @@ namespace Sofco.WebJob.Security
         {
             Response.StatusCode = 401;
 
-            var headerValue = _Scheme + $" realm=\"{Options.Realm}\""; ;
+            var headerValue = Scheme + $" realm=\"{Options.Realm}\""; ;
             Response.Headers.Append(HeaderNames.WWWAuthenticate, headerValue);
 
             return Task.FromResult(true);

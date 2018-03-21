@@ -1,7 +1,7 @@
 ﻿using System;
 using Hangfire;
-using Hangfire.Storage.Monitoring;
 using Sofco.WebJob.Helpers;
+using Sofco.WebJob.Jobs;
 using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Services
@@ -39,6 +39,8 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(EmployeeResetExamDaysJobName, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
 
             BackgroundJob.Schedule<IEmployeeForceSaveJob>(j => j.Execute(), DateTime.UtcNow.AddYears(100));
+
+            RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(LicenseCertificatePendingJob.JobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Friday, 10), localTimeZone);
         }
 
         private static void ClearJobs()

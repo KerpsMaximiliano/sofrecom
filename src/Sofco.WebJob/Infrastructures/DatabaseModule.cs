@@ -11,15 +11,15 @@ namespace Sofco.WebJob.Infrastructures
 {
     public class DatabaseModule : Module
     {
-        const string WebJobConnectionString = "WebJobConnection";
+        private const string WebJobConnectionString = "WebJobConnection";
 
-        const string TigerConnectionString = "TigerConnection";
+        private const string TigerConnectionString = "TigerConnection";
 
-        const string RhproConnectionString = "RhproConnection";
+        private const string RhproConnectionString = "RhproConnection";
 
         private const string RepositoryAssemblyEndName = "Repository";
 
-        public IConfigurationRoot Configuration { set; get; }
+        public IConfigurationRoot Configuration { get; set; }
 
         protected override void Load(ContainerBuilder builder)
         {

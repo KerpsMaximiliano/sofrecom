@@ -1,6 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
 using Sofco.WebJob.Security.Events;
