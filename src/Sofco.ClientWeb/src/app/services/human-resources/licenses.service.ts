@@ -68,4 +68,11 @@ export class LicenseService {
   deleteFile(id){
     return this.http.delete<any>(`${this.baseUrl}/licenses/file/${id}`);
   }
+
+  createReport() {
+    return this.http.get(`${this.baseUrl}/licenses/report`,
+     {
+       responseType: 'blob'
+     });
+ }
 }

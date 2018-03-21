@@ -56,6 +56,16 @@ namespace Sofco.WebApi.Controllers.Rrhh
         {
             var response = licenseService.Add(model.CreateDomain());
 
+            if (response.HasErrors())
+                return BadRequest(response);
+            
+            UpdateStatus(model, response);
+
+            return this.CreateResponse(response);
+        }
+
+        private void UpdateStatus(LicenseAddModel model, Response<string> response)
+        {
             if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
             {
                 var statusParams = new LicenseStatusChangeModel
@@ -80,8 +90,6 @@ namespace Sofco.WebApi.Controllers.Rrhh
                 var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
                 response.AddMessages(statusResponse.Messages);
             }
-
-            return this.CreateResponse(response);
         }
 
         [HttpPost("search")]
@@ -169,6 +177,24 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var histories = licenseService.GetHistories(id);
 
             return Ok(histories);
+        }
+
+        [HttpGet]
+        [Route("report")]
+        public IActionResult Report()
+        {
+            try
+            {
+                var excel = licenseService.GetLicenseReport();
+
+                return File(excel.GetAsByteArray(), "application/octet-stream", "licencias");
+            }
+            catch
+            {
+                var response = new Response();
+                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+                return BadRequest(response);
+            }
         }
     }
 }

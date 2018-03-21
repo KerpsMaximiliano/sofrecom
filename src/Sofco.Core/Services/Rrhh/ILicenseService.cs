@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -23,5 +24,6 @@ namespace Sofco.Core.Services.Rrhh
         Response ChangeStatus(int id, LicenseStatusChangeModel model);
         Response<LicenseDetailModel> GetById(int id);
         ICollection<LicenseHistoryModel> GetHistories(int id);
+        ExcelPackage GetLicenseReport();
     }
 }

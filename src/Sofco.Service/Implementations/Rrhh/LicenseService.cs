@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using OfficeOpenXml;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
@@ -32,10 +34,11 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly ILicenseStatusFactory licenseStatusFactory;
         private readonly IMailBuilder mailBuilder;
         private readonly IMailSender mailSender;
+        private readonly ILicenseFileManager licenseFileManager;
 
         public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
                               ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
-                              IMailSender mailSender)
+                              IMailSender mailSender, ILicenseFileManager licenseFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -44,6 +47,7 @@ namespace Sofco.Service.Implementations.Rrhh
             this.licenseStatusFactory = licenseStatusFactory;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
+            this.licenseFileManager = licenseFileManager;
         }
 
         public Response<string> Add(License domain)
@@ -277,6 +281,13 @@ namespace Sofco.Service.Implementations.Rrhh
             };
 
             return history;
+        }
+
+        public ExcelPackage GetLicenseReport()
+        {
+            var licenses = unitOfWork.LicenseRepository.GetLicensesLastMonth();
+
+            return licenseFileManager.CreateLicenseReportExcel(licenses);
         }
     }
 }
