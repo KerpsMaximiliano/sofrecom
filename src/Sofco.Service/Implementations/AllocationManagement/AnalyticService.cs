@@ -11,6 +11,7 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
@@ -46,6 +47,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public ICollection<Analytic> GetAllActives()
         {
             return unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
+        }
+
+        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId)
+        {
+            return unitOfWork.AnalyticRepository.GetByClient(clientId).Select(x => new AnalyticOptionForOcModel
+            {
+                Id = x.Id,
+                Text = $"{x.Title} - {x.Name}",
+                CommercialManagerId = x.CommercialManagerId.GetValueOrDefault(),
+                ManagerId = x.ManagerId.GetValueOrDefault()
+
+            }).ToList();
         }
 
         public ICollection<Analytic> GetAll()

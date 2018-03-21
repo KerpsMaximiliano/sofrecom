@@ -18,6 +18,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void Close(Analytic analytic);
         ICollection<Analytic> GetAllOpenReadOnly();
-        bool ExistWithService(string serviceId);
+        Analytic GetByService(string serviceId);
+        ICollection<Analytic> GetByClient(string clientId);
     }
 }

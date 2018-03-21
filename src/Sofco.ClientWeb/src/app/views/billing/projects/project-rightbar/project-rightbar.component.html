@@ -5,10 +5,17 @@
         </div>
         <div class="skin-settings">
             <div class="title">{{'ACTIONS.title' | translate }}</div>
-            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD') && hasAnalytic == false">
+            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD') && analytic?.id == 0">
                 <span class="skin-name ">
                     <a (click)="goToCreateAnalytic()" class="s-skin-0">
                         {{'allocationManagement.analytics.new' | translate }}
+                    </a>
+                </span>
+            </div>
+            <div class="setings-item default-skin" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic?.id > 0">
+                <span class="skin-name ">
+                    <a (click)="goToEditAnalytic()" class="s-skin-0">
+                        {{'allocationManagement.analytics.editTitle' | translate }}
                     </a>
                 </span>
             </div>

@@ -85,7 +85,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/contracts/analytics']);
+        window.history.back();
     }
 
     getStatus(){

@@ -51,7 +51,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     getIfIsRelated(){
       this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(response => {
-        this.rightbar.hasAnalytic = response;
+        this.rightbar.analytic = response;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
