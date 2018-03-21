@@ -8,6 +8,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
+import * as FileSaver from "file-saver";
 
 declare var $: any;
 
@@ -145,5 +146,21 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     goToDetail(item){
         this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+    }
+
+    createReport(){
+        this.messageService.showLoading();
+
+        this.licenseService.createReport().subscribe(file => {
+            this.messageService.closeLoading();
+
+            var date = new Date();
+
+            FileSaver.saveAs(file, `${date.getFullYear()}-${date.getMonth() == 0 ? 12 : date.getMonth()} Licencias.xlsx`);
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }

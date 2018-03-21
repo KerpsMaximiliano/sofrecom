@@ -18,6 +18,8 @@ namespace Sofco.Domain.Crm.Billing
 
         public decimal Incomes { get; set; }
 
+        public decimal RealIncomes { get; set; }
+
         public string PurchaseOrder { get; set; }
 
         public string OpportunityId { get; set; }

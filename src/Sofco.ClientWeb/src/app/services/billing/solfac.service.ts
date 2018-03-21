@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { MenuService } from 'app/services/admin/menu.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -112,17 +112,12 @@ export class SolfacService {
   }
 
   downloadFile(id) {
-    return this.http.get(`${this.baseUrl}/solfacs/file/${id}/download`,
-     {
-       responseType: 'blob'
-     })
-     .map((res: any) => {
-       if (res.status >= 300 && res.status <= 500) {
-         return res.json();
-       } else {
-         return new Blob([res._body], { type: 'application/vnd.ms-excel' });
-       }
-     });
+    return this.http.get(`${this.baseUrl}/solfacs/file/${id}/download`, {
+       responseType: 'arraybuffer',
+       observe: 'response'
+    }).map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    });
   }
 
   getFile(id) {

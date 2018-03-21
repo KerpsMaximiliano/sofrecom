@@ -52,31 +52,21 @@ export class InvoiceService {
  }
 
   getExcel(id) {
-     return this.http.get(`${this.baseUrl}/invoices/${id}/excel`,
-      {
-        responseType: 'blob'
-      })
-      .map((res: any) => {
-        if (res.status >= 300 && res.status <= 500){
-          return res.json();
-        } else {
-          return new Blob([res._body],{ type: 'application/vnd.ms-excel' });
-        }
-      });
+    return this.http.get(`${this.baseUrl}/invoices/${id}/excel`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+   }).map((res: any) => {
+     return new Blob([res.body], { type: 'application/octet-stream' });
+   });
   }
 
   downloadPdf(id) {
-     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`,
-      {
-        responseType: 'blob'
-      })
-      .map((res: any) => {
-        if (res.status >= 300 && res.status <= 500){
-          return res.json();
-        } else {
-          return new Blob([res._body],{ type: 'application/vnd.ms-excel' })
-        }
-      });
+    return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    });
   }
 
   getPdf(id) {
@@ -84,12 +74,12 @@ export class InvoiceService {
  }
 
   export(model) {
-    return this.http.post(`${this.baseUrl}/invoices/excel`,
-      model,
-      {
-        responseType: 'blob'
-      })
-      .map((res: any) => new Blob([res._body], { type: 'application/vnd.ms-excel' }));
+    return this.http.post(`${this.baseUrl}/invoices/excel`, model, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+   }).map((res: any) => {
+     return new Blob([res.body], { type: 'application/octet-stream' });
+   });
   }
 
   search(parameters) {

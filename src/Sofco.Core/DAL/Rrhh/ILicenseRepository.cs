@@ -11,6 +11,7 @@ namespace Sofco.Core.DAL.Rrhh
     public interface ILicenseRepository : IBaseRepository<License>
     {
         void AddFile(LicenseFile licenseFile);
+        IList<License> GetLicensesLastMonth();
         ICollection<License> GetByEmployee(int employeeId);
         ICollection<License> GetByStatus(LicenseStatus statusId);
         ICollection<License> Search(LicenseSearchParams parameters);

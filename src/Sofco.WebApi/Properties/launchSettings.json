@@ -17,7 +17,6 @@
     },
     "IIS Express - azsof01wd - Dev": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "azsof01wd-dev"
       }

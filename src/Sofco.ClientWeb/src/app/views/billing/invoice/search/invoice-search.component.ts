@@ -179,7 +179,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 if (res.messages) {
                     this.messageService.showMessages(res.messages);
                 } else {
-                    this.data = res.data;
+                    this.data = res;
                     sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(parameters));
                 }
 

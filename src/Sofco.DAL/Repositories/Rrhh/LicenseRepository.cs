@@ -22,6 +22,19 @@ namespace Sofco.DAL.Repositories.Rrhh
             context.LicenseFiles.Add(licenseFile);
         }
 
+        public IList<License> GetLicensesLastMonth()
+        {
+            var today = DateTime.Today;
+            var month = new DateTime(today.Year, today.Month, 1);
+            var last = month.AddDays(-1).Month;
+
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Type)
+                .Where(x => x.StartDate.Month == last || x.EndDate.Month == last)
+                .ToList();
+        }
+
         public ICollection<License> GetByEmployee(int employeeId)
         {
             return context.Licenses
