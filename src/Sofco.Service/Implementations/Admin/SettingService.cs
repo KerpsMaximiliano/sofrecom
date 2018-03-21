@@ -35,16 +35,46 @@ namespace Sofco.Service.Implementations.Admin
             return new Response<List<Setting>> { Data = unitOfWork.SettingRepository.GetAll() };
         }
 
-        public Response<List<Setting>> Save(List<Setting> globalParameters)
+        public Response<List<Setting>> Save(List<Setting> settings)
         {
-            var response = ValidateSettings(globalParameters);
+            var response = ValidateSettings(settings);
 
             if (response.HasErrors())
                 return response;
 
-            unitOfWork.SettingRepository.Save(globalParameters);
+            unitOfWork.SettingRepository.Save(settings);
 
-            response.Data = globalParameters;
+            response.Data = settings;
+
+            return response;
+        }
+
+        public Response<Setting> Save(Setting setting)
+        {
+            var response = ValidateSetting(setting);
+
+            if (response.HasErrors())
+                return response;
+
+            unitOfWork.SettingRepository.Save(setting);
+
+            response.Data = setting;
+
+            return response;
+        }
+
+        private Response<Setting> ValidateSetting(Setting setting)
+        {
+            var response = new Response<Setting>();
+
+            if (!validationDicts.ContainsKey(setting.Key)) return response;
+
+            var validationReponse = validationDicts[setting.Key](setting);
+
+            if (validationReponse.HasErrors())
+            {
+                response.AddMessages(validationReponse.Messages);
+            }
 
             return response;
         }

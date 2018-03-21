@@ -7,9 +7,12 @@ namespace Sofco.Core.DAL.Admin
     {
         List<Setting> GetAll();
 
-        void Save(List<Setting> globalSettings);
+        void Save(List<Setting> settings);
+
+        void Save(Setting setting);
 
         Setting GetByKey(string examdaysallowtogether);
+
         ICollection<Setting> GetHolidaysValues();
     }
 }

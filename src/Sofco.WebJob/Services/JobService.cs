@@ -40,7 +40,7 @@ namespace Sofco.WebJob.Services
 
             BackgroundJob.Schedule<IEmployeeForceSaveJob>(j => j.Execute(), DateTime.UtcNow.AddYears(100));
 
-            RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(LicenseCertificatePendingJob.JobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Friday, 10), localTimeZone);
+            RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(LicenseCertificatePendingJob.JobName, j => j.Execute(), Cron.Monthly(25), localTimeZone);
         }
 
         private static void ClearJobs()

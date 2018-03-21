@@ -9,7 +9,9 @@ namespace Sofco.Core.Services.Admin
     {
         Response<List<Setting>> GetAll();
 
-        Response<List<Setting>> Save(List<Setting> globalSettings);
+        Response<List<Setting>> Save(List<Setting> settings);
+
+        Response<Setting> Save(Setting setting);
 
         IList<LicenseTypeSettingItem> GetLicenseTypes();
     }

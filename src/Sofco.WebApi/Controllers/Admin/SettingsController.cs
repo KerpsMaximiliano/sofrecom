@@ -27,19 +27,29 @@ namespace Sofco.WebApi.Controllers.Admin
 
         [HttpPost]
         [Authorize]
-        public IActionResult Post([FromBody] List<Setting> globalSettings)
+        public IActionResult Post([FromBody] List<Setting> settings)
         {
-            var response = settingService.Save(globalSettings);
+            var response = settingService.Save(settings);
 
             return this.CreateResponse(response);
         }
 
         [HttpGet("licenseTypes")]
+        [Authorize]
         public IActionResult GetLicensesTypes()
         {
             var response = settingService.GetLicenseTypes();
 
             return Ok(response);
+        }
+
+        [HttpPost("{id}")]
+        [Authorize]
+        public IActionResult Post([FromBody] Setting settings)
+        {
+            var response = settingService.Save(settings);
+
+            return this.CreateResponse(response);
         }
     }
 }

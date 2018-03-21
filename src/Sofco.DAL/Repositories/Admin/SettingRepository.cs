@@ -32,6 +32,17 @@ namespace Sofco.DAL.Repositories.Admin
             context.SaveChanges();
         }
 
+        public void Save(Setting setting)
+        {
+            var item = context.Settings.SingleOrDefault(s => s.Id == setting.Id);
+
+            if (item == null) return;
+
+            Update(item, setting);
+
+            context.SaveChanges();
+        }
+
         public Setting GetByKey(string examdaysallowtogether)
         {
             return context.Settings.SingleOrDefault(x => x.Key.Equals(examdaysallowtogether));
