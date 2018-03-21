@@ -46,7 +46,7 @@
                             <tr *ngFor="let project of projects" (click)="goToProjectDetail(project)" class="pointer">
                                 <td>{{project.nombre}}</td>
                                 <td>{{project.purchaseOrder}}</td>
-                                <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
+                                <td>{{ getCurrencySymbol(project.currency) }} {{project.realIncomes | number: '1.2-2' }}</td>
                                 <td> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
                                 <td> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
                             </tr>

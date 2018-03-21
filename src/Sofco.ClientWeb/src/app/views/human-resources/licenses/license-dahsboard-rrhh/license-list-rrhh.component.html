@@ -92,12 +92,10 @@
                     </a>
                 </span>
             </div> 
-            <div class="setings-item blue-skin">
+            <div class="setings-item blue-skin pointer text-white" (click)="createReport()">
                 <span class="skin-name">
-                    <a [routerLink]="['/allocationManagement/licenses/add']">
-                        {{ 'rrhh.license.report' | translate }}
-                        <i class="fa fa-file"></i>
-                    </a>
+                    {{ 'rrhh.license.report' | translate }}
+                    <i class="fa fa-file"></i>
                 </span>
             </div>
         </div>

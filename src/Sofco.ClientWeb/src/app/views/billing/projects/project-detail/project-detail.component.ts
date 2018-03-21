@@ -220,7 +220,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateIncomes() {
-        this.incomes[0].value = this.project.incomes;
+        this.incomes[0].value = this.project.realIncomes;
         
         this.solfacs.forEach((item, index) => {
             if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
