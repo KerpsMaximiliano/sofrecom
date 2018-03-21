@@ -27,6 +27,15 @@ export class ErrorHandlerService {
     }
 
     private handle400(response) {
+        if (response.error instanceof ArrayBuffer) {
+            const errorText = String.fromCharCode.apply(null, new Uint8Array(response.error));
+
+            const errorData = JSON.parse(errorText);
+
+            this.messageService.showMessages(errorData.messages);
+            return;
+        }
+
         if (response.error && response.error.messages) {
             this.messageService.showMessages(response.error.messages);
             return;
