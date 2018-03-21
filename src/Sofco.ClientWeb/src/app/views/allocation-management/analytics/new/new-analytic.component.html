@@ -6,6 +6,9 @@
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
             <li>
+                {{'contracts.title' | translate }}
+            </li>
+            <li>
                 {{'allocationManagement.analytics.title' | translate }}
             </li>
             <li class="active">
@@ -22,7 +25,7 @@
         </div>
         <div class="ibox-footer">
             <button (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-            <a class="btn btn-link btn-success text-white" [routerLink]="['/contracts/analytics']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+            <a class="btn btn-link btn-success text-white" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
         </div>
     </div>
 </div>

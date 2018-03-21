@@ -11,7 +11,7 @@ declare var jQuery:any;
 
 export class ProjectRightBarComponent {
 
-  public hasAnalytic: boolean = false;
+  public analytic: any;
 
   constructor(private router: Router, public menuService: MenuService) {
   }
@@ -23,6 +23,10 @@ export class ProjectRightBarComponent {
   goToCreateAnalytic(){
     sessionStorage.setItem('analyticWithProject', 'yes');
     this.router.navigate(['/contracts/analytics/new']);
+  }
+
+  goToEditAnalytic(){
+    this.router.navigate([`/contracts/analytics/${this.analytic.id}/edit/`]);
   }
 
   goToResources(){

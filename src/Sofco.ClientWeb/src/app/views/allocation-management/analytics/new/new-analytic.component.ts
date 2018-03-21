@@ -39,11 +39,16 @@ export class NewAnalyticComponent implements OnInit, OnDestroy {
             data => {
                 this.messageService.closeLoading();
               if(data.messages) this.messageService.showMessages(data.messages);
-              this.router.navigate(['contracts/analytics']);
+              
+              this.back();
             },
             err => {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
+    }
+
+    back(){
+        window.history.back();
     }
 }

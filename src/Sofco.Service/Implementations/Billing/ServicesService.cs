@@ -7,6 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Billing
@@ -59,9 +60,9 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<CrmService> { Data = result.FirstOrDefault(x => x.Id.Equals(serviceId)) };
         }
 
-        public bool HasAnalyticRelated(string serviceId)
+        public Analytic GetAnalyticByService(string serviceId)
         {
-            return unitOfWork.AnalyticRepository.ExistWithService(serviceId);
+            return unitOfWork.AnalyticRepository.GetByService(serviceId);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Core.Models.Billing;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -19,7 +18,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void Close(Analytic analytic);
         ICollection<Analytic> GetAllOpenReadOnly();
-        bool ExistWithService(string serviceId);
+        Analytic GetByService(string serviceId);
         ICollection<Analytic> GetByClient(string clientId);
     }
 }

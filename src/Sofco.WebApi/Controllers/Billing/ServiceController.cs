@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Extensions;
+using Sofco.WebApi.Models.AllocationManagement;
 using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -52,12 +53,20 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
         }
 
-        [HttpGet("{serviceId}/hasAnalytic")]
-        public IActionResult HasAnalyticRelated(string serviceId)
+        [HttpGet("{serviceId}/analytic")]
+        public IActionResult GetAnalyticByService(string serviceId)
         {
-            var isRelated = servicesService.HasAnalyticRelated(serviceId);
+            var analytic = servicesService.GetAnalyticByService(serviceId);
 
-            return Ok(isRelated);
+            var model = new AnalyticViewModel();
+
+            if (analytic != null)
+            {
+                model.Id = analytic.Id;
+                model.Name = analytic.Name;
+            }
+
+            return Ok(model);
         }
     }
 }
