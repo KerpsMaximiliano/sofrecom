@@ -34,10 +34,10 @@
 
     <div class="row" *ngIf="purchaseOrders && purchaseOrders.length > 0">
         <div class="col-sm-12" >
-            <div class="file-box" *ngFor="let item of purchaseOrders">
-                <div class="file">
+            <div class="file-box" *ngFor="let item of purchaseOrders" >
+                <div class="file" *ngIf="item.fileName">
                     <div class="icon"><i class="fa fa-file"></i></div>
-                    <div class="file-name text-word-break" [ngClass]="item.fileName.endsWith('.pdf') ? 'pdf-file' : ''" (click)="viewFile(item)">
+                    <div class="file-name text-word-break" [ngClass]="item.fileName?.endsWith('.pdf') ? 'pdf-file' : ''" (click)="viewFile(item)">
                         {{ item.fileName }} 
                         <br>
                         <small>{{'billing.invoice.createdAt' | translate }}: {{ item.creationDate }}</small>

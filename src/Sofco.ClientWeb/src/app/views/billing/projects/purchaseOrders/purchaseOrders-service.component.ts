@@ -84,8 +84,8 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
 
     viewFile(item){
       if(item.fileName.endsWith('.pdf')){
-          this.purchaseOrderService.getFile(item.fileId).subscribe(file => {
-              this.pdfViewer.renderFile(file);
+          this.purchaseOrderService.getFile(item.fileId).subscribe(response => {
+              this.pdfViewer.renderFile(response.data);
           },
           err => this.errorHandlerService.handleErrors(err));
       }
