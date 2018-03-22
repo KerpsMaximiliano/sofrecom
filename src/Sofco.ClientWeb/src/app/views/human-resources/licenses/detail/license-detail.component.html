@@ -17,6 +17,10 @@
             <button class="btn btn-success btn-outline dim" (click)="back()"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
+                <button class="btn btn-success btn-outline dim" (click)="fileDelivered()" *ngIf="menuService.userIsRrhh && !model.hasCertificate"> 
+                    {{'rrhh.license.fileDelivered' | translate }}
+                </button>
+
                 <status-auth-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-auth-pending>
                 <status-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-pending>
                 <status-reject [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-reject>
@@ -76,6 +80,12 @@
                                 <span *ngIf="!model.final" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
                             </dd> 
                         </div>
+
+                        <dt>{{'rrhh.license.hasCertificate' | translate }}: </dt>
+                        <dd>
+                            <span *ngIf="model.hasCertificate" class="label label-primary">{{ 'ACTIONS.yes' | translate }}</span>
+                            <span *ngIf="!model.hasCertificate" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
+                        </dd> 
                     </dl>
                 </div>
             </div>

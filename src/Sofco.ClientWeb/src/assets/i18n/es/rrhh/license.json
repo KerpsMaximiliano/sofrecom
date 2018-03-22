@@ -21,5 +21,6 @@
     "cannotChangeStatus": "No se puede cambiar el estado",
     "authPendingSuccess": "La licencia quedo en Pendiente de Autorización correctamente",
     "approveSuccess": "La licencia ha sido aprobada exitosamente",
-    "approvePendingSuccess": "La licencia quedo en Aprobada / Documetanción Pendiente correctamente"
+    "approvePendingSuccess": "La licencia quedo en Aprobada / Documetanción Pendiente correctamente",
+    "updateSuccess": "La licencia se actualizo correctamente"
 }

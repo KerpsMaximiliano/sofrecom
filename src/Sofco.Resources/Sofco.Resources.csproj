@@ -12,6 +12,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="AllocationManagement\Allocation.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Allocation.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AllocationManagement\Analytic.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Analytic.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AllocationManagement\CostCenter.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CostCenter.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AllocationManagement\Employee.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Employee.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AllocationManagement\EmployeeSyncAction.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
+    </Compile>
     <Compile Update="Mails\MailMessageResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -27,9 +52,34 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MailSubjectResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="Rrhh\License.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>License.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="AllocationManagement\Allocation.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Allocation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AllocationManagement\Analytic.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Analytic.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AllocationManagement\CostCenter.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CostCenter.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AllocationManagement\Employee.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Employee.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AllocationManagement\EmployeeSyncAction.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EmployeeSyncAction.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Mails\MailMessageResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailMessageResource.Designer.cs</LastGenOutput>
@@ -41,6 +91,10 @@
     <EmbeddedResource Update="Mails\MailSubjectResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailSubjectResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Rrhh\License.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>License.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

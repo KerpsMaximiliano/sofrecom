@@ -61,6 +61,10 @@ export class LicenseService {
     return this.http.post<any>(`${this.baseUrl}/licenses/search`, params);
   }
 
+  fileDelivered(id){
+    return this.http.put<any>(`${this.baseUrl}/licenses/${id}/fileDelivered`, {});
+  }
+
   getUrlForImportFile(id){
     return `${this.baseUrl}/licenses/${id}/file`;
   }
@@ -74,5 +78,5 @@ export class LicenseService {
      {
        responseType: 'blob'
      });
- }
+  }
 }

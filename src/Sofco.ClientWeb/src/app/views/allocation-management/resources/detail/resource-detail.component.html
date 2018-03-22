@@ -172,7 +172,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row widget-custom lazur-bg">
+            <div class="row widget-custom lazur-bg" *ngIf="!isRrhh">
                 <div class="col-sm-2">
                     <i class="fa fa-clock-o fa-2x"></i>
                 </div>
@@ -182,13 +182,23 @@
                     </div>
                 </div>
             </div>
-            <div class="row widget-custom lazur-bg">
+            <div class="row widget-custom lazur-bg" *ngIf="!isRrhh">
                 <div class="col-sm-2">
                     <i class="fa fa-home fa-2x"></i>
                 </div>
                 <div class="col-sm-10">
                     <div class="vertical-align">
                         <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row widget-custom lazur-bg" *ngIf="isRrhh" (click)="finalizeExtraHolidays()">
+                <div class="col-sm-2">
+                    <i class="fa fa-plane fa-2x"></i>
+                </div>
+                <div class="col-sm-10">
+                    <div class="vertical-align">
+                        <h4 class="font-bold">Finalizar Acuerdo</h4>
                     </div>
                 </div>
             </div>

@@ -39,4 +39,8 @@ export class EmployeeService {
   sendUnsubscribeNotification(employeeName, json){
     return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json);
   }
+
+  finalizeExtraHolidays(id){
+    return this.http.put<any>(`${this.baseUrl}/employees/${id}/finalizeExtraHolidays`, {});
+  }
 }

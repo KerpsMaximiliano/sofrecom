@@ -129,6 +129,33 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response FinalizeExtraHolidays(int id)
+        {
+            var response = new Response();
+
+            var employee = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                employee.ExtraHolidaysQuantity = 0;
+                employee.HasExtraHolidays = false;
+
+                unitOfWork.EmployeeRepository.Update(employee);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Employee.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

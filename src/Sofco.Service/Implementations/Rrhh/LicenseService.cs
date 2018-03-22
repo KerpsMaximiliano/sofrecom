@@ -289,5 +289,30 @@ namespace Sofco.Service.Implementations.Rrhh
 
             return licenseFileManager.CreateLicenseReportExcel(licenses);
         }
+
+        public Response FileDelivered(int id)
+        {
+            var response = new Response();
+
+            var license = LicenseValidationHandler.Find(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                license.HasCertificate = true;
+                unitOfWork.LicenseRepository.Update(license);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Rrhh.License.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
     }
 }

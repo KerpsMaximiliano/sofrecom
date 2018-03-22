@@ -25,5 +25,6 @@ namespace Sofco.Core.Services.Rrhh
         Response<LicenseDetailModel> GetById(int id);
         ICollection<LicenseHistoryModel> GetHistories(int id);
         ExcelPackage GetLicenseReport();
+        Response FileDelivered(int id);
     }
 }

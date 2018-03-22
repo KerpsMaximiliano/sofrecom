@@ -21,5 +21,6 @@
     "cannotChangeStatus": "The state can not be changed",
     "authPendingSuccess": "The license was left in Authorization Pending correctly",
     "approveSuccess": "The license has been successfully approved",
-    "approvePendingSuccess": "The license was left in Approved / Documentation Pending correctly"
+    "approvePendingSuccess": "The license was left in Approved / Documentation Pending correctly",
+    "updateSuccess": "The license has been updated successfully"
 }

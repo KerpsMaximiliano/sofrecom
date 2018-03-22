@@ -186,4 +186,7 @@
   <data name="TypeRequired" xml:space="preserve">
     <value>rrhh/license.typeRequired</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>rrhh/license.updateSuccess</value>
+  </data>
 </root>

@@ -58,7 +58,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             if (response.HasErrors())
                 return BadRequest(response);
-            
+
             UpdateStatus(model, response);
 
             return this.CreateResponse(response);
@@ -195,6 +195,15 @@ namespace Sofco.WebApi.Controllers.Rrhh
                 response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
                 return BadRequest(response);
             }
+        }
+
+        [HttpPut]
+        [Route("{id}/fileDelivered")]
+        public IActionResult FileDelivered(int id)
+        {
+            var response = licenseService.FileDelivered(id);
+
+            return this.CreateResponse(response);
         }
     }
 }

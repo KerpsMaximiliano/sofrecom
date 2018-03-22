@@ -77,5 +77,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/finalizeExtraHolidays")]
+        public IActionResult FinalizeExtraHolidays(int id)
+        {
+            var response = employeeService.FinalizeExtraHolidays(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

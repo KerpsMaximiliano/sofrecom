@@ -132,6 +132,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/employee.notFound</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>allocationManagement/employee.updateSuccess</value>
+  </data>
   <data name="WrongStatus" xml:space="preserve">
     <value>allocationManagement/employee.wrongStatus</value>
   </data>

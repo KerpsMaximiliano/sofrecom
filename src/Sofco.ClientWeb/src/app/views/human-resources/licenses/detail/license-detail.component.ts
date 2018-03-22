@@ -25,6 +25,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
     deleteFileSubscrip: Subscription;
+    fileDeliveredSubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
     public showUploader: boolean = false;
@@ -45,7 +46,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
 
     constructor(private licenseService: LicenseService,
                 private router: Router,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
@@ -72,6 +73,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
+        if(this.fileDeliveredSubscrip) this.fileDeliveredSubscrip.unsubscribe();
     }
 
     back(){
@@ -121,5 +123,16 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     updateStatus(event){
         if(event.statusId) this.model.status = event.statusId;
         if(event.statusName) this.model.statusName = event.statusName;
+    }
+
+    fileDelivered(){
+        this.messageService.showLoading();
+
+        this.fileDeliveredSubscrip = this.licenseService.fileDelivered(this.model.id).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.model.hasCertificate = true;
+          },
+          err => this.errorHandlerService.handleErrors(err),
+          () => this.messageService.closeLoading());
     }
 } 

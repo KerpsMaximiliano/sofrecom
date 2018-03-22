@@ -558,7 +558,8 @@
             "holidaysPending": "Holidays Pending",
             "hasCertificate": "Certificate",
             "detail": "License's Detail",
-            "detailTitle": "Detail"
+            "detailTitle": "Detail",
+            "fileDelivered": "Certification Delivered"
         }
     },
     "ACTIONS":{

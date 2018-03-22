@@ -566,7 +566,8 @@
             "holidaysPending": "Vacaciones Pendientes",
             "hasCertificate": "Certificado",
             "detail": "Detalle de la Licencia",
-            "detailTitle": "Detalle"
+            "detailTitle": "Detalle",
+            "fileDelivered": "Entregó Documentación"
         }
     },
     "ACTIONS":{

@@ -25,6 +25,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
+    finalizeExtraHolidaysSubscrip: Subscription;
     getDataSubscrip: Subscription;
 
     constructor(private router: Router,
@@ -80,6 +81,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if (this.getSubscrip) { this.getSubscrip.unsubscribe(); }
         if (this.paramsSubscrip) { this.paramsSubscrip.unsubscribe(); }
         if (this.getDataSubscrip) { this.getDataSubscrip.unsubscribe(); }
+        if (this.finalizeExtraHolidaysSubscrip) { this.finalizeExtraHolidaysSubscrip.unsubscribe(); }
     }
 
     initGrid(){
@@ -106,5 +108,15 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     goToDetail(item){
         this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+    }
+
+    finalizeExtraHolidays(){
+        this.messageService.showLoading();
+
+        this.finalizeExtraHolidaysSubscrip = this.employeeService.finalizeExtraHolidays(this.resourceId).subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+        },
+        error => this.errorHandlerService.handleErrors(error),
+        () => this.messageService.closeLoading());
     }
 } 

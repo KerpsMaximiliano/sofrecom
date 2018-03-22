@@ -14,12 +14,13 @@ namespace Sofco.Resources.AllocationManagement {
     
     
     /// <summary>
-    ///    Clase de recurso fuertemente tipada para buscar cadenas localizadas, etc.
+    ///   Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
     /// </summary>
     // StronglyTypedResourceBuilder generó automáticamente esta clase
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Allocation {
@@ -28,11 +29,12 @@ namespace Sofco.Resources.AllocationManagement {
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Allocation() {
         }
         
         /// <summary>
-        ///    Devuelve la instancia de ResourceManager en caché que usa la clase.
+        ///   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Resources.ResourceManager ResourceManager {
@@ -46,8 +48,8 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Reemplaza la propiedad CurrentUICulture del subproceso actual para todas
-        ///    las búsquedas de recursos que usan esta clase de recursos fuertemente tipada.
+        ///   Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+        ///   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Globalization.CultureInfo Culture {
@@ -60,7 +62,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.added.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.added.
         /// </summary>
         public static string Added {
             get {
@@ -69,7 +71,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.billingPercentageExceeded.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.billingPercentageExceeded.
         /// </summary>
         public static string BillingPercentageExceeded {
             get {
@@ -78,7 +80,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.cannotBeAssign.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.cannotBeAssign.
         /// </summary>
         public static string CannotBeAssign {
             get {
@@ -87,7 +89,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceOutOfRange.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateSinceOutOfRange.
         /// </summary>
         public static string DateSinceOutOfRange {
             get {
@@ -96,7 +98,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateSinceRequired.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateSinceRequired.
         /// </summary>
         public static string DateSinceRequired {
             get {
@@ -105,7 +107,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToLessThanDateSince.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateToLessThanDateSince.
         /// </summary>
         public static string DateToLessThanDateSince {
             get {
@@ -114,7 +116,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToOutOfRange.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateToOutOfRange.
         /// </summary>
         public static string DateToOutOfRange {
             get {
@@ -123,7 +125,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.dateToRequired.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateToRequired.
         /// </summary>
         public static string DateToRequired {
             get {
@@ -132,7 +134,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.releaseDateIsRequired.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.releaseDateIsRequired.
         /// </summary>
         public static string ReleaseDateIsRequired {
             get {
@@ -141,7 +143,7 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a allocationManagement/allocation.wrongPercentage.
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.wrongPercentage.
         /// </summary>
         public static string WrongPercentage {
             get {
