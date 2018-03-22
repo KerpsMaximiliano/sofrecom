@@ -31,7 +31,7 @@ namespace Sofco.DAL
         private IFunctionalityRepository functionalityRepository;
         private IUserGroupRepository userGroupRepository;
         private IMenuRepository menuRepository;
-        private IGlobalSettingRepository globalSettingRepository;
+        private ISettingRepository settingRepository;
         private IRoleFunctionalityRepository roleFunctionalityRepository;
 
         #endregion
@@ -91,7 +91,7 @@ namespace Sofco.DAL
         public IFunctionalityRepository FunctionalityRepository => functionalityRepository ?? (functionalityRepository = new FunctionalityRepository(context));
         public IUserGroupRepository UserGroupRepository => userGroupRepository ?? (userGroupRepository = new UserGroupRepository(context));
         public IMenuRepository MenuRepository => menuRepository ?? (menuRepository = new MenuRepository(context));
-        public IGlobalSettingRepository GlobalSettingRepository => globalSettingRepository ?? (globalSettingRepository = new GlobalSettingRepository(context));
+        public ISettingRepository SettingRepository => settingRepository ?? (settingRepository = new SettingRepository(context));
         public IRoleFunctionalityRepository RoleFunctionalityRepository => roleFunctionalityRepository ?? (roleFunctionalityRepository = new RoleFunctionalityRepository(context));
 
         #endregion

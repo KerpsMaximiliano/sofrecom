@@ -15,7 +15,7 @@ namespace Sofco.WebJob.Security
         /// <summary>
         /// Create an instance of the options initialized with the default values
         /// </summary>
-        public BasicAuthenticationOptions() : base()
+        public BasicAuthenticationOptions()
         {
             AuthenticationScheme = BasicAuthenticationDefaults.AuthenticationScheme;
             AutomaticAuthenticate = true;

@@ -5,11 +5,11 @@ namespace Sofco.Framework.ValidationHelpers.Admin
 {
     public class SettingValidationHelper
     {
-        public static Response<GlobalSetting> ValidateAllocationManagementMonths(GlobalSetting globalSetting)
+        public static Response<Setting> ValidateAllocationManagementMonths(Setting setting)
         {
-            var response = new Response<GlobalSetting>();
+            var response = new Response<Setting>();
 
-            var value = globalSetting.Value;
+            var value = setting.Value;
 
             int months;
 

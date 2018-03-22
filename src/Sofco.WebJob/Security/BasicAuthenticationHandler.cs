@@ -90,6 +90,7 @@ namespace Sofco.WebJob.Security
                 {
                     return AuthenticateResult.Success(authenticationFailedContext.Ticket);
                 }
+
                 if (authenticationFailedContext.Skipped)
                 {
                     return AuthenticateResult.Success(ticket: null);
@@ -103,7 +104,7 @@ namespace Sofco.WebJob.Security
         {
             Response.StatusCode = 401;
 
-            var headerValue = Scheme + $" realm=\"{Options.Realm}\""; ;
+            var headerValue = Scheme + $" realm=\"{Options.Realm}\"";
             Response.Headers.Append(HeaderNames.WWWAuthenticate, headerValue);
 
             return Task.FromResult(true);

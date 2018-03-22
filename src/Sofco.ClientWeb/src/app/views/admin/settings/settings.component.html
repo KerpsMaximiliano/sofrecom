@@ -16,6 +16,7 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+
     <div class="row">
         <div class="col-sm-6">
             <div class="ibox float-e-margins">
@@ -29,7 +30,7 @@
                 </div>
                 <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
                     <spinner></spinner>
-                    <div class="form-group" *ngFor="let item of data; let dataIndex = index">
+                    <div class="form-group" *ngFor="let item of settings; let dataIndex = index">
                         <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
                         <input class="form-control" [type]="item.type" [(ngModel)]="item.value">
                     </div>
@@ -56,4 +57,28 @@
             </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ 'ADMIN.settings.jobsSettingTitle' | translate }}</h5>
+                </div>
+                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+                    <spinner></spinner>
+                    <div class="form-group" *ngFor="let item of jobSettings; let dataIndex = index">
+                        <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
+                        <div class="input-group">
+                            <input class="form-control" [type]="item.type" [(ngModel)]="item.value">
+                            <span class="input-group-btn"> 
+                                <button class="btn btn-primary" type="button" (click)="saveSetting(item)">{{ 'ACTIONS.update' | translate }}</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -30,7 +30,7 @@ namespace Sofco.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
-        public DbSet<GlobalSetting> GlobalSettings { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
@@ -105,7 +105,7 @@ namespace Sofco.DAL
             builder.MapLicenseType();
             builder.MapEmployeeLicense();
             builder.MapHitoDetails();
-            builder.MapGlobalSetting();
+            builder.MapSetting();
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
             builder.MapEmployeeHistory();

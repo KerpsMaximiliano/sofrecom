@@ -80,7 +80,9 @@
             "Holidays20Days": "Días de Vacaciones. Más de 10 años, hasta 20 años",
             "Holidays25Days": "Días de Vacaciones. Antiguedad mas de 20 años",
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
-            "StartDateHolidays": "Fecha de inicio período vacacional"
+            "StartDateHolidays": "Fecha de inicio período vacacional",
+            "jobsSettingTitle": "Parámetros de Jobs",
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes)."
         }
     },
     "billing":{

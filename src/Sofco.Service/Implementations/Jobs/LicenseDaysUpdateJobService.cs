@@ -129,11 +129,11 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void GetHolidaysValues()
         {
-            var settings = unitOfWork.GlobalSettingRepository.GetHolidaysValues();
+            var settings = unitOfWork.SettingRepository.GetHolidaysValues();
 
             foreach (var globalSetting in settings)
             {
-                if (globalSetting.Type == GlobalSettingType.Number)
+                if (globalSetting.Type == SettingValueType.Number)
                 {
                     holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
                 }
