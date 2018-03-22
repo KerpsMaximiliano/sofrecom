@@ -25,7 +25,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         "ADMIN.USERS.addGroup", //title
         "modalGroups", //id
         true,          //Accept Button
-        false,          //Cancel Button
+        true,          //Cancel Button
         "ACTIONS.ACCEPT",     //Accept Button Text
         "ACTIONS.cancel");   //Cancel Button Text
 
