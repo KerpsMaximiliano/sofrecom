@@ -14,7 +14,8 @@ declare var $: any;
 
 @Component({
     selector: 'license-list-rrhh',
-    templateUrl: './license-list-rrhh.component.html'
+    templateUrl: './license-list-rrhh.component.html',
+    styleUrls: ['./license-list-rrhh.component.scss']
 })
 export class LicenseListRrhh implements OnInit, OnDestroy {
 
@@ -162,5 +163,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
+    }
+
+    goToAdd(){
+        this.router.navigate([`/allocationManagement/licenses/add`])
     }
 }

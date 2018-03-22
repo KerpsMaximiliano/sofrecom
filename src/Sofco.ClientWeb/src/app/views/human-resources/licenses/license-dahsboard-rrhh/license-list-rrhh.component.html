@@ -11,92 +11,93 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <license-list-widget [statusId]="pending" [label]="'rrhh.license.pending'" [color]="'success'"></license-list-widget>
-    <license-list-widget [statusId]="authPending" [label]="'rrhh.license.authPending'" [color]="'warning'"></license-list-widget>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            {{'rrhh.license.approved' | translate }}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-right">
+                <button class="btn btn-sm btn-success btn-outline dim" (click)="goToAdd()"> {{ 'rrhh.license.load' | translate }} <i class="fa fa-plus"></i></button>
+                <button class="btn btn-sm btn-success btn-outline dim" (click)="createReport()"> {{ 'rrhh.license.report' | translate }} <i class="fa fa-file"></i></button>
+            </div>
         </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
-                        <select select2 class="form-control" id="employeeId">
-                            <option value="0">Seleccione una opción</option>
-                            <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.name }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label"> {{'rrhh.license.reason' | translate }} </label>
-                        <select select2 class="form-control" id="licensesTypeId">
-                            <option value="0">Seleccione una opción</option>
-                            <option *ngFor="let licensesType of licensesTypes" [value]="licensesType?.id">{{ licensesType?.text }}</option>
-                        </select>
-                    </div>
-                </div>
+    </div>
 
-                <div class="col-sm-4 m-t-md">
-                    <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                    <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+    <div class="tabs-container m-b-md">
+        <ul class="nav nav-tabs">
+            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1"> {{'rrhh.license.pending' | translate }} </a></li>
+            <li class=""><a class="tab-link-warning" data-toggle="tab" href="#tab-2"> {{'rrhh.license.authPending' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-3"> {{'rrhh.license.approved' | translate }} </a></li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body tab-success">
+                    <license-list-widget [statusId]="pending" [label]="'rrhh.license.pending'"></license-list-widget>
                 </div>
             </div>
 
-            <div class="m-t-md">
-                <table class="table table-striped" id="licenseStatusApproved" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="column-lg"> {{ 'rrhh.license.employee' | translate }} </th>
-                            <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
-                            <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
-                            <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
-                            <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
-                            <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
-                            <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
-                            <th class="column-xs text-center"> {{ 'rrhh.license.hasCertificate' | translate }} </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item)">
-                            <td class="column-lg"> {{ item.employeeName }} </td>
-                            <td class="column-lg"> {{ item.managerName }} </td>
-                            <td class="column-lg"> {{ item.licenseTypeName }} </td>
-                            <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
-                            <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
-                            <td class="column-sm text-center"> {{ item.days }} </td>
-                            <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
-                            <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.hasCertificate) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
-                        </tr>
-                    </tbody>
-                </table>   
-            </div> 
-        </div>
-    </div>
-</div>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body tab-warning">
+                    <license-list-widget [statusId]="authPending" [label]="'rrhh.license.authPending'"></license-list-widget>
+                </div>
+            </div>
 
-<div class="theme-config">
-    <div class="theme-config-box">
-        <div class="spin-icon" (click)="toggleNavigation()">
-            <i class="fa fa-cogs fa-spin"></i>
-        </div>
-        <div class="skin-settings">
-            <div class="title">{{'ACTIONS.title' | translate }}</div>
-            <div class="setings-item default-skin">
-                <span class="skin-name">
-                    <a [routerLink]="['/allocationManagement/licenses/add']">
-                        {{ 'rrhh.license.load' | translate }}
-                        <i class="fa fa-plus"></i>
-                    </a>
-                </span>
-            </div> 
-            <div class="setings-item blue-skin pointer text-white" (click)="createReport()">
-                <span class="skin-name">
-                    {{ 'rrhh.license.report' | translate }}
-                    <i class="fa fa-file"></i>
-                </span>
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body tab-primary">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
+                                <select select2 class="form-control" id="employeeId">
+                                    <option value="0">Seleccione una opción</option>
+                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label"> {{'rrhh.license.reason' | translate }} </label>
+                                <select select2 class="form-control" id="licensesTypeId">
+                                    <option value="0">Seleccione una opción</option>
+                                    <option *ngFor="let licensesType of licensesTypes" [value]="licensesType?.id">{{ licensesType?.text }}</option>
+                                </select>
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-4 m-t-md">
+                            <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+        
+                    <div class="m-t-md">
+                        <table class="table table-striped" id="licenseStatusApproved" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="column-lg"> {{ 'rrhh.license.employee' | translate }} </th>
+                                    <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+                                    <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                                    <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
+                                    <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
+                                    <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
+                                    <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
+                                    <th class="column-xs text-center"> {{ 'rrhh.license.hasCertificate' | translate }} </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item)">
+                                    <td class="column-lg"> {{ item.employeeName }} </td>
+                                    <td class="column-lg"> {{ item.managerName }} </td>
+                                    <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                                    <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
+                                    <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
+                                    <td class="column-sm text-center"> {{ item.days }} </td>
+                                    <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
+                                    <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.hasCertificate) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
+                                </tr>
+                            </tbody>
+                        </table>   
+                    </div> 
+                </div>
             </div>
         </div>
     </div>

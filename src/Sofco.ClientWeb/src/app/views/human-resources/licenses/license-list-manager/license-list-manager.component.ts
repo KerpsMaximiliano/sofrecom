@@ -11,7 +11,8 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 
 @Component({
     selector: 'license-list-manager',
-    templateUrl: './license-list-manager.component.html'
+    templateUrl: './license-list-manager.component.html',
+    styleUrls: ['./license-list-manager.component.scss']
 })
 export class LicenseListManager implements OnInit, OnDestroy {
 
