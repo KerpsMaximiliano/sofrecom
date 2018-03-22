@@ -12,7 +12,8 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: 'login.template.html'
+  templateUrl: 'login.template.html',
+  styleUrls: ['login.component.scss']
 })
 export class LoginComponent implements OnInit {
     model: any = {};
