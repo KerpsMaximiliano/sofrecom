@@ -18,7 +18,7 @@ namespace Sofco.Core.DAL
         IFunctionalityRepository FunctionalityRepository { get; }
         IUserGroupRepository UserGroupRepository { get; }
         IMenuRepository MenuRepository { get; }
-        IGlobalSettingRepository GlobalSettingRepository { get; }
+        ISettingRepository SettingRepository { get; }
         IRoleFunctionalityRepository RoleFunctionalityRepository { get; }
 
         #endregion

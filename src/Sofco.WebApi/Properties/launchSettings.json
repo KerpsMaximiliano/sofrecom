@@ -44,7 +44,6 @@
     },
     "IIS Express - frosales": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "frosales"
       }

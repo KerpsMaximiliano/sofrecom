@@ -6,7 +6,7 @@ using Sofco.Model.Enums;
 
 namespace Sofco.Model.Models.Admin
 {
-    public class GlobalSetting : IEntityDate
+    public class Setting : IEntityDate
     {
         public int Id { get; set; }
 
@@ -15,7 +15,9 @@ namespace Sofco.Model.Models.Admin
         public string Value { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public GlobalSettingType Type { get; set; }
+        public SettingValueType Type { get; set; }
+
+        public SettingCategory Category { get; set; }
 
         public DateTime? Created { get; set; }
 

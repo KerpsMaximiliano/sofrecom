@@ -1,6 +1,6 @@
 ﻿namespace Sofco.Model.Enums
 {
-    public enum GlobalSettingType
+    public enum SettingValueType
     {
         Text,
         Number

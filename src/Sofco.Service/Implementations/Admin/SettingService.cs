@@ -4,6 +4,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
 using Sofco.Framework.ValidationHelpers.Admin;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Utils;
 
@@ -13,7 +14,7 @@ namespace Sofco.Service.Implementations.Admin
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private Dictionary<string, Func<GlobalSetting, Response<GlobalSetting>>> validationDicts;
+        private Dictionary<string, Func<Setting, Response<Setting>>> validationDicts;
 
         public SettingService(IUnitOfWork unitOfWork)
         {
@@ -24,34 +25,64 @@ namespace Sofco.Service.Implementations.Admin
 
         private void InitValidations()
         {
-            validationDicts = new Dictionary<string, Func<GlobalSetting, Response<GlobalSetting>>>
+            validationDicts = new Dictionary<string, Func<Setting, Response<Setting>>>
             {
                 {"AllocationManagement_Months", SettingValidationHelper.ValidateAllocationManagementMonths}
             };
         }
 
-        public Response<List<GlobalSetting>> GetAll()
+        public Response<List<Setting>> GetAll()
         {
-            return new Response<List<GlobalSetting>> { Data = unitOfWork.GlobalSettingRepository.GetAll() };
+            return new Response<List<Setting>> { Data = unitOfWork.SettingRepository.GetAll() };
         }
 
-        public Response<List<GlobalSetting>> Save(List<GlobalSetting> globalParameters)
+        public Response<List<Setting>> Save(List<Setting> settings)
         {
-            var response = ValidateSettings(globalParameters);
+            var response = ValidateSettings(settings);
 
             if (response.HasErrors())
                 return response;
 
-            unitOfWork.GlobalSettingRepository.Save(globalParameters);
+            unitOfWork.SettingRepository.Save(settings);
 
-            response.Data = globalParameters;
+            response.Data = settings;
 
             return response;
         }
 
-        private Response<List<GlobalSetting>> ValidateSettings(List<GlobalSetting> globalParameters)
+        public Response<Setting> Save(Setting setting)
         {
-            var response = new Response<List<GlobalSetting>>();
+            var response = ValidateSetting(setting);
+
+            if (response.HasErrors())
+                return response;
+
+            unitOfWork.SettingRepository.Save(setting);
+
+            response.Data = setting;
+
+            return response;
+        }
+
+        private Response<Setting> ValidateSetting(Setting setting)
+        {
+            var response = new Response<Setting>();
+
+            if (!validationDicts.ContainsKey(setting.Key)) return response;
+
+            var validationReponse = validationDicts[setting.Key](setting);
+
+            if (validationReponse.HasErrors())
+            {
+                response.AddMessages(validationReponse.Messages);
+            }
+
+            return response;
+        }
+
+        private Response<List<Setting>> ValidateSettings(List<Setting> globalParameters)
+        {
+            var response = new Response<List<Setting>>();
 
             foreach (var globalParameter in globalParameters)
             {
@@ -98,6 +129,13 @@ namespace Sofco.Service.Implementations.Admin
             }
 
             return list;
+        }
+
+        public Response<List<Setting>> GetJobSettings()
+        {
+            var data = unitOfWork.SettingRepository.GetByCategory(SettingCategory.Jobs);
+
+            return new Response<List<Setting>> { Data = data };
         }
     }
 }

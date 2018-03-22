@@ -12,12 +12,17 @@ import { AppSetting } from 'app/services/common/app-setting';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 
-    data: Array<any>;
-    serviceSubscrip: Subscription;
-    licenseTypesSubscrip: Subscription;
-    public loading = false;
+  JobsSettingCategory = 2;
 
-    licenseTypes: Array<any> = new Array();
+  settings: Array<any>;
+  serviceSubscrip: Subscription;
+  licenseTypesSubscrip: Subscription;
+  public loading = false;
+
+  licenseTypes: Array<any> = new Array();
+  jobSettings: Array<any> = new Array();
+
+
 
   constructor(
       private service: SettingsService,
@@ -40,7 +45,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   getAll() {
     this.loading = true;
     this.serviceSubscrip = this.service.getAll().subscribe(
-      d => { this.data = d.body.data; },
+      d => {
+        const settings: Array<any> = d.body.data;
+        this.settings = settings.filter(item => item.category !== this.JobsSettingCategory);
+        this.jobSettings = settings.filter(item => item.category === this.JobsSettingCategory);
+      },
       err => this.errorHandlerService.handleErrors(err),
       () => { this.loading = false; });
   }
@@ -57,8 +66,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   save() {
     this.loading = true;
-    this.serviceSubscrip = this.service.save(this.data).subscribe(
-      d => { this.data = d.data; this.saveResponseHandler(); },
+    this.serviceSubscrip = this.service.save(this.settings).subscribe(
+      d => { this.settings = d.data; this.saveResponseHandler(); },
       err => { this.errorHandlerService.handleErrors(err); this.loading = false; },
       () => { this.loading = false; });
   }
@@ -78,11 +87,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.succes('ADMIN.settings.saveSuccess');
     for (const key in this.appSettting) {
 
-      const item = this.data.find(s => s.key === key);
+      const item = this.settings.find(s => s.key === key);
 
       if (item != null) {
         this.appSettting[key] = this.appSetttingService.parseValueByType(item);
       }
     }
+  }
+
+  saveSetting(item) {
+    this.messageService.showLoading();
+
+    this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
+      response => {
+        if (response.messages) { this.messageService.showMessages(response.messages); }
+      },
+      err => this.errorHandlerService.handleErrors(err),
+      () => this.messageService.closeLoading());
   }
 }

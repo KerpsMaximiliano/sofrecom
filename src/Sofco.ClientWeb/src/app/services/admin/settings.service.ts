@@ -20,6 +20,10 @@ export class SettingsService {
         return this.http.post<any>(`${this.baseUrl}/settings`, data);
     }
 
+    saveItem (data: any) {
+        return this.http.post<any>(`${this.baseUrl}/settings/${data.id}`, data);
+    }
+
     getLicenseTypes() {
         return this.http.get<any>(`${this.baseUrl}/settings/licenseTypes`);
     }
