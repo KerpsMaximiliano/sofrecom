@@ -14,5 +14,7 @@ namespace Sofco.Core.Services.Admin
         Response<Setting> Save(Setting setting);
 
         IList<LicenseTypeSettingItem> GetLicenseTypes();
+
+        Response<List<Setting>> GetJobSettings();
     }
 }

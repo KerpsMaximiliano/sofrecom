@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.DAL.Repositories.Admin
@@ -51,6 +52,11 @@ namespace Sofco.DAL.Repositories.Admin
         public ICollection<Setting> GetHolidaysValues()
         {
             return context.Settings.Where(x => x.Key.Contains("Holidays")).ToList();
+        }
+
+        public List<Setting> GetByCategory(SettingCategory category)
+        {
+            return context.Settings.Where(x => x.Category == category).ToList();
         }
 
         private void Update(Setting storedData, Setting data)

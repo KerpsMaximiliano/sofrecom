@@ -1,49 +1,66 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Hangfire;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Services.Admin;
+using Sofco.Model.Models.Admin;
+using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Helpers;
-using Sofco.WebJob.Jobs;
 using Sofco.WebJob.Jobs.Interfaces;
+using Sofco.WebJob.Services.Interfaces;
 
 namespace Sofco.WebJob.Services
 {
-    public class JobService
+    public class JobService : IJobService
     {
-        private const string SolfacJobName = "HitosSinSolfacDailyJob";
+        private const string LicenseCertificatePendingDayOfMonthKey = "LicenseCertificatePendingDayOfMonth";
 
-        private const string TigerEmployeeSyncJobName = "TigerEmployeeSyncJob";
+        private readonly JobSetting jobSetting;
 
-        private const string AzureJobName = "UpdateAzureUsers";
+        private readonly ISettingService settingService;
 
-        private const string TigerHealthInsuranceJobName = "TigerHealthInsurance";
+        public JobService(IOptions<JobSetting> jobSetting, ISettingService settingService)
+        {
+            this.settingService = settingService;
+            this.jobSetting = jobSetting.Value;
+        }
 
-        private const string LicenseDaysUpdateJobName = "LicenseDaysUpdate";
+        public void Execute()
+        {
+            var jobSettings = settingService.GetJobSettings().Data;
 
-        private const string EmployeeResetExamDaysJobName = "EmployeeResetExamDays";
+            Init(jobSetting.LocalTimeZoneName, jobSettings);
+        }
 
-        public static void Init(string timeZoneName)
+        private void Init(string timeZoneName, List<Setting> settings)
         {
             ClearJobs();
 
             var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
 
-            RecurringJob.AddOrUpdate<ISolfacJob>(SolfacJobName, j => j.Execute(), Cron.Daily(8), localTimeZone);
+            RecurringJob.AddOrUpdate<ISolfacJob>(JobNames.Solfac, j => j.Execute(), Cron.Daily(8), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IAzureJob>(AzureJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
+            RecurringJob.AddOrUpdate<IAzureJob>(JobNames.Azure, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IEmployeeSyncJob>(TigerEmployeeSyncJobName, j => j.Execute(), Cron.Daily(7), localTimeZone);
+            RecurringJob.AddOrUpdate<IEmployeeSyncJob>(JobNames.TigerEmployeeSync, j => j.Execute(), Cron.Daily(7), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(TigerHealthInsuranceJobName, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
+            RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(JobNames.TigerHealthInsurance, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
 
-            RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(LicenseDaysUpdateJobName, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
+            RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(JobNames.LicenseDaysUpdate, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(EmployeeResetExamDaysJobName, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
+            RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(JobNames.EmployeeResetExamDays, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
 
             BackgroundJob.Schedule<IEmployeeForceSaveJob>(j => j.Execute(), DateTime.UtcNow.AddYears(100));
 
-            RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(LicenseCertificatePendingJob.JobName, j => j.Execute(), Cron.Monthly(25), localTimeZone);
+            var licenseCertificatePendingDayOfMonth = settings.SingleOrDefault(s => s.Key == LicenseCertificatePendingDayOfMonthKey);
+
+            var licenseCertificatePending = licenseCertificatePendingDayOfMonth != null ? Cron.Monthly(int.Parse(licenseCertificatePendingDayOfMonth.Value)) : Cron.Monthly(25);
+
+            RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(JobNames.LicenseCertificatePending, j => j.Execute(), licenseCertificatePending, localTimeZone);
         }
 
-        private static void ClearJobs()
+        private void ClearJobs()
         {
             JobHelper.ClearAllRecurringJob();
         }

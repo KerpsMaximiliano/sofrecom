@@ -4,6 +4,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
 using Sofco.Framework.ValidationHelpers.Admin;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Utils;
 
@@ -128,6 +129,13 @@ namespace Sofco.Service.Implementations.Admin
             }
 
             return list;
+        }
+
+        public Response<List<Setting>> GetJobSettings()
+        {
+            var data = unitOfWork.SettingRepository.GetByCategory(SettingCategory.Jobs);
+
+            return new Response<List<Setting>> { Data = data };
         }
     }
 }

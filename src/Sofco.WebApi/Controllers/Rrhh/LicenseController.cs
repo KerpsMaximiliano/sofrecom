@@ -58,7 +58,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             if (response.HasErrors())
                 return BadRequest(response);
-            
+
             UpdateStatus(model, response);
 
             return this.CreateResponse(response);

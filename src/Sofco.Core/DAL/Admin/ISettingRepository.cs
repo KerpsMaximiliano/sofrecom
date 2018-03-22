@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
@@ -14,5 +15,7 @@ namespace Sofco.Core.DAL.Admin
         Setting GetByKey(string examdaysallowtogether);
 
         ICollection<Setting> GetHolidaysValues();
+
+        List<Setting> GetByCategory(SettingCategory category);
     }
 }
