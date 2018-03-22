@@ -19,7 +19,7 @@ namespace Sofco.Framework.StatusHandlers.License
                 response.AddError(Resources.Rrhh.License.ExamDescriptionRequired);
             }
 
-            if (!domain.Final && !domain.Parcial)
+            if ((!domain.Final && !domain.Parcial) || (domain.Final && domain.Parcial))
             {
                 response.AddError(Resources.Rrhh.License.ExamTypeRequired);
             }
