@@ -87,6 +87,8 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     add(){
         var analyticId = $('#analyticId').val();
 
+        if(analyticId == 0) return
+
         var analytic = this.analytics.find(x => x.id == analyticId);
 
         this.allocations.add(analytic);
