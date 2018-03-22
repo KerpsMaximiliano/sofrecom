@@ -54,6 +54,16 @@ export class SplitHitoComponent implements OnDestroy  {
     this.spliHitoModal.show();
   }
 
+  getCurrencySymbol(){
+    if(!this.hitoSelected || !this.hitoSelected.money) return "";
+
+    switch(this.hitoSelected.money){
+      case "Peso": { return "$"; }
+      case "Dolar": { return "U$D"; }
+      case "Euro": { return "€"; }
+    }
+  }
+
   save(){
     this.hito.statusCode = this.hitoSelected.statusCode;
     this.hito.projectId = this.hitoSelected.projectId;
