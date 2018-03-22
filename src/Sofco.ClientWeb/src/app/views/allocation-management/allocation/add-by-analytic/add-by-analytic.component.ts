@@ -102,6 +102,8 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
         var employeeId = $('#employeeId').val();
         this.resourceId = employeeId;
 
+        if(this.resourceId == 0) return;
+
         if(this.pmoUser){
             this.allocations.getAllocations(employeeId, this.dateSince);
         }

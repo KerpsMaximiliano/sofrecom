@@ -19,6 +19,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private id;
     public user = <UserDetail>{};
     private groupId: any;
+    public isLoading: boolean = false;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ADMIN.USERS.addGroup", //title
@@ -128,13 +129,19 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             groupsToRemove: []
         };
 
+        this.isLoading = true;
+
         this.service.assignGroups(this.id, objToSend).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.getDetails();
                 this.modalGroups.hide();
+                if(data.messages) this.messageService.showMessages(data.messages);
+                this.isLoading = false;
+                this.getDetails();
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => { 
+                this.errorHandlerService.handleErrors(err);
+                this.isLoading = false;
+            });
     }
 
     unassignGroup(){
