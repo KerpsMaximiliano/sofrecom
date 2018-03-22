@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180322195334_ChangeContractNumberMaxLength")]
+    partial class ChangeContractNumberMaxLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -1410,18 +1411,21 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany("Invoices")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceHistory", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Billing.Invoice", "Invoice")
                         .WithMany("Histories")
-                        .HasForeignKey("InvoiceId");
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
@@ -1433,7 +1437,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "CommercialManager")
                         .WithMany("PurchaseOrder2")
-                        .HasForeignKey("CommercialManagerId");
+                        .HasForeignKey("CommercialManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Models.Common.File", "File")
                         .WithMany()
@@ -1441,7 +1446,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
                         .WithMany("PurchaseOrder1")
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
@@ -1468,7 +1474,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")
-                        .HasForeignKey("UserApplicantId");
+                        .HasForeignKey("UserApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacAttachment", b =>
@@ -1488,7 +1495,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Rrhh.License", b =>
@@ -1500,7 +1508,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
                         .WithMany("Licenses")
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Utils.Sector", "Sector")
                         .WithMany("Licenses")
@@ -1522,7 +1531,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.LicenseFile", b =>
