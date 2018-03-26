@@ -64,7 +64,9 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         this.model.commercialManagerId = item.commercialManagerId;
         this.model.managerId = item.managerId;
 
-        this.getProjects(item.serviceId);
+        if(item.id > 0 && item.serviceId){
+            this.getProjects(item.serviceId);
+        }
     }
 
     getProjects(serviceId){

@@ -75,6 +75,8 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<IList<CrmProject>>();
 
+            if (string.IsNullOrWhiteSpace(serviceId)) return response;
+
             try
             {
                 var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
