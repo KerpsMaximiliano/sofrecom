@@ -26,6 +26,7 @@
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../node_modules/datatables.net-buttons-bs/css/buttons.bootstrap.css",
         "assets/styles/plugins/awesome-bootstrap-checkbox.css",
+        "assets/styles/plugins/datepicker/datepicker.css",
         "styles.scss",
         "../node_modules/toastr-ng2/toastr.css",
         "../node_modules/sweetalert2/dist/sweetalert2.min.css"
@@ -40,6 +41,7 @@
         "../node_modules/pdfmake/build/pdfmake.min.js",
         "assets/js/vfs_fonts.js",
         "assets/js/pdfjs/pdf.js",
+        "assets/styles/plugins/datepicker/bootstrap-datepicker.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/datatables.net-buttons/js/dataTables.buttons.js",

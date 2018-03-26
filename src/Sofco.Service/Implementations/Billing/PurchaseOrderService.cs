@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Billing
                 logger.LogError(e);
             }
 
-            //await UpdateProjectOnCrm(response, domain.ProjectId, domain.Number);
+            await UpdateProjectOnCrm(response, domain.ProjectId, domain.Number);
 
             return response;
         }
@@ -227,9 +227,9 @@ namespace Sofco.Service.Implementations.Billing
             {
                 client.BaseAddress = new Uri(crmConfig.Url);
 
-                var data = $"PurchaseOrder={purchaseOrder}";
+                var data = $"purchaseOrder={purchaseOrder}";
 
-                var urlPath = $"/api/Project/{projectId}/";
+                var urlPath = $"/api/Project/{projectId}/purchaseOrder";
 
                 try
                 {
