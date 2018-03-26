@@ -18,7 +18,6 @@ namespace Sofco.WebApi.Models.AllocationManagement
             Name = domain.Name;
             ClientExternalId = domain.ClientExternalId;
             ClientExternalName = domain.ClientExternalName;
-            ContractNumber = domain.ContractNumber;
             Service = domain.Service;
             ServiceId = domain.ServiceId;
             SoftwareLawId = domain.SoftwareLawId;
@@ -131,7 +130,6 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.Name = Name;
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
-            domain.ContractNumber = ContractNumber;
             domain.Service = Service;
             domain.ServiceId = ServiceId;
             domain.SoftwareLawId = SoftwareLawId;

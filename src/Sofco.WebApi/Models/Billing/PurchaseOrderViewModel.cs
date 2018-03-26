@@ -18,6 +18,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public int CommercialManagerId { get; set; }
 
+        public string ProjectId { get; set; }
+
         public int AnalyticId { get; set; }
 
         public DateTime ReceptionDate { get; set; }
@@ -36,6 +38,7 @@ namespace Sofco.WebApi.Models.Billing
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
+            domain.ProjectId = ProjectId;
             domain.ManagerId = ManagerId;
             domain.CommercialManagerId = CommercialManagerId;
             domain.AnalyticId = AnalyticId;

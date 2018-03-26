@@ -10,6 +10,7 @@ import { CustomerService } from "../../../../services/billing/customer.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { ProjectService } from "app/services/billing/project.service";
 
 @Component({
     selector: 'purchase-order-form',
@@ -21,6 +22,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     public model: any = {};
     public customers: Option[] = new Array<Option>();
     public analytics: any[] = new Array();
+    public projects: any[] = new Array();
 
     @Input() mode: string;
 
@@ -31,6 +33,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private analyticService: AnalyticService,
+                private projectService: ProjectService,
                 private menuService: MenuService,
                 private customerService: CustomerService,
                 private messageService: MessageService,
@@ -60,6 +63,16 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         var item = this.analytics.find(x => x.id == this.model.analyticId);
         this.model.commercialManagerId = item.commercialManagerId;
         this.model.managerId = item.managerId;
+
+        this.getProjects(item.serviceId);
+    }
+
+    getProjects(serviceId){
+        this.projectService.getOptions(serviceId).subscribe(d => {
+            this.projects = d.data;
+            this.model.projectId = 0;
+        },
+        err => this.errorHandlerService.handleErrors(err));
     }
 
     getAnalytics(){
@@ -78,4 +91,4 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err)
         });
     }
-}
+} 

@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="quantity">{{'billing.solfac.project' | translate }}</label>
+                        <label class="control-label" for="projectId">{{'billing.solfac.project' | translate }}</label>
                         <select class="form-control m-b" [(ngModel)]="projectId">
                             <option value="0">{{'selectAnOption' | translate }}</option>
                             <option *ngFor="let project of projects" [value]="project?.value">{{project?.text}}</option>

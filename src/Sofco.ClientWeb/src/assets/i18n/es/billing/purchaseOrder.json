@@ -10,5 +10,6 @@
     "yearIsRequired": "Año invalido",
     "notFound": "Orden de Compra no encontrada",
     "fileAdded": "Archivo subido exitosamente",
-    "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados"
+    "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados",
+    "projectIsRequired": "El proyecto es requerido"
 }

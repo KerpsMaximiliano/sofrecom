@@ -95,4 +95,12 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
             case 3: return this.i18nService.translateByKey("allocationManagement.analytics.status.closeForExpenses");
         }
     }
+
+    goToPurchaseOrders(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
+    }
+
+    goToProjects(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
+    }
 }

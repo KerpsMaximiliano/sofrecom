@@ -9,5 +9,7 @@
         public int CommercialManagerId { get; set; }
 
         public int ManagerId { get; set; }
+
+        public string ServiceId { get; set; }
     }
 }

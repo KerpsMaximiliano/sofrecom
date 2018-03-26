@@ -53,11 +53,11 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] PurchaseOrderViewModel model)
+        public async Task<IActionResult> Post([FromBody] PurchaseOrderViewModel model)
         {
             var domain = model.CreateDomain(sessionManager.GetUserName());
 
-            var response = purchaseOrderService.Add(domain);
+            var response = await purchaseOrderService.Add(domain);
 
             return this.CreateResponse(response);
         }

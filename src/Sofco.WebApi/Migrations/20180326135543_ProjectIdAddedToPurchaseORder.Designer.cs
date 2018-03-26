@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180326135543_ProjectIdAddedToPurchaseORder")]
+    partial class ProjectIdAddedToPurchaseORder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -225,6 +226,9 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(150);
 
                     b.Property<int?>("CommercialManagerId");
+
+                    b.Property<string>("ContractNumber")
+                        .HasMaxLength(500);
 
                     b.Property<int>("CostCenterId");
 

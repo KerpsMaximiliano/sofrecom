@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -22,12 +24,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<PurchaseOrderService> logger;
         private readonly FileConfig fileConfig;
+        private readonly CrmConfig crmConfig;
 
-        public PurchaseOrderService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<FileConfig> fileOptions)
+        public PurchaseOrderService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<FileConfig> fileOptions, IOptions<CrmConfig> crmOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.fileConfig = fileOptions.Value;
+            this.crmConfig = crmOptions.Value;
         }
 
         public PurchaseOrderOptions GetFormOptions()
@@ -44,7 +48,7 @@ namespace Sofco.Service.Implementations.Billing
             return options;
         }
 
-        public Response<PurchaseOrder> Add(PurchaseOrder domain)
+        public async Task<Response<PurchaseOrder>> Add(PurchaseOrder domain)
         {
             var response = new Response<PurchaseOrder>();
 
@@ -66,6 +70,8 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(e);
             }
+
+            //await UpdateProjectOnCrm(response, domain.ProjectId, domain.Number);
 
             return response;
         }
@@ -208,10 +214,37 @@ namespace Sofco.Service.Implementations.Billing
             PurchaseOrderValidationHelper.ValidateNumber(response, domain);
             PurchaseOrderValidationHelper.ValidateAnalytic(response, domain);
             PurchaseOrderValidationHelper.ValidateClient(response, domain);
+            PurchaseOrderValidationHelper.ValidateProject(response, domain);
             PurchaseOrderValidationHelper.ValidateComercialManager(response, domain);
             PurchaseOrderValidationHelper.ValidateManager(response, domain);
             PurchaseOrderValidationHelper.ValidateArea(response, domain);
             PurchaseOrderValidationHelper.ValidateYear(response, domain);
+        }
+
+        private async Task UpdateProjectOnCrm(Response response, string projectId, string purchaseOrder)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(crmConfig.Url);
+
+                var data = $"PurchaseOrder={purchaseOrder}";
+
+                var urlPath = $"/api/Project/{projectId}/";
+
+                try
+                {
+                    var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    var httpResponse = await client.PutAsync(urlPath, stringContent);
+
+                    httpResponse.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(urlPath + "; data: " + data, ex);
+                    response.AddError(Resources.Common.ErrorSave);
+                }
+            }
         }
     }
 }

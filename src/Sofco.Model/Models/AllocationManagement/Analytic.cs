@@ -22,8 +22,6 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public string ClientExternalName { get; set; }
 
-        public string ContractNumber { get; set; }
-
         public string Service { get; set; }
 
         public string ServiceId { get; set; }

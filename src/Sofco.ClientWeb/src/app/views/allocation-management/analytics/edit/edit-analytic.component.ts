@@ -110,4 +110,12 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             this.isLoading = false;
         });
     }
+
+    goToPurchaseOrders(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
+    }
+
+    goToProjects(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
+    }
 } 

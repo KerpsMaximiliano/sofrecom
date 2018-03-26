@@ -21,14 +21,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     serviceName: string;
     customerName: string;
     public loading = true;
+    public analytic: any;
 
-    @ViewChild('rightbar') rightbar;
- 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ProjectService,
-        private menuService: MenuService,
+        public menuService: MenuService,
         private messageService: MessageService,
         private datatableService: DataTableService,
         private errorHandlerService: ErrorHandlerService) { }
@@ -51,7 +50,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     getIfIsRelated(){
       this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(response => {
-        this.rightbar.analytic = response;
+        this.analytic = response;
       },
       err => this.errorHandlerService.handleErrors(err));
     }
@@ -109,5 +108,30 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     canBillMultiple(){
       return this.menuService.hasFunctionality('SOLFA', 'MUPRO') && this.projects.length > 1;
+    }
+
+    back(){
+      window.history.back();
+    }
+
+    goToCreateAnalytic(){
+      sessionStorage.setItem('analyticWithProject', 'yes');
+      this.router.navigate(['/contracts/analytics/new']);
+    }
+  
+    goToEditAnalytic(){
+      this.router.navigate([`/contracts/analytics/${this.analytic.id}/edit/`]);
+    }
+  
+    goToResources(){
+      var customerId = sessionStorage.getItem('customerId');
+      var serviceId = sessionStorage.getItem('serviceId');
+      this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/resources`]);
+    }
+  
+    goToPurchaseOrders(){
+      var customerId = sessionStorage.getItem('customerId');
+      var serviceId = sessionStorage.getItem('serviceId');
+      this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/purchaseOrders`]);
     }
 }

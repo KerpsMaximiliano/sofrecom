@@ -24,6 +24,7 @@ namespace Sofco.WebApi.Models.Billing
             Area = domain.Area;
             Year = domain.Year;
             Status = domain.Status;
+            ProjectId = domain.ProjectId;
 
             if (domain.File != null)
             {
@@ -42,6 +43,8 @@ namespace Sofco.WebApi.Models.Billing
         public string ClientExternalId { get; set; }
 
         public string ClientExternalName { get; set; }
+
+        public string ProjectId { get; set; }
 
         public int ManagerId { get; set; }
 
@@ -79,6 +82,7 @@ namespace Sofco.WebApi.Models.Billing
             domain.Area = Area;
             domain.Year = Year;
             domain.Status = Status;
+            domain.ProjectId = ProjectId;
 
             if (FileId > 0)
                 domain.FileId = FileId;

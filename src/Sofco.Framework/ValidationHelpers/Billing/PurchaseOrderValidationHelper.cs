@@ -91,5 +91,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.PurchaseOrder.NotFound);
             }
         }
+
+        public static void ValidateProject(Response<PurchaseOrder> response, PurchaseOrder domain)
+        {
+            if (string.IsNullOrWhiteSpace(domain.ProjectId) || domain.ProjectId.Equals("0"))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.ProjectIsRequired);
+            }
+        }
     }
 }

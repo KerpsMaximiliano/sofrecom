@@ -56,7 +56,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 Id = x.Id,
                 Text = $"{x.Title} - {x.Name}",
                 CommercialManagerId = x.CommercialManagerId.GetValueOrDefault(),
-                ManagerId = x.ManagerId.GetValueOrDefault()
+                ManagerId = x.ManagerId.GetValueOrDefault(),
+                ServiceId = x.ServiceId
 
             }).ToList();
         }
