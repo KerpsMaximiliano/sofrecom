@@ -64,34 +64,6 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return this.CreateResponse(response);
         }
 
-        private void UpdateStatus(LicenseAddModel model, Response<string> response)
-        {
-            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
-            {
-                var statusParams = new LicenseStatusChangeModel
-                {
-                    Status = LicenseStatus.ApprovePending,
-                    UserId = model.UserId,
-                    IsRrhh = model.IsRrhh
-                };
-
-                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
-                response.AddMessages(statusResponse.Messages);
-            }
-            else
-            {
-                var statusParams = new LicenseStatusChangeModel
-                {
-                    Status = LicenseStatus.AuthPending,
-                    UserId = model.UserId,
-                    IsRrhh = model.IsRrhh
-                };
-
-                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
-                response.AddMessages(statusResponse.Messages);
-            }
-        }
-
         [HttpPost("search")]
         public IActionResult Search([FromBody] LicenseSearchParams parameters)
         {
@@ -204,6 +176,34 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var response = licenseService.FileDelivered(id);
 
             return this.CreateResponse(response);
+        }
+
+        private void UpdateStatus(LicenseAddModel model, Response<string> response)
+        {
+            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.ApprovePending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
+            else
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.AuthPending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
         }
     }
 }
