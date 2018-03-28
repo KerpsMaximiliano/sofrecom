@@ -21,13 +21,13 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.startDate' | translate }}</label>
-                    <ng-datepicker [(ngModel)]="model.startDateContract" [options]="datePickerOptions"></ng-datepicker>
+                    <date-picker [(date)]="model.startDateContract"></date-picker>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.endDate' | translate }}</label>
-                    <ng-datepicker [(ngModel)]="model.endDateContract" [options]="datePickerOptions"></ng-datepicker>
+                    <date-picker [(date)]="model.endDateContract"></date-picker>
                 </div>
             </div>
         </div>

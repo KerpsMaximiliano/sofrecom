@@ -41,7 +41,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         percentage: null
     };
 
-    public options: any;
     public endDate: Date = new Date();
 
     getAllSubscrip: Subscription;
@@ -55,10 +54,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private usersService: UserService,
                 private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){
-
-                this.options = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
  
     ngOnInit(): void {
 

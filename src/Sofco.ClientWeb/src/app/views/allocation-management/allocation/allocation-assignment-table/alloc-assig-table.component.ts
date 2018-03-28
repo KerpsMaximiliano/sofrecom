@@ -39,7 +39,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     addSubscrip: Subscription;
 
     releaseDate: Date = new Date();
-    public options;
 
     public allocationSelected: any;
     public isEditingAnyRow: boolean = false;
@@ -54,10 +53,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         private allocationsService: AllocationService,
         private messageService: MessageService,
         private employeeService: EmployeeService,
-        private errorHandlerService: ErrorHandlerService){
-
-            this.options = this.menuService.getDatePickerOptions();
-    }
+        private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
         if(this.resourceId > 0){

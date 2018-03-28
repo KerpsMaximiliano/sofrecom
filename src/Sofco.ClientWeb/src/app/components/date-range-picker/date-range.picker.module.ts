@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Daterangepicker, DaterangepickerConfig } from 'ng2-daterangepicker';
-import { DateRangePickerComponent } from 'app/components/datepicker/date-range-picker.component';
+import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
 
 @NgModule({
   imports: [

@@ -5,6 +5,6 @@
 <ng2-modal [config]="updateCashModalConfig" #updateCashModal (accept)="updateCash()" [isLoading]="isLoading">
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.cashedDate' | translate }}</label>
-        <ng-datepicker [(ngModel)]="cashedDate" [options]="options"></ng-datepicker>
+        <date-picker [(date)]="cashedDate"></date-picker>
     </div>
 </ng2-modal> 

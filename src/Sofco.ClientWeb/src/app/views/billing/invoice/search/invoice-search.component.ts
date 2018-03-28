@@ -39,8 +39,6 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
-    public dateOptions;
-
     public filterByDates = true;
 
     constructor(
@@ -55,10 +53,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private projectService: ProjectService,
         private datatableService: DataTableService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) {
-
-            this.dateOptions = this.menuService.getDatePickerOptions();
-         }
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
         this.getCustomers();

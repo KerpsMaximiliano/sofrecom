@@ -25,17 +25,12 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     @Input() mode: string;
 
-    public datePickerOptions;
-
     constructor(private analyticService: AnalyticService,
                 private costCenter: CostCenterService,
                 private router: Router,
                 private menuService: MenuService,
                 private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
-
-        this.datePickerOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
         let service = JSON.parse(sessionStorage.getItem('serviceDetail'));

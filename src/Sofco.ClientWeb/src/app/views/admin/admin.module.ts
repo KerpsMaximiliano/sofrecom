@@ -30,12 +30,13 @@ import { UserService } from "app/services/admin/user.service";
 import { SettingsService } from "app/services/admin/settings.service";
 import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, SettingsComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService],
   

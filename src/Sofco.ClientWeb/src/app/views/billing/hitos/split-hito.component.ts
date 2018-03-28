@@ -30,17 +30,13 @@ export class SplitHitoComponent implements OnDestroy  {
 
   public hito: NewHito = new NewHito();
   public hitoSelected: any;
-  public options;
   public btnDisabled: boolean = false;
 
   constructor(private messageService: MessageService,
     private menuService: MenuService,
     private projectService: ProjectService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router) {
-      
-      this.options = this.menuService.getDatePickerOptions();
-    }
+    private router: Router) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();

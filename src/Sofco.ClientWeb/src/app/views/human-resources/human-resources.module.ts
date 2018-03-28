@@ -23,13 +23,14 @@ import { LicenseAuthPendingComponent } from 'app/views/human-resources/licenses/
 import { LicensePendingComponent } from 'app/views/human-resources/licenses/workflow/pending/pending.component';
 import { LicenseRejectComponent } from 'app/views/human-resources/licenses/workflow/reject/reject.component';
 import { LicenseHistoryComponent } from 'app/views/human-resources/licenses/history/license-history.component';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 
 @NgModule({
   declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule],
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],
 
   providers   : [LicenseService],
   

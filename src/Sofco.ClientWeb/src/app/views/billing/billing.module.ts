@@ -67,6 +67,7 @@ import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-
 import { CertificatesService } from 'app/services/billing/certificates.service';
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -80,7 +81,8 @@ import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule],
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
+                 DatePickerModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService],

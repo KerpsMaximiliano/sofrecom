@@ -31,7 +31,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
-    public dateOptions;
 
     private lastQuery: any;
     public loaded: boolean = false;
@@ -43,10 +42,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
  
     ngOnInit(): void {
         this.getAllocationResources();

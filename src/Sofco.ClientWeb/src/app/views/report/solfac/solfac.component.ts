@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-import { DateRangePickerComponent } from 'app/components/datepicker/date-range-picker.component'
+import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component'
 
 import { ReportHelper } from "app/views/report/common/report-helper"
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -23,7 +23,6 @@ export class SolfacReportComponent implements OnInit, OnDestroy {
     @ViewChild('chart') chart:SolfacChartComponent;
     @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
     public loading: boolean = true;
-    public dateOptions;
     getDataSubscription: Subscription;
     data;
     dateSince: Date = new Date();
@@ -34,10 +33,7 @@ export class SolfacReportComponent implements OnInit, OnDestroy {
         private menuService: MenuService,
         private service: SolfacReportService,
         private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) 
-    {
-        this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit(){
         jQuery('#dataSource').slideUp();

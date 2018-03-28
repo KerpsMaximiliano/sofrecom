@@ -22,13 +22,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateSince"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateTo"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
