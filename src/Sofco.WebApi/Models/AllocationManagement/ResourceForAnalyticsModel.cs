@@ -17,7 +17,11 @@ namespace Sofco.WebApi.Models.AllocationManagement
             Percentage = allocation.Percentage;
 
             EndDate = allocation.StartDate.AddMonths(1).AddDays(-1);
+
+            EmployeeId = allocation.EmployeeId;
         }
+
+        public int EmployeeId { get; set; }
 
         public DateTime EndDate { get; set; }
 
