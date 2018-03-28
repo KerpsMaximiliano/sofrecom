@@ -12,7 +12,6 @@ import { Daterangepicker } from 'ng2-daterangepicker';
 
 import { SpinnerModule } from "app/components/spinner/spinner.module";
 import { WidgetModule } from 'app/components/widget/widget.module';
-import { DateRangePickerModule } from 'app/components/datepicker/date-range.picker.module'
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 import { SolfacReportComponent } from './solfac/solfac.component';
@@ -20,6 +19,8 @@ import { SolfacChartComponent } from './solfac/solfac-chart.component';
 
 import { SolfacReportService } from 'app/services/report/solfacReport.service';
 import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
+import { DateRangePickerModule } from 'app/components/date-range-picker/date-range.picker.module';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 
 @NgModule({
 declarations: [
@@ -29,7 +30,7 @@ declarations: [
 imports: [
     CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
     TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, ChartsModule,
-    DateRangePickerModule, IboxtoolsModule
+    DateRangePickerModule, IboxtoolsModule, DatePickerModule
 ],
   
 providers: [ SolfacReportService ],

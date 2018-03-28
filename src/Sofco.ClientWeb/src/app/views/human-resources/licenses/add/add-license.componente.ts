@@ -31,8 +31,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     public uploader: FileUploader = new FileUploader({url:""});
     public showUploader: boolean = false;
 
-    public dateOptions;
-
     public model: License = new License();
 
     public resources: any[] = new Array();
@@ -63,10 +61,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private menuService: MenuService,
                 private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
         var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from "@angular/core";
+import { Component, OnDestroy, Input, ViewChild } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
@@ -26,7 +26,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     @Input() mode: string;
 
-    public datePickerOptions;
     getOptionsSubscrip: Subscription;
     getAnalyticSubscrip: Subscription;
 
@@ -37,14 +36,9 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
                 private menuService: MenuService,
                 private customerService: CustomerService,
                 private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
-
-        this.datePickerOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
-        this.model.receptionDate = new Date();
-       
         this.getCustomers();
 
         this.getOptionsSubscrip = this.purchaseOrderService.getFormOptions().subscribe(

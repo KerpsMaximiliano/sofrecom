@@ -36,18 +36,13 @@ export class StatusCashComponent implements OnDestroy  {
 
   cashedDate: Date = new Date();
 
-  public options;
-
   public isLoading: boolean = false;
 
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router) {
-
-        this.options = this.menuService.getDatePickerOptions();
-     }
+    private router: Router) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();

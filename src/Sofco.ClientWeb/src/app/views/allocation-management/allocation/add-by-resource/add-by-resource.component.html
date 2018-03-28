@@ -27,7 +27,7 @@
                             <div class="col-md-6" *ngIf="pmoUser">
                                 <div class="form-group">
                                     <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                                    <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                                    <date-picker [(date)]="dateSince"></date-picker>
                                 </div>
                             </div>
                             <div class="col-md-6">

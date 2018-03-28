@@ -2,13 +2,6 @@
     <label class="control-label">{{'billing.purchaseOrder.fields.title' | translate }}</label>
     <input type="text" class="form-control" [(ngModel)]="model.title">
 </div>
-<!-- 
-<div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
-    <input type="text" class="form-control" placeholder="DD/MM/YYYY" id="partida">
-    <div class="input-group-addon">
-        <span class="fa fa-calendar"></span>
-    </div>
-</div> -->
 
 <div class="row">
     <div class="col-sm-6">
@@ -20,7 +13,7 @@
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</label>
-            <ng-datepicker [(ngModel)]="model.receptionDate" [options]="datePickerOptions"></ng-datepicker>
+            <date-picker [(date)]="model.receptionDate"></date-picker>
         </div>
     </div>
 </div>

@@ -39,8 +39,6 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
-    public dateOptions;
-
     public filterByDates = true;
 
     constructor(
@@ -54,10 +52,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private menuService: MenuService,
         private datatableService: DataTableService,
         private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) {
-
-            this.dateOptions = this.menuService.getDatePickerOptions();
-         }
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
         this.getCustomers();

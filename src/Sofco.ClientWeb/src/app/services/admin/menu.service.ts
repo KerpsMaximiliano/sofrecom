@@ -100,16 +100,4 @@ export class MenuService {
         }
          return false;
      }
- 
-    getDatePickerOptions(){
-        var options: DatepickerOptions = {
-            minYear: 1970,
-            maxYear: 2030,
-            displayFormat: 'DD/MM/YYYY',
-            barTitleFormat: 'MMMM YYYY',
-            firstCalendarDay: 1
-          };
-
-        return options;
-    }
 }

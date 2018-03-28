@@ -13,7 +13,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-md-7 col-xs-12">
             <div class="ibox">
                 <div class="ibox-content">
                     <div class="form-group" *ngIf="fromProfile == false">
@@ -32,13 +32,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
-                                <ng-datepicker [(ngModel)]="model.startDate" [options]="dateOptions"></ng-datepicker>
+                                <date-picker [(date)]="model.startDate"></date-picker>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
-                                <ng-datepicker [(ngModel)]="model.endDate" [options]="dateOptions"></ng-datepicker>
+                                <date-picker [(date)]="model.endDate"></date-picker>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div class="col-sm-5" *ngIf="model.id > 0">
+        <div class="col-md-5 col-xs-12" *ngIf="model.id > 0">
             <h3>{{'billing.solfac.import' | translate }}</h3>
 
             <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />

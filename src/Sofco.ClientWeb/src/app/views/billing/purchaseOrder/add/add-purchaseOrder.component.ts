@@ -43,6 +43,7 @@ export class NewPurchaseOrderComponent implements OnDestroy {
     add() {
         this.messageService.showLoading();
         this.form.model.clientExternalName = $('#clientExternalId option:selected').text();
+        this.form.model.receptionDate = new Date();
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {
