@@ -62,7 +62,7 @@
 
                     <div class="form-group" [hidden]="model.typeId != '13'">
                         <label class="control-label">{{'rrhh.license.comments' | translate }}</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.comments">
+                        <input type="text" class="form-control" maxlength="200" [(ngModel)]="model.comments">
                     </div>
 
                     <div class="row" [hidden]="model.typeId != '7'">
