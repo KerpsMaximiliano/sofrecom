@@ -77,12 +77,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        if(this.menuService.userIsRrhh){
-            this.router.navigate(['/allocationManagement/licenses/rrhh']);
-        }
-        else{
-            this.router.navigate(['/profile/' + this.model.employeeId]);
-        }
+        window.history.back();
     }
 
     configUploader(){
