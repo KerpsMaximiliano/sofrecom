@@ -124,7 +124,7 @@ namespace Sofco.Service.Implementations.Admin
             try
             {
                 entity.Description = model.Description;
-                if (entity.Active) entity.EndDate = null;
+                entity.CategoryId = model.CategoryId;
 
                 unitOfWork.TaskRepository.Update(entity);
                 unitOfWork.Save();

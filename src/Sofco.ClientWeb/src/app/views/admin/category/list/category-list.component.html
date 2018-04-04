@@ -21,7 +21,7 @@
             <h4 class="pull-left">{{ 'ADMIN.category.list' | translate }}</h4>
             
             <div class="ibox-tools" >
-                <a [routerLink]="['/admin/categories/add']" class="btn btn-primary btn-sm btn-link"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+                <a [routerLink]="['/admin/categories/add']" class="btn btn-primary btn-sm btn-link" *ngIf="menuService.hasFunctionality('CATEG', 'ADD')"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
             </div>
         </div>
         <div class="ibox-content">
@@ -42,9 +42,12 @@
                         <td>{{ category.endDate | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center column-xs"><span class="fa" [ngClass]="category.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                         <td class="text-center column-xs">
-                            <button class="btn btn-warning btn-xs" (click)="goToDetail(category)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-warning btn-xs" (click)="goToDetail(category)" *ngIf="menuService.hasFunctionality('CATEG', 'EDIT')"><i class="fa fa-edit"></i></button>
 
-                            <button class="btn btn-xs" [ngClass]="(category.active)?'btn-danger':'btn-success'" (click)="habInhabClick(category)" >
+                            <button class="btn btn-xs" [ngClass]="(category.active)?'btn-danger':'btn-success'"
+                                                       (click)="habInhabClick(category)" 
+                                                       *ngIf="menuService.hasFunctionality('CATEG', 'HABIN')">
+
                                 <span [ngClass]="(category.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
                             </button>
                         </td>

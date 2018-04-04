@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-xs-12">
-            <h2>{{ 'ADMIN.task.add' | translate }}</h2>
+            <h2>{{ 'ADMIN.task.edit' | translate }}</h2>
             <ol class="breadcrumb">
                 <li>
                     <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -9,7 +9,7 @@
                     <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
                 </li>
                 <li class="active">
-                    <strong>{{ 'ADMIN.category.title' | translate }}</strong>
+                    <strong>{{ 'ADMIN.task.title' | translate }}</strong>
                 </li>
             </ol>
         </div>
@@ -41,7 +41,7 @@
     
                 <hr class="hr-line-dashed">
     
-                <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>
+                <button (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>
                 <button (click)="goBack()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
             </div>
         </div>

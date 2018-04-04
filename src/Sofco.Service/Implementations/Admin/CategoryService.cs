@@ -122,7 +122,6 @@ namespace Sofco.Service.Implementations.Admin
             try
             {
                 entity.Description = model.Description;
-                if (entity.Active) entity.EndDate = null;
 
                 unitOfWork.CategoryRepository.Update(entity);
                 unitOfWork.Save();

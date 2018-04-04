@@ -5,6 +5,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { CategoryService } from "app/services/admin/category.service";
 import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
 declare var moment: any;
 
 @Component({
@@ -21,6 +22,7 @@ declare var moment: any;
 
     constructor(private messageService: MessageService,
                 private router: Router,
+                public menuService: MenuService,
                 private dataTableService: DataTableService,
                 private categoryService: CategoryService,
                 private errorHandlerService: ErrorHandlerService) { }

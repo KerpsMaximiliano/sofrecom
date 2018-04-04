@@ -81,6 +81,13 @@
             "edit": "Editar Categoria",
             "task": "Categorias de Tareas"
         },
+        "task": {
+            "admin": "Administracion de tareas",
+            "title": "Tareas",
+            "list": "Listado de Tareas",
+            "edit": "Editar Tarea",
+            "add": "Agregar Tarea"
+        },
         "settings": {
             "title": "Configuración",
             "licenseTitle": "Configuración de licencias",

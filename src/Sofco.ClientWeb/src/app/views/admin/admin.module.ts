@@ -38,11 +38,13 @@ import { CategoryListComponent } from 'app/views/admin/category/list/category-li
 import { TaskService } from 'app/services/admin/task.service';
 import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
 import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
+import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
-                 SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent],
+                 SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
+                 TaskEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule],
 

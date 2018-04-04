@@ -64,6 +64,7 @@ import { CategoryEditComponent } from 'app/views/admin/category/edit/category-ed
 import { CategoryListComponent } from 'app/views/admin/category/list/category-list.component';
 import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
 import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
+import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -99,15 +100,15 @@ export const ROUTES:Routes = [
       ]},
 
       { path: "categories", children: [
-        { path: '', component: CategoryListComponent, canActivate: [AuthGuard] },
-        { path: 'add', component: CategoryAddComponent, canActivate: [AuthGuard] },
-        { path: ':id/edit', component: CategoryEditComponent, canActivate: [AuthGuard] }
+        { path: '', component: CategoryListComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "QUERY" } },
+        { path: 'add', component: CategoryAddComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "ADD" } },
+        { path: ':id/edit', component: CategoryEditComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "EDIT" } }
       ]},
 
       { path: "tasks", children: [
-        { path: '', component: TaskListComponent, canActivate: [AuthGuard] },
-        { path: 'add', component: TaskAddComponent, canActivate: [AuthGuard] },
-        { path: ':id/edit', component: CategoryEditComponent, canActivate: [AuthGuard] }
+        { path: '', component: TaskListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
+        { path: 'add', component: TaskAddComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "ADD" } },
+        { path: ':id/edit', component: TaskEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
       ]},
       
       { path: 'settings', children:[
