@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL.Common;
+﻿using System.Collections.Generic;
+using Sofco.Core.DAL.Common;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
@@ -7,5 +8,7 @@ namespace Sofco.Core.DAL.Admin
     {
         bool ExistById(int taskId);
         void UpdateCategory(Task task);
+        IList<Task> GetAllActives();
+        Task GetById(int id);
     }
 }

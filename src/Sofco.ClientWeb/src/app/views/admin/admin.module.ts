@@ -35,15 +35,18 @@ import { CategoryService } from 'app/services/admin/category.service';
 import { CategoryAddComponent } from 'app/views/admin/category/add/category-add.component';
 import { CategoryEditComponent } from 'app/views/admin/category/edit/category-edit.component';
 import { CategoryListComponent } from 'app/views/admin/category/list/category-list.component';
+import { TaskService } from 'app/services/admin/task.service';
+import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
+import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
-                 SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent],
+                 SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule],
 
-  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService],
+  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService, TaskService],
   
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, SettingsComponent]
 })
