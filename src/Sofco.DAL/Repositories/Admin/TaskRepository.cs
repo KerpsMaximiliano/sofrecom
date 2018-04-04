@@ -1,0 +1,24 @@
+﻿using System.Linq;
+using Sofco.Core.DAL.Admin;
+using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Models.Admin;
+
+namespace Sofco.DAL.Repositories.Admin
+{
+    public class TaskRepository : BaseRepository<Task>, ITaskRepository
+    {
+        public TaskRepository(SofcoContext context) : base(context)
+        {
+        }
+
+        public bool ExistById(int taskId)
+        {
+            return context.Tasks.Any(x => x.Id == taskId);
+        }
+
+        public void UpdateCategory(Task task)
+        {
+            context.Entry(task).Property("CategoryId").IsModified = true;
+        }
+    }
+}

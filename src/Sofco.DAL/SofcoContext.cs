@@ -31,6 +31,8 @@ namespace Sofco.DAL
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Task> Tasks { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
@@ -118,6 +120,8 @@ namespace Sofco.DAL
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();
+            builder.MapCategory();
+            builder.MapTasks();
         }
     }
 }

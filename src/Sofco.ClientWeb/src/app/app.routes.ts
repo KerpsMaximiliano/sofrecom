@@ -59,6 +59,9 @@ import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-del
 import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
 import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
 import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detail/license-detail.component';
+import { CategoryAddComponent } from 'app/views/admin/category/add/category-add.component';
+import { CategoryEditComponent } from 'app/views/admin/category/edit/category-edit.component';
+import { CategoryListComponent } from 'app/views/admin/category/list/category-list.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -93,6 +96,12 @@ export const ROUTES:Routes = [
         { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "UPDAT" } }
       ]},
 
+      { path: "categories", children: [
+        { path: '', component: CategoryListComponent, canActivate: [AuthGuard] },
+        { path: 'add', component: CategoryAddComponent, canActivate: [AuthGuard] },
+        { path: ':id/edit', component: CategoryEditComponent, canActivate: [AuthGuard] }
+      ]},
+      
       { path: 'settings', children:[
         {path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
       ]},

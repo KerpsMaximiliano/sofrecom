@@ -31,14 +31,19 @@ import { SettingsService } from "app/services/admin/settings.service";
 import { UserAddComponent } from 'app/views/admin/users/user-add/user-add.component';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
+import { CategoryService } from 'app/services/admin/category.service';
+import { CategoryAddComponent } from 'app/views/admin/category/add/category-add.component';
+import { CategoryEditComponent } from 'app/views/admin/category/edit/category-edit.component';
+import { CategoryListComponent } from 'app/views/admin/category/list/category-list.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
-                 UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, SettingsComponent],
+                 UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
+                 SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule],
 
-  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService],
+  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService],
   
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, UserDetailComponent, SettingsComponent]
 })

@@ -69,6 +69,18 @@
             "add": "Add Module",
             "deleteConfirm": "Are you sure you want to delete the module?"
         },
+        "category": {
+            "admin": "Administracion de Categorias",
+            "title": "Categorias",
+            "list": "Listado de Categorias",
+            "description":"Descripción",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "add": "Agregar Categoria",
+            "edit": "Editar Categoria",
+            "task": "Categorias de Tareas"
+        },
         "settings": {
             "title": "Configs",
             "licenseTitle": "Licenses's Configuration",

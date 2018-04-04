@@ -23,14 +23,14 @@ namespace Sofco.Resources.Admin {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Functionality {
+    public class Category {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Functionality() {
+        internal Category() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace Sofco.Resources.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Functionality", typeof(Functionality).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Category", typeof(Category).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,7 +62,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.created.
+        ///   Busca una cadena traducida similar a admin/category.created.
         /// </summary>
         public static string Created {
             get {
@@ -71,7 +71,16 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.disabled.
+        ///   Busca una cadena traducida similar a admin/category.descriptionRequired.
+        /// </summary>
+        public static string DescriptionRequired {
+            get {
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a admin/category.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -80,7 +89,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.enabled.
+        ///   Busca una cadena traducida similar a admin/category.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -89,29 +98,20 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.moduleFunctionalityAlreadyCreated.
-        /// </summary>
-        public static string ModuleFunctionalityAlreadyCreated {
-            get {
-                return ResourceManager.GetString("ModuleFunctionalityAlreadyCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.moduleFunctionalityAlreadyRemoved.
-        /// </summary>
-        public static string ModuleFunctionalityAlreadyRemoved {
-            get {
-                return ResourceManager.GetString("ModuleFunctionalityAlreadyRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a admin/functionality.notFound.
+        ///   Busca una cadena traducida similar a admin/category.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a admin/category.updated.
+        /// </summary>
+        public static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
             }
         }
     }
