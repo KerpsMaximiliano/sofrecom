@@ -119,6 +119,12 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
+            if (string.IsNullOrWhiteSpace(model.Description))
+            {
+                response.AddError(Resources.Admin.Category.DescriptionRequired);
+                return response;
+            }
+
             try
             {
                 entity.Description = model.Description;

@@ -90,4 +90,8 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
           err => this.errorHandlerService.handleErrors(err));
       }
   }
+
+  goBack(){
+    window.history.back();
+  }
 }

@@ -28,6 +28,8 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+    <button class="btn btn-success btn-outline dim" (click)="goBack()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+
     <div class="alert alert-info" *ngIf="purchaseOrders && purchaseOrders.length == 0">
         {{'billing.purchaseOrder.noOrdersFound' | translate }}
     </div>

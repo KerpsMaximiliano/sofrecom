@@ -276,5 +276,14 @@ namespace Sofco.Resources.Rrhh {
                 return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.wrongCertificateMonthQuantity.
+        /// </summary>
+        public static string WrongCertificateMonthQuantity {
+            get {
+                return ResourceManager.GetString("WrongCertificateMonthQuantity", resourceCulture);
+            }
+        }
     }
 }
