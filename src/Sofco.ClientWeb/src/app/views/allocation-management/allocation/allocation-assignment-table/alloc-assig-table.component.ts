@@ -84,11 +84,40 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.getAllAllocationsSubscrip = this.allocationsService.getAllocations(resourceId, dateSince.toUTCString(), todayPlus12Months.toUTCString()).subscribe(data => {
+            let allocationAux = new Array();
+            
+            if(this.model && this.model.allocations){
+                allocationAux = this.model.allocations;
+            }
+
             this.model = data;
 
             if(this.model.allocations.length == 0){
                 this.messageService.showWarning("allocationManagement.allocation.emptyMessage");
             }
+
+            allocationAux.forEach((item, index) => {
+
+                var analyticExist = this.model.allocations.find(x => x.analyticId == item.analyticId);
+
+                if(!analyticExist){
+                    
+                    if(item.months.length > this.model.monthsHeader.length){
+                        item.months = item.months.splice(0, this.model.monthsHeader.length);
+                    }
+                    else if(item.months.length < this.model.monthsHeader.length){
+                        for(var i = item.months.length; i < this.model.monthsHeader.length; i++){
+                            item.months.push({ 
+                                allocationId: 0,
+                                date: new Date(this.model.monthsHeader[i].year, this.model.monthsHeader[i].month-1, 1),
+                                percentage: 0
+                            })
+                        }
+                    }
+
+                    this.model.allocations.push(item);
+                }
+            });
 
             if(this.analytic){
                 this.add(this.analytic);
