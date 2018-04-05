@@ -4,5 +4,6 @@
     "disabled": "La categoria fue deshabilitada correctamente",
     "enabled": "La categoria fue habilitada correctamente",
     "notFound": "Categoria no encontrada",
-    "updated": "La categoria fue actualizada exitosamente"
+    "updated": "La categoria fue actualizada exitosamente",
+    "descriptionAlreadyExist": "La descripcion ya existe"
 }

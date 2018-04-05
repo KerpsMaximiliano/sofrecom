@@ -10,5 +10,6 @@ namespace Sofco.Core.DAL.Admin
         void UpdateCategory(Task task);
         IList<Task> GetAllActives();
         Task GetById(int id);
+        bool DescriptionExist(string modelDescription);
     }
 }

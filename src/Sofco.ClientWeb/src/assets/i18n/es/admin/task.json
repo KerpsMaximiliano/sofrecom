@@ -5,5 +5,6 @@
     "enabled": "La tarea fue habilitada correctamente",
     "notFound": "tarea no encontrada",
     "updated": "La tarea fue actualizada exitosamente",
-    "categoryRequired": "La categoria es requerida"
+    "categoryRequired": "La categoria es requerida",
+    "descriptionAlreadyExist": "La descripcion ya existe"
 }

@@ -71,6 +71,15 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a admin/category.descriptionAlreadyExist.
+        /// </summary>
+        public static string DescriptionAlreadyExist {
+            get {
+                return ResourceManager.GetString("DescriptionAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a admin/category.descriptionRequired.
         /// </summary>
         public static string DescriptionRequired {

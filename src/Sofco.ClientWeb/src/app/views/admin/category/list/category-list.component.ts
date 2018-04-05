@@ -91,7 +91,8 @@ declare var moment: any;
             selector: '#categoryTable',
             columns: columns,
             title: title,
-            withExport: true
+            withExport: true,
+            columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ]
           }
 
           this.dataTableService.destroy(params.selector);

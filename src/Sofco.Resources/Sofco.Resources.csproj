@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Admin\Category.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.resx</DependentUpon>
+    </Compile>
     <Compile Update="Admin\Task.Designer.cs">
       <DependentUpon>Category - Copia.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -140,7 +145,7 @@
       <LastGenOutput>Employee.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Admin\Category.resx">
-      <LastGenOutput>Category - Copia.Designer.cs</LastGenOutput>
+      <LastGenOutput>Category.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\EmployeeSyncAction.resx">

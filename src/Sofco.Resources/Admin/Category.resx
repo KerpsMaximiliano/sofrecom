@@ -120,6 +120,9 @@
   <data name="Created" xml:space="preserve">
     <value>admin/category.created</value>
   </data>
+  <data name="DescriptionAlreadyExist" xml:space="preserve">
+    <value>admin/category.descriptionAlreadyExist</value>
+  </data>
   <data name="DescriptionRequired" xml:space="preserve">
     <value>admin/category.descriptionRequired</value>
   </data>

@@ -9,5 +9,6 @@ namespace Sofco.Core.DAL.Admin
         IList<Category> GetAllActives();
         Category GetById(int id);
         bool ExistById(int categoryId);
+        bool DescriptionExist(string description);
     }
 }

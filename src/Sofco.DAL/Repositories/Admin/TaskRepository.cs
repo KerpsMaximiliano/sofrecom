@@ -32,5 +32,10 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.Tasks.SingleOrDefault(x => x.Id == id);
         }
+
+        public bool DescriptionExist(string description)
+        {
+            return context.Tasks.Any(x => x.Description == description);
+        }
     }
 }

@@ -26,11 +26,9 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response();
 
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                response.AddError(Resources.Admin.Category.DescriptionRequired);
-                return response;
-            }
+            Validate(description, response);
+
+            if (response.HasErrors()) return response;
 
             try
             {
@@ -119,11 +117,9 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            if (string.IsNullOrWhiteSpace(model.Description))
-            {
-                response.AddError(Resources.Admin.Category.DescriptionRequired);
-                return response;
-            }
+            Validate(model.Description, response);
+
+            if (response.HasErrors()) return response;
 
             try
             {
@@ -151,6 +147,19 @@ namespace Sofco.Service.Implementations.Admin
             };
 
             return model;
+        }
+
+        private void Validate(string description, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                response.AddError(Resources.Admin.Category.DescriptionRequired);
+            }
+
+            if (unitOfWork.CategoryRepository.DescriptionExist(description))
+            {
+                response.AddError(Resources.Admin.Category.DescriptionAlreadyExist);
+            }
         }
     }
 }

@@ -123,6 +123,9 @@
   <data name="Created" xml:space="preserve">
     <value>admin/task.created</value>
   </data>
+  <data name="DescriptionAlreadyExist" xml:space="preserve">
+    <value>admin/task.descriptionAlreadyExist</value>
+  </data>
   <data name="DescriptionRequired" xml:space="preserve">
     <value>admin/task.descriptionRequired</value>
   </data>
