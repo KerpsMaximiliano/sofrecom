@@ -124,6 +124,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 return BadRequest(response);
 
             var model = Translate(response.Data);
+            model.Groups = new List<GroupModel>();
 
             foreach (var userGroup in response.Data.UserGroups)
             {

@@ -40,8 +40,14 @@ export class TopNavbarComponent {
       if (Cookie.get('userInfo')){
         const userApplicant = JSON.parse(Cookie.get('userInfo'));
 
+        console.log("Paso 1", userApplicant);
+
         if (userApplicant && userApplicant.employeeId && userApplicant.name){
+            console.log("Dentro del if", userApplicant.employeeId);
             this.employeeId = userApplicant.employeeId;
+        }
+        else{
+          console.log("No anda nada");
         }
       }
   }
@@ -67,6 +73,7 @@ export class TopNavbarComponent {
   }
 
   goToProfile(){
+    console.log("Click Profile", this.employeeId);
     this.router.navigate([`/profile/${this.employeeId}`]);
   }
 }
