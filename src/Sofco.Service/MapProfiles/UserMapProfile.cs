@@ -19,7 +19,6 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.ExpiresIn, s => s.MapFrom(x => x.expires_in));
 
             CreateMap<User, UserSelectListItem>()
-                .ForMember(d => d.Value, s => s.MapFrom(x => x.Id))
                 .ForMember(d => d.Text, s => s.MapFrom(x => x.Name))
                 .ForMember(d => d.ExternalId, s => s.MapFrom(x => x.ExternalManagerId));
         }
