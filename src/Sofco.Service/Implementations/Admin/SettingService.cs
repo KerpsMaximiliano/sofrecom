@@ -27,7 +27,8 @@ namespace Sofco.Service.Implementations.Admin
         {
             validationDicts = new Dictionary<string, Func<Setting, Response<Setting>>>
             {
-                {"AllocationManagement_Months", SettingValidationHelper.ValidateAllocationManagementMonths}
+                { "AllocationManagement_Months", SettingValidationHelper.ValidateAllocationManagementMonths },
+                { "LicenseCertificatePendingDayOfMonth", SettingValidationHelper.ValidateLicenseCertificatePendingDayOfMonth }
             };
         }
 

@@ -4,12 +4,8 @@
 </button>
 
 <ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="reject()" [isLoading]="isLoading">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label class="control-label">{{'comments' | translate }}</label>
-                <textarea class="form-control" name="comments" rows="10" [(ngModel)]="comments"></textarea>
-            </div>
-        </div>
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="comments" rows="10" [(ngModel)]="comments"></textarea>
     </div>
 </ng2-modal> 

@@ -41,8 +41,8 @@ namespace Sofco.Framework.FileManager.Rrhh
                 sheet.Cells[$"A{index}"].Value = licenses[i].Employee.EmployeeNumber;
                 sheet.Cells[$"B{index}"].Value = licenses[i].Employee.Name;
                 sheet.Cells[$"C{index}"].Value = licenses[i].Type.Description;
-                sheet.Cells[$"D{index}"].Value = licenses[i].StartDate.ToString("d");
-                sheet.Cells[$"E{index}"].Value = licenses[i].EndDate.ToString("d");
+                sheet.Cells[$"D{index}"].Value = licenses[i].StartDate.ToString("dd/MM/yyyy");
+                sheet.Cells[$"E{index}"].Value = licenses[i].EndDate.ToString("dd/MM/yyyy");
                 sheet.Cells[$"F{index}"].Value = licenses[i].DaysQuantity;
                 sheet.Cells[$"G{index}"].Value = GetStatusDescription(licenses[i].Status);
                 sheet.Cells[$"H{index}"].Value = licenses[i].Employee.HolidaysPending;

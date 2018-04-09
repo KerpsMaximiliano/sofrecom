@@ -20,6 +20,8 @@ namespace Sofco.Core.DAL
         IMenuRepository MenuRepository { get; }
         ISettingRepository SettingRepository { get; }
         IRoleFunctionalityRepository RoleFunctionalityRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
+        ITaskRepository TaskRepository { get; }
 
         #endregion
 

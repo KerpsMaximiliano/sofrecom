@@ -20,6 +20,26 @@ namespace Sofco.WebApi.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Sofco.Model.Models.Admin.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
                 {
                     b.Property<int>("Id")
@@ -142,6 +162,30 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Admin.Task", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Admin.User", b =>
@@ -1341,6 +1385,14 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
                         .WithMany("Groups")
                         .HasForeignKey("RoleId");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Admin.Task", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Admin.Category", "Category")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Allocation", b =>

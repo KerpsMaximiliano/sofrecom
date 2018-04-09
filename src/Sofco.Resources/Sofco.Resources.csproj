@@ -12,6 +12,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Admin\Category.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Task.Designer.cs">
+      <DependentUpon>Category - Copia.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Admin\Task.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Task.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Functionality.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Functionality.resx</DependentUpon>
+    </Compile>
     <Compile Update="AllocationManagement\Allocation.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -32,7 +52,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Employee.resx</DependentUpon>
     </Compile>
-    <Compile Update="AllocationManagement\EmployeeSyncAction.Designer.cs">
+    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
+      <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
@@ -100,6 +125,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Admin\Task.resx">
+      <LastGenOutput>Task.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Functionality.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Functionality.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Allocation.Designer.cs</LastGenOutput>
@@ -116,9 +149,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Employee.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Category.resx">
+      <LastGenOutput>Category.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\EmployeeSyncAction.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmployeeSyncAction.Designer.cs</LastGenOutput>
+      <LastGenOutput>EmployeeSyncAction - Copia.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\TimeApproval.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

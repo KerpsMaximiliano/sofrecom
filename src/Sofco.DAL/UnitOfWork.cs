@@ -33,6 +33,8 @@ namespace Sofco.DAL
         private IMenuRepository menuRepository;
         private ISettingRepository settingRepository;
         private IRoleFunctionalityRepository roleFunctionalityRepository;
+        private ICategoryRepository categoryRepository;
+        private ITaskRepository taskRepository;
 
         #endregion
 
@@ -93,6 +95,8 @@ namespace Sofco.DAL
         public IMenuRepository MenuRepository => menuRepository ?? (menuRepository = new MenuRepository(context));
         public ISettingRepository SettingRepository => settingRepository ?? (settingRepository = new SettingRepository(context));
         public IRoleFunctionalityRepository RoleFunctionalityRepository => roleFunctionalityRepository ?? (roleFunctionalityRepository = new RoleFunctionalityRepository(context));
+        public ICategoryRepository CategoryRepository => categoryRepository ?? (categoryRepository = new CategoryRepository(context));
+        public ITaskRepository TaskRepository => taskRepository ?? (taskRepository = new TaskRepository(context));
 
         #endregion
 

@@ -32,7 +32,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
-            var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
+            var options = new List<Option>();
 
             options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
 

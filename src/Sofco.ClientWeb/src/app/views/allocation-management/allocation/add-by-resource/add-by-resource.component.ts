@@ -89,7 +89,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
 
         this.allocations.add(analytic);
     }
-
+ 
     search(){
         if(this.pmoUser){
             this.allocations.getAllocations(this.resourceId, this.dateSince);

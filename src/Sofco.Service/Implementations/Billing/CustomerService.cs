@@ -60,7 +60,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
                     .OrderBy(x => x.Text)
                     .ToList()
             };

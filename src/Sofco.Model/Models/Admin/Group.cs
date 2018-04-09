@@ -12,6 +12,7 @@ namespace Sofco.Model.Models.Admin
 
         public bool Active { get; set; }
 
+        public int RoleId { get; set; }
         public Role Role { get; set; }
 
         public IList<UserGroup> UserGroups { get; set; }

@@ -86,12 +86,11 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
                 private router: Router) { }
 
     ngOnInit() {
-      this.getOptions();
-      this.getUserOptions();
-
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.solfacId = params['solfacId'];
-        this.getSolfac(this.solfacId);
+
+        this.getOptions();
+        this.getUserOptions();
         this.getInvoices();
       });
     }
@@ -170,6 +169,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers; 
         this.paymentTerms = data.paymentTerms;
+
+        this.getSolfac(this.solfacId);
       },
       err => this.errorHandlerService.handleErrors(err));
     }

@@ -54,6 +54,9 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     analyticChange(){
+        if(this.model.analyticId == undefined || this.model.analyticId == '') return;
+        if(this.analytics.length == 0) return;
+
         var item = this.analytics.find(x => x.id == this.model.analyticId);
         this.model.commercialManagerId = item.commercialManagerId;
         this.model.managerId = item.managerId;
@@ -66,7 +69,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getProjects(serviceId){
         this.projectService.getOptions(serviceId).subscribe(d => {
             this.projects = d.data;
-            this.model.projectId = 0;
         },
         err => this.errorHandlerService.handleErrors(err));
     }

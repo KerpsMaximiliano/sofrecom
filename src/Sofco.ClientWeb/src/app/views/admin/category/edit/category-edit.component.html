@@ -1,0 +1,32 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{ 'ADMIN.category.edit' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ 'ADMIN.category.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="form-group">
+                <label class="control-label">{{ 'ADMIN.category.description' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="description" maxlength="100">
+            </div>
+
+            <hr class="hr-line-dashed">
+
+            <button (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>
+            <button (click)="goBack()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+        </div>
+    </div>
+</div>

@@ -141,10 +141,10 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(GetStatuses());
         }
 
-        private IEnumerable<SelectListItem> GetStatuses()
+        private IEnumerable<Option> GetStatuses()
         {
-            yield return new SelectListItem { Value = ((int)PurchaseOrderStatus.Valid).ToString(), Text = PurchaseOrderStatus.Valid.ToString() };
-            yield return new SelectListItem { Value = ((int)PurchaseOrderStatus.Consumed).ToString(), Text = PurchaseOrderStatus.Consumed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Consumed, Text = PurchaseOrderStatus.Consumed.ToString() };
         }
     }
 }

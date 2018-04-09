@@ -44,7 +44,7 @@
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body tab-primary">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-4"> 
                             <div class="form-group">
                                 <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
                                 <select select2 class="form-control" id="employeeId">
@@ -54,13 +54,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label"> {{'rrhh.license.reason' | translate }} </label>
-                                <select select2 class="form-control" id="licensesTypeId">
-                                    <option value="0">Seleccione una opción</option>
-                                    <option *ngFor="let licensesType of licensesTypes" [value]="licensesType?.id">{{ licensesType?.text }}</option>
-                                </select>
-                            </div>
+                            <select-two [label]="'rrhh.license.reason'" [(value)]="licensesTypeId" [options]="licensesTypes"></select-two>
                         </div>
         
                         <div class="col-sm-4 m-t-md">

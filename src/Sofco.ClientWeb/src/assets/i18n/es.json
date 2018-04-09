@@ -69,6 +69,25 @@
             "add": "Agregar Modulo",
             "deleteConfirm": "¿Esta seguro que desea eliminar el modulo?"
         },
+        "category": {
+            "admin": "Administracion de Categorias",
+            "title": "Categorias",
+            "list": "Listado de Categorias",
+            "description":"Descripción",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "add": "Agregar Categoria",
+            "edit": "Editar Categoria",
+            "task": "Categorias de Tareas"
+        },
+        "task": {
+            "admin": "Administracion de tareas",
+            "title": "Tareas",
+            "list": "Listado de Tareas",
+            "edit": "Editar Tarea",
+            "add": "Agregar Tarea"
+        },
         "settings": {
             "title": "Configuración",
             "licenseTitle": "Configuración de licencias",
@@ -481,7 +500,7 @@
             "listTitle": "Listado de Analiticas",
             "title": "Analiticas",
             "list": "Listado",
-            "new": "Crear de Analitica",
+            "new": "Crear Analitica",
             "edit": "Editar",
             "editTitle": "Editar Analitica",
             "view": "Ver",
@@ -576,7 +595,7 @@
             "goce": "Goce",
             "status": "Estado",
             "managed": "Licencias Gestionadas",
-            "authPending": "Licencias Pendientes Autorizacion",
+            "authPending": "Licencias Pendientes de Autorizacion",
             "approved": "Licencias Aprobadas",
             "pending": "Licencias Pendientes de Aprobación",
             "load": "Cargar Licencia",
@@ -660,7 +679,7 @@
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
     "comments": "Comentarios",
-    "selectAnOption": "Seleccione una opción",
+    "SelectAnOption": "Seleccione una opción",
     "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
     "filterByDates": "Filtrar por fechas",
     "name": "Nombre",

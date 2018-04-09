@@ -37,13 +37,7 @@ export class TopNavbarComponent {
 
       this.userName = this.menuService.currentUser;
 
-      if (Cookie.get('userInfo')){
-        const userApplicant = JSON.parse(Cookie.get('userInfo'));
-
-        if (userApplicant && userApplicant.employeeId && userApplicant.name){
-            this.employeeId = userApplicant.employeeId;
-        }
-      }
+      this.setEmployeeId();
   }
 
   toggleNavigation(): void {
@@ -66,7 +60,21 @@ export class TopNavbarComponent {
     this.router.navigate(['/login']);
   }
 
+  setEmployeeId(){
+    if (Cookie.get('userInfo')){
+      const userApplicant = JSON.parse(Cookie.get('userInfo'));
+
+      if (userApplicant && userApplicant.employeeId && userApplicant.name){
+          this.employeeId = userApplicant.employeeId;
+      }
+    }
+  }
+
   goToProfile(){
+    if(!this.employeeId){
+      this.setEmployeeId();
+    }
+
     this.router.navigate([`/profile/${this.employeeId}`]);
   }
 }

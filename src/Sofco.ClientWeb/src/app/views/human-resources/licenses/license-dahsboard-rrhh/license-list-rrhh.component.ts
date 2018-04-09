@@ -31,6 +31,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     public resources: any[] = new Array();
     public licensesTypes: any[] = new Array();
 
+    public licensesTypeId: any;
+
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
         private router: Router,
@@ -91,7 +93,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 if(lastQuery){
-                    $( "#licensesTypeId" ).val(lastQuery.licenseTypeId).trigger('change');
+                    this.licensesTypeId = lastQuery.licenseTypeId
                 }
             }, 0)
         },
@@ -110,7 +112,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     newSearch(){
         var params = {
             employeeId: $( "#employeeId" ).val(),
-            licenseTypeId: $( "#licensesTypeId" ).val(),
+            licenseTypeId: this.licensesTypeId
         }
 
         this.search(params);
@@ -142,7 +144,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     clean(){
         sessionStorage.removeItem('lastLicenseQuery');
         $( "#employeeId" ).val(0).trigger('change');;
-        $( "#licensesTypeId" ).val(0).trigger('change');;
+        this.licensesTypeId = 0;
     }
 
     goToDetail(item){

@@ -32,7 +32,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     @ViewChild('resourceTimeline') resourceTimeline: any;
     @ViewChild('allocations') allocations: any;
 
-    public resourceId: number = 0; 
+    public resourceId: any; 
 
     dateSince: Date = new Date();
 
@@ -94,16 +94,13 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        var employeeId = $('#employeeId').val();
-        this.resourceId = employeeId;
-
-        if(this.resourceId == 0) return;
+        if(this.resourceId == undefined || this.resourceId == '0') return;
 
         if(this.pmoUser){
-            this.allocations.getAllocations(employeeId, this.dateSince);
+            this.allocations.getAllocations(this.resourceId, this.dateSince);
         }
         else{
-            this.allocations.getAllocations(employeeId, new Date());
+            this.allocations.getAllocations(this.resourceId, new Date());
         }
     }
 }

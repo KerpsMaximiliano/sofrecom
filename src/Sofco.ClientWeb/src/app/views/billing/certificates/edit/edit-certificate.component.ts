@@ -76,7 +76,9 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
 
     update() {
         this.messageService.showLoading();
-        this.form.model.clientExternalName = $('#clientExternalId option:selected').text();
+
+        var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
+        this.form.model.clientExternalName = client.text;
 
         this.updateSubscrip = this.certificateService.update(this.form.model).subscribe(
             response => {

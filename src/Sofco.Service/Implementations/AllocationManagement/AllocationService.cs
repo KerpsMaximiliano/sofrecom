@@ -156,12 +156,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         if (parameters.Percentage.HasValue && parameters.Percentage != 999 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
                         if (parameters.Percentage.HasValue && parameters.Percentage == 999 && allocation.Months.All(x => x.Percentage == 100)) continue;
 
+                        var analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
+
                         var reportRow = new AllocationReportRow();
 
-                        reportRow.Manager = "Diego O. Miguel";
-                        reportRow.Office = "Dirección de Soluciones IT";
+                        reportRow.Manager = analytic.Manager?.Name;
                         reportRow.Percentage = employee.BillingPercentage;
-                        reportRow.ProjectManager = "Juan J. Larenze";
                         reportRow.Profile = employee.Profile;
                         reportRow.ResourceName = employee.Name;
                         reportRow.Seniority = employee.Seniority;
