@@ -29,7 +29,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> Search(EmployeeSearchParams parameters);
 
         void ResetAllExamDays();
+
         void UpdateHolidaysPending(Employee employeeToModif);
+
         void UpdateExamDaysTaken(Employee employeeToModif);
     }
 }

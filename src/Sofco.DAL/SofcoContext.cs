@@ -62,6 +62,7 @@ namespace Sofco.DAL
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
+        public DbSet<WorkTimeApproval> WorkTimeApprovals { get; set; }
 
         // Human Resources
         public DbSet<License> Licenses { get; set; }
@@ -116,10 +117,11 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
-            builder.MapSolfacDelegate();
+            builder.MapUserDelegate();
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();
+            builder.MapWorkTimeApproval();
             builder.MapCategory();
             builder.MapTasks();
         }

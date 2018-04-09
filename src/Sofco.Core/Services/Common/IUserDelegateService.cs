@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Common;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
-namespace Sofco.Core.Services.Billing
+namespace Sofco.Core.Services.Common
 {
-    public interface ISolfacDelegateService
+    public interface IUserDelegateService
     {
-        Response<List<SolfacDelegateModel>> GetAll();
+        Response<List<UserDelegateModel>> GetAll(UserDelegateType type);
 
         Response<UserDelegate> Save(UserDelegate userDelegate);
 

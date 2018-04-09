@@ -5,5 +5,7 @@
         public string Domain { get; set; }
 
         public string SolfacGeneratorCode { get; set; }
+
+        public string HourApprovalCode { get; set; }
     }
 }

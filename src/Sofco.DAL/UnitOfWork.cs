@@ -45,7 +45,6 @@ namespace Sofco.DAL
         private ISolfacReportRepository solfacReportRepository;
         private IPurchaseOrderRepository purchaseOrderRepository;
         private ICertificateRepository certificateRepository;
-        private ISolfacDelegateRepository solfacDelegateRepository;
         private ISolfacCertificateRepository solfacCertificateRepository;
 
         #endregion
@@ -75,6 +74,7 @@ namespace Sofco.DAL
 
         private IUtilsRepository utilsRepository;
         private IFileRepository fileRepository;
+        private IUserDelegateRepository userDelegateRepository;
 
         #endregion
 
@@ -107,7 +107,6 @@ namespace Sofco.DAL
         public ISolfacReportRepository SolfacReportRepository => solfacReportRepository ?? (solfacReportRepository = new SolfacReportRepository(context));
         public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
         public ICertificateRepository CertificateRepository => certificateRepository ?? (certificateRepository = new CertificateRepository(context));
-        public ISolfacDelegateRepository SolfacDelegateRepository => solfacDelegateRepository ?? (solfacDelegateRepository = new SolfacDelegateRepository(context));
         public ISolfacCertificateRepository SolfacCertificateRepository => solfacCertificateRepository ?? (solfacCertificateRepository = new SolfacCertificateRepository(context));
 
         #endregion
@@ -145,6 +144,8 @@ namespace Sofco.DAL
 
         public IUtilsRepository UtilsRepository => utilsRepository ?? (utilsRepository = new UtilsRepository(context));
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
+        public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
+
 
         #endregion
 
