@@ -63,6 +63,8 @@ namespace Sofco.WebJob.Services
         private void ClearJobs()
         {
             JobHelper.ClearAllRecurringJob();
+
+            JobHelper.ClearScheduledJob(typeof(IEmployeeForceSaveJob));
         }
     }
 }
