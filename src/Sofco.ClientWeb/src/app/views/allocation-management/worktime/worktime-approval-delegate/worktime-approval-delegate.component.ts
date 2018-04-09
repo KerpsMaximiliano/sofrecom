@@ -28,7 +28,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     @Input()
     public model: any;
 
-    private idKey = 'value';
+    private idKey = 'id';
     private textKey = 'text';
 
     public workTimeApprovals: any[] = new Array<any>();

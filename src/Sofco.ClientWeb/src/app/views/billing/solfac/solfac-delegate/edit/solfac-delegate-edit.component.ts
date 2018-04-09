@@ -25,7 +25,7 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
     @Input()
     public model: any;
 
-    private idKey = 'value';
+    private idKey = 'id';
     private textKey = 'text';
 
     private customers: any[] = new Array<any>();
