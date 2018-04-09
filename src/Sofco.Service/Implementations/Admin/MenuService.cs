@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
+using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Admin
@@ -24,14 +24,14 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly AppSetting appSetting;
 
-        private readonly ISolfacDelegateRepository solfacDelegateRepository;
+        private readonly IUserDelegateRepository userDelegateRepository;
 
-        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, ISolfacDelegateRepository solfacDelegateRepository, IOptions<AppSetting> appSetting)
+        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, IUserDelegateRepository userDelegateRepository, IOptions<AppSetting> appSetting)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.userService = userService;
-            this.solfacDelegateRepository = solfacDelegateRepository;
+            this.userDelegateRepository = userDelegateRepository;
             this.emailConfig = emailConfig.Value;
             this.appSetting = appSetting.Value;
         }
@@ -44,12 +44,19 @@ namespace Sofco.Service.Implementations.Admin
 
             var roles = unitOfWork.RoleRepository.GetRolesByGroup(groupsId);
 
-            if (solfacDelegateRepository.HasSolfacDelegate(userName))
+            if (userDelegateRepository.HasUserDelegate(userName, UserDelegateType.Solfac))
             {
                 var solfacDelegateRole = unitOfWork.RoleRepository.GetByCode(appSetting.SolfacGeneratorCode);
 
                 roles.Add(solfacDelegateRole);
             }
+
+            //if (userDelegateRepository.HasUserDelegate(userName))
+            //{
+            //    var solfacDelegateRole = unitOfWork.RoleRepository.GetByCode(appSetting.HourApprovalCode);
+
+            //    roles.Add(solfacDelegateRole);
+            //}
 
             var modules = unitOfWork.MenuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
 

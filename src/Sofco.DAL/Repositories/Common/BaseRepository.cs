@@ -59,8 +59,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Insert(T entity)
         {
-            var entityDate = entity as IEntityDate;
-            if (entityDate != null)
+            if (entity is IEntityDate entityDate)
             {
                 entityDate.Created = DateTime.UtcNow;
             }
@@ -75,8 +74,7 @@ namespace Sofco.DAL.Repositories.Common
         {
             foreach(var item in entities)
             {
-                var entityDate = item as IEntityDate;
-                if (entityDate != null)
+                if (item is IEntityDate entityDate)
                 {
                     entityDate.Created = DateTime.UtcNow;
                 }
@@ -90,8 +88,7 @@ namespace Sofco.DAL.Repositories.Common
         /// </summary>
         public void Update(T entity)
         {
-            var entityDate = entity as IEntityDate;
-            if (entityDate != null)
+            if (entity is IEntityDate entityDate)
             {
                 entityDate.Modified = DateTime.UtcNow;
             }
@@ -155,17 +152,14 @@ namespace Sofco.DAL.Repositories.Common
 
         public void Rollback()
         {
-            if (contextTransaction != null)
-                contextTransaction.Rollback();
+            contextTransaction?.Rollback();
         }
 
         public void Commit(string nombreUsuario)
         {
             Save();
-            if (contextTransaction != null)
-            {
-                contextTransaction.Commit();
-            }
+
+            contextTransaction?.Commit();
         }
 
         #endregion

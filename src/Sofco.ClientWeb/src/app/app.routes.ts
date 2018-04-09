@@ -59,6 +59,7 @@ import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-del
 import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
 import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
 import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detail/license-detail.component';
+import { WorkTimeApprovalDelegateComponent } from 'app/views/allocation-management/worktime/worktime-approval-delegate/worktime-approval-delegate.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -196,17 +197,24 @@ export const ROUTES:Routes = [
           { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] } 
         ]
-      }]
+      },
+      {
+        path: 'workTimeApproval',
+        children: [
+          { path: "delegate", component: WorkTimeApprovalDelegateComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "TAPDE" } }
+        ]
+      }
+    ]
   },
 
   {
     path: 'profile', component: BasicLayoutComponent,
     children: [
-      { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: false } },
-      { 
-        path:"licenses",
+      { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: false } },
+      {
+        path: "licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "CTRLI", functionality: "ALTA" } } ,
+          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "CTRLI", functionality: "ALTA" } } ,
         ]
       }]
   },
@@ -214,14 +222,14 @@ export const ROUTES:Routes = [
   {
     path: 'reports', component: BasicLayoutComponent,
     children: [
-      { 
+      {
         path: 'solfacs', children:[
-          { path:"", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
+          { path: "", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
         ]
       }
     ]
   },
-      
+
   {
     path: '', component: BasicLayoutComponent,
     children: [

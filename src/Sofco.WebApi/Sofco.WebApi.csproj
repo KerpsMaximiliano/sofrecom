@@ -21,6 +21,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180320180846_RenameSetting.cs" />
     <Compile Remove="Migrations\20180320180846_RenameSetting.Designer.cs" />
+    <Compile Remove="Migrations\20180406124307_WorkTimeApproval.cs" />
+    <Compile Remove="Migrations\20180406124307_WorkTimeApproval.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

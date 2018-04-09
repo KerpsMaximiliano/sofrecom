@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Models.Billing;
+using Sofco.Model.Models.Common;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -26,9 +26,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]SolfacDelegate solfacDelegate)
+        public IActionResult Post([FromBody]UserDelegate userDelegate)
         {
-            var response = solfacDelegateService.Save(solfacDelegate);
+            var response = solfacDelegateService.Save(userDelegate);
 
             return this.CreateResponse(response);
         }

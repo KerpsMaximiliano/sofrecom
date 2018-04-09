@@ -4,7 +4,8 @@ using System.Linq;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL.Billing;
+using Sofco.Core.DAL.Common;
+using Sofco.Model.Enums;
 
 namespace Sofco.Data.Billing
 {
@@ -13,16 +14,16 @@ namespace Sofco.Data.Billing
         private const string SolfacDelegateCacheKey = "urn:solfacDelegates:{0}";
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
         private readonly ICacheManager cacheManager;
-        private readonly ISolfacDelegateRepository solfacDelegateRepository;
+        private readonly IUserDelegateRepository userDelegateRepository;
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
 
         public SolfacDelegateData(ICacheManager cacheManager,
-            ISolfacDelegateRepository solfacDelegateRepository, IUserData userData, 
+            IUserDelegateRepository userDelegateRepository, IUserData userData, 
             IServiceData serviceData)
         {
             this.cacheManager = cacheManager;
-            this.solfacDelegateRepository = solfacDelegateRepository;
+            this.userDelegateRepository = userDelegateRepository;
             this.userData = userData;
             this.serviceData = serviceData;
         }
@@ -40,7 +41,7 @@ namespace Sofco.Data.Billing
         {
             var currentUserId = userData.GetByUserName(userName).Id;
 
-            var delegates = solfacDelegateRepository.GetByUserId(currentUserId);
+            var delegates = userDelegateRepository.GetByUserId(currentUserId, UserDelegateType.Solfac);
 
             var result = delegates
                 .Select(solfacDelegate => serviceData.GetService(solfacDelegate.ServiceId))
