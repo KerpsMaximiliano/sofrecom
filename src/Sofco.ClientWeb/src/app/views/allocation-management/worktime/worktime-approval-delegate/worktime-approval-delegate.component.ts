@@ -31,7 +31,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     private idKey = 'value';
     private textKey = 'text';
 
-    private workTimeApprovals: any[] = new Array<any>();
+    public workTimeApprovals: any[] = new Array<any>();
     public workTimeApprovalId: string = null;
 
     private customers: any[] = new Array<any>();
@@ -257,5 +257,8 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         err => {
             this.errorHandlerService.handleErrors(err);
         });
+    }
+
+    save() {
     }
 }
