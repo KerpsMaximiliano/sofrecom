@@ -39,6 +39,7 @@ import { TaskService } from 'app/services/admin/task.service';
 import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
 import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
 import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
+import { Select2Module } from 'app/components/select2/select2';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
@@ -46,7 +47,7 @@ import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.componen
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, SpinnerModule, DatePickerModule, Select2Module],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService, TaskService],
   

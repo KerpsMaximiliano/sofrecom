@@ -128,10 +128,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.model.employeeId = $( "#employeeId" ).val();
         }
         
-        this.model.managerId = $( "#managerId" ).val();
-        this.model.sectorId = $( "#sectorId" ).val();
-        this.model.typeId = $( "#licensesTypeId" ).val();
-
         this.messageService.showLoading();
 
         this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {

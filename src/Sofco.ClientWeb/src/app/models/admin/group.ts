@@ -1,13 +1,15 @@
 
 import { Role } from "app/models/admin/role";
 
-export interface Group {
-    id: number,
-    description: string,
-    active: boolean
-    role: Role,
-    startDate: Date,
-    endDate: Date,
-    roleId: number,
-    email: string
+export class Group {
+    public id: number;
+    public description: string;
+    public active: boolean;
+    public role: Role;
+    public startDate: Date;
+    public  endDate: Date;
+    public roleId: any;
+    public email: string;
+
+    constructor() {}
 }

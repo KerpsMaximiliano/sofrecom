@@ -50,7 +50,9 @@ export class NewCertificateComponent implements OnDestroy {
 
     add() {
         this.messageService.showLoading();
-        this.form.model.clientExternalName = $('#clientExternalId option:selected').text();
+        
+        var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
+        this.form.model.clientExternalName = client.text;
 
         this.addSubscrip = this.certificateService.add(this.form.model).subscribe(
             response => {

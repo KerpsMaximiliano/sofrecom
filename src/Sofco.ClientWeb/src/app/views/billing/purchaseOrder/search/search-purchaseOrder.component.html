@@ -30,22 +30,10 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="control-label" for="client">{{'billing.invoice.account' | translate }}</label>
-                            <select class="form-control m-b" [(ngModel)]="customerId">
-                                <option value="0">{{'selectAnOption' | translate }}</option>
-                                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
-                            </select>
-                        </div>
+                        <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
                     </div>
                     <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="control-label" for="status">{{'billing.purchaseOrder.fields.status' | translate }}</label>
-                            <select class="form-control m-b" [(ngModel)]="statusId">
-                                <option value="0">{{'selectAnOption' | translate }}</option>
-                                <option *ngFor="let status of statuses" [value]="status?.value">{{status?.text | translate }}</option>
-                            </select>
-                        </div>
+                        <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses"></select-two>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">

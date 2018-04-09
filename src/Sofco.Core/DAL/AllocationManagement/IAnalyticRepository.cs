@@ -20,5 +20,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Analytic> GetAllOpenReadOnly();
         Analytic GetByService(string serviceId);
         ICollection<Analytic> GetByClient(string clientId);
+        Analytic GetById(int allocationAnalyticId);
     }
 }

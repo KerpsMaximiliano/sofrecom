@@ -38,8 +38,8 @@ namespace Sofco.Service.Implementations.Billing
         {
             var options = new PurchaseOrderOptions
             {
-                Sellers = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } },
-                Managers = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } }
+                Sellers = new List<Option>(),
+                Managers = new List<Option>()
             };
 
             options.Sellers.AddRange(unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }));

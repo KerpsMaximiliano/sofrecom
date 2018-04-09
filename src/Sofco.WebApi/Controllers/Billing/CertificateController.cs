@@ -50,7 +50,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var certificates = certificateService.GetByClient(client);
 
-            return Ok(certificates.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }));
+            return Ok(certificates.Select(x => new Option { Id = x.Id, Text = x.Name }));
         }
 
         [HttpPost]

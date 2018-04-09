@@ -1,0 +1,79 @@
+<div class="form-group">
+        <label class="control-label">{{'billing.purchaseOrder.fields.title' | translate }}</label>
+        <input type="text" class="form-control" [(ngModel)]="model.title">
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'billing.purchaseOrder.fields.number' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="model.number">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</label>
+                <date-picker [(date)]="model.receptionDate"></date-picker>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
+        <select class="form-control m-b" id="clientExternalId" [(ngModel)]="model.clientExternalId" (ngModelChange)="getAnalytics()">
+            <option *ngFor="let customer of customers" [value]="customer?.id">{{customer?.text}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
+        <select class="form-control" id="analyticId" [(ngModel)]="model.analyticId" (ngModelChange)="analyticChange()">
+            <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label" for="projectId">{{'billing.solfac.project' | translate }}</label>
+        <select class="form-control m-b" [(ngModel)]="model.projectId">
+            <option *ngFor="let project of projects" [value]="project?.id">{{project?.text}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.analytics.add.commercialManager' | translate }}</label>
+        <select class="form-control m-b" [(ngModel)]="model.commercialManagerId">
+            <option *ngFor="let seller of options?.sellers" [value]="seller?.id">{{seller?.text}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
+        <select class="form-control m-b" [(ngModel)]="model.managerId">
+            <option *ngFor="let manager of options?.managers" [value]="manager?.id">{{manager?.text}}</option>
+        </select>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'billing.purchaseOrder.fields.year' | translate }}</label>
+                <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="model.year">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
+    
+            <div class="radio radio-info radio-inline">
+                <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
+                <label for="area"> Comercial </label>
+            </div>
+            <div class="radio radio-inline radio-info">
+                <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
+                <label for="area2"> Compañia </label>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    

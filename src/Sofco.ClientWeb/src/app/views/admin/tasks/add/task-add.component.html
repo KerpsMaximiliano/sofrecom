@@ -27,15 +27,9 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row"> 
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="control-label">{{ 'ADMIN.category.title' | translate }}</label>
-                            <select class="form-control" [(ngModel)]="categoryId">
-                                <option value="0">{{'selectAnOption' | translate }}</option>
-                                <option *ngFor="let category of categories" [value]="category?.id">{{category?.text}}</option>
-                            </select>
-                        </div>
+                        <select-two [label]="'ADMIN.category.title'" [(value)]="categoryId" [options]="categories"></select-two>
                     </div>
                 </div>
     

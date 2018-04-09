@@ -71,5 +71,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
         }
+
+        public Analytic GetById(int allocationAnalyticId)
+        {
+            return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.Id == allocationAnalyticId);
+        }
     }
 }

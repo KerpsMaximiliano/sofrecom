@@ -28,7 +28,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     public model: Solfac = <Solfac>{};
     public provinces: Option[] = new Array<Option>();
-    public documentTypes: Option[] = new Array<Option>();
+    public documentTypes: any[] = new Array();
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
@@ -53,9 +53,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
     isCreditNoteSolfacType:boolean = false;
     isDebitNoteSolfacType:boolean = false;
     documentTypeDicts:Object = {
-      "default": ["1", "3", "6", "7"],
-      "creditNote": ["2", "4"],
-      "debitNote": ["5"]
+      "default": [1, 3, 6, 7],
+      "creditNote": [2, 4],
+      "debitNote": [5]
     }
     documentTypeKey:string = "documentTypeName";
 
@@ -237,7 +237,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       },
       err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     getOptions() {
       this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
         this.currencies = data.currencies;
@@ -378,7 +378,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     updateDocumentTypes() {
       let allowedValues = this.getAllowedDocumentType();
       
-      this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.value));
+      this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.id));
 
       if(this.documentTypes.length > 0 && !allowedValues.includes(this.model.documentType.toString()))
       {

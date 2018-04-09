@@ -33,7 +33,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
-            var options = new List<AnalyticOption> { new AnalyticOption { Id = 0, Text = "Seleccione una opcion" } };
+            var options = new List<AnalyticOption>();
 
             options.AddRange(analyticService.GetAllActives().Select(x => new AnalyticOption { Id = x.Id, Text = $"{x.Title} - {x.Name}", Title = x.Title }));
 
@@ -43,7 +43,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("clients/{clientId}")]
         public IActionResult GetByClient(string clientId)
         {
-            var options = new List<AnalyticOptionForOcModel> { new AnalyticOptionForOcModel { Id = 0, Text = "Seleccione una opcion" } };
+            var options = new List<AnalyticOptionForOcModel>();
 
             options.AddRange(analyticService.GetByClient(clientId));
 

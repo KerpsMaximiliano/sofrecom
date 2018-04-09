@@ -75,7 +75,6 @@ export class TopNavbarComponent {
       this.setEmployeeId();
     }
 
-    console.log(this.employeeId);
     this.router.navigate([`/profile/${this.employeeId}`]);
   }
 }

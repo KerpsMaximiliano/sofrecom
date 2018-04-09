@@ -104,7 +104,7 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<SelectListModel>>
             {
                 Data = result
-                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
                     .OrderBy(x => x.Text)
                     .ToList()
             };

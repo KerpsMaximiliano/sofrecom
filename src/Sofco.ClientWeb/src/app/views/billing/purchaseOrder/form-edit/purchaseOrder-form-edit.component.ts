@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input, ViewChild } from "@angular/core";
+import { Component, OnDestroy, Input, ViewChild, Output } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
@@ -13,10 +13,10 @@ import { AnalyticService } from "../../../../services/allocation-management/anal
 import { ProjectService } from "app/services/billing/project.service";
 
 @Component({
-    selector: 'purchase-order-form',
-    templateUrl: './purchaseOrder-form.component.html'
+    selector: 'purchase-order-form-edit',
+    templateUrl: './purchaseOrder-form-edit.component.html'
 })
-export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
+export class PurchaseOrderFormEditComponent implements OnInit, OnDestroy {
 
     public options: any;
     public model: any = {};
@@ -54,9 +54,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     analyticChange(){
-        if(this.model.analyticId == undefined || this.model.analyticId == '') return;
-        if(this.analytics.length == 0) return;
-
         var item = this.analytics.find(x => x.id == this.model.analyticId);
         this.model.commercialManagerId = item.commercialManagerId;
         this.model.managerId = item.managerId;
@@ -77,6 +74,11 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
+
+                var item = this.analytics.find(x => x.id == this.model.analyticId);
+                if(item.id > 0 && item.serviceId){
+                    this.getProjects(item.serviceId);
+                }
             },
             err => this.errorHandlerService.handleErrors(err));
     }
