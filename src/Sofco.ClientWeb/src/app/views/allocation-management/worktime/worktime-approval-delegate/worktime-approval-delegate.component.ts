@@ -1,32 +1,38 @@
-import { Component, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CustomerService } from 'app/services/billing/customer.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from 'app/services/common/message.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { UserService } from 'app/services/admin/user.service';
-import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { ServiceService } from 'app/services/billing/service.service';
+import { CustomerService } from 'app/services/billing/customer.service';
+import { UserService } from 'app/services/admin/user.service';
+import { I18nService } from 'app/services/common/i18n.service';
+import { DataTableService } from 'app/services/common/datatable.service';
+import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
+import { MessageService } from 'app/services/common/message.service';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
 declare var $: any;
 
 @Component({
-    selector: 'app-solfac-delegate-edit',
-    templateUrl: './solfac-delegate-edit.component.html'
+    selector: 'app-worktime-approval-delegate',
+    templateUrl: './worktime-approval-delegate.component.html'
   })
 
-export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
+export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
     private nullId = '';
 
-    subscription: Subscription;
+    private subscription: Subscription;
 
     @Input()
     public model: any;
 
     private idKey = 'id';
     private textKey = 'text';
+
+    public workTimeApprovals: any[] = new Array<any>();
+    public workTimeApprovalId: string = null;
 
     private customers: any[] = new Array<any>();
     public customerId: string = null;
@@ -37,27 +43,55 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
     public users: any[] = new Array<any>();
     public userId: string = null;
 
-    constructor(private serviceService: ServiceService,
+    public delegates: any[] = new Array<any>();
+
+    private delegeteSelected: any;
+
+    public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        'ACTIONS.confirmTitle',
+        'confirmModal',
+        true,
+        true,
+        'ACTIONS.DELETE',
+        'ACTIONS.cancel');
+
+    @ViewChild('confirmModal') confirmModal;
+
+    constructor(private workTimeApprovalDelegateService: WorkTimeApprovalDelegateService,
+        private serviceService: ServiceService,
         private customerService: CustomerService,
         private usersService: UserService,
-        private solfacDelegateService: SolfacDelegateService,
         private errorHandlerService: ErrorHandlerService,
+        private dataTableService: DataTableService,
         private messageService: MessageService,
         private i18nService: I18nService,
         private router: Router) {
-
     }
 
     ngOnInit() {
         this.getCustomers();
         this.initServiceControl();
         this.getUsers();
+        this.getWorkTimeApprovals();
     }
 
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    getWorkTimeApprovals() {
+        this.messageService.showLoading();
+        this.subscription = this.workTimeApprovalDelegateService.getCurrentEmployees().subscribe(res => {
+            this.messageService.closeLoading();
+            this.workTimeApprovals = res.data;
+            this.initTable();
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     getCustomers() {
@@ -160,16 +194,16 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
         const data = this.mapToSelect(this.users, this.model);
         const self = this;
 
-        $('#userControl').select2({
+        $('#userControl, #userControl2').select2({
             data: data,
             allowClear: true,
             placeholder: this.i18nService.translateByKey('selectAnOption'),
             width: '100%'
         });
-        $('#userControl').on('select2:unselecting', function(){
+        $('#userControl, #userControl2').on('select2:unselecting', function(){
             self.userId = null;
         });
-        $('#userControl').on('select2:select', function(evt){
+        $('#userControl, #userControl2').on('select2:select', function(evt){
             const item = evt.params.data;
             self.userId = item.id === this.nullId ? null : item.id;
         });
@@ -187,21 +221,44 @@ export class SolfacDelegateEditComponent implements OnInit, OnDestroy {
         return this.userId !== null;
     }
 
-    save(): void {
-        const item = {
-            serviceId: this.serviceId,
-            userId: parseInt(this.userId)
-        };
+    initTable() {
+        const options = { selector: "#resourcesTable" };
+        this.dataTableService.destroy(options.selector);
+        this.dataTableService.init2(options);
+    }
 
+    getDelegates() {
         this.messageService.showLoading();
-        this.subscription = this.solfacDelegateService.save(item).subscribe(users => {
+        this.subscription = this.workTimeApprovalDelegateService.getAll().subscribe(response => {
             this.messageService.closeLoading();
-            this.messageService.succes('billing.solfac.delegate.saveSuccess');
-            this.router.navigate(['/billing/solfac/delegate']);
+            this.delegates = response.data;
+            // this.initTable();
         },
         err => {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
+    }
+
+    goToAdd() {
+        this.router.navigate(['/allocationManagement/workTimeApproval/delegate/edit']);
+    }
+
+    showConfirmDelete(item: any) {
+        this.delegeteSelected = item;
+        this.confirmModal.show();
+    }
+
+    processDelete() {
+        this.confirmModal.hide();
+        this.subscription = this.workTimeApprovalDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
+            this.getDelegates();
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
+    }
+
+    save() {
     }
 }

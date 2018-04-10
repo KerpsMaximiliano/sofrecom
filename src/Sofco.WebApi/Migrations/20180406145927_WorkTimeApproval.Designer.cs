@@ -10,34 +10,15 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180406145927_WorkTimeApproval")]
+    partial class WorkTimeApproval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<DateTime?>("EndDate");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
 
             modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
                 {
@@ -83,7 +64,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<int>("RoleId");
+                    b.Property<int?>("RoleId");
 
                     b.Property<DateTime>("StartDate");
 
@@ -161,30 +142,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Settings");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Task", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("EndDate");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Admin.User", b =>
@@ -1150,19 +1107,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("LicenseHistories");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>
-                {
-                    b.Property<int>("CategoryId");
-
-                    b.Property<int>("EmployeeId");
-
-                    b.HasKey("CategoryId", "EmployeeId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("EmployeeCategories");
-                });
-
             modelBuilder.Entity("Sofco.Model.Relationships.LicenseFile", b =>
                 {
                     b.Property<int>("LicenseId");
@@ -1396,16 +1340,7 @@ namespace Sofco.WebApi.Migrations
                 {
                     b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
                         .WithMany("Groups")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Task", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Admin.Category", "Category")
-                        .WithMany("Tasks")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Allocation", b =>
@@ -1623,19 +1558,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Admin.Category", "Category")
-                        .WithMany("EmployeeCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
-                        .WithMany("EmployeeCategories")
-                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

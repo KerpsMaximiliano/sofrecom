@@ -548,7 +548,23 @@
                 "close": "Cerrada"
             }
         },
-        "confirmBody": "Esta seguro que desea seguir con la acción de "
+        "confirmBody": "Esta seguro que desea seguir con la acción de ",
+        "workTimeApproval": {
+            "delegate": {
+                "title": "Delegar aprobación horas",
+                "delegateAction": "Delegar",
+                "client": "Cliente",
+                "approvers": "Autorizadores",
+                "saveSuccess": "Autorizador agregado correctamente.",
+                "service": "Servicio",
+                "manager": "Gerente",
+                "approver": "Autorizador",
+                "employee": "Recurso",
+                "createdUser": "Creado por",
+                "createdDate": "Fecha creación",
+                "deleteConfirm": "¿Esta seguro que desea eliminar al autorizador seleccionado?"
+            }
+        }
     },
     "rrhh":{
         "title": "Recursos Humanos",
