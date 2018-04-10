@@ -32,5 +32,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Technology { get; set; }
 
         public decimal Percentage { get; set; }
+
+        public bool Selected { get; set; }
     }
 }

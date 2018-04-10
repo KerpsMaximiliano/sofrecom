@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Admin
 {
@@ -15,5 +16,7 @@ namespace Sofco.Model.Models.Admin
         public DateTime? EndDate { get; set; }
 
         public IList<Task> Tasks { get; set; }
+
+        public ICollection<EmployeeCategory> EmployeeCategories { get; set; }
     }
 }

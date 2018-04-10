@@ -43,4 +43,8 @@ export class EmployeeService {
   finalizeExtraHolidays(id){
     return this.http.put<any>(`${this.baseUrl}/employees/${id}/finalizeExtraHolidays`, {});
   }
+
+  addCategories(json){
+    return this.http.put<any>(`${this.baseUrl}/employees/categories`, json);
+  }
 }

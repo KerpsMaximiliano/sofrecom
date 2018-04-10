@@ -15,6 +15,7 @@ using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -146,6 +147,36 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.AllocationManagement.Employee.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response AddCategories(EmployeeAddCategoriesParams parameters)
+        {
+            var response = new Response();
+
+            foreach (var employeeId in parameters.Employees)
+            {
+                foreach (var categoryId in parameters.Categories)
+                {
+                    if (!unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
+                    {
+                        var employeeCategory = new EmployeeCategory(employeeId, categoryId);
+                        unitOfWork.CategoryRepository.AddEmployeeCategory(employeeCategory);
+                    }
+                }
+            }
+
+            try
+            {
+                unitOfWork.Save();
+                response.AddSuccess(Resources.AllocationManagement.Employee.CategoriesAdded);
             }
             catch (Exception e)
             {

@@ -19,5 +19,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<EmployeeProfileModel> GetProfile(int id);
 
         Response FinalizeExtraHolidays(int id);
+
+        Response AddCategories(EmployeeAddCategoriesParams parameters);
     }
 }

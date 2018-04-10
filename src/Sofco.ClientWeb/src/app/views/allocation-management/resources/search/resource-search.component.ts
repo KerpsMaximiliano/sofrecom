@@ -8,6 +8,8 @@ import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserService } from "app/services/admin/user.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { CategoryService } from "../../../../services/admin/category.service";
 
 declare var $: any;
 
@@ -16,6 +18,8 @@ declare var $: any;
     templateUrl: './resource-search.component.html'
 })
 export class ResourceSearchComponent implements OnInit, OnDestroy {
+
+    @ViewChild('accordion') accordion;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -27,9 +31,21 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     ); 
 
+    @ViewChild('categoriesModal') categoriesModal;
+    public categoriesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ADMIN.category.list",
+        "categoriesModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    ); 
+
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
     public users: any[] = new Array<any>();
+    public analytics: any[] = new Array<any>();
+    public categories: any[] = new Array<any>();
     public resource: any;
     public resourceSelected: any;
 
@@ -38,7 +54,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         seniority: "",
         profile: "",
         technology: "",
-        percentage: null
+        percentage: null,
+        analyticId: 0
     };
 
     public endDate: Date = new Date();
@@ -47,33 +64,36 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     getAllEmployeesSubscrip: Subscription;
     searchSubscrip: Subscription;
     getUsersSubscrip: Subscription;
+    getAnalyticSubscrip: Subscription;
+    getCategorySubscrip: Subscription;
+    addCategoriesSubscrip: Subscription;
 
     constructor(private router: Router,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
                 private usersService: UserService,
+                private categoryService: CategoryService,
+                private analyticService: AnalyticService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService){}
  
     ngOnInit(): void {
-
-        var data = JSON.parse(sessionStorage.getItem('lastResourceQuery'));
-
-        if(data){
-            this.searchModel = data;
-            this.search();
-        }
-
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
             this.users = data;
         },
         error => this.errorHandlerService.handleErrors(error));
+
+        this.getAnalytics();
+        this.getCategories();
     }
 
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
         if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
+        if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
+        if(this.getCategorySubscrip) this.getCategorySubscrip.unsubscribe();
+        if(this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
     }
 
     goToAssignAnalytics(resource){
@@ -106,12 +126,42 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         });
     }
 
+    getAnalytics(){
+        this.getAnalyticSubscrip = this.analyticService.getOptions().subscribe(
+            data => {
+                this.analytics = data;
+
+                this.setLastQuery();
+            },
+            err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getCategories(){
+        this.getCategorySubscrip = this.categoryService.getOptions().subscribe(
+            data => {
+                this.categories = data;
+            },
+            err => this.errorHandlerService.handleErrors(err));
+    }
+
+    setLastQuery(){
+        setTimeout(() => {
+            var data = JSON.parse(sessionStorage.getItem('lastResourceQuery'));
+
+            if(data){
+                this.searchModel = data;
+                this.search();
+            }
+        }, 0);
+    }
+
     clean(){
         this.searchModel.name = "";
         this.searchModel.profile = "";
         this.searchModel.seniority = "";
         this.searchModel.technology = "";
         this.searchModel.percentage = null;
+        this.searchModel.analyticId = 0;
         this.resources = [];
         sessionStorage.removeItem('lastResourceQuery');
     }
@@ -121,6 +171,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            !this.searchModel.profile && this.searchModel.profile == "" &&
            !this.searchModel.seniority && this.searchModel.seniority == "" &&
            !this.searchModel.technology && this.searchModel.technology == "" && 
+           !this.searchModel.analyticId && this.searchModel.analyticId == 0 && 
            !this.searchModel.percentage && this.searchModel.percentage == null){
                return true;
            }
@@ -140,6 +191,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             }
            
             this.messageService.closeLoading();
+            this.collapse();
 
             sessionStorage.setItem('lastResourceQuery', JSON.stringify(this.searchModel));
         },
@@ -156,6 +208,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             this.resources = data;
             this.initGrid();
             this.messageService.closeLoading();
+
+            this.collapse();
         },
         error => {
             this.messageService.closeLoading();
@@ -175,5 +229,42 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     canViewProfile(){
         return this.menuService.hasFunctionality('ALLOC', 'VWPRO');
+    }
+
+    collapse(){
+        if($("#collapseOne").hasClass('in')){
+            $("#collapseOne").removeClass('in');
+        }
+        else{
+            $("#collapseOne").addClass('in');
+        }
+    }
+
+    addCategoryDisabled(){
+        return this.resources.filter(x => x.selected == true).length == 0;
+    }
+
+    saveCategories(){
+        var categoriesSelected = this.categories.filter(x => x.selected == true).map(item => item.id);
+        var usersSelected = this.resources.filter(x => x.selected == true).map(item => item.id);
+
+        if(categoriesSelected.length == 0) return;
+
+        var json = {
+            categories: categoriesSelected,
+            employees: usersSelected
+        }
+
+        this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
+            this.messageService.closeLoading();
+            this.categoriesModal.hide();
+
+            this.messageService.showMessages(response.messages);
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.categoriesModal.hide();
+            this.errorHandlerService.handleErrors(error)
+        });
     }
 }

@@ -444,6 +444,7 @@
         },
         "resources": {
             "listTitle": "Resources´s List",
+            "search": "Resources´s Search",
             "title": "Resources",
             "list": "List",
             "recipients": "Copy to",

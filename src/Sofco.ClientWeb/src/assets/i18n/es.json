@@ -453,6 +453,7 @@
         },
         "resources": {
             "listTitle": "Listado de Recursos",
+            "search": "Busqueda de Recursos",
             "title": "Recursos",
             "list": "Listado",
             "profile": "Perfil del empleado",

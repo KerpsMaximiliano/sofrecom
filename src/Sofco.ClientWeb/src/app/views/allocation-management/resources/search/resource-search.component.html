@@ -16,57 +16,76 @@
 </div>
  
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="ibox">
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'allocationManagement.resources.grid.profile' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
-                    </div>
-                </div>
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">{{'allocationManagement.resources.search' | translate }}</a>
+                </h5>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.grid.profile' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
-                        <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success" (click)="search()" [disabled]="searchDisable()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        <button class="btn btn-success" (click)="searchAll()"> {{ 'ACTIONS.searchAll' | translate }} <i class="fa fa-search"></i></button>
                     </div>
                 </div>
-            </div>
-        </div> 
-        <div class="ibox-footer">
-            <div class="text-right">
-                <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                <button class="btn btn-success" (click)="search()" [disabled]="searchDisable()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
-                <button class="btn btn-success" (click)="searchAll()"> {{ 'ACTIONS.searchAll' | translate }} <i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>
 
     <div class="ibox" *ngIf="resources.length > 0"> 
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <button class="btn btn-primary btn-sm" (click)="categoriesModal.show()" [disabled]="addCategoryDisabled()"> Agregar Tareas <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
         <div class="ibox-content">
             <table class="table table-striped dataTable" role="grid" id="resourcesTable">
                 <thead>
                     <tr>
+                        <th class="column-xs"></th>
                         <th>{{'allocationManagement.resources.grid.name' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.start' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
@@ -77,6 +96,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let resource of resources" class="pointer">
+                        <td class="column-xs text-center">
+                            <icheck [(checked)]="resource.selected"></icheck>
+                        </td>
                         <td>{{ resource.employeeNumber }} - {{ resource.name}}</td>
                         <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
                         <td>{{ resource.senority}}</td>
@@ -93,7 +115,7 @@
         </div>
     </div>
 </div>
-
+ 
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="sendUnsubscribeNotification()">
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.resources.recipient' | translate }}: </label>
@@ -112,3 +134,11 @@
         <date-picker [(date)]="endDate"></date-picker>
     </div>
 </ng2-modal> 
+
+<ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
+    <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
+        <icheck [(checked)]="category.selected" >
+            <label style="padding-left:20px;">{{ category.text }}</label> 
+        </icheck>
+    </div>
+</ng2-modal>

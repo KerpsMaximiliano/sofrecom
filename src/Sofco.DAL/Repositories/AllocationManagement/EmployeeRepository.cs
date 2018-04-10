@@ -62,7 +62,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 
-            return query.ToList();
+            //query = query.Join(context.Allocations.Where(x => x.AnalyticId == parameters.AnalyticId), x => x.Id, s => s.EmployeeId, (e, a) => e);
+
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+            {
+                query = from employee in query
+                        from allocation in context.Allocations
+                        where employee.Id == allocation.EmployeeId && allocation.AnalyticId == parameters.AnalyticId
+                        select employee;
+            }
+
+            return query.Distinct().ToList();
         }
 
         public void ResetAllExamDays()
