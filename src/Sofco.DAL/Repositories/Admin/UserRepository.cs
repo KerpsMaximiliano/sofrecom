@@ -129,6 +129,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == dafCode));
         }
 
+        public bool HasManagersGroup(string userMail)
+        {
+            var managerCode = emailConfig.ManagersCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == managerCode));
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;

@@ -27,5 +27,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasManagerGroup(string userName);
 
         bool HasRrhhGroup(string userMail);
+
+        bool HasManagersGroup(string userMail);
     }
 }

@@ -38,5 +38,7 @@ namespace Sofco.Core.Models.Admin
         public string RrhhMail { get; set; }
 
         public string SellerMail { get; set; }
+
+        public bool IsManager { get; set; }
     }
 }

@@ -93,5 +93,11 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/analytics")]
+        public IActionResult GetAnalytics(int id)
+        {
+            return Ok(employeeService.GetAnalytics(id));
+        }
     }
 }

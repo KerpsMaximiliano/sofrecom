@@ -76,9 +76,9 @@
     </div>
 
     <div class="ibox" *ngIf="resources.length > 0"> 
-        <div class="ibox-title">
+        <div class="ibox-title" *ngIf="canAddCategories()">
             <div class="ibox-tools">
-                <button class="btn btn-primary btn-sm" (click)="categoriesModal.show()" [disabled]="addCategoryDisabled()"> Agregar Tareas <i class="fa fa-plus"></i></button>
+                <button class="btn btn-primary btn-sm" (click)="categoriesModal.show()" [disabled]="addCategoryDisabled()"> {{'ADMIN.category.add' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>
         <div class="ibox-content">
@@ -136,6 +136,10 @@
 </ng2-modal> 
 
 <ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
+    <div class="alert alert-warning">
+        {{'ADMIN.category.areYouSureAdd' | translate }}
+    </div>
+
     <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 

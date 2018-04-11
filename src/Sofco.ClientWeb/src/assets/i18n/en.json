@@ -79,7 +79,8 @@
             "active": "Activo",
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
-            "task": "Categorias de Tareas"
+            "task": "Categorias de Tareas",
+            "areYouSureAdd": "When accepting the selected categories are added to the previously assigned ones, does the action confirm?"
         },
         "settings": {
             "title": "Configs",

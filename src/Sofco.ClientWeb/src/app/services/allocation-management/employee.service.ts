@@ -24,6 +24,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
+  getAnalytics(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/analytics`);
+  }
+
   getById(id) {
     return this.http.get<any>(`${this.baseUrl}/employees/${id}`);
   }

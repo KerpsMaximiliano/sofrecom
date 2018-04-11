@@ -33,5 +33,7 @@ namespace Sofco.Core.Services.Admin
         ICollection<User> GetManagers();
 
         bool HasRrhhGroup();
+
+        bool HasManagerGroup();
     }
 }

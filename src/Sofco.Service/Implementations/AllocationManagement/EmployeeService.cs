@@ -187,6 +187,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public ICollection<Option> GetAnalytics(int id)
+        {
+            return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

@@ -21,5 +21,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response FinalizeExtraHolidays(int id);
 
         Response AddCategories(EmployeeAddCategoriesParams parameters);
+
+        ICollection<Option> GetAnalytics(int id);
     }
 }

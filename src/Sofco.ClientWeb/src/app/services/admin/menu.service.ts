@@ -12,6 +12,7 @@ export class MenuService {
 
     public menu: Menu[];
     public userIsDirector: boolean;
+    public userIsManager: boolean;
     public userIsDaf: boolean;
     public userIsCdg: boolean;
     public userIsRrhh: boolean;
@@ -33,6 +34,7 @@ export class MenuService {
             {
                 this.menu = menu.menus;
                 this.userIsDirector = menu.isDirector;
+                this.userIsManager = menu.isManager;
                 this.userIsDaf = menu.isDaf;
                 this.userIsCdg = menu.isCdg;
                 this.userIsRrhh = menu.isRrhh;

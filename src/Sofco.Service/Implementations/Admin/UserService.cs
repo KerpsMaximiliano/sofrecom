@@ -285,6 +285,11 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.HasRrhhGroup(sessionManager.GetUserEmail());
         }
 
+        public bool HasManagerGroup()
+        {
+            return unitOfWork.UserRepository.HasManagersGroup(sessionManager.GetUserEmail());
+        }
+
         private UserModel Translate(User user)
         {
             return mapper.Map<User, UserModel>(user);

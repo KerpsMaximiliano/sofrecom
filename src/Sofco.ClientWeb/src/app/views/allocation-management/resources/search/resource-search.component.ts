@@ -127,7 +127,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getOptions().subscribe(
+        this.getAnalyticSubscrip = this.employeeService.getAnalytics(this.menuService.user.id).subscribe(
             data => {
                 this.analytics = data;
 
@@ -266,5 +266,9 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             this.categoriesModal.hide();
             this.errorHandlerService.handleErrors(error)
         });
+    }
+
+    canAddCategories(){
+        return this.menuService.userIsDirector || this.menuService.userIsManager;
     }
 }

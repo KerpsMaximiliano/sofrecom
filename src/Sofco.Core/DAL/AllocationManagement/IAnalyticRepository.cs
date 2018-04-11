@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -21,5 +22,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         Analytic GetByService(string serviceId);
         ICollection<Analytic> GetByClient(string clientId);
         Analytic GetById(int allocationAnalyticId);
+        ICollection<Analytic> GetAnalyticsByManagers(int id);
     }
 }
