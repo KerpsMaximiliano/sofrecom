@@ -68,6 +68,21 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response<List<SelectListModel>> GetCustomersOptionsByCurrentManager()
+        {
+            var result = GetCustomersByCurrentManager();
+
+            var response = new Response<List<SelectListModel>>
+            {
+                Data = result.Data
+                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
+        }
+
         public Response<CrmCustomer> GetCustomerById(string customerId)
         {
             var url = $"{crmConfig.Url}/api/account/{customerId}";
@@ -83,6 +98,17 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             response.Data = customer;
+            return response;
+        }
+
+        private Response<List<CrmCustomer>> GetCustomersByCurrentManager()
+        {
+            var response = new Response<List<CrmCustomer>>();
+
+            var result = customerData.GetCustomersByManager(sessionManager.GetUserName()).ToList();
+
+            response.Data = result.DistinctBy(x => x.Id);
+
             return response;
         }
     }

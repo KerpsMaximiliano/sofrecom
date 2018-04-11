@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Models.Admin;
+﻿using Sofco.Core.Models.Admin;
+using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.Data.Admin
 {
@@ -9,5 +10,7 @@ namespace Sofco.Core.Data.Admin
         User GetById(int userId);
 
         User GetByUserName(string userName);
+
+        UserLiteModel GetUserLiteById(int managerId);
     }
 }

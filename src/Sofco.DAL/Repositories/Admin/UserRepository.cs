@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Models.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Admin;
 
@@ -162,6 +163,15 @@ namespace Sofco.DAL.Repositories.Admin
                 .Include(x => x.UserGroups)
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == rrhhCode));
+        }
+
+        public UserLiteModel GetUserLiteById(int userId)
+        {
+            return context.Users.Where(s => s.Id == userId).Select(s => new UserLiteModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).FirstOrDefault();
         }
     }
 }

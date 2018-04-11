@@ -17,9 +17,15 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Analytic> GetAnalyticsByEmployee(int employeeId);
 
         void Close(Analytic analytic);
+
         ICollection<Analytic> GetAllOpenReadOnly();
+
         Analytic GetByService(string serviceId);
+
         ICollection<Analytic> GetByClient(string clientId);
+
         Analytic GetById(int allocationAnalyticId);
+
+        List<Analytic> GetByManagerId(int managerId);
     }
 }

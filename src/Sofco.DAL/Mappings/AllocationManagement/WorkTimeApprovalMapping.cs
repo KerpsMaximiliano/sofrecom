@@ -14,8 +14,6 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<WorkTimeApproval>().Property(_ => _.CreatedUser).HasMaxLength(50);
             builder.Entity<WorkTimeApproval>().Property(_ => _.ModifiedUser).HasMaxLength(50);
             builder.Entity<WorkTimeApproval>().HasIndex(x => new { x.ServiceId, x.UserId, x.ApprovalUserId }).IsUnique();
-            builder.Entity<WorkTimeApproval>()
-                .HasOne(x => x.ApprovalUser);
         }
     }
 }

@@ -19,8 +19,8 @@ export class WorkTimeApprovalDelegateService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  getCurrentEmployees() {
-    return this.http.get<any>(this.apiUrl + '/employees');
+  getCurrentEmployees(query) {
+    return this.http.get<any>(this.apiUrl + `/employees?customerId=${query.customerId}&serviceId=${query.serviceId}&approvalId=${query.approvalId}`);
   }
 
   delete(id: number) {
