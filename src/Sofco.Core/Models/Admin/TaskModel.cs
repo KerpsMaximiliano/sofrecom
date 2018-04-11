@@ -19,6 +19,8 @@ namespace Sofco.Core.Models.Admin
             this.StartDate = task.StartDate;
             this.EndDate = task.EndDate;
             this.Active = task.Active;
+
+            this.Category = task.Category?.Description;
         }
 
         public int Id { get; set; }
@@ -26,5 +28,7 @@ namespace Sofco.Core.Models.Admin
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool Active { get; set; }
+
+        public string Category { get; set; }
     }
 }

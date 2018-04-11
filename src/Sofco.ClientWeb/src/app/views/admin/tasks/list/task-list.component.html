@@ -29,6 +29,7 @@
                 <thead>
                     <tr>
                         <th>{{ 'ADMIN.category.description' | translate }}</th>
+                        <th>{{ 'ADMIN.task.category' | translate }}</th>
                         <th>{{ 'ADMIN.category.startDate' | translate }}</th>
                         <th>{{ 'ADMIN.category.endDate' | translate }}</th>
                         <th class="text-center column-xs">{{ 'ADMIN.category.active' | translate }}</th>
@@ -38,6 +39,7 @@
                 <tbody>
                     <tr *ngFor="let task of tasks">
                         <td>{{ task.description }}</td>
+                        <td>{{ task.category }}</td>
                         <td>{{ task.startDate | date: 'dd/MM/yyyy' }}</td>
                         <td>{{ task.endDate | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center column-xs"><span class="fa" [ngClass]="task.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>

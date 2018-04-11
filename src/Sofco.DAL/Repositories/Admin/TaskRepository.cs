@@ -37,5 +37,10 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.Tasks.Any(x => x.Description == description);
         }
+
+        public new IList<Task> GetAll()
+        {
+            return context.Tasks.Include(x => x.Category).Where(x => x.Active).ToList().AsReadOnly();
+        }
     }
 }
