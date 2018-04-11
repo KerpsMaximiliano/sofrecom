@@ -15,6 +15,7 @@ using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -93,7 +94,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
             parameters.Receipents.Add(mailRrhh);
-            
+
             try
             {
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
@@ -110,7 +111,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSendMail);
-                
+
             }
 
             return response;
@@ -151,6 +152,68 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response AddCategories(EmployeeAddCategoriesParams parameters)
+        {
+            var response = new Response();
+
+            foreach (var employeeId in parameters.Employees)
+            {
+                foreach (var categoryId in parameters.Categories)
+                {
+                    if (!unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
+                    {
+                        var employeeCategory = new EmployeeCategory(employeeId, categoryId);
+                        unitOfWork.CategoryRepository.AddEmployeeCategory(employeeCategory);
+                    }
+                }
+            }
+
+            try
+            {
+                unitOfWork.Save();
+                response.AddSuccess(Resources.AllocationManagement.Employee.CategoriesAdded);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public ICollection<Option> GetAnalytics(int id)
+        {
+            return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+        }
+
+        public Response<IList<EmployeeCategoryOption>> GetCategories(int id)
+        {
+            var employeeCategories = unitOfWork.EmployeeRepository.GetEmployeeCategories(id);
+
+            var response = new Response<IList<EmployeeCategoryOption>> { Data = new List<EmployeeCategoryOption>() };
+
+            foreach (var employeeCategory in employeeCategories)
+            {
+                if (employeeCategory.Category == null) continue;
+
+                foreach (var task in employeeCategory.Category.Tasks)
+                {
+                    if (!task.Active) continue;
+
+                    var option = new EmployeeCategoryOption
+                    {
+                        Category = employeeCategory.Category?.Description,
+                        Task = task.Description
+                    };
+
+                    response.Data.Add(option);
+                }
             }
 
             return response;

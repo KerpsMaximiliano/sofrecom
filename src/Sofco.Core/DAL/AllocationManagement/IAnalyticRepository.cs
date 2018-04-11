@@ -26,6 +26,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Analytic GetById(int allocationAnalyticId);
 
+        ICollection<Analytic> GetAnalyticsByManagers(int id);
+
         List<Analytic> GetByManagerId(int managerId);
     }
 }

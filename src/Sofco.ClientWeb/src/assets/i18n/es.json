@@ -79,14 +79,17 @@
             "active": "Activo",
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
-            "task": "Categorias de Tareas"
+            "task": "Categorias de Tareas",
+            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas, confirma la acción?"
         },
         "task": {
             "admin": "Administracion de tareas",
             "title": "Tareas",
             "list": "Listado de Tareas",
             "edit": "Editar Tarea",
-            "add": "Agregar Tarea"
+            "add": "Agregar Tarea",
+            "category": "Categoria",
+            "task": "Tarea"
         },
         "settings": {
             "title": "Configuración",
@@ -453,6 +456,7 @@
         },
         "resources": {
             "listTitle": "Listado de Recursos",
+            "search": "Busqueda de Recursos",
             "title": "Recursos",
             "list": "Listado",
             "profile": "Perfil del empleado",
@@ -515,7 +519,7 @@
                 "description": "Descripción",
                 "client":"Cliente",
                 "service":"Servicio",
-                "commercialManager": "Manager Comercial",
+                "commercialManager": "Ejecutivo de Cuenta",
                 "contractNumber": "Numero de Contrato",
                 "softwareLaw": "Ley de Software",
                 "evalProp": "Eval Prop",
@@ -538,7 +542,7 @@
                 "title": "Título",
                 "name": "Nombre",
                 "client": "Cliente",
-                "commercialManager": "Manager Comercial",
+                "commercialManager": "Ejecutivo de Cuenta",
                 "status": "Estado"
             },
             "status": {
@@ -604,7 +608,10 @@
             "hasCertificate": "Certificado",
             "detail": "Detalle de la Licencia",
             "detailTitle": "Detalle",
-            "fileDelivered": "Entregó Documentación"
+            "fileDelivered": "Entregó Documentación",
+            "extraHolidays": "Vacaciones extra acordadas",
+            "holidaysByLaw": "Vacaciones por ley",
+            "finalizeExtraHolidays": "Finalizar Acuerdo"
         }
     },
     "ACTIONS":{

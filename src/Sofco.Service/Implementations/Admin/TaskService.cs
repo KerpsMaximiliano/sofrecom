@@ -55,7 +55,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public IList<Task> GetAll(bool active)
         {
-            var list = active ? unitOfWork.TaskRepository.GetAllActives().ToList() : unitOfWork.TaskRepository.GetAllReadOnly().ToList();
+            var list = active ? unitOfWork.TaskRepository.GetAllActives() : unitOfWork.TaskRepository.GetAll();
 
             return list;
         }

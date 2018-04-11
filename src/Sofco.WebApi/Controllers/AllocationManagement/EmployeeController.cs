@@ -85,5 +85,27 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("categories")]
+        public IActionResult AddCategories([FromBody] EmployeeAddCategoriesParams parameters)
+        {
+            var response = employeeService.AddCategories(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/analytics")]
+        public IActionResult GetAnalytics(int id)
+        {
+            return Ok(employeeService.GetAnalytics(id));
+        }
+
+        [HttpGet("{id}/categories")]
+        public IActionResult GetCategories(int id)
+        {
+            var response = employeeService.GetCategories(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

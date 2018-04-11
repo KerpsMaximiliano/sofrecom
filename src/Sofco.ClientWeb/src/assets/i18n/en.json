@@ -68,7 +68,7 @@
             "edit": "Edit Module",
             "add": "Add Module",
             "deleteConfirm": "Are you sure you want to delete the module?"
-        },
+        }, 
         "category": {
             "admin": "Administracion de Categorias",
             "title": "Categorias",
@@ -79,7 +79,17 @@
             "active": "Activo",
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
-            "task": "Categorias de Tareas"
+            "task": "Categorias de Tareas",
+            "areYouSureAdd": "When accepting the selected categories are added to the previously assigned ones, does the action confirm?"
+        },
+        "task": {
+            "admin": "Administracion de tareas",
+            "title": "Tareas",
+            "list": "Listado de Tareas",
+            "edit": "Editar Tarea",
+            "add": "Agregar Tarea",
+            "category": "Categoria",
+            "task": "Tarea"
         },
         "settings": {
             "title": "Configs",
@@ -444,6 +454,7 @@
         },
         "resources": {
             "listTitle": "Resources´s List",
+            "search": "Resources´s Search",
             "title": "Resources",
             "list": "List",
             "recipients": "Copy to",
@@ -571,7 +582,10 @@
             "hasCertificate": "Certificate",
             "detail": "License's Detail",
             "detailTitle": "Detail",
-            "fileDelivered": "Certification Delivered"
+            "fileDelivered": "Certification Delivered",
+            "extraHolidays": "Vacaciones extra acordadas",
+            "holidaysByLaw": "Vacaciones por ley",
+            "finalizeExtraHolidays": "Finalizar Acuerdo"
         }
     },
     "ACTIONS":{

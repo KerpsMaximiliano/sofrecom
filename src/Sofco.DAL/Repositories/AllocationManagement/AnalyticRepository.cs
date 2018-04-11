@@ -77,6 +77,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.Id == allocationAnalyticId);
         }
 
+        public ICollection<Analytic> GetAnalyticsByManagers(int id)
+        {
+            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id).ToList();
+        }
+
         public List<Analytic> GetByManagerId(int managerId)
         {
             return context.Analytics.Where(x => x.ManagerId == managerId).ToList();

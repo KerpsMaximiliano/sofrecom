@@ -32,5 +32,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasRrhhGroup(string userMail);
 
         UserLiteModel GetUserLiteById(int userId);
+
+        bool HasManagersGroup(string userMail);
     }
 }

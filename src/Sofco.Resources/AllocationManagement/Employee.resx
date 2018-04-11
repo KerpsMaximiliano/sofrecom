@@ -120,6 +120,9 @@
   <data name="Added" xml:space="preserve">
     <value>allocationManagement/employee.added</value>
   </data>
+  <data name="CategoriesAdded" xml:space="preserve">
+    <value>allocationManagement/employee.categoriesAdded</value>
+  </data>
   <data name="Deleted" xml:space="preserve">
     <value>allocationManagement/employee.deleted</value>
   </data>

@@ -6,6 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -62,7 +63,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 
-            return query.ToList();
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+            {
+                query = from employee in query
+                        from allocation in context.Allocations
+                        where employee.Id == allocation.EmployeeId && allocation.AnalyticId == parameters.AnalyticId
+                        select employee;
+            }
+
+            return query.Distinct().ToList();
         }
 
         public void ResetAllExamDays()
@@ -78,6 +87,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void UpdateExamDaysTaken(Employee employeeToModif)
         {
             context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
+        }
+
+        public IList<EmployeeCategory> GetEmployeeCategories(int id)
+        {
+            return context.EmployeeCategories
+                .Include(x => x.Category)
+                    .ThenInclude(x => x.Tasks)
+                .Where(x => x.EmployeeId == id && x.Category.Active).ToList();
         }
 
         public void Save(List<Employee> employees)

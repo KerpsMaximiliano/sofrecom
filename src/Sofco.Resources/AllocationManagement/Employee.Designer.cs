@@ -71,6 +71,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.categoriesAdded.
+        /// </summary>
+        public static string CategoriesAdded {
+            get {
+                return ResourceManager.GetString("CategoriesAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.deleted.
         /// </summary>
         public static string Deleted {

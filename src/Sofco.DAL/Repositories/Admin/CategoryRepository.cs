@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.Admin
 {
@@ -31,6 +32,16 @@ namespace Sofco.DAL.Repositories.Admin
         public bool DescriptionExist(string description)
         {
             return context.Categories.Any(x => x.Description == description);
+        }
+
+        public bool ExistEmployeeCategory(int employeeId, int categoryId)
+        {
+            return context.EmployeeCategories.Any(x => x.CategoryId == categoryId && x.EmployeeId == employeeId);
+        }
+
+        public void AddEmployeeCategory(EmployeeCategory employeeCategory)
+        {
+            context.EmployeeCategories.AddRange(employeeCategory);
         }
     }
 }

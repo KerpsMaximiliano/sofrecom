@@ -24,6 +24,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
+  getAnalytics(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/analytics`);
+  }
+
   getById(id) {
     return this.http.get<any>(`${this.baseUrl}/employees/${id}`);
   }
@@ -42,5 +46,13 @@ export class EmployeeService {
 
   finalizeExtraHolidays(id){
     return this.http.put<any>(`${this.baseUrl}/employees/${id}/finalizeExtraHolidays`, {});
+  }
+
+  addCategories(json){
+    return this.http.put<any>(`${this.baseUrl}/employees/categories`, json);
+  }
+
+  getTasks(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/categories`);
   }
 }

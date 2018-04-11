@@ -138,6 +138,10 @@ div.scroll{
   font-size: 16px;
 }
 
+.text-sm {
+  font-size: 12px;
+}
+
 .text-smaller{
   font-size: 0.99em;
 }
@@ -185,6 +189,11 @@ ul.indented{
 
 .pointer {
   cursor: pointer;
+}
+
+.btn-dark {
+  background-color: black;
+  color: white;
 }
 
 .text-white{
