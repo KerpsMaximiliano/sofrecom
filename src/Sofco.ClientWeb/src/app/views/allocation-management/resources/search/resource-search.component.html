@@ -21,7 +21,10 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h5 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">{{'allocationManagement.resources.search' | translate }}</a>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()">
+                        {{'allocationManagement.resources.search' | translate }}
+                        <i id="search-icon" class="fa fa-angle-down"></i>
+                    </a>
                 </h5>
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
