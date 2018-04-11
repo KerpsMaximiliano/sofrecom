@@ -24,6 +24,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpGet("options/currentManager")]
+        public IActionResult GetOptionsByCurrentManager()
+        {
+            var response = customerService.GetCustomersOptionsByCurrentManager();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet]
         public IActionResult Get()
         {

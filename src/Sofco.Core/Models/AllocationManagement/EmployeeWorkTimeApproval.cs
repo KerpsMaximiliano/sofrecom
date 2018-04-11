@@ -12,6 +12,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string Service { get; set; }
 
+        public int? ManagerId { get; set; }
+
         public string Manager { get; set; }
 
         public string ApprovalName { get; set; }

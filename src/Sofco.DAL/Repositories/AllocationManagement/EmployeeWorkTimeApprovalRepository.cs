@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
@@ -14,18 +16,63 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
         }
 
-        public List<EmployeeWorkTimeApproval> Get()
+        public List<EmployeeWorkTimeApproval> Get(EmployeeWorkTimeApprovalQuery query)
         {
+            Expression<Func<Employee, bool>> where = e => e.EndDate == null;
+
+            if (query.CustomerId != Guid.Empty)
+            {
+                where = e => e.EndDate == null
+                    && e.Allocations.Any(s => s.Analytic.ClientExternalId == query.CustomerId.ToString());
+            }
+
+            if (query.CustomerId != Guid.Empty && query.ServiceId != Guid.Empty)
+            {
+                where = e => e.EndDate == null
+                    && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString())
+                    && e.Allocations.Any(a => a.Analytic.ServiceId == query.ServiceId.ToString());
+            }
+
             var result = context
                 .Employees
-                .Where(x => x.EndDate == null)
+                .Where(where)
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
-                .ThenInclude(x => x.Manager)
+                .GroupJoin(context.WorkTimeApprovals,
+                    e => e.Id,
+                    w => w.EmployeeId,
+                    Translate);
+
+            return result.ToList();
+        }
+
+        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, EmployeeWorkTimeApprovalQuery query)
+        {
+            Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId));
+
+            if (query.CustomerId != Guid.Empty)
+            {
+                where = e => e.EndDate == null
+                             && e.Allocations.Any(a => analyticIds.Contains(a.AnalyticId))
+                             && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString());
+            }
+
+            if (query.CustomerId != Guid.Empty && query.ServiceId != Guid.Empty)
+            {
+                where = e => e.EndDate == null
+                             && e.Allocations.Any(a => analyticIds.Contains(a.AnalyticId))
+                             && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString())
+                             && e.Allocations.Any(a => a.Analytic.ServiceId == query.ServiceId.ToString());
+            }
+
+            var result = context
+                .Employees
+                .Where(where)
+                .Include(x => x.Allocations)
+                .ThenInclude(x => x.Analytic)
                 .GroupJoin(
                     context
-                    .WorkTimeApprovals
-                    .Include(x => x.ApprovalUser),
+                        .WorkTimeApprovals,
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -37,7 +84,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             var allocation = employee.Allocations.LastOrDefault();
 
-            var managerName = allocation?.Analytic?.Manager?.Name;
+            var managerId = allocation?.Analytic?.ManagerId;
 
             var firstWorkTimeApproval = workTimeApprovals.FirstOrDefault();
 
@@ -47,7 +94,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Name = employee.Name,
                 Client = allocation?.Analytic?.ClientExternalName,
                 Service = allocation?.Analytic?.Service,
-                Manager = managerName,
+                ManagerId = managerId,
                 ApprovalName = firstWorkTimeApproval?.ApprovalUser?.Name,
                 WorkTimeApproval = firstWorkTimeApproval
             };

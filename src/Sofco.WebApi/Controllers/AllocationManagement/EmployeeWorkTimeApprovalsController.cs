@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Extensions;
 
@@ -17,9 +20,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromUri] EmployeeWorkTimeApprovalQuery query)
         {
-            var response = service.Get();
+            var response = service.Get(query);
 
             return this.CreateResponse(response);
         }

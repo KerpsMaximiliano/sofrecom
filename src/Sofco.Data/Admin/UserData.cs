@@ -2,6 +2,7 @@
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Admin;
 using Sofco.Model.Models.Admin;
 
 namespace Sofco.Data.Admin
@@ -11,6 +12,7 @@ namespace Sofco.Data.Admin
         private const string UserByIdCacheKey = "urn:users:id:{0}";
         private const string UserByUserNamCacheKey = "urn:users:userName:{0}";
         private const string UserByMangerIdCacheKey = "urn:users:managerId:{0}";
+        private const string UserLiteByMangerIdCacheKey = "urn:userLites:id:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
@@ -42,6 +44,13 @@ namespace Sofco.Data.Admin
         {
             return cacheManager.Get(string.Format(UserByUserNamCacheKey, userName),
                 () => unitOfWork.UserRepository.GetSingle(user => user.UserName == userName),
+                cacheExpire);
+        }
+
+        public UserLiteModel GetUserLiteById(int userId)
+        {
+            return cacheManager.Get(string.Format(UserLiteByMangerIdCacheKey, userId),
+                () => unitOfWork.UserRepository.GetUserLiteById(userId),
                 cacheExpire);
         }
     }

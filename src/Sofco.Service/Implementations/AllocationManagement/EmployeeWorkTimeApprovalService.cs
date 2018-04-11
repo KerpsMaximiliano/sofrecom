@@ -8,16 +8,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
 {
     public class EmployeeWorkTimeApprovalService : IEmployeeWorkTimeApprovalService
     {
-        private readonly IEmployeeManager employeeManager;
+        private readonly IEmployeeWorkTimeManager employeeWorkTimeManager;
 
-        public EmployeeWorkTimeApprovalService(IEmployeeManager employeeManager)
+        public EmployeeWorkTimeApprovalService(IEmployeeWorkTimeManager employeeWorkTimeManager)
         {
-            this.employeeManager = employeeManager;
+            this.employeeWorkTimeManager = employeeWorkTimeManager;
         }
 
-        public Response<List<EmployeeWorkTimeApproval>> Get()
+        public Response<List<EmployeeWorkTimeApproval>> Get(EmployeeWorkTimeApprovalQuery query)
         {
-            var employees = employeeManager.GetByCurrentServices();
+            var employees = employeeWorkTimeManager.GetByCurrentServices(query);
 
             return new Response<List<EmployeeWorkTimeApproval>>{ Data = employees };
         }
