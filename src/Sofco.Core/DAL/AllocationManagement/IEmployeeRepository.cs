@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -33,5 +34,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateHolidaysPending(Employee employeeToModif);
 
         void UpdateExamDaysTaken(Employee employeeToModif);
+
+        IList<EmployeeCategory> GetEmployeeCategories(int id);
     }
 }

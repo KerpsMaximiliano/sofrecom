@@ -51,4 +51,8 @@ export class EmployeeService {
   addCategories(json){
     return this.http.put<any>(`${this.baseUrl}/employees/categories`, json);
   }
+
+  getTasks(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/categories`);
+  }
 }

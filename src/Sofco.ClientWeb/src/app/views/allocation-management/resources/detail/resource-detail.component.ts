@@ -22,11 +22,13 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public isRrhh: boolean = false;
 
     public licenses: any[] = new Array();
+    public tasks: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
     finalizeExtraHolidaysSubscrip: Subscription;
     getDataSubscrip: Subscription;
+    getTasksSubscrip: Subscription;
 
     constructor(private router: Router,
                 private menuService: MenuService,
@@ -60,20 +62,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 }
             }
 
-            this.messageService.showLoading();
-
-            this.getSubscrip = this.employeeService.getProfile(params['id']).subscribe(response => {
-                this.model = response.data;
-
-                this.messageService.closeLoading();
-                this.initGrid();
-            },
-            error => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
-            });
-
-            this.getLicenses(this.resourceId);
+            this.getProfile();
+            this.getLicenses();
+            this.getTasks();
         });
     }
 
@@ -82,6 +73,22 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if (this.paramsSubscrip) { this.paramsSubscrip.unsubscribe(); }
         if (this.getDataSubscrip) { this.getDataSubscrip.unsubscribe(); }
         if (this.finalizeExtraHolidaysSubscrip) { this.finalizeExtraHolidaysSubscrip.unsubscribe(); }
+        if (this.getTasksSubscrip) { this.getTasksSubscrip.unsubscribe(); }
+    }
+
+    getProfile(){
+        this.messageService.showLoading();
+
+        this.getSubscrip = this.employeeService.getProfile(this.resourceId).subscribe(response => {
+            this.model = response.data;
+
+            this.messageService.closeLoading();
+            this.initGrid();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     initGrid(){
@@ -93,8 +100,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         this.router.navigate([`/profile/licenses/add`]);
     }
 
-    getLicenses(employeeId){
-        this.getDataSubscrip = this.licenseService.getByEmployee(employeeId).subscribe(data => {
+    getLicenses(){
+        this.getDataSubscrip = this.licenseService.getByEmployee(this.resourceId).subscribe(data => {
             this.licenses = data;
 
             var params = {
@@ -118,5 +125,16 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         },
         error => this.errorHandlerService.handleErrors(error),
         () => this.messageService.closeLoading());
+    }
+
+    getTasks(){
+        this.getDataSubscrip = this.employeeService.getTasks(this.resourceId).subscribe(response => {
+            this.tasks = response.data;
+
+            var params = { selector: "#tasksTable" };
+    
+            this.dataTableService.init2(params);
+        },
+        error => { this.errorHandlerService.handleErrors(error) });
     }
 } 

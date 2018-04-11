@@ -94,7 +94,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
             parameters.Receipents.Add(mailRrhh);
-            
+
             try
             {
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
@@ -111,7 +111,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSendMail);
-                
+
             }
 
             return response;
@@ -190,6 +190,33 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public ICollection<Option> GetAnalytics(int id)
         {
             return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+        }
+
+        public Response<IList<EmployeeCategoryOption>> GetCategories(int id)
+        {
+            var employeeCategories = unitOfWork.EmployeeRepository.GetEmployeeCategories(id);
+
+            var response = new Response<IList<EmployeeCategoryOption>> { Data = new List<EmployeeCategoryOption>() };
+
+            foreach (var employeeCategory in employeeCategories)
+            {
+                if (employeeCategory.Category == null) continue;
+
+                foreach (var task in employeeCategory.Category.Tasks)
+                {
+                    if (!task.Active) continue;
+
+                    var option = new EmployeeCategoryOption
+                    {
+                        Category = employeeCategory.Category?.Description,
+                        Task = task.Description
+                    };
+
+                    response.Data.Add(option);
+                }
+            }
+
+            return response;
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

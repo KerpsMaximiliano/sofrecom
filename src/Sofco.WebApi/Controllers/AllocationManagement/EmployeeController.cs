@@ -99,5 +99,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             return Ok(employeeService.GetAnalytics(id));
         }
+
+        [HttpGet("{id}/categories")]
+        public IActionResult GetCategories(int id)
+        {
+            var response = employeeService.GetCategories(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

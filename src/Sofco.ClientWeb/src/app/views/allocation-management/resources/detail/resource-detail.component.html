@@ -17,35 +17,87 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row m-b-md m-t-md">
-        <div class="col-md-5">
+        <div class="col-md-12">
             <div class="profile-image">
-                <img src="assets/images/user_default_m.png" class="img-circle circle-border m-b-md" alt="profile">
+                <img src="assets/images/user_default_m.png" class="img-circle circle-border m-b-md">
             </div>
             <div class="profile-info">
-                <h2 class="no-margins"> {{ model?.name }} </h2>
-                <br>
-                <h4>{{ model?.profile }}</h4>
-                <p><strong>{{'allocationManagement.resources.grid.start' | translate }}:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</p>
+                <h1 class="no-margins text-green"> {{ model?.name }} </h1>
+                
+                <h4 class="m-t-md">{{ model?.profile }}</h4>
+
+                <div class="row m-t-lg">
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" >
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-clock-o fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.timeSheet' | translate }}</h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" >
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-home fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="finalizeExtraHolidays()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-plane fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">Finalizar Acuerdo</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="goToLicenses()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-plane fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-7">
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <table class="table table-font-md">
                 <tbody>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
-                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
-                    </tr>
-                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.start' | translate }}:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</td>
                         <td><strong>{{'allocationManagement.resources.grid.senority' | translate }}: </strong> {{ model?.seniority }} </td>
-                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
-                    </tr>
-                    <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
                         <td><strong>Vacaciones por ley: </strong> {{ model?.holidaysByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
-                        <td *ngIf="model?.hasExtraHolidays"><strong>Vacaciones extra acordadas: </strong> {{ model?.extraHolidaysQuantity }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
+                        <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
                         <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
+                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
+                        <td *ngIf="model?.hasExtraHolidays"><strong>Vacaciones extra acordadas: </strong> {{ model?.extraHolidaysQuantity }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -53,14 +105,14 @@
     </div>
 
     <div class="row">
-
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
                     <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-5"> Tareas </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -157,48 +209,23 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3" style="margin-top: 40px" *ngIf="!isRrhh">
-            <div class="row widget-custom lazur-bg" (click)="goToLicenses()">
-                <div class="col-sm-2">
-                    <i class="fa fa-plane fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row widget-custom lazur-bg" *ngIf="!isRrhh">
-                <div class="col-sm-2">
-                    <i class="fa fa-clock-o fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.timeSheet' | translate }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row widget-custom lazur-bg" *ngIf="!isRrhh">
-                <div class="col-sm-2">
-                    <i class="fa fa-home fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row widget-custom lazur-bg" *ngIf="isRrhh" (click)="finalizeExtraHolidays()">
-                <div class="col-sm-2">
-                    <i class="fa fa-plane fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">Finalizar Acuerdo</h4>
+                    <div id="tab-5" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="tasksTable">
+                                <thead>
+                                    <tr>
+                                        <th>Categoria</th>
+                                        <th>Tarea</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of tasks">
+                                        <td> {{ item.category }} </td>
+                                        <td> {{ item.task }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
