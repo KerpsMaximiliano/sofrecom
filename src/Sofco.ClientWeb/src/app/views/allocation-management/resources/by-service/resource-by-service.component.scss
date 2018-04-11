@@ -8,5 +8,17 @@
 }
 
 .contact-box {
-    max-height: 180px;
+    height: 190px;
+    border: 1px solid #e7eaec;
+}
+
+.contact-info {
+    height: 80%;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.contact-buttons {
+    height: 20%;
+    background-color: darkgray;
 }
