@@ -16,7 +16,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
         }
 
-        public List<EmployeeWorkTimeApproval> Get(EmployeeWorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null;
 
@@ -43,10 +43,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     w => w.EmployeeId,
                     Translate);
 
+            if (query.ApprovalId > 0)
+            {
+                result = result.Where(s =>
+                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+            }
+
             return result.ToList();
         }
 
-        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, EmployeeWorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, WorkTimeApprovalQuery query)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId));
 
@@ -76,6 +82,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
+
+            if (query.ApprovalId > 0)
+            {
+                result = result.Where(s =>
+                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+            }
 
             return result.ToList();
         }

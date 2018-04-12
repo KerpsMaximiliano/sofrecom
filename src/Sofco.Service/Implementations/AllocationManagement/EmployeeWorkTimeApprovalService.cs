@@ -15,7 +15,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeWorkTimeManager = employeeWorkTimeManager;
         }
 
-        public Response<List<EmployeeWorkTimeApproval>> Get(EmployeeWorkTimeApprovalQuery query)
+        public Response<List<EmployeeWorkTimeApproval>> Get(WorkTimeApprovalQuery query)
         {
             var employees = employeeWorkTimeManager.GetByCurrentServices(query);
 

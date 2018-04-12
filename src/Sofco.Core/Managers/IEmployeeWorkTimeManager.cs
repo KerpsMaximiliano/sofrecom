@@ -5,6 +5,6 @@ namespace Sofco.Core.Managers
 {
     public interface IEmployeeWorkTimeManager
     {
-        List<EmployeeWorkTimeApproval> GetByCurrentServices(EmployeeWorkTimeApprovalQuery query);
+        List<EmployeeWorkTimeApproval> GetByCurrentServices(WorkTimeApprovalQuery query);
     }
 }
