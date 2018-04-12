@@ -38,7 +38,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(where)
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
-                .GroupJoin(context.WorkTimeApprovals,
+                .GroupJoin(context.WorkTimeApprovals.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -46,7 +46,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (query.ApprovalId > 0)
             {
                 result = result.Where(s =>
-                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+                    s.WorkTimeApproval != null 
+                    && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
             }
 
             return result.ToList();
@@ -77,8 +78,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
                 .GroupJoin(
-                    context
-                        .WorkTimeApprovals,
+                    context.WorkTimeApprovals.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
