@@ -27,7 +27,7 @@ namespace Sofco.Framework.Managers
             this.userData = userData;
         }
 
-        public List<EmployeeWorkTimeApproval> GetByCurrentServices(EmployeeWorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> GetByCurrentServices(WorkTimeApprovalQuery query)
         {
             var userMail = sessionManager.GetUserEmail();
 

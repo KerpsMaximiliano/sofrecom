@@ -36,6 +36,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public List<WorkTimeApproval> GetByServiceIds(List<Guid> serviceIds)
+        {
+            var result = context.WorkTimeApprovals
+                .Where(s => serviceIds.Contains(s.ServiceId))
+                .ToList();
+
+            return result;
+        }
+
         private void Save(WorkTimeApproval item)
         {
             var storedItem = GetUnique(item.ServiceId, item.UserId, item.ApprovalUserId);

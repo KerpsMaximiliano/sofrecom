@@ -5,8 +5,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 {
     public interface IEmployeeWorkTimeApprovalRepository
     {
-        List<EmployeeWorkTimeApproval> Get(EmployeeWorkTimeApprovalQuery query);
+        List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query);
 
-        List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, EmployeeWorkTimeApprovalQuery query);
+        List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, WorkTimeApprovalQuery query);
     }
 }
