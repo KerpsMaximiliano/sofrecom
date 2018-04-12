@@ -11,6 +11,6 @@ namespace Sofco.Core.Data.Admin
 
         User GetByUserName(string userName);
 
-        UserLiteModel GetUserLiteById(int managerId);
+        UserLiteModel GetUserLiteById(int id);
     }
 }

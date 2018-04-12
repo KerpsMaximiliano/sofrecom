@@ -2,7 +2,7 @@
 
 namespace Sofco.Core.Models.AllocationManagement
 {
-    public class EmployeeWorkTimeApprovalQuery
+    public class WorkTimeApprovalQuery
     {
         public Guid CustomerId { get; set; }
 
