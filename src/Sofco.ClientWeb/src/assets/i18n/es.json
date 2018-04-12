@@ -475,6 +475,10 @@
             "healtInsurance": "Obra social",
             "prepaidHealth": "Plan",
             "prepaidHealthAmount": "Valor",
+            "businessHours": "Jornada Laboral",
+            "businessHoursDescription": "Horario",
+            "businessHoursModal": "Actualizacion horas por contrato",
+            "hoursByContract": "Horas por Contrato",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",

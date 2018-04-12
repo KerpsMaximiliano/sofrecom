@@ -120,6 +120,15 @@
   <data name="Added" xml:space="preserve">
     <value>allocationManagement/employee.added</value>
   </data>
+  <data name="BusinessHoursEmpty" xml:space="preserve">
+    <value>allocationManagement/employee.businessHoursEmpty</value>
+  </data>
+  <data name="BusinessHoursUpdated" xml:space="preserve">
+    <value>allocationManagement/employee.businessHoursUpdated</value>
+  </data>
+  <data name="BusinessHoursWrong" xml:space="preserve">
+    <value>allocationManagement/employee.businessHoursWrong</value>
+  </data>
   <data name="CategoriesAdded" xml:space="preserve">
     <value>allocationManagement/employee.categoriesAdded</value>
   </data>
