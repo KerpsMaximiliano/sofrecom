@@ -23,8 +23,11 @@ export class Select2Component implements OnInit{
         var self = this;
         $(this.element.nativeElement).on('change', function() { 
             if(self.element.nativeElement.value && self.element.nativeElement.value != undefined){
-                self.value = self.element.nativeElement.value;
-                self.valueChange.emit(self.value);
+
+                if(self.value != self.element.nativeElement.value){
+                    self.value = self.element.nativeElement.value;
+                    self.valueChange.emit(self.value);
+                }
             }
         });
     }
@@ -34,7 +37,7 @@ export class Select2Component implements OnInit{
             $(this.element.nativeElement).val(changes.value.currentValue).trigger('change');
         }
 
-        if(changes.options && changes.options.currentValue.length > 0){
+        if(changes.options && changes.options.currentValue && changes.options.currentValue.length > 0){
             setTimeout(() => {
                 $(this.element.nativeElement).val(this.value).trigger('change');
             }, 0);

@@ -82,7 +82,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     update() {
         this.messageService.showLoading();
         var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
-        this.form.model.clientExternalName = client.text;
+        this.form.model.clientExternalName = client ? client.text : '';
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
             response => {
