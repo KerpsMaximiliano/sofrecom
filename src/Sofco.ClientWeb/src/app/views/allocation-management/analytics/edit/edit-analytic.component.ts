@@ -85,7 +85,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/contracts/analytics']);
+        window.history.back();
     }
 
     getStatus(){
@@ -109,5 +109,13 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err);
             this.isLoading = false;
         });
+    }
+
+    goToPurchaseOrders(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
+    }
+
+    goToProjects(){
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
     }
 } 

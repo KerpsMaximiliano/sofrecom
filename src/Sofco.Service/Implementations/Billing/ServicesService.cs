@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Billing
@@ -33,7 +35,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 result.AddRange(serviceData.GetServices(customerId, item));
             }
-            return new Response<List<CrmService>> {Data = result};
+            return new Response<List<CrmService>> {Data = result.DistinctBy(x => x.Id) };
         }
 
         public Response<List<SelectListModel>> GetServicesOptions(string customerId)
@@ -43,7 +45,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel { Value = x.Id, Text = x.Nombre })
+                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -58,9 +60,9 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<CrmService> { Data = result.FirstOrDefault(x => x.Id.Equals(serviceId)) };
         }
 
-        public bool HasAnalyticRelated(string serviceId)
+        public Analytic GetAnalyticByService(string serviceId)
         {
-            return unitOfWork.AnalyticRepository.ExistWithService(serviceId);
+            return unitOfWork.AnalyticRepository.GetByService(serviceId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
@@ -47,7 +48,7 @@ namespace Sofco.Service.Implementations.Billing
                     response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }
-            response.Data = result;
+            response.Data = result.DistinctBy(x => x.Id);
 
             return response;
         }
@@ -59,7 +60,22 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
+        }
+
+        public Response<List<SelectListModel>> GetCustomersOptionsByCurrentManager()
+        {
+            var result = GetCustomersByCurrentManager();
+
+            var response = new Response<List<SelectListModel>>
+            {
+                Data = result.Data
+                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -82,6 +98,17 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             response.Data = customer;
+            return response;
+        }
+
+        private Response<List<CrmCustomer>> GetCustomersByCurrentManager()
+        {
+            var response = new Response<List<CrmCustomer>>();
+
+            var result = customerData.GetCustomersByManager(sessionManager.GetUserName()).ToList();
+
+            response.Data = result.DistinctBy(x => x.Id);
+
             return response;
         }
     }

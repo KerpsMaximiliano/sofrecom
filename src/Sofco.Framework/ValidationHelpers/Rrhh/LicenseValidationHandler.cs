@@ -88,5 +88,17 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
 
             return license;
         }
+
+        public static License FindFull(int id, Response response, IUnitOfWork unitOfWork)
+        {
+            var license = unitOfWork.LicenseRepository.GetById(id);
+
+            if (license == null)
+            {
+                response.AddError(Resources.Rrhh.License.NotFound);
+            }
+
+            return license;
+        }
     }
 }

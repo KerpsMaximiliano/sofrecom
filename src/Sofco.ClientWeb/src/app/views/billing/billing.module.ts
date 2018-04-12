@@ -50,7 +50,6 @@ import { SplitHitoComponent } from 'app/views/billing/hitos/split-hito.component
 import { SolfacPdfViewerComponent } from 'app/views/billing/solfac/pdf-viewer/solfac-pdf-viewer.component';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { StatusRejectDafComponent } from 'app/views/billing/solfac/workflow/reject-by-daf/status-reject-daf.component';
-import { ProjectRightBarComponent } from 'app/views/billing/projects/project-rightbar/project-rightbar.component';
 import { BillMultipleProjectsComponent } from 'app/views/billing/projects/bill-multiple-projects/bill-multiple-projects.component';
 import { HitosByProjectComponent } from 'app/views/billing/projects/bill-multiple-projects/hitos-by-project/hitos-by-project.component';
 import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-account-control/solfac-account-control.component';
@@ -67,6 +66,9 @@ import { EditCertificateComponent } from 'app/views/billing/certificates/edit/ed
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 import { CertificatesService } from 'app/services/billing/certificates.service';
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
+import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
+import { PurchaseOrderFormEditComponent } from 'app/views/billing/purchaseOrder/form-edit/purchaseOrder-form-edit.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -74,13 +76,15 @@ import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-del
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, ProjectRightBarComponent, StatusRejectDafComponent, 
+                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent, 
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
-                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent],
+                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
+                 PurchaseOrderFormEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule],
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
+                 DatePickerModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService],

@@ -56,6 +56,16 @@ import { EditCertificateComponent } from 'app/views/billing/certificates/edit/ed
 import { NewCertificateComponent } from 'app/views/billing/certificates/add/add-certificate.component';
 import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component';
+import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
+import { LicenseListManager } from 'app/views/human-resources/licenses/license-list-manager/license-list-manager.component';
+import { LicenseDetailComponent } from 'app/views/human-resources/licenses/detail/license-detail.component';
+import { WorkTimeApprovalDelegateComponent } from 'app/views/allocation-management/worktime/worktime-approval-delegate/worktime-approval-delegate.component';
+import { CategoryAddComponent } from 'app/views/admin/category/add/category-add.component';
+import { CategoryEditComponent } from 'app/views/admin/category/edit/category-edit.component';
+import { CategoryListComponent } from 'app/views/admin/category/list/category-list.component';
+import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
+import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
+import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -90,6 +100,18 @@ export const ROUTES:Routes = [
         { path: 'edit/:id', component: ModuleEditComponent, canActivate: [AuthGuard], data: { module: "MOD", functionality: "UPDAT" } }
       ]},
 
+      { path: "categories", children: [
+        { path: '', component: CategoryListComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "QUERY" } },
+        { path: 'add', component: CategoryAddComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "ADD" } },
+        { path: ':id/edit', component: CategoryEditComponent, canActivate: [AuthGuard], data: { module: "CATEG", functionality: "EDIT" } }
+      ]},
+
+      { path: "tasks", children: [
+        { path: '', component: TaskListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
+        { path: 'add', component: TaskAddComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "ADD" } },
+        { path: ':id/edit', component: TaskEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
+      ]},
+      
       { path: 'settings', children:[
         {path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
       ]},
@@ -175,7 +197,7 @@ export const ROUTES:Routes = [
         path: "resources", 
         children: [
           { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
-          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
+          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWPRO" } },
           { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
@@ -188,18 +210,29 @@ export const ROUTES:Routes = [
       {
         path:"licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "ALTA" } } ,
+          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
+          { path:"rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
+          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
+          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] } 
         ]
-      }]
+      },
+      {
+        path: 'workTimeApproval',
+        children: [
+          { path: "delegate", component: WorkTimeApprovalDelegateComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "TAPDE" } }
+        ]
+      }
+    ]
   },
 
   {
     path: 'profile', component: BasicLayoutComponent,
     children: [
-      { 
-        path:"licenses",
+      { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: false } },
+      {
+        path: "licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "ALLOC", functionality: "ALTA" } } ,
+          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "CTRLI", functionality: "ALTA" } } ,
         ]
       }]
   },
@@ -207,14 +240,14 @@ export const ROUTES:Routes = [
   {
     path: 'reports', component: BasicLayoutComponent,
     children: [
-      { 
+      {
         path: 'solfacs', children:[
-          { path:"", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
+          { path: "", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
         ]
       }
     ]
   },
-      
+
   {
     path: '', component: BasicLayoutComponent,
     children: [

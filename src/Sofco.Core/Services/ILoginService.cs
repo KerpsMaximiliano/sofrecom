@@ -1,5 +1,5 @@
-﻿using System;
-using Sofco.Common.Domains;
+﻿using Sofco.Common.Domains;
+using Sofco.Core.Models.Admin;
 using Sofco.Model.AzureAd;
 using Sofco.Model.Users;
 using Sofco.Model.Utils;
@@ -8,12 +8,12 @@ namespace Sofco.Core.Services
 {
     public interface ILoginService
     {
-        Response<string> Login(UserLogin userLogin);
+        Response<UserTokenModel> Login(UserLogin userLogin);
 
-        Result Refresh(UserLoginRefresh userLoginRefresh);
+        Response<UserTokenModel> Refresh(UserLoginRefresh userLoginRefresh);
 
-        Response<AzureAdUserResponse> GetUserFromAzureADByEmail(string email);
+        Response<AzureAdUserResponse> GetUserFromAzureAdByEmail(string email);
 
-        Response<AzureAdUserListResponse> GetUsersFromAzureADBySurname(string surname);
+        Response<AzureAdUserListResponse> GetUsersFromAzureAdBySurname(string surname);
     }
 }

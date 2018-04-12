@@ -331,3 +331,4 @@ __pycache__/
 .vs/
 
 .orig
+.sonarqube

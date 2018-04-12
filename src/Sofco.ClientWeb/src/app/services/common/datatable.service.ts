@@ -60,6 +60,10 @@ export class DataTableService {
                     language: lang,
                 }
 
+                if(params.scrollX && params.scrollX == true){
+                    options.scrollX = true;
+                }
+
                 if(params.columnDefs){
                     options.aoColumnDefs = params.columnDefs;
                 }
@@ -76,14 +80,6 @@ export class DataTableService {
                             exportOptions: {
                                 columns: params.columns
                             }
-                        },
-                        {
-                          extend: 'pdfHtml5', 
-                          title: params.title,
-                          orientation: 'landscape',
-                          exportOptions: {
-                            columns: params.columns
-                          }
                         }
                       ];
                 }

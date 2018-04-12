@@ -18,8 +18,10 @@ namespace Sofco.Core.DAL
         IFunctionalityRepository FunctionalityRepository { get; }
         IUserGroupRepository UserGroupRepository { get; }
         IMenuRepository MenuRepository { get; }
-        IGlobalSettingRepository GlobalSettingRepository { get; }
+        ISettingRepository SettingRepository { get; }
         IRoleFunctionalityRepository RoleFunctionalityRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
+        ITaskRepository TaskRepository { get; }
 
         #endregion
 
@@ -30,7 +32,6 @@ namespace Sofco.Core.DAL
         ISolfacReportRepository SolfacReportRepository { get; }
         IPurchaseOrderRepository PurchaseOrderRepository { get; }
         ICertificateRepository CertificateRepository { get; }
-        ISolfacDelegateRepository SolfacDelegateRepository { get; }
         ISolfacCertificateRepository SolfacCertificateRepository { get; }
 
         #endregion
@@ -61,6 +62,7 @@ namespace Sofco.Core.DAL
 
         IUtilsRepository UtilsRepository { get; }
         IFileRepository FileRepository { get; }
+        IUserDelegateRepository UserDelegateRepository { get; }
 
         #endregion
 

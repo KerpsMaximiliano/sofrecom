@@ -3,8 +3,10 @@ using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -61,7 +63,38 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 
-            return query.ToList();
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+            {
+                query = from employee in query
+                        from allocation in context.Allocations
+                        where employee.Id == allocation.EmployeeId && allocation.AnalyticId == parameters.AnalyticId
+                        select employee;
+            }
+
+            return query.Distinct().ToList();
+        }
+
+        public void ResetAllExamDays()
+        {
+            context.Database.ExecuteSqlCommand("UPDATE app.Employees SET ExamDaysTaken = 0");
+        }
+
+        public void UpdateHolidaysPending(Employee employeeToModif)
+        {
+            context.Entry(employeeToModif).Property("HolidaysPending").IsModified = true;
+        }
+
+        public void UpdateExamDaysTaken(Employee employeeToModif)
+        {
+            context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
+        }
+
+        public IList<EmployeeCategory> GetEmployeeCategories(int id)
+        {
+            return context.EmployeeCategories
+                .Include(x => x.Category)
+                    .ThenInclude(x => x.Tasks)
+                .Where(x => x.EmployeeId == id && x.Category.Active).ToList();
         }
 
         public void Save(List<Employee> employees)
@@ -103,6 +136,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.HealthInsuranceCode = data.HealthInsuranceCode;
             storedData.PrepaidHealthCode = data.PrepaidHealthCode;
             storedData.OfficeAddress = data.OfficeAddress;
+            storedData.Email = data.Email;
 
             Update(storedData);
         }
@@ -119,6 +153,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Employee GetById(int id)
         {
             return context.Employees.SingleOrDefault(x => x.Id == id);
+        }
+
+        public Employee GetByEmail(string email)
+        {
+            return context.Employees.SingleOrDefault(x => x.Email == email);
         }
     }
 }

@@ -120,9 +120,14 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
         public static void CheckService(Response<Analytic> response, Analytic analytic, IAnalyticRepository analyticRepository)
         {
-            if (!string.IsNullOrWhiteSpace(analytic.ServiceId) && analyticRepository.ExistWithService(analytic.ServiceId))
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
             {
-                response.AddError(Resources.AllocationManagement.Analytic.ServiceAlreadyRelated);
+                var domain = analyticRepository.GetByService(analytic.ServiceId);
+
+                if (domain != null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.ServiceAlreadyRelated);
+                }
             }
         }
     }

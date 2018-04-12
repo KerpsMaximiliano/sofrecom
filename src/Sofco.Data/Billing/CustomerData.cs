@@ -14,6 +14,7 @@ namespace Sofco.Data.Billing
     public class CustomerData : ICustomerData
     {
         private const string CustomersCacheKey = "urn:customers:{0}:all";
+        private const string CustomersByManagerCacheKey = "urn:customersByManager:{0}:all";
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
@@ -43,6 +44,29 @@ namespace Sofco.Data.Billing
                     var hasDirectorGroup = userRepository.HasDirectorGroup(email);
                     var hasCommercialGroup = userRepository.HasComercialGroup(email);
                     var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
+
+                    var url = hasAllAccess
+                        ? $"{crmConfig.Url}/api/account"
+                        : $"{crmConfig.Url}/api/account?idManager={email}";
+
+                    var result = client.GetMany<CrmCustomer>(url);
+
+                    return result.Data;
+                },
+                x => x.Id,
+                cacheExpire);
+        }
+
+        public IList<CrmCustomer> GetCustomersByManager(string userMail)
+        {
+            var email = sessionManager.GetUserEmail(userMail);
+
+            var identityName = email.Split('@')[0];
+
+            return cacheManager.GetHashList(string.Format(CustomersByManagerCacheKey, identityName),
+                () =>
+                {
+                    var hasAllAccess = userRepository.HasDirectorGroup(email);
 
                     var url = hasAllAccess
                         ? $"{crmConfig.Url}/api/account"

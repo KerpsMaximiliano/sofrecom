@@ -1,75 +1,53 @@
+<div class="form-group">
+    <label class="control-label">{{'billing.purchaseOrder.fields.title' | translate }}</label>
+    <input type="text" class="form-control" [(ngModel)]="model.title">
+</div>
+
 <div class="row">
     <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.title' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="model.title">
-        </div>
-    </div>
-    <div class="col-sm-2">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.number' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="model.number">
         </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</label>
-            <ng-datepicker [(ngModel)]="model.receptionDate" [options]="datePickerOptions"></ng-datepicker>
+            <date-picker [(date)]="model.receptionDate"></date-picker>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-5">
-        <div class="form-group">
-            <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
-            <select class="form-control" id="analyticId" [(ngModel)]="model.analyticId">
-                <option *ngFor="let analytic of options?.analytics" [value]="analytic?.id">{{analytic?.text}}</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-sm-5">
-        <div class="form-group">
-            <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
-            <select class="form-control m-b" id="clientExternalId" [(ngModel)]="model.clientExternalId">
-                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
-            </select>
-        </div>
-    </div>
-</div>
+<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
+
+<select-two [label]="'allocationManagement.analytics.title'" [(value)]="model.analyticId" [options]="analytics" (valueChange)="analyticChange()"></select-two>
+
+<select-two [label]="'billing.solfac.project'" [(value)]="model.projectId" [options]="projects"></select-two>
+
+<select-two [label]="'allocationManagement.analytics.add.commercialManager'" [(value)]="model.commercialManagerId" [options]="options?.sellers"></select-two>
+
+<select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="model.managerId" [options]="options?.managers"></select-two>
 
 <div class="row">
-    <div class="col-sm-4">
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.commercialManager' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.commercialManagerId">
-                <option *ngFor="let seller of options?.sellers" [value]="seller?.id">{{seller?.text}}</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.managerId">
-                <option *ngFor="let manager of options?.managers" [value]="manager?.id">{{manager?.text}}</option>
-            </select>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-2">
+    <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.year' | translate }}</label>
-            <input type="number" class="form-control" [(ngModel)]="model.year">
+            <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="model.year">
         </div>
     </div>
-    <div class="col-sm-3">
-        <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.area' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="model.area">
+    <div class="col-sm-6">
+        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
+
+        <div class="radio radio-info radio-inline">
+            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
+            <label for="area"> Comercial </label>
+        </div>
+        <div class="radio radio-inline radio-info">
+            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
+            <label for="area2"> Compañia </label>
         </div>
     </div>
 </div>
+
 
 

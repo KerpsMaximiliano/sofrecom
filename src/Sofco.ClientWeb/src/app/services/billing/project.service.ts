@@ -1,50 +1,50 @@
 import { Injectable } from '@angular/core';
 import { Http, Response} from '@angular/http';
 import { Service } from 'app/services/common/service';
-import { HttpAuth } from 'app/services/common/http-auth';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ProjectService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.baseUrl = this.service.UrlApi;
   }
 
   getAll(serviceId) {
-      return this.http.get(`${this.baseUrl}/projects/service/${serviceId}`).map((res: Response) => res.json().data);
+      return this.http.get<any>(`${this.baseUrl}/projects/service/${serviceId}`);
   }
 
   getById(projectId) {
-      return this.http.get(`${this.baseUrl}/projects/${projectId}`).map((res: Response) => res.json());
+      return this.http.get<any>(`${this.baseUrl}/projects/${projectId}`);
   }
 
   getOptions(serviceId) {
-    return this.http.get(`${this.baseUrl}/projects/${serviceId}/options`).map((res: Response) => res.json().data);
+    return this.http.get<any>(`${this.baseUrl}/projects/${serviceId}/options`);
   }
 
-  getHitos(projectId){
-      return this.http.get(`${this.baseUrl}/projects/${projectId}/hitos`).map((res: Response) => res.json());
+  getHitos(projectId) {
+      return this.http.get<any>(`${this.baseUrl}/projects/${projectId}/hitos`);
   }
 
-  getSolfacs(projectId){
-      return this.http.get(`${this.baseUrl}/solfacs/project/${projectId}`).map((res: Response) => res.json());
+  getSolfacs(projectId) {
+      return this.http.get<any>(`${this.baseUrl}/solfacs/project/${projectId}`);
   }
 
-  getInvoices(projectId){
-      return this.http.get(`${this.baseUrl}/invoices/project/${projectId}`).map((res: Response) => res.json());
+  getInvoices(projectId) {
+      return this.http.get<any>(`${this.baseUrl}/invoices/project/${projectId}`);
   }
 
-  createNewHito(hito){
-    return this.http.post(`${this.baseUrl}/projects/hitos/new`, hito).map((res: Response) => res.json());
+  createNewHito(hito) {
+    return this.http.post<any>(`${this.baseUrl}/projects/hitos/new`, hito);
   }
 
-  closeHito(id){
-    return this.http.put(`${this.baseUrl}/hitos/${id}/close`, {}).map((res: Response) => res.json());
+  closeHito(id) {
+    return this.http.put<any>(`${this.baseUrl}/hitos/${id}/close`, {});
   }
 
-  getIfIsRelated(serviceId){
-    return this.http.get(`${this.baseUrl}/services/${serviceId}/hasAnalytic`).map((res: Response) => res.json());
+  getIfIsRelated(serviceId) {
+    return this.http.get<any>(`${this.baseUrl}/services/${serviceId}/analytic`);
   }
 }

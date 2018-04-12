@@ -1,50 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "app/services/common/service";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AnalyticService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.baseUrl = this.service.UrlApi;
   }
 
   getAll() {
-    return this.http.get(`${this.baseUrl}/analytics`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics`);
   }
 
   getById(id) {
-    return this.http.get(`${this.baseUrl}/analytics/${id}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}`);
   }
 
   getResources(id) {
-    return this.http.get(`${this.baseUrl}/analytics/${id}/resources`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources`);
   }
 
   getOptions(){
-    return this.http.get(`${this.baseUrl}/analytics/options`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics/options`);
+  }
+
+  getClientId(clientId){
+    return this.http.get<any>(`${this.baseUrl}/analytics/clients/${clientId}`);
   }
 
   getFormOptions(){
-    return this.http.get(`${this.baseUrl}/analytics/formOptions`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics/formOptions`);
   }
 
   getNewTitle(costCenterId) {
-    return this.http.get(`${this.baseUrl}/analytics/title/costcenter/${costCenterId}`).map((res:Response) => res.json());
+    return this.http.get<any>(`${this.baseUrl}/analytics/title/costcenter/${costCenterId}`);
   }
 
-  add(model){
-    return this.http.post(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
+  add(model) {
+    return this.http.post<any>(`${this.baseUrl}/analytics`, model);
   }
 
-  update(model){
-    return this.http.put(`${this.baseUrl}/analytics`, model).map((res:Response) => res.json());
+  update(model) {
+    return this.http.put<any>(`${this.baseUrl}/analytics`, model);
   }
 
-  close(id){
-    return this.http.put(`${this.baseUrl}/analytics/${id}/close`, {}).map((res:Response) => res.json());
+  close(id) {
+    return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
   }
 }

@@ -1,0 +1,11 @@
+<button class="btn btn-primary btn-outline dim" (click)="approveWithPendingDocumentation()" *ngIf="canApproveWithPendingDocumentation()"> 
+    {{ 'ACTIONS.pendingDocumentation' | translate }} <i class="fa fa-check"></i>
+</button>
+
+<button class="btn btn-primary btn-outline dim" (click)="approve()" *ngIf="canApprove()"> 
+    {{ 'ACTIONS.approve' | translate }} <i class="fa fa-check"></i>
+</button>
+
+<ng2-modal [config]="pendingModalConfig" #pendingModal (accept)="confirm()" [isLoading]="isLoading">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal> 

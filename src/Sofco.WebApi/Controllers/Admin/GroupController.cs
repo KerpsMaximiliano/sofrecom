@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
@@ -16,9 +18,12 @@ namespace Sofco.WebApi.Controllers.Admin
     {
         private readonly IGroupService groupService;
 
-        public GroupController(IGroupService groupsService)
+        private readonly IMapper mapper;
+
+        public GroupController(IGroupService groupsService, IMapper mapper)
         {
             groupService = groupsService;
+            this.mapper = mapper;
         }
 
         // GET: api/group
@@ -40,10 +45,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var groups = groupService.GetAllReadOnly(true);
-            var model = new List<SelectListItem>();
+            var model = new List<Option>();
 
             foreach (var group in groups)
-                model.Add(new SelectListItem { Value = group.Id.ToString(), Text = group.Description });
+                model.Add(new Option { Id = group.Id, Text = group.Description });
 
             return Ok(model);
         }
@@ -63,7 +68,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 groupModel.Role = new RoleModel(response.Data.Role);
 
             foreach (var userGroup in response.Data.UserGroups)
-                groupModel.Users.Add(new UserModel(userGroup.User));
+                groupModel.Users.Add(Translate(userGroup.User));
 
             return Ok(groupModel);
         }
@@ -106,9 +111,8 @@ namespace Sofco.WebApi.Controllers.Admin
                 return BadRequest(groupReponse);
 
             model.ApplyTo(groupReponse.Data);
-            var roleId = model.Role != null ? model.Role.Id : 0;
 
-            var response = groupService.Update(groupReponse.Data, roleId);
+            var response = groupService.Update(groupReponse.Data, model.RoleId);
 
             if (response.HasErrors())
                 return BadRequest(response);
@@ -126,6 +130,11 @@ namespace Sofco.WebApi.Controllers.Admin
                 return BadRequest(response);
 
             return Ok(response);
+        }
+
+        private UserModel Translate(User user)
+        {
+            return mapper.Map<User, UserModel>(user);
         }
     }
 }

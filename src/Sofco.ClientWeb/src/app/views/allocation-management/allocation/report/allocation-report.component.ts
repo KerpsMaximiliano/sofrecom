@@ -31,7 +31,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
-    public dateOptions;
 
     private lastQuery: any;
     public loaded: boolean = false;
@@ -43,10 +42,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
  
     ngOnInit(): void {
         this.getAllocationResources();
@@ -154,7 +150,10 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
             this.messageService.closeLoading();
-            this.loaded = true;
+
+            if(this.model.rows.length > 0){
+                this.loaded = true;
+            }
 
             this.dataTableService.destroy(options.selector);
             this.dataTableService.init2(options);
@@ -166,6 +165,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             $("#resourcesTable_filter label").addClass('search-filter');
             $(".html5buttons").addClass('export-buttons');
             $("#resourcesTable_paginate").addClass('table-pagination');
+            $("#resourcesTable_length").css("margin-right","10px");
+            $("#resourcesTable_info").css("padding-top","4px");
         }, 1000);
     }
 

@@ -28,7 +28,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     public model: Solfac = <Solfac>{};
     public provinces: Option[] = new Array<Option>();
-    public documentTypes: Option[] = new Array<Option>();
+    public documentTypes: any[] = new Array();
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
@@ -53,9 +53,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
     isCreditNoteSolfacType:boolean = false;
     isDebitNoteSolfacType:boolean = false;
     documentTypeDicts:Object = {
-      "default": ["1", "3", "6", "7"],
-      "creditNote": ["2", "4"],
-      "debitNote": ["5"]
+      "default": [1, 3, 6, 7],
+      "creditNote": [2, 4],
+      "debitNote": [5]
     }
     documentTypeKey:string = "documentTypeName";
 
@@ -100,7 +100,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.details = new Array<HitoDetail>();
 
       multipleProjects.hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.money, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
@@ -126,7 +126,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.projectId = project.id;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-      this.model.currencyId = this.getCurrencyId(project.currency);
+      
       this.model.remito = project.remito;
       this.model.analytic = project.analytic;
       this.model.imputationNumber1 = project.analytic;
@@ -137,11 +137,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.currencyId, hito.opportunityId, hito.managerId);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.money, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
         this.model.details.push(detail);
+
+        this.model.currencyId = this.getCurrencyId(hito.money);
 
         this.calculateDetail(detail);
       });
@@ -168,15 +170,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
       var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
 
       if(service){
-        // this.model.imputationNumber1 = service.analytic; 
-        // this.model.analytic = service.analytic;
+        this.model.imputationNumber1 = service.analytic; 
+        this.model.analytic = service.analytic;
         this.model.manager = service.manager;
         this.model.managerId = service.managerId;
       }
       else{
         this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
-          // this.model.imputationNumber1 = data.analytic; 
-          // this.model.analytic = data.analytic;
+          this.model.imputationNumber1 = data.analytic; 
+          this.model.analytic = data.analytic;
           this.model.manager = data.manager;
           this.model.managerId = data.managerId;
         },
@@ -235,7 +237,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       },
       err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     getOptions() {
       this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
         this.currencies = data.currencies;
@@ -300,9 +302,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.router.navigate([`/billing/solfac/${data.data.id}/edit`])
           }, 500);
-          
         },
-        err => { 
+        err => {
           this.messageService.closeLoading();
           this.errorHandlerService.handleErrors(err);
         });
@@ -377,7 +378,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     updateDocumentTypes() {
       let allowedValues = this.getAllowedDocumentType();
       
-      this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.value));
+      this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.id));
 
       if(this.documentTypes.length > 0 && !allowedValues.includes(this.model.documentType.toString()))
       {

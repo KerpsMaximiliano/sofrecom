@@ -1,21 +1,21 @@
 ﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
-using Sofco.WebJob.Security;
 using Sofco.WebJob.Security.Events;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Sofco.WebJob.Security
 {
     /// <summary>
     /// Contains the options used by the BasicAuthenticationMiddleware
     /// </summary>
     public class BasicAuthenticationOptions : AuthenticationOptions, IOptions<BasicAuthenticationOptions>
     {
-        private string _realm;
+        private string realm;
 
         /// <summary>
         /// Create an instance of the options initialized with the default values
         /// </summary>
-        public BasicAuthenticationOptions() : base()
+        public BasicAuthenticationOptions()
         {
             AuthenticationScheme = BasicAuthenticationDefaults.AuthenticationScheme;
             AutomaticAuthenticate = true;
@@ -34,10 +34,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </remarks>
         public string Realm
         {
-            get
-            {
-                return _realm;
-            }
+            get => realm;
 
             set
             {
@@ -46,7 +43,7 @@ namespace Microsoft.AspNetCore.Builder
                     throw new ArgumentOutOfRangeException("Realm", "Realm must be US ASCII");
                 }
 
-                _realm = value;
+                realm = value;
             }
         }
 
@@ -57,17 +54,11 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         public IBasicAuthenticationEvents Events { get; set; } = new BasicAuthenticationEvents();
 
-        BasicAuthenticationOptions IOptions<BasicAuthenticationOptions>.Value
-        {
-            get
-            {
-                return this;
-            }
-        }
+        BasicAuthenticationOptions IOptions<BasicAuthenticationOptions>.Value => this;
 
         private bool IsAscii(string input)
         {
-            foreach (char c in input)
+            foreach (var c in input)
             {
                 if (c < 32 || c >= 127)
                 {

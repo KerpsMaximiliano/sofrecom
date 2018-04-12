@@ -91,17 +91,12 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var options = new SolfacOptions
             {
-                Currencies = utilsService.GetCurrencies().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                DocumentTypes = utilsService.GetDocumentTypes().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList(),
-                Provinces = new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Seleccione una opción" } },
-                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text }).ToList()
+                Currencies = utilsService.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                DocumentTypes = utilsService.GetDocumentTypes().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                Provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList()
             };
-
-            var provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).ToList();
-
-            foreach (var province in provinces)
-                options.Provinces.Add(new SelectListItem { Value = province.Id.ToString(), Text = province.Text });
 
             return Ok(options);
         }
@@ -403,7 +398,8 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = solfacService.AddCertificates(id, certificates);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             var responseModel = new Response<IList<CertificateFileViewModel>> { Messages = response.Messages, Data = new List<CertificateFileViewModel>() };
 
@@ -415,15 +411,15 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(responseModel);
         }
 
-        private IEnumerable<SelectListItem> GetStatuses()
+        private IEnumerable<Option> GetStatuses()
         {
-            yield return new SelectListItem { Value = ((int)SolfacStatus.SendPending).ToString(), Text = SolfacStatus.SendPending.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.PendingByManagementControl).ToString(), Text = SolfacStatus.PendingByManagementControl.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.ManagementControlRejected).ToString(), Text = SolfacStatus.ManagementControlRejected.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.InvoicePending).ToString(), Text = SolfacStatus.InvoicePending.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.Invoiced).ToString(), Text = SolfacStatus.Invoiced.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.AmountCashed).ToString(), Text = SolfacStatus.AmountCashed.ToString() };
-            yield return new SelectListItem { Value = ((int)SolfacStatus.RejectedByDaf).ToString(), Text = SolfacStatus.RejectedByDaf.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.SendPending, Text = SolfacStatus.SendPending.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.PendingByManagementControl, Text = SolfacStatus.PendingByManagementControl.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.ManagementControlRejected, Text = SolfacStatus.ManagementControlRejected.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.InvoicePending, Text = SolfacStatus.InvoicePending.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.Invoiced, Text = SolfacStatus.Invoiced.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.AmountCashed, Text = SolfacStatus.AmountCashed.ToString() };
+            yield return new Option { Id = (int)SolfacStatus.RejectedByDaf, Text = SolfacStatus.RejectedByDaf.ToString() };
         }
     }
 }

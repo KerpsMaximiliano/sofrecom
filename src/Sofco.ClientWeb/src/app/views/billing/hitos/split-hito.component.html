@@ -13,7 +13,7 @@
         <div class="col-sm-6">
             <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
             <div class="input-group m-b">
-                <span class="input-group-addon">$</span> 
+                <span class="input-group-addon">{{ getCurrencySymbol() }}</span> 
                 <input type="number" min="1" class="form-control" [(ngModel)]="hito.ammount">
             </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
-                <ng-datepicker [(ngModel)]="hito.startDate" [options]="options"></ng-datepicker>
+                <date-picker [(date)]="hito.startDate"></date-picker>
             </div>
         </div>
     </div>

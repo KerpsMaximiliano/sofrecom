@@ -7,7 +7,7 @@ namespace Sofco.Repository.Rh.Maps
 {
     public class TigerPrepaidHealthMap : EntityMappingConfiguration<TigerPrepaidHealth>
     {
-        private const string TableName = "tb032";
+        private const string TableName = "View_tb032";
 
         public override void Map(EntityTypeBuilder<TigerPrepaidHealth> builder)
         {

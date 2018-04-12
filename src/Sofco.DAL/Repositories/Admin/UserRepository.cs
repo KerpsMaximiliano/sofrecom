@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.Models.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Admin;
 
@@ -129,6 +130,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == dafCode));
         }
 
+        public bool HasManagersGroup(string userMail)
+        {
+            var managerCode = emailConfig.ManagersCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == managerCode));
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;
@@ -152,6 +163,25 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => 
                 x.UserName.Equals(userName) 
                 && x.UserGroups.Any(s => s.Group.Description.Equals(ManagerDescription)));
+        }
+
+        public bool HasRrhhGroup(string userMail)
+        {
+            var rrhhCode = emailConfig.RrhhCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == rrhhCode));
+        }
+
+        public UserLiteModel GetUserLiteById(int userId)
+        {
+            return context.Users.Where(s => s.Id == userId).Select(s => new UserLiteModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).FirstOrDefault();
         }
 
         public bool HasComercialGroup(string comercialCode, string email)

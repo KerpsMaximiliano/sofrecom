@@ -37,7 +37,15 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.analyticService.getAll().subscribe(data => {
             this.model = data;
             this.loading = false;
-            this.dataTableService.init('#analyticsTable', false);
+
+            var options = {
+                selector: "#analyticsTable",
+                withExport: true,
+                title: "Analiticas",
+                columns: [0, 1, 2, 3, 4]
+            }
+
+            this.dataTableService.init2(options);
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -68,7 +76,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         sessionStorage.setItem('analyticWithProject', 'no');
         this.router.navigate(['/contracts/analytics/new']);
     }
-
+ 
     getStatus(analytic){
         switch(analytic.status){
             case 1: return this.i18nService.translateByKey("allocationManagement.analytics.status.open");

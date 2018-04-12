@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using AutoMapper;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Security.Interfaces;
@@ -20,7 +21,7 @@ namespace Sofco.UnitTest.Services
         private Mock<IUnitOfWork> unitOfWork;
         private Mock<ILogMailer<UserService>> loggerMock;
         private Mock<ISessionManager> sessionManagerMock;
-
+        private Mock<IMapper> mapperMock;
         private UserService sut;
 
         [SetUp]
@@ -37,7 +38,9 @@ namespace Sofco.UnitTest.Services
 
             sessionManagerMock = new Mock<ISessionManager>();
 
-            sut = new UserService(unitOfWork.Object, loggerMock.Object, sessionManagerMock.Object);
+            mapperMock = new Mock<IMapper>();
+
+            sut = new UserService(unitOfWork.Object, loggerMock.Object, sessionManagerMock.Object, mapperMock.Object);
         }
 
         [TestCase(true)]

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddAnalytic" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt; Se dio de alta la analítica &lt;strong&gt;{0}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;&lt;/br&gt;&lt;/br&gt; Saludos</value>
+  </data>
   <data name="CloseAnalytic" xml:space="preserve">
     <value>Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt; &lt;/br&gt;&lt;/br&gt;
 Saludos</value>
@@ -126,5 +129,39 @@ Saludos</value>
   </data>
   <data name="EmployeeNews" xml:space="preserve">
     <value>Existen novedades que necesitan su confirmacion, por favor acceder a la lista a traves del siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;</value>
+  </data>
+  <data name="LicenseApproveMessage" xml:space="preserve">
+    <value>RRHH, Autorizador, Recuros: &lt;/br&gt;
+Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
+</value>
+  </data>
+  <data name="LicenseApprovePendingMessage" xml:space="preserve">
+    <value>RRHH: &lt;/br&gt;
+Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
+&lt;/br&gt;&lt;/br&gt;
+Recurso: &lt;/br&gt;
+La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH.</value>
+  </data>
+  <data name="LicenseAuthPendingMessage" xml:space="preserve">
+    <value>RRHH: &lt;/br&gt;
+Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.&lt;/br&gt;&lt;/br&gt;
+Autorizador: &lt;/br&gt;
+El recurso: {1}, ha iniciado un proceso de autorización de licencia. Para autorizarla ingrese al siguiente  &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.</value>
+  </data>
+  <data name="LicensePendingMessage" xml:space="preserve">
+    <value>RRHH: &lt;/br&gt;
+Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
+&lt;/br&gt;&lt;/br&gt;
+Recurso: &lt;/br&gt;
+La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.</value>
+  </data>
+  <data name="LicenseRejectMessage" xml:space="preserve">
+    <value>RRHH: &lt;/br&gt;
+Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
+Motivo: {1}
+&lt;/br&gt;&lt;/br&gt;
+Recurso: &lt;/br&gt;
+La licencia solicitada ha sido &lt;strong&gt; Rechazada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
+Motivo: {1}</value>
   </data>
 </root>

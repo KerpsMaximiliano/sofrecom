@@ -15,18 +15,9 @@ namespace Sofco.WebApi.Models
 {
     public class DomainActionResult : IActionResult
     {
-        internal const string ContentProperty = "ResultData";
+        private const string ContentProperty = "ResultData";
 
-        internal readonly HttpContext Context;
-
-        public Result Result { get; set; }
-
-        internal Func<HttpRequestMessage, HttpStatusCode, object, HttpResponseMessage> CreateResponse { get; set; }
-
-        protected DomainActionResult(HttpContext context)
-        {
-            Context = context;
-        }
+        private readonly HttpContext context;
 
         public DomainActionResult(HttpContext context, Result result)
             : this(context)
@@ -36,9 +27,41 @@ namespace Sofco.WebApi.Models
             SetHttpStatusCode();
         }
 
+        protected DomainActionResult(HttpContext context)
+        {
+            this.context = context;
+        }
+
+        public Result Result { get; set; }
+
+        public Func<HttpRequestMessage, HttpStatusCode, object, HttpResponseMessage> CreateResponse { get; set; }
+
+        public Task ExecuteResultAsync(ActionContext actionContext)
+        {
+            var response = new ResponseModel
+            {
+                Data = GetContentsFromResult(),
+                Errors = Result.Errors.ToList(),
+                Status = Result.HasErrors
+                    ? StatusType.Error.ToString().ToUpper()
+                    : StatusType.Success.ToString().ToUpper()
+            };
+
+            var contextResponse = context.Response;
+
+            contextResponse.ContentType = "application/json; charset=utf-8";
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(response, jsonSettings), Encoding.UTF8);
+        }
+
         private void SetHttpStatusCode()
         {
-            Context.Response.StatusCode = Result.HasErrors
+            context.Response.StatusCode = Result.HasErrors
                 ? (int)HttpStatusCode.BadRequest // Http422UnprocessableEntity
                 : (int)HttpStatusCode.OK;
         }
@@ -51,29 +74,6 @@ namespace Sofco.WebApi.Models
                 t.GetProperty(ContentProperty) != null
                 ? t.GetProperty(ContentProperty).GetValue(Result)
                 : null;
-        }
-
-        public Task ExecuteResultAsync(ActionContext context)
-        {
-            var response = new ResponseModel
-            {
-                Data = GetContentsFromResult(),
-                Errors = Result.Errors.ToList(),
-                Status = Result.HasErrors
-                   ? StatusType.Error.ToString().ToUpper()
-                   : StatusType.Success.ToString().ToUpper()
-            };
-
-            var contextResponse = Context.Response;
-
-            contextResponse.ContentType = "application/json; charset=utf-8";
-
-            var jsonSettings = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-
-            return Context.Response.WriteAsync(JsonConvert.SerializeObject(response, jsonSettings), Encoding.UTF8);
         }
     }
 }

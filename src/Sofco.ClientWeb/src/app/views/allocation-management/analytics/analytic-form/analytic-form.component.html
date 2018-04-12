@@ -21,13 +21,13 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.startDate' | translate }}</label>
-                    <ng-datepicker [(ngModel)]="model.startDateContract" [options]="datePickerOptions"></ng-datepicker>
+                    <date-picker [(date)]="model.startDateContract"></date-picker>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.endDate' | translate }}</label>
-                    <ng-datepicker [(ngModel)]="model.endDateContract" [options]="datePickerOptions"></ng-datepicker>
+                    <date-picker [(date)]="model.endDateContract"></date-picker>
                 </div>
             </div>
         </div>
@@ -76,8 +76,8 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.contractNumber' | translate }}</label>
-                    <input type="text" disabled class="form-control" [ngModel]="model?.contractNumber">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.proposal' | translate }}</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.proposal">
                 </div>
             </div>
         </div>
@@ -103,10 +103,6 @@
                 <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.amountProject' | translate }}</label>
                     <input type="text" class="form-control" [(ngModel)]="model.amountProject">
-                </div>
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.proposal' | translate }}</label>
-                    <input type="text" class="form-control" [(ngModel)]="model.proposal">
                 </div>
             </div>
         </div>

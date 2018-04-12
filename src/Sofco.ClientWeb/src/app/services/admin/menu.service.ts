@@ -3,7 +3,7 @@ import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/htt
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from 'app/services/common/service';
 import { Menu } from 'app/models/admin/menu';
-import { HttpAuth } from 'app/services/common/http-auth';
+import { HttpClient } from '@angular/common/http';
 import { DatepickerOptions } from 'ng2-datepicker';
 
 @Injectable()
@@ -12,8 +12,10 @@ export class MenuService {
 
     public menu: Menu[];
     public userIsDirector: boolean;
+    public userIsManager: boolean;
     public userIsDaf: boolean;
     public userIsCdg: boolean;
+    public userIsRrhh: boolean;
     public currentUser: any;
     public user: any;
 
@@ -23,7 +25,7 @@ export class MenuService {
     public rrhhMail: string;
     public sellerMail: string;
 
-    constructor(private http: HttpAuth, private service: Service) {
+    constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
 
         if (!this.menu) {
@@ -32,8 +34,10 @@ export class MenuService {
             {
                 this.menu = menu.menus;
                 this.userIsDirector = menu.isDirector;
+                this.userIsManager = menu.isManager;
                 this.userIsDaf = menu.isDaf;
                 this.userIsCdg = menu.isCdg;
+                this.userIsRrhh = menu.isRrhh;
 
                 this.dafMail = menu.dafMail;
                 this.cdgMail = menu.cdgMail;
@@ -57,7 +61,7 @@ export class MenuService {
     }
 
     get() {
-       return this.http.get(`${this.baseUrl}/menu/`).map((res: Response) => res.json());
+       return this.http.get<any>(`${this.baseUrl}/menu/`);
     }
 
     hasModule(module: string){
@@ -98,16 +102,4 @@ export class MenuService {
         }
          return false;
      }
- 
-    getDatePickerOptions(){
-        var options: DatepickerOptions = {
-            minYear: 1970,
-            maxYear: 2030,
-            displayFormat: 'DD/MM/YYYY',
-            barTitleFormat: 'MMMM YYYY',
-            firstCalendarDay: 1
-          };
-
-        return options;
-    }
 }

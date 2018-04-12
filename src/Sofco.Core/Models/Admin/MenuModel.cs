@@ -27,6 +27,8 @@ namespace Sofco.Core.Models.Admin
 
         public bool IsCdg { get; set; }
 
+        public bool IsRrhh { get; set; }
+
         public string DafMail { get; set; }
 
         public string CdgMail { get; set; }
@@ -36,5 +38,7 @@ namespace Sofco.Core.Models.Admin
         public string RrhhMail { get; set; }
 
         public string SellerMail { get; set; }
+
+        public bool IsManager { get; set; }
     }
 }

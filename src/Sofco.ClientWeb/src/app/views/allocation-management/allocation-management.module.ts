@@ -1,9 +1,9 @@
 import { FormsModule } from '@angular/forms';
-import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {RouterModule} from "@angular/router";
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
 
-import {PeityModule } from '../../components/charts/peity';
+import { PeityModule } from '../../components/charts/peity';
 import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.component";
 import { TranslateModule } from "@ngx-translate/core";
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
@@ -14,7 +14,6 @@ import { AnalyticSearchComponent } from 'app/views/allocation-management/analyti
 import { AddAllocationComponent } from 'app/views/allocation-management/allocation/add-by-analytic/add-by-analytic.component';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
-import { DateRangePickerModule } from 'app/components/datepicker/date-range.picker.module';
 import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
 import { AddAllocationByResourceComponent } from 'app/views/allocation-management/allocation/add-by-resource/add-by-resource.component';
 import { AllocationAssignmentTableComponent } from 'app/views/allocation-management/allocation/allocation-assignment-table/alloc-assig-table.component';
@@ -36,12 +35,17 @@ import { ResourceDetailComponent } from 'app/views/allocation-management/resourc
 import { AllocationReportComponent } from 'app/views/allocation-management/allocation/report/allocation-report.component';
 import { ViewAnalyticComponent } from 'app/views/allocation-management/analytics/view/view-analytic.component';
 import { EditCostCenterComponent } from 'app/views/allocation-management/cost-center/edit/edit-cost-center.component';
+import { DateRangePickerModule } from 'app/components/date-range-picker/date-range.picker.module';
+import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
+import { WorkTimeApprovalDelegateComponent } from 'app/views/allocation-management/worktime/worktime-approval-delegate/worktime-approval-delegate.component';
+import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
 
 @NgModule({
   declarations: [
-    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent, 
-    ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent, 
-    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent, AllocationReportComponent, ViewAnalyticComponent, EditCostCenterComponent
+    AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent,
+    ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent,
+    EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent, AllocationReportComponent, ViewAnalyticComponent, EditCostCenterComponent,
+    WorkTimeApprovalDelegateComponent
   ],
   imports: [
     BrowserModule,
@@ -52,13 +56,14 @@ import { EditCostCenterComponent } from 'app/views/allocation-management/cost-ce
     TranslateModule,
     Select2Module,
     NgDatepickerModule,
+    DatePickerModule,
     DateRangePickerModule,
     IboxtoolsModule,
-    ICheckModule, 
+    ICheckModule,
     NumbersOnlyModule,
     Ng2ModalModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, EmployeeNewsService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, EmployeeNewsService, WorkTimeApprovalDelegateService ],
   exports: [],
 })
 

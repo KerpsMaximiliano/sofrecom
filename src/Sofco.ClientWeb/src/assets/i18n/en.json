@@ -68,9 +68,32 @@
             "edit": "Edit Module",
             "add": "Add Module",
             "deleteConfirm": "Are you sure you want to delete the module?"
+        }, 
+        "category": {
+            "admin": "Administracion de Categorias",
+            "title": "Categorias",
+            "list": "Listado de Categorias",
+            "description":"Descripción",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "add": "Agregar Categoria",
+            "edit": "Editar Categoria",
+            "task": "Categorias de Tareas",
+            "areYouSureAdd": "When accepting the selected categories are added to the previously assigned ones, does the action confirm?"
+        },
+        "task": {
+            "admin": "Administracion de tareas",
+            "title": "Tareas",
+            "list": "Listado de Tareas",
+            "edit": "Editar Tarea",
+            "add": "Agregar Tarea",
+            "category": "Categoria",
+            "task": "Tarea"
         },
         "settings": {
             "title": "Configs",
+            "licenseTitle": "Licenses's Configuration",
             "saveSuccess": "Save successfully",
             "AllocationManagement_Months": "Allocations - Months",
             "ExamDaysAllowTogether": "Maximum consecutive examination days",
@@ -86,6 +109,7 @@
         "title": "Billing",
         "customer":{
             "title": "Customers",
+            "client": "Client",
             "management": "List of Customers",
             "edit": "Customer Edit",
             "add": "Add Customer",
@@ -298,6 +322,7 @@
             "integrator": "Integrator",
             "customers": "Customers",
             "delegate": {
+                "delegateAction": "Delegate",
                 "title": "Solfac Delegate",
                 "users": "Users",
                 "saveSuccess": "User added succesfully.",
@@ -402,6 +427,9 @@
             "wrongMonthQuantity": "Months to show must be greater than or equal to 1 and less than or equal to 36",
             "monthQuantity": "Months to show",
             "releaseDateShortDesc": "Release",
+            "resourceWithLicense": "Resource with license",
+            "betweenDays": "between days",
+            "and": "and",
             "grid": {
                 "title": "Title",
                 "name": "Name",
@@ -426,6 +454,7 @@
         },
         "resources": {
             "listTitle": "Resources´s List",
+            "search": "Resources´s Search",
             "title": "Resources",
             "list": "List",
             "recipients": "Copy to",
@@ -447,7 +476,8 @@
                 "technology": "Technology",
                 "startDate" :"Start",
                 "releaseDate": "Release",
-                "percentage": "Percentage"
+                "percentage": "Percentage",
+                "start": "Start Date"
             }
         },
         "news": {
@@ -471,6 +501,7 @@
             "view": "View",
             "viewTitle": "View Analytic",
             "assigned": "Analytics Assigned",
+            "close": "Close Analytic",
             "add": {
                 "title": "Title",
                 "startDate":"Start Date",
@@ -529,7 +560,32 @@
             "final": "Final",
             "manager":"Manager",
             "sector": "Sector",
-            "attachments": "Attachments"
+            "attachments": "Attachments",
+            "exam": "Days for exam",
+            "marrige": "Days for marrige",
+            "born": "Days for born",
+            "deadParent": "Days for direct family death",
+            "deadBrother": "Days for brother's death",
+            "type": "License",
+            "start": "Start",
+            "end": "End",
+            "days": "Days (Business)",
+            "goce": "Goce",
+            "status": "Status",
+            "managed": "Managed Licenses",
+            "authPending": "Authorization Pending Licenses",
+            "approved": "Approved Licenses",
+            "pending": "Pending Licenses",
+            "load": "Load License",
+            "report": "Generate Report",
+            "holidaysPending": "Holidays Pending",
+            "hasCertificate": "Certificate",
+            "detail": "License's Detail",
+            "detailTitle": "Detail",
+            "fileDelivered": "Certification Delivered",
+            "extraHolidays": "Vacaciones extra acordadas",
+            "holidaysByLaw": "Vacaciones por ley",
+            "finalizeExtraHolidays": "Finalizar Acuerdo"
         }
     },
     "ACTIONS":{
@@ -579,7 +635,9 @@
         "searchAll": "Search All",
         "changeDates": "Change Dates",
         "notifyUnsubscribe": "Notify unsubscribe",
-        "goHere": "Enter Here"
+        "goHere": "Enter Here",
+        "pendingDocumentation": "Pending Documentation",
+        "authorize": "Authorize"
     },
     "SendPending": "Send Pending",
     "PendingByManagementControl": "Review pending by Management Control",
@@ -611,6 +669,10 @@
     "Reincorporation": "Reincoporation",
     "Valid": "Valid",
     "Consumed": "Consumed",
+    "Draft": "Draft",
+    "Pending": "Approve Pending",
+    "ApprovePending": "Approve / Missing Documentation",
+    "AuthPending": "Authorization Pending", 
     "report":{
         "title": "Report",
         "solfacs": {

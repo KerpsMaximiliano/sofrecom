@@ -17,30 +17,87 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row m-b-md m-t-md">
-        <div class="col-md-5">
+        <div class="col-md-12">
             <div class="profile-image">
-                <img src="assets/images/user_default_m.png" class="img-circle circle-border m-b-md" alt="profile">
+                <img src="assets/images/user_default_m.png" class="img-circle circle-border m-b-md">
             </div>
             <div class="profile-info">
-                <h2 class="no-margins"> {{ model?.name }} </h2>
-                <br>
-                <h4>{{ model?.profile }}</h4>
+                <h1 class="no-margins text-green"> {{ model?.name }} </h1>
+
+                <h4 class="m-t-md">{{ model?.profile }}</h4>
+
+                <div class="row m-t-lg">
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" >
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-clock-o fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.timeSheet' | translate }}</h4>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" >
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-home fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="finalizeExtraHolidays()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-plane fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'rrhh.license.finalizeExtraHolidays' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="goToLicenses()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-plane fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-7">
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <table class="table table-font-md">
                 <tbody>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
-                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
-                    </tr>
-                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.start' | translate }}:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</td>
                         <td><strong>{{'allocationManagement.resources.grid.senority' | translate }}: </strong> {{ model?.seniority }} </td>
-                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
+                        <td><strong>{{'rrhh.license.holidaysByLaw' | translate }}: </strong> {{ model?.holidaysByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
                         <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td></td>
+                        <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
+                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
+                        <td *ngIf="model?.hasExtraHolidays"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantity }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -48,19 +105,18 @@
     </div>
 
     <div class="row">
-
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
+                    <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-
                             <dl class="dl-horizontal">
                                 <dt>{{'allocationManagement.resources.address' | translate }}</dt>
                                 <dd>{{ model?.address }}</dd>
@@ -75,7 +131,6 @@
                                 <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
                             </dl>
-                          
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">
@@ -106,10 +161,29 @@
                     </div>
                     <div id="tab-3" class="tab-pane">
                         <div class="panel-body">
-
+                            <table class="table table-striped" id="licenses" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+                                        <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                                        <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
+                                        <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
+                                        <th class="column-sm text-center"> {{ 'rrhh.license.status' | translate }} </th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    <tr *ngFor="let item of licenses" class="pointer" (click)="goToDetail(item)">
+                                        <td class="column-lg"> {{ item.managerName }} </td>
+                                        <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                                        <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
+                                        <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
+                                        <td class="column-sm text-ellipsis"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
+                                    </tr>
+                                </tbody>
+                            </table>    
                         </div>
                     </div>
-                    <div id="tab-4" class="tab-pane">
+                    <div id="tab-4" class="tab-pane" *ngIf="model?.history.length > 0">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="historyTable">
                                 <thead>
@@ -135,38 +209,23 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3" style="margin-top: 40px">
-            <div class="row widget-custom lazur-bg" (click)="goToLicenses()">
-                <div class="col-sm-2">
-                    <i class="fa fa-plane fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row widget-custom lazur-bg">
-                <div class="col-sm-2">
-                    <i class="fa fa-clock-o fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.timeSheet' | translate }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="row widget-custom lazur-bg">
-                <div class="col-sm-2">
-                    <i class="fa fa-home fa-2x"></i>
-                </div>
-                <div class="col-sm-10">
-                    <div class="vertical-align">
-                        <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
+                    <div id="tab-5" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="tasksTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'ADMIN.task.category' | translate }}</th>
+                                        <th>{{ 'ADMIN.task.task' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of tasks">
+                                        <td> {{ item.category }} </td>
+                                        <td> {{ item.task }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

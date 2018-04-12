@@ -11,8 +11,9 @@ import { UserService } from "app/services/admin/user.service";
 import { CryptographyService } from 'app/services/common/cryptography.service';
 
 @Component({
-  selector: 'login',
-  templateUrl: 'login.template.html'
+  selector: 'app-login',
+  templateUrl: 'login.template.html',
+  styleUrls: ['login.component.scss']
 })
 export class LoginComponent implements OnInit {
     model: any = {};
@@ -33,28 +34,26 @@ export class LoginComponent implements OnInit {
         private cryptoService: CryptographyService,
         private errorHandlerService: ErrorHandlerService) { }
 
-    ngOnInit() { 
-        // get return url from route parameters or default to '/'
+    ngOnInit() {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
         this.messageService.showLoginLoading();
 
-        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password).subscribe(
-            data => {
-                this.onLoginSucces(data);
-            },
+        this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password)
+        .subscribe(
+            data => { this.onLoginSucces(data); },
             error => this.errorHandlerService.handleErrors(error));
     }
 
-    onLoginSucces(data){
-        Cookie.set('access_token', data.access_token);
-        Cookie.set('refresh_token', data.refresh_token);
+    onLoginSucces(data) {
+        Cookie.set('access_token', data.accessToken);
+        Cookie.set('refresh_token', data.refreshToken);
 
         this.userSubscrip = this.userService.getByEmail().subscribe(
             response => {
-                const userData = response.data;
+                const userData = response;
                 Cookie.set('userInfo', JSON.stringify(userData));
                 this.menuService.currentUser = userData.name;
                 this.menuService.user = userData;
@@ -75,6 +74,7 @@ export class LoginComponent implements OnInit {
                 this.menuService.userIsDirector = menu.isDirector;
                 this.menuService.userIsDaf = menu.isDaf;
                 this.menuService.userIsCdg = menu.isCdg;
+                this.menuService.userIsRrhh = menu.isRrhh;
 
                 this.menuService.dafMail = menu.dafMail;
                 this.menuService.cdgMail = menu.cdgMail;

@@ -50,7 +50,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var invoices = invoiceService.GetOptions(projectId);
 
-            var list = invoices.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.PdfFileName });
+            var list = invoices.Select(x => new Option { Id = x.Id, Text = x.PdfFileName });
 
             return Ok(list);
         }
@@ -292,14 +292,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(list);
         }
 
-        private IEnumerable<SelectListItem> GetStatuses()
+        private IEnumerable<Option> GetStatuses()
         {
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.SendPending).ToString(), Text = InvoiceStatus.SendPending.ToString() };
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.Sent).ToString(), Text = InvoiceStatus.Sent.ToString() };
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.Rejected).ToString(), Text = InvoiceStatus.Rejected.ToString() };
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.Approved).ToString(), Text = InvoiceStatus.Approved.ToString() };
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.Related).ToString(), Text = InvoiceStatus.Related.ToString() };
-            yield return new SelectListItem { Value = ((int)InvoiceStatus.Cancelled).ToString(), Text = InvoiceStatus.Cancelled.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.SendPending, Text = InvoiceStatus.SendPending.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.Sent, Text = InvoiceStatus.Sent.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.Rejected, Text = InvoiceStatus.Rejected.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.Approved, Text = InvoiceStatus.Approved.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.Related, Text = InvoiceStatus.Related.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.Cancelled, Text = InvoiceStatus.Cancelled.ToString() };
         }
     }
 }

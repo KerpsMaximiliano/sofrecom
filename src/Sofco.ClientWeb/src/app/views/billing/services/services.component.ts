@@ -16,7 +16,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     services: any[];
     public customerId: any;
     public customerName: string;
-    public loading:  boolean = true;
+    public loading = true;
 
     constructor(
         private router: Router,
@@ -43,7 +43,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(customerId).subscribe(d => {
-        this.services = d;
+        this.services = d.data;
 
         this.initGrid();
 
@@ -69,7 +69,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("serviceName", service.nombre);
       sessionStorage.setItem("serviceId", service.id);
       sessionStorage.setItem("serviceDetail", JSON.stringify(service));
-      
+
       this.router.navigate([`/billing/customers/${this.customerId}/services/${service.id}/projects`]);
     }
 }

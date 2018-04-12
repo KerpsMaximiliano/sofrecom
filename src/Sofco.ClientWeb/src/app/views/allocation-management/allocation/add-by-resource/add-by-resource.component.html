@@ -17,48 +17,47 @@
             </ol>
         </div>
     </div>
-
+ 
     <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-md-6" *ngIf="pmoUser">
-                                <div class="form-group">
-                                    <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                                    <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
-                                    <input type="number" myNumberOnly min="1" max="36" class="form-control input-sm" [(ngModel)]="monthQuantity">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ibox-footer">
-                        <a class="btn btn-primary pointer btn-sm" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5">
-                <div class="ibox">
-                    <div class="ibox-content">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
                             <select select2 class="form-control" id="analyticId">
-                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.title}} - {{analytic?.name}}</option>
+                                <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="ibox-footer">
-                        <a class="btn btn-primary pointer btn-sm" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
-                        <a class="btn btn-success btn-sm" [routerLink]="['/allocationManagement/resources']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    <div class="col-md-2">
+                        <a class="btn btn-primary pointer btn-sm m-t-md btn-width-100" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus" ></i></a>
+                    </div>
+                    <div class="col-md-2 border-left" *ngIf="pmoUser">
+                        <div class="form-group">
+                            <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
+                            <date-picker [(date)]="dateSince"></date-picker>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label"> {{ 'allocationManagement.allocation.monthQuantity' | translate }} </label>
+                            <input type="number" myNumberOnly min="1" max="36" class="form-control input-sm" [(ngModel)]="monthQuantity">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-primary pointer btn-sm m-t-md btn-width-100" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></a>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="alert alert-warning" *ngIf="allocations.model && allocations.model?.licenses.length > 0">
+            <ul>
+                <li *ngFor="let license of allocations.model?.licenses">
+                    {{ 'allocationManagement.allocation.resourceWithLicense' | translate }} {{ license.licenseTypeName }} {{ 'allocationManagement.allocation.betweenDays' | translate }} {{ license.startDate | date: 'dd/MM/yyyy' }} {{ 'allocationManagement.allocation.and' | translate }} {{ license.endDate | date: 'dd/MM/yyyy' }}
+                </li>
+            </ul>
         </div>
 
         <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 

@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
+using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
@@ -31,12 +35,20 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var model = new LicenseTypeOptions
             {
                 OptionsWithPayment = options.Where(x => x.WithPayment)
-                    .Select(x => new Option {Id = x.Id, Text = x.Description}).ToList(),
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList(),
                 OptionsWithoutPayment = options.Where(x => !x.WithPayment)
-                    .Select(x => new Option {Id = x.Id, Text = x.Description}).ToList()
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList()
             };
 
             return Ok(model);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = licenseService.GetById(id);
+
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -44,7 +56,55 @@ namespace Sofco.WebApi.Controllers.Rrhh
         {
             var response = licenseService.Add(model.CreateDomain());
 
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            UpdateStatus(model, response);
+
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] LicenseSearchParams parameters)
+        {
+            return Ok(licenseService.Search(parameters));
+        }
+
+        [HttpPut]
+        [Route("type/{typeId}/days/{value}")]
+        public IActionResult UpdateTypeValue(int typeId, int value)
+        {
+            var response = licenseTypeService.UpdateLicenseTypeDays(typeId, value);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet]
+        [Route("status/{statusId}")]
+        public IActionResult GetByStatus(LicenseStatus statusId)
+        {
+            return Ok(licenseService.GetByStatus(statusId));
+        }
+
+        [HttpGet]
+        [Route("manager/{managerId}")]
+        public IActionResult GetByManager(int managerId)
+        {
+            return Ok(licenseService.GetByManager(managerId));
+        }
+
+        [HttpGet]
+        [Route("employee/{employeeId}")]
+        public IActionResult GetByEmployee(int employeeId)
+        {
+            return Ok(licenseService.GetByEmployee(employeeId));
+        }
+
+        [HttpGet]
+        [Route("status/{statusId}/manager/{managerId}")]
+        public IActionResult GetByManagerAndStatus(LicenseStatus statusId, int managerId)
+        {
+            return Ok(licenseService.GetByManagerAndStatus(statusId, managerId));
         }
 
         [HttpPost("{id}/file")]
@@ -56,7 +116,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
             {
                 var file = Request.Form.Files.First();
 
-                await licenseService.AttachFile(id, response, file);
+                response = await licenseService.AttachFile(id, response, file);
             }
             else
             {
@@ -64,6 +124,86 @@ namespace Sofco.WebApi.Controllers.Rrhh
             }
 
             return this.CreateResponse(response);
+        }
+
+        [HttpDelete("file/{id}")]
+        public IActionResult DeleteFile(int id)
+        {
+            var response = licenseService.DeleteFile(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody]LicenseStatusChangeModel model)
+        {
+            var response = licenseService.ChangeStatus(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = licenseService.GetHistories(id);
+
+            return Ok(histories);
+        }
+
+        [HttpGet]
+        [Route("report")]
+        public IActionResult Report()
+        {
+            try
+            {
+                var excel = licenseService.GetLicenseReport();
+
+                return File(excel.GetAsByteArray(), "application/octet-stream", "licencias");
+            }
+            catch
+            {
+                var response = new Response();
+                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}/fileDelivered")]
+        public IActionResult FileDelivered(int id)
+        {
+            var response = licenseService.FileDelivered(id);
+
+            return this.CreateResponse(response);
+        }
+
+        private void UpdateStatus(LicenseAddModel model, Response<string> response)
+        {
+            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.ApprovePending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
+            else
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.AuthPending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
         }
     }
 }

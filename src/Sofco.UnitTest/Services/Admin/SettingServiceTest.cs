@@ -3,7 +3,6 @@ using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.DAL;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 
@@ -12,7 +11,7 @@ namespace Sofco.UnitTest.Services.Admin
     [TestFixture]
     public class SettingServiceTest
     {
-        private Mock<IGlobalSettingRepository> globalSettingRepository;
+        private Mock<ISettingRepository> globalSettingRepository;
         private Mock<IUnitOfWork> unitOfWork;
 
         private SettingService sut;
@@ -20,17 +19,17 @@ namespace Sofco.UnitTest.Services.Admin
         [SetUp]
         public void Setup()
         {
-            globalSettingRepository = new Mock<IGlobalSettingRepository>();
+            globalSettingRepository = new Mock<ISettingRepository>();
 
             unitOfWork = new Mock<IUnitOfWork>();
 
-            unitOfWork.Setup(x => x.GlobalSettingRepository).Returns(globalSettingRepository.Object);
+            unitOfWork.Setup(x => x.SettingRepository).Returns(globalSettingRepository.Object);
 
             globalSettingRepository.Setup(s => s.GetAll()).Returns(
-                new List<GlobalSetting> {
-                    new GlobalSetting { Id = 1, Key = "Key1" }
+                new List<Setting> {
+                    new Setting { Id = 1, Key = "Key1" }
                 });
-            globalSettingRepository.Setup(s => s.Save(It.IsAny<List<GlobalSetting>>()));
+            globalSettingRepository.Setup(s => s.Save(It.IsAny<List<Setting>>()));
 
             sut = new SettingService(unitOfWork.Object);
         }
@@ -40,7 +39,7 @@ namespace Sofco.UnitTest.Services.Admin
         {
             var actual = sut.GetAll();
 
-            Assert.False(actual.HasErrors);
+            Assert.False(actual.HasErrors());
 
             Assert.NotNull(actual.Data);
 
@@ -50,13 +49,13 @@ namespace Sofco.UnitTest.Services.Admin
         [Test]
         public void ShouldPassSave()
         {
-            var globalSettings = new List<GlobalSetting>();
+            var globalSettings = new List<Setting>();
 
             var actual = sut.Save(globalSettings);
 
-            Assert.False(actual.HasErrors);
+            Assert.False(actual.HasErrors());
 
-            globalSettingRepository.Verify(s => s.Save(It.IsAny<List<GlobalSetting>>()), Times.Once);
+            globalSettingRepository.Verify(s => s.Save(It.IsAny<List<Setting>>()), Times.Once);
         }
     }
 }

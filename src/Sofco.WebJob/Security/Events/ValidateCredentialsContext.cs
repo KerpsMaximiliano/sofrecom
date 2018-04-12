@@ -25,6 +25,5 @@ namespace Sofco.WebJob.Security.Events
         /// The password to validate.
         /// </summary>
         public string Password { get; set; }
-
     }
 }

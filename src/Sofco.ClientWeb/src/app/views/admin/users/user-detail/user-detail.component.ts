@@ -19,12 +19,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private id;
     public user = <UserDetail>{};
     private groupId: any;
+    public isLoading: boolean = false;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ADMIN.USERS.addGroup", //title
         "modalGroups", //id
         true,          //Accept Button
-        false,          //Cancel Button
+        true,          //Cancel Button
         "ACTIONS.ACCEPT",     //Accept Button Text
         "ACTIONS.cancel");   //Cancel Button Text
 
@@ -42,7 +43,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     //GroupService
     public checkAtLeft:boolean = true;
-    public groupsToAdd: Option[] = new Array<Option>();
+    public groupsToAdd: any[] = new Array();
     public groupsToAddSubscrip: Subscription;
     @ViewChild('modalGroups') modalGroups;
     @ViewChild('confirmModal') confirmModal;
@@ -85,8 +86,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     getAllGroups(){
         this.groupsToAddSubscrip = this.groupService.getOptions().subscribe(
             data => {
-                this.groupsToAdd = new Array<Option>();
-                var groups = new Array<Option>();
+                this.groupsToAdd = new Array();
+                var groups = new Array();
                 var index = 0;
                 for(var i: number = 0; i<data.length; i++){
 
@@ -104,11 +105,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             err => this.errorHandlerService.handleErrors(err));
     }
 
-    private isOptionInArray(arrGroup, option: Option): boolean{
+    private isOptionInArray(arrGroup, option: any): boolean{
         var esta: boolean = false;
 
         for(var i: number = 0; i<arrGroup.length; i++){
-            if(arrGroup[i].value.toString() == option.value ){
+            if(arrGroup[i].id == option.id ){
                 esta = true;
                 break;
             }
@@ -120,7 +121,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     assignGroups(){
 
         var arrGroupsToAdd = this.groupsToAdd.filter((el)=> el.included).map((item) => {
-            return item.value
+            return item.id
         });
 
         var objToSend = {
@@ -128,13 +129,19 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             groupsToRemove: []
         };
 
+        this.isLoading = true;
+
         this.service.assignGroups(this.id, objToSend).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-                this.getDetails();
                 this.modalGroups.hide();
+                if(data.messages) this.messageService.showMessages(data.messages);
+                this.isLoading = false;
+                this.getDetails();
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => { 
+                this.errorHandlerService.handleErrors(err);
+                this.isLoading = false;
+            });
     }
 
     unassignGroup(){

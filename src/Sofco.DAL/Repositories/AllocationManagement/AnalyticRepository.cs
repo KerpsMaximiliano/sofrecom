@@ -62,9 +62,29 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open).ToList();
         }
 
-        public bool ExistWithService(string serviceId)
+        public Analytic GetByService(string serviceId)
         {
-            return context.Analytics.Any(x => x.ServiceId.Equals(serviceId));
+            return context.Analytics.SingleOrDefault(x => x.ServiceId.Equals(serviceId));
+        }
+
+        public ICollection<Analytic> GetByClient(string clientId)
+        {
+            return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
+        }
+
+        public Analytic GetById(int allocationAnalyticId)
+        {
+            return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.Id == allocationAnalyticId);
+        }
+
+        public ICollection<Analytic> GetAnalyticsByManagers(int id)
+        {
+            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id).ToList();
+        }
+
+        public List<Analytic> GetByManagerId(int managerId)
+        {
+            return context.Analytics.Where(x => x.ManagerId == managerId).ToList();
         }
     }
 }

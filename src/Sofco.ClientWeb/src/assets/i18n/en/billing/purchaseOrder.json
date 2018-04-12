@@ -10,5 +10,6 @@
     "yearIsRequired": "Year is required",
     "notFound": "Purchase Order not found",
     "fileAdded": "File has been uploaded succesfully",
-    "searchEmpty": "No results found with the selected parameters"
+    "searchEmpty": "No results found with the selected parameters",
+    "projectIsRequired": "Project is required"
 }

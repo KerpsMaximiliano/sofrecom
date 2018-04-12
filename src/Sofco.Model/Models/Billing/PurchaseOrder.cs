@@ -39,5 +39,7 @@ namespace Sofco.Model.Models.Billing
 
         public int? FileId { get; set; }
         public File File { get; set; }
+
+        public string ProjectId { get; set; }
     }
 }

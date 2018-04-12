@@ -7,6 +7,8 @@ import { GroupService } from "app/services/admin/group.service";
 import { RoleService } from "app/services/admin/role.service";
 import { Group } from "app/models/admin/group";
 import { Role } from "app/models/admin/role";
+import { Module } from '../../../../models/admin/module';
+import { group } from '@angular/animations';
 declare var $: any;
 
 @Component({
@@ -16,7 +18,7 @@ declare var $: any;
 })
 export class GroupEditComponent implements OnInit, OnDestroy {
 
-  public module: Group;
+  public module: Group = new Group();
 
   private id: number;
   
@@ -25,7 +27,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   private editSubscrip: Subscription;
   private getRolesSubscrip: Subscription;
 
-  public roles;
+  public roles: any[] = new Array();
 
   constructor(
     private service: GroupService, 
@@ -39,7 +41,6 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.id = params['id'];
-        this.getEntity(this.id);
         this.getAllRoles();
     });
   }
@@ -64,11 +65,20 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   }
 
   getAllRoles(){
+    this.messageService.showLoading();
+
     this.getRolesSubscrip = this.roleService.getOptions().subscribe(
       d => {
         this.roles = d;
+
+        this.getEntity(this.id);
+
+        this.messageService.closeLoading();
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => { 
+        this.errorHandlerService.handleErrors(err);
+        this.messageService.closeLoading();
+      });
   }
 
   goToGroups(){
@@ -76,18 +86,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form){
-    var json = {
-      id: this.module.id,
-      description: this.module.description,
-      active: this.module.active,
-      email: this.module.email,
-      role: {
-        id: this.module.role.id,
-        description: "fake"
-      }
-    }
-
-    this.editSubscrip = this.service.edit(json).subscribe(
+    this.editSubscrip = this.service.edit(this.module).subscribe(
       data => {
         if(data.messages) this.messageService.showMessages(data.messages);
         this.router.navigate(["/admin/groups"])

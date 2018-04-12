@@ -44,9 +44,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<Certificate> GetByClients(string client)
         {
-            var certificatesInUse = context.SolfacCertificates.Select(x => x.CertificateId).Distinct().ToList();
-
-            return context.Certificates.Where(x => x.ClientExternalId.Equals(client) && !certificatesInUse.Contains(x.Id)).ToList();
+            return context.Certificates.Where(x => x.ClientExternalId.Equals(client)).ToList();
         }
 
         public void RelateToSolfac(SolfacCertificate solfacCertificate)

@@ -19,6 +19,7 @@ declare var $: any;
 export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     @ViewChild('form') form;
+    @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
 
     updateSubscrip: Subscription;
@@ -59,6 +60,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.form.model = data;
 
                 this.uploaderConfig();
+
+                if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
+                    this.form.getAnalytics();
+                }
             },
             error => {
                 this.messageService.closeLoading();
@@ -76,7 +81,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     update() {
         this.messageService.showLoading();
-        this.form.model.clientExternalName = $('#clientExternalId option:selected').text();
+        var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
+        this.form.model.clientExternalName = client.text;
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
             response => {
@@ -144,5 +150,14 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    viewFile(){
+        if(this.form.model.fileName.endsWith('.pdf')){
+            this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 }  

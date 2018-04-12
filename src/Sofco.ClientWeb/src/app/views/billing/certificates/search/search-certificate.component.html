@@ -1,92 +1,85 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-12">
-            <h2>{{'billing.certificate.searchTitle' | translate }}</h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-                </li>
-                <li>
-                    <a>{{'billing.title' | translate }}</a>
-                </li>
-                <li>
-                    {{'billing.certificate.title' | translate }}
-                </li>
-                <li class="active">
-                    <strong>{{'billing.certificate.search' | translate }}</strong>
-                </li>
-            </ol>
-        </div>
+    <div class="col-lg-12">
+        <h2>{{'billing.certificate.searchTitle' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                {{'billing.certificate.title' | translate }}
+            </li>
+            <li class="active">
+                <strong>{{'billing.certificate.search' | translate }}</strong>
+            </li>
+        </ol>
     </div>
-    
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h4 class="pull-left">{{'billing.certificate.parameters' | translate }}</h4>
-                
-                <div class="ibox-tools">
-                    <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="control-label" for="client">{{'billing.invoice.account' | translate }}</label>
-                            <select class="form-control m-b" [(ngModel)]="customerId">
-                                <option value="0">{{'selectAnOption' | translate }}</option>
-                                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
-                            <input type="number" class="form-control" [(ngModel)]="year" >
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ibox-footer">
-                <div class="text-right">
-                    <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                    <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
-                </div>
-            </div>
-        </div>
-    
-        <div class="row" *ngIf="data.length > 0">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-    
-                        <table class="table table-striped" id="certificateTable" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>{{'billing.certificate.fields.name' | translate }}</th>
-                                    <th>{{'billing.certificate.fields.client' | translate }}</th>
-                                    <th>{{'billing.certificate.fields.year' | translate }}</th>
-                                    <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let certificate of data">
-                                    <td>{{certificate.name}}</td>
-                                    <td>{{certificate.client}}</td>
-                                    <td>{{certificate.year}}</td>
-                                    <td class="text-center column-xs">
-                                        <button class="btn btn-warning btn-xs" (click)="gotToEdit(certificate)"><i class="fa fa-edit"></i></button>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h4 class="pull-left">{{'billing.certificate.parameters' | translate }}</h4>
             
-                                        <button class="btn btn-xs btn-success" (click)="export(certificate)" *ngIf="certificate.fileId > 0">
-                                            <i class="fa fa-download"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>       
+            <div class="ibox-tools">
+                <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
+                        <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="year" >
                     </div>
                 </div>
             </div>
         </div>
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            </div>
+        </div>
     </div>
-    
-    
+
+    <div class="row" *ngIf="data.length > 0">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+
+                    <table class="table table-striped" id="certificateTable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{{'billing.certificate.fields.name' | translate }}</th>
+                                <th>{{'billing.certificate.fields.client' | translate }}</th>
+                                <th>{{'billing.certificate.fields.year' | translate }}</th>
+                                <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let certificate of data">
+                                <td>{{certificate.name}}</td>
+                                <td>{{certificate.client}}</td>
+                                <td>{{certificate.year}}</td>
+                                <td class="text-center column-xs">
+                                    <button class="btn btn-warning btn-xs" (click)="gotToEdit(certificate)"><i class="fa fa-edit"></i></button>
+        
+                                    <button class="btn btn-xs btn-success" (click)="export(certificate)" *ngIf="certificate.fileId > 0">
+                                        <i class="fa fa-download"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -17,18 +17,18 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
-        <div class="ibox-content">
+        <div class="ibox-content"> 
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group" *ngIf="filterByDates">
                         <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateSince"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group" *ngIf="filterByDates">
                         <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateTo"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -42,31 +42,13 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
-                        <select class="form-control m-b" [(ngModel)]="customerId" (ngModelChange)="customerChange()">
-                            <option value="0">{{'selectAnOption' | translate }}</option>
-                            <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
-                        </select>
-                    </div>
+                    <select-two [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
                 </div>
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label" for="service">{{'billing.solfac.service' | translate }}</label>
-                        <select class="form-control m-b" [(ngModel)]="serviceId" (ngModelChange)="serviceChange()">
-                            <option value="0">{{'selectAnOption' | translate }}</option>
-                            <option *ngFor="let service of services" [value]="service?.value">{{service?.text}}</option>
-                        </select>
-                    </div>
+                    <select-two [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
                 </div>
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label" for="quantity">{{'billing.solfac.project' | translate }}</label>
-                        <select class="form-control m-b" [(ngModel)]="projectId">
-                            <option value="0">{{'selectAnOption' | translate }}</option>
-                            <option *ngFor="let project of projects" [value]="project?.value">{{project?.text}}</option>
-                        </select>
-                    </div>
+                    <select-two [label]="'billing.solfac.project'" [(value)]="projectId" [options]="projects"></select-two>
                 </div>
             </div>
 
@@ -78,22 +60,10 @@
                     </div>
                 </div>
                 <div class="col-sm-4" *ngIf="showUserApplicantFilter()">
-                    <div class="form-group">
-                        <label class="control-label" for="quantity">{{'billing.project.grid.manager' | translate }}</label>
-                        <select class="form-control m-b" [(ngModel)]="userApplicantId">
-                            <option value="0">{{'selectAnOption' | translate }}</option>
-                            <option *ngFor="let userApplicant of userApplicants" [value]="userApplicant?.value">{{userApplicant?.text}}</option>
-                        </select>
-                    </div>
+                    <select-two [label]="'billing.project.grid.manager'" [(value)]="userApplicantId" [options]="userApplicants"></select-two>
                 </div>
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label" for="status">{{'billing.solfac.status' | translate }}</label>
-                        <select class="form-control m-b" [(ngModel)]="status">
-                            <option value="0">{{'selectAnOption' | translate }}</option>
-                            <option *ngFor="let status of statuses" [value]="status?.value">{{ status?.text | translate }}</option>
-                        </select>
-                    </div>
+                    <select-two [label]="'billing.solfac.status'" [(value)]="status" [options]="statuses"></select-two>
                 </div>
             </div>
         </div>

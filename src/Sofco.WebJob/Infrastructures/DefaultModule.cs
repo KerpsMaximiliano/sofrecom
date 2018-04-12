@@ -11,8 +11,6 @@ using Sofco.Core.Mail;
 using Sofco.DAL;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
-using Sofco.Service.Http;
-using Sofco.Service.Http.Interfaces;
 using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Infrastructures
@@ -22,7 +20,7 @@ namespace Sofco.WebJob.Infrastructures
         private const string ServiceAssemblyEndName = "Service";
         private const string ClientAssemblyEndName = "Client";
 
-        public IConfigurationRoot Configuration { set; get; }
+        public IConfigurationRoot Configuration { get; set; }
 
         protected override void Load(ContainerBuilder builder)
         {

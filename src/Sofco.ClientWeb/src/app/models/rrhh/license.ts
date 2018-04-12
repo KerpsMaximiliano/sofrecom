@@ -1,3 +1,5 @@
+import { LicenseStatus } from "../enums/licenseStatus";
+
 export class License {
     public id: number;
     public employeeId: string;
@@ -13,6 +15,7 @@ export class License {
     public final: boolean;
     public comments: string;
     public examDescription: string;
+    public status: LicenseStatus;
 
     constructor(){
         this.startDate = new Date();

@@ -49,8 +49,7 @@ namespace Sofco.WebJob
             services.AddMvc();
 
             services.AddHangfire(x => x
-                .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection"))
-            );
+                .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection")));
 
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
@@ -80,7 +79,8 @@ namespace Sofco.WebJob
 
             app.UseMvc();
 
-            app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:PanelUsername"], Configuration["JobSetting:PanelPassword"]));
+            app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:PanelUsername"],
+                Configuration["JobSetting:PanelPassword"]));
 
             app.UseHangfireDashboard(WebJobPath, new DashboardOptions
             {
@@ -91,7 +91,7 @@ namespace Sofco.WebJob
 
             ConfigureLogger(loggerFactory);
 
-            JobService.Init(Configuration["JobSetting:LocalTimeZoneName"]);
+            JobStartup.Init();
         }
 
         private void ConfigureLogger(ILoggerFactory loggerFactory)
@@ -101,7 +101,7 @@ namespace Sofco.WebJob
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
             loggerFactory.AddLog4Net(
-                container.Resolve<IMailSender>(), 
+                container.Resolve<IMailSender>(),
                 container.Resolve<IMailBuilder>(),
                 Configuration["Mail:SupportMailLogTitle"]);
         }

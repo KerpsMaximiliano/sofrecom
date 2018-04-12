@@ -30,13 +30,16 @@ namespace Sofco.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Functionality> Functionalities { get; set; }
         public DbSet<Module> Modules { get; set; }
-        public DbSet<GlobalSetting> GlobalSettings { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Task> Tasks { get; set; }
 
         // RelationShips
         public DbSet<RoleFunctionality> RoleFunctionality { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
         public DbSet<LicenseFile> LicenseFiles { get; set; }
+        public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -60,9 +63,11 @@ namespace Sofco.DAL
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
+        public DbSet<WorkTimeApproval> WorkTimeApprovals { get; set; }
 
         // Human Resources
         public DbSet<License> Licenses { get; set; }
+        public DbSet<LicenseHistory> LicenseHistories { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }
@@ -104,7 +109,7 @@ namespace Sofco.DAL
             builder.MapLicenseType();
             builder.MapEmployeeLicense();
             builder.MapHitoDetails();
-            builder.MapGlobalSetting();
+            builder.MapSetting();
             builder.MapCostCenter();
             builder.MapEmployeeSyncAction();
             builder.MapEmployeeHistory();
@@ -113,10 +118,14 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
-            builder.MapSolfacDelegate();
+            builder.MapUserDelegate();
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();
+            builder.MapWorkTimeApproval();
+            builder.MapCategory();
+            builder.MapTasks();
+            builder.MapEmployeeCategory();
         }
     }
 }

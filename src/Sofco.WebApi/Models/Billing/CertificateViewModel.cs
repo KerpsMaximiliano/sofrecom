@@ -13,7 +13,6 @@ namespace Sofco.WebApi.Models.Billing
 
         public int Year { get; set; }
 
-
         public Certificate CreateDomain(string userName)
         {
             var domain = new Certificate();

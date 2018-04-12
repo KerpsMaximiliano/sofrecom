@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Model.Models.Rrhh;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.AllocationManagement
 {
@@ -56,5 +57,11 @@ namespace Sofco.Model.Models.AllocationManagement
         public int ExamDaysTaken { get; set; }
 
         public ICollection<License> Licenses { get; set; }
+
+        public string Email { get; set; }
+
+        public int HolidaysByLaw { get; set; }
+
+        public ICollection<EmployeeCategory> EmployeeCategories { get; set; }
     }
 }

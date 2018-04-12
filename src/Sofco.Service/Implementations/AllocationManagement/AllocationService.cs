@@ -60,6 +60,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+            var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, startDate, endDate);
 
             var allocationResponse = new AllocationResponse();
 
@@ -70,8 +71,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Month = date.Month;
                 monthHeader.Year = date.Year;
+                monthHeader.EmployeeHasLicense = licenses.Any(x => x.StartDate.Month == date.Month || x.EndDate.Month == date.Month);
 
                 allocationResponse.MonthsHeader.Add(monthHeader);
+            }
+
+            if (licenses.Any())
+            {
+                allocationResponse.Licenses = licenses.Select(x => new LicenseItemDto(x)).ToList();
             }
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
@@ -129,13 +136,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
         {
-            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
-
-            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
-
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
 
+            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
+
+            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
+         
             if (employees.Any())
             {
                 foreach (var employee in employees)
@@ -149,12 +156,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         if (parameters.Percentage.HasValue && parameters.Percentage != 999 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
                         if (parameters.Percentage.HasValue && parameters.Percentage == 999 && allocation.Months.All(x => x.Percentage == 100)) continue;
 
+                        var analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
+
                         var reportRow = new AllocationReportRow();
 
-                        reportRow.Manager = "Diego O. Miguel";
-                        reportRow.Office = "Dirección de Soluciones IT";
+                        reportRow.Manager = analytic.Manager?.Name;
                         reportRow.Percentage = employee.BillingPercentage;
-                        reportRow.ProjectManager = "Juan J. Larenze";
                         reportRow.Profile = employee.Profile;
                         reportRow.ResourceName = employee.Name;
                         reportRow.Seniority = employee.Seniority;

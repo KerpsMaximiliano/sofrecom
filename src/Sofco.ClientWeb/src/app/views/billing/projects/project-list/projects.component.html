@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>{{'billing.project.title' | translate }}</h2>
+        <h2>{{'billing.service.title' | translate }}: {{serviceName}}</h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -28,6 +28,26 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+    <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+
+    <div class="btn-right">
+        <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
+            {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
+        </button>
+
+        <button class="btn btn-success btn-outline dim" (click)="goToPurchaseOrders()"> 
+            {{'billing.purchaseOrder.title' | translate }} <i class="fa fa-file"></i> 
+        </button>
+
+        <button class="btn btn-primary btn-outline dim" (click)="goToEditAnalytic()" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic?.id > 0"> 
+            {{'allocationManagement.analytics.editTitle' | translate }} <i class="fa fa-save"></i> 
+        </button>
+
+        <button class="btn btn-primary btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD') && analytic?.id == 0"> 
+            {{'allocationManagement.analytics.new' | translate }} <i class="fa fa-plus"></i> 
+        </button>
+    </div>
+
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
@@ -36,8 +56,6 @@
                         <thead>
                             <tr>
                                 <th>{{"billing.project.grid.name" | translate}}</th>
-                                <th>{{"billing.project.grid.manager" | translate}}</th>
-                                <th>{{"billing.project.grid.analytic" | translate}}</th>
                                 <th>{{"billing.project.grid.purchaseOrder" | translate}}</th>
                                 <th>{{"billing.project.grid.incomes" | translate}}</th>
                                 <th>{{"billing.project.grid.startDate" | translate}}</th>
@@ -47,10 +65,8 @@
                         <tbody>
                             <tr *ngFor="let project of projects" (click)="goToProjectDetail(project)" class="pointer">
                                 <td>{{project.nombre}}</td>
-                                <td>{{project.manager}}</td>
-                                <td>{{project.analytic}}</td>
                                 <td>{{project.purchaseOrder}}</td>
-                                <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
+                                <td>{{ getCurrencySymbol(project.currency) }} {{project.realIncomes | number: '1.2-2' }}</td>
                                 <td> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
                                 <td> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
                             </tr>
@@ -64,5 +80,3 @@
         </div>
     </div>
 </div>
-
-<project-rightbar #rightbar></project-rightbar>

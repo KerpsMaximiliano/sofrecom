@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Models.AllocationManagement;
+﻿using System;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Models.AllocationManagement
 {
@@ -13,7 +14,10 @@ namespace Sofco.WebApi.Models.AllocationManagement
             Profile = domain.Profile;
             Technology = domain.Technology;
             Percentage = domain.BillingPercentage;
+            StartDate = domain.StartDate;
         }
+
+        public DateTime StartDate { get; set; }
 
         public int Id { get; set; }
 
@@ -28,5 +32,7 @@ namespace Sofco.WebApi.Models.AllocationManagement
         public string Technology { get; set; }
 
         public decimal Percentage { get; set; }
+
+        public bool Selected { get; set; }
     }
 }

@@ -46,18 +46,18 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = purchaseOrderService.GetById(id);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return Ok(new PurchaseOrderEditViewModel(response.Data));
         }
 
-
         [HttpPost]
-        public IActionResult Post([FromBody] PurchaseOrderViewModel model)
+        public async Task<IActionResult> Post([FromBody] PurchaseOrderViewModel model)
         {
             var domain = model.CreateDomain(sessionManager.GetUserName());
 
-            var response = purchaseOrderService.Add(domain);
+            var response = await purchaseOrderService.Add(domain);
 
             return this.CreateResponse(response);
         }
@@ -104,11 +104,23 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var response = fileService.ExportFile(id, fileConfig.PurchaseOrdersPath);
 
-            if (response.HasErrors()) return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
-        
+
+        [HttpGet("{id}/file")]
+        public IActionResult GetFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.PurchaseOrdersPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
         {
@@ -129,10 +141,10 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(GetStatuses());
         }
 
-        private IEnumerable<SelectListItem> GetStatuses()
+        private IEnumerable<Option> GetStatuses()
         {
-            yield return new SelectListItem { Value = ((int)PurchaseOrderStatus.Valid).ToString(), Text = PurchaseOrderStatus.Valid.ToString() };
-            yield return new SelectListItem { Value = ((int)PurchaseOrderStatus.Consumed).ToString(), Text = PurchaseOrderStatus.Consumed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Consumed, Text = PurchaseOrderStatus.Consumed.ToString() };
         }
     }
 }

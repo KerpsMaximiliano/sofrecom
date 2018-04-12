@@ -1,13 +1,20 @@
 ﻿using System.Collections.Generic;
-using Sofco.Common.Domains;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Admin
 {
     public interface ISettingService
     {
-        Result<List<GlobalSetting>> GetAll();
+        Response<List<Setting>> GetAll();
 
-        Result Save(List<GlobalSetting> globalSettings);
+        Response<List<Setting>> Save(List<Setting> settings);
+
+        Response<Setting> Save(Setting setting);
+
+        IList<LicenseTypeSettingItem> GetLicenseTypes();
+
+        Response<List<Setting>> GetJobSettings();
     }
 }

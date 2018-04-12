@@ -30,17 +30,13 @@ export class SplitHitoComponent implements OnDestroy  {
 
   public hito: NewHito = new NewHito();
   public hitoSelected: any;
-  public options;
   public btnDisabled: boolean = false;
 
   constructor(private messageService: MessageService,
     private menuService: MenuService,
     private projectService: ProjectService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router) {
-      
-      this.options = this.menuService.getDatePickerOptions();
-    }
+    private router: Router) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -54,13 +50,23 @@ export class SplitHitoComponent implements OnDestroy  {
     this.spliHitoModal.show();
   }
 
+  getCurrencySymbol(){
+    if(!this.hitoSelected || !this.hitoSelected.money) return "";
+
+    switch(this.hitoSelected.money){
+      case "Peso": { return "$"; }
+      case "Dolar": { return "U$D"; }
+      case "Euro": { return "€"; }
+    }
+  }
+
   save(){
     this.hito.statusCode = this.hitoSelected.statusCode;
     this.hito.projectId = this.hitoSelected.projectId;
     this.hito.opportunityId = this.hitoSelected.opportunityId;
     this.hito.managerId = this.hitoSelected.managerId;
     this.hito.externalHitoId = this.hitoSelected.id;
-    this.hito.moneyId = this.hitoSelected.currencyId;
+    this.hito.moneyId = this.hitoSelected.moneyId;
     this.hito.ammountFirstHito = this.hitoSelected.ammount;
 
     this.btnDisabled = true;

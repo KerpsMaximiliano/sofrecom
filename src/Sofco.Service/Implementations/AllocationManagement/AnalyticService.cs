@@ -7,14 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Billing;
+using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -26,31 +30,36 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly EmailConfig emailConfig;
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
-
-        private const string MailSubject = "Apertura analítica {0}";
-
-        private const string MailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "Se dio de alta la analítica <strong>{0}</strong>, puede acceder a la misma desde el siguiente <a href='{1}' target='_blank'>link</a></br></br>" +
-                                                "Saludos" +
-                                            "</span>" +
-                                        "</font>";
+        private readonly ICrmService crmService;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
             this.logger = logger;
             crmConfig = crmOptions.Value;
-            this.emailConfig = emailOptions.Value;
+            emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
+            this.crmService = crmService;
         }
 
         public ICollection<Analytic> GetAllActives()
         {
             return unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
+        }
+
+        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId)
+        {
+            return unitOfWork.AnalyticRepository.GetByClient(clientId).Select(x => new AnalyticOptionForOcModel
+            {
+                Id = x.Id,
+                Text = $"{x.Title} - {x.Name}",
+                CommercialManagerId = x.CommercialManagerId.GetValueOrDefault(),
+                ManagerId = x.ManagerId.GetValueOrDefault(),
+                ServiceId = x.ServiceId
+
+            }).ToList();
         }
 
         public ICollection<Analytic> GetAll()
@@ -201,6 +210,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
+            var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
+            if (result.HasErrors)
+            {
+                response.AddError(Resources.Common.CrmGeneralError);
+                return response;
+            }
+
             try
             {
                 AnalyticStatusClose.Save(analytic, unitOfWork, response);
@@ -209,6 +225,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
+
+                result = crmService.ActivateService(new Guid(analytic.ServiceId));
+                if (result.HasErrors)
+                {
+                    response.AddError(Resources.Common.CrmGeneralError);
+                }
+
                 return response;
             }
 
@@ -219,20 +242,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
             catch (Exception ex)
             {
                 response.AddWarning(Resources.Common.ErrorSendMail);
-                this.logger.LogError(ex);
+                logger.LogError(ex);
             }
-
-            //todo: inhabilitar el servicio en crm
 
             return response;
         }
-
+         
         private void SendMail(Analytic analytic, Response response)
         {
             try
             {
-                var subject = string.Format(MailSubject, analytic.ClientExternalName);
-                var body = string.Format(MailBody, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
+                var body = string.Format(MailMessageResource.AddAnalytic, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
@@ -252,7 +273,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var recipients = string.Join(";", recipientsList.Distinct());
 
-                mailSender.Send(recipients, subject, body);
+                var data = new AddAnalyticData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipients
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
             }
             catch (Exception ex)
             {

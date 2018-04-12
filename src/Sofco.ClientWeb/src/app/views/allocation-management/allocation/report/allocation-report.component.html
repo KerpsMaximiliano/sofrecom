@@ -22,13 +22,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateSince" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateSince"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
-                        <ng-datepicker [(ngModel)]="dateTo" [options]="dateOptions"></ng-datepicker>
+                        <date-picker [(date)]="dateTo"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -45,6 +45,7 @@
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
                         <select select2 class="form-control" id="analyticId">
+                            <option value="0">Seleccione una opción</option>
                             <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
                         </select>
                     </div>
@@ -53,6 +54,7 @@
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                         <select select2 class="form-control" id="employeeId">
+                            <option value="0">Seleccione una opción</option>
                             <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.text }}</option>
                         </select>
                     </div>
@@ -61,7 +63,8 @@
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.allocation.percentages' | translate }} </label>
                         <select select2 class="form-control" id="percentageId">
-                            <option *ngFor="let percentage of percentages" [value]="percentage?.value">{{ percentage?.text }}</option>
+                            <option value="0">Seleccione una opción</option>
+                            <option *ngFor="let percentage of percentages" [value]="percentage?.id">{{ percentage?.text }}</option>
                         </select>
                     </div>
                 </div>
@@ -87,8 +90,6 @@
                             <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
                             <th class="column-md">{{'allocationManagement.resources.grid.technology' | translate }}</th>
                             <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
-                            <th class="column-lg">{{'allocationManagement.report.grid.manager' | translate }}</th>
-                            <th class="column-md">{{'allocationManagement.report.grid.office' | translate }} </th>
                             <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
 
                             <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }} (%)</th>
@@ -102,8 +103,6 @@
                             <td class="column-lg">{{ resource.profile}}</td>
                             <td class="column-md">{{ resource.technology}}</td>
                             <td class="column-lg">{{ resource.manager}}</td>
-                            <td class="column-lg">{{ resource.projectManager}}</td>
-                            <td class="column-md">{{ resource.office}}</td>
                             <td class="column-sm">{{ resource.percentage}}</td>
 
                             <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }}</td>

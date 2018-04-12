@@ -11,7 +11,7 @@ namespace Sofco.Core.Services.Billing
     public interface IPurchaseOrderService
     {
         PurchaseOrderOptions GetFormOptions();
-        Response<PurchaseOrder> Add(PurchaseOrder domain);
+        Task<Response<PurchaseOrder>> Add(PurchaseOrder domain);
         Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName);
         Response<PurchaseOrder> GetById(int id);
         Response Update(PurchaseOrder domain);

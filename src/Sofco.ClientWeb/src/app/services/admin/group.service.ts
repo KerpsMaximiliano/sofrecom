@@ -2,45 +2,45 @@ import { Injectable } from '@angular/core';
 import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { Group } from "app/models/admin/group";
-import { HttpAuth } from "app/services/common/http-auth";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class GroupService {
     private baseUrl: string;
 
-    constructor(private http: HttpAuth, private service: Service) {
+    constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
     }
 
     getAll() {
-        return this.http.get(`${this.baseUrl}/groups`).map((res:Response) => res.json());
+        return this.http.get<any>(`${this.baseUrl}/groups`);
     }
 
     get(id: number) {
-       return this.http.get(`${this.baseUrl}/groups/${id}`).map((res:Response) => res.json());
+       return this.http.get<any>(`${this.baseUrl}/groups/${id}`);
     }
 
-    add(model : Group) {
-        return this.http.post(`${this.baseUrl}/groups`, model).map((res:Response) => res.json());
+    add(model: Group) {
+        return this.http.post<any>(`${this.baseUrl}/groups`, model);
     }
 
     edit(model) {
-        return this.http.put(`${this.baseUrl}/groups`, model).map((res:Response) => res.json());
+        return this.http.put<any>(`${this.baseUrl}/groups`, model);
     }
 
     delete(id: number) {
-        return this.http.delete(`${this.baseUrl}/groups/${id}`).map((res:Response) => res.json());
+        return this.http.delete<any>(`${this.baseUrl}/groups/${id}`);
     }
 
     deactivate(id: number) {
-        return this.http.put(`${this.baseUrl}/groups/${id}/active/false`, {}).map((res:Response) => res.json());
+        return this.http.put<any>(`${this.baseUrl}/groups/${id}/active/false`, {});
     }
 
     activate(id: number) {
-        return this.http.put(`${this.baseUrl}/groups/${id}/active/true`, {}).map((res:Response) => res.json());
+        return this.http.put<any>(`${this.baseUrl}/groups/${id}/active/true`, {});
     }
 
     getOptions() {
-        return this.http.get(`${this.baseUrl}/groups/options`).map((res:Response) => res.json());
+        return this.http.get<any>(`${this.baseUrl}/groups/options`);
     }
 }

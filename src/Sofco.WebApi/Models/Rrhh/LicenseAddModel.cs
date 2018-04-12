@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.WebApi.Models.Rrhh
@@ -31,6 +32,12 @@ namespace Sofco.WebApi.Models.Rrhh
 
         public string ExamDescription { get; set; }
 
+        public int UserId { get; set; }
+
+        public int EmployeeLoggedId { get; set; }
+
+        public bool IsRrhh { get; set; }
+
         public License CreateDomain()
         {
             var domain = new License();
@@ -44,11 +51,12 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.WithPayment = WithPayment;
             domain.DaysQuantity = DaysQuantity;
             domain.HasCertificate = HasCertificate;
-            domain.Parcial = domain.Parcial;
+            domain.Parcial = Parcial;
             domain.Final = Final;
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;
             domain.CreationDate = DateTime.UtcNow;
+            domain.Status = LicenseStatus.Draft;
 
             return domain;
         }

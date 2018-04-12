@@ -37,20 +37,15 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
 
     subscrip: Subscription;
 
-    public options;
     public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService,
         private errorHandlerService: ErrorHandlerService,
-        private router: Router) {
-
-            this.options = this.menuService.getDatePickerOptions();
-         }
+        private router: Router) {}
 
     ngOnInit(): void {
-        
     }
 
     ngOnDestroy(): void {

@@ -141,6 +141,9 @@
   <data name="NumberIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.numberIsRequired</value>
   </data>
+  <data name="ProjectIsRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.projectIsRequired</value>
+  </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.saveSuccess</value>
   </data>

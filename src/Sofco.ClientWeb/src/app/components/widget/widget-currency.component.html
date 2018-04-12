@@ -1,11 +1,19 @@
-<div class="widget {{style}}">
-    <div class="row">
-        <div class="col-xs-4">
-            <h2>{{symbol}}</h2>
-        </div>
-        <div class="col-xs-8 text-right">
-            <span> {{ label | translate }} </span>
-            <h3 class="font-bold">{{ value| number: '1.2-2' }}</h3>
-        </div>
-    </div>
+<div class="widget-currency {{ style }}">
+    <h3 class="text-center"> {{ label | translate}} </h3>
+    <table class="table table-stripped small m-t-xs table-widget">
+        <tbody>
+            <tr>
+                <td class="no-borders text-center">$</td>
+                <td class="no-borders text-center">{{ incomes[0]?.value | number: '1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="incomes[1]?.value > 0">
+                <td class="text-center">U$D</td>
+                <td class="text-center">{{ incomes[1]?.value | number: '1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="incomes[2]?.value > 0">
+                <td class="text-center">€</td>
+                <td class="text-center">{{ incomes[2]?.value | number: '1.2-2' }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

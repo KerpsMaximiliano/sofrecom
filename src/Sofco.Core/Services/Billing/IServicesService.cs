@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models;
 using Sofco.Domain.Crm.Billing;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -13,6 +14,6 @@ namespace Sofco.Core.Services.Billing
 
         Response<CrmService> GetService(string serviceId, string customerId);
 
-        bool HasAnalyticRelated(string serviceId);
+        Analytic GetAnalyticByService(string serviceId);
     }
 }

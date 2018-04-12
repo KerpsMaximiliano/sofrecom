@@ -1,30 +1,13 @@
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label">{{'billing.certificate.fields.name' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="model.name">
-        </div>
-    </div>
+<div class="form-group">
+    <label class="control-label">{{'billing.certificate.fields.name' | translate }}</label>
+    <input type="text" class="form-control" [(ngModel)]="model.name">
 </div>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label" for="client">{{'billing.solfac.client' | translate }}</label>
-            <select class="form-control m-b" id="clientExternalId" [(ngModel)]="model.clientExternalId">
-                <option *ngFor="let customer of customers" [value]="customer?.value">{{customer?.text}}</option>
-            </select>
-        </div>
-    </div>
-</div>
+<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers"></select-two>
 
-<div class="row">
-    <div class="col-sm-2">
-        <div class="form-group">
-            <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
-            <input type="number" class="form-control" [(ngModel)]="model.year">
-        </div>
-    </div>
+<div class="form-group">
+    <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
+    <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="model.year">
 </div>
 
 

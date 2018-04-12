@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from 'app/services/common/service';
-import { HttpAuth } from 'app/services/common/http-auth';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CustomerService {
 
   private apiUrl: string;
 
-  constructor(private http: HttpAuth, private service: Service) {
+  constructor(private http: HttpClient, private service: Service) {
     this.apiUrl = this.service.UrlApi + '/customers';
   }
 
   getAll() {
-    return this.http.get(this.apiUrl).map((res: Response) => res.json());
+    return this.http.get<any>(this.apiUrl);
   }
 
   getOptions() {
-    return this.http.get(`${this.apiUrl}/options`).map((res: Response) => res.json().data);
+    return this.http.get<any>(`${this.apiUrl}/options`);
+  }
+
+  getOptionsByCurrentManager() {
+    return this.http.get<any>(`${this.apiUrl}/options/currentManager`);
   }
 
   getById(customerId) {
-    return this.http.get(`${this.apiUrl}/${customerId}`).map((res: Response) => res.json().data);
+    return this.http.get<any>(`${this.apiUrl}/${customerId}`);
   }
 }

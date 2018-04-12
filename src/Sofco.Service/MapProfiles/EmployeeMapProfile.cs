@@ -32,7 +32,8 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Province, s => s.MapFrom(x => x.Dprov.Trim()))
                 .ForMember(d => d.Country, s => s.ResolveUsing(x => ArCountry))
                 .ForMember(d => d.HealthInsuranceCode, s => s.MapFrom(x => x.Obsoc))
-                .ForMember(d => d.PrepaidHealthCode, s => s.MapFrom(x => x.Ospla));
+                .ForMember(d => d.PrepaidHealthCode, s => s.MapFrom(x => x.Ospla))
+                .ForMember(d => d.Email, s => s.MapFrom(x => x.Email.Trim()));
 
             CreateMap<RhproEmployeeLicense, EmployeeLicense>()
                 .ForMember(d => d.EmployeeNumber, s => s.MapFrom(x => x.Empleado))

@@ -9,6 +9,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { MenuService } from "app/services/admin/menu.service";
 import { License } from "../../../../models/rrhh/license";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -25,11 +26,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     getManagersSubscrip: Subscription;
     getLicenseTypeSubscrip: Subscription;
     getSectorsSubscrip: Subscription;
+    deleteFileSubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
     public showUploader: boolean = false;
-
-    public dateOptions;
 
     public model: License = new License();
 
@@ -42,6 +42,18 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
     public fromProfile: boolean = false;
     public userApplicantName: string;
+    public fileIdToDelete: number;
+    public indexToDelete: number;
+
+    @ViewChild('confirmDeleteFileModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmDeleteFileModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private licenseService: LicenseService,
                 private employeeService: EmployeeService,
@@ -49,10 +61,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private menuService: MenuService,
                 private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
-
-                this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+                private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
         var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
@@ -63,8 +72,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             if(Cookie.get('userInfo')){
                 var userApplicant = JSON.parse(Cookie.get('userInfo'));
         
-                if(userApplicant && userApplicant.id && userApplicant.name){
-                    this.model.employeeId = userApplicant.id;
+                if(userApplicant && userApplicant.employeeId && userApplicant.name){
+                    this.model.employeeId = userApplicant.employeeId;
                     this.userApplicantName = userApplicant.name;
                 }
             }
@@ -84,6 +93,16 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(this.getManagersSubscrip) this.getManagersSubscrip.unsubscribe();
         if(this.getLicenseTypeSubscrip) this.getLicenseTypeSubscrip.unsubscribe();
         if(this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
+        if(this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
+    }
+
+    back(){
+        if(this.menuService.userIsRrhh){
+            this.router.navigate(['/allocationManagement/licenses/rrhh']);
+        }
+        else{
+            this.router.navigate(['/profile/' + this.model.employeeId]);
+        }
     }
 
     configUploader(){
@@ -109,10 +128,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.model.employeeId = $( "#employeeId" ).val();
         }
         
-        this.model.managerId = $( "#managerId" ).val();
-        this.model.sectorId = $( "#sectorId" ).val();
-        this.model.typeId = $( "#licensesTypeId" ).val();
-
         this.messageService.showLoading();
 
         this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {
@@ -186,5 +201,20 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     clearSelectedFile(){
         this.uploader.clearQueue();
         this.selectedFile.nativeElement.value = '';
+    }
+
+    openConfirmModal(fileId, index){
+        this.fileIdToDelete = fileId;
+        this.indexToDelete = index;
+        this.confirmModal.show();
+    }
+
+    deleteFile(){
+        this.deleteFileSubscrip = this.licenseService.deleteFile(this.fileIdToDelete).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.files.splice(this.indexToDelete, 1);
+          },
+          err => this.errorHandlerService.handleErrors(err),
+         () => this.confirmModal.hide());
     }
 } 

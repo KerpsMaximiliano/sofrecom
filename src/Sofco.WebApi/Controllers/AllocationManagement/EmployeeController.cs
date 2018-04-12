@@ -32,7 +32,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
-            var options = new List<Option> { new Option { Id = 0, Text = "Seleccione una opcion" } };
+            var options = new List<Option>();
 
             options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
 
@@ -74,6 +74,36 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult SendUnsubscribeNotification(string employeeName, [FromBody] UnsubscribeNotificationParams parameters)
         {
             var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/finalizeExtraHolidays")]
+        public IActionResult FinalizeExtraHolidays(int id)
+        {
+            var response = employeeService.FinalizeExtraHolidays(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("categories")]
+        public IActionResult AddCategories([FromBody] EmployeeAddCategoriesParams parameters)
+        {
+            var response = employeeService.AddCategories(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/analytics")]
+        public IActionResult GetAnalytics(int id)
+        {
+            return Ok(employeeService.GetAnalytics(id));
+        }
+
+        [HttpGet("{id}/categories")]
+        public IActionResult GetCategories(int id)
+        {
+            var response = employeeService.GetCategories(id);
 
             return this.CreateResponse(response);
         }

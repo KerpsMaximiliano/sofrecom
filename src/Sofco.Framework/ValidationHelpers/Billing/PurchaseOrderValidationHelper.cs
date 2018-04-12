@@ -64,7 +64,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateYear(Response response, PurchaseOrder domain)
         {
-            if (domain.Year <= 0)
+            if (domain.Year < 2015 && domain.Year > 2099)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.YearIsRequired);
             }
@@ -89,6 +89,14 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (!exist)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.NotFound);
+            }
+        }
+
+        public static void ValidateProject(Response<PurchaseOrder> response, PurchaseOrder domain)
+        {
+            if (string.IsNullOrWhiteSpace(domain.ProjectId) || domain.ProjectId.Equals("0"))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.ProjectIsRequired);
             }
         }
     }

@@ -18,21 +18,18 @@ namespace Sofco.WebApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody]UserLogin userLogin)
         {
-            var result = service.Login(userLogin);
+            var response = service.Login(userLogin);
 
-            if (result.HasErrors())
-                return BadRequest(result);
-
-            return Ok(result);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
         [Route("refresh")]
         public IActionResult RefreshToken([FromBody]UserLoginRefresh userLoginRefresh)
         {
-            var result = service.Refresh(userLoginRefresh);
+            var response = service.Refresh(userLoginRefresh);
 
-            return result.CreateResponse(this);
+            return this.CreateResponse(response);
         }
     }
 }

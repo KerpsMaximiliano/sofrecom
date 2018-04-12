@@ -4,6 +4,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -128,17 +129,21 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void GetHolidaysValues()
         {
-            var settings = unitOfWork.GlobalSettingRepository.GetHolidaysValues();
+            var settings = unitOfWork.SettingRepository.GetHolidaysValues();
 
             foreach (var globalSetting in settings)
             {
-                holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
+                if (globalSetting.Type == SettingValueType.Number)
+                {
+                    holidaysValues.Add(globalSetting.Key, Convert.ToInt32(globalSetting.Value));
+                }
             }
         }
 
         private void CalculateDaysPending(Employee employee, string key)
         {
             employee.HolidaysPending += holidaysValues[key];
+            employee.HolidaysByLaw = holidaysValues[key];
 
             if (employee.HasExtraHolidays)
             {

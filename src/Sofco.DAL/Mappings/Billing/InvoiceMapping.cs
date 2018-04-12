@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Model.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing
@@ -23,9 +24,9 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Invoice>().Property(_ => _.PdfFileName).HasMaxLength(150);
             builder.Entity<Invoice>().Property(_ => _.InvoiceNumber).HasMaxLength(50);
 
-            builder.Entity<Invoice>().HasOne(x => x.User).WithMany(x => x.Invoices).HasForeignKey(x => x.UserId);
+            builder.Entity<Invoice>().HasOne(x => x.User).WithMany(x => x.Invoices).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Invoice>().HasOne(x => x.Solfac).WithMany(x => x.Invoices).HasForeignKey(x => x.SolfacId);
-            builder.Entity<Invoice>().HasMany(x => x.Histories).WithOne(x => x.Invoice).HasForeignKey(x => x.InvoiceId);
+            builder.Entity<Invoice>().HasMany(x => x.Histories).WithOne(x => x.Invoice).HasForeignKey(x => x.InvoiceId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

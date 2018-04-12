@@ -134,7 +134,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.CertificateRepository.Update(domain);
                 unitOfWork.Save();
 
-                response.AddSuccess(Resources.Billing.Certificate.SaveSuccess);
+                response.AddSuccess(Resources.Billing.Certificate.Updated);
 
                 response.Data = domain;
             }

@@ -7,6 +7,7 @@ import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { CertificatesService } from "app/services/billing/certificates.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -25,9 +26,17 @@ export class NewCertificateComponent implements OnDestroy {
     public uploader: FileUploader = new FileUploader({url:""});
     public showUploader: boolean = false;
 
-    public fileName: string;
     public creationDate: string;
-    public fileId: number;
+
+    @ViewChild('confirmDeleteFileModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmDeleteFileModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private certificateService: CertificatesService,
                 private router: Router,
@@ -41,7 +50,9 @@ export class NewCertificateComponent implements OnDestroy {
 
     add() {
         this.messageService.showLoading();
-        this.form.model.clientExternalName = $('#clientExternalId option:selected').text();
+        
+        var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
+        this.form.model.clientExternalName = client.text;
 
         this.addSubscrip = this.certificateService.add(this.form.model).subscribe(
             response => {
@@ -69,9 +80,10 @@ export class NewCertificateComponent implements OnDestroy {
             if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
 
             if(dataJson){
-                this.fileName = dataJson.data.fileName;
                 this.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
-                this.fileId = dataJson.data.id;
+
+                this.form.model.fileId = dataJson.data.id;
+                this.form.model.fileName = dataJson.data.fileName ;
             }
 
             this.clearSelectedFile();
@@ -90,9 +102,27 @@ export class NewCertificateComponent implements OnDestroy {
     }
 
     exportExcel(){
-        this.certificateService.exportFile(this.fileId).subscribe(file => {
-            FileSaver.saveAs(file, this.fileName);
+        this.certificateService.exportFile(this.form.model.fileId).subscribe(file => {
+            FileSaver.saveAs(file, this.form.model.fileName);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    deleteFile(){
+        this.confirmModal.hide();
+        this.messageService.showLoading();
+
+        this.certificateService.deleteFile(this.form.model.id).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+
+            this.form.model.fileId = null;
+            this.form.model.fileName = null;
+
+            this.messageService.closeLoading();
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err)
+        });
     }
 } 

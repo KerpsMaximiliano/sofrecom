@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Relationships;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -13,6 +14,8 @@ namespace Sofco.Core.DAL.AllocationManagement
         bool Exist(int employeeId);
 
         Employee GetById(int id);
+
+        Employee GetByEmail(string email);
 
         void Save(List<Employee> employees);
 
@@ -25,5 +28,13 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateEndDate(Employee employeeToChange);
 
         ICollection<Employee> Search(EmployeeSearchParams parameters);
+
+        void ResetAllExamDays();
+
+        void UpdateHolidaysPending(Employee employeeToModif);
+
+        void UpdateExamDaysTaken(Employee employeeToModif);
+
+        IList<EmployeeCategory> GetEmployeeCategories(int id);
     }
 }

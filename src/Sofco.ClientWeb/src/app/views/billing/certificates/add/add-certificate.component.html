@@ -19,53 +19,55 @@
 </div>
     
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="ibox">
-        <div class="ibox-content">
-            <certificate-form #form [mode]="'new'"></certificate-form>
-        </div>
-        <div class="ibox-footer">
-            <button *ngIf="!showUploader" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-            <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/certificates']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-sm-7">
-            <div class="box" *ngIf="showUploader">
+            <div class="ibox">
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-7">
-                            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
-                
-                            <div class="uploader-margin-top">
-                                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                                </div>
-        
-                                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                                </button>
-                                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
-                                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                                </button>
-                            </div>
+                    <certificate-form #form [mode]="'new'"></certificate-form>
+                </div>
+                <div class="ibox-footer">
+                    <button *ngIf="!showUploader" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                    <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/certificates']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="m-t-sm" *ngIf="showUploader">
+                <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+    
+                <div class="uploader-margin-top">
+                    <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                    <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+
+                    <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="m-t-md" *ngIf="form.model.fileName && form.model.fileName !=''">
+                <div class="file-box">
+                    <div class="file">
+                        <div class="icon"><i class="fa fa-file"></i></div>
+                        <div class="file-name text-word-break">
+                            {{ form.model.fileName }} 
+                            <br>
+                            <small>{{'billing.invoice.createdAt' | translate }}: {{ creationDate }}</small>
                         </div>
-        
-                        <div class="col-sm-5" *ngIf="fileName && fileName !=''">
-                            <div class="file-box">
-                                <div class="file">
-                                    <div class="icon"><i class="fa fa-file"></i></div>
-                                    <div class="file-name text-word-break">
-                                        {{ fileName }} 
-                                        <br>
-                                        <small>{{'billing.invoice.createdAt' | translate }}: {{ creationDate }}</small>
-                                    </div>
-                                    <div class="file-name export-file text-center pointer" (click)="exportExcel()">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'ACTIONS.export' | translate }}
-                                    </div>
-                                </div>
+                        <div class="file-buttons"> 
+                            <div class="file-name export-file text-center pointer" (click)="exportExcel()">
+                                <i class="fa fa-download"></i>
+                                {{ 'ACTIONS.export' | translate }}
+                            </div>
+
+                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()">
+                                <i class="fa fa-trash"></i>
+                                {{ 'ACTIONS.DELETE' | translate }}
                             </div>
                         </div>
                     </div>
@@ -75,4 +77,6 @@
     </div>
 </div>
 
-     
+<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal> 

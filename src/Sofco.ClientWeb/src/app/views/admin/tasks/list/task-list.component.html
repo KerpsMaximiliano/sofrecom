@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{ 'ADMIN.task.admin' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ 'ADMIN.task.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h4 class="pull-left">{{ 'ADMIN.task.list' | translate }}</h4>
+            
+            <div class="ibox-tools" >
+                <a [routerLink]="['/admin/tasks/add']" class="btn btn-primary btn-sm btn-link" *ngIf="menuService.hasFunctionality('TASKS', 'ADD')"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-striped" id="taskTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{{ 'ADMIN.category.description' | translate }}</th>
+                        <th>{{ 'ADMIN.task.category' | translate }}</th>
+                        <th>{{ 'ADMIN.category.startDate' | translate }}</th>
+                        <th>{{ 'ADMIN.category.endDate' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'ADMIN.category.active' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of tasks">
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.category }}</td>
+                        <td>{{ task.startDate | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ task.endDate | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center column-xs"><span class="fa" [ngClass]="task.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td class="text-center column-xs">
+                            <button class="btn btn-warning btn-xs" (click)="goToDetail(task)" *ngIf="menuService.hasFunctionality('TASKS', 'EDIT')"><i class="fa fa-edit"></i></button>
+
+                            <button class="btn btn-xs" [ngClass]="(task.active)?'btn-danger':'btn-success'" (click)="habInhabClick(task)" *ngIf="menuService.hasFunctionality('TASKS', 'HABIN')">
+                                <span [ngClass]="(task.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</div>

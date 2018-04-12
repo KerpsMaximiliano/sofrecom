@@ -69,8 +69,31 @@
             "add": "Agregar Modulo",
             "deleteConfirm": "¿Esta seguro que desea eliminar el modulo?"
         },
+        "category": {
+            "admin": "Administracion de Categorias",
+            "title": "Categorias",
+            "list": "Listado de Categorias",
+            "description":"Descripción",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "add": "Agregar Categoria",
+            "edit": "Editar Categoria",
+            "task": "Categorias de Tareas",
+            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas, confirma la acción?"
+        },
+        "task": {
+            "admin": "Administracion de tareas",
+            "title": "Tareas",
+            "list": "Listado de Tareas",
+            "edit": "Editar Tarea",
+            "add": "Agregar Tarea",
+            "category": "Categoria",
+            "task": "Tarea"
+        },
         "settings": {
             "title": "Configuración",
+            "licenseTitle": "Configuración de licencias",
             "saveSuccess": "Datos actualizados exitosamente",
             "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
             "ExamDaysAllowTogether": "Máximo días de examen consecutivos",
@@ -79,13 +102,16 @@
             "Holidays20Days": "Días de Vacaciones. Más de 10 años, hasta 20 años",
             "Holidays25Days": "Días de Vacaciones. Antiguedad mas de 20 años",
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
-            "StartDateHolidays": "Fecha de inicio período vacacional"
+            "StartDateHolidays": "Fecha de inicio período vacacional",
+            "jobsSettingTitle": "Parámetros de Jobs",
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes)."
         }
     },
     "billing":{
         "title": "Aseg. Ingresos y Costos",
         "customer":{
             "title": "Gestión Facturación",
+            "client": "Cliente",
             "management": "Listado de Clientes",
             "edit": "Editar Cliente",
             "add": "Agregar Cliente",
@@ -298,6 +324,7 @@
             "integrator": "Integrador",
             "customers": "Clientes",
             "delegate": {
+                "delegateAction": "Delegar",
                 "title": "Delegar Solfac",
                 "users": "Usuarios",
                 "saveSuccess": "Usuario agregado correctamente.",
@@ -402,6 +429,9 @@
             "wrongMonthQuantity": "Meses a mostrar debe ser mayor o igual a 1 y menor o igual a 36",
             "monthQuantity": "Meses a mostrar",
             "releaseDateShortDesc": "F. Liberación",
+            "resourceWithLicense": "Recurso con licencia",
+            "betweenDays": "entre los días",
+            "and": "y",
             "grid": {
                 "title": "Título",
                 "name": "Nombre",
@@ -426,6 +456,7 @@
         },
         "resources": {
             "listTitle": "Listado de Recursos",
+            "search": "Busqueda de Recursos",
             "title": "Recursos",
             "list": "Listado",
             "profile": "Perfil del empleado",
@@ -454,7 +485,8 @@
                 "technology": "Tecnologia",
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
-                "percentage": "Porcentaje"
+                "percentage": "Facturabilidad",
+                "start": "Ingreso"
             }
         },
         "news": {
@@ -472,12 +504,13 @@
             "listTitle": "Listado de Analiticas",
             "title": "Analiticas",
             "list": "Listado",
-            "new": "Crear de Analitica",
+            "new": "Crear Analitica",
             "edit": "Editar",
             "editTitle": "Editar Analitica",
             "view": "Ver",
             "viewTitle": "Ver Analitica",
             "assigned": "Analíticas Asignadas",
+            "close": "Cerrar Analitica",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",
@@ -486,7 +519,7 @@
                 "description": "Descripción",
                 "client":"Cliente",
                 "service":"Servicio",
-                "commercialManager": "Manager Comercial",
+                "commercialManager": "Ejecutivo de Cuenta",
                 "contractNumber": "Numero de Contrato",
                 "softwareLaw": "Ley de Software",
                 "evalProp": "Eval Prop",
@@ -509,7 +542,7 @@
                 "title": "Título",
                 "name": "Nombre",
                 "client": "Cliente",
-                "commercialManager": "Manager Comercial",
+                "commercialManager": "Ejecutivo de Cuenta",
                 "status": "Estado"
             },
             "status": {
@@ -518,7 +551,23 @@
                 "close": "Cerrada"
             }
         },
-        "confirmBody": "Esta seguro que desea seguir con la acción de "
+        "confirmBody": "Esta seguro que desea seguir con la acción de ",
+        "workTimeApproval": {
+            "delegate": {
+                "title": "Delegar aprobación horas",
+                "delegateAction": "Delegar",
+                "client": "Cliente",
+                "approvers": "Autorizadores",
+                "saveSuccess": "Autorizador agregado correctamente.",
+                "service": "Servicio",
+                "manager": "Gerente",
+                "approver": "Autorizador",
+                "employee": "Recurso",
+                "createdUser": "Creado por",
+                "createdDate": "Fecha creación",
+                "deleteConfirm": "¿Esta seguro que desea eliminar al autorizador seleccionado?"
+            }
+        }
     },
     "rrhh":{
         "title": "Recursos Humanos",
@@ -537,7 +586,32 @@
             "final": "Final",
             "manager":"Superior",
             "sector": "Sector",
-            "attachments": "Archivos Adjuntos"
+            "attachments": "Archivos Adjuntos",
+            "exam": "Días por examen",
+            "marrige": "Días por Matrimonio",
+            "born": "Días por Nacimiento",
+            "deadParent": "Días por fallecimiento familiar directo",
+            "deadBrother": "Días por fallecimiento hermano",
+            "type": "Licencia",
+            "start": "Inicio",
+            "end": "Fin",
+            "days": "Días (habiles)",
+            "goce": "Goce",
+            "status": "Estado",
+            "managed": "Licencias Gestionadas",
+            "authPending": "Licencias Pendientes de Autorizacion",
+            "approved": "Licencias Aprobadas",
+            "pending": "Licencias Pendientes de Aprobación",
+            "load": "Cargar Licencia",
+            "report": "Generar Reporte",
+            "holidaysPending": "Vacaciones Pendientes",
+            "hasCertificate": "Certificado",
+            "detail": "Detalle de la Licencia",
+            "detailTitle": "Detalle",
+            "fileDelivered": "Entregó Documentación",
+            "extraHolidays": "Vacaciones extra acordadas",
+            "holidaysByLaw": "Vacaciones por ley",
+            "finalizeExtraHolidays": "Finalizar Acuerdo"
         }
     },
     "ACTIONS":{
@@ -587,7 +661,9 @@
         "searchAll": "Ver Todo",
         "changeDates": "Cambiar Fechas",
         "notifyUnsubscribe": "Notifcar baja",
-        "goHere": "Ingrese Aqui"
+        "goHere": "Ingrese Aqui",
+        "pendingDocumentation": "Documentación Pendiente",
+        "authorize": "Autorizar"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -610,7 +686,7 @@
     "noInfoAvailable": "No hay información disponible",
     "None": "Ninguno",
     "comments": "Comentarios",
-    "selectAnOption": "Seleccione una opción",
+    "SelectAnOption": "Seleccione una opción",
     "dateToLessThanSince": "Fecha hasta no puede ser menor a fecha desde",
     "filterByDates": "Filtrar por fechas",
     "name": "Nombre",
@@ -619,6 +695,10 @@
     "Reincorporation": "Reincorporación",
     "Valid": "Vigente",
     "Consumed": "Consumida",
+    "Draft": "Borrador",
+    "Pending": "Pendiente Aprobación",
+    "ApprovePending": "Aprobada / Documentación pendiente",
+    "AuthPending": "Pendiente Autorización",
     "report":{
         "title": "Reporte",
         "solfacs": {

@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sofco.Core.Models;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.WebApi.Extensions;
@@ -58,18 +59,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("percentages")]
         public IActionResult GetAllPercentages()
         {
-            var options = new List<SelectListItem>();
+            var options = new List<SelectListModel>();
 
-            options.Add(new SelectListItem { Value = "", Text = "Seleccione una opcion" });
-            options.Add(new SelectListItem { Value = "999", Text = "<> 100%" });
+            options.Add(new SelectListModel { Id = "999", Text = "<> 100%" });
 
             var percentages = allocationService.GetAllPercentages();
 
-            options.AddRange(percentages.Select(x => new SelectListItem { Value = x.ToString(CultureInfo.InvariantCulture), Text = $"{x.ToString(CultureInfo.InvariantCulture)}%" }));
+            options.AddRange(percentages.Select(x => new SelectListModel { Id = x.ToString(CultureInfo.InvariantCulture), Text = $"{x.ToString(CultureInfo.InvariantCulture)}%" }));
 
             if (percentages.All(x => x != 100))
             {
-                options.Add(new SelectListItem { Value = "100", Text = "100%" });
+                options.Add(new SelectListModel { Id = "100", Text = "100%" });
             }
 
             return Ok(options);

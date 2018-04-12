@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Common.Extensions;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.Logger;
@@ -74,6 +76,8 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<IList<CrmProject>>();
 
+            if (string.IsNullOrWhiteSpace(serviceId)) return response;
+
             try
             {
                 var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
@@ -83,7 +87,7 @@ namespace Sofco.Service.Implementations.Billing
                     result.AddRange(projectData.GetProjects(serviceId, item));
                 }
 
-                response.Data = result;
+                response.Data = result.DistinctBy(x => x.Id);
             }
             catch (Exception ex)
             {
@@ -101,7 +105,7 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<SelectListModel>>
             {
                 Data = result
-                    .Select(x => new SelectListModel {Value = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
                     .OrderBy(x => x.Text)
                     .ToList()
             };

@@ -84,8 +84,8 @@
                     <div class="scroll">
                         <ul class="todo-list m-t small-list">
                             <li *ngFor="let group of user.groups">
-                                <span [routerLink]="['/admin/groups/edit', group.value]" class="m-l-xs pointer">{{group.text}}</span>
-                                <a class="pull-right" (click)="openConfirmModal(group.value)"><i class="check-link fa fa-times icon-danger"></i></a>
+                                <span [routerLink]="['/admin/groups/edit', group.id]" class="m-l-xs pointer">{{group.text}}</span>
+                                <a class="pull-right" (click)="openConfirmModal(group.id)"><i class="check-link fa fa-times icon-danger"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -102,7 +102,7 @@
                 <div class="panel-body">
                     <ul class="todo-list m-t small-list">
                         <li *ngFor="let role of user.roles">
-                            <span [routerLink]="['/admin/roles/edit', role.value]" class="m-l-xs pointer">{{role.text}}</span>
+                            <span [routerLink]="['/admin/roles/edit', role.id]" class="m-l-xs pointer">{{role.text}}</span>
                         </li>
                     </ul>
                 </div>
@@ -144,7 +144,7 @@
 </div>
 
 
-<ng2-modal [config]="modalConfig"  #modalGroups (accept)="assignGroups()">
+<ng2-modal [config]="modalConfig"  #modalGroups (accept)="assignGroups()" [isLoading]="isLoading">
 
     <h4>{{ 'ADMIN.USERS.selectGroups' | translate }}</h4>
 
@@ -161,3 +161,4 @@
 <ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unassignGroup()">
     {{ 'ADMIN.USERS.deleteGroup' | translate }}
 </ng2-modal>
+ 

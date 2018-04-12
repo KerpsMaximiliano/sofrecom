@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Core.Services.Admin;
+using Sofco.Model.Models.Admin;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
@@ -17,26 +20,25 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly IRoleService roleService;
         private readonly IFunctionalityService functionalityService;
         private readonly ILoginService loginService;
+        private readonly IMapper mapper;
 
-        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService, ILoginService loginServ)
+        public UserController(IUserService userService, IRoleService roleService, IFunctionalityService functionalityService, ILoginService loginServ, IMapper mapper)
         {
             this.userService = userService;
             this.roleService = roleService;
             this.functionalityService = functionalityService;
             loginService = loginServ;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var users = userService.GetAllReadOnly(false);
-            
-            var model = new List<UserModel>();
 
-            foreach (var user in users)
-                model.Add(new UserModel(user));
+            var models = Translate(users.ToList());
 
-            return Ok(model.OrderBy(x => x.Name));
+            return Ok(models.OrderBy(x => x.Name));
         }
 
         [HttpGet]
@@ -47,7 +49,7 @@ namespace Sofco.WebApi.Controllers.Admin
             var model = new List<UserSelectListItem>();
 
             foreach (var user in users)
-                model.Add(new UserSelectListItem { Value = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email, ExternalId = user.ExternalManagerId });
+                model.Add(new UserSelectListItem { Id = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email, ExternalId = user.ExternalManagerId });
 
             return Ok(model);
         }
@@ -58,7 +60,7 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var users = userService.GetManagers();
 
-            return Ok(users.Select(x => new SelectListModel { Value = x.Id.ToString(), Text = x.Name }));
+            return Ok(users.Select(x => new SelectListModel { Id = x.Id.ToString(), Text = x.Name }));
         }
 
         [HttpGet("{id}/detail")]
@@ -69,7 +71,7 @@ namespace Sofco.WebApi.Controllers.Admin
             if (response.HasErrors())
                 return BadRequest(response);
 
-            var model = new UserDetailModel(response.Data);
+            var model = TranslateToUserDetailModel(response.Data);
 
             if (response.Data.UserGroups.Any())
             {
@@ -77,19 +79,19 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     if (userGroup.Group.Active)
                     {
-                        model.Groups.Add(new SelectListModel { Value = userGroup.Group.Id.ToString(), Text = userGroup.Group.Description });
+                        model.Groups.Add(new SelectListModel { Id = userGroup.Group.Id.ToString(), Text = userGroup.Group.Description });
                     }
                 }
 
-                var roles = roleService.GetRolesByGroup(model.Groups.Select(x => Convert.ToInt32(x.Value)));
+                var roles = roleService.GetRolesByGroup(model.Groups.Select(x => Convert.ToInt32(x.Id)));
 
                 foreach (var rol in roles)
                 {
                     if (rol != null)
                     {
-                        var roleModel = new SelectListModel { Value = rol.Id.ToString(), Text = rol.Description };
+                        var roleModel = new SelectListModel { Id = rol.Id.ToString(), Text = rol.Description };
 
-                        if (!model.Roles.Any(x => x.Value.Equals(roleModel.Value)) && rol.Active)
+                        if (!model.Roles.Any(x => x.Id.Equals(roleModel.Id)) && rol.Active)
                         {
                             model.Roles.Add(roleModel);
                         }
@@ -103,7 +105,7 @@ namespace Sofco.WebApi.Controllers.Admin
                 {
                     var moduleModel = new ModuleModelDetail(module);
 
-                    moduleModel.Functionalities = module.Functionalities.Select(x => new SelectListModel { Value = x.Code, Text = x.Description }).ToList();
+                    moduleModel.Functionalities = module.Functionalities.Select(x => new SelectListModel { Id = x.Code, Text = x.Description }).ToList();
 
                     model.Modules.Add(moduleModel);
                 }
@@ -121,7 +123,8 @@ namespace Sofco.WebApi.Controllers.Admin
             if (response.HasErrors())
                 return BadRequest(response);
 
-            var model = new UserModel(response.Data);
+            var model = Translate(response.Data);
+            model.Groups = new List<GroupModel>();
 
             foreach (var userGroup in response.Data.UserGroups)
             {
@@ -132,6 +135,7 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpGet("email")]
+        [Authorize]
         public IActionResult GetByMail()
         {
             var response = userService.GetByMail();
@@ -147,7 +151,7 @@ namespace Sofco.WebApi.Controllers.Admin
             if (response.HasErrors())
                 return BadRequest(response);
 
-            var azureResponse = loginService.GetUserFromAzureADByEmail(mail);
+            var azureResponse = loginService.GetUserFromAzureAdByEmail(mail);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);
@@ -158,7 +162,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpGet("ad/surname/{surname}")]
         public IActionResult AdGetBySurname(string surname)
         {
-            var azureResponse = loginService.GetUsersFromAzureADBySurname(surname);
+            var azureResponse = loginService.GetUsersFromAzureAdBySurname(surname);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);
@@ -174,7 +178,7 @@ namespace Sofco.WebApi.Controllers.Admin
             if (errors.HasErrors())
                 return BadRequest(errors);
 
-            var azureResponse = loginService.GetUserFromAzureADByEmail(model.Email);
+            var azureResponse = loginService.GetUserFromAzureAdByEmail(model.Email);
 
             if (azureResponse.HasErrors())
                 return BadRequest(azureResponse);
@@ -238,6 +242,21 @@ namespace Sofco.WebApi.Controllers.Admin
                 return BadRequest(response);
 
             return Ok(response);
+        }
+
+        private UserModel Translate(User user)
+        {
+            return mapper.Map<User, UserDetailModel>(user);
+        }
+
+        private List<UserModel> Translate(List<User> users)
+        {
+            return mapper.Map<List<User>, List<UserModel>>(users);
+        }
+
+        private UserDetailModel TranslateToUserDetailModel(User user)
+        {
+            return mapper.Map<User, UserDetailModel>(user);
         }
     }
 }

@@ -17,5 +17,13 @@ namespace Sofco.Core.Services.AllocationManagement
         Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
 
         Response<EmployeeProfileModel> GetProfile(int id);
+
+        Response FinalizeExtraHolidays(int id);
+
+        Response AddCategories(EmployeeAddCategoriesParams parameters);
+
+        ICollection<Option> GetAnalytics(int id);
+
+        Response<IList<EmployeeCategoryOption>> GetCategories(int id);
     }
 }

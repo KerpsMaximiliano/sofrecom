@@ -21,6 +21,7 @@ namespace Sofco.Core.Models.Admin
             StartDate = group.StartDate;
             EndDate = group.EndDate;
             Email = group.Email;
+            RoleId = group.RoleId;
 
             Users = new List<UserModel>();
         }
@@ -50,6 +51,7 @@ namespace Sofco.Core.Models.Admin
             group.Description = Description;
             group.Active = Active;
             group.Email = Email;
+            group.RoleId = RoleId;
         }
     }
 

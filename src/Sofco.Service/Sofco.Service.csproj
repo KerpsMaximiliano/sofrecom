@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Sofco.Service</AssemblyName>
+    <PackageId>Sofco.Service</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
+    <ProjectReference Include="..\Sofco.DAL\Sofco.DAL.csproj" />
+    <ProjectReference Include="..\Sofco.Data\Sofco.Data.csproj" />
+    <ProjectReference Include="..\Sofco.Framework\Sofco.Framework.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
+    <ProjectReference Include="..\Sofco.Repository.Rh\Sofco.Repository.Rh.csproj" />
+    <ProjectReference Include="..\Sofco.Resources\Sofco.Resources.csproj" />
+    <ProjectReference Include="..\Sofco.Service.Http\Sofco.Service.Http.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+  </ItemGroup>
+
+</Project>

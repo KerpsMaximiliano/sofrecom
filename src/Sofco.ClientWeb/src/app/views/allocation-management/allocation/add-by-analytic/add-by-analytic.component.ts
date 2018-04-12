@@ -8,7 +8,6 @@ import { MenuService } from "app/services/admin/menu.service";
 import { AllocationSearch } from "app/models/allocation-management/allocationSearch";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { MessageService } from "app/services/common/message.service";
-import { DateRangePickerComponent } from "app/components/datepicker/date-range-picker.component";
 import { AppSetting } from 'app/services/common/app-setting'
 
 declare var $:any;
@@ -33,10 +32,9 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     @ViewChild('resourceTimeline') resourceTimeline: any;
     @ViewChild('allocations') allocations: any;
 
-    public resourceId: number = 0; 
+    public resourceId: any; 
 
     dateSince: Date = new Date();
-    public dateOptions;
 
     pmoUser: boolean;
 
@@ -48,10 +46,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService,
-                private appSetting: AppSetting){
-                    
-                this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+                private appSetting: AppSetting){}
 
     ngOnInit(): void {
         this.monthQuantity = this.appSetting.AllocationManagement_Months;
@@ -87,7 +82,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     }
 
     getAllocationResources(){
-        this.getAllocationResourcesSubscrip = this.employeeService.getAll().subscribe(data => {
+        this.getAllocationResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -99,14 +94,13 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        var employeeId = $('#employeeId').val();
-        this.resourceId = employeeId;
+        if(this.resourceId == undefined || this.resourceId == '0') return;
 
         if(this.pmoUser){
-            this.allocations.getAllocations(employeeId, this.dateSince);
+            this.allocations.getAllocations(this.resourceId, this.dateSince);
         }
         else{
-            this.allocations.getAllocations(employeeId, new Date());
+            this.allocations.getAllocations(this.resourceId, new Date());
         }
     }
 }

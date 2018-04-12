@@ -16,6 +16,8 @@
                 case 9: 
                 case 10: 
                 case 11:
+                case 14:
+                case 15:
                 case 12: return new CommonLicense();
                 case 7: return new ExamLicense();
                 case 13: return new OthersLicense();

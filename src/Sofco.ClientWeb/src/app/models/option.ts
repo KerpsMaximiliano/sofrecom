@@ -1,9 +1,12 @@
 
 export class Option{
+    public included: boolean;
+    public index: number;
+
     constructor(
         public value: string,
-        public text: string,
-        public included: boolean = false,
-        public index: number
-    ){}
+        public text: string
+    ){
+        this.included = false;
+    }
 }

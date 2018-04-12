@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
+using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
@@ -41,10 +42,10 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult GetOptions()
         {
             var modules = moduleService.GetAllReadOnly(true);
-            var model = new List<SelectListItem>();
+            var model = new List<Option>();
 
             foreach (var module in modules)
-                model.Add(new SelectListItem { Value = module.Id.ToString(), Text = module.Description });
+                model.Add(new Option { Id = module.Id, Text = module.Description });
 
             return Ok(model);
         }

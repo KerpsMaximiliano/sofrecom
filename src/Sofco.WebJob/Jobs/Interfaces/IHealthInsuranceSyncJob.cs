@@ -2,6 +2,5 @@
 {
     public interface IHealthInsuranceSyncJob : IJob
     {
-        
     }
 }

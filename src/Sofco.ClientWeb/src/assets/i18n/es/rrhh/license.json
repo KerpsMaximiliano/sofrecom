@@ -13,5 +13,15 @@
     "examDescriptionRequired": "La asignatura a rendir es requerida",
     "commentsRequired": "Los comentarios son requeridos",
     "notFound": "Licencia no encontrada",
-    "fileAdded": "Archivo cargado exitosamente"
+    "fileAdded": "Archivo cargado exitosamente",
+    "licenseTypeUpdate": "Licencias actualizadas",
+    "examTypeRequired": "Se debe seleccionar solo un tipo de examen",
+    "rejectSuccess": "La licencia ha sido rechazada exitosamente",
+    "pendingSuccess": "La licencia quedo en Pendiente de Aprobación correctamente",
+    "cannotChangeStatus": "No se puede cambiar el estado",
+    "authPendingSuccess": "La licencia quedo en Pendiente de Autorización correctamente",
+    "approveSuccess": "La licencia ha sido aprobada exitosamente",
+    "approvePendingSuccess": "La licencia quedo en Aprobada / Documetanción Pendiente correctamente",
+    "updateSuccess": "La licencia se actualizo correctamente",
+    "wrongCertificateMonthQuantity": "El dia del mes debe ser mayor o igual a 1 y menor o igual a 28"
 }

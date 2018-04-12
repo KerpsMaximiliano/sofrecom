@@ -16,6 +16,10 @@
 
         public string DafCode { get; set; }
 
+        public string ManagersCode { get; set; }
+
+        public string DirectorsCode { get; set; }
+
         public string CdgCode { get; set; }
 
         public string PmoCode { get; set; }

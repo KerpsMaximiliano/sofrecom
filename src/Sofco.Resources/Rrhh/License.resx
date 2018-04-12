@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApproveSuccess" xml:space="preserve">
+    <value>rrhh/license.approveSuccess</value>
+  </data>
+  <data name="AuthPendingSuccess" xml:space="preserve">
+    <value>rrhh/license.authPendingSuccess</value>
+  </data>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>rrhh/license.cannotChangeStatus</value>
+  </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>rrhh/license.commentsRequired</value>
   </data>
@@ -141,8 +150,17 @@
   <data name="ExamDescriptionRequired" xml:space="preserve">
     <value>rrhh/license.examDescriptionRequired</value>
   </data>
+  <data name="ExamTypeRequired" xml:space="preserve">
+    <value>rrhh/license.examTypeRequired</value>
+  </data>
   <data name="FileAdded" xml:space="preserve">
     <value>rrhh/license.fileAdded</value>
+  </data>
+  <data name="LicenseTypeNotFound" xml:space="preserve">
+    <value>rrhh/license.licenseTypeNotFound</value>
+  </data>
+  <data name="LicenseTypeUpdate" xml:space="preserve">
+    <value>rrhh/license.licenseTypeUpdate</value>
   </data>
   <data name="ManagerNotFound" xml:space="preserve">
     <value>rrhh/license.managerNotFound</value>
@@ -153,6 +171,12 @@
   <data name="NotFound" xml:space="preserve">
     <value>rrhh/license.notFound</value>
   </data>
+  <data name="PendingSuccess" xml:space="preserve">
+    <value>rrhh/license.pendingSuccess</value>
+  </data>
+  <data name="RejectSuccess" xml:space="preserve">
+    <value>rrhh/license.rejectSuccess</value>
+  </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>rrhh/license.saveSuccess</value>
   </data>
@@ -161,5 +185,11 @@
   </data>
   <data name="TypeRequired" xml:space="preserve">
     <value>rrhh/license.typeRequired</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>rrhh/license.updateSuccess</value>
+  </data>
+  <data name="WrongCertificateMonthQuantity" xml:space="preserve">
+    <value>rrhh/license.wrongCertificateMonthQuantity</value>
   </data>
 </root>

@@ -6,7 +6,6 @@ import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { DateRangePickerComponent } from "app/components/datepicker/date-range-picker.component";
 import { AllocationService } from "app/services/allocation-management/allocation.service";
 import { AllocationModel, Allocation } from "app/models/allocation-management/allocation";
 import { AppSetting } from 'app/services/common/app-setting'
@@ -35,7 +34,6 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     @ViewChild('allocations') allocations: any;
 
     dateSince: Date = new Date();
-    public dateOptions;
 
     pmoUser: boolean;
   
@@ -47,9 +45,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private employeeService: EmployeeService,
         private errorHandlerService: ErrorHandlerService,
-        private appSetting: AppSetting){
-            this.dateOptions = this.menuService.getDatePickerOptions();
-    }
+        private appSetting: AppSetting){}
 
     ngOnDestroy(): void {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
@@ -72,13 +68,13 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
                 this.resourceId = params['id'];
 
                 this.getByIdSubscrip = this.employeeService.getById(params['id']).subscribe(data => {
-                    this.resource = data;
+                    this.resource = data.data;
                 },
                 error => this.errorHandlerService.handleErrors(error));
             });
         }
 
-        this.getAllSubscrip = this.analyticService.getAll().subscribe(data => {
+        this.getAllSubscrip = this.analyticService.getOptions().subscribe(data => {
             this.analytics = data;
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -87,11 +83,13 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     add(){
         var analyticId = $('#analyticId').val();
 
+        if(analyticId == 0) return
+
         var analytic = this.analytics.find(x => x.id == analyticId);
 
         this.allocations.add(analytic);
     }
-
+ 
     search(){
         if(this.pmoUser){
             this.allocations.getAllocations(this.resourceId, this.dateSince);
