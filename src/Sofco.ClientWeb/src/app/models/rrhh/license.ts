@@ -3,11 +3,11 @@ import { LicenseStatus } from "../enums/licenseStatus";
 export class License {
     public id: number;
     public employeeId: string;
-    public managerId: string;
-    public sectorId: string;
+    public managerId: number;
+    public sectorId: number;
     public startDate: Date;
     public endDate: Date;
-    public typeId: string;
+    public typeId: number;
     public withPayment: boolean;
     public daysQuantity: number;
     public hasCertificate: boolean;
