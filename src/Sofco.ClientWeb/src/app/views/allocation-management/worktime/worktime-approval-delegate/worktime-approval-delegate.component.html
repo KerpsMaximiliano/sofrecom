@@ -60,7 +60,8 @@
     </div>
 
     <div class="ibox">
-        <div class="ibox-content">
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
             <table class="table table-striped dataTable" role="grid" id="resourcesTable">
                 <thead>
                     <tr>
@@ -79,13 +80,14 @@
                         <td>{{ item.service }}</td>
                         <td>{{ item.manager }}</td>
                         <td>{{ item.approvalName }}</td>
-                        <td class="column-xs">
-
-                            <icheck [(checked)]="item.checked" style="float:left;margin-right: 10px">
-                            </icheck>
-                            <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)" [disabled]="!showDelete(item)">
-                                <span class="fa-trash fa"></span>
-                            </button>
+                        <td>
+                            <div *ngIf="item.serviceId != null">
+                                <icheck [(checked)]="item.checked" style="float:left;margin-right: 10px">
+                                </icheck>
+                                <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)" [disabled]="!showDelete(item)">
+                                    <span class="fa-trash fa"></span>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

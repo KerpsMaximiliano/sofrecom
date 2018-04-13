@@ -32,7 +32,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             if (query.CustomerId == Guid.Empty)
             {
-                return new Response<List<UserSelectListItem>>();
+                return new Response<List<UserSelectListItem>>{ Data = new List<UserSelectListItem>() };
             }
 
             var analytics = unitOfWork.AnalyticRepository.GetByClient(query.CustomerId.ToString());
