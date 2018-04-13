@@ -5,7 +5,7 @@ namespace Sofco.Core.Data.Admin
 {
     public interface IUserData
     {
-        User GetByManagerId(string managerId);
+        User GetByExternalManagerId(string externalManagerId);
 
         User GetById(int userId);
 
