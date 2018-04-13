@@ -69,7 +69,7 @@
                         <th>{{'allocationManagement.workTimeApproval.delegate.service' | translate }}</th>
                         <th>{{'allocationManagement.workTimeApproval.delegate.manager' | translate }}</th>
                         <th>{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</th>
-                        <th>{{'ACTIONS.title' | translate }}</th>
+                        <th width="25">{{'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,8 +79,11 @@
                         <td>{{ item.service }}</td>
                         <td>{{ item.manager }}</td>
                         <td>{{ item.approvalName }}</td>
-                        <td>
-                            <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)" >
+                        <td class="column-xs">
+
+                            <icheck [(checked)]="item.checked" style="float:left;margin-right: 10px">
+                            </icheck>
+                            <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)" [disabled]="!showDelete(item)">
                                 <span class="fa-trash fa"></span>
                             </button>
                         </td>
