@@ -47,11 +47,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         private void Save(WorkTimeApproval item)
         {
-            var storedItem = GetUnique(item.ServiceId, item.UserId, item.ApprovalUserId);
+            var storedItem = GetUnique(item.ServiceId, item.UserId);
 
             if (storedItem != null)
             {
-                Update(storedItem);
+                Update(storedItem, item);
             }
             else
             {
@@ -61,12 +61,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
-        private WorkTimeApproval GetUnique(Guid serviceId, int userId, int approvalUserId)
+        private WorkTimeApproval GetUnique(Guid serviceId, int userId)
         {
             return context.WorkTimeApprovals
                 .SingleOrDefault(s => s.ServiceId == serviceId
-                                      && s.UserId == userId
-                                      && s.ApprovalUserId == approvalUserId);
+                                      && s.UserId == userId);
+        }
+
+        private void Update(WorkTimeApproval stored, WorkTimeApproval data)
+        {
+            stored.ApprovalUserId = data.ApprovalUserId;
+
+            Update(stored);
         }
     }
 }

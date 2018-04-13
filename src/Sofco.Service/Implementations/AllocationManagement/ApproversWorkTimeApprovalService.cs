@@ -46,7 +46,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var workTimeApprovals = workTimeApprovalRepository.GetByServiceIds(serviceIds);
 
-            var userIds = workTimeApprovals.Select(s => s.ApprovalUserId).ToList();
+            var userIds = workTimeApprovals.Select(s => s.ApprovalUserId).Distinct().ToList();
 
             var users = new List<UserSelectListItem>();
 
