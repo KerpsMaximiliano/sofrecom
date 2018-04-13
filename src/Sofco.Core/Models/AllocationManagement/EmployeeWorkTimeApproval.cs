@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Models.AllocationManagement;
+﻿using System;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
 {
@@ -10,7 +11,11 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string Client { get; set; }
 
+        public string ClientId { get; set; }
+
         public string Service { get; set; }
+
+        public string ServiceId { get; set; }
 
         public int? ManagerId { get; set; }
 

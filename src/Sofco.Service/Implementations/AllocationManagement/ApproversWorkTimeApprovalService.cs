@@ -32,7 +32,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             if (query.CustomerId == Guid.Empty)
             {
-                return new Response<List<UserSelectListItem>>();
+                return new Response<List<UserSelectListItem>>{ Data = new List<UserSelectListItem>() };
             }
 
             var analytics = unitOfWork.AnalyticRepository.GetByClient(query.CustomerId.ToString());
@@ -46,7 +46,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var workTimeApprovals = workTimeApprovalRepository.GetByServiceIds(serviceIds);
 
-            var userIds = workTimeApprovals.Select(s => s.ApprovalUserId).ToList();
+            var userIds = workTimeApprovals.Select(s => s.ApprovalUserId).Distinct().ToList();
 
             var users = new List<UserSelectListItem>();
 
