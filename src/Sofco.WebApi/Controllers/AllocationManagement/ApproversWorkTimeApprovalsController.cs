@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
@@ -8,13 +7,13 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
-    [Route("api/workTimeApprovals/employees")]
+    [Route("api/workTimeApprovals/approvers")]
     [Authorize]
-    public class EmployeeWorkTimeApprovalsController : Controller
+    public class ApproversWorkTimeApprovalsController : Controller
     {
-        private readonly IEmployeeWorkTimeApprovalService service;
+        private readonly IApproversWorkTimeApprovalService service;
 
-        public EmployeeWorkTimeApprovalsController(IEmployeeWorkTimeApprovalService service)
+        public ApproversWorkTimeApprovalsController(IApproversWorkTimeApprovalService service)
         {
             this.service = service;
         }
@@ -22,7 +21,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet]
         public IActionResult Get([FromUri] WorkTimeApprovalQuery query)
         {
-            var response = service.Get(query);
+            var response = service.GetApprovers(query);
 
             return this.CreateResponse(response);
         }

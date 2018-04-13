@@ -54,5 +54,9 @@ namespace Sofco.Core.Models.AllocationManagement
         public bool HasExtraHolidays { get; set; }
 
         public DateTime StartDate { get; set; }
+
+        public int BusinessHours { get; set; }
+
+        public string BusinessHoursDescription { get; set; }
     }
 }

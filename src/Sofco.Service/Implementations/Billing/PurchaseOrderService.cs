@@ -242,7 +242,7 @@ namespace Sofco.Service.Implementations.Billing
                 catch (Exception ex)
                 {
                     logger.LogError(urlPath + "; data: " + data, ex);
-                    response.AddError(Resources.Common.ErrorSave);
+                    response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }
         }

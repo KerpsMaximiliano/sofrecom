@@ -16,7 +16,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
         }
 
-        public List<EmployeeWorkTimeApproval> Get(EmployeeWorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null;
 
@@ -38,15 +38,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(where)
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
-                .GroupJoin(context.WorkTimeApprovals,
+                .GroupJoin(context.WorkTimeApprovals.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
 
+            if (query.ApprovalId > 0)
+            {
+                result = result.Where(s =>
+                    s.WorkTimeApproval != null 
+                    && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+            }
+
             return result.ToList();
         }
 
-        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, EmployeeWorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, WorkTimeApprovalQuery query)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId));
 
@@ -71,11 +78,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
                 .GroupJoin(
-                    context
-                        .WorkTimeApprovals,
+                    context.WorkTimeApprovals.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
+
+            if (query.ApprovalId > 0)
+            {
+                result = result.Where(s =>
+                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+            }
 
             return result.ToList();
         }

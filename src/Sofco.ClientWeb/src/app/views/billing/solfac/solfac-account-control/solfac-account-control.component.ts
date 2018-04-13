@@ -26,7 +26,7 @@ export class SolfacAccountControlComponent implements OnInit {
     @Output()
     public modelChange: EventEmitter<any> = new EventEmitter<any>();
 
-    private idKey = "value";
+    private idKey = "id";
     private textKey = "text";
 
     private customers: any[] = new Array<any>();

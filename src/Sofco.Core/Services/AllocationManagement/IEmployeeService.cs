@@ -25,5 +25,7 @@ namespace Sofco.Core.Services.AllocationManagement
         ICollection<Option> GetAnalytics(int id);
 
         Response<IList<EmployeeCategoryOption>> GetCategories(int id);
+
+        Response UpdateBusinessHours(int id, EmployeeBusinessHoursParams model);
     }
 }

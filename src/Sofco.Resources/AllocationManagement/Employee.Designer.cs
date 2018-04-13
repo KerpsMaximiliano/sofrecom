@@ -71,6 +71,33 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.businessHoursEmpty.
+        /// </summary>
+        public static string BusinessHoursEmpty {
+            get {
+                return ResourceManager.GetString("BusinessHoursEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.businessHoursUpdated.
+        /// </summary>
+        public static string BusinessHoursUpdated {
+            get {
+                return ResourceManager.GetString("BusinessHoursUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.businessHoursWrong.
+        /// </summary>
+        public static string BusinessHoursWrong {
+            get {
+                return ResourceManager.GetString("BusinessHoursWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.categoriesAdded.
         /// </summary>
         public static string CategoriesAdded {

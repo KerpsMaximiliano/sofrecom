@@ -158,6 +158,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     getManagers(){
         this.getManagersSubscrip = this.employeeService.getManagers().subscribe(data => {
             this.managers = data;
+            this.model.managerId = 0;
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -166,6 +167,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
             this.licensesTypesOptions = data;
             this.licensesTypes = data.optionsWithPayment;
+            this.model.typeId = 0;
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -173,6 +175,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     getSectors(){
         this.getSectorsSubscrip = this.licenseService.getSectors().subscribe(data => {
             this.sectors = data;
+            this.model.sectorId = 0;
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -186,14 +189,14 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     withPaymentChange(event){
         if(!event){
             this.licensesTypes = this.licensesTypesOptions.optionsWithoutPayment;
-            this.model.typeId = "12";
+            this.model.typeId = 12;
             this.model.parcial = false;
             this.model.final = false;
             this.model.examDescription = null;
         }
         else{
             this.licensesTypes = this.licensesTypesOptions.optionsWithPayment;
-            this.model.typeId = "1";
+            this.model.typeId = 1;
             this.model.comments = null;
         }
     }

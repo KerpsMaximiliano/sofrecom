@@ -23,6 +23,10 @@ export class WorkTimeApprovalDelegateService {
     return this.http.get<any>(this.apiUrl + `/employees?customerId=${query.customerId}&serviceId=${query.serviceId}&approvalId=${query.approvalId}`);
   }
 
+  getApprovals(query) {
+    return this.http.get<any>(this.apiUrl + `/approvers?customerId=${query.customerId}&serviceId=${query.serviceId}`);
+  }
+
   delete(id: number) {
     return this.http.delete<any>(this.apiUrl + '/' + id);
   }

@@ -8,7 +8,7 @@ END
 
 DECLARE @FuncId Int = (SELECT Id FROM app.Functionalities WHERE Code = 'TAPDE')
 DECLARE @MangerRoleId Int = (SELECT Id from app.Roles WHERE Description = 'Gerente')
-DECLARE @DirectorRoleId Int = (SELECT Id from app.Roles WHERE Description = 'Gerente')
+DECLARE @DirectorRoleId Int = (SELECT Id from app.Roles WHERE Description = 'Director')
 
 IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @MangerRoleId AND FunctionalityId = @FuncId))
 BEGIN

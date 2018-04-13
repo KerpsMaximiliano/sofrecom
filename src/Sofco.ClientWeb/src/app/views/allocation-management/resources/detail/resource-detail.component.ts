@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -8,6 +8,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { DataTableService } from "app/services/common/datatable.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 @Component({
     selector: 'resource-detail',
@@ -16,10 +17,23 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 })
 export class ResourceDetailComponent implements OnInit, OnDestroy {
 
+    @ViewChild('businessHoursModal') businessHoursModal;
+    public businessHoursModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "allocationManagement.resources.businessHoursModal",
+        "businessHoursModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    ); 
+
     resourceId: number;
     public model: any;
 
     public isRrhh: boolean = false;
+    public isLoading: boolean = false;
+    public businessHours: number;
+    public businessHoursDescription: string;
 
     public licenses: any[] = new Array();
     public tasks: any[] = new Array();
@@ -82,6 +96,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.employeeService.getProfile(this.resourceId).subscribe(response => {
             this.model = response.data;
 
+            this.businessHours = response.data.businessHours;
+            this.businessHoursDescription = response.data.businessHoursDescription;
+
             this.messageService.closeLoading();
             this.initGrid();
         },
@@ -136,5 +153,27 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.dataTableService.init2(params);
         },
         error => { this.errorHandlerService.handleErrors(error) });
+    }
+
+    updateBusinessHours(){
+        var json = {
+            businessHours: this.businessHours,
+            businessHoursDescription: this.businessHoursDescription
+        };
+
+        this.isLoading = true;
+
+        this.finalizeExtraHolidaysSubscrip = this.employeeService.updateBusinessHours(this.resourceId, json).subscribe(data => {
+            this.isLoading = false
+            if(data.messages) this.messageService.showMessages(data.messages);
+            this.businessHoursModal.hide();
+
+            this.model.businessHours = this.businessHours;
+            this.model.businessHoursDescription = this.businessHoursDescription;
+        },
+        error => { 
+            this.isLoading = false;
+            this.errorHandlerService.handleErrors(error)
+        });
     }
 } 

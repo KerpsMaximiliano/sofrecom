@@ -44,7 +44,8 @@ export class NewPurchaseOrderComponent implements OnDestroy {
         this.messageService.showLoading();
 
         var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
-        this.form.model.clientExternalName = client.text;
+
+        this.form.model.clientExternalName = client ? client.text : '';
 
         this.form.model.receptionDate = new Date();
 
