@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
@@ -104,6 +105,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetCategories(int id)
         {
             var response = employeeService.GetCategories(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/businessHours")]
+        public IActionResult UpdateBusinessHours(int id, [FromBody] EmployeeBusinessHoursParams model)
+        {
+            var response = employeeService.UpdateBusinessHours(id, model);
 
             return this.CreateResponse(response);
         }

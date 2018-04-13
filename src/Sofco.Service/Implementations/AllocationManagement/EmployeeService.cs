@@ -219,6 +219,36 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response UpdateBusinessHours(int id, EmployeeBusinessHoursParams model)
+        {
+            var response = new Response();
+
+            EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, id);
+            EmployeeValidationHelper.ValidateBusinessHours(response, model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var employee = new Employee();
+                employee.Id = id;
+                employee.BusinessHours = model.BusinessHours;
+                employee.BusinessHoursDescription = model.BusinessHoursDescription;
+
+                unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Employee.BusinessHoursUpdated);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+            
+            return response;
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

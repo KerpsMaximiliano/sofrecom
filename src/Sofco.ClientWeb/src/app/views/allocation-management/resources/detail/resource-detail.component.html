@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3" *ngIf="!isRrhh">
+                    <!-- <div class="col-sm-3" *ngIf="!isRrhh">
                         <div class="widget-custom lazur-bg" >
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
@@ -50,19 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-3" *ngIf="isRrhh">
-                        <div class="widget-custom lazur-bg" (click)="finalizeExtraHolidays()">
-                            <div class="row vertical-align">
-                                <div class="col-xs-2">
-                                    <i class="fa fa-plane fa-2x"></i>
-                                </div>
-                                <div class="col-xs-10 text-right">
-                                    <h4 class="font-bold">{{'rrhh.license.finalizeExtraHolidays' | translate }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div> -->
                     <div class="col-sm-3" *ngIf="!isRrhh">
                         <div class="widget-custom lazur-bg" (click)="goToLicenses()">
                             <div class="row vertical-align">
@@ -71,6 +59,30 @@
                                 </div>
                                 <div class="col-xs-10 text-right">
                                     <h4 class="font-bold">{{'allocationManagement.resources.licenses' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="finalizeExtraHolidays()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-times-circle fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'rrhh.license.finalizeExtraHolidays' | translate }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" *ngIf="isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="businessHoursModal.show()">
+                            <div class="row vertical-align">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-hourglass-start fa-2x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <h4 class="font-bold">{{'allocationManagement.resources.hoursByContract' | translate }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -120,16 +132,27 @@
                             <dl class="dl-horizontal">
                                 <dt>{{'allocationManagement.resources.address' | translate }}</dt>
                                 <dd>{{ model?.address }}</dd>
+
                                 <dt>{{'allocationManagement.resources.location' | translate }}</dt>
                                 <dd>{{ model?.location }}</dd>
+
                                 <dt>{{'allocationManagement.resources.province' | translate }}</dt>
                                 <dd>{{ model?.province }}</dd>
+
                                 <dt>{{'allocationManagement.resources.healtInsurance' | translate }}</dt>
                                 <dd>{{ model?.healthInsurance?.name }}</dd>
+
                                 <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.name }}</dd>
+
                                 <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+
+                                <dt>{{'allocationManagement.resources.businessHours' | translate }}</dt>
+                                <dd>{{ model?.businessHours }} hs</dd>
+
+                                <dt>{{'allocationManagement.resources.businessHoursDescription' | translate }}</dt>
+                                <dd>{{ model?.businessHoursDescription }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -231,4 +254,16 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
+
+<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()" [isLoading]="isLoading">
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }}: </label>
+        <input class="form-control" type="number" min="1" max="8" [(ngModel)]="businessHours" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.businessHoursDescription' | translate }}: </label>
+        <input class="form-control" type="text" [(ngModel)]="businessHoursDescription" placeholder="09.00 hs a 18.00 hs" />
+    </div>
+</ng2-modal> 

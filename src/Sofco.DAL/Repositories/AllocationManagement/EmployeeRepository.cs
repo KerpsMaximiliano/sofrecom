@@ -97,6 +97,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(x => x.EmployeeId == id && x.Category.Active).ToList();
         }
 
+        public void UpdateBusinessHours(Employee employee)
+        {
+            context.Entry(employee).Property("BusinessHours").IsModified = true;
+            context.Entry(employee).Property("BusinessHoursDescription").IsModified = true;
+        }
+
         public void Save(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());

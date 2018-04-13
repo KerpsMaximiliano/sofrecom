@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
@@ -7,7 +8,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {
     public static class EmployeeValidationHelper
     {
-        public static void Exist(Response<Allocation> response, IEmployeeRepository employeeRepository, int employeeId)
+        public static void Exist(Response response, IEmployeeRepository employeeRepository, int employeeId)
         {
             var exist = employeeRepository.Exist(employeeId);
 
@@ -27,6 +28,19 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             }
 
             return employee;
+        }
+
+        public static void ValidateBusinessHours(Response response, EmployeeBusinessHoursParams model)
+        {
+            if (model.BusinessHours < 1 || model.BusinessHours > 8)
+            {
+                response.Messages.Add(new Message(Resources.AllocationManagement.Employee.BusinessHoursWrong, MessageType.Error));
+            }
+
+            if (string.IsNullOrWhiteSpace(model.BusinessHoursDescription))
+            {
+                response.Messages.Add(new Message(Resources.AllocationManagement.Employee.BusinessHoursEmpty, MessageType.Error));
+            }
         }
     }
 }

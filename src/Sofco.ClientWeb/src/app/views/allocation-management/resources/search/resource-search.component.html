@@ -138,7 +138,7 @@
     </div>
 </ng2-modal> 
 
-<ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
+<ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()" [isLoading]="isLoading">
     <div class="alert alert-warning">
         {{'ADMIN.category.areYouSureAdd' | translate }}
     </div>
