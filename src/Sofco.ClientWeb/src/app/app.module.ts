@@ -1,3 +1,4 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BillingModule } from './views/billing/billing.module';
 import { ReportModule } from './views/report/report.module';
 import { AuthGuard } from './guards/auth.guard';
@@ -38,9 +39,9 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
 import { LaddaModule } from 'angular2-ladda';
 import { HumanResourcesModule } from 'app/views/human-resources/human-resources.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
+import { WorkTimeManagementModule } from 'app/views/worktime-management/worktime-management.module';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -78,7 +79,8 @@ export function HttpLoaderFactory(http: Http) {
     }),
     ReportModule,
     AllocationManagementModule,
-    HttpClientModule
+    HttpClientModule,
+    WorkTimeManagementModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
