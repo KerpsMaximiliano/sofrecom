@@ -5,6 +5,7 @@ using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Common;
 using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
+using Sofco.DAL.Mappings.WorkTimeManagement;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
@@ -12,6 +13,7 @@ using Sofco.Model.Utils;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Models.Rrhh;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.DAL
 {
@@ -64,6 +66,9 @@ namespace Sofco.DAL
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
         public DbSet<WorkTimeApproval> WorkTimeApprovals { get; set; }
+
+        // Work Time Management
+        public DbSet<WorkTime> WorkTimes { get; set; }
 
         // Human Resources
         public DbSet<License> Licenses { get; set; }
@@ -126,6 +131,7 @@ namespace Sofco.DAL
             builder.MapCategory();
             builder.MapTasks();
             builder.MapEmployeeCategory();
+            builder.MapWorkTime();
         }
     }
 }

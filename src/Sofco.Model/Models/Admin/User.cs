@@ -5,6 +5,7 @@ using Sofco.Model.Interfaces;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Models.Rrhh;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.Admin
@@ -39,5 +40,8 @@ namespace Sofco.Model.Models.Admin
         public ICollection<PurchaseOrder> PurchaseOrder2 { get; set; }
 
         public ICollection<License> Licenses { get; set; }
+
+        public ICollection<WorkTime> WorkTimes1 { get; set; }
+        public ICollection<WorkTime> WorkTimes2 { get; set; }
     }
 }

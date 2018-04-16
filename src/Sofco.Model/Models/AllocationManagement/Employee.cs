@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Model.Models.Rrhh;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -67,5 +68,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public string BusinessHoursDescription { get; set; }
 
         public ICollection<EmployeeCategory> EmployeeCategories { get; set; }
+
+        public ICollection<WorkTime> WorkTimes { get; set; }
     }
 }
