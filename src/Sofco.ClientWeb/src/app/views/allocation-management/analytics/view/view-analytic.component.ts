@@ -19,6 +19,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
+    public showClientButton = true;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -30,7 +31,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    public isLoading: boolean = false;
+    public isLoading = false;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -49,18 +50,19 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
-        if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
-        if(this.closeSubscrip) this.closeSubscrip.unsubscribe();
+        if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+        if (this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
+        if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
-    getAnalytic(){
+    getAnalytic() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
 
             this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
                 this.messageService.closeLoading();
                 this.form.model = data;
+                this.showClientButton = this.form.model.clientExternalId != null;
             },
             error => {
                 this.messageService.closeLoading();
@@ -69,11 +71,11 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         });
     }
 
-    back(){
+    back() {
         this.router.navigate(['/contracts/analytics']);
     }
 
-    close(){
+    close() {
         this.isLoading = true;
 
         this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
@@ -88,19 +90,19 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         });
     }
 
-    getStatus(){
-        switch(this.form.model.status){
+    getStatus() {
+        switch (this.form.model.status){
             case 1: return this.i18nService.translateByKey("allocationManagement.analytics.status.open");
             case 2: return this.i18nService.translateByKey("allocationManagement.analytics.status.close");
             case 3: return this.i18nService.translateByKey("allocationManagement.analytics.status.closeForExpenses");
         }
     }
 
-    goToPurchaseOrders(){
+    goToPurchaseOrders() {
         this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
     }
 
-    goToProjects(){
+    goToProjects() {
         this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
     }
 }

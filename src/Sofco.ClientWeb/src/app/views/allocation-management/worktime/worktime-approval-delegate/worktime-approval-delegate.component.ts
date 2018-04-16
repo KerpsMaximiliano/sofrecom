@@ -8,11 +8,10 @@ import { CustomerService } from 'app/services/billing/customer.service';
 import { UserService } from 'app/services/admin/user.service';
 import { I18nService } from 'app/services/common/i18n.service';
 import { DataTableService } from 'app/services/common/datatable.service';
-import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
-import { Ng2DatatablesModule } from '../../../../components/datatables/ng2-datatables.module';
+import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
 declare var $: any;
 
 @Component({
@@ -47,9 +46,9 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     public approvers: any[] = new Array<any>();
     public approversUerId: string = null;
 
-    public delegates: any[] = new Array<any>();
+    private itemSelected: any;
 
-    private delegeteSelected: any;
+    public loading = false;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         'ACTIONS.confirmTitle',
@@ -87,19 +86,19 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     getWorkTimeApprovals() {
-        this.messageService.showLoading();
+        this.loading = true;
         const query = {
             customerId: this.customerId,
             serviceId: this.serviceId,
             approvalId: this.approversUerId
         };
         this.subscription = this.workTimeApprovalDelegateService.getCurrentEmployees(query).subscribe(res => {
-            this.messageService.closeLoading();
+            this.loading = false;
             this.workTimeApprovals = res.data;
             this.initTable();
         },
         err => {
-            this.messageService.closeLoading();
+            this.loading = false;
             this.errorHandlerService.handleErrors(err);
         });
     }
@@ -274,7 +273,15 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     showSave(): boolean {
+        const isValid = this.workTimeApprovals.filter(x => x.checked).length > 0;
+        if (!isValid) {
+            return false;
+        }
         return this.userId !== null;
+    }
+
+    showDelete(item): boolean {
+        return item.workTimeApproval != null;
     }
 
     initTable() {
@@ -283,38 +290,46 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         this.dataTableService.init2(options);
     }
 
-    getDelegates() {
-        this.messageService.showLoading();
-        this.subscription = this.workTimeApprovalDelegateService.getAll().subscribe(response => {
-            this.messageService.closeLoading();
-            this.delegates = response.data;
-            // this.initTable();
-        },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
-    }
-
     goToAdd() {
         this.router.navigate(['/allocationManagement/workTimeApproval/delegate/edit']);
     }
 
-    showConfirmDelete(item: any) {
-        this.delegeteSelected = item;
-        this.confirmModal.show();
-    }
+    save() {
+        this.setAddApprovers();
+        this.messageService.showLoading();
+        const data = this.workTimeApprovals.filter(x => x.checked);
 
-    processDelete() {
-        this.confirmModal.hide();
-        this.subscription = this.workTimeApprovalDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
-            this.getDelegates();
+        this.subscription = this.workTimeApprovalDelegateService.save(data).subscribe(response => {
+            this.messageService.closeLoading();
+            this.getWorkTimeApprovals();
         },
         err => {
+            this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
     }
 
-    save() {
+    setAddApprovers() {
+        const adds = this.workTimeApprovals.filter(x => x.checked);
+        const self = this;
+        adds.forEach(x => {
+            x.approvalUserId = self.userId;
+        });
+    }
+
+    showConfirmDelete(item: any) {
+        this.itemSelected = item;
+        this.confirmModal.show();
+    }
+
+    processDelete() {
+        const id = this.itemSelected.workTimeApproval.id;
+        this.confirmModal.hide();
+        this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
+            this.getWorkTimeApprovals();
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }
