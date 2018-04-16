@@ -30,7 +30,8 @@ namespace Sofco.Service.Implementations.Billing
 
         public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, 
             IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, 
-            ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData)
+            ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData,
+            IOptions<EmailConfig> emailOptions)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;

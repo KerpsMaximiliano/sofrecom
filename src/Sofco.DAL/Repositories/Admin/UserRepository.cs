@@ -60,7 +60,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals(ManagerDescription))
+                .Where(x => x.Group.Description.Equals(ManagerDescription) || x.Group.Code == emailConfig.DirectorsCode)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -182,6 +182,14 @@ namespace Sofco.DAL.Repositories.Admin
                 Id = s.Id,
                 Name = s.Name
             }).FirstOrDefault();
+        }
+
+        public bool HasComercialGroup(string comercialCode, string email)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(email) && x.UserGroups.Any(s => s.Group.Code.Equals(comercialCode)));
         }
     }
 }
