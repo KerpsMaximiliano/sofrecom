@@ -715,5 +715,11 @@
             "amount": "Importe"
         },
         "dateRange": "Desde - hasta"
+    },
+    "workTimeManagement": {
+        "title": "Gestión de Horas",
+        "workTime": {
+            "title": "Cargas de Horas"
+        }
     }
 }  

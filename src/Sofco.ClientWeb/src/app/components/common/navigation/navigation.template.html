@@ -65,6 +65,15 @@
           <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
         </ul>
       </li>
+
+      <!-- WorkTimeManagement-->
+      <li [ngClass]="{active: activeRoute('workTimeManagement')}" *ngIf="menuService.hasWorkTimeManagement()">
+        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'workTimeManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('workTimeManagement')}">
+          <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('WOTIM', 'WORKT')"><a [routerLink]="['/workTimeManagement/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
+        </ul>
+      </li>
+
     </ul>
 
   </div>

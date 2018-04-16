@@ -75,30 +75,34 @@ export class MenuService {
        if (this.hasModule("USR") || this.hasModule("GRP") || this.hasModule("ROL") || this.hasModule("MOD") || this.hasModule("FUNC")){
             return true;
        }
-
        return false;
     }
 
     hasBillingMenu() {
-       if (this.hasModule("SOLFA")){
+        if (this.hasModule("SOLFA")) {
             return true;
        }
-
        return false;
     }
 
-    hasAllocationManagementMenu(){
-        if (this.hasModule("ALLOC")){
+    hasAllocationManagementMenu() {
+        if (this.hasModule("ALLOC")) {
             return true;
-       }
-
-       return false;
+        }
+        return false;
     }
 
     hasReportMenu() {
-        if (this.hasModule("REPOR")){
+        if (this.hasModule("REPOR")) {
              return true;
         }
-         return false;
-     }
+        return false;
+    }
+
+    hasWorkTimeManagement() {
+        if (this.hasModule("WOTIM")) {
+            return true;
+       }
+       return false;
+    }
 }
