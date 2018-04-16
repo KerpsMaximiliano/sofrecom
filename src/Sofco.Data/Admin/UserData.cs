@@ -26,7 +26,7 @@ namespace Sofco.Data.Admin
             this.unitOfWork = unitOfWork;
         }
 
-        public User GetByManagerId(string managerId)
+        public User GetByExternalManagerId(string managerId)
         {
             return cacheManager.Get(string.Format(UserByMangerIdCacheKey, managerId),
                 () => unitOfWork.UserRepository.GetSingle(user => user.ExternalManagerId == managerId),

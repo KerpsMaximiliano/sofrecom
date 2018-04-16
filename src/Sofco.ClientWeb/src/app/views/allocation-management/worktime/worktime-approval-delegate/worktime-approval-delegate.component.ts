@@ -332,4 +332,21 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err);
         });
     }
+
+    collapse() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#collapseOne").removeClass('in');
+        } else {
+            $("#collapseOne").addClass('in');
+        }
+        this.changeIcon();
+    }
+
+    changeIcon() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#search-icon").toggleClass('fa-angle-down').toggleClass('fa-angle-left');
+        } else {
+            $("#search-icon").toggleClass('fa-angle-left').toggleClass('fa-angle-down');
+        }
+    }
 }
