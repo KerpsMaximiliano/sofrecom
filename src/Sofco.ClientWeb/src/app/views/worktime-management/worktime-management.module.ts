@@ -12,9 +12,10 @@ import { Select2Module } from 'app/components/select2/select2';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
+import { WorkTimeComponent } from './worktime/worktime.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [WorkTimeComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],
