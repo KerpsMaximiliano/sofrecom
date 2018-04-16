@@ -52,9 +52,9 @@ export class MenuService {
 
         const userInfo = Cookie.get("userInfo");
 
-        if (userInfo){
+        if (userInfo) {
             const jsonParsed = JSON.parse(userInfo);
-            this.currentUser = jsonParsed.name;
+            this.currentUser = decodeURIComponent(jsonParsed.name);
             this.user = jsonParsed;
         }
     }
