@@ -60,7 +60,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
                 }
 
-                if (!response.HasErrors() && (!unitOfWork.SolfacRepository.HasAttachments(solfac.Id) || !unitOfWork.SolfacCertificateRepository.HasCertificates(solfac.Id)))
+                if (!response.HasErrors() && (!unitOfWork.SolfacRepository.HasAttachments(solfac.Id) && !unitOfWork.SolfacCertificateRepository.HasCertificates(solfac.Id)))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
                 }

@@ -7,7 +7,8 @@ namespace Sofco.Model.Models.WorkTimeManagement
 {
     public class WorkTime : BaseEntity
     {
-        public string ServiceId { get; set; }
+        public int AnalyticId { get; set; }
+        public Analytic Analytic { get; set; }
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }

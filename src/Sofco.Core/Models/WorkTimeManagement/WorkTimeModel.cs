@@ -9,7 +9,6 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public WorkTimeModel(WorkTime domain)
         {
             Id = domain.Id;
-            ServiceId = domain.ServiceId;
             Date = domain.Date;
             Hours = domain.Hours;
             Source = domain.Source;
@@ -27,9 +26,13 @@ namespace Sofco.Core.Models.WorkTimeManagement
                 TaskId = domain.TaskId;
                 TaskName = domain.Task.Description;
             }
-        }
 
-        public string ServiceId { get; set; }
+            if (domain.Analytic != null)
+            {
+                AnalyticId = domain.AnalyticId;
+                AnalyticName = domain.Analytic.Name;
+            }
+        }
 
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
@@ -46,5 +49,9 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string UserComment { get; set; }
 
         public string ApprovalComment { get; set; }
+
+        public int AnalyticId { get; set; }
+
+        public string AnalyticName { get; set; }
     }
 }
