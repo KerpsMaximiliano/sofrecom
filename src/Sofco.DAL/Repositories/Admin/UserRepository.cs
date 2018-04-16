@@ -60,7 +60,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals(ManagerDescription))
+                .Where(x => x.Group.Description.Equals(ManagerDescription) || x.Group.Code == emailConfig.DirectorsCode)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();

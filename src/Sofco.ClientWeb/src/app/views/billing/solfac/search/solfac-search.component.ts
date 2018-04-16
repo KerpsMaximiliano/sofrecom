@@ -13,6 +13,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
 import { MenuService } from 'app/services/admin/menu.service';
+import { EmployeeService } from '../../../../services/allocation-management/employee.service';
 
 declare var moment: any;
 
@@ -46,6 +47,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private service: SolfacService,
         private customerService: CustomerService,
+        private employeeService: EmployeeService,
         private messageService: MessageService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
@@ -107,7 +109,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     getUserOptions() {
-        this.userService.getOptions().subscribe(d => {
+        this.employeeService.getManagers().subscribe(d => {
           this.userApplicants = d;
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -173,7 +175,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
         let managerId = "";
         if(this.userApplicantId != '0'){
-            let manager = this.userApplicants.filter(item => item.value == this.userApplicantId);
+            let manager = this.userApplicants.filter(item => item.id == this.userApplicantId);
 
             if(manager && manager.length > 0){
                 managerId = manager[0].externalId;
