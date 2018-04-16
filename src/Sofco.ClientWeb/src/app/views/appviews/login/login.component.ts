@@ -54,8 +54,10 @@ export class LoginComponent implements OnInit {
         this.userSubscrip = this.userService.getByEmail().subscribe(
             response => {
                 const userData = response;
+                const userName = userData.name;
+                userData.name = encodeURIComponent(userName);
                 Cookie.set('userInfo', JSON.stringify(userData));
-                this.menuService.currentUser = userData.name;
+                this.menuService.currentUser = userName;
                 this.menuService.user = userData;
             },
             error => this.errorHandlerService.handleErrors(error)
