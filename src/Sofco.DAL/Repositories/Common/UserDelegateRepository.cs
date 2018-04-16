@@ -30,7 +30,6 @@ namespace Sofco.DAL.Repositories.Common
             return UserDelegateSet
                 .Where(s => s.UserId == userId && s.Type == type)
                 .ToList();
-
         }
 
         public UserDelegate Save(UserDelegate userDelegate)

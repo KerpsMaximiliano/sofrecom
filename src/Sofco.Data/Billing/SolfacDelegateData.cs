@@ -47,16 +47,18 @@ namespace Sofco.Data.Billing
                 .Select(solfacDelegate => serviceData.GetService(solfacDelegate.ServiceId))
                 .Select(service =>
                 {
-                    var user = userData.GetByManagerId(service.ManagerId);
+                    var user = userData.GetByExternalManagerId(service.ManagerId);
 
-                    return user.UserName;
+                    return user != null ? user.UserName : string.Empty;
 
                 })
+                .Where(s => !string.IsNullOrEmpty(s))
+                .Distinct()
                 .ToList();
 
             result.Add(userName);
 
-            return result.Distinct().ToList();
+            return result;
         }
     }
 }

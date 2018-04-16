@@ -18,7 +18,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query)
         {
-            Expression<Func<Employee, bool>> where = e => e.EndDate == null;
+            Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any();
 
             if (query.CustomerId != Guid.Empty)
             {
@@ -108,6 +108,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Service = allocation?.Analytic?.Service,
                 ManagerId = managerId,
                 ApprovalName = firstWorkTimeApproval?.ApprovalUser?.Name,
+                ClientId = allocation?.Analytic?.ClientExternalId,
+                ServiceId = allocation?.Analytic?.ServiceId,
                 WorkTimeApproval = firstWorkTimeApproval
             };
         }
