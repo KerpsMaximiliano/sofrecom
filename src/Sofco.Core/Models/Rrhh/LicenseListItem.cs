@@ -13,6 +13,7 @@ namespace Sofco.Core.Models.Rrhh
             WithPayment = license.WithPayment;
             Status = license.Status.ToString();
             HasCertificate = license.HasCertificate;
+            CreationDate = license.CreationDate;
 
             Days = EndDate.Date.Subtract(StartDate.Date).Days + 1;
 
@@ -35,6 +36,8 @@ namespace Sofco.Core.Models.Rrhh
         }
 
         public bool HasCertificate { get; set; }
+
+        public DateTime CreationDate { get; }
 
         public int Id { get; set; }
 

@@ -189,6 +189,7 @@
                                     <tr>
                                         <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
                                         <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
+                                        <th class="column-sm">{{ 'rrhh.license.creation' | translate }}</th>
                                         <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
                                         <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
                                         <th class="column-sm text-center"> {{ 'rrhh.license.status' | translate }} </th>
@@ -198,6 +199,7 @@
                                     <tr *ngFor="let item of licenses" class="pointer" (click)="goToDetail(item)">
                                         <td class="column-lg"> {{ item.managerName }} </td>
                                         <td class="column-lg"> {{ item.licenseTypeName }} </td>
+                                        <td class="column-sm"> {{ item.creationDate | date:'dd/MM/yyyy' }} </td>
                                         <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
                                         <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
                                         <td class="column-sm text-ellipsis"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
