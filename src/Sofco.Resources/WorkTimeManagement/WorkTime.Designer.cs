@@ -107,6 +107,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.monthError.
+        /// </summary>
+        public static string MonthError {
+            get {
+                return ResourceManager.GetString("MonthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.searchNotFound.
         /// </summary>
         public static string SearchNotFound {
@@ -130,6 +139,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string UserRequired {
             get {
                 return ResourceManager.GetString("UserRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.yearError.
+        /// </summary>
+        public static string YearError {
+            get {
+                return ResourceManager.GetString("YearError", resourceCulture);
             }
         }
     }

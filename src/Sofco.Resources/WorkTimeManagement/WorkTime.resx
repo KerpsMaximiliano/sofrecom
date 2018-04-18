@@ -132,6 +132,9 @@
   <data name="HoursWrong" xml:space="preserve">
     <value>workTimeManagement/workTime.hoursWrong</value>
   </data>
+  <data name="MonthError" xml:space="preserve">
+    <value>workTimeManagement/workTime.monthError</value>
+  </data>
   <data name="SearchNotFound" xml:space="preserve">
     <value>workTimeManagement/workTime.searchNotFound</value>
   </data>
@@ -140,5 +143,8 @@
   </data>
   <data name="UserRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.userRequired</value>
+  </data>
+  <data name="YearError" xml:space="preserve">
+    <value>workTimeManagement/workTime.yearError</value>
   </data>
 </root>

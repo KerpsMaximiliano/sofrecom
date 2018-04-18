@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Enums;
 using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.WorkTimeManagement
@@ -27,7 +28,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
         public IList<WorkTime> Search(WorktimeHoursApprovedParams parameters)
         {
-            IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task);
+            IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License);
 
             if (parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId);

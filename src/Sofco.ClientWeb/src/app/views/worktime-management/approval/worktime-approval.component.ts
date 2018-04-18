@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Component } from "@angular/core";
+import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Router } from "@angular/router";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -8,6 +8,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { WorktimeService } from "app/services/worktime-management/worktime.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -29,6 +30,18 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     public analyticId: number = 0;
     public employeeId: number = 0;
+    public comments: string;
+
+    @ViewChild('commentsModal') commentsModal;
+
+    public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "comments",
+        "commentsModal",
+        false,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.close"
+    );
 
     constructor(private employeeService: EmployeeService,
         private analyticService: AnalyticService,
@@ -131,5 +144,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
         this.datatableService.destroy(options.selector);
         this.datatableService.init2(options);
+    }
+
+    showComments(item){
+        this.comments = item.comments;
+        this.commentsModal.show();
     }
 }

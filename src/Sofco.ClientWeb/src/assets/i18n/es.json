@@ -718,6 +718,18 @@
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
+        "approval": "Aprobacion",
+        "approvalHours": "Aprobacion de horas",
+        "hoursPending": "Horas Pendientes Aprobacion",
+        "hoursApproved": "Horas Aprobadas",
+        "analytic": "Analitica-Servicio",
+        "employee": "Legajo-Nombre",
+        "task":"Tarea",
+        "date": "Fecha",
+        "hours": "Horas",
+        "comments": "Comentarios",
+        "status": "Estado",
+        "monthYear": "Mes-Año",
         "workTime": {
             "title": "Cargas de Horas"
         },
