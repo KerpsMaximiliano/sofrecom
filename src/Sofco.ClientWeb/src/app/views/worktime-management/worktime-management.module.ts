@@ -13,14 +13,16 @@ import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { WorkTimeComponent } from './worktime/worktime.component';
+import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
+import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 
 @NgModule({
-  declarations: [WorkTimeComponent],
+  declarations: [WorkTimeComponent, WorkTimeApprovalComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],
 
-  providers   : [],
+  providers   : [WorktimeService],
 
   exports     : []
 })

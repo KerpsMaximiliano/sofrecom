@@ -67,10 +67,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(analyticService.GetOptions());
         }
 
-        [HttpGet("{id}/resources")]
-        public IActionResult GetResources(int id)
+        [HttpGet("{id}/resources/timeline")]
+        public IActionResult GetTimelineResources(int id)
         {
-            var responseResources = analyticService.GetResources(id);
+            var responseResources = analyticService.GetTimelineResources(id);
 
             var model = responseResources.Data.Select(x => new ResourceForAnalyticsModel(x));
 
@@ -79,6 +79,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             response.AddMessages(responseResources.Messages);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}/resources")]
+        public IActionResult GetResources(int id)
+        {
+            return Ok(analyticService.GetResources(id));
         }
 
         [HttpPost]

@@ -107,6 +107,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.searchNotFound.
+        /// </summary>
+        public static string SearchNotFound {
+            get {
+                return ResourceManager.GetString("SearchNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.taskRequired.
         /// </summary>
         public static string TaskRequired {

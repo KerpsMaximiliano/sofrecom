@@ -33,5 +33,13 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("hoursApproved")]
+        public IActionResult GetHoursApproved([FromBody] WorktimeHoursApprovedParams model)
+        {
+            var response = workTimeService.GetHoursApproved(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

@@ -132,6 +132,9 @@
   <data name="HoursWrong" xml:space="preserve">
     <value>workTimeManagement/workTime.hoursWrong</value>
   </data>
+  <data name="SearchNotFound" xml:space="preserve">
+    <value>workTimeManagement/workTime.searchNotFound</value>
+  </data>
   <data name="TaskRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.taskRequired</value>
   </data>
