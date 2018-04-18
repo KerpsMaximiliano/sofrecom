@@ -59,6 +59,7 @@ namespace Sofco.UnitTest.Services.Billing
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
 
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
+            solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
 
             crmInvoiceServiceMock.Setup(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>())).Returns(new Response());
 
