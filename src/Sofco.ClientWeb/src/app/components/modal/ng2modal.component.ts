@@ -23,6 +23,7 @@ export class Ng2ModalComponent implements OnInit {
   @Input() size;
 
   @Input() isLoading: boolean = false;
+  @Input() isSaveEnabled: boolean = true;
 
   constructor() { }
 

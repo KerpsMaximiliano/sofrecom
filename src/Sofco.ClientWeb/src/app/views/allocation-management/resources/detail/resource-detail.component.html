@@ -256,7 +256,7 @@
     </div>
 </div> 
 
-<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()" [isLoading]="isLoading">
+<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()" [isLoading]="isLoading" [isSaveEnabled]="canUpdateBusinessHours()">
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }}: </label>
         <input class="form-control" type="number" min="1" max="8" [(ngModel)]="businessHours" />

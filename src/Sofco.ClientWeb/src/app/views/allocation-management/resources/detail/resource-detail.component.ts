@@ -176,4 +176,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(error)
         });
     }
+
+    canUpdateBusinessHours(){
+        if(this.businessHours > 0 && this.businessHoursDescription && this.businessHoursDescription != ''){
+            return true;
+        }
+
+        return false;
+    }
 } 
