@@ -57,7 +57,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if(this.resourceId > 0){
-            this.getAllocations(this.resourceId, this.dateSince);
+            this.getAllocations(this.resourceId, this.dateSince, false);
         }
     }
 
@@ -66,7 +66,11 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         if(this.addSubscrip) this.addSubscrip.unsubscribe();
     }
 
-    getAllocations(resourceId, dateSince){
+    getAllocations(resourceId, dateSince, cleanModel){
+
+        if(cleanModel && this.model){
+            this.model.allocations = [];
+        }
 
         this.dateSince = dateSince;
 
@@ -216,7 +220,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             this.isEditingAnyRow = false;
             this.allocationSelected.edit = false;
 
-            this.getAllocations(this.resourceId, this.dateSince);
+            this.getAllocations(this.resourceId, this.dateSince, false);
 
             this.rowEditing = [];
             this.totalsAux = [];
