@@ -12,9 +12,9 @@ namespace Sofco.WebApi.Models.Rrhh
 
         public int SectorId { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public int TypeId { get; set; }
 
@@ -45,8 +45,8 @@ namespace Sofco.WebApi.Models.Rrhh
             domain.EmployeeId = EmployeeId;
             domain.ManagerId = ManagerId;
             domain.SectorId = SectorId;
-            domain.StartDate = StartDate;
-            domain.EndDate = EndDate;
+            domain.StartDate = StartDate.GetValueOrDefault();
+            domain.EndDate = EndDate.GetValueOrDefault();
             domain.TypeId = TypeId;
             domain.WithPayment = WithPayment;
             domain.DaysQuantity = DaysQuantity;
