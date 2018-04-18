@@ -344,9 +344,9 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
     changeIcon() {
         if ($("#collapseOne").hasClass('in')) {
-            $("#search-icon").toggleClass('fa-angle-down').toggleClass('fa-angle-left');
+            $("#search-icon").toggleClass('fa-minus').toggleClass('fa-plus');
         } else {
-            $("#search-icon").toggleClass('fa-angle-left').toggleClass('fa-angle-down');
+            $("#search-icon").toggleClass('fa-plus').toggleClass('fa-minus');
         }
     }
 }
