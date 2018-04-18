@@ -38,7 +38,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     getAllAllocationsSubscrip: Subscription;
     addSubscrip: Subscription;
 
-    releaseDate: Date = new Date();
+    releaseDate: Date;
 
     public allocationSelected: any;
     public isEditingAnyRow: boolean = false;
@@ -180,7 +180,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     confirm(allocation){
         this.allocationSelected = allocation;
 
-        let date = new Date();
+        let date;
 
         allocation.months.forEach(element => {
             if(element.percentage > 0){
@@ -200,7 +200,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     }
 
     save(){
-        if(this.releaseDate.getMonth() != this.monthLastAllocation){
+        if(this.releaseDate && this.releaseDate.getMonth() != this.monthLastAllocation){
             this.messageService.showErrorByFolder("allocationManagement/allocation", "monthDifferent");
             return;
         }   

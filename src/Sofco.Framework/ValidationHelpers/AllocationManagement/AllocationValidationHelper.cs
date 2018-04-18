@@ -42,9 +42,12 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
         public static void ValidateReleaseDate(Response<Allocation> response, AllocationDto allocation)
         {
-            if (!allocation.ReleaseDate.HasValue || allocation.ReleaseDate == DateTime.MinValue)
+            if (allocation.Months.Any(x => x.Percentage.GetValueOrDefault() > 0))
             {
-                response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.ReleaseDateIsRequired, MessageType.Error));
+                if (!allocation.ReleaseDate.HasValue || allocation.ReleaseDate == DateTime.MinValue)
+                {
+                    response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.ReleaseDateIsRequired, MessageType.Error));
+                }
             }
         }
     }
