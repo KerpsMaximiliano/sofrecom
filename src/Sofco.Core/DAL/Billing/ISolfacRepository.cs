@@ -34,5 +34,7 @@ namespace Sofco.Core.DAL.Billing
         bool HasAttachments(int solfacId);
         bool HasInvoices(int solfacId);
         IList<Hito> GetHitosBySolfacId(int solfacId);
+
+        decimal GetTotalAmountById(int solfacId);
     }
 }
