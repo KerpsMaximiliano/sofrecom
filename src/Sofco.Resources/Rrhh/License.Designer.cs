@@ -260,6 +260,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateIsWeekend.
+        /// </summary>
+        public static string StartDateIsWeekend {
+            get {
+                return ResourceManager.GetString("StartDateIsWeekend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.typeRequired.
         /// </summary>
         public static string TypeRequired {

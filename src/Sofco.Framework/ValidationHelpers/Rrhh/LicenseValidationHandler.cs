@@ -47,6 +47,11 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
             }
             else
             {
+                if (domain.StartDate.DayOfWeek == DayOfWeek.Saturday || domain.StartDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    response.AddError(Resources.Rrhh.License.StartDateIsWeekend);
+                }
+
                 if (domain.StartDate.Date > domain.EndDate.Date)
                 {
                     response.AddError(Resources.Rrhh.License.EndDateLessThanStartDate);

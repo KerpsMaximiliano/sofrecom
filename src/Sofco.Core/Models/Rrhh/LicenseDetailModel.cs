@@ -15,7 +15,7 @@ namespace Sofco.Core.Models.Rrhh
             StartDate = license.StartDate;
             EndDate = license.EndDate;
             WithPayment = license.WithPayment;
-            DaysQuantity = license.DaysQuantity;
+            DaysQuantity = license.DaysQuantityByLaw;
             HasCertificate = license.HasCertificate;
             Parcial = license.Parcial;
             Final = license.Final;

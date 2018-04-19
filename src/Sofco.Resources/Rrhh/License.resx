@@ -183,6 +183,9 @@
   <data name="SectorRequired" xml:space="preserve">
     <value>rrhh/license.sectorRequired</value>
   </data>
+  <data name="StartDateIsWeekend" xml:space="preserve">
+    <value>rrhh/license.startDateIsWeekend</value>
+  </data>
   <data name="TypeRequired" xml:space="preserve">
     <value>rrhh/license.typeRequired</value>
   </data>
