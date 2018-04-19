@@ -384,7 +384,7 @@ namespace Sofco.Service.Implementations.Billing
 
             return response;
         }
-
+         
         public Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();

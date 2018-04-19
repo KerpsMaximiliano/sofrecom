@@ -52,7 +52,10 @@ export class NewCertificateComponent implements OnDestroy {
         this.messageService.showLoading();
         
         var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
-        this.form.model.clientExternalName = client.text;
+
+        if(client){
+            this.form.model.clientExternalName = client.text;
+        }
 
         this.addSubscrip = this.certificateService.add(this.form.model).subscribe(
             response => {

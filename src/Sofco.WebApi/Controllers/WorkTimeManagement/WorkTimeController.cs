@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.WorkTimeManagement
 {
@@ -22,6 +24,22 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             var list = this.workTimeService.Get(date);
 
             return Ok(list);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] WorkTimeAddModel model)
+        {
+            var response = workTimeService.Add(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("hoursApproved")]
+        public IActionResult GetHoursApproved([FromBody] WorktimeHoursApprovedParams model)
+        {
+            var response = workTimeService.GetHoursApproved(model);
+
+            return this.CreateResponse(response);
         }
     }
 }

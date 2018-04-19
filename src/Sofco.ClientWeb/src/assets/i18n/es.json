@@ -599,6 +599,7 @@
             "type": "Licencia",
             "start": "Inicio",
             "end": "Fin",
+            "creation": "Alta",
             "days": "Días (habiles)",
             "goce": "Goce",
             "status": "Estado",
@@ -718,6 +719,18 @@
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
+        "approval": "Aprobacion",
+        "approvalHours": "Aprobacion de horas",
+        "hoursPending": "Horas Pendientes Aprobacion",
+        "hoursApproved": "Horas Aprobadas",
+        "analytic": "Analitica-Servicio",
+        "employee": "Legajo-Nombre",
+        "task":"Tarea",
+        "date": "Fecha",
+        "hours": "Horas",
+        "comments": "Comentarios",
+        "status": "Estado",
+        "monthYear": "Mes-Año",
         "workTime": {
             "title": "Cargas de Horas",
             "calendar": "Calendario",
@@ -733,5 +746,10 @@
             "workingHours": "Horas Laborales",
             "currentHoursToDate": "Horas a la fecha"
         }
+        "Draft": "Borrador",
+        "Sent": "Enviada",
+        "Approved": "Aprobada",
+        "Rejected": "Rechazada",
+        "License": "Licencia"
     }
 }  

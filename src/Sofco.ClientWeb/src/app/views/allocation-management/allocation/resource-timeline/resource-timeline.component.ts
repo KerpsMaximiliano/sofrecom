@@ -37,7 +37,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     getAllocations(analyticId){
         this.showTimeLine = false;
 
-        this.getAllSubscrip = this.analyticService.getResources(analyticId).subscribe(data => {
+        this.getAllSubscrip = this.analyticService.getTimelineResources(analyticId).subscribe(data => {
             if (data.messages) this.messageService.showMessages(data.messages);
 
             if (data.data && data.data.length > 0){

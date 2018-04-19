@@ -62,6 +62,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }).ToList();
         }
 
+        public IList<Option> GetResources(int id)
+        {
+            var list = unitOfWork.AnalyticRepository.GetResources(id);
+
+            return list.Select(x => new Option {Id = x.Id, Text = $"{x.EmployeeNumber}-{x.Name}"}).ToList();
+        }
+
         public ICollection<Analytic> GetAll()
         {
             return unitOfWork.AnalyticRepository.GetAllReadOnly();
@@ -96,11 +103,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<IList<Allocation>> GetResources(int id)
+        public Response<IList<Allocation>> GetTimelineResources(int id)
         {
             var response = new Response<IList<Allocation>>();
 
-            var resources = unitOfWork.AnalyticRepository.GetResources(id);
+            var resources = unitOfWork.AnalyticRepository.GetTimelineResources(id);
 
             if (!resources.Any())
             {

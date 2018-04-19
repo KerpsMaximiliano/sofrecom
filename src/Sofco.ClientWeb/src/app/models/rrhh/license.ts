@@ -18,8 +18,6 @@ export class License {
     public status: LicenseStatus;
 
     constructor(){
-        this.startDate = new Date();
-        this.endDate = new Date();
         this.withPayment = true;
     }
 }

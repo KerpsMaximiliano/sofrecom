@@ -1,0 +1,12 @@
+{
+    "addSuccess": "Horas cargadas exitosamente",
+    "analyticRequired": "La analitica es requerida",
+    "dateRequired": "La fecha es requerida",
+    "employeeRequired": "El empleado es requerido",
+    "hoursWrong": "La cantidad de horas es requerida",
+    "searchNotFound": "No se han encontrados resultados con los parametros especificados",
+    "taskRequired": "La tarea es requerida",
+    "userRequired": "El usuario es requerido",
+    "monthError": "Mes invalido",
+    "yearError": "Año invalido"
+}

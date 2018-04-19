@@ -20,6 +20,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}`);
   }
 
+  getTimelineResources(id) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources/timeline`);
+  }
+
   getResources(id) {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources`);
   }

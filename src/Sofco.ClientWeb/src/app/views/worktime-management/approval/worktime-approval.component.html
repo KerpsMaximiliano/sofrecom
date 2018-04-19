@@ -1,0 +1,106 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'workTimeManagement.approvalHours' | translate }} </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li>{{'workTimeManagement.title' | translate }}</li>
+            <li class="active"><strong> {{'workTimeManagement.approval' | translate }} </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="tabs-container m-b-md">
+        <ul class="nav nav-tabs">
+            <li class="active"><a class="tab-link-warning" data-toggle="tab" href="#tab-1"> {{'workTimeManagement.hoursPending' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2"> {{'workTimeManagement.hoursApproved' | translate }} </a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body tab-warning">
+                    <table class="table table-striped" id="hoursPending" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="column-lg"> {{'workTimeManagement.analytic' | translate }} </th>
+                                <th class="column-lg"> {{'workTimeManagement.employee' | translate }} </th>
+                                <th class="column-md"> {{'workTimeManagement.task' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.date' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.hours' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.comments' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.status' | translate }} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of hoursPending">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>  
+                </div>
+            </div> 
+
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body tab-primary">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="getEmployees()"></select-two>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <select-two [label]="'rrhh.license.employee'" [(value)]="employeeId" [options]="employees"></select-two>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">{{'workTimeManagement.monthYear' | translate }}</label>
+                                <input type="text" class="form-control" id="monthyear" placeholder="mm-aaaa" data-mask="99-9999" >
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-2 action-buttons">
+                            <button class="btn btn-warning btn-sm m-r-xs" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <table class="table table-striped" id="hoursApproved" width="100%" *ngIf="hoursApproved.length > 0">
+                        <thead>
+                            <tr>
+                                <th class="column-xlg"> {{'workTimeManagement.analytic' | translate }} </th>
+                                <th class="column-xlg"> {{'workTimeManagement.employee' | translate }} </th>
+                                <th class="column-md"> {{'workTimeManagement.task' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.date' | translate }} </th>
+                                <th class="column-xs text-center"> {{'workTimeManagement.hours' | translate }} </th>
+                                <th class="column-xs text-center"> {{'workTimeManagement.comments' | translate }} </th>
+                                <th class="column-xs text-center"> {{'workTimeManagement.status' | translate }} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of hoursApproved">
+                                <td class="column-xlg">{{ item.analytic }}</td>
+                                <td class="column-xlg">{{ item.employee }}</td>
+                                <td class="column-md">{{ item.task }}</td>
+                                <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
+                                <td class="column-xs text-center">{{ item.hours }} hs</td>
+                                <td class="column-xs text-center"><button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button></td>
+                                <td class="column-xs text-center"><span class="label label-worktime-{{item.status}} font-11">{{ ('workTimeManagement.' + item.status) | translate  }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="commentsModalConfig" #commentsModal>
+    <pre class="pre-clear">{{ comments }}</pre>
+</ng2-modal>

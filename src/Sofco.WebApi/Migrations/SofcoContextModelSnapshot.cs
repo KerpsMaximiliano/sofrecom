@@ -1162,6 +1162,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AnalyticId");
+
                     b.Property<string>("ApprovalComment")
                         .HasMaxLength(500);
 
@@ -1174,9 +1176,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("EmployeeId");
 
                     b.Property<int>("Hours");
-
-                    b.Property<string>("ServiceId")
-                        .HasMaxLength(100);
 
                     b.Property<string>("Source")
                         .HasMaxLength(50);
@@ -1191,6 +1190,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
 
                     b.HasIndex("ApprovalUserId");
 
@@ -1689,6 +1690,10 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Model.Models.WorkTimeManagement.WorkTime", b =>
                 {
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("WorkTimes")
+                        .HasForeignKey("AnalyticId");
+
                     b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
                         .WithMany("WorkTimes2")
                         .HasForeignKey("ApprovalUserId");

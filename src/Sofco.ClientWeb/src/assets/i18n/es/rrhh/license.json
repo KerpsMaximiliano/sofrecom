@@ -1,5 +1,5 @@
 {
-    "employeeRequired": "EL solicitante es requerido",
+    "employeeRequired": "El solicitante es requerido",
     "employeeNotFound": "Solicitante no encontrado",
     "managerRequired": "El superior es requerido",
     "managerNotFound": "Superior no encontrado",
@@ -15,7 +15,7 @@
     "notFound": "Licencia no encontrada",
     "fileAdded": "Archivo cargado exitosamente",
     "licenseTypeUpdate": "Licencias actualizadas",
-    "examTypeRequired": "Se debe seleccionar solo un tipo de examen",
+    "examTypeRequired": "Debe seleccionar un tipo de examen",
     "rejectSuccess": "La licencia ha sido rechazada exitosamente",
     "pendingSuccess": "La licencia quedo en Pendiente de Aprobación correctamente",
     "cannotChangeStatus": "No se puede cambiar el estado",

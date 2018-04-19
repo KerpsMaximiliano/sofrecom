@@ -12,7 +12,6 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
-using Sofco.DAL;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -59,6 +58,7 @@ namespace Sofco.UnitTest.Services.Billing
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
 
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
+            solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
 
             crmInvoiceServiceMock.Setup(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>())).Returns(new Response());
 

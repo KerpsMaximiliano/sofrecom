@@ -23,6 +23,7 @@ namespace Sofco.Core.Models.Rrhh
             ExamDescription = license.ExamDescription;
             Status = license.Status;
             StatusName = license.Status.ToString();
+            CreationDate = license.CreationDate;
 
             if (license.Employee != null)
             {
@@ -58,7 +59,7 @@ namespace Sofco.Core.Models.Rrhh
         }
 
         public string StatusName { get; set; }
-
+        public DateTime CreationDate { get; }
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 

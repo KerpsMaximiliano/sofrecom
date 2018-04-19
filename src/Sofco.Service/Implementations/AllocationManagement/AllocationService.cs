@@ -117,7 +117,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     if (!allocationDto.ReleaseDate.HasValue)
                     {
-                        allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date ?? DateTime.UtcNow;
+                        allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date == DateTime.MinValue ? null : allocationMonth?.ReleaseDate.Date;
                     }
 
                     allocationDto.Months.Add(allocationMonthDto);

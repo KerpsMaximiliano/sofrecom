@@ -207,5 +207,13 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Hitos.Where(x => x.SolfacId == solfacId).ToList();
         }
+
+        public decimal GetTotalAmountById(int solfacId)
+        {
+            return context.Solfacs
+                .Where(s => s.Id == solfacId)
+                .Select(s => s.TotalAmount)
+                .FirstOrDefault();
+        }
     }
 }
