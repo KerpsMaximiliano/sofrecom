@@ -94,13 +94,16 @@ namespace Sofco.Service.Implementations.Jobs
 
             if (days > 6)
             {
+                employee.HolidaysPendingByLaw = days;
                 days -= 2;
             }
             else if (days == 6)
             {
+                employee.HolidaysPendingByLaw = days;
                 days--;
             }
 
+            employee.HolidaysByLaw = holidaysValues["Holidays10Days"];
             employee.HolidaysPending = days;
         }
 
@@ -142,8 +145,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void CalculateDaysPending(Employee employee, string key)
         {
-            employee.HolidaysPending += holidaysValues[key];
+            employee.HolidaysPending += GetBusinessHolidyas(holidaysValues[key]);
             employee.HolidaysByLaw = holidaysValues[key];
+            employee.HolidaysPendingByLaw += holidaysValues[key];
 
             if (employee.HasExtraHolidays)
             {
@@ -156,6 +160,17 @@ namespace Sofco.Service.Implementations.Jobs
             var days = new DateTime(DateTime.UtcNow.Year, 12, 31).Subtract(employee.StartDate.Date).Days + 1;
 
             return days;
+        }
+
+        private int GetBusinessHolidyas(int days)
+        {
+            if (days >= 1 && days <= 7) return 5;
+            if (days >= 8 && days <= 14) return 10;
+            if (days >= 15 && days <= 21) return 15;
+            if (days >= 22 && days <= 28) return 20;
+            if (days >= 29 && days <= 35) return 25;
+
+            return 0;
         }
     }
 }

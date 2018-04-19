@@ -40,6 +40,16 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.TypeId == 1)
             {
                 license.Employee.HolidaysPending -= license.DaysQuantity;
+
+                if (license.Employee.HolidaysPending == 0)
+                {
+                    license.Employee.HolidaysPendingByLaw = 0;
+                }
+                else
+                {
+                    license.Employee.HolidaysPendingByLaw -= license.DaysQuantityByLaw;
+                }
+
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 

@@ -63,6 +63,8 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public int HolidaysByLaw { get; set; }
 
+        public int HolidaysPendingByLaw { get; set; }
+
         public int BusinessHours { get; set; }
 
         public string BusinessHoursDescription { get; set; }

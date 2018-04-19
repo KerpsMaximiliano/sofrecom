@@ -23,5 +23,6 @@
     "approveSuccess": "La licencia ha sido aprobada exitosamente",
     "approvePendingSuccess": "La licencia quedo en Aprobada / Documetanción Pendiente correctamente",
     "updateSuccess": "La licencia se actualizo correctamente",
-    "wrongCertificateMonthQuantity": "El dia del mes debe ser mayor o igual a 1 y menor o igual a 28"
+    "wrongCertificateMonthQuantity": "El dia del mes debe ser mayor o igual a 1 y menor o igual a 28",
+    "startDateIsWeekend": "La licencia debe comenzar en día lunes o el siguiente hábil si aquél fuese feriado."
 }
