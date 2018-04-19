@@ -26,7 +26,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     @ViewChild('confirmDeleteFileModal') confirmModal;
     @ViewChild('pdfViewer') pdfViewer: any;
     
-    public certificates: Option[] = new Array<Option>();
+    public certificates: any[] = new Array();
     public certificatesRelated: any[] = new Array();
     public files: any[] = new Array<any>();
     fileId: number;
@@ -167,7 +167,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             this.certificatesRelated.splice(this.index, 1);
 
             this.certificates.push(new Option(this.certificateId.toString(), this.certificateName));
-            $("#certificate").select2('data', {value: this.certificateId.toString(), text: this.certificateName});   
+            $("#certificate").select2('data', {id: this.certificateId.toString(), text: this.certificateName});   
           },
           err => this.errorHandlerService.handleErrors(err),
         () => this.confirmModal.hide());
@@ -198,7 +198,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             });
   
             this.certificates = this.certificates.filter(item => {
-              if(!certificates.includes(item.value)) return item;
+              if(!certificates.includes(item.id)) return item;
   
               return null;
             })

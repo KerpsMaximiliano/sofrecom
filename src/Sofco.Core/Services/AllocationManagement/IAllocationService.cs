@@ -13,6 +13,6 @@ namespace Sofco.Core.Services.AllocationManagement
         AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
         ICollection<Employee> GetByService(string serviceId);
         Response<AllocationReportModel> CreateReport(AllocationReportParams parameters);
-        IList<decimal> GetAllPercentages();
+        IEnumerable<OptionPercentage> GetAllPercentages();
     }
 }

@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label class="control-label">{{'billing.certificate.title' | translate }}</label>
                     <select id="certificate" select2 multiple class="form-control">
-                        <option *ngFor="let certificate of certificates" [value]="certificate?.value">{{certificate?.text}}</option>
+                        <option *ngFor="let certificate of certificates" [value]="certificate?.id">{{certificate?.text}}</option>
                     </select>
                 </div>
             </div>
