@@ -14,18 +14,75 @@
 </div>
     
 <div class="wrapper wrapper-content animated fadeInUp">
-    <div class="ibox">
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
+    <div class="row">
+
+        <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>{{ 'workTimeManagement.workTime.calendar' | translate }}</h3>
+                        </div>
+                        <div class="col-md-6 text-right"><button class="btn btn-primary" (click)="sendHours()"> {{ 'workTimeManagement.workTime.sendHours' | translate }} <i class="fa fa-arrow-circle-right"></i></button></div>
                     </div>
+                    <hr>
+                    <ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+                        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <button class="btn btn-success" style="width:100%" (click)="sendHours()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
+                    </div>
+                    <div class="row">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
+                                <iboxtools #boxtools></iboxtools>
+                            </div>
+                            <div class="ibox-content">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{ 'workTimeManagement.workTime.resume' | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <dl class="dl-horizontal">
+                        <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
+                        <dd class="bg-primary">20 hs</dd>
+                        <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
+                        <dd class="bg-danger">4 hs</dd>
+                        <dt class="bg-warning">{{ 'workTimeManagement.workTime.pendingToSend' | translate }}</dt>
+                        <dd class="bg-warning">4 hs</dd>
+                        <dt class="bg-success">{{ 'workTimeManagement.workTime.pendingToApprove' | translate }}</dt>
+                        <dd class="bg-success">4 hs</dd>
+                        <dt>{{ 'workTimeManagement.workTime.totalResume' | translate }}</dt>
+                        <dd>68 hs</dd>
+                        <hr style="margin:0px">
+                        <dt>{{ 'workTimeManagement.workTime.workingHours' | translate }}</dt>
+                        <dd>160 hs</dd>
+                        <dt>{{ 'workTimeManagement.workTime.currentHoursToDate' | translate }}</dt>
+                        <dd>48 hs</dd>
+                    </dl>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<ng2-modal [config]="modalConfig" #confirmModal (accept)="processDelete()">
+<ng2-modal [config]="modalConfig" #confirmModal>
     <h4>{{ 'allocationManagement.workTimeApproval.delegate.deleteConfirm' | translate }}</h4>
 </ng2-modal>

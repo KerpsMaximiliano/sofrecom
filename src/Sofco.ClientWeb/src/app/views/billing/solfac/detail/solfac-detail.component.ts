@@ -102,7 +102,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(event.cashedDate) this.model.cashedDate = event.cashedDate;
     }
 
-    printSolfac(){
+    printSolfac() {
         window.print();
     }
 }

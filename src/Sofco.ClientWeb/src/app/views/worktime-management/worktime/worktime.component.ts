@@ -11,11 +11,13 @@ import { DataTableService } from 'app/services/common/datatable.service';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
-declare var $: any;
+import { CalendarComponent } from 'ng-fullcalendar';
+import { Options } from 'fullcalendar';
 
 @Component({
     selector: 'app-worktime',
-    templateUrl: './worktime.component.html'
+    templateUrl: './worktime.component.html',
+    styleUrls: ['./worktime.component.scss']
   })
 
 export class WorkTimeComponent implements OnInit, OnDestroy {
@@ -29,6 +31,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     private textKey = 'text';
 
     private itemSelected: any;
+
+    calendarOptions: Options;
 
     public loading = false;
 
@@ -53,11 +57,50 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.calendarOptions = {
+          weekends: true,
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: false, // allow "more" link when too many events
+            events: [
+              {
+                title: '8 h - Gestión de Servicio',
+                start: '2018-01-01',
+              },
+              {
+                title: '8 h - Gestión de Servicio',
+                start: '2018-04-07',
+                end: '2018-04-10'
+              },
+              {
+                id: 999,
+                title: '4 h - Gestión de Servicio',
+                start: '2018-04-16T09:00:00'
+              },
+              {
+                title: '8 h - Gestión de Servicio',
+                start: '2018-04-12T09:00:00'
+              },
+              {
+                title: '6 h - Gestión de Servicio',
+                start: '2018-04-13T09:00:00'
+              }
+            ]
+          };
     }
 
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    sendHours() {
+      console.log('> sendHours ---');
     }
 }

@@ -13,12 +13,16 @@ import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { WorkTimeComponent } from './worktime/worktime.component';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import 'fullcalendar/dist/locale/es.js';
+import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
 
 @NgModule({
   declarations: [WorkTimeComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],
+  imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, 
+    TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule,
+    FullCalendarModule, IboxtoolsModule],
 
   providers   : [],
 
