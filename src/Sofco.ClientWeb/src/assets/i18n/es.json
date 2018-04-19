@@ -547,7 +547,8 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Ejecutivo de Cuenta",
-                "status": "Estado"
+                "status": "Estado",
+                "allocationPercentage": "% Asig"
             },
             "status": {
                 "open": "Abierta",

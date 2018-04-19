@@ -261,7 +261,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var firstAllocation = analityc.Allocations.FirstOrDefault();
 
-                model.Allocations.Add(new EmployeeAllocationModel
+                var item = new EmployeeAllocationModel
                 {
                     Title = analityc.Title,
                     Name = analityc.Name,
@@ -269,7 +269,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Service = analityc.Service,
                     StartDate = firstAllocation?.StartDate,
                     ReleaseDate = firstAllocation?.ReleaseDate,
-                });
+                };
+
+                var allocationThisMonth = analityc.Allocations.FirstOrDefault(x => x.StartDate == new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1));
+                if (allocationThisMonth != null)
+                {
+                    item.AllocationPercentage = allocationThisMonth.Percentage;
+                }
+
+                model.Allocations.Add(item);
             }
 
             model.History = Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));

@@ -15,5 +15,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public DateTime? StartDate { get; set; }
 
         public DateTime? ReleaseDate { get; set; }
+
+        public decimal AllocationPercentage { get; set; }
     }
 }
