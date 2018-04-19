@@ -779,10 +779,13 @@ namespace Sofco.Service.Implementations.Billing
 
                     if (certificate != null)
                     {
-                        var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
-                        unitOfWork.SolfacCertificateRepository.Insert(solfacCertificate);
+                        if (!unitOfWork.SolfacCertificateRepository.Exist(id, certificateId))
+                        {
+                            var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
+                            unitOfWork.SolfacCertificateRepository.Insert(solfacCertificate);
 
-                        response.Data.Add(certificate);
+                            response.Data.Add(certificate);
+                        }
                     }
                     else
                     {
