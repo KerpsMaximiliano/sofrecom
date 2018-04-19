@@ -65,20 +65,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!parameters.IncludeStaff)
                 query = query.Where(x => x.Employee.BillingPercentage != 0);
 
-            if (parameters.Percentage.HasValue)
-            {
-                if (parameters.Percentage == 999)
-                    query = query.Where(x => x.Percentage != 100);
-                else
-                    query = query.Where(x => x.Percentage == parameters.Percentage);
-            }
+            //if (parameters.Percentage.HasValue)
+            //{
+            //    if (parameters.Percentage == 999)
+            //        query = query.Where(x => x.Percentage != 100);
+            //    else
+            //        query = query.Where(x => x.Percentage == parameters.Percentage);
+            //}
 
             return query.Select(x => x.Employee).Distinct().ToList();
-        }
-
-        public IList<decimal> GetAllPercentages()
-        {
-            return context.Allocations.Select(x => x.Percentage).Distinct().ToList();
         }
 
         public void RemoveAllocationByAnalytic(int analyticId, DateTime today)

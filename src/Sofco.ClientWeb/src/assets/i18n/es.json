@@ -706,6 +706,13 @@
     "Pending": "Pendiente Aprobación",
     "ApprovePending": "Aprobada / Documentación pendiente",
     "AuthPending": "Pendiente Autorización",
+    "Differente100": "<> 100",
+    "Equals100": "= 100",
+    "Different0": "<> 0",
+    "Equals0": "= 0",
+    "Between0And50": "> 0 y < 50",
+    "Between50And75": "> 50 y < 75",
+    "Between75And99": "> 75 y < 99",
     "report":{
         "title": "Reporte",
         "solfacs": {

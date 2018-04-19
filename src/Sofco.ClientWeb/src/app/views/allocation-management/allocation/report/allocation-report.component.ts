@@ -112,6 +112,19 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             analyticId: $('#analyticId').val() == 0 ? null : $('#analyticId').val(),
             employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
             percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),
+            startPercentage: 0,
+            endPercentage: 0
+        }
+
+        var percentageSelected = $('#percentageId').val();
+
+        if(percentageSelected > 0){
+            var percentage = this.percentages.filter(x => x.id == percentageSelected)[0];
+
+            if(percentage){
+                parameters.startPercentage = percentage.startValue;
+                parameters.endPercentage = percentage.endValue;
+            }
         }
 
         this.messageService.showLoading();

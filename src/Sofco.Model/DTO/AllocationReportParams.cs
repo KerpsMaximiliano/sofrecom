@@ -15,5 +15,9 @@ namespace Sofco.Model.DTO
         public decimal? Percentage { get; set; }
 
         public bool IncludeStaff { get; set; }
+
+        public decimal? StartPercentage { get; set; }
+
+        public decimal? EndPercentage { get; set; }
     }
 }

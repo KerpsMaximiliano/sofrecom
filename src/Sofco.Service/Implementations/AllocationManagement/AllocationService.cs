@@ -153,8 +153,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     {
 
                         if (parameters.AnalyticId.HasValue && parameters.AnalyticId != allocation.AnalyticId) continue;
-                        if (parameters.Percentage.HasValue && parameters.Percentage != 999 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
-                        if (parameters.Percentage.HasValue && parameters.Percentage == 999 && allocation.Months.All(x => x.Percentage == 100)) continue;
+                        //if (parameters.Percentage.HasValue && parameters.Percentage != (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
+                        //if (parameters.Percentage.HasValue && parameters.Percentage == (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage == 100)) continue;
+
+                        if(parameters.Percentage.HasValue && parameters.Percentage > 0 &&
+                            !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() && 
+                                                       x.Percentage <= parameters.EndPercentage.GetValueOrDefault())) continue;
 
                         var analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
 
@@ -187,9 +191,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public IList<decimal> GetAllPercentages()
+        public IEnumerable<OptionPercentage> GetAllPercentages()
         {
-            return unitOfWork.AllocationRepository.GetAllPercentages();
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Differente100, Text = AllocationPercentage.Differente100.ToString(), StartValue = 0, EndValue = 99 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Equals100, Text = AllocationPercentage.Equals100.ToString(), StartValue = 100, EndValue = 100 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Different0, Text = AllocationPercentage.Different0.ToString(), StartValue = 1, EndValue = 100 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Equals0, Text = AllocationPercentage.Equals0.ToString(), StartValue = 0, EndValue = 0 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between0And50, Text = AllocationPercentage.Between0And50.ToString(), StartValue = 0, EndValue = 50 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between50And75, Text = AllocationPercentage.Between50And75.ToString(), StartValue = 50, EndValue = 75 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between75And99, Text = AllocationPercentage.Between75And99.ToString(), StartValue = 75, EndValue = 99 };
         }
 
         private void SaveAllocation(AllocationDto allocationDto, Response response)

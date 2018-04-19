@@ -26,7 +26,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     @ViewChild('confirmDeleteFileModal') confirmModal;
     @ViewChild('pdfViewer') pdfViewer: any;
     
-    public certificates: Option[] = new Array<Option>();
+    public certificates: any[] = new Array();
     public certificatesRelated: any[] = new Array();
     public files: any[] = new Array<any>();
     fileId: number;
@@ -166,8 +166,8 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             if(response.messages) this.messageService.showMessages(response.messages);
             this.certificatesRelated.splice(this.index, 1);
 
-            this.certificates.push(new Option(this.certificateId.toString(), this.certificateName));
-            $("#certificate").select2('data', {value: this.certificateId.toString(), text: this.certificateName});   
+            this.certificates.push({ id: this.certificateId, text: this.certificateName });
+            $("#certificate").select2('data', {id: this.certificateId.toString(), text: this.certificateName});   
           },
           err => this.errorHandlerService.handleErrors(err),
         () => this.confirmModal.hide());
@@ -182,13 +182,13 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     }
 
     addCertificate(){
-        var certificates = <any>$('#certificate').val();
+        var certificatesValues = <any>$('#certificate').val();
   
-        if(certificates && certificates.length == 0) return;
+        if(certificatesValues && certificatesValues.length == 0) return;
   
         this.messageService.showLoading();
 
-        this.solfacService.addCertificates(this.solfacId, certificates).subscribe(data => {
+        this.solfacService.addCertificates(this.solfacId, certificatesValues).subscribe(data => {
           if(data.messages) this.messageService.showMessages(data.messages);
       
           if(data.data && data.data.length > 0){
@@ -198,7 +198,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             });
   
             this.certificates = this.certificates.filter(item => {
-              if(!certificates.includes(item.value)) return item;
+              if(!certificatesValues.includes(item.id.toString())) return item;
   
               return null;
             })

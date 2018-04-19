@@ -15,5 +15,10 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.SolfacCertificates.Any(x => x.SolfacId == solfacId);
         }
+
+        public bool Exist(int id, int certificateId)
+        {
+            return context.SolfacCertificates.Any(x => x.SolfacId == id && x.CertificateId == certificateId);
+        }
     }
 }
