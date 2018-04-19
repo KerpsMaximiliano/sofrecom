@@ -21,9 +21,9 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         [HttpGet("{date}")]
         public IActionResult Get(DateTime date)
         {
-            var list = this.workTimeService.Get(date);
+            var response = workTimeService.Get(date);
 
-            return Ok(list);
+            return this.CreateResponse(response);
         }
 
         [HttpPost]

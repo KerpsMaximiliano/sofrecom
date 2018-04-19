@@ -31,10 +31,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.logger = logger;
         }
 
-        public IList<WorkTimeModel> Get(DateTime date)
+        public Response<IList<WorkTimeModel>> Get(DateTime date)
         {
-            if(date == DateTime.MinValue) return new List<WorkTimeModel>();
+            if(date == DateTime.MinValue) return new Response<IList<WorkTimeModel>>();
 
+            var result = new Response<IList<WorkTimeModel>>();
             try
             {
                 var userName = sessionManager.GetUserName();
@@ -45,14 +46,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
 
-                var list = workTimes.Select(x => new WorkTimeModel(x)).ToList();
+                result.Data = workTimes.Select(x => new WorkTimeModel(x)).ToList();
 
-                return list;
+                return result;
             }
             catch (Exception e)
             {
                 logger.LogError(e);
-                return new List<WorkTimeModel>();
+
+                result.AddError(Resources.Common.GeneralError);
+
+                return result;
             }
         }
 

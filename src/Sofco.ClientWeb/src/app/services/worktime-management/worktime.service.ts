@@ -12,7 +12,7 @@ export class WorktimeService {
     this.baseUrl = this.service.UrlApi;
   }
 
-  getWorkTimeApproved(model){
+  getWorkTimeApproved(model) {
     return this.http.post<any>(`${this.baseUrl}/worktime/hoursApproved`, model);
   }
 }

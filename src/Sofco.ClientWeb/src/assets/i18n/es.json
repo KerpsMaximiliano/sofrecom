@@ -741,7 +741,19 @@
         "status": "Estado",
         "monthYear": "Mes-Año",
         "workTime": {
-            "title": "Cargas de Horas"
+            "title": "Cargas de Horas",
+            "calendar": "Calendario",
+            "sendHours": "Enviar horas",
+            "loadNewTask": "Cargar nueva tarea",
+            "taskPreloaded": "Tareas Pre-Cargadas",
+            "resume": "Resumen",
+            "approved": "Aprobadas",
+            "rejected": "Rechazadas",
+            "pendingToSend": "Pendientes de envío",
+            "pendingToApprove": "Pendientes de aprobación",
+            "totalResume": "Total resumen",
+            "workingHours": "Horas Laborales",
+            "currentHoursToDate": "Horas a la fecha"
         },
         "Draft": "Borrador",
         "Sent": "Enviada",
