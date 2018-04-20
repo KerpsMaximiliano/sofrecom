@@ -175,9 +175,9 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateCreditNote(Solfac solfac, ISolfacRepository solfacRepository, Response response)
         {
-            var hito = solfac.Hitos.First().SolfacId;
+            var solfacId = solfac.Hitos.First().SolfacId;
 
-            var totalLimit = solfacRepository.GetById(hito).TotalAmount;
+            var totalLimit = solfacRepository.GetTotalAmountById(solfacId);
 
             var hitosTotalImport = solfac.Hitos.Sum(s => s.Details.Sum(d => d.Total));
 

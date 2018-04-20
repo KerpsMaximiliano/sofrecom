@@ -122,7 +122,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.licenses = data;
 
             var params = {
-                selector: "#licenses"
+                selector: "#licenses",
+                columnDefs: [ {'aTargets': [2, 4, 5], "sType": "date-uk"} ]
             };
     
             this.dataTableService.init2(params);
@@ -175,5 +176,13 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.isLoading = false;
             this.errorHandlerService.handleErrors(error)
         });
+    }
+
+    canUpdateBusinessHours(){
+        if(this.businessHours > 0 && this.businessHoursDescription && this.businessHoursDescription != ''){
+            return true;
+        }
+
+        return false;
     }
 } 

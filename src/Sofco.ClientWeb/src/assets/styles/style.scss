@@ -208,27 +208,27 @@ ul.indented{
   color: black;
 }
 
-.label-license-Draft {
+.label-license-Draft, .label-worktime-Draft {
   background-color: gray;
   color: #FFFFFF;
 }
 
-.label-license-Rejected {
+.label-license-Rejected, .label-worktime-Rejected {
   background-color: #ED5565;
   color: #FFFFFF;
 }
 
-.label-license-Pending {
+.label-license-Pending, .label-worktime-Sent {
   background-color: #1c84c6;
   color: #FFFFFF;
 }
 
-.label-license-AuthPending {
+.label-license-AuthPending, .label-worktime-License {
   background-color: #f8ac59;
   color: #FFFFFF;
 }
 
-.label-license-Approved, .label-license-ApprovePending {
+.label-license-Approved, .label-license-ApprovePending, .label-worktime-Approved {
   background-color: #1ab394;
   color: #FFFFFF;
 }
@@ -415,6 +415,11 @@ pre {
 .column-lg {
   width: 220px!important;
   max-width: 220px!important;
+}
+
+.column-xlg {
+  width: 350px!important;
+  max-width: 350px!important;
 }
 
 .column-md {

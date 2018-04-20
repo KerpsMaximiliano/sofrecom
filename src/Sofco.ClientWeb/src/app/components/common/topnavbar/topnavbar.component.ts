@@ -1,6 +1,6 @@
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Component } from '@angular/core';
 import { smoothlyMenu } from '../../../app.helpers';
 import * as _ from 'lodash';
 import { AuthenticationService } from "app/services/common/authentication.service";

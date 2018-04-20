@@ -547,7 +547,8 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Ejecutivo de Cuenta",
-                "status": "Estado"
+                "status": "Estado",
+                "allocationPercentage": "% Asig"
             },
             "status": {
                 "open": "Abierta",
@@ -599,7 +600,8 @@
             "type": "Licencia",
             "start": "Inicio",
             "end": "Fin",
-            "days": "Días (habiles)",
+            "creation": "Alta",
+            "days": "Días",
             "goce": "Goce",
             "status": "Estado",
             "managed": "Licencias Gestionadas",
@@ -608,7 +610,8 @@
             "pending": "Licencias Pendientes de Aprobación",
             "load": "Cargar Licencia",
             "report": "Generar Reporte",
-            "holidaysPending": "Vacaciones Pendientes",
+            "holidaysPendingByLaw": "Vacaciones Pendientes",
+            "holidaysPending": "Vacaciones Pendientes (habiles)",
             "hasCertificate": "Certificado",
             "detail": "Detalle de la Licencia",
             "detailTitle": "Detalle",
@@ -703,6 +706,13 @@
     "Pending": "Pendiente Aprobación",
     "ApprovePending": "Aprobada / Documentación pendiente",
     "AuthPending": "Pendiente Autorización",
+    "Differente100": "<> 100",
+    "Equals100": "= 100",
+    "Different0": "<> 0",
+    "Equals0": "= 0",
+    "Between0And50": "> 0 y < 50",
+    "Between50And75": "> 50 y < 75",
+    "Between75And99": "> 75 y < 99",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -715,5 +725,40 @@
             "amount": "Importe"
         },
         "dateRange": "Desde - hasta"
+    },
+    "workTimeManagement": {
+        "title": "Gestión de Horas",
+        "approval": "Aprobacion",
+        "approvalHours": "Aprobacion de horas",
+        "hoursPending": "Horas Pendientes Aprobacion",
+        "hoursApproved": "Horas Aprobadas",
+        "analytic": "Analitica-Servicio",
+        "employee": "Legajo-Nombre",
+        "task":"Tarea",
+        "date": "Fecha",
+        "hours": "Horas",
+        "comments": "Comentarios",
+        "status": "Estado",
+        "monthYear": "Mes-Año",
+        "workTime": {
+            "title": "Cargas de Horas",
+            "calendar": "Calendario",
+            "sendHours": "Enviar horas",
+            "loadNewTask": "Cargar nueva tarea",
+            "taskPreloaded": "Tareas Pre-Cargadas",
+            "resume": "Resumen",
+            "approved": "Aprobadas",
+            "rejected": "Rechazadas",
+            "pendingToSend": "Pendientes de envío",
+            "pendingToApprove": "Pendientes de aprobación",
+            "totalResume": "Total resumen",
+            "workingHours": "Horas Laborales",
+            "currentHoursToDate": "Horas a la fecha"
+        },
+        "Draft": "Borrador",
+        "Sent": "Enviada",
+        "Approved": "Aprobada",
+        "Rejected": "Rechazada",
+        "License": "Licencia"
     }
 }  

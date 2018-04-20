@@ -418,6 +418,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("HolidaysPending");
 
+                    b.Property<int>("HolidaysPendingByLaw");
+
                     b.Property<string>("Location")
                         .HasMaxLength(200);
 
@@ -1093,6 +1095,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("DaysQuantity");
 
+                    b.Property<int>("DaysQuantityByLaw");
+
                     b.Property<int>("EmployeeId");
 
                     b.Property<DateTime>("EndDate");
@@ -1155,6 +1159,53 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LicenseHistories");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.WorkTimeManagement.WorkTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalyticId");
+
+                    b.Property<string>("ApprovalComment")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("ApprovalUserId");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<int>("Hours");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Status");
+
+                    b.Property<int>("TaskId");
+
+                    b.Property<string>("UserComment")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
+
+                    b.HasIndex("ApprovalUserId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WorkTimes");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>
@@ -1639,6 +1690,29 @@ namespace Sofco.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.WorkTimeManagement.WorkTime", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("WorkTimes")
+                        .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
+                        .WithMany("WorkTimes2")
+                        .HasForeignKey("ApprovalUserId");
+
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
+                        .WithMany("WorkTimes")
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.Task", "Task")
+                        .WithMany("WorkTimes")
+                        .HasForeignKey("TaskId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                        .WithMany("WorkTimes1")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>

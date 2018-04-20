@@ -10,32 +10,39 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
 
-            var days = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
+            //Item 1 = Working Days
+            //Item 2 = Total Days
+            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
 
-            if (days > user.HolidaysPending)
+            if (tupla.Item1 > user.HolidaysPending)
             {
                 response.AddError(Resources.Rrhh.License.DaysWrong);
             }
             else
             {
-                //user.HolidaysPending -= days;
-                //unitOfWork.EmployeeRepository.Update(user);
-                domain.DaysQuantity = days;
+                domain.DaysQuantity = tupla.Item1;
+                domain.DaysQuantityByLaw = tupla.Item2;
             }
         }
 
-        private int GetNumberOfWorkingDays(DateTime start, DateTime stop)
+        private Tuple<int, int> GetNumberOfWorkingDays(DateTime start, DateTime stop)
         {
-            int days = 0;
+            int workingDays = 0;
+            int totalDays = 0;
+
             while (start.Date <= stop.Date)
             {
                 if (start.DayOfWeek != DayOfWeek.Saturday && start.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    ++days;
+                    workingDays++;
                 }
+
+                totalDays++;
+
                 start = start.AddDays(1);
             }
-            return days;
+
+            return new Tuple<int, int>(workingDays, totalDays);
         }
     }
 }

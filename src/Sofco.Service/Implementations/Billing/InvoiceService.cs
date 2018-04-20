@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
@@ -20,15 +21,18 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IInvoiceStatusFactory invoiceStatusFactory;
         private readonly IMailSender mailSender;
         private readonly ISessionManager sessionManager;
+        private readonly EmailConfig emailConfig;
 
         public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
+            IOptions<EmailConfig> emailOptions,
             IMailSender mailSender, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.invoiceStatusFactory = invoiceStatusFactory;
             this.mailSender = mailSender;
             this.sessionManager = sessionManager;
+            this.emailConfig = emailOptions.Value;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -299,7 +303,7 @@ namespace Sofco.Service.Implementations.Billing
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
             var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
             var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
-            var isComercial = unitOfWork.UserRepository.HasComercialGroup(userMail);
+            var isComercial = unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
 
             if (isDirector || isDaf || isCdg || isComercial)
             {

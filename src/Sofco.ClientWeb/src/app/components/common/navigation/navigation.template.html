@@ -58,6 +58,15 @@
         </ul>
       </li> 
 
+      <!-- WorkTimeManagement-->
+      <li [ngClass]="{active: activeRoute('workTimeManagement')}" *ngIf="menuService.hasWorkTimeManagement()">
+        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'workTimeManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('workTimeManagement')}">
+          <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('WOTIM', 'WORKT')"><a [routerLink]="['/workTimeManagement/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('approval')}" *ngIf="menuService.hasFunctionality('WOTIM', 'APPRO')"><a [routerLink]="['/workTimeManagement/workTime/approval']">{{'workTimeManagement.approvalHours' | translate }}</a></li>
+        </ul>
+      </li>
+
       <!--REPORT-->
       <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>
@@ -65,6 +74,7 @@
           <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
         </ul>
       </li>
+      
     </ul>
 
   </div>

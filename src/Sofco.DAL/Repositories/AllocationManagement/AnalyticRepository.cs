@@ -20,9 +20,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Any(x => x.Id == id);
         }
 
-        public IList<Allocation> GetResources(int id)
+        public IList<Allocation> GetTimelineResources(int id)
         {
             return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).ToList().AsReadOnly();
+        }
+
+        public IList<Employee> GetResources(int id)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).Select(x => x.Employee).Distinct().ToList().AsReadOnly();
         }
 
         public Analytic GetLastAnalytic(int costCenterId)

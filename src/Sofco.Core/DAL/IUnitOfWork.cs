@@ -4,6 +4,8 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.WorkTimeManagement;
+using Sofco.Core.Services.WorkTimeManagement;
 
 namespace Sofco.Core.DAL
 {
@@ -63,6 +65,12 @@ namespace Sofco.Core.DAL
         IUtilsRepository UtilsRepository { get; }
         IFileRepository FileRepository { get; }
         IUserDelegateRepository UserDelegateRepository { get; }
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        IWorkTimeRepository WorkTimeRepository { get; }
 
         #endregion
 

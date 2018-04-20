@@ -384,7 +384,7 @@ namespace Sofco.Service.Implementations.Billing
 
             return response;
         }
-
+         
         public Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();
@@ -779,10 +779,13 @@ namespace Sofco.Service.Implementations.Billing
 
                     if (certificate != null)
                     {
-                        var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
-                        unitOfWork.SolfacCertificateRepository.Insert(solfacCertificate);
+                        if (!unitOfWork.SolfacCertificateRepository.Exist(id, certificateId))
+                        {
+                            var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
+                            unitOfWork.SolfacCertificateRepository.Insert(solfacCertificate);
 
-                        response.Data.Add(certificate);
+                            response.Data.Add(certificate);
+                        }
                     }
                     else
                     {

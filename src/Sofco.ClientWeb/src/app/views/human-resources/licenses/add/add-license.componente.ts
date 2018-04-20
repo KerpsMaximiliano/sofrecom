@@ -74,10 +74,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         
                 if(userApplicant && userApplicant.employeeId && userApplicant.name){
                     this.model.employeeId = userApplicant.employeeId;
-                    this.userApplicantName = userApplicant.name;
+                    this.userApplicantName = decodeURIComponent(userApplicant.name);
                 }
             }
-        }
+        } 
         else{
             this.getEmployees();
         }

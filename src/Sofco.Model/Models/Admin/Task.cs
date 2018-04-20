@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Model.Models.Admin
 {
@@ -16,5 +18,7 @@ namespace Sofco.Model.Models.Admin
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public ICollection<WorkTime> WorkTimes { get; set; }
     }
 }

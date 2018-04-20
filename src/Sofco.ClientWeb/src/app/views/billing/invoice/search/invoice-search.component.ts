@@ -13,6 +13,7 @@ import { MessageService } from "app/services/common/message.service";
 import { InvoiceService } from 'app/services/billing/invoice.service';
 import { MenuService } from 'app/services/admin/menu.service';
 import { I18nService } from 'app/services/common/i18n.service';
+import { EmployeeService } from '../../../../services/allocation-management/employee.service';
 declare var $: any;
 declare var moment: any;
 
@@ -51,6 +52,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private serviceService: ServiceService,
         private i18nService: I18nService,
         private projectService: ProjectService,
+        private employeeService: EmployeeService,
         private datatableService: DataTableService,
         private userService: UserService,
         private errorHandlerService: ErrorHandlerService) {}
@@ -92,7 +94,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     }
 
     getUserOptions(){
-        this.userService.getOptions().subscribe(res => {
+        this.employeeService.getOptions().subscribe(res => {
           this.userApplicants = res;
         },
         err => this.errorHandlerService.handleErrors(err));
