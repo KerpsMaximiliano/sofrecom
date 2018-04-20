@@ -2,6 +2,7 @@
 using System.Linq;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Managers;
@@ -17,14 +18,17 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
+        private readonly IAnalyticData analyticData;
+
         private readonly ISessionManager sessionManager;
 
-        public EmployeeWorkTimeManager(ISessionManager sessionManager, IEmployeeWorkTimeApprovalRepository repository, IUnitOfWork unitOfWork, IUserData userData)
+        public EmployeeWorkTimeManager(ISessionManager sessionManager, IEmployeeWorkTimeApprovalRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
         {
             this.sessionManager = sessionManager;
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.analyticData = analyticData;
         }
 
         public List<EmployeeWorkTimeApproval> GetByCurrentServices(WorkTimeApprovalQuery query)
@@ -48,11 +52,23 @@ namespace Sofco.Framework.Managers
 
             if (!isManager) return new List<EmployeeWorkTimeApproval>();
 
-            var currentUser = userData.GetByUserName(userName);
+            List<EmployeeWorkTimeApproval> analytics;
 
-            var currentAnalyticIds = unitOfWork.AnalyticRepository.GetByManagerId(currentUser.Id).Select(x => x.Id).ToList();
+            if (query.AnalyticId > 0)
+            {
+                analytics = repository.Get(query);
+            }
+            else
+            {
+                var currentUser = userData.GetByUserName(userName);
 
-            result = ResolveApprovalUser(repository.GetByAnalytics(currentAnalyticIds, query));
+                var currentAnalyticIds = unitOfWork.AnalyticRepository.GetByManagerId(currentUser.Id).Select(x => x.Id)
+                    .ToList();
+
+                analytics = repository.GetByAnalytics(currentAnalyticIds, query.ApprovalId);
+            }
+
+            result = ResolveApprovalUser(analytics);
 
             return ResolveManagers(result);
         }
@@ -84,6 +100,24 @@ namespace Sofco.Framework.Managers
                 var approvalUser = userNames.FirstOrDefault(s => s.Id == item.WorkTimeApproval.ApprovalUserId);
                 if (approvalUser == null) continue;
                 item.ApprovalName = approvalUser.Name;
+            }
+
+            data = ResolveAnalytics(data);
+
+            return data;
+        }
+
+        private List<EmployeeWorkTimeApproval> ResolveAnalytics(List<EmployeeWorkTimeApproval> data)
+        {
+            var analyticsIds = data.Where(s => s.AnalyticId != null).Select(s => s.AnalyticId.Value).Distinct().ToList();
+
+            var analytics = analyticsIds.Select(x => analyticData.GetLiteById(x)).ToList();
+
+            foreach (var item in data.Where(s => s.AnalyticId != null))
+            {
+                var analytic = analytics.FirstOrDefault(s => s.Id == item.AnalyticId);
+                if (analytic == null) continue;
+                item.Analytic = $"{analytic.Title} - {analytic.Name}";
             }
 
             return data;

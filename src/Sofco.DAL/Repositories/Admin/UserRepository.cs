@@ -140,6 +140,15 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == managerCode));
         }
 
+        public UserLiteModel GetUserLiteByUserName(string userName)
+        {
+            return context.Users.Where(s => s.UserName == userName).Select(s => new UserLiteModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).FirstOrDefault();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;

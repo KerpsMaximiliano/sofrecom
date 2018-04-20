@@ -19,5 +19,7 @@ namespace Sofco.Core.Services.AllocationManagement
         ICollection<Analytic> GetAllActives();
         ICollection<AnalyticOptionForOcModel> GetByClient(string clientId);
         IList<Option> GetResources(int id);
+
+        Response<List<Option>> GetByCurrentUser();
     }
 }

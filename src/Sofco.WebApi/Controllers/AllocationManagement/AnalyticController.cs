@@ -118,5 +118,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("options/currentUser")]
+        public IActionResult GetByCurrentUser()
+        {
+            var response = analyticService.GetByCurrentUser();
+
+            return this.CreateResponse(response);
+        }
     }
 }

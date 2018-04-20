@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sofco.Common.Security;
+﻿using System.Collections.Generic;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
@@ -74,7 +72,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             foreach (var workTimeApproval in workTimeApprovals)
             {
                 if (workTimeApproval.ApprovalUserId == 0
-                    || workTimeApproval.ServiceId == Guid.Empty
+                    || workTimeApproval.AnalyticId == 0
                     || workTimeApproval.EmployeeId == 0)
                 {
                     response.AddError(Resources.Common.ErrorSave);
