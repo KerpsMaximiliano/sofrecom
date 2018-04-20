@@ -12,25 +12,26 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 {
     public class EmployeeWorkTimeApprovalRepository : BaseRepository<Employee>, IEmployeeWorkTimeApprovalRepository
     {
+        private WorkTimeApprovalQuery parameter;
+
         public EmployeeWorkTimeApprovalRepository(SofcoContext context) : base(context)
         {
+            parameter = new WorkTimeApprovalQuery();
         }
 
         public List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query)
         {
-            Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any();
+            parameter = query;
 
-            if (query.CustomerId != Guid.Empty)
+            Expression<Func<Employee, bool>> where = x => x.EndDate == null 
+                && x.Allocations.Any(s => s.StartDate >= DateTime.UtcNow);
+
+            if (query.AnalyticId > 0)
             {
                 where = e => e.EndDate == null
-                    && e.Allocations.Any(s => s.Analytic.ClientExternalId == query.CustomerId.ToString());
-            }
-
-            if (query.CustomerId != Guid.Empty && query.ServiceId != Guid.Empty)
-            {
-                where = e => e.EndDate == null
-                    && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString())
-                    && e.Allocations.Any(a => a.Analytic.ServiceId == query.ServiceId.ToString());
+                    && e.Allocations.Any(s => 
+                        s.AnalyticId == query.AnalyticId
+                        && s.StartDate >= DateTime.UtcNow);
             }
 
             var result = context
@@ -53,24 +54,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return result.ToList();
         }
 
-        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, WorkTimeApprovalQuery query)
+        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, int approvalId)
         {
-            Expression<Func<Employee, bool>> where = e => e.EndDate == null && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId));
-
-            if (query.CustomerId != Guid.Empty)
-            {
-                where = e => e.EndDate == null
-                             && e.Allocations.Any(a => analyticIds.Contains(a.AnalyticId))
-                             && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString());
-            }
-
-            if (query.CustomerId != Guid.Empty && query.ServiceId != Guid.Empty)
-            {
-                where = e => e.EndDate == null
-                             && e.Allocations.Any(a => analyticIds.Contains(a.AnalyticId))
-                             && e.Allocations.Any(a => a.Analytic.ClientExternalId == query.CustomerId.ToString())
-                             && e.Allocations.Any(a => a.Analytic.ServiceId == query.ServiceId.ToString());
-            }
+            Expression<Func<Employee, bool>> where = e => e.EndDate == null 
+                && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId) 
+                    && x.StartDate >= DateTime.UtcNow);
 
             var result = context
                 .Employees
@@ -83,10 +71,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     w => w.EmployeeId,
                     Translate);
 
-            if (query.ApprovalId > 0)
+            if (approvalId > 0)
             {
                 result = result.Where(s =>
-                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == approvalId);
             }
 
             return result.ToList();
@@ -94,11 +82,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public EmployeeWorkTimeApproval Translate(Employee employee, IEnumerable<WorkTimeApproval> workTimeApprovals)
         {
-            var allocation = employee.Allocations.LastOrDefault();
+            var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
+            if (parameter.AnalyticId > 0)
+            {
+                allocation = employee.Allocations.FirstOrDefault(s =>
+                    s.AnalyticId == parameter.AnalyticId && s.StartDate >= DateTime.UtcNow);
+            }
 
-            var managerId = allocation?.Analytic?.ManagerId;
-
-            var firstWorkTimeApproval = workTimeApprovals.FirstOrDefault();
+            var firstWorkTimeApproval = workTimeApprovals.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
 
             return new EmployeeWorkTimeApproval
             {
@@ -106,10 +97,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Name = employee.Name,
                 Client = allocation?.Analytic?.ClientExternalName,
                 Service = allocation?.Analytic?.Service,
-                ManagerId = managerId,
+                ManagerId = allocation?.Analytic?.ManagerId,
                 ApprovalName = firstWorkTimeApproval?.ApprovalUser?.Name,
                 ClientId = allocation?.Analytic?.ClientExternalId,
-                ServiceId = allocation?.Analytic?.ServiceId,
+                AnalyticId = allocation?.AnalyticId,
                 WorkTimeApproval = firstWorkTimeApproval
             };
         }

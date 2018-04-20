@@ -561,10 +561,8 @@
             "delegate": {
                 "title": "Delegar aprobación horas",
                 "delegateAction": "Delegar",
-                "client": "Cliente",
                 "approvers": "Autorizadores",
                 "saveSuccess": "Autorizador agregado correctamente.",
-                "service": "Servicio",
                 "manager": "Gerente",
                 "approver": "Autorizador",
                 "employee": "Recurso",

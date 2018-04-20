@@ -6,7 +6,7 @@ namespace Sofco.Model.Models.AllocationManagement
 {
     public class WorkTimeApproval : BaseEntity, IEntityDate
     {
-        public Guid ServiceId { get; set; }
+        public int AnalyticId { get; set; }
 
         public int ApprovalUserId { get; set; }
 

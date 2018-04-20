@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.Admin;
@@ -91,6 +92,30 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public List<Analytic> GetByManagerId(int managerId)
         {
             return context.Analytics.Where(x => x.ManagerId == managerId).ToList();
+        }
+
+        public List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId)
+        {
+            return context.Analytics
+                .Where(x => x.ManagerId == managerId || x.DirectorId == managerId
+                && x.Status == AnalyticStatus.Open)
+                .Select(s => new AnalyticLiteModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Title = s.Title
+                }).ToList();
+        }
+
+        public AnalyticLiteModel GetAnalyticLiteById(int id)
+        {
+            return context.Analytics.Where(s => s.Id == id).Select(s => new AnalyticLiteModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Title = s.Title
+            }).FirstOrDefault();
+
         }
     }
 }

@@ -12,6 +12,6 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void Delete(int workTimeApprovalId);
 
-        List<WorkTimeApproval> GetByServiceIds(List<Guid> serviceIds);
+        List<WorkTimeApproval> GetByAnalyticId(int analyticId);
     }
 }

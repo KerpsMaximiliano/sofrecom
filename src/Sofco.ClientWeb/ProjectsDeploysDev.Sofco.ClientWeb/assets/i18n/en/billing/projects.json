@@ -1,0 +1,11 @@
+{
+    "notFound": "Project not found",
+    "hitoAmmoutRequired": "The amounts are required and can not be less than 0",
+    "almost2HitosRequired": "At least 2 milestones are required to divide",
+    "hitoSplitted": "Milestone has been splitted successfully. CRM has been updated successfully",
+    "opportunityRequired": "The opportunity is not loaded in CRM. Update CRM before dividing the milestone",
+    "hitoQuantityBetween2and5": "The number of milestones to be divided must be between 2 and 5",
+    "hitoSplittedRequired": "Before saving, divide the milestone",
+    "nameRequired": "Name is required",
+    "monthRequired": "Month is required"
+}

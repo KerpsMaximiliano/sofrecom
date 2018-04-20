@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.Admin;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -30,36 +27,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<UserSelectListItem>> GetApprovers(WorkTimeApprovalQuery query)
         {
-            if (query.CustomerId == Guid.Empty)
+            if (query.AnalyticId == 0)
             {
                 return new Response<List<UserSelectListItem>>{ Data = new List<UserSelectListItem>() };
             }
 
-            var analytics = unitOfWork.AnalyticRepository.GetByClient(query.CustomerId.ToString());
-
-            var serviceIds = analytics.Select(s => Guid.Parse(s.ServiceId)).ToList();
-
-            if (query.ServiceId != Guid.Empty)
-            {
-                serviceIds = serviceIds.Where(s => s == query.ServiceId).ToList();
-            }
-
-            var workTimeApprovals = workTimeApprovalRepository.GetByServiceIds(serviceIds);
+            var workTimeApprovals = workTimeApprovalRepository.GetByAnalyticId(query.AnalyticId);
 
             var userIds = workTimeApprovals.Select(s => s.ApprovalUserId).Distinct().ToList();
 
-            var users = new List<UserSelectListItem>();
-
-            foreach (var userId in userIds)
-            {
-                var userLite = userData.GetUserLiteById(userId);
-
-                users.Add(new UserSelectListItem
+            var users = userIds.Select(userId => userData.GetUserLiteById(userId))
+                .Select(userLite => new UserSelectListItem
                 {
                     Id = userLite.Id.ToString(),
                     Text = userLite.Name
-                });
-            }
+                })
+                .ToList();
 
             return new Response<List<UserSelectListItem>>
             {

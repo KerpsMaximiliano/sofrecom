@@ -7,6 +7,6 @@ namespace Sofco.Core.DAL.AllocationManagement
     {
         List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query);
 
-        List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, WorkTimeApprovalQuery query);
+        List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, int approvalId);
     }
 }

@@ -13,6 +13,7 @@ namespace Sofco.Data.Admin
         private const string UserByUserNamCacheKey = "urn:users:userName:{0}";
         private const string UserByMangerIdCacheKey = "urn:users:managerId:{0}";
         private const string UserLiteByMangerIdCacheKey = "urn:userLites:id:{0}";
+        private const string UserLiteByUserNameCacheKey = "urn:userLites:userName:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
@@ -51,6 +52,13 @@ namespace Sofco.Data.Admin
         {
             return cacheManager.Get(string.Format(UserLiteByMangerIdCacheKey, userId),
                 () => unitOfWork.UserRepository.GetUserLiteById(userId),
+                cacheExpire);
+        }
+
+        public UserLiteModel GetUserLiteByUserName(string userName)
+        {
+            return cacheManager.Get(string.Format(UserLiteByUserNameCacheKey, userName),
+                () => unitOfWork.UserRepository.GetUserLiteByUserName(userName),
                 cacheExpire);
         }
     }
