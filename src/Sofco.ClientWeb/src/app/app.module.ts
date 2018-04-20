@@ -42,6 +42,7 @@ import { HumanResourcesModule } from 'app/views/human-resources/human-resources.
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
 import { WorkTimeManagementModule } from 'app/views/worktime-management/worktime-management.module';
+import { NgxInactivity } from 'ngx-inactivity';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -64,6 +65,7 @@ export function HttpLoaderFactory(http: Http) {
     BillingModule,
     HumanResourcesModule,
     ChartsModule,
+    NgxInactivity,
     LaddaModule.forRoot({
       style: "zoom-in",
       spinnerSize: 30,
