@@ -1,0 +1,13 @@
+{
+    "added": "Recurso asignado a la analitica correctamente.",
+    "billingPercentageExceeded": "Se supero el porcentaje que puede ser asignado el recurso",
+    "cannotBeAssign": "No puede ser asignado el recurso a la analitica. Entra en conflicto con otras analiticas",
+    "dateSinceOutOfRange": "Fecha de inicio fuera del rango de la analitica",
+    "dateSinceRequired": "Fecha desde es requerida",
+    "dateToLessThanDateSince": "Fecha de fin no puede ser menor a la fecha de inicio",
+    "dateToOutOfRange": "Fecha de fin fuera del rango de la analitica",
+    "dateToRequired": "Fecha hasta es requerida",
+    "releaseDateIsRequired": "Fecha de liberación es requerida.",
+    "wrongPercentage": "Porcentaje ingresado es incorrecto",
+    "monthDifferent": "La fecha ingresada no puede ser diferente a la del mes en curso de la última asignación"
+}

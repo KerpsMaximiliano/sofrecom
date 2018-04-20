@@ -1,0 +1,642 @@
+/*
+ *
+ *   INSPINIA - Responsive Admin Theme
+ *   version 2.7.1
+ *
+*/
+// Google Fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+// Variables, Mixins
+@import "imports/variables";
+@import "imports/mixins";
+
+// INSPINIA Theme Elements
+@import "imports/typography";
+@import "imports/navigation";
+@import "imports/top_navigation";
+@import "imports/buttons";
+@import "imports/badges_labels";
+@import "imports/elements";
+@import "imports/sidebar";
+@import "imports/base";
+@import "imports/pages";
+@import "imports/chat";
+@import "imports/metismenu";
+@import "imports/spinners";
+
+// Landing page styles
+@import "imports/landing";
+
+// RTL Support
+@import "imports/rtl";
+
+// For demo only - config box style
+@import "imports/theme-config";
+
+// INSPINIA Skins
+@import "imports/skins";
+@import "imports/md-skin";
+
+// Media query style
+@import "imports/media";
+
+// Custom style
+// Your custom style to override base style
+@import "imports/custom";
+
+@import "node_modules/ladda/css/ladda";
+
+// Clear layout on print mode
+@media print {
+  nav.navbar-static-side {
+    display: none;
+  }
+  body { overflow: visible !important; }
+
+  #page-wrapper {
+    margin: 0;
+  }
+}
+
+/*
+.btn-group{
+    margin-top: -60px;
+}*/
+
+.btn-group .buttons-print {
+  border-radius: 0 5px 5px 0;
+}
+
+.btn-group .buttons-html5 {
+  border-radius: 5px 0 0 5px;
+}
+
+
+
+li.paginate-button a{
+  height:32px;
+  padding-top:15px;
+}
+
+
+input[type="checkbox"]{
+  margin-top:-4px;
+}
+
+.icheck-label.icheck-label{
+    width:16%;
+}
+
+.icon-danger {
+  color: #ed5565;
+}
+
+.icon-white {
+  color: white;
+}
+
+//popup
+.modal-header{
+  background-color:#1ab394;
+  color:#fff;
+  font-weight: bold;
+}
+
+.modal-header h3{
+  font-weight: bold;
+}
+
+div.scroll{
+  overflow-y: auto; 
+  max-height:300px;
+}
+
+.icon-round{
+  border-radius: 35px;
+  font-weight: bold; 
+  font-size: 18px;
+  box-shadow: 2px 2px 1px 0px #5e6f6c;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(26, 179, 148, 0.2);
+}
+
+.icon-round:hover{
+  background-color: rgba(26, 179, 148, 0.9);
+}
+
+.text-xl{
+  font-size: 24px;
+}
+
+.text-l{
+  font-size: 20px;
+}
+
+.text-m{
+  font-size: 16px;
+}
+
+.text-sm {
+  font-size: 12px;
+}
+
+.text-smaller{
+  font-size: 0.99em;
+}
+
+.margin-left-m{
+  margin-left: 20px;
+}
+
+.margin-left-s{
+  margin-left: 10px;
+}
+
+.margin-right-m{
+  margin-right: 20px;
+}
+
+.margin-bottom-xs{
+  margin-bottom: 5px;
+}
+
+.margin-bottom-s{
+  margin-bottom: 10px;
+}
+
+.margin-bottom-m{
+  margin-bottom: 15px;
+}
+
+li.indented{
+  margin-left:20px;
+}
+
+.todo-list > li.indented{
+  background-color:white;
+}
+
+ul.indented{
+  background-color:white;
+}
+
+/*SECTION admin_roleEdit*/
+#admin_roleEdit{
+  
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.btn-dark {
+  background-color: black;
+  color: white;
+}
+
+.text-white{
+  color: white!important;
+}
+
+.text-green {
+  color: #1ab394;
+}
+
+.text-dark{
+  color: black;
+}
+
+.label-license-Draft, .label-worktime-Draft {
+  background-color: gray;
+  color: #FFFFFF;
+}
+
+.label-license-Rejected, .label-worktime-Rejected {
+  background-color: #ED5565;
+  color: #FFFFFF;
+}
+
+.label-license-Pending, .label-worktime-Sent {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-license-AuthPending, .label-worktime-License {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-license-Approved, .label-license-ApprovePending, .label-worktime-Approved {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
+.label-SendPending {
+  background-color: gray;
+  color: #FFFFFF;
+}
+
+.label-PendingByManagementControl {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-InvoicePending{
+  background-color: #23c6c8;
+  color: #FFFFFF;
+}
+
+.label-Sent {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-Rejected, .label-Cancelled, .label-ManagementControlRejected, .label-RejectedByDaf {
+  background-color: #ED5565;
+  color: #FFFFFF;
+}
+
+.label-Approved, .label-Invoiced, .label-AmountCashed {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
+.label-Related {
+  background-color: #7CB400;
+  color: #FFFFFF;
+}
+
+.label-Proyectado, .label-Pendiente {
+  background-color: #f8ac59;
+  color: #FFFFFF;
+}
+
+.label-ToBeBilled {
+  background-color: #1c84c6;
+  color: #FFFFFF;
+}
+
+.label-Cerrado {
+  background-color: black;
+  color: #FFFFFF;
+}
+
+.label-Facturado {
+  background-color: #1ab394;
+  color: #FFFFFF;
+}
+
+.label-Pagado {
+  background-color: #7CB400;
+  color: #FFFFFF;
+}
+
+.label-New {
+  background-color: #1ab394;
+  color: #FFFFFF;
+  font-size: 12px!important;
+}
+
+.label-Delete {
+  background-color: #ED5565;
+  color: #FFFFFF;
+  font-size: 12px!important;
+}
+
+.label-New-Reincorporation {
+  background-color: #24C6C8;
+  color: #FFFFFF;
+  font-size: 12px!important;
+}
+
+.error-desc{
+  font-size: 14px;
+}
+
+.btn-right{
+  float: right;
+} 
+
+.ngx-datepicker-calendar-container{
+  z-index: 1000;
+}
+
+.font-18{
+  font-size: 18px;
+}
+
+.font-9 {
+  font-size: 9px;
+}
+
+.select2 {
+  width: 100%;
+}
+
+.btn-allignment-input{
+  margin-top: 22px;
+}
+
+pre {
+  background-color: transparent;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.text-word-break { 
+  word-wrap: break-word
+}
+
+.ngx-datepicker-input{
+  width: 100%!important;
+}
+
+.table{
+  font-size: 11px;
+}
+
+.hito-selected {
+  background-color: lightblue!important;
+}
+
+.list-hitos{
+  max-height: 310px;
+  overflow-y: auto;
+}
+
+.select2-dropdown {
+  z-index: 9001!important;
+}
+
+.table-font-md {
+  font-size: 13px;
+}
+
+.widget-custom {
+  border-radius: 5px;
+  padding: 5px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.search-filter {
+  position: fixed;
+  right: 0;
+  margin-right: 120px!important;
+}
+
+.export-buttons {
+  position: fixed;
+  right: 0;
+  padding-right: 30px;
+}
+
+.table-pagination {
+  position: fixed;
+  right: 0;
+  padding-right: 30px;
+}
+
+.checkbox-center {
+  margin-top: 25px;
+}
+
+.column-xs {
+  width: 80px!important;
+  max-width: 80px!important;
+}
+
+.column-lg {
+  width: 220px!important;
+  max-width: 220px!important;
+}
+
+.column-xlg {
+  width: 350px!important;
+  max-width: 350px!important;
+}
+
+.column-md {
+  width: 150px!important;
+  max-width: 150px!important;
+}
+
+.column-sm {
+  width: 110px!important;
+  max-width: 110px!important;
+}
+
+.uploader-margin-top{
+  margin-top: 10px;
+}
+
+.gaps-image {
+  width: 150px;
+  height: 50px;
+}
+
+/*=== 2.7 DATEPICKER ===*/
+.ed-datepicker {
+  height: 35px;
+  border: none;
+  border-bottom: 1px solid rgba(191, 191, 191, 0.3);
+  padding: 0;
+  border-radius: 0;
+  }
+  .ed-datepicker.filterDate {
+  border-color: #bfbfbf;
+  margin-bottom: 20px;
+  }
+  
+  .ed-datepicker .form-control {
+  height: 35px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 4px 12px 4px 0;
+  box-shadow: none !important;
+  }
+  
+  .ed-datepicker.filterDate .form-control {
+  color: #777777;
+  }
+  
+  .ed-datepicker .form-control::-webkit-input-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  }
+  
+  .ed-datepicker .form-control::-moz-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .ed-datepicker .form-control:-ms-input-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .ed-datepicker .form-control:-moz-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .ed-datepicker.filterDate .form-control::-webkit-input-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: #777777;
+  }
+  
+  .ed-datepicker.filterDate .form-control::-moz-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: #777777;
+  }
+  
+  .ed-datepicker.filterDate .form-control:-ms-input-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: #777777;
+  }
+  
+  .ed-datepicker.filterDate .form-control:-moz-placeholder {
+  font-size: 12px;
+  font-weight: 400;
+  color: #777777;
+  }
+  
+  .ed-datepicker .input-group-addon {
+  height: 35px;
+  background: transparent;
+  border: none;
+  padding-right: 0;
+  }
+  
+  .datepicker-dropdown {
+  width: auto;
+  padding: 0;
+  }
+  
+  .filterDate .datepicker-dropdown {
+  top: 87% !important;
+  }
+  
+  .datepicker-dropdown thead {
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
+  }
+  
+  .datepicker-dropdown thead tr:last-child th {
+  background-color: #009ddf;
+  border-radius: 0;
+  font-size: 14px;
+  color: #ffffff;
+  }
+  
+  .datepicker table tr td.day {
+  color: #777777;
+  font-weight: 400;
+  border-radius: 0 !important;
+  background: transparent;
+  margin: 0 3px 10px;
+  padding: 5px;
+  width: 43px;
+  height: 43px;
+  text-align: center;
+  border: 1px solid #c6c6c6;
+  }
+  
+  .datepicker table tr td.day.new,
+  .datepicker table tr td.day.old {
+  color: #cccfd3;
+  background: transparent;
+  }
+  
+  .datepicker table tr td.day:hover,
+  .datepicker table tr td.focused {
+  background: #009ddf;
+  -webkit-transition: background 0.3s;
+  -moz-transition: background 0.3s;
+  -ms-transition: background 0.3s;
+  -o-transition: background 0.3s;
+  transition: background 0.3s;
+  cursor: pointer;
+  color: #ffffff;
+  }
+  
+  .datepicker table tr td.active.active,
+  .datepicker table tr td.active.highlighted.active,
+  .datepicker table tr td.active.highlighted:active,
+  .datepicker table tr td.active:active {
+  border-color: #262a2e;
+  background: #262a2e;
+  -webkit-transition: background 0.3s, border-color 0.3s;
+  -moz-transition: background 0.3s, border-color 0.3s;
+  -ms-transition: background 0.3s, border-color 0.3s;
+  -o-transition: background 0.3s, border-color 0.3s;
+  transition: background 0.3s, border-color 0.3s;
+  }
+  
+  .datepicker table tr td.active.active.focus,
+  .datepicker table tr td.active.active:focus,
+  .datepicker table tr td.active.active:hover,
+  .datepicker table tr td.active.highlighted.active.focus,
+  .datepicker table tr td.active.highlighted.active:focus,
+  .datepicker table tr td.active.highlighted.active:hover,
+  .datepicker table tr td.active.highlighted:active.focus,
+  .datepicker table tr td.active.highlighted:active:focus,
+  .datepicker table tr td.active.highlighted:active:hover,
+  .datepicker table tr td.active:active.focus,
+  .datepicker table tr td.active:active:focus,
+  .datepicker table tr td.active:active:hover {
+  border-color: #262a2e;
+  background: #262a2e;
+  -webkit-transition: background 0.3s, border-color 0.3s;
+  -moz-transition: background 0.3s, border-color 0.3s;
+  -ms-transition: background 0.3s, border-color 0.3s;
+  -o-transition: background 0.3s, border-color 0.3s;
+  transition: background 0.3s, border-color 0.3s;
+  }
+  
+  .datepicker .datepicker-switch {
+  color: #030303;
+  }
+  
+  .datepicker .datepicker-switch:hover,
+  .datepicker .next:hover,
+  .datepicker .prev:hover,
+  .datepicker tfoot tr th:hover {
+  background: transparent;
+  border: none;
+  -webkit-transition: color 0.3s;
+  -moz-transition: color 0.3s;
+  -ms-transition: color 0.3s;
+  -o-transition: color 0.3s;
+  transition: color 0.3s;
+  cursor: pointer;
+  color: #262a2e;
+  }
+  
+  .datepicker-dropdown::after,
+  .datepicker-dropdown::before {
+  display: none;
+  }
+  
+  .datepicker table tr td, .datepicker table tr th {
+  height: 50px;
+  }
+  
