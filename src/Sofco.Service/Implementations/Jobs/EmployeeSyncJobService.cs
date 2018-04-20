@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
@@ -67,7 +68,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             if (syncActions.Count > 0)
             {
-                SendMail();
+                SendMail(newEmployees, EmployeeSyncActionStatus.New);
             }
 
             unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
@@ -121,7 +122,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             if (syncActions.Count > 0)
             {
-                SendMail();
+                SendMail(endEmployees, EmployeeSyncActionStatus.Delete);
             }
 
             unitOfWork.EmployeeSyncActionRepository.Save(syncActions);
@@ -170,16 +171,22 @@ namespace Sofco.Service.Implementations.Jobs
             return result;
         }
 
-        private void SendMail()
+        private void SendMail(List<Employee> employees, string status)
         {
             try
             {
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
+                var infoText = GetInfoText(employees, status);
+
+                var message = new StringBuilder();
+                message.AppendFormat(MailMessageResource.EmployeeNews, $"{emailConfig.SiteUrl}allocationManagement/employees/news");
+                message.AppendLine(infoText);
+
                 var mailData = new EmployeeNewsData
                 {
                     Recipients = mailRrhh,
-                    Message = string.Format(MailMessageResource.EmployeeNews, $"{emailConfig.SiteUrl}allocationManagement/employees/news")
+                    Message = message.ToString()
                 };
 
                 var email = mailBuilder.GetEmail(mailData);
@@ -190,6 +197,20 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 logger.LogError(ex);
             }
+        }
+
+        private string GetInfoText(List<Employee> employees, string status)
+        {
+            var actionTxt = status == EmployeeSyncActionStatus.New ? MailCommonResource.EmployeeActionNew : MailCommonResource.EmployeeActionDelete;
+
+            var list = new StringBuilder();
+
+            foreach (var employee in employees)
+            {
+                list.AppendFormat("<li>{0}</li>", employee.Name);
+            }
+
+            return string.Format("{0}:<br><br><ul>{1}</ul>", actionTxt, list);
         }
     }
 }
