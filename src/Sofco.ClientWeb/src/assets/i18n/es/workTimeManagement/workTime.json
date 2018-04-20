@@ -8,5 +8,7 @@
     "taskRequired": "La tarea es requerida",
     "userRequired": "El usuario es requerido",
     "monthError": "Mes invalido",
-    "yearError": "Año invalido"
+    "yearError": "Año invalido",
+    "approverAdded": "Autorizador agregado exitosamente",
+    "approverDeleted": "Autorizador eliminado exitosamente"
 }

@@ -123,6 +123,12 @@
   <data name="AnalyticRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.analyticRequired</value>
   </data>
+  <data name="ApproverAdded" xml:space="preserve">
+    <value>workTimeManagement/workTime.approverAdded</value>
+  </data>
+  <data name="ApproverDeleted" xml:space="preserve">
+    <value>workTimeManagement/workTime.approverDeleted</value>
+  </data>
   <data name="DateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.dateRequired</value>
   </data>
