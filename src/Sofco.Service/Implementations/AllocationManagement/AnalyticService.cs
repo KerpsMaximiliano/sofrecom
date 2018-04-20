@@ -118,11 +118,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<IList<Allocation>> GetTimelineResources(int id)
+        public Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months)
         {
             var response = new Response<IList<Allocation>>();
 
-            var resources = unitOfWork.AnalyticRepository.GetTimelineResources(id);
+            var startDate = new DateTime(dateSince.Year, dateSince.Month, 1);
+            var endDateAux = dateSince.AddMonths(months-1);
+            var endDate = new DateTime(endDateAux.Year, endDateAux.Month, DateTime.DaysInMonth(endDateAux.Year, endDateAux.Month));
+
+            var resources = unitOfWork.AnalyticRepository.GetTimelineResources(id, startDate, endDate);
 
             if (!resources.Any())
             {

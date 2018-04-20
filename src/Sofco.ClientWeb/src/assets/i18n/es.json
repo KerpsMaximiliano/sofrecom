@@ -80,7 +80,7 @@
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
             "task": "Categorias de Tareas",
-            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas, confirma la acción?"
+            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas"
         },
         "task": {
             "admin": "Administracion de tareas",
@@ -668,7 +668,9 @@
         "notifyUnsubscribe": "Notifcar baja",
         "goHere": "Ingrese Aqui",
         "pendingDocumentation": "Documentación Pendiente",
-        "authorize": "Autorizar"
+        "authorize": "Autorizar",
+        "sessionExpiredTitle": "La sesion ha expirado...",
+        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

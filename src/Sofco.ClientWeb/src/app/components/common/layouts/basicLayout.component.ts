@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { detectBody } from '../../../app.helpers';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { AuthenticationService } from 'app/services/common/authentication.service';
+import { Router } from '@angular/router';
 
 declare var jQuery:any;
 
@@ -13,7 +16,19 @@ declare var jQuery:any;
 })
 export class BasicLayoutComponent {
 
-  constructor(){
+  @ViewChild('inactivityModal') inactivityModal;
+  public inactivityModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+      "ACTIONS.sessionExpiredTitle",
+      "inactivityModal",
+      true,
+      false,
+      "HOME.logout",
+      "ACTIONS.cancel",
+      false
+  );
+
+  constructor(private authService: AuthenticationService,
+              private router: Router){
   }
 
   public ngOnInit():any {
@@ -37,5 +52,20 @@ export class BasicLayoutComponent {
 
   public onResize(){
     detectBody();
+  }
+
+  handleInactivityCallback(){
+    this.inactivityModal.show();
+  }
+
+  accept(){
+    this.inactivityModal.hide();
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
@@ -21,9 +22,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Any(x => x.Id == id);
         }
 
-        public IList<Allocation> GetTimelineResources(int id)
+        public IList<Allocation> GetTimelineResources(int id, DateTime startDate, DateTime endDate)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate).Include(x => x.Employee).ToList().AsReadOnly();
         }
 
         public IList<Employee> GetResources(int id)

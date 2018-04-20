@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -67,10 +68,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(analyticService.GetOptions());
         }
 
-        [HttpGet("{id}/resources/timeline")]
-        public IActionResult GetTimelineResources(int id)
+        [HttpGet("{id}/resources/timeline/{dateSince}/{months}")]
+        public IActionResult GetTimelineResources(int id, DateTime dateSince, int months)
         {
-            var responseResources = analyticService.GetTimelineResources(id);
+            var responseResources = analyticService.GetTimelineResources(id, dateSince, months);
 
             var model = responseResources.Data.Select(x => new ResourceForAnalyticsModel(x));
 

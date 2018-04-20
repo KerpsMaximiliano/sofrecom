@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Utils;
+﻿using System;
+using Sofco.Model.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sofco.Core.Models.Billing;
@@ -10,7 +11,7 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         ICollection<Analytic> GetAll();
         Response<Analytic> GetById(int id);
-        Response<IList<Allocation>> GetTimelineResources(int id);
+        Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months);
         AnalyticOptions GetOptions();
         Task<Response<Analytic>> Add(Analytic analytic);
         Response<string> GetNewTitle(int costCenterId);
