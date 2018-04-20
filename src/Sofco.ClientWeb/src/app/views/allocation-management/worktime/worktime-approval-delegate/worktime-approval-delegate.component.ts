@@ -301,6 +301,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
         this.subscription = this.workTimeApprovalDelegateService.save(data).subscribe(response => {
             this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
         },
         err => {
@@ -326,6 +327,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         const id = this.itemSelected.workTimeApproval.id;
         this.confirmModal.hide();
         this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
         },
         err => {

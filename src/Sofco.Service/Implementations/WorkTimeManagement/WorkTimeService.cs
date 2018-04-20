@@ -8,7 +8,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -31,11 +31,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.logger = logger;
         }
 
-        public Response<IList<WorkTimeModel>> Get(DateTime date)
+        public Response<WorkTimeModel> Get(DateTime date)
         {
-            if(date == DateTime.MinValue) return new Response<IList<WorkTimeModel>>();
+            if(date == DateTime.MinValue) return new Response<WorkTimeModel>();
 
-            var result = new Response<IList<WorkTimeModel>>();
+            var result = new Response<WorkTimeModel>(); 
+            result.Data = new WorkTimeModel();
+
             try
             {
                 var userName = sessionManager.GetUserName();
@@ -46,7 +48,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
 
-                result.Data = workTimes.Select(x => new WorkTimeModel(x)).ToList();
+                result.Data.Calendar = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
+
+                FillResume(result, startDate, endDate);
 
                 return result;
             }
@@ -57,6 +61,31 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 result.AddError(Resources.Common.GeneralError);
 
                 return result;
+            }
+        }
+
+        private void FillResume(Response<WorkTimeModel> result, DateTime startDate, DateTime endDate)
+        {
+            result.Data.Resume = new WorkTimeResumeModel();
+
+            result.Data.Resume.HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
+            result.Data.Resume.HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours);
+            result.Data.Resume.HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
+            result.Data.Resume.HoursPendingApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
+
+            while (startDate.Date <= endDate.Date)
+            {
+                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    result.Data.Resume.BusinessHours += 8;
+
+                    if (startDate.Date <= DateTime.UtcNow)
+                    {
+                        result.Data.Resume.HoursUntilToday += 8;
+                    }
+                }
+
+                startDate = startDate.AddDays(1);
             }
         }
 

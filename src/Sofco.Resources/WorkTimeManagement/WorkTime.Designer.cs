@@ -80,6 +80,24 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.approverAdded.
+        /// </summary>
+        public static string ApproverAdded {
+            get {
+                return ResourceManager.GetString("ApproverAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.approverDeleted.
+        /// </summary>
+        public static string ApproverDeleted {
+            get {
+                return ResourceManager.GetString("ApproverDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateRequired.
         /// </summary>
         public static string DateRequired {

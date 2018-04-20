@@ -15,4 +15,8 @@ export class WorktimeService {
   getWorkTimeApproved(model) {
     return this.http.post<any>(`${this.baseUrl}/worktime/hoursApproved`, model);
   }
+
+  get(date) {
+    return this.http.get<any>(`${this.baseUrl}/worktime/${date}`);
+  }
 }

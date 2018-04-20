@@ -44,17 +44,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             workTimeApprovalRepository.Save(workTimeApprovals);
 
-            return new Response<List<WorkTimeApproval>>
-            {
-                Data = workTimeApprovals
-            };
+            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
+            response.Data = workTimeApprovals;
+
+            return response;
         }
 
         public Response Delete(int workTimeApprovalId)
         {
             workTimeApprovalRepository.Delete(workTimeApprovalId);
 
-            return new Response();
+            var response = new Response();
+            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+
+            return response;
         }
 
         private Response<List<WorkTimeApproval>> ValidateSave(List<WorkTimeApproval> workTimeApprovals)
