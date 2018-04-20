@@ -33,11 +33,11 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
-
-    getAllocations(analyticId){
+ 
+    getAllocations(analyticId, dateSince, months){
         this.showTimeLine = false;
 
-        this.getAllSubscrip = this.analyticService.getTimelineResources(analyticId).subscribe(data => {
+        this.getAllSubscrip = this.analyticService.getTimelineResources(analyticId, moment(dateSince).format('YYYY-MM-DD'), months).subscribe(data => {
             if (data.messages) this.messageService.showMessages(data.messages);
 
             if (data.data && data.data.length > 0){

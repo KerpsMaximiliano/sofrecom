@@ -80,7 +80,7 @@
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
             "task": "Categorias de Tareas",
-            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas, confirma la acción?"
+            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas"
         },
         "task": {
             "admin": "Administracion de tareas",
