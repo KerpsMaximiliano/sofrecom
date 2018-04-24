@@ -1,10 +1,8 @@
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CustomerService } from 'app/services/billing/customer.service';
 import { UserService } from 'app/services/admin/user.service';
 import { I18nService } from 'app/services/common/i18n.service';
 import { DataTableService } from 'app/services/common/datatable.service';
@@ -12,6 +10,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
 import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 declare var $: any;
 
 @Component({
@@ -34,17 +33,14 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     public workTimeApprovals: any[] = new Array<any>();
     public workTimeApprovalId: string = null;
 
-    private customers: any[] = new Array<any>();
-    public customerId: string = null;
-
-    private services: any[] = new Array<any>();
-    public serviceId: string = null;
-
     public users: any[] = new Array<any>();
     public userId: string = null;
 
     public approvers: any[] = new Array<any>();
     public approversUerId: string = null;
+
+    public analytics: any[] = new Array();
+    public analyticId = 0;
 
     private itemSelected: any;
 
@@ -61,8 +57,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     constructor(private workTimeApprovalDelegateService: WorkTimeApprovalDelegateService,
-        private serviceService: ServiceService,
-        private customerService: CustomerService,
+        private analyticService: AnalyticService,
         private usersService: UserService,
         private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
@@ -72,8 +67,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.getCustomers();
-        this.initServiceControl();
+        this.getAnalytics();
         this.initApproverUserControl();
         this.getUsers();
         this.getWorkTimeApprovals();
@@ -88,8 +82,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     getWorkTimeApprovals() {
         this.loading = true;
         const query = {
-            customerId: this.customerId,
-            serviceId: this.serviceId,
+            analyticId: this.analyticId,
             approvalId: this.approversUerId
         };
         this.subscription = this.workTimeApprovalDelegateService.getCurrentEmployees(query).subscribe(res => {
@@ -103,47 +96,35 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         });
     }
 
-    getCustomers() {
-        this.messageService.showLoading();
-        this.subscription = this.customerService.getOptionsByCurrentManager().subscribe(res => {
-            this.messageService.closeLoading();
-            this.customers = this.sortCustomers(res.data);
-            this.setCustomerSelect();
+    getAnalytics() {
+        this.subscription = this.analyticService.getByCurrentUser().subscribe(res => {
+            this.analytics = res.data;
+            this.setAnalyticSelect();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
+        error => {
+            this.errorHandlerService.handleErrors(error);
         });
     }
 
-    setCustomerSelect() {
-        const data = this.mapToSelect(this.customers, this.model);
+    setAnalyticSelect() {
+        const data = this.mapToSelect(this.analytics, this.model);
         const self = this;
 
-        $('#customerControl').select2({
+        $('#analyticsControl').select2({
             data: data,
             allowClear: true,
             placeholder: this.i18nService.translateByKey('selectAnOption')
         });
-        $('#customerControl').on('select2:unselecting', function(){
-            self.customerId = null;
-            self.serviceId = null;
+        $('#analyticsControl').on('select2:unselecting', function(){
+            self.analyticId = 0;
             self.getWorkTimeApprovals();
-            self.getApprovers();
         });
-        $('#customerControl').on('select2:select', function(evt){
+        $('#analyticsControl').on('select2:select', function(evt){
             const item = evt.params.data;
-            self.customerId = item.id === this.nullId ? null : item.id;
-            self.getServices();
+            self.analyticId = item.id === this.nullId ? 0 : item.id;
             self.getWorkTimeApprovals();
             self.getApprovers();
         });
-    }
-
-    sortCustomers(data: Array<any>) {
-        return data.sort(function (a, b) {
-            return a.text.localeCompare(b.text);
-          });
     }
 
     mapToSelect(data: Array<any>, selectedOption: string): Array<any> {
@@ -159,23 +140,6 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         });
         return result;
       }
-
-    getServices(): void {
-        if (this.customerId === null) { return; }
-        this.subscription = this.serviceService.getOptions(this.customerId).subscribe(res => {
-            this.services = res.data;
-            this.updateServiceControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
-        });
-    }
-
-    updateServiceControl() {
-        const options = $('#serviceControl').data('select2').options.options;
-        options.data = this.mapToSelect(this.services, this.model);
-        $('#serviceControl').empty().select2(options);
-    }
 
     updateApproverUserControl() {
         const options = $('#userApprovalControl').data('select2').options.options;
@@ -194,36 +158,12 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     getApprovers(): void {
-        const query = {
-            customerId: this.customerId,
-            serviceId: this.serviceId
-        };
-        this.subscription = this.workTimeApprovalDelegateService.getApprovals(query).subscribe(res => {
+        this.subscription = this.workTimeApprovalDelegateService.getApprovals(this.analyticId).subscribe(res => {
             this.approvers = res.data;
             this.updateApproverUserControl();
         },
         err => {
             this.errorHandlerService.handleErrors(err);
-        });
-    }
-
-    initServiceControl() {
-        const self = this;
-        $('#serviceControl').select2({
-            data: [],
-            allowClear: true,
-            placeholder: this.i18nService.translateByKey('selectAnOption')
-        });
-        $('#serviceControl').on('select2:unselecting', function(){
-            self.serviceId = null;
-            self.getWorkTimeApprovals();
-            self.getApprovers();
-        });
-        $('#serviceControl').on('select2:select', function(evt){
-            const item = evt.params.data;
-            self.serviceId = item.id === this.nullId ? null : item.id;
-            self.getWorkTimeApprovals();
-            self.getApprovers();
         });
     }
 
@@ -264,12 +204,8 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         });
     }
 
-    showService(): boolean {
-        return this.customerId !== null;
-    }
-
     showUser(): boolean {
-        return this.serviceId !== null;
+        return this.analyticId > 0;
     }
 
     showSave(): boolean {
@@ -301,6 +237,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
         this.subscription = this.workTimeApprovalDelegateService.save(data).subscribe(response => {
             this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
         },
         err => {
@@ -326,6 +263,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         const id = this.itemSelected.workTimeApproval.id;
         this.confirmModal.hide();
         this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
         },
         err => {

@@ -9,11 +9,11 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 {
     [Route("api/workTimeApprovals/approvers")]
     [Authorize]
-    public class ApproversWorkTimeApprovalsController : Controller
+    public class WorkTimeApprovalsApproversController : Controller
     {
         private readonly IApproversWorkTimeApprovalService service;
 
-        public ApproversWorkTimeApprovalsController(IApproversWorkTimeApprovalService service)
+        public WorkTimeApprovalsApproversController(IApproversWorkTimeApprovalService service)
         {
             this.service = service;
         }

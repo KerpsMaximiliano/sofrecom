@@ -1,0 +1,13 @@
+{
+    "added": "Resource assigned to the analytics correctly.",
+    "billingPercentageExceeded": "The percentage that can be assigned the resource was exceeded",
+    "cannotBeAssign": "The resource to the analytic can not be assigned. It conflicts with other analytics",
+    "dateSinceOutOfRange": "Start date out of analytic range",
+    "dateSinceRequired": "Date from is required",
+    "dateToLessThanDateSince": "End date can not be less than the start date",
+    "dateToOutOfRange": "End date out of analytical range",
+    "dateToRequired": "Date to is required",
+    "releaseDateIsRequired": "Release date is required.",
+    "wrongPercentage": "Percentage is incorrect",
+    "monthDifferent": "The release date can not be different from the current month of the last assignment"
+}

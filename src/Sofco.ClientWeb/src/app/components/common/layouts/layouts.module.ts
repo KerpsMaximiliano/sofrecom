@@ -11,6 +11,8 @@ import {BlankLayoutComponent} from "./blankLayout.component";
 import {NavigationComponent} from "./../navigation/navigation.component";
 import {FooterComponent} from "./../footer/footer.component";
 import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
+import { NgxInactivity } from 'ngx-inactivity';
+import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
   imports: [
     BrowserModule,
     RouterModule,
+    NgxInactivity, 
+    Ng2ModalModule,
     BsDropdownModule.forRoot(),
     TranslateModule
   ],

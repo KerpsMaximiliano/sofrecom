@@ -90,11 +90,13 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
     getTimeline(analyticId){
         this.resourceTimeline.model = new Array<any>();
-        this.resourceTimeline.getAllocations(analyticId);
+        this.resourceTimeline.getAllocations(analyticId, this.dateSince, this.monthQuantity);
     }
 
     search(){
         if(this.resourceId == undefined || this.resourceId == '0') return;
+
+        this.resourceTimeline.getAllocations(this.analytic.id, this.dateSince, this.monthQuantity);
 
         if(this.pmoUser){
             this.allocations.getAllocations(this.resourceId, this.dateSince, true);

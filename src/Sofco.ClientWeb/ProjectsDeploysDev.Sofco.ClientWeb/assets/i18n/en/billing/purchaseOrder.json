@@ -1,0 +1,15 @@
+{
+    "analyticIsRequired": "Analytic is required",
+    "areaIsRequired": "Area is required",
+    "clientIsRequired": "Client is required",
+    "comercialManagerIsRequired": "Comercial Manager is required",
+    "managerIsRequired": "Manager is required",
+    "numberIsRequired": "Numer is required",
+    "saveSuccess": "Purchase Order has been created succesfully",
+    "titleIsRequired": "Title is required",
+    "yearIsRequired": "Year is required",
+    "notFound": "Purchase Order not found",
+    "fileAdded": "File has been uploaded succesfully",
+    "searchEmpty": "No results found with the selected parameters",
+    "projectIsRequired": "Project is required"
+}

@@ -59,20 +59,21 @@
 
                     <dl class="dl-horizontal">
                         <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
-                        <dd class="bg-primary">20 hs</dd>
+                        <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
                         <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
-                        <dd class="bg-danger">4 hs</dd>
+                        <dd class="bg-danger">{{ model?.resume?.hoursRejected }} hs</dd>
                         <dt class="bg-warning">{{ 'workTimeManagement.workTime.pendingToSend' | translate }}</dt>
-                        <dd class="bg-warning">4 hs</dd>
+                        <dd class="bg-warning">{{ model?.resume?.hoursPending }} hs</dd>
                         <dt class="bg-success">{{ 'workTimeManagement.workTime.pendingToApprove' | translate }}</dt>
-                        <dd class="bg-success">4 hs</dd>
+                        <dd class="bg-success">{{ model?.resume?.hoursPendingApproved }} hs</dd>
+
                         <dt>{{ 'workTimeManagement.workTime.totalResume' | translate }}</dt>
-                        <dd>68 hs</dd>
+                        <dd>{{ model?.resume?.total }} hs</dd>
                         <hr style="margin:0px">
                         <dt>{{ 'workTimeManagement.workTime.workingHours' | translate }}</dt>
-                        <dd>160 hs</dd>
+                        <dd>{{ model?.resume?.businessHours }} hs</dd>
                         <dt>{{ 'workTimeManagement.workTime.currentHoursToDate' | translate }}</dt>
-                        <dd>48 hs</dd>
+                        <dd>{{ model?.resume?.hoursUntilToday }} hs</dd>
                     </dl>
 
                 </div>

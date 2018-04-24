@@ -69,6 +69,7 @@ import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-del
 import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { PurchaseOrderFormEditComponent } from 'app/views/billing/purchaseOrder/form-edit/purchaseOrder-form-edit.component';
+import { NgxInactivity } from 'ngx-inactivity';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,

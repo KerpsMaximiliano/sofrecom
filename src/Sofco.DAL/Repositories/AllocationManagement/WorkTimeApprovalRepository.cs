@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
@@ -36,18 +35,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
-        public List<WorkTimeApproval> GetByServiceIds(List<Guid> serviceIds)
+        public List<WorkTimeApproval> GetByAnalyticId(int analyticId)
         {
-            var result = context.WorkTimeApprovals
-                .Where(s => serviceIds.Contains(s.ServiceId))
+            return context.WorkTimeApprovals
+                .Where(s => s.AnalyticId == analyticId)
                 .ToList();
-
-            return result;
         }
 
         private void Save(WorkTimeApproval item)
         {
-            var storedItem = GetUnique(item.ServiceId, item.UserId);
+            var storedItem = GetUnique(item.AnalyticId, item.EmployeeId);
 
             if (storedItem != null)
             {
@@ -61,11 +58,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
-        private WorkTimeApproval GetUnique(Guid serviceId, int userId)
+        private WorkTimeApproval GetUnique(int analyticId, int employeeId)
         {
             return context.WorkTimeApprovals
-                .SingleOrDefault(s => s.ServiceId == serviceId
-                                      && s.UserId == userId);
+                .SingleOrDefault(s => s.AnalyticId == analyticId
+                                      && s.EmployeeId == employeeId);
         }
 
         private void Update(WorkTimeApproval stored, WorkTimeApproval data)
