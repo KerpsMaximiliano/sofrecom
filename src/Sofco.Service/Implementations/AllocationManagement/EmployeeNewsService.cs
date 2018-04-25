@@ -52,9 +52,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             MatchReincorporation(data);
 
+            FillEndReason(employeeSyncActions, data);
+
             var response = new Response<IList<EmployeeNewsModel>> { Data = data };
 
             return response;
+        }
+
+        private void FillEndReason(IList<EmployeeSyncAction> employeeSyncActions, List<EmployeeNewsModel> data)
+        {
+            var employeesInGaps = unitOfWork.EmployeeRepository.GetByEmployeeNumbers(employeeSyncActions.Select(x => x.EmployeeNumber));
+
+            foreach (var employeeNewsModel in data.Where(x => x.Status == "Delete"))
+            {
+                employeeNewsModel.EndReason = employeesInGaps
+                    .SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNewsModel.EmployeeNumber))
+                    ?.EndReason;
+            }
         }
 
         private void MatchReincorporation(List<EmployeeNewsModel> data)
@@ -127,7 +141,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             unitOfWork.EmployeeRepository.Delete(storedEmployee);
         }
 
-        public Response<EmployeeSyncAction> Delete(int newsId)
+        public Response<EmployeeSyncAction> Delete(int newsId, NewsDeleteModel model)
         {
             var userName = sessionManager.GetUserName();
 
@@ -135,6 +149,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);
             EmployeeSyncActionValidationHelper.ValidateDeleteStatus(response);
+            EmployeeSyncActionValidationHelper.ValidateEndReasonType(response, model);
 
             var employeeToChange = unitOfWork.EmployeeRepository.GetByEmployeeNumber(response.Data.EmployeeNumber);
 
@@ -150,6 +165,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeeToChange.CreatedByUser = userName;
                 employeeToChange.Modified = DateTime.UtcNow;
                 employeeToChange.EndDate = response.Data.EndDate;
+                employeeToChange.EndReason = model.Comments;
+                employeeToChange.TypeEndReasonId = model.Type.GetValueOrDefault();
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
 

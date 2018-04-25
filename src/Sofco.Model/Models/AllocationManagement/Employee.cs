@@ -4,6 +4,7 @@ using Sofco.Common.Domains;
 using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.AllocationManagement
 {
@@ -72,5 +73,11 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<EmployeeCategory> EmployeeCategories { get; set; }
 
         public ICollection<WorkTime> WorkTimes { get; set; }
+
+        public string EndReason { get; set; }
+
+        public int? TypeEndReasonId { get; set; }
+
+        public EmployeeEndReason TypeEndReason { get; set; }
     }
 }

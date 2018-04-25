@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.DAL;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
@@ -38,6 +39,14 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             if (response.Data.Status == EmployeeSyncActionStatus.New)
             {
                 response.AddError(Resources.AllocationManagement.Employee.WrongStatus);
+            }
+        }
+
+        public static void ValidateEndReasonType(Response<EmployeeSyncAction> response, NewsDeleteModel model)
+        {
+            if (!model.Type.HasValue || model.Type <= 0)
+            {
+                response.AddError(Resources.AllocationManagement.EmployeeSyncAction.EndReasonTypeRequired);
             }
         }
     }

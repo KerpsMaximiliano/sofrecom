@@ -123,6 +123,9 @@
   <data name="AuthPendingSuccess" xml:space="preserve">
     <value>rrhh/license.authPendingSuccess</value>
   </data>
+  <data name="CancelledSuccess" xml:space="preserve">
+    <value>rrhh/license.cancelledSuccess</value>
+  </data>
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>rrhh/license.cannotChangeStatus</value>
   </data>

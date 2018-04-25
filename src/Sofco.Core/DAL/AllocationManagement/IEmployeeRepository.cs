@@ -38,5 +38,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<EmployeeCategory> GetEmployeeCategories(int id);
 
         void UpdateBusinessHours(Employee employee);
+
+        IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers);
     }
 }

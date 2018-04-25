@@ -12,11 +12,11 @@ using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
-    public class LicenseStatusApproveHandler : ILicenseStatusHandler
+    public class LicenseStatusCancelledHandler : ILicenseStatusHandler
     {
         private readonly EmailConfig emailConfig;
 
-        public LicenseStatusApproveHandler(EmailConfig emailConfig)
+        public LicenseStatusCancelledHandler(EmailConfig emailConfig)
         {
             this.emailConfig = emailConfig;
         }
@@ -25,7 +25,7 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
-            if (parameters.IsRrhh && (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.AuthPending || license.Status == LicenseStatus.Rejected))
+            if (parameters.IsRrhh && license.Status != LicenseStatus.Approved)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
             }
@@ -38,36 +38,28 @@ namespace Sofco.Framework.StatusHandlers.License
 
             if (license.TypeId == 1)
             {
-                license.Employee.HolidaysPending -= license.DaysQuantity;
-
-                if (license.Employee.HolidaysPending == 0)
-                {
-                    license.Employee.HolidaysPendingByLaw = 0;
-                }
-                else
-                {
-                    license.Employee.HolidaysPendingByLaw -= license.DaysQuantityByLaw;
-                }
+                license.Employee.HolidaysPending += license.DaysQuantity;
+                license.Employee.HolidaysPendingByLaw += license.DaysQuantityByLaw;
 
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
             if (license.TypeId == 7)
             {
-                license.Employee.ExamDaysTaken += license.DaysQuantity;
+                license.Employee.ExamDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
 
         public string GetSuccessMessage()
         {
-            return Resources.Rrhh.License.ApproveSuccess;
+            return Resources.Rrhh.License.CancelledSuccess;
         }
 
         public IMailData GetEmailData(Model.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
-            var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
-            var body = string.Format(MailMessageResource.LicenseApproveMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail");
+            var subject = string.Format(MailSubjectResource.LicenseCancelledTitle, license.Employee.Name);
+            var body = string.Format(MailMessageResource.LicenseCancelledMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail", parameters.Comment);
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 

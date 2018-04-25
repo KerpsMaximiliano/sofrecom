@@ -496,6 +496,7 @@
         "news": {
             "title": "Novedades",
             "listTitle": "Listado de Novedades",
+            "endReasonTypes": "Motivos",
             "grid": {
                 "employeeNumber": "Legajo",
                 "name":"Nombre",
@@ -683,7 +684,7 @@
     "Sent": "Pendiente Aprobación",
     "Approved": "Aprobado",
     "Related": "Relacionado",
-    "Cancelled": "Anulado",
+    "Cancelled": "Anulado/a",
     "Proyectado": "Proyectado",
     "Pendiente": "Pendiente",
     "Cerrado": "Cerrado",

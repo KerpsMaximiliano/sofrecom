@@ -148,6 +148,15 @@ Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &
 Autorizador: &lt;/br&gt;
 El recurso: {1}, ha iniciado un proceso de autorización de licencia. Para autorizarla ingrese al siguiente  &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.</value>
   </data>
+  <data name="LicenseCancelledMessage" xml:space="preserve">
+    <value>RRHH: &lt;/br&gt;
+Se ha &lt;strong&gt; Cancelado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
+Motivo: {1}
+&lt;/br&gt;&lt;/br&gt;
+Recurso: &lt;/br&gt;
+La licencia solicitada ha sido &lt;strong&gt; Cancelada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
+Motivo: {1}</value>
+  </data>
   <data name="LicensePendingMessage" xml:space="preserve">
     <value>RRHH: &lt;/br&gt;
 Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180425183826_TypeEndReason")]
+    partial class TypeEndReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -1178,7 +1179,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ApprovalComment")
                         .HasMaxLength(500);
 
-                    b.Property<int?>("ApprovalUserId");
+                    b.Property<int>("ApprovalUserId");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -1203,6 +1204,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId");
+
+                    b.HasIndex("ApprovalUserId");
 
                     b.HasIndex("EmployeeId");
 
@@ -1721,6 +1724,10 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("WorkTimes")
                         .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
+                        .WithMany("WorkTimes2")
+                        .HasForeignKey("ApprovalUserId");
 
                     b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("WorkTimes")

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180425175755_EndReason")]
+    partial class EndReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -450,14 +451,10 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Technology")
                         .HasMaxLength(300);
 
-                    b.Property<int?>("TypeEndReasonId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber")
                         .IsUnique();
-
-                    b.HasIndex("TypeEndReasonId");
 
                     b.ToTable("Employees");
                 });
@@ -1178,7 +1175,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ApprovalComment")
                         .HasMaxLength(500);
 
-                    b.Property<int?>("ApprovalUserId");
+                    b.Property<int>("ApprovalUserId");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -1203,6 +1200,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId");
+
+                    b.HasIndex("ApprovalUserId");
 
                     b.HasIndex("EmployeeId");
 
@@ -1315,18 +1314,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DocumentTypes");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Utils.EmployeeEndReason", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeEndReason");
                 });
 
             modelBuilder.Entity("Sofco.Model.Utils.ImputationNumber", b =>
@@ -1553,13 +1540,6 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("TechnologyId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Employee", b =>
-                {
-                    b.HasOne("Sofco.Model.Utils.EmployeeEndReason", "TypeEndReason")
-                        .WithMany("Employees")
-                        .HasForeignKey("TypeEndReasonId");
-                });
-
             modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.WorkTimeApproval", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
@@ -1721,6 +1701,10 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("WorkTimes")
                         .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
+                        .WithMany("WorkTimes2")
+                        .HasForeignKey("ApprovalUserId");
 
                     b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("WorkTimes")

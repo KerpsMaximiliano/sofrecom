@@ -71,6 +71,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employeeSyncAction.endReasonTypeRequired.
+        /// </summary>
+        public static string EndReasonTypeRequired {
+            get {
+                return ResourceManager.GetString("EndReasonTypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employeeSyncAction.notFound.
         /// </summary>
         public static string NotFound {
