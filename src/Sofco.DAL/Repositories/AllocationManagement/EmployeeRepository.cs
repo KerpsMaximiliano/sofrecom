@@ -40,8 +40,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public void UpdateEndDate(Employee employeeToChange)
         {
+            context.Entry(employeeToChange).Property("CreatedByUser").IsModified = true;
             context.Entry(employeeToChange).Property("Modified").IsModified = true;
             context.Entry(employeeToChange).Property("EndDate").IsModified = true;
+            context.Entry(employeeToChange).Property("EndReason").IsModified = true;
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
@@ -101,6 +103,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             context.Entry(employee).Property("BusinessHours").IsModified = true;
             context.Entry(employee).Property("BusinessHoursDescription").IsModified = true;
+        }
+
+        public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
+        {
+            return context.Employees.Where(x => employeeNumbers.Contains(x.EmployeeNumber)).ToList();
         }
 
         public void Save(List<Employee> employees)

@@ -72,5 +72,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<EmployeeCategory> EmployeeCategories { get; set; }
 
         public ICollection<WorkTime> WorkTimes { get; set; }
+
+        public string EndReason { get; set; }
     }
 }

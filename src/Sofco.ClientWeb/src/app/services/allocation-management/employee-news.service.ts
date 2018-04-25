@@ -16,8 +16,8 @@ export class EmployeeNewsService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  delete(id){
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  delete(id, comments){
+    return this.http.put<any>(`${this.apiUrl}/${id}`, { comments: comments });
   }
 
   add(id){

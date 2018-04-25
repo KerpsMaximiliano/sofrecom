@@ -29,6 +29,8 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     public isLoading: boolean = false;
 
+    public rejectComments: string;
+
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -38,6 +40,16 @@ export class NewsComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel",
         false
+    );
+
+    @ViewChild('deleteModal') deleteModal;
+    public deleteModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "deleteModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     constructor(private employeeService: EmployeeService,
@@ -90,7 +102,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     showConfirmDelete(news, index){
         this.newsToConfirm = news;
         this.indexToConfirm = index;
-        this.confirmModal.show();
+        this.rejectComments = news.endReason;
+        this.deleteModal.show();
         this.confirm = this.delete;
         this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
     }
@@ -134,13 +147,13 @@ export class NewsComponent implements OnInit, OnDestroy {
     delete(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id, this.rejectComments).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
             this.isLoading = false;
-            this.confirmModal.hide();
+            this.deleteModal.hide();
         },
         error => {
             this.isLoading = false;
