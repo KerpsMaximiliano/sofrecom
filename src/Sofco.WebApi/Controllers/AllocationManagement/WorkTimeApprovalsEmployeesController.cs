@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
@@ -10,11 +9,11 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 {
     [Route("api/workTimeApprovals/employees")]
     [Authorize]
-    public class EmployeeWorkTimeApprovalsController : Controller
+    public class WorkTimeApprovalsEmployeesController : Controller
     {
         private readonly IEmployeeWorkTimeApprovalService service;
 
-        public EmployeeWorkTimeApprovalsController(IEmployeeWorkTimeApprovalService service)
+        public WorkTimeApprovalsEmployeesController(IEmployeeWorkTimeApprovalService service)
         {
             this.service = service;
         }

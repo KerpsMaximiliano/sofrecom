@@ -1,0 +1,20 @@
+{
+    "generalError": "An unexpected error occurred in the system. Check with the administrator",
+    "TITLE": "Home",
+    "welcome": "Welcome to SofcoAr!",
+    "login": "Login",
+    "logout": "Logout",
+    "loginFailed": "Invalid username or password",
+    "user": "User",
+    "password": "Password",
+    "forbidden": "Unauthorized access",
+    "forbiddenMessage": "Sorry, you do not have access to the requested page. Please go back to the home page",
+    "errorSave": "An error occurred while saving",
+    "errorSendMail": "Error sending the mail",
+    "exportFileError": "An error occurred while exporting the file",
+    "fileNotFound": "File not found",
+    "saveFileError": "An error occurred while saving the file",
+    "mailSent": "The Email has been sent successfully",
+    "fileDeleted": "File has been deleted successfully",
+    "crmGeneralError": "Internal error in CRM"
+}

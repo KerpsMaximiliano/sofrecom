@@ -55,4 +55,8 @@ export class AnalyticService {
   close(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
   }
+
+  getByCurrentUser() {
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
+  }
 }
