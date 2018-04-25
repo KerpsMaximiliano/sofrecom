@@ -116,6 +116,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cancelación de licencia - {0}.
+        /// </summary>
+        public static string LicenseCancelledTitle {
+            get {
+                return ResourceManager.GetString("LicenseCancelledTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Recursos que tienen pendiente la entrega de certificado por licencia.
         /// </summary>
         public static string LicenseCertificatePending {

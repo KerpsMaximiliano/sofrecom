@@ -80,6 +80,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.cancelledSuccess.
+        /// </summary>
+        public static string CancelledSuccess {
+            get {
+                return ResourceManager.GetString("CancelledSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.cannotChangeStatus.
         /// </summary>
         public static string CannotChangeStatus {

@@ -1,0 +1,10 @@
+<button class="btn btn-danger btn-outline dim" (click)="showModal()" *ngIf="canCancel()"> 
+    {{'ACTIONS.cancel' | translate }} <i class="fa fa-check"></i>
+</button>
+
+<ng2-modal [config]="cancelModalConfig" #cancelModal (accept)="cancel()" [isLoading]="isLoading">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="rejectComments" rows="10" [(ngModel)]="rejectComments"></textarea>
+    </div>
+</ng2-modal> 

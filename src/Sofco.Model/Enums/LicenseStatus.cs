@@ -7,6 +7,7 @@
         AuthPending = 3,
         Approved = 4,
         Rejected = 5,
-        ApprovePending = 6
+        ApprovePending = 6,
+        Cancelled = 7
     }
 }
