@@ -147,6 +147,9 @@
   <data name="TaskRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.taskRequired</value>
   </data>
+  <data name="UserCommentMaxLengthError" xml:space="preserve">
+    <value>workTimeManagement/workTime.userCommentMaxLengthError</value>
+  </data>
   <data name="UserRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.userRequired</value>
   </data>

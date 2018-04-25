@@ -7,7 +7,7 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.WorkTimeManagement
 {
-    [Route("api/worktime")]
+    [Route("api/worktimes")]
     [Authorize]
     public class WorkTimeController : Controller
     {

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180425201431_WorkTimeApprovalNull")]
+    partial class WorkTimeApprovalNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -406,9 +407,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<string>("EndReason")
-                        .HasMaxLength(2000);
-
                     b.Property<int>("ExamDaysTaken");
 
                     b.Property<int>("ExtraHolidaysQuantity");
@@ -450,14 +448,10 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Technology")
                         .HasMaxLength(300);
 
-                    b.Property<int?>("TypeEndReasonId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber")
                         .IsUnique();
-
-                    b.HasIndex("TypeEndReasonId");
 
                     b.ToTable("Employees");
                 });
@@ -1317,18 +1311,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("DocumentTypes");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.EmployeeEndReason", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeEndReason");
-                });
-
             modelBuilder.Entity("Sofco.Model.Utils.ImputationNumber", b =>
                 {
                     b.Property<int>("Id")
@@ -1551,13 +1533,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Utils.Technology", "Technology")
                         .WithMany("Analytics")
                         .HasForeignKey("TechnologyId");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Employee", b =>
-                {
-                    b.HasOne("Sofco.Model.Utils.EmployeeEndReason", "TypeEndReason")
-                        .WithMany("Employees")
-                        .HasForeignKey("TypeEndReasonId");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.WorkTimeApproval", b =>

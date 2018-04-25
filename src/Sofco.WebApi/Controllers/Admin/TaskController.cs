@@ -32,7 +32,7 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var list = taskService.GetAll(true);
 
-            return Ok(list.Select(x => new Option { Id = x.Id, Text = x.Description }));
+            return Ok(list.Select(x => new TaskOptionModel { Id = x.Id, Text = x.Description, CategoryId = x.CategoryId }));
         }
 
         [HttpGet("{id}")]

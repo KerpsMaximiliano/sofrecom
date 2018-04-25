@@ -10,5 +10,6 @@
     "monthError": "Mes invalido",
     "yearError": "Año invalido",
     "approverAdded": "Autorizador agregado exitosamente",
-    "approverDeleted": "Autorizador eliminado exitosamente"
+    "approverDeleted": "Autorizador eliminado exitosamente",
+    "userCommentMaxLengthError": "El comentario excede los 500 carácteres."
 }

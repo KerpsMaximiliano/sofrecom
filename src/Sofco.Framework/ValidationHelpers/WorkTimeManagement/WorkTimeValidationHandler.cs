@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
@@ -9,6 +7,8 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
 {
     public static class WorkTimeValidationHandler
     {
+        private const int UserCommentMaxLength = 500;
+
         public static void ValidateEmployee(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.EmployeeId <= 0)
@@ -81,6 +81,14 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             if (model.Date == DateTime.MinValue)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateRequired);
+            }
+        }
+
+        public static void ValidateUserComment(Response<WorkTimeAddModel> response, WorkTimeAddModel model)
+        {
+            if (model.UserComment.Length > UserCommentMaxLength)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.UserCommentMaxLengthError);
             }
         }
     }
