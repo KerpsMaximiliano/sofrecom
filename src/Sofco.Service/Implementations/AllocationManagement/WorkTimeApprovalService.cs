@@ -22,7 +22,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeRepository = employeeRepository;
         }
 
-
         public Response<List<WorkTimeApproval>> GetAll()
         {
             return new Response<List<WorkTimeApproval>>

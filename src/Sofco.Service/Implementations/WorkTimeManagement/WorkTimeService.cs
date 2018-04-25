@@ -10,6 +10,7 @@ using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
+using Sofco.Core.Data.AllocationManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -19,15 +20,18 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IUserData userData;
 
+        private readonly IEmployeeData employeeData;
+
         private readonly ISessionManager sessionManager;
 
         private readonly ILogMailer<WorkTimeService> logger;
 
-        public WorkTimeService(ISessionManager sessionManager, ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData)
+        public WorkTimeService(ISessionManager sessionManager, ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData)
         {
             this.sessionManager = sessionManager;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.employeeData = employeeData;
             this.logger = logger;
         }
 
@@ -93,21 +97,21 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<WorkTimeAddModel>();
 
+            SetCurrentUser(model);
+
             WorkTimeValidationHandler.ValidateEmployee(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateAnalytic(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUser(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateDate(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateHours(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateTask(response, unitOfWork, model);
+            WorkTimeValidationHandler.ValidateUserComment(response, model);
 
             if (response.HasErrors()) return response;
 
             try
             {
                 var workTime = model.CreateDomain();
-
-                //todo: traer el aprobador del empleado
-                workTime.ApprovalUserId = 1;
 
                 unitOfWork.WorkTimeRepository.Insert(workTime);
                 unitOfWork.Save();
@@ -156,5 +160,23 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             return response;
         }
+
+        private void SetCurrentUser(WorkTimeAddModel workTimeAdd)
+        {
+            if (workTimeAdd.UserId > 0) return;
+
+            var currentUser = userData.GetByUserName(sessionManager.GetUserName());
+
+            if(currentUser == null) return;
+
+            workTimeAdd.UserId = currentUser.Id;
+
+            var currentEmployee = employeeData.GetByEmail(currentUser.Email);
+
+            if (currentEmployee == null) return;
+
+            workTimeAdd.EmployeeId = currentEmployee.Id;
+        }
     }
 }
+

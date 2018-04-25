@@ -26,7 +26,7 @@ export class TaskService {
     edit(model){
         return this.http.put<any>(`${this.baseUrl}/task`, model);
     }
-    
+
     active(id, active){
         return this.http.put<any>(`${this.baseUrl}/task/${id}/active/${active}`, {});
     }

@@ -11,17 +11,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     [Authorize]
     public class WorkTimeApprovalsApproversController : Controller
     {
-        private readonly IApproversWorkTimeApprovalService service;
+        private readonly IWorkTimeApprovalApproverService approverService;
 
-        public WorkTimeApprovalsApproversController(IApproversWorkTimeApprovalService service)
+        public WorkTimeApprovalsApproversController(IWorkTimeApprovalApproverService approverService)
         {
-            this.service = service;
+            this.approverService = approverService;
         }
 
         [HttpGet]
         public IActionResult Get([FromUri] WorkTimeApprovalQuery query)
         {
-            var response = service.GetApprovers(query);
+            var response = approverService.GetApprovers(query);
 
             return this.CreateResponse(response);
         }

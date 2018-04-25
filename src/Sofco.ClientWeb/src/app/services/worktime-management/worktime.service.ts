@@ -6,17 +6,21 @@ import { MenuService } from '../admin/menu.service';
 
 @Injectable()
 export class WorktimeService {
-  private baseUrl: string;
+  private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service, private menuService: MenuService) {
-    this.baseUrl = this.service.UrlApi;
+    this.apiUrl = this.service.UrlApi + '/worktimes';
   }
 
   getWorkTimeApproved(model) {
-    return this.http.post<any>(`${this.baseUrl}/worktime/hoursApproved`, model);
+    return this.http.post<any>(`${this.apiUrl}/hoursApproved`, model);
   }
 
   get(date) {
-    return this.http.get<any>(`${this.baseUrl}/worktime/${date}`);
+    return this.http.get<any>(`${this.apiUrl}/${date}`);
+  }
+
+  post(model) {
+    return this.http.post<any>(`${this.apiUrl}`, model);
   }
 }

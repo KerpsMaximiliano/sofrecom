@@ -1,8 +1,0 @@
-{
-    "created": "Funcionalidad creado correctamente",
-    "disabled": "Funcionalidad inhabilitada correctamente",
-    "enabled": "Funcionalidad habilitada correctamente",
-    "moduleFunctionalityAlreadyCreated": "Funcionalidad ya asociada al modulo",
-    "moduleFunctionalityAlreadyRemoved": "Funcionalidad no asociada al modulo",
-    "notFound": "Funcionalidad no encontrada"
-}
