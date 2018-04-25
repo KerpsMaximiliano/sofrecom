@@ -496,6 +496,7 @@
         "news": {
             "title": "Novedades",
             "listTitle": "Listado de Novedades",
+            "endReasonTypes": "Motivos",
             "grid": {
                 "employeeNumber": "Legajo",
                 "name":"Nombre",

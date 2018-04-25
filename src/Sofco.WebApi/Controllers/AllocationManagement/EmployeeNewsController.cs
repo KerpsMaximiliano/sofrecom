@@ -28,7 +28,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut("{id}")]
         public IActionResult Delete(int id, [FromBody] NewsDeleteModel model)
         {
-            var response = employeeNewsService.Delete(id, model.Comments);
+            var response = employeeNewsService.Delete(id, model);
 
             return this.CreateResponse(response);
         }

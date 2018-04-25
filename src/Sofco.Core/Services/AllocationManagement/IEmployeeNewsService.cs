@@ -11,7 +11,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<EmployeeSyncAction> Add(int newsId);
 
-        Response<EmployeeSyncAction> Delete(int newsId, string comments);
+        Response<EmployeeSyncAction> Delete(int newsId, NewsDeleteModel model);
 
         Response<EmployeeSyncAction> Cancel(int newsId);
     }

@@ -141,7 +141,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             unitOfWork.EmployeeRepository.Delete(storedEmployee);
         }
 
-        public Response<EmployeeSyncAction> Delete(int newsId, string comments)
+        public Response<EmployeeSyncAction> Delete(int newsId, NewsDeleteModel model)
         {
             var userName = sessionManager.GetUserName();
 
@@ -149,6 +149,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             EmployeeSyncActionValidationHelper.Exist(newsId, response, unitOfWork);
             EmployeeSyncActionValidationHelper.ValidateDeleteStatus(response);
+            EmployeeSyncActionValidationHelper.ValidateEndReasonType(response, model);
 
             var employeeToChange = unitOfWork.EmployeeRepository.GetByEmployeeNumber(response.Data.EmployeeNumber);
 
@@ -164,7 +165,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeeToChange.CreatedByUser = userName;
                 employeeToChange.Modified = DateTime.UtcNow;
                 employeeToChange.EndDate = response.Data.EndDate;
-                employeeToChange.EndReason = comments;
+                employeeToChange.EndReason = model.Comments;
+                employeeToChange.TypeEndReasonId = model.Type.GetValueOrDefault();
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
 

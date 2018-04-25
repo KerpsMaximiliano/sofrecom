@@ -52,12 +52,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Employee.resx</DependentUpon>
     </Compile>
-    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
-      <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
+    <Compile Update="AllocationManagement\EmployeeSyncAction.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
@@ -165,7 +160,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\EmployeeSyncAction.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmployeeSyncAction - Copia.Designer.cs</LastGenOutput>
+      <LastGenOutput>EmployeeSyncAction.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\TimeApproval.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

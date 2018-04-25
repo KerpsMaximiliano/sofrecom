@@ -61,6 +61,11 @@ namespace Sofco.DAL.Repositories.Common
             return _context.Sectors.ToList().AsReadOnly();
         }
 
+        public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
+        {
+            return _context.EmployeeEndReason.ToList().AsReadOnly();
+        }
+
         public IList<SoftwareLaw> GetSoftwareLaws()
         {
             return _context.SoftwareLaws.ToList().AsReadOnly();

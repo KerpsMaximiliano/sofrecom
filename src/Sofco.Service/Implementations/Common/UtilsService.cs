@@ -29,6 +29,11 @@ namespace Sofco.Service.Implementations.Common
             return unitOfWork.UtilsRepository.GetSectors();
         }
 
+        public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
+        {
+            return unitOfWork.UtilsRepository.GetEmployeeTypeEndReasons();
+        }
+
         public IList<DocumentType> GetDocumentTypes()
         {
             return unitOfWork.UtilsRepository.GetDocumentTypes();

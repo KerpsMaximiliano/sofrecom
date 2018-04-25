@@ -55,7 +55,9 @@
 
 
 <ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="confirm()" [isLoading]="isLoading">
-        <h4>{{'allocationManagement.confirmBody' | translate }} <b>{{ confirmBodyAction }}</b> ?</h4>
+    <h4>{{'allocationManagement.confirmBody' | translate }} <b>{{ confirmBodyAction }}</b> ?</h4>
+
+    <select-two [label]="'allocationManagement.news.endReasonTypes'" [(value)]="endReasonType" [options]="endReasonTypes"></select-two>
 
     <div class="form-group">
         <label class="control-label">{{'comments' | translate }}</label>

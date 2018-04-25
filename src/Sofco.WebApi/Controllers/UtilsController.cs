@@ -24,5 +24,13 @@ namespace Sofco.WebApi.Controllers
 
             return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }));
         }
+
+        [HttpGet("employeeTypeEndReasons")]
+        public IActionResult GetEmployeeTypeEndReasons()
+        {
+            var sectors = utilsService.GetEmployeeTypeEndReasons();
+
+            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }));
+        }
     }
 }

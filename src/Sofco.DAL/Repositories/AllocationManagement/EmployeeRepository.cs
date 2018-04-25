@@ -44,6 +44,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToChange).Property("Modified").IsModified = true;
             context.Entry(employeeToChange).Property("EndDate").IsModified = true;
             context.Entry(employeeToChange).Property("EndReason").IsModified = true;
+            context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)

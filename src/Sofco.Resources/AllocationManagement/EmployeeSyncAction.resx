@@ -120,6 +120,9 @@
   <data name="Deleted" xml:space="preserve">
     <value>allocationManagement/employeeSyncAction.deleted</value>
   </data>
+  <data name="EndReasonTypeRequired" xml:space="preserve">
+    <value>allocationManagement/employeeSyncAction.endReasonTypeRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/employeeSyncAction.notFound</value>
   </data>
