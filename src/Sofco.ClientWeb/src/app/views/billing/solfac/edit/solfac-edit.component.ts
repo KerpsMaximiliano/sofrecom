@@ -142,7 +142,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
           this.users = data;
 
           var userapplicant = this.users.find(x => x.userName == Cookie.get('currentUser'));
-          this.model.userApplicantId = userapplicant.value;
+          this.model.userApplicantId = userapplicant.id;
           this.model.userApplicantName = userapplicant.text;
         },
         err => this.errorHandlerService.handleErrors(err));

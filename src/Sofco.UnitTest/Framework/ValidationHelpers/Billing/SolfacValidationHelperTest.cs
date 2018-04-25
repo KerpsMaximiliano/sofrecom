@@ -22,6 +22,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Billing
             solfacRepositoryMock = new Mock<ISolfacRepository>();
 
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
+            solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
         }
 
         [Test]
