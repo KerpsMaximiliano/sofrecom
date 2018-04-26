@@ -22,13 +22,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IEmployeeData employeeData;
 
-        private readonly ISessionManager sessionManager;
-
         private readonly ILogMailer<WorkTimeService> logger;
 
-        public WorkTimeService(ISessionManager sessionManager, ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData)
+        public WorkTimeService(ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData)
         {
-            this.sessionManager = sessionManager;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.employeeData = employeeData;
@@ -44,8 +41,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             try
             {
-                var userName = sessionManager.GetUserName();
-                var currentUser = userData.GetByUserName(userName);
+                var currentUser = userData.GetCurrentUser();
 
                 var startDate = new DateTime(date.Year, date.Month, 1);
                 var endDate = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
@@ -165,13 +161,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             if (workTimeAdd.UserId > 0) return;
 
-            var currentUser = userData.GetByUserName(sessionManager.GetUserName());
+            var currentUser = userData.GetCurrentUser();
 
             if(currentUser == null) return;
 
             workTimeAdd.UserId = currentUser.Id;
 
-            var currentEmployee = employeeData.GetByEmail(currentUser.Email);
+            var currentEmployee = employeeData.GetCurrentEmployee();
 
             if (currentEmployee == null) return;
 

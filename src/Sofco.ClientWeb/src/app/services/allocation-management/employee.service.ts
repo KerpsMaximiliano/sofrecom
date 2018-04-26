@@ -59,4 +59,8 @@ export class EmployeeService {
   updateBusinessHours(id, json){
     return this.http.put<any>(`${this.baseUrl}/employees/${id}/businessHours`, json);
   }
+
+  getCurrentCategories() {
+    return this.http.get<any>(`${this.baseUrl}/employees/currentCategories`);
+  }
 }

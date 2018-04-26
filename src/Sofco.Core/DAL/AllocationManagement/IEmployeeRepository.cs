@@ -35,7 +35,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void UpdateExamDaysTaken(Employee employeeToModif);
 
-        IList<EmployeeCategory> GetEmployeeCategories(int id);
+        IList<EmployeeCategory> GetEmployeeCategories(int employeeId);
 
         void UpdateBusinessHours(Employee employee);
 

@@ -4,6 +4,6 @@ namespace Sofco.Core.Data.AllocationManagement
 {
     public interface IEmployeeData
     {
-        Employee GetByEmail(string email);
+        Employee GetCurrentEmployee();
     }
 }

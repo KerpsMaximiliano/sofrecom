@@ -60,7 +60,7 @@ namespace Sofco.Framework.Managers
             }
             else
             {
-                var currentUser = userData.GetByUserName(userName);
+                var currentUser = userData.GetCurrentUser();
 
                 var currentAnalyticIds = unitOfWork.AnalyticRepository.GetByManagerId(currentUser.Id).Select(x => x.Id)
                     .ToList();

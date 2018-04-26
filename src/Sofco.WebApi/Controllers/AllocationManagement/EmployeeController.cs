@@ -116,5 +116,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("currentCategories")]
+        public IActionResult GetCurrentCategories()
+        {
+            var response = employeeService.GetCurrentCategories();
+
+            return this.CreateResponse(response);
+        }
     }
 }

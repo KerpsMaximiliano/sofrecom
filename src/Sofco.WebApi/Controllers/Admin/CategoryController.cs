@@ -46,7 +46,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpPost]
         public IActionResult Post([FromBody] CategoryModel model)
         {
-            var response = this.categoryService.Add(model.Description);
+            var response = categoryService.Add(model.Description);
 
             return this.CreateResponse(response);
         }
@@ -54,7 +54,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpPut]
         public IActionResult Put([FromBody] CategoryModel model)
         {
-            var response = this.categoryService.Update(model);
+            var response = categoryService.Update(model);
 
             return this.CreateResponse(response);
         }
@@ -62,7 +62,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [HttpPut("{id}/active/{active}")]
         public IActionResult Active(int id, bool active)
         {
-            var response = this.categoryService.Active(id, active);
+            var response = categoryService.Active(id, active);
 
             return this.CreateResponse(response);
         }
