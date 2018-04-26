@@ -8,10 +8,7 @@ declare var jQuery:any;
 
 @Directive({
     selector: 'select[select2]',
-    exportAs: 'select',
-    host: {
-        '(window:resize)': 'onResize()'
-    }
+    exportAs: 'select'
 })
 export class Select2Directive implements OnInit {
 

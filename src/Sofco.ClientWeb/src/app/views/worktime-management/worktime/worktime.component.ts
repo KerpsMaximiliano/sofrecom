@@ -28,6 +28,8 @@ import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskMo
 
 export class WorkTimeComponent implements OnInit, OnDestroy {
 
+  private pendingTaskColor = '#f8ac59';
+
   public analytics: any[] = new Array();
   public categories: any[] = new Array();
   public allTasks: any[] = new Array();
@@ -36,6 +38,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   private idKey = 'id';
   private textKey = 'text';
   private subscription: Subscription;
+  private calendarEvents: any[] = new Array();
 
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
@@ -54,6 +57,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   @ViewChild('editModal') editModal;
   @ViewChild('dateControl') dateControl;
+  @ViewChild('calendarControl') calendarControl;
 
   constructor(private serviceService: ServiceService,
       private analyticService: AnalyticService,
@@ -84,30 +88,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         eventLimit: false, // allow "more" link when too many events
-        events: [
-          {
-            title: '8 h - Gestión de Servicio',
-            start: '2018-01-01',
-          },
-          {
-            title: '8 h - Gestión de Servicio',
-            start: '2018-04-07',
-            end: '2018-04-10'
-          },
-          {
-            id: 999,
-            title: '4 h - Gestión de Servicio',
-            start: '2018-04-16T09:00:00'
-          },
-          {
-            title: '8 h - Gestión de Servicio',
-            start: '2018-04-12T09:00:00'
-          },
-          {
-            title: '6 h - Gestión de Servicio',
-            start: '2018-04-13T09:00:00'
-          }
-        ]
+        events: this.calendarEvents
       };
   }
 
@@ -122,13 +103,19 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.subscription = this.worktimeService.get(moment().format('YYYY-MM-DD')).subscribe(response => {
       this.messageService.closeLoading();
-
       this.model = response.data;
+      this.updateCalendarEvents();
     },
     error => {
       this.messageService.closeLoading();
       this.errorHandlerService.handleErrors(error);
     });
+  }
+
+  updateCalendarEvents() {
+    this.calendarEvents = this.translateToEvent(this.model.calendar);
+    this.calendarControl.fullCalendar("removeEventSources");
+    this.calendarControl.fullCalendar("addEventSource", this.calendarEvents);
   }
 
   sendHours() {
@@ -194,6 +181,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.isLoading = false;
       this.editModal.hide();
+      this.getModel();
     },
     error => {
       this.errorHandlerService.handleErrors(error);
@@ -230,5 +218,24 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const today = new Date();
 
     return date.getMonth() === today.getMonth();
+  }
+
+  translateToEvent(data: Array<any>) {
+    const events = [];
+
+    data.forEach(item => {
+      events.push(this.setPendingTaskEvent(item));
+    });
+
+    return events;
+  }
+
+  setPendingTaskEvent(item: any) {
+    return {
+      id: item.id,
+      title: item.taskName,
+      start: item.date,
+      color: this.pendingTaskColor
+    };
   }
 }

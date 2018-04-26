@@ -26,7 +26,7 @@
                         <div class="col-md-6 text-right"><button class="btn btn-primary" (click)="sendHours()"> {{ 'workTimeManagement.workTime.sendHours' | translate }} <i class="fa fa-arrow-circle-right"></i></button></div>
                     </div>
                     <hr>
-                    <ng-fullcalendar #ucCalendar [options]="calendarOptions"></ng-fullcalendar>
+                    <ng-fullcalendar #calendarControl [options]="calendarOptions"></ng-fullcalendar>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-md-2">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input type="number" class="form-control" min="0" max="24" name="hours" [(ngModel)]="taskModel.hours" (change)="showSaveTask()">
+                    <input type="number" class="form-control" min="1" max="24" name="hours" [(ngModel)]="taskModel.hours" (change)="showSaveTask()">
                 </div>
             </div>
         </div>
