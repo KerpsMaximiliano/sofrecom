@@ -4,10 +4,7 @@ declare var jQuery:any;
 
 @Directive({
     selector: 'input[datepicker]',
-    exportAs: 'datepicker',
-    host: {
-        '(window:resize)': 'onResize()'
-    }
+    exportAs: 'datepicker'
 })
 export class DatepickerDirective implements OnInit {
 

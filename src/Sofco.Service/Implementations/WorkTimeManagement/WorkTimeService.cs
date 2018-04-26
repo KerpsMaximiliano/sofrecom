@@ -36,14 +36,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             if(date == DateTime.MinValue) return new Response<WorkTimeModel>();
 
-            var result = new Response<WorkTimeModel>(); 
-            result.Data = new WorkTimeModel();
+            var result = new Response<WorkTimeModel> {Data = new WorkTimeModel()};
 
             try
             {
                 var currentUser = userData.GetCurrentUser();
 
                 var startDate = new DateTime(date.Year, date.Month, 1);
+
                 var endDate = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
 
                 var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
@@ -66,12 +66,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private void FillResume(Response<WorkTimeModel> result, DateTime startDate, DateTime endDate)
         {
-            result.Data.Resume = new WorkTimeResumeModel();
-
-            result.Data.Resume.HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
-            result.Data.Resume.HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours);
-            result.Data.Resume.HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
-            result.Data.Resume.HoursPendingApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
+            result.Data.Resume = new WorkTimeResumeModel
+            {
+                HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours),
+                HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours),
+                HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
+                HoursPendingApproved =
+                    result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours)
+            };
 
             while (startDate.Date <= endDate.Date)
             {
