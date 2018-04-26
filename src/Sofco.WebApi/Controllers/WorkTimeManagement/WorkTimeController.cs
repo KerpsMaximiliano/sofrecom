@@ -41,5 +41,13 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("hoursPending")]
+        public IActionResult GetHoursPending([FromBody] WorktimeHoursPendingParams model)
+        {
+            var response = workTimeService.GetHoursPending(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

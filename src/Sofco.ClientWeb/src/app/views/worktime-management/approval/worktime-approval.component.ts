@@ -69,8 +69,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             if(this.employeeId > 0){
                 this.getEmployees();
             }
-
-            this.search();
         }
     }
 
@@ -106,12 +104,38 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         $('#monthyear').val('');
     }
 
+    searchPending(){
+        var json = {
+            analyticId : this.analyticId,
+            employeeId : this.employeeId,
+            month : 0,
+            year : 0
+        }
+
+        this.messageService.showLoading();
+
+        this.searchSubscrip = this.worktimeService.getWorkTimePending(json).subscribe(response => {
+            this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
+
+            this.hoursPending = response.data;
+
+            this.initPendingGrid();
+
+            sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
     search() {
         var json = {
             analyticId : this.analyticId,
             employeeId : this.employeeId,
             month : 0,
-            year : 0,
+            year : 0
         }
 
         var monthYear = $('#monthyear').val();
@@ -142,6 +166,12 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     initGrid(){
         var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+        this.datatableService.destroy(options.selector);
+        this.datatableService.init2(options);
+    }
+
+    initPendingGrid(){
+        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
         this.datatableService.destroy(options.selector);
         this.datatableService.init2(options);
     }

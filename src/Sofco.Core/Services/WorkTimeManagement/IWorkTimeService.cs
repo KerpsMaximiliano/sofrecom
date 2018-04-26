@@ -12,5 +12,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response<WorkTimeAddModel> Add(WorkTimeAddModel model);
 
         Response<IList<HoursApprovedModel>> GetHoursApproved(WorktimeHoursApprovedParams model);
+
+        Response<IList<HoursApprovedModel>> GetHoursPending(WorktimeHoursPendingParams model);
     }
 }

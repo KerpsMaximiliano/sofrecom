@@ -157,6 +157,22 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return response;
         }
 
+        public Response<IList<HoursApprovedModel>> GetHoursPending(WorktimeHoursPendingParams model)
+        {
+            var response = new Response<IList<HoursApprovedModel>>();
+
+            var list = unitOfWork.WorkTimeRepository.SearchPending(model);
+
+            if (!list.Any())
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+
+            response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
+
+            return response;
+        }
+
         private void SetCurrentUser(WorkTimeAddModel workTimeAdd)
         {
             if (workTimeAdd.UserId > 0) return;

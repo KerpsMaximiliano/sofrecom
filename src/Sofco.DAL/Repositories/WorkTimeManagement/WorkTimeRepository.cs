@@ -46,5 +46,18 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
             return query.ToList();
         }
+
+        public IList<WorkTime> SearchPending(WorktimeHoursPendingParams parameters)
+        {
+            IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Sent);
+
+            if (parameters.EmployeeId > 0)
+                query = query.Where(x => x.EmployeeId == parameters.EmployeeId);
+
+            if (parameters.AnalyticId > 0)
+                query = query.Where(x => x.AnalyticId == parameters.AnalyticId);
+
+            return query.ToList();
+        }
     }
 }
