@@ -329,7 +329,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
           });
 
           this.invoices = this.invoices.filter(item => {
-            if(!invoices.includes(item.value)) return item;
+            if(!invoices.includes(item.id)) return item;
 
             return null;
           })

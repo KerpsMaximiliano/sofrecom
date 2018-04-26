@@ -261,6 +261,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return GetCategories(currentEmployee.Id);
         }
 
+        public IList<UnemployeeListItemModel> GetUnemployees(UnemployeeSearchParameters parameters)
+        {
+            var employees = unitOfWork.EmployeeRepository.SearchUnemployees(parameters);
+
+            return employees.Select(x => new UnemployeeListItemModel(x)).ToList();
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

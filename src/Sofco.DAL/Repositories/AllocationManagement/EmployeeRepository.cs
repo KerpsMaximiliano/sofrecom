@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Relationships;
@@ -109,6 +110,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
         {
             return context.Employees.Where(x => employeeNumbers.Contains(x.EmployeeNumber)).ToList();
+        }
+
+        public IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters)
+        {
+            IQueryable<Employee> query = context.Employees.Include(x => x.TypeEndReason).Where(x => x.EndDate.HasValue);
+
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
+                query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
+
+            if (parameters.StartDate.HasValue)
+                query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date >= parameters.StartDate.Value.Date);
+
+            if (parameters.EndDate.HasValue)
+                query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date <= parameters.EndDate.Value.Date);
+
+            return query.ToList();
         }
 
         public void Save(List<Employee> employees)

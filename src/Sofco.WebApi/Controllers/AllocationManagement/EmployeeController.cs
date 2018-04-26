@@ -30,6 +30,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpPost("search/unemployees")]
+        public IActionResult GetUnemployees([FromBody] UnemployeeSearchParameters parameters)
+        {
+            var model = employeeService.GetUnemployees(parameters);
+
+            return Ok(model);
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
