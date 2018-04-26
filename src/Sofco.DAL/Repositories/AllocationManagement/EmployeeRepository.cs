@@ -92,12 +92,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
         }
 
-        public IList<EmployeeCategory> GetEmployeeCategories(int id)
+        public IList<EmployeeCategory> GetEmployeeCategories(int employeeId)
         {
             return context.EmployeeCategories
                 .Include(x => x.Category)
                     .ThenInclude(x => x.Tasks)
-                .Where(x => x.EmployeeId == id && x.Category.Active).ToList();
+                .Where(x => x.EmployeeId == employeeId && x.Category.Active).ToList();
         }
 
         public void UpdateBusinessHours(Employee employee)

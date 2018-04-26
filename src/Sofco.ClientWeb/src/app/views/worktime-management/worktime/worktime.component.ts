@@ -16,7 +16,7 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
-import { CategoryService } from 'app/services/admin/category.service';
+import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { TaskService } from 'app/services/admin/task.service';
 import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
 
@@ -30,9 +30,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   public analytics: any[] = new Array();
   public categories: any[] = new Array();
-  public availableTasks: any[] = new Array();
+  public allTasks: any[] = new Array();
   public tasks: any[] = new Array();
 
+  private idKey = 'id';
+  private textKey = 'text';
   private subscription: Subscription;
 
   public model: any = {};
@@ -55,7 +57,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   constructor(private serviceService: ServiceService,
       private analyticService: AnalyticService,
-      private categoryService: CategoryService,
+      private employeeService: EmployeeService,
       private taskService: TaskService,
       private customerService: CustomerService,
       private usersService: UserService,
@@ -71,7 +73,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.getModel();
     this.getAnalytics();
     this.getCategories();
-    this.getTasks();
 
     this.calendarOptions = {
       weekends: true,
@@ -149,8 +150,24 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   getCategories() {
-    this.subscription = this.categoryService.getOptions().subscribe(res => {
-      this.categories = res;
+    this.subscription = this.employeeService.getCurrentCategories().subscribe(res => {
+      const categories = {};
+      const tasks = [];
+      res.data.forEach(item => {
+        categories[item.categoryId] = item.category;
+        tasks.push({
+          [this.idKey]: item.taskId,
+          [this.textKey]: item.task,
+          categoryId: item.categoryId
+        });
+      });
+      const uniqueCategories = [];
+      for (const key in categories) {
+        uniqueCategories.push({[this.idKey]: key, [this.textKey]: categories[key]});
+      }
+
+      this.categories = uniqueCategories;
+      this.allTasks = tasks;
     },
     error => {
       this.errorHandlerService.handleErrors(error);
@@ -159,7 +176,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   getTasks() {
     this.subscription = this.taskService.getOptions().subscribe(res => {
-      this.availableTasks = res;
+      this.allTasks = res;
     },
     error => {
       this.errorHandlerService.handleErrors(error);
@@ -167,7 +184,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   categoryChange() {
-    this.tasks = this.availableTasks.filter(x => x.categoryId == this.taskModel.categoryId);
+    this.taskModel.taskId = 0;
+    this.tasks = this.allTasks.filter(x => x.categoryId == this.taskModel.categoryId);
     this.showSaveTask();
   }
 
@@ -197,7 +215,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.editModal.isSaveEnabled = false;
       return;
     }
-    if (taskModel.date == null) {
+    if (taskModel.date == null || !this.validateDate(taskModel.date)) {
       this.editModal.isSaveEnabled = false;
       return;
     }
@@ -206,5 +224,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       return;
     }
     this.editModal.isSaveEnabled = true;
+  }
+
+  validateDate(date: Date) {
+    const today = new Date();
+
+    return date.getMonth() === today.getMonth();
   }
 }

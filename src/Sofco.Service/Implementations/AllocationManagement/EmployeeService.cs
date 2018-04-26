@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -29,8 +30,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
         private readonly ISessionManager sessionManager;
+        private readonly IEmployeeData employeeData;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -38,6 +40,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mailBuilder = mailBuilder;
             this.mapper = mapper;
             this.sessionManager = sessionManager;
+            this.employeeData = employeeData;
             emailConfig = emailOptions.Value;
         }
 
@@ -192,9 +195,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
         }
 
-        public Response<IList<EmployeeCategoryOption>> GetCategories(int id)
+        public Response<IList<EmployeeCategoryOption>> GetCategories(int employeeId)
         {
-            var employeeCategories = unitOfWork.EmployeeRepository.GetEmployeeCategories(id);
+            var employeeCategories = unitOfWork.EmployeeRepository.GetEmployeeCategories(employeeId);
 
             var response = new Response<IList<EmployeeCategoryOption>> { Data = new List<EmployeeCategoryOption>() };
 
@@ -208,7 +211,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     var option = new EmployeeCategoryOption
                     {
+                        CategoryId = employeeCategory.CategoryId,
                         Category = employeeCategory.Category?.Description,
+                        TaskId = task.Id,
                         Task = task.Description
                     };
 
@@ -247,6 +252,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             
             return response;
+        }
+
+        public Response<IList<EmployeeCategoryOption>> GetCurrentCategories()
+        {
+            var currentEmployee = employeeData.GetCurrentEmployee();
+
+            return GetCategories(currentEmployee.Id);
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

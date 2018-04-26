@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
@@ -14,16 +15,21 @@ namespace Sofco.Data.AllocationManagement
 
         private readonly ICacheManager cacheManager;
 
+        private readonly ISessionManager sessionManager;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public EmployeeData(ICacheManager cacheManager, IUnitOfWork unitOfWork)
+        public EmployeeData(ICacheManager cacheManager, IUnitOfWork unitOfWork, ISessionManager sessionManager)
         {
             this.cacheManager = cacheManager;
             this.unitOfWork = unitOfWork;
+            this.sessionManager = sessionManager;
         }
 
-        public Employee GetByEmail(string email)
+        public Employee GetCurrentEmployee()
         {
+            var email = sessionManager.GetUserEmail();
+
             return cacheManager.Get(string.Format(EmployeeByEmailCacheKey, email),
                 () => unitOfWork.EmployeeRepository.GetSingle(x => x.Email == email),
                 cacheExpire);
