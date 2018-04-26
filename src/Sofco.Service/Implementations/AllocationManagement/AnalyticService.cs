@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
@@ -33,11 +32,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
-        private readonly ISessionManager sessionManager;
         private readonly IUserData userData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService, ISessionManager sessionManager, IUserData userData)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -46,7 +44,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
-            this.sessionManager = sessionManager;
             this.userData = userData;
         }
 
@@ -77,7 +74,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<Option>> GetByCurrentUser()
         {
-            var userId = userData.GetByUserName(sessionManager.GetUserName()).Id;
+            var userId = userData.GetCurrentUser().Id;
 
             var result = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(userId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 

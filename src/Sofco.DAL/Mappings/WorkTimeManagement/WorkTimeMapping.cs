@@ -18,7 +18,6 @@ namespace Sofco.DAL.Mappings.WorkTimeManagement
             builder.Entity<WorkTime>().HasOne(x => x.Employee).WithMany(x => x.WorkTimes).HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkTime>().HasOne(x => x.User).WithMany(x => x.WorkTimes1).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkTime>().HasOne(x => x.Task).WithMany(x => x.WorkTimes).HasForeignKey(x => x.TaskId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<WorkTime>().HasOne(x => x.ApprovalUser).WithMany(x => x.WorkTimes2).HasForeignKey(x => x.ApprovalUserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkTime>().HasOne(x => x.Analytic).WithMany(x => x.WorkTimes).HasForeignKey(x => x.AnalyticId).OnDelete(DeleteBehavior.Restrict);
         }
     }

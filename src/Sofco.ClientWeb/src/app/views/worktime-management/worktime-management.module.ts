@@ -22,7 +22,7 @@ import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.modul
 @NgModule({
   declarations: [WorkTimeComponent, WorkTimeApprovalComponent],
 
-  imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, 
+  imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
     TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule,
     FullCalendarModule, IboxtoolsModule],
 

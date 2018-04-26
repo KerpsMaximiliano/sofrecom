@@ -27,8 +27,7 @@ namespace Sofco.Model.Models.WorkTimeManagement
 
         public WorkTimeStatus Status { get; set; }
 
-        public int ApprovalUserId { get; set; }
-        public User ApprovalUser { get; set; }
+        public int? ApprovalUserId { get; set; }
 
         public string UserComment { get; set; }
 

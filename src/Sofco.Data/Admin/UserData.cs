@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -19,12 +20,15 @@ namespace Sofco.Data.Admin
 
         private readonly ICacheManager cacheManager;
 
+        private readonly ISessionManager sessionManager;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public UserData(ICacheManager cacheManager, IUnitOfWork unitOfWork)
+        public UserData(ICacheManager cacheManager, IUnitOfWork unitOfWork, ISessionManager sessionManager)
         {
             this.cacheManager = cacheManager;
             this.unitOfWork = unitOfWork;
+            this.sessionManager = sessionManager;
         }
 
         public User GetByExternalManagerId(string managerId)
@@ -60,6 +64,13 @@ namespace Sofco.Data.Admin
             return cacheManager.Get(string.Format(UserLiteByUserNameCacheKey, userName),
                 () => unitOfWork.UserRepository.GetUserLiteByUserName(userName),
                 cacheExpire);
+        }
+
+        public UserLiteModel GetCurrentUser()
+        {
+            var currentUserName = sessionManager.GetUserName();
+
+            return GetUserLiteByUserName(currentUserName);
         }
     }
 }

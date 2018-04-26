@@ -42,6 +42,5 @@ namespace Sofco.Model.Models.Admin
         public ICollection<License> Licenses { get; set; }
 
         public ICollection<WorkTime> WorkTimes1 { get; set; }
-        public ICollection<WorkTime> WorkTimes2 { get; set; }
     }
 }

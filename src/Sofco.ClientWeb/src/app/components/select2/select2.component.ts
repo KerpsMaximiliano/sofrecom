@@ -17,10 +17,10 @@ export class Select2Component implements OnInit{
 
     private callChange: boolean = false;
 
-    constructor() {} 
+    constructor() {}
 
     ngOnInit(): void {
-        var self = this;
+        const self = this;
         $(this.element.nativeElement).on('change', function() { 
             if(self.element.nativeElement.value && self.element.nativeElement.value != undefined){
 
