@@ -456,8 +456,10 @@
         },
         "resources": {
             "listTitle": "Listado de Recursos",
+            "listTitleInactives": "Listado de Recursos Inactivos",
             "search": "Busqueda de Recursos",
             "title": "Recursos",
+            "titleInactive": "Recursos Inactivos",
             "list": "Listado",
             "profile": "Perfil del empleado",
             "recipients": "Con Copia (CC)",
@@ -479,6 +481,12 @@
             "businessHoursDescription": "Horario",
             "businessHoursModal": "Actualizacion horas por contrato",
             "hoursByContract": "Horas por Contrato",
+            "dateFrom": "Fecha Desde",
+            "dateTo": "Fecha Hasta",
+            "startDate": "Fecha Ingreso",
+            "endDate": "Fecha Baja",
+            "reason": "Motivo",
+            "comments": "Comentarios",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",

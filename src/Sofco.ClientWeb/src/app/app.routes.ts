@@ -68,6 +68,7 @@ import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.componen
 import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
 import { WorkTimeComponent } from './views/worktime-management/worktime/worktime.component';
 import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
+import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -209,6 +210,7 @@ export const ROUTES:Routes = [
           { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
         ]
       },
+      { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
       {
         path: "licenses",
         children: [

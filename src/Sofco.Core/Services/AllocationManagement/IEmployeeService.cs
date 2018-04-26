@@ -27,5 +27,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<EmployeeCategoryOption>> GetCategories(int id);
 
         Response UpdateBusinessHours(int id, EmployeeBusinessHoursParams model);
+
+        IList<UnemployeeListItemModel> GetUnemployees(UnemployeeSearchParameters parameters);
     }
 }
