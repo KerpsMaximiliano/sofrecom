@@ -104,6 +104,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.Created = DateTime.UtcNow;
                 employee.Modified = DateTime.UtcNow;
                 employee.CreatedByUser = userName;
+                employee.BusinessHours = 8;
+                employee.BusinessHoursDescription = "09:00 hs a 18:00 hs";
 
                 SetEmployeeHistory(employee);
 
