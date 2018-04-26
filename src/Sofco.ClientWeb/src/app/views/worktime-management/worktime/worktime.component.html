@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-md-2">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input type="number" class="form-control" min="0" max="24" name="hours" [(ngModel)]="taskModel.hours" (change)="showSaveTask()">
+                    <input type="number" class="form-control" min="1" max="24" name="hours" [(ngModel)]="taskModel.hours" (change)="showSaveTask()">
                 </div>
             </div>
         </div>
