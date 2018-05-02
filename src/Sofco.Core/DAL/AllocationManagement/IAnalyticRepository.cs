@@ -37,5 +37,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId);
 
         AnalyticLiteModel GetAnalyticLiteById(int id);
+
+        IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId);
     }
 }

@@ -163,7 +163,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<IList<HoursApprovedModel>>();
 
-            var list = unitOfWork.WorkTimeRepository.SearchPending(model);
+            var currentUser = userData.GetCurrentUser();
+            var userIsDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
+            var userIsManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
+
+            var list = unitOfWork.WorkTimeRepository.SearchPending(model, userIsManager || userIsDirector, currentUser.Id);
 
             if (!list.Any())
             {
@@ -171,6 +175,85 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
+
+            return response;
+        }
+
+        public Response Approve(int id)
+        {
+            var response = new Response();
+
+            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
+
+            WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                worktime.Status = WorkTimeStatus.Approved;
+                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
+
+                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApprovedSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public IEnumerable<Option> GetAnalytics()
+        {
+            var currentUser = userData.GetCurrentUser();
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id);
+            var analyticsByDelegates = unitOfWork.WorkTimeApprovalRepository.GetByAnalyticApproval(currentUser.Id);
+
+            var list = analyticsByManagers.Select(x => new Option {Id = x.Id, Text = $"{x.Title} - {x.Name}"}).ToList();
+
+            foreach (var analyticsByDelegate in analyticsByDelegates)
+            {
+                if (list.All(x => x.Id != analyticsByDelegate.Id))
+                {
+                   list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" }); 
+                }
+            }
+
+            return list;
+        }
+
+        public Response Reject(int id, string comments)
+        {
+            var response = new Response();
+
+            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
+
+            WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                worktime.Status = WorkTimeStatus.Rejected;
+                worktime.ApprovalComment = comments;
+                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
+
+                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
+                unitOfWork.WorkTimeRepository.UpdateApprovalComment(worktime);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }

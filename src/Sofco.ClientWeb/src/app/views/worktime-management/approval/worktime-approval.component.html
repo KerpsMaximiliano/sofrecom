@@ -38,26 +38,26 @@
                     <table class="table table-striped" id="hoursPending" width="100%" *ngIf="hoursPending.length > 0">
                         <thead>
                             <tr>
-                                <th class="column-lg"> {{'workTimeManagement.analytic' | translate }} </th>
-                                <th class="column-lg"> {{'workTimeManagement.employee' | translate }} </th>
+                                <th class="column-xlg"> {{'workTimeManagement.analytic' | translate }} </th>
+                                <th class="column-xlg"> {{'workTimeManagement.employee' | translate }} </th>
                                 <th class="column-md"> {{'workTimeManagement.task' | translate }} </th>
                                 <th class="column-sm"> {{'workTimeManagement.date' | translate }} </th>
-                                <th class="column-sm"> {{'workTimeManagement.hours' | translate }} </th>
-                                <th class="column-sm"> {{'workTimeManagement.comments' | translate }} </th>
-                                <th class="column-sm"> {{'ACTIONS.title' | translate }} </th>
+                                <th class="column-sm text-center"> {{'workTimeManagement.hours' | translate }} </th>
+                                <th class="column-xs text-center"> {{'workTimeManagement.comments' | translate }} </th>
+                                <th class="column-xs text-center"> {{'ACTIONS.title' | translate }} </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of hoursPending">
+                            <tr *ngFor="let item of hoursPending; let i = index">
                                 <td class="column-xlg">{{ item.analytic }}</td>
                                 <td class="column-xlg">{{ item.employee }}</td>
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
-                                <td class="column-xs text-center">{{ item.hours }} hs</td>
+                                <td class="column-sm text-center">{{ item.hours }} hs</td>
                                 <td class="column-xs text-center"><button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button></td>
-                                <td> 
-                                    <i class="fa fa-thumbs-o-up fa-2x pointer"></i> 
-                                    <i class="fa fa-thumbs-o-down fa-2x pointer"></i> 
+                                <td class="column-xs text-center"> 
+                                    <a><i class="fa fa-thumbs-o-up fa-2x pointer" (click)="showApproveModal(item, i)"></i> </a>
+                                    <a><i class="fa fa-thumbs-o-down fa-2x pointer" (click)="showRejectModal(item, i)"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -122,3 +122,6 @@
 <ng2-modal [config]="commentsModalConfig" #commentsModal>
     <pre class="pre-clear">{{ comments }}</pre>
 </ng2-modal>
+
+<worktime-status-approve #statusApprove (onSuccess)="removeItem()"></worktime-status-approve>
+<worktime-status-reject #statusReject (onSuccess)="removeItem()"></worktime-status-reject>

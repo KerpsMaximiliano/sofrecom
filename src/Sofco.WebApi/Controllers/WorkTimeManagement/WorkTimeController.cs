@@ -49,5 +49,29 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/approve")]
+        public IActionResult Approve(int id)
+        {
+            var response = workTimeService.Approve(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/reject")]
+        public IActionResult Reject(int id, [FromBody] WorkTimeRejectParams parameters)
+        {
+            var response = workTimeService.Reject(id, parameters.Comments);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("analytics")]
+        public IActionResult GetAnalytics()
+        {
+            var analytics = workTimeService.GetAnalytics();
+
+            return Ok(analytics);
+        }
     }
 }

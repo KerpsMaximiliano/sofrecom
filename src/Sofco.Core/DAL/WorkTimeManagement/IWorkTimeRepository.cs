@@ -10,6 +10,8 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     {
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
         IList<WorkTime> Search(WorktimeHoursApprovedParams model);
-        IList<WorkTime> SearchPending(WorktimeHoursPendingParams model);
+        IList<WorkTime> SearchPending(WorktimeHoursPendingParams model, bool isManagerOrDirector, int currentUserId);
+        void UpdateStatus(WorkTime worktime);
+        void UpdateApprovalComment(WorkTime worktime);
     }
 }

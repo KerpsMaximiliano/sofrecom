@@ -1,6 +1,9 @@
 ﻿using System;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Model.Enums;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
@@ -62,7 +65,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
             else
             {
-                if (!unitOfWork.TaskRepository.ExistById(model.UserId))
+                if (!unitOfWork.TaskRepository.ExistById(model.TaskId))
                 {
                     response.AddError(Resources.Admin.Task.NotFound);
                 }
@@ -89,6 +92,21 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             if (model.UserComment.Length > UserCommentMaxLength)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.UserCommentMaxLengthError);
+            }
+        }
+
+        public static void ValidateApproveOrReject(WorkTime worktime, Response response)
+        {
+            if (worktime == null)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WorkTimeNotFound);
+            }
+            else
+            {
+                if (worktime.Status != WorkTimeStatus.Sent)
+                {
+                    response.AddError(Resources.WorkTimeManagement.WorkTime.CannotChangeStatus);
+                }
             }
         }
     }

@@ -11,5 +11,10 @@
     "yearError": "Año invalido",
     "approverAdded": "Autorizador agregado exitosamente",
     "approverDeleted": "Autorizador eliminado exitosamente",
-    "userCommentMaxLengthError": "El comentario excede los 500 carácteres."
+    "userCommentMaxLengthError": "El comentario excede los 500 carácteres.",
+    "approvedSuccess": "Horas aprobadas correctamente",
+    "workTimeNotFound": "Horas no encontradas",
+    "cannotChangeStatus": "No se puede cambiar el estado",
+    "wrongApprover": "No tiene permisos para autorizar estas horas",
+    "rejectedSuccess": "Las horas han sido rechazadas correctamente"
 }

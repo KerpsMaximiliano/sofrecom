@@ -1,6 +1,5 @@
 ﻿using System;
 using Sofco.Model;
-using Sofco.Model.Enums;
 using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Core.Models.WorkTimeManagement
@@ -24,6 +23,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
                 Task = domain.Task.Description;
             }
 
+            Id = domain.Id;
             Date = domain.Date;
             Hours = domain.Hours;
             Comments = domain.UserComment;

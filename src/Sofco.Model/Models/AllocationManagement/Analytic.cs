@@ -93,5 +93,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<Billing.PurchaseOrder> PurchaseOrders { get; set; }
 
         public ICollection<WorkTime> WorkTimes { get; set; }
+
+        public ICollection<WorkTimeApproval> WorkTimeApprovals { get; set; }
     }
 }

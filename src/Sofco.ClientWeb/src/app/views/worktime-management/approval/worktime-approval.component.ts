@@ -32,7 +32,12 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     public employeeId: number = 0;
     public comments: string;
 
+    indexToRemove: number;
+
     @ViewChild('commentsModal') commentsModal;
+
+    @ViewChild('statusApprove') statusApprove;
+    @ViewChild('statusReject') statusReject;
 
     public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "comments",
@@ -79,7 +84,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics() {
-        this.getAnalyticsSubscrip = this.employeeService.getAnalytics(this.menuService.user.id).subscribe(data => {
+        this.getAnalyticsSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.analytics = data;
         },
         error => {
@@ -180,4 +185,20 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         this.comments = item.comments;
         this.commentsModal.show();
     }
-}
+
+    showApproveModal(worktime, index){
+        this.indexToRemove = index;
+        this.statusApprove.approve(worktime);
+    }
+
+    showRejectModal(worktime, index){
+        this.indexToRemove = index;
+        this.statusReject.reject(worktime);
+    }
+
+    removeItem(){
+        this.hoursPending.splice(this.indexToRemove, 1);
+        
+        this.initPendingGrid();
+    }
+} 

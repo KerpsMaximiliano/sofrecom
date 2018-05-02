@@ -123,11 +123,17 @@
   <data name="AnalyticRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.analyticRequired</value>
   </data>
+  <data name="ApprovedSuccess" xml:space="preserve">
+    <value>workTimeManagement/workTime.approvedSuccess</value>
+  </data>
   <data name="ApproverAdded" xml:space="preserve">
     <value>workTimeManagement/workTime.approverAdded</value>
   </data>
   <data name="ApproverDeleted" xml:space="preserve">
     <value>workTimeManagement/workTime.approverDeleted</value>
+  </data>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>workTimeManagement/workTime.cannotChangeStatus</value>
   </data>
   <data name="DateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.dateRequired</value>
@@ -141,6 +147,9 @@
   <data name="MonthError" xml:space="preserve">
     <value>workTimeManagement/workTime.monthError</value>
   </data>
+  <data name="RejectedSuccess" xml:space="preserve">
+    <value>workTimeManagement/workTime.rejectedSuccess</value>
+  </data>
   <data name="SearchNotFound" xml:space="preserve">
     <value>workTimeManagement/workTime.searchNotFound</value>
   </data>
@@ -152,6 +161,12 @@
   </data>
   <data name="UserRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.userRequired</value>
+  </data>
+  <data name="WorkTimeNotFound" xml:space="preserve">
+    <value>workTimeManagement/workTime.workTimeNotFound</value>
+  </data>
+  <data name="WrongApprover" xml:space="preserve">
+    <value>workTimeManagement/workTime.wrongApprover</value>
   </data>
   <data name="YearError" xml:space="preserve">
     <value>workTimeManagement/workTime.yearError</value>

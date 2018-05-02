@@ -27,4 +27,16 @@ export class WorktimeService {
   post(model) {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
+
+  approve(id) {
+    return this.http.put<any>(`${this.apiUrl}/${id}/approve`, {});
+  }
+
+  reject(id, comments) {
+    return this.http.put<any>(`${this.apiUrl}/${id}/reject`, { comments: comments });
+  }
+
+  getAnalytics(){
+    return this.http.get<any>(`${this.apiUrl}/analytics`);
+  }
 }

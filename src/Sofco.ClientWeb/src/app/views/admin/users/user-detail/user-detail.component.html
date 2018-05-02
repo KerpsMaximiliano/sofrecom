@@ -100,11 +100,13 @@
                     <i class="fa fa-info-circle"></i> {{ 'ADMIN.ROLES.TITLE' | translate }}
                 </div>
                 <div class="panel-body">
-                    <ul class="todo-list m-t small-list">
-                        <li *ngFor="let role of user.roles">
-                            <span [routerLink]="['/admin/roles/edit', role.id]" class="m-l-xs pointer">{{role.text}}</span>
-                        </li>
-                    </ul>
+                    <div class="scroll">
+                        <ul class="todo-list m-t small-list">
+                            <li *ngFor="let role of user.roles">
+                                <span [routerLink]="['/admin/roles/edit', role.id]" class="m-l-xs pointer">{{role.text}}</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

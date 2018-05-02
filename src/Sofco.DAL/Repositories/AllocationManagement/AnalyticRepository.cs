@@ -86,7 +86,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Analytic> GetAnalyticsByManagers(int id)
         {
-            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id).ToList();
+            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id && x.Status == AnalyticStatus.Open).ToList();
         }
 
         public List<Analytic> GetByManagerId(int managerId)
@@ -116,6 +116,20 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Title = s.Title
             }).FirstOrDefault();
 
+        }
+
+        public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1))
+                .Include(x => x.Analytic)
+                .Select(x => new Analytic
+                {
+                    Id = x.AnalyticId,
+                    Title = x.Analytic.Title,
+                    Name = x.Analytic.Name
+                })
+                .ToList();
         }
     }
 }

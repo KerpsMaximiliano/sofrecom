@@ -18,13 +18,15 @@ import 'fullcalendar/dist/locale/es.js';
 import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
 import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
+import { WorkTimeStatusApproveComponent } from 'app/views/worktime-management/status-approve/status-approve.component';
+import { WorkTimeStatusRejectComponent } from 'app/views/worktime-management/status-reject/status-reject.component';
 
 @NgModule({
-  declarations: [WorkTimeComponent, WorkTimeApprovalComponent],
+  declarations: [WorkTimeComponent, WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-    TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule,
-    FullCalendarModule, IboxtoolsModule],
+              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule,
+              FullCalendarModule, IboxtoolsModule],
 
   providers   : [WorktimeService],
 
