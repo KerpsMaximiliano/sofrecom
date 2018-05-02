@@ -258,6 +258,39 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return response;
         }
 
+        public Response ApproveAll(List<int> hourIds)
+        {
+            var response = new Response();
+            var anyError = false;
+            var anySuccess = false;
+
+            foreach (var hourId in hourIds)
+            {
+                var hourResponse = Approve(hourId);
+
+                if (hourResponse.HasErrors())
+                    anyError = true;
+                else
+                    anySuccess = true;
+            }
+
+            if (anySuccess)
+            {
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApprovedSuccess);
+
+                if (anyError)
+                {
+                    response.AddWarning(Resources.WorkTimeManagement.WorkTime.ApprovedWithSomeErrors);
+                }
+            }
+            else
+            {
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void SetCurrentUser(WorkTimeAddModel workTimeAdd)
         {
             if (workTimeAdd.UserId > 0) return;

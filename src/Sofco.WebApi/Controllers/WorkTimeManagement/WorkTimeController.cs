@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -54,6 +55,14 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         public IActionResult Approve(int id)
         {
             var response = workTimeService.Approve(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("approve")]
+        public IActionResult Approve([FromBody]List<int> hourIds)
+        {
+            var response = workTimeService.ApproveAll(hourIds);
 
             return this.CreateResponse(response);
         }

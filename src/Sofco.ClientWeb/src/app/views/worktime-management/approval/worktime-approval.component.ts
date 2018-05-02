@@ -34,6 +34,8 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     indexToRemove: number;
 
+    public isMultipleSelection: boolean = false;
+
     @ViewChild('commentsModal') commentsModal;
 
     @ViewChild('statusApprove') statusApprove;
@@ -125,7 +127,8 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             this.hoursPending = response.data;
 
-            this.initPendingGrid();
+            var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
         },
@@ -159,7 +162,8 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             this.hoursApproved = response.data;
 
-            this.initGrid();
+            var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
         },
@@ -169,14 +173,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         });
     }
 
-    initGrid(){
-        var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
-        this.datatableService.destroy(options.selector);
-        this.datatableService.init2(options);
-    }
-
-    initPendingGrid(){
-        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+    initGrid(options){
         this.datatableService.destroy(options.selector);
         this.datatableService.init2(options);
     }
@@ -198,7 +195,29 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     removeItem(){
         this.hoursPending.splice(this.indexToRemove, 1);
-        
-        this.initPendingGrid();
+        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+        this.initGrid(options);
+    }
+
+    approveAllDisabled(){
+        return this.hoursPending.filter(x => x.selected == true).length == 0;
+    }
+
+    approveAll(){
+        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
+
+        if(hoursSelected.length == 0) return;
+
+        this.messageService.showLoading();
+
+        this.searchSubscrip = this.worktimeService.approveAll(hoursSelected).subscribe(response => {
+            this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.searchPending();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 } 

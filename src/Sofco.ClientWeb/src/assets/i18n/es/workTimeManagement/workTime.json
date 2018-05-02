@@ -16,5 +16,6 @@
     "workTimeNotFound": "Horas no encontradas",
     "cannotChangeStatus": "No se puede cambiar el estado",
     "wrongApprover": "No tiene permisos para autorizar estas horas",
-    "rejectedSuccess": "Las horas han sido rechazadas correctamente"
+    "rejectedSuccess": "Las horas han sido rechazadas correctamente",
+    "approvedWithSomeErrors": "Algunas horas fueron aprobadas correctamente y algunas contenian algun error"
 }

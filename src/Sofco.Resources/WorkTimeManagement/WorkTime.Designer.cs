@@ -89,6 +89,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.approvedWithSomeErrors.
+        /// </summary>
+        public static string ApprovedWithSomeErrors {
+            get {
+                return ResourceManager.GetString("ApprovedWithSomeErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.approverAdded.
         /// </summary>
         public static string ApproverAdded {

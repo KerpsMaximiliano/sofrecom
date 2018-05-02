@@ -126,6 +126,9 @@
   <data name="ApprovedSuccess" xml:space="preserve">
     <value>workTimeManagement/workTime.approvedSuccess</value>
   </data>
+  <data name="ApprovedWithSomeErrors" xml:space="preserve">
+    <value>workTimeManagement/workTime.approvedWithSomeErrors</value>
+  </data>
   <data name="ApproverAdded" xml:space="preserve">
     <value>workTimeManagement/workTime.approverAdded</value>
   </data>

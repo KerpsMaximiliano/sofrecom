@@ -20,5 +20,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         IEnumerable<Option> GetAnalytics();
 
         Response Reject(int id, string comments);
+
+        Response ApproveAll(List<int> hourIds);
     }
 }

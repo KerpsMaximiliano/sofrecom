@@ -678,6 +678,7 @@
         "goHere": "Ingrese Aqui",
         "pendingDocumentation": "Documentación Pendiente",
         "authorize": "Autorizar",
+        "approveSelected": "Aprobar seleccionados",
         "sessionExpiredTitle": "La sesion ha expirado...",
         "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema"
     }, 
