@@ -34,6 +34,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
     private functionalitiesToAddSubscrip: Subscription;
 
     //EntitiesService
+    public isLoading: boolean = false;
     public editMode: boolean = false;
     public checkAtLeft:boolean = true;
     public functionalitiesToAdd: any[] = new Array<any>();
@@ -207,13 +208,17 @@ export class RolEditComponent implements OnInit, OnDestroy {
     }
 
     unAssignFunct(){
+        this.isLoading = true;
+
         this.service.unAssignFunctionality(this.role.id, this.functId).subscribe(
             data => {
+                this.isLoading = false;
                 this.functConfirmModal.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
             },
             err => {
+                this.isLoading = false;
                 this.functConfirmModal.hide();
                 this.errorHandlerService.handleErrors(err);
             }
@@ -227,13 +232,20 @@ export class RolEditComponent implements OnInit, OnDestroy {
             return item.id;
         });
 
+        this.isLoading = true;
+
         this.service.unAssignFunctionalities(this.role.id , arrFunctsToAdd).subscribe(
             data => {
+                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
                 this.confirmModal.hide();
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => {
+                this.isLoading = false;
+                this.confirmModal.hide();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 
     assignFunctionalities(){
@@ -245,13 +257,20 @@ export class RolEditComponent implements OnInit, OnDestroy {
                 return item.id;
             });
 
+            this.isLoading = true;
+
             this.service.assignFunctionalities(this.role.id , arrFunctsToAdd).subscribe(
                 data => {
+                    this.isLoading = false;
                     if(data.messages) this.messageService.showMessages(data.messages);
                     this.getDetails();
                     this.functModal.hide();
                 },
-                err => this.errorHandlerService.handleErrors(err));
+                err => {
+                    this.isLoading = false;
+                    this.functModal.hide();
+                    this.errorHandlerService.handleErrors(err);
+                });
         }
     }
 }
