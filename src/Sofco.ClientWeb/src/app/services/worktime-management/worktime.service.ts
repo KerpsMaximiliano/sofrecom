@@ -43,4 +43,8 @@ export class WorktimeService {
   getAnalytics(){
     return this.http.get<any>(`${this.apiUrl}/analytics`);
   }
+
+  sendHours(){
+    return this.http.put<any>(`${this.apiUrl}/send`, {});
+  }
 }

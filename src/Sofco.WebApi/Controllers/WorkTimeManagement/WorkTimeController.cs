@@ -75,6 +75,14 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return this.CreateResponse(response);
         }
 
+        [HttpPut("send")]
+        public IActionResult Send()
+        {
+            var response = workTimeService.Send();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("analytics")]
         public IActionResult GetAnalytics()
         {

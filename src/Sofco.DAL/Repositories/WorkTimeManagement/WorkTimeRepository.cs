@@ -105,5 +105,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         {
             context.Entry(worktime).Property("ApprovalComment").IsModified = true;
         }
+
+        public void SendHours(int employeeid)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeid}");
+        }
     }
 }

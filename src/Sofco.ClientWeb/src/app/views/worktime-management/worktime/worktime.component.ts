@@ -119,6 +119,16 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   sendHours() {
+    this.messageService.showLoading();
+
+    this.subscription = this.worktimeService.sendHours().subscribe(response => {
+      this.messageService.closeLoading();
+      if(response.messages) this.messageService.showMessages(response.messages);
+    },
+    error => {
+      this.messageService.closeLoading();
+      this.errorHandlerService.handleErrors(error);
+    });
   }
 
   showEditModal() {

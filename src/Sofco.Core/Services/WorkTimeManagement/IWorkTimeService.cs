@@ -22,5 +22,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response Reject(int id, string comments);
 
         Response ApproveAll(List<int> hourIds);
+
+        Response Send();
     }
 }

@@ -179,6 +179,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.sentSuccess.
+        /// </summary>
+        public static string SentSuccess {
+            get {
+                return ResourceManager.GetString("SentSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.taskRequired.
         /// </summary>
         public static string TaskRequired {

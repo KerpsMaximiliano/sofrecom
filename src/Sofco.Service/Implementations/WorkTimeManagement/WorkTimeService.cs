@@ -291,6 +291,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return response;
         }
 
+        public Response Send()
+        {
+            var response = new Response();
+
+            try
+            {
+                unitOfWork.WorkTimeRepository.SendHours(employeeData.GetCurrentEmployee().Id);
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.SentSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void SetCurrentUser(WorkTimeAddModel workTimeAdd)
         {
             if (workTimeAdd.UserId > 0) return;
