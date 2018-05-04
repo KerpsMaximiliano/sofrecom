@@ -1,10 +1,8 @@
 ﻿using System;
 using Sofco.Core.DAL;
-using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
