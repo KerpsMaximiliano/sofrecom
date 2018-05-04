@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -40,6 +41,54 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             var response = workTimeService.GetHoursApproved(model);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("hoursPending")]
+        public IActionResult GetHoursPending([FromBody] WorktimeHoursPendingParams model)
+        {
+            var response = workTimeService.GetHoursPending(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/approve")]
+        public IActionResult Approve(int id)
+        {
+            var response = workTimeService.Approve(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("approve")]
+        public IActionResult Approve([FromBody]List<int> hourIds)
+        {
+            var response = workTimeService.ApproveAll(hourIds);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/reject")]
+        public IActionResult Reject(int id, [FromBody] WorkTimeRejectParams parameters)
+        {
+            var response = workTimeService.Reject(id, parameters.Comments);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("send")]
+        public IActionResult Send()
+        {
+            var response = workTimeService.Send();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("analytics")]
+        public IActionResult GetAnalytics()
+        {
+            var analytics = workTimeService.GetAnalytics();
+
+            return Ok(analytics);
         }
     }
 }

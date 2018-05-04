@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Sofco.Common.Extensions;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
@@ -45,6 +46,69 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             }
 
             return query.ToList();
+        }
+
+        public IList<WorkTime> SearchPending(WorktimeHoursPendingParams parameters, bool isManagerOrDirector, int currentUserId)
+        {
+            IQueryable<WorkTime> query1 = context.WorkTimes
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
+                .Where(x => x.Status == WorkTimeStatus.Sent && (x.Analytic.ManagerId == currentUserId || x.Analytic.DirectorId == currentUserId));
+
+            IQueryable<WorkTime> query2 = from worktime in context.WorkTimes
+                                          from worktimeApproval in context.WorkTimeApprovals
+                                          where worktime.EmployeeId == worktimeApproval.EmployeeId &&
+                                                worktimeApproval.ApprovalUserId == currentUserId &&
+                                                worktime.Status == WorkTimeStatus.Sent
+                                          select worktime;
+
+            query2 = query2.Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task);
+
+            if (parameters.EmployeeId > 0)
+            {
+                query1 = query1.Where(x => x.EmployeeId == parameters.EmployeeId);
+                query2 = query2.Where(x => x.EmployeeId == parameters.EmployeeId);
+            }
+                
+
+            if (parameters.AnalyticId > 0)
+            {
+                query1 = query1.Where(x => x.AnalyticId == parameters.AnalyticId);
+                query2 = query2.Where(x => x.AnalyticId == parameters.AnalyticId);
+            }
+
+            if (isManagerOrDirector)
+            {
+                var list1 = query1.ToList();
+                var list2 = query2.ToList();
+                
+                list1.AddRange(list2);
+
+                return list1.DistinctBy(x => x.Id.ToString());
+            }
+            else
+            {
+                return query2.ToList();
+            }
+        }
+
+        public void UpdateStatus(WorkTime worktime)
+        {
+            context.Entry(worktime).Property("Status").IsModified = true;
+            context.Entry(worktime).Property("ApprovalUserId").IsModified = true;
+        }
+
+        public void UpdateApprovalComment(WorkTime worktime)
+        {
+            context.Entry(worktime).Property("ApprovalComment").IsModified = true;
+        }
+
+        public void SendHours(int employeeid)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeid}");
         }
 
         public int GetTotalHoursByDate(DateTime date, int currentUserId)

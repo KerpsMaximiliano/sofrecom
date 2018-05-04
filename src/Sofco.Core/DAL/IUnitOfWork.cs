@@ -5,7 +5,6 @@ using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.WorkTimeManagement;
-using Sofco.Core.Services.WorkTimeManagement;
 
 namespace Sofco.Core.DAL
 {
@@ -71,6 +70,7 @@ namespace Sofco.Core.DAL
         #region WorkTimeManagement
 
         IWorkTimeRepository WorkTimeRepository { get; }
+        IWorkTimeApprovalRepository WorkTimeApprovalRepository { get; }
 
         #endregion
 

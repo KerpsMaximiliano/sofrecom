@@ -32,7 +32,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     public employeeId: number = 0;
     public comments: string;
 
+    indexToRemove: number;
+
+    public isMultipleSelection: boolean = false;
+
     @ViewChild('commentsModal') commentsModal;
+
+    @ViewChild('statusApprove') statusApprove;
+    @ViewChild('statusReject') statusReject;
 
     public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "comments",
@@ -69,8 +76,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             if(this.employeeId > 0){
                 this.getEmployees();
             }
-
-            this.search();
         }
     }
 
@@ -81,7 +86,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics() {
-        this.getAnalyticsSubscrip = this.employeeService.getAnalytics(this.menuService.user.id).subscribe(data => {
+        this.getAnalyticsSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.analytics = data;
         },
         error => {
@@ -106,12 +111,39 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         $('#monthyear').val('');
     }
 
+    searchPending(){
+        var json = {
+            analyticId : this.analyticId,
+            employeeId : this.employeeId,
+            month : 0,
+            year : 0
+        }
+
+        this.messageService.showLoading();
+
+        this.searchSubscrip = this.worktimeService.getWorkTimePending(json).subscribe(response => {
+            this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
+
+            this.hoursPending = response.data;
+
+            var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            this.initGrid(options);
+
+            sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
     search() {
         var json = {
             analyticId : this.analyticId,
             employeeId : this.employeeId,
             month : 0,
-            year : 0,
+            year : 0
         }
 
         var monthYear = $('#monthyear').val();
@@ -130,7 +162,8 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             this.hoursApproved = response.data;
 
-            this.initGrid();
+            var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
         },
@@ -140,8 +173,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         });
     }
 
-    initGrid(){
-        var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+    initGrid(options){
         this.datatableService.destroy(options.selector);
         this.datatableService.init2(options);
     }
@@ -150,4 +182,42 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         this.comments = item.comments;
         this.commentsModal.show();
     }
-}
+
+    showApproveModal(worktime, index){
+        this.indexToRemove = index;
+        this.statusApprove.approve(worktime);
+    }
+
+    showRejectModal(worktime, index){
+        this.indexToRemove = index;
+        this.statusReject.reject(worktime);
+    }
+
+    removeItem(){
+        this.hoursPending.splice(this.indexToRemove, 1);
+        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+        this.initGrid(options);
+    }
+
+    approveAllDisabled(){
+        return this.hoursPending.filter(x => x.selected == true).length == 0;
+    }
+
+    approveAll(){
+        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
+
+        if(hoursSelected.length == 0) return;
+
+        this.messageService.showLoading();
+
+        this.searchSubscrip = this.worktimeService.approveAll(hoursSelected).subscribe(response => {
+            this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.searchPending();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+} 

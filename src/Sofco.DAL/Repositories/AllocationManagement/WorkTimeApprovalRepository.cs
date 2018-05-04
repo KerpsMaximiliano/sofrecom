@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
@@ -40,6 +41,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.WorkTimeApprovals
                 .Where(s => s.AnalyticId == analyticId)
                 .ToList();
+        }
+
+        public List<Analytic> GetByAnalyticApproval(int currentUserId)
+        {
+            return context.WorkTimeApprovals.Include(x => x.Analytic).Where(x => x.ApprovalUserId == currentUserId && x.Analytic.Status == AnalyticStatus.Open)
+                .Select(x => x.Analytic).Distinct().ToList();
         }
 
         private void Save(WorkTimeApproval item)

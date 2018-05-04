@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -33,9 +34,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
         private readonly IUserData userData;
+        private readonly IEmployeeData employeeData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService, IUserData userData)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService, 
+            IUserData userData, IEmployeeData employeeData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -45,6 +48,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
             this.userData = userData;
+            this.employeeData = employeeData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -74,9 +78,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<Option>> GetByCurrentUser()
         {
-            var userId = userData.GetCurrentUser().Id;
+            var employeeId = employeeData.GetCurrentEmployee().Id;
 
-            var result = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(userId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
         }

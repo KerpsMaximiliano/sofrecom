@@ -145,7 +145,9 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users.Where(s => s.UserName == userName).Select(s => new UserLiteModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Email = s.Email,
+                UserName = userName
             }).FirstOrDefault();
         }
 
