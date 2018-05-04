@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.WorkTimeManagement
@@ -9,7 +10,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
     {
         Response<WorkTimeModel> Get(DateTime date);
 
-        Response<WorkTimeAddModel> Add(WorkTimeAddModel model);
+        Response<WorkTime> Add(WorkTimeAddModel model);
 
         Response<IList<HoursApprovedModel>> GetHoursApproved(WorktimeHoursApprovedParams model);
 

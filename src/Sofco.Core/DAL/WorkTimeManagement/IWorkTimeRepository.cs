@@ -9,7 +9,10 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     public interface IWorkTimeRepository : IBaseRepository<WorkTime>
     {
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
+
         IList<WorkTime> Search(WorktimeHoursApprovedParams model);
+
+        int GetTotalHoursByDate(DateTime date, int currentUserId);
         IList<WorkTime> SearchPending(WorktimeHoursPendingParams model, bool isManagerOrDirector, int currentUserId);
         void UpdateStatus(WorkTime worktime);
         void UpdateApprovalComment(WorkTime worktime);

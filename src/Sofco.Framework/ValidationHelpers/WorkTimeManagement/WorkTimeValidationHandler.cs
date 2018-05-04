@@ -2,6 +2,7 @@
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
@@ -12,7 +13,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     {
         private const int UserCommentMaxLength = 500;
 
-        public static void ValidateEmployee(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.EmployeeId <= 0)
             {
@@ -27,7 +28,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
         }
 
-        public static void ValidateAnalytic(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateAnalytic(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.AnalyticId <= 0)
             {
@@ -42,7 +43,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
         }
 
-        public static void ValidateUser(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateUser(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.UserId <= 0)
             {
@@ -57,7 +58,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
         }
 
-        public static void ValidateTask(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateTask(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.TaskId <= 0)
             {
@@ -71,15 +72,24 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 }
             }
         }
-        public static void ValidateHours(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateHours(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
-            if (model.Hours < 1 || model.Hours > 12)
+            if (model.Hours < 1)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.HoursWrong);
+
+                return;
+            }
+
+            var totalHours = unitOfWork.WorkTimeRepository.GetTotalHoursByDate(model.Date, model.UserId);
+
+            if (totalHours > 24)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.HoursMaxError);
             }
         }
 
-        public static void ValidateDate(Response<WorkTimeAddModel> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
+        public static void ValidateDate(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.Date == DateTime.MinValue)
             {
@@ -87,7 +97,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
         }
 
-        public static void ValidateUserComment(Response<WorkTimeAddModel> response, WorkTimeAddModel model)
+        public static void ValidateUserComment(Response<WorkTime> response, WorkTimeAddModel model)
         {
             if (model.UserComment.Length > UserCommentMaxLength)
             {

@@ -134,7 +134,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workTimeManagement/workTime.employeeRequired.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.employeeRequired.
         /// </summary>
         public static string EmployeeRequired {
             get {
@@ -143,7 +143,16 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workTimeManagement/workTime.hoursWrong.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.hoursMaxError.
+        /// </summary>
+        public static string HoursMaxError {
+            get {
+                return ResourceManager.GetString("HoursMaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to workTimeManagement/workTime.hoursWrong.
         /// </summary>
         public static string HoursWrong {
             get {

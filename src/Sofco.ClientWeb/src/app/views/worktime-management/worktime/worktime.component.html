@@ -26,25 +26,51 @@
                         <div class="col-md-6 text-right"><button class="btn btn-primary" (click)="sendHours()"> {{ 'workTimeManagement.workTime.sendHours' | translate }} <i class="fa fa-arrow-circle-right"></i></button></div>
                     </div>
                     <hr>
-                    <ng-fullcalendar #calendarControl [options]="calendarOptions"></ng-fullcalendar>
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="ibox">
+            <div class="ibox ibox-task">
                 <div class="ibox-content">
                     <div class="row">
                         <button class="btn btn-success" style="width:100%" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
                     </div>
                     <div class="row">
-                        <div class="ibox">
+                        <div class="ibox ibox-task">
                             <div class="ibox-title">
                                 <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
                                 <iboxtools #boxtools></iboxtools>
                             </div>
-                            <div class="ibox-content">
-                                
+                            <div class="ibox-content ibox-task external-events">
+                                <div id='external-events' *ngFor="let item of recentAnalyticTasks; let i = index; let last = last">
+                                    <div class="panel-group" id="accordion{{ i }}" (loaded)="taskReady()">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading task-panel-head">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" [href]="'#collapse'+i">{{ item.analytic }}</a>
+                                                </h5>
+                                            </div>
+                                            <div [id]="'collapse'+i" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                    <div class='bg-success row task-item-row' *ngFor="let taskItem of item.tasks; let t = index">
+                                                        <div class='external-event bg-success task-item' 
+                                                            [attr.data-task]="taskItem.task"
+                                                            [attr.data-color]="pendingTaskColor"
+                                                            [attr.data-taskId]="taskItem.taskId"
+                                                            [attr.data-analyticId]="taskItem.analyticId"
+                                                            [attr.data-hours]="taskItem.hours"
+                                                            >{{ taskItem.task }} - {{ taskItem.hours }} hs</div>
+                                                        <a class="task-item-close" (click)="removeTask(taskItem)">
+                                                            <i class="fa fa-close text-white"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
