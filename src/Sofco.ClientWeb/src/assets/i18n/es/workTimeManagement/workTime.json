@@ -11,5 +11,6 @@
     "yearError": "Año invalido",
     "approverAdded": "Autorizador agregado exitosamente",
     "approverDeleted": "Autorizador eliminado exitosamente",
-    "userCommentMaxLengthError": "El comentario excede los 500 carácteres."
+    "userCommentMaxLengthError": "El comentario excede los 500 carácteres.",
+    "hoursMaxError": "La cantidad de horas excede los parámetros establecidos"
 }

@@ -11,6 +11,7 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -91,9 +92,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        public Response<WorkTimeAddModel> Add(WorkTimeAddModel model)
+        public Response<WorkTime> Add(WorkTimeAddModel model)
         {
-            var response = new Response<WorkTimeAddModel>();
+            var response = new Response<WorkTime>();
 
             SetCurrentUser(model);
 
@@ -113,6 +114,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 unitOfWork.WorkTimeRepository.Insert(workTime);
                 unitOfWork.Save();
+
+                response.Data = workTime;
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.AddSuccess);
             }

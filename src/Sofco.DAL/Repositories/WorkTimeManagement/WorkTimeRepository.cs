@@ -46,5 +46,15 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
             return query.ToList();
         }
+
+        public int GetTotalHoursByDate(DateTime date, int currentUserId)
+        {
+            return context.WorkTimes
+                .Where(x => x.UserId == currentUserId 
+                        && x.Date.Month == date.Month 
+                        && x.Date.Day == date.Day)
+                .Select(s => s.Hours)
+                .Sum();
+        }
     }
 }

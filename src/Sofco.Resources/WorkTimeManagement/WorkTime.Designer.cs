@@ -116,6 +116,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to workTimeManagement/workTime.hoursMaxError.
+        /// </summary>
+        public static string HoursMaxError {
+            get {
+                return ResourceManager.GetString("HoursMaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to workTimeManagement/workTime.hoursWrong.
         /// </summary>
         public static string HoursWrong {

@@ -25,3 +25,36 @@ dd {
     font-weight: bold;
     text-align: right;
 }
+
+.task-panel-head {
+    background-color: #0e9aef;
+    color: white;
+}
+
+.task-item-row {
+    overflow-x:hidden;
+    margin-bottom: 2px;
+    vertical-align: top;
+}
+
+.task-item {
+    float:left;
+    width:250px;
+}
+
+.task-item-close {
+    float:right;
+    width: 20px;
+    padding-top:5px;
+}
+
+.task-item-drag {
+    color:whitesmoke; 
+    margin-right:2px;
+    padding:2px;
+}
+
+.ibox-task
+ {
+    padding-bottom: 0px;
+}
