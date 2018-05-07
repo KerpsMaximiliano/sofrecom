@@ -125,7 +125,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
         eventClick: function(calEvent, jsEvent, view) {
           console.log('---> className : ' + calEvent.className);
         },
+        dayRender: this.setDayCalendar
       });
+  }
+
+  setDayCalendar(date, cell) {
+    if (date.isoWeekday() > 5) {
+      cell.css("background-color", '#EFEFEF');
+    }
   }
 
   eventDragInitWithDocumentReady() {
