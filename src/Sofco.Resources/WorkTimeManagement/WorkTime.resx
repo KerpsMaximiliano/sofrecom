@@ -138,6 +138,9 @@
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>workTimeManagement/workTime.cannotChangeStatus</value>
   </data>
+  <data name="DateOutOfRangeError" xml:space="preserve">
+    <value>workTimeManagement/workTime.dateOutOfRange</value>
+  </data>
   <data name="DateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.dateRequired</value>
   </data>

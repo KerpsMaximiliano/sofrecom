@@ -18,5 +18,7 @@
     "cannotChangeStatus": "No se puede cambiar el estado",
     "wrongApprover": "No tiene permisos para autorizar estas horas",
     "rejectedSuccess": "Las horas han sido rechazadas correctamente",
-    "approvedWithSomeErrors": "Algunas horas fueron aprobadas correctamente y algunas contenian algun error"
+    "approvedWithSomeErrors": "Algunas horas fueron aprobadas correctamente y algunas contenian algun error",
+    "dateOutOfRange": "No se permite la carga de tarea en fechas fuera de rango.",
+    "sentSuccess": "Horas enviadas correctamente"
 }

@@ -32,18 +32,19 @@ dd {
 }
 
 .task-item-row {
-    overflow-x:hidden;
+    margin-left: 1px;
     margin-bottom: 2px;
-    vertical-align: top;
+    display: table;
+    width: 100%;
 }
 
 .task-item {
-    float:left;
+    display: table-cell;
     width:250px;
 }
 
 .task-item-close {
-    float:right;
+    display: table-cell;
     width: 20px;
     padding-top:5px;
 }
@@ -57,4 +58,8 @@ dd {
 .ibox-task
  {
     padding-bottom: 0px;
+}
+
+:host ::ng-deep .eventTask  {
+    cursor: default;
 }

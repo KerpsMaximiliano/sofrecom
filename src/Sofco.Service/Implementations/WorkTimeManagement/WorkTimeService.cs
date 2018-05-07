@@ -96,6 +96,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<WorkTime>();
 
+            model.Date = model.Date.ToUniversalTime();
+
             SetCurrentUser(model);
 
             WorkTimeValidationHandler.ValidateEmployee(response, unitOfWork, model);
