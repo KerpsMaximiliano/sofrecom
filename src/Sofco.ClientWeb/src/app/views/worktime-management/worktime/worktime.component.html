@@ -57,7 +57,7 @@
                                                     <div class='bg-success row task-item-row' *ngFor="let taskItem of item.tasks; let t = index">
                                                         <div class='external-event bg-success task-item' 
                                                             [attr.data-task]="taskItem.task"
-                                                            [attr.data-color]="pendingTaskColor"
+                                                            [attr.data-color]="draftTaskColor"
                                                             [attr.data-taskId]="taskItem.taskId"
                                                             [attr.data-analyticId]="taskItem.analyticId"
                                                             [attr.data-hours]="taskItem.hours"

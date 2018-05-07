@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import 'jqueryui';
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,6 +21,7 @@ import { TaskService } from 'app/services/admin/task.service';
 import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
+import { debug } from 'util';
 
 @Component({
     selector: 'app-worktime',
@@ -30,7 +31,18 @@ import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAn
 
 export class WorkTimeComponent implements OnInit, OnDestroy {
 
-  public pendingTaskColor = '#f8ac59';
+  public draftStatus = 1;
+  public sentStatus = 2;
+  public approvedStatus = 3;
+  public rejectedStatus = 4;
+  public licenseStatus = 5;
+
+  public draftTaskColor = '#f8ac59';
+  public sentTaskColor = '#1d84c6';
+  public approvedTaskColor = '#1cb394';
+  public rejectedTaskColor = '#ea5865';
+  public licenseTaskColor = '#808080';
+  public taskColors: any[] = new Array();
 
   public analytics: any[] = new Array();
   public categories: any[] = new Array();
@@ -74,12 +86,22 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.setTaskColors();
     this.calendarInit();
     this.eventDragInitWithDocumentReady();
     this.getRecentTask();
     this.getModel();
     this.getAnalytics();
     this.getCategories();
+  }
+
+  setTaskColors() {
+    this.taskColors[0] = this.draftTaskColor;
+    this.taskColors[this.draftStatus] = this.draftTaskColor;
+    this.taskColors[this.sentStatus] = this.sentTaskColor;
+    this.taskColors[this.approvedStatus] = this.approvedTaskColor;
+    this.taskColors[this.rejectedStatus] = this.rejectedTaskColor;
+    this.taskColors[this.licenseStatus] = this.licenseTaskColor;
   }
 
   calendarInit() {
@@ -92,14 +114,17 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
           center: 'title',
           right: 'month,agendaWeek,agendaDay,listWeek'
         },
-        navLinks: true, // can click day/week names to navigate views
+        navLinks: true,
         editable: false,
-        eventLimit: false, // allow "more" link when too many events
+        eventLimit: false,
         events: this.calendarEvents,
         droppable: true,
         drop: function(date, jsEvent, ui) {
           self.calendarDropHandler(date, jsEvent);
-        }
+        },
+        eventClick: function(calEvent, jsEvent, view) {
+          console.log('---> className : ' + calEvent.className);
+        },
       });
   }
 
@@ -119,20 +144,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
             analyticId: $(this).data('analyticId'),
             hours: $(this).data('hours')
         });
-        $(this).data('eventObject', {title: 'MyDrag Title'});
         $(this).draggable({
             helper: 'clone',
             zIndex: 1111999,
-            // revert: true,
             revertDuration: 0,
-            revert: function(droppableObj) {
-              if (droppableObj === false) {
-                  console.log('Not a droppable object');
-                  return true;
-              } else {
-                return false;
-              }
-          },
+            revert: function(droppableObj) { return droppableObj === false; },
           start: function(e, ui) {
               $(ui.helper).css('width', 180);
           }
@@ -187,7 +203,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.subscription = this.worktimeService.sendHours().subscribe(response => {
       this.messageService.closeLoading();
-      if(response.messages) this.messageService.showMessages(response.messages);
+      if (response.messages) this.messageService.showMessages(response.messages);
+      this.getModel();
     },
     error => {
       this.messageService.closeLoading();
@@ -299,20 +316,27 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const events = [];
 
     data.forEach(item => {
-      events.push(this.setPendingTaskEvent(item));
+      events.push(this.setTaskEvent(item));
     });
 
     return events;
   }
 
-  setPendingTaskEvent(item: any) {
+  setTaskEvent(item: any) {
+    const color = this.translateStatusColor(item.status);
+    const className = (item.status === this.draftStatus) ? '' : 'eventTask';
     return {
       id: item.id,
       title: item.taskName,
       start: item.date,
-      color: this.pendingTaskColor,
-      allDay: true
+      color: color,
+      allDay: true,
+      className: className
     };
+  }
+
+  translateStatusColor(status): string {
+    return this.taskColors[status];
   }
 
   translateWorktimeToRecentTask(data) {
