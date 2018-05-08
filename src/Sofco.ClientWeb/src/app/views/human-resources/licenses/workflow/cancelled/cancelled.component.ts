@@ -17,7 +17,7 @@ export class LicenseCancelComponent implements OnDestroy  {
 
     @ViewChild('cancelModal') cancelModal;
     public cancelModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.solfac.addComments",
+        "rrhh.license.addCancelComments",
         "cancelModal",
         true,
         true,
@@ -66,7 +66,7 @@ export class LicenseCancelComponent implements OnDestroy  {
 
   cancel(){
     if(!this.rejectComments || this.rejectComments == ""){
-        this.messageService.showError("billing.solfac.rejectCommentRequired");
+        this.messageService.showError("rrhh.license.cancelComments");
         return;
     }
     

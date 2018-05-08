@@ -62,6 +62,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employeeSyncAction.commentsRequired.
+        /// </summary>
+        public static string CommentsRequired {
+            get {
+                return ResourceManager.GetString("CommentsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employeeSyncAction.deleted.
         /// </summary>
         public static string Deleted {

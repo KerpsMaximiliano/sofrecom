@@ -625,7 +625,9 @@
             "fileDelivered": "Entregó Documentación",
             "extraHolidays": "Vacaciones extra acordadas",
             "holidaysByLaw": "Vacaciones por ley",
-            "finalizeExtraHolidays": "Finalizar Acuerdo"
+            "finalizeExtraHolidays": "Finalizar Acuerdo",
+            "cancelComments": "Se debe agregar un motivo para cancelar",
+            "addCancelComments": "Ingrese los motivos para cancelar"
         }
     },
     "ACTIONS":{
@@ -740,7 +742,7 @@
         "title": "Gestión de Horas",
         "approval": "Aprobacion",
         "approvalHours": "Aprobacion de horas",
-        "hoursPending": "Horas Pendientes Aprobacion",
+        "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",
         "employee": "Legajo-Nombre",

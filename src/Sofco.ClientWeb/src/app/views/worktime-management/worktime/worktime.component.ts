@@ -313,6 +313,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.isLoading = false;
       this.editModal.hide();
+      if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
       this.addRecentTask(res.data);
     },
@@ -470,6 +471,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   saveDropTask(taskModel: WorkTimeTaskModel) {
     this.subscription = this.worktimeService.post(taskModel).subscribe(res => {
+      if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
     },
     error => {

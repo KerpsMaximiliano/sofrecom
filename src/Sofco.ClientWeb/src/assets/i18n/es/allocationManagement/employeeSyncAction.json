@@ -1,5 +1,6 @@
 {
     "notFound": "Novedad no encontrada",
     "deleted": "Novedad eliminada correctamente",
-    "endReasonTypeRequired": "Motivo de baja es requerido"
+    "endReasonTypeRequired": "Motivo de baja es requerido",
+    "commentsRequired": "Los comentarios son requeridos"
 }
