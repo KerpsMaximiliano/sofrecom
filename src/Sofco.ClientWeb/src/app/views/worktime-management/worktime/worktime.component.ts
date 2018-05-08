@@ -123,13 +123,30 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
           self.calendarDropHandler(date, jsEvent);
         },
         eventClick: function(calEvent, jsEvent, view) {
-          console.log('---> className : ' + calEvent.className);
+          self.eventClickHandler(calEvent);
         },
-        dayRender: this.setDayCalendar
+        dayRender: this.setNotWorkingDayCalendar
       });
   }
 
-  setDayCalendar(date, cell) {
+  eventClickHandler(calEvent) {
+    const task = this.model.calendar.find(x => x.id == calEvent.id);
+    if (task.status === this.licenseStatus) { return; }
+    this.editTask(task);
+  }
+
+  editTask(task) {
+    this.taskModel = task;
+    this.taskModel.date = new Date(task.date);
+    const storedTask = this.allTasks.find(x => x.id == task.taskId);
+    if (storedTask == null) {
+      return;
+    }
+    this.taskModel.categoryId = storedTask.categoryId;
+    this.showEditModal(false);
+  }
+
+  setNotWorkingDayCalendar(date, cell) {
     if (date.isoWeekday() > 5) {
       cell.css("background-color", '#EFEFEF');
     }
@@ -219,8 +236,21 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
   }
 
-  showEditModal() {
-    this.taskModel = new WorkTimeTaskModel();
+  showEditModal(isNew = true) {
+    if (isNew) {
+      this.taskModel = new WorkTimeTaskModel();
+      this.editModalConfig.acceptButton = true;
+      this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+    } else {
+      this.updateModalTaskCombo();
+      if (this.taskModel.status !== this.draftStatus && this.taskModel.status !== this.rejectedStatus) {
+        this.editModalConfig.acceptButton = false;
+        this.editModalConfig.cancelButtonText = 'ACTIONS.close';
+      } else {
+        this.editModalConfig.acceptButton = true;
+        this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+      }
+    }
     this.showSaveTask();
     this.editModal.show();
   }
@@ -274,6 +304,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.showSaveTask();
   }
 
+  updateModalTaskCombo() {
+    this.tasks = this.allTasks.filter(x => x.categoryId == this.taskModel.categoryId);
+  }
+
   saveTask() {
     this.editModal.isLoading = true;
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
@@ -291,6 +325,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   showSaveTask() {
     const taskModel = this.taskModel;
+
+    if (taskModel.status !== 0
+        && taskModel.status !== this.draftStatus
+        && taskModel.status !== this.rejectedStatus) {
+      this.editModal.isSaveEnabled = false;
+      return;
+    }
+
     if (taskModel.analyticId == 0) {
       this.editModal.isSaveEnabled = false;
       return;
@@ -332,7 +374,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
-    const className = (item.status === this.draftStatus) ? '' : 'eventTask';
+    const className = (item.status !== this.licenseStatus) ? '' : 'eventTask';
     return {
       id: item.id,
       title: item.taskName,
@@ -436,11 +478,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     },
     error => {
       this.errorHandlerService.handleErrors(error);
-      this.removeLastEvent();
+      this.getModel();
     });
-  }
-
-  removeLastEvent() {
-    this.getModel();
   }
 }

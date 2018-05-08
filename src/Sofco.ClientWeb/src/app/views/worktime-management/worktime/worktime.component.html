@@ -116,10 +116,14 @@
             <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
         </div>
         <div class="form-group">
-            <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
-        </div>
-        <div class="form-group">
-            <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
+            <div class="row">
+                <div class="col-md-6">
+                    <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
+                </div>
+                <div class="col-md-6">
+                    <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="row">

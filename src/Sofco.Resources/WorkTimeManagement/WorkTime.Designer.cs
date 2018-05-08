@@ -251,6 +251,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to workTimeManagement/workTime.wrongStatus.
+        /// </summary>
+        public static string WrongStatus {
+            get {
+                return ResourceManager.GetString("WrongStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to workTimeManagement/workTime.yearError.
         /// </summary>
         public static string YearError {

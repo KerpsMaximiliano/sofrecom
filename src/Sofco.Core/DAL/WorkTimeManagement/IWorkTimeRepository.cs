@@ -12,7 +12,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         IList<WorkTime> Search(WorktimeHoursApprovedParams model);
 
-        int GetTotalHoursByDate(DateTime date, int currentUserId);
+        int GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id);
 
         IList<WorkTime> SearchPending(WorktimeHoursPendingParams model, bool isManagerOrDirector, int currentUserId);
 
@@ -21,5 +21,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void UpdateApprovalComment(WorkTime worktime);
 
         void SendHours(int employeeid);
+
+        void Save(WorkTime workTime);
     }
 }

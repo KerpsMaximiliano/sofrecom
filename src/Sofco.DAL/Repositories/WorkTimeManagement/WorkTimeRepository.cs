@@ -111,14 +111,40 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeid}");
         }
 
-        public int GetTotalHoursByDate(DateTime date, int currentUserId)
+        public void Save(WorkTime workTime)
+        {
+            if (workTime.Id == 0)
+            {
+                Insert(workTime);
+                return;
+            }
+
+            Update(workTime);
+        }
+
+        public int GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id)
         {
             return context.WorkTimes
                 .Where(x => x.UserId == currentUserId 
                         && x.Date.Month == date.Month 
-                        && x.Date.Day == date.Day)
+                        && x.Date.Day == date.Day
+                        && x.Id != id)
                 .Select(s => s.Hours)
                 .Sum();
+        }
+
+        private new void Update(WorkTime workTime)
+        {
+            var stored = context.WorkTimes.SingleOrDefault(x => x.Id == workTime.Id);
+
+            if (stored == null) throw new Exception("Item Not Found");
+
+            stored.AnalyticId = workTime.AnalyticId;
+            stored.TaskId  = workTime.TaskId;
+            stored.Date  = workTime.Date;
+            stored.Hours  = workTime.Hours;
+            stored.UserComment  = workTime.UserComment;
+            stored.Status  = workTime.Status;
         }
     }
 }
