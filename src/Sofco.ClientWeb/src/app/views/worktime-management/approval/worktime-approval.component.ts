@@ -62,7 +62,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getAnalytics();
-
+ 
         var data = JSON.parse(sessionStorage.getItem('lastWorktimeQuery'));
 
         if(data){

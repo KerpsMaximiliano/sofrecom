@@ -48,6 +48,11 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             {
                 response.AddError(Resources.AllocationManagement.EmployeeSyncAction.EndReasonTypeRequired);
             }
+
+            if (model.Type == 17 && string.IsNullOrWhiteSpace(model.Comments))
+            {
+                response.AddError(Resources.AllocationManagement.EmployeeSyncAction.CommentsRequired);
+            }
         }
     }
 }

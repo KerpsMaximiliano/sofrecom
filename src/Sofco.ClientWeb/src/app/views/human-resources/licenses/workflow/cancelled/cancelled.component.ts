@@ -17,7 +17,7 @@ export class LicenseCancelComponent implements OnDestroy  {
 
     @ViewChild('cancelModal') cancelModal;
     public cancelModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.solfac.addComments",
+        "rrhh.license.addCancelComments",
         "cancelModal",
         true,
         true,

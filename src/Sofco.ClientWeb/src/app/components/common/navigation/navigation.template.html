@@ -69,12 +69,12 @@
       </li>
 
       <!--REPORT-->
-      <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
+      <!-- <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('report')}">
           <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
         </ul>
-      </li>
+      </li> -->
       
     </ul>
 

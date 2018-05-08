@@ -626,7 +626,8 @@
             "extraHolidays": "Vacaciones extra acordadas",
             "holidaysByLaw": "Vacaciones por ley",
             "finalizeExtraHolidays": "Finalizar Acuerdo",
-            "cancelComments": "Se debe agregar un motivo para cancelar"
+            "cancelComments": "Se debe agregar un motivo para cancelar",
+            "addCancelComments": "Ingrese los motivos para cancelar"
         }
     },
     "ACTIONS":{
