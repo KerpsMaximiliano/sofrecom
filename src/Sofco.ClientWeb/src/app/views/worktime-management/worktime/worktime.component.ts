@@ -326,7 +326,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   showSaveTask() {
     const taskModel = this.taskModel;
 
-    if (taskModel.status !== this.draftStatus && taskModel.status !== this.rejectedStatus) {
+    if (taskModel.status !== 0
+        && taskModel.status !== this.draftStatus
+        && taskModel.status !== this.rejectedStatus) {
       this.editModal.isSaveEnabled = false;
       return;
     }

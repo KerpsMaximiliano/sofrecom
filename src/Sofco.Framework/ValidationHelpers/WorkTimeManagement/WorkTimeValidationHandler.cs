@@ -129,6 +129,8 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
 
         public static void ValidateStatus(Response<WorkTime> response, WorkTimeAddModel model)
         {
+            if (model.Status == 0) return;
+
             if (model.Status != WorkTimeStatus.Draft && model.Status != WorkTimeStatus.Rejected)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.WrongStatus);
