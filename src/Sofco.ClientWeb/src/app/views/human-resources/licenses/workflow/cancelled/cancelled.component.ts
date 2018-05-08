@@ -66,7 +66,7 @@ export class LicenseCancelComponent implements OnDestroy  {
 
   cancel(){
     if(!this.rejectComments || this.rejectComments == ""){
-        this.messageService.showError("billing.solfac.rejectCommentRequired");
+        this.messageService.showError("rrhh.license.cancelComments");
         return;
     }
     

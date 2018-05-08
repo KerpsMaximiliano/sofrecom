@@ -59,7 +59,6 @@ export class LicenseListWidget implements OnInit, OnDestroy {
     initGrid(){
         var params = {
             selector: "#licenseStatus-" + this.statusId,
-            scrollX: true
         };
 
         this.datatableService.init2(params);

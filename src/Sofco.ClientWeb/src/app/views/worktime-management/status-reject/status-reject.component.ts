@@ -45,8 +45,13 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
     this.workTime = worktime;
     this.rejectModal.show();
   }
-
+ 
   confirm(){
+    if(!this.rejectComments || this.rejectComments == ""){
+        this.messageService.showError("billing.solfac.rejectCommentRequired");
+        return;
+    }
+
     this.isLoading = true;
 
     this.subscrip = this.worktimeService.reject(this.workTime.id, this.rejectComments).subscribe(

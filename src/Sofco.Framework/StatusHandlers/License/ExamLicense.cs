@@ -4,7 +4,7 @@ using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
-    public class ExamLicense : ILicenseValidator
+    public class ExamLicense : LicenseValidator, ILicenseValidator
     {
         public void Validate(Response response, Model.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
         {
@@ -12,7 +12,9 @@ namespace Sofco.Framework.StatusHandlers.License
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
             var examDaysAllowTogether = unitOfWork.SettingRepository.GetByKey("ExamDaysAllowTogether");
 
-            var days = domain.EndDate.Date.Subtract(domain.StartDate.Date).Days + 1;
+            //Item 1 = Working Days
+            //Item 2 = Total Days 
+            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
 
             if (string.IsNullOrWhiteSpace(domain.ExamDescription))
             {
@@ -24,7 +26,7 @@ namespace Sofco.Framework.StatusHandlers.License
                 response.AddError(Resources.Rrhh.License.ExamTypeRequired);
             }
 
-            if (days > Convert.ToInt32(examDaysAllowTogether.Value))
+            if (tupla.Item1 > Convert.ToInt32(examDaysAllowTogether.Value))
             {
                 response.AddError(Resources.Rrhh.License.DaysWrong);
             }
@@ -32,12 +34,10 @@ namespace Sofco.Framework.StatusHandlers.License
             {
                 if (response.HasErrors()) return;
 
-                //user.ExamDaysTaken += days;
-                //unitOfWork.EmployeeRepository.Update(user);
+                domain.DaysQuantity = tupla.Item1;
+                domain.DaysQuantityByLaw = tupla.Item2;
 
-                domain.DaysQuantity = days;
-
-                if (user.ExamDaysTaken + days > licenseType.Days)
+                if (user.ExamDaysTaken + tupla.Item1 > licenseType.Days)
                 {
                     response.AddWarning(Resources.Rrhh.License.ExamDaysTakenExceeded);
                 }

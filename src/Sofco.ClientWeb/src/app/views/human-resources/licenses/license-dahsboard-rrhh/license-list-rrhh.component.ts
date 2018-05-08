@@ -134,7 +134,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     initGrid(){
         var params = {
             selector: "#licenseStatusApproved",
-            scrollX: true
         };
 
         this.datatableService.destroy(params.selector);

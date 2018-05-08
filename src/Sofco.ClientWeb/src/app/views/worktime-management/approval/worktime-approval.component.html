@@ -64,10 +64,12 @@
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
                                 <td class="column-sm text-center">{{ item.hours }} hs</td>
-                                <td class="column-xs text-center"><button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button></td>
+                                <td class="column-xs text-center">
+                                    <button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+                                </td>
                                 <td class="column-xs text-center"> 
-                                    <a><i class="fa fa-thumbs-o-up fa-2x pointer" (click)="showApproveModal(item, i)"></i> </a>
-                                    <a><i class="fa fa-thumbs-o-down fa-2x pointer" (click)="showRejectModal(item, i)"></i> </a>
+                                    <a *ngIf="approveAllDisabled()" title="{{ 'ACTIONS.approve' | translate }}"><i class="fa fa-thumbs-o-up fa-2x pointer" (click)="showApproveModal(item, i)"></i> </a>
+                                    <a *ngIf="approveAllDisabled()" title="{{ 'ACTIONS.reject' | translate }}"><i class="fa fa-thumbs-o-down fa-2x pointer" (click)="showRejectModal(item, i)"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -120,7 +122,9 @@
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
                                 <td class="column-xs text-center">{{ item.hours }} hs</td>
-                                <td class="column-xs text-center"><button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button></td>
+                                <td class="column-xs text-center">
+                                    <button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+                                </td>
                                 <td class="column-xs text-center"><span class="label label-worktime-{{item.status}} font-11">{{ ('workTimeManagement.' + item.status) | translate  }}</span></td>
                             </tr>
                         </tbody>
