@@ -25,10 +25,13 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public string ApprovalComment { get; set; }
 
+        public WorkTimeStatus Status { get; set; }
+
         public WorkTime CreateDomain()
         {
             var domain = new WorkTime();
 
+            domain.Id = Id;
             domain.AnalyticId = AnalyticId;
             domain.EmployeeId = EmployeeId;
             domain.UserId = UserId;

@@ -20,5 +20,6 @@
     "rejectedSuccess": "Las horas han sido rechazadas correctamente",
     "approvedWithSomeErrors": "Algunas horas fueron aprobadas correctamente y algunas contenian algun error",
     "dateOutOfRange": "No se permite la carga de tarea en fechas fuera de rango.",
-    "sentSuccess": "Horas enviadas correctamente"
+    "sentSuccess": "Horas enviadas correctamente",
+    "wrongStatus": "No se permite modificar la tarea con el estado actual."
 }

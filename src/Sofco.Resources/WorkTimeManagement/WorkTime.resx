@@ -180,6 +180,9 @@
   <data name="WrongApprover" xml:space="preserve">
     <value>workTimeManagement/workTime.wrongApprover</value>
   </data>
+  <data name="WrongStatus" xml:space="preserve">
+    <value>workTimeManagement/workTime.wrongStatus</value>
+  </data>
   <data name="YearError" xml:space="preserve">
     <value>workTimeManagement/workTime.yearError</value>
   </data>

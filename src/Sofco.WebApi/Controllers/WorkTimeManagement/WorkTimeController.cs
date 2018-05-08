@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         [HttpPost]
         public IActionResult Post([FromBody] WorkTimeAddModel model)
         {
-            var response = workTimeService.Add(model);
+            var response = workTimeService.Save(model);
 
             return this.CreateResponse(response);
         }

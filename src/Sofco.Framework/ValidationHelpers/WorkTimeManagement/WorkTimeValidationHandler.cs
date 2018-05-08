@@ -81,9 +81,11 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 return;
             }
 
-            var totalHours = unitOfWork.WorkTimeRepository.GetTotalHoursByDate(model.Date, model.UserId);
+            var totalHours = unitOfWork.WorkTimeRepository.GetTotalHoursByDateExceptCurrentId(model.Date, model.UserId, model.Id);
 
-            if (totalHours + model.Hours > AllowedHoursPerDay)
+            totalHours += model.Hours;
+
+            if (totalHours > AllowedHoursPerDay)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.HoursMaxError);
             }
@@ -122,6 +124,14 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 {
                     response.AddError(Resources.WorkTimeManagement.WorkTime.CannotChangeStatus);
                 }
+            }
+        }
+
+        public static void ValidateStatus(Response<WorkTime> response, WorkTimeAddModel model)
+        {
+            if (model.Status != WorkTimeStatus.Draft && model.Status != WorkTimeStatus.Rejected)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WrongStatus);
             }
         }
     }
