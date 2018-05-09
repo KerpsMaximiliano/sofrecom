@@ -127,13 +127,13 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <label>{{'workTimeManagement.date' | translate }}</label>
                     <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input type="number" class="form-control" min="1" max="24" name="hours" [(ngModel)]="taskModel.hours" (change)="showSaveTask()">
+                    <input id="hoursOne" type="text" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
                 </div>
             </div>
         </div>

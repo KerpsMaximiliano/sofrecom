@@ -1,6 +1,6 @@
 {
   "name": "sofcoar",
-  "version": "1.18.50",
+  "version": "1.18.51",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -32,6 +32,7 @@
     "angular2-ladda": "^1.2.3",
     "animate.css": "3.1.1",
     "bootstrap": "^3.3.7",
+    "bootstrap-touchspin": "^4.2.5",
     "chart.js": "^2.7.2",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.3",
