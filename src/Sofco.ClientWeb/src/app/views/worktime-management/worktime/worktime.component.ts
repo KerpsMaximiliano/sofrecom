@@ -21,7 +21,6 @@ import { TaskService } from 'app/services/admin/task.service';
 import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
-import { debug } from 'util';
 
 @Component({
     selector: 'app-worktime',
@@ -54,6 +53,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   private textKey = 'text';
   private subscription: Subscription;
   private calendarEvents: any[] = new Array();
+  private calendarCurrentDateText = "";
 
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
@@ -105,38 +105,65 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   calendarInit() {
-      const self = this;
+    const self = this;
 
-      $('#calendar').fullCalendar({
-        weekends: true,
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay,listWeek'
-        },
-        navLinks: true,
-        editable: false,
-        eventLimit: false,
-        events: this.calendarEvents,
-        droppable: true,
-        drop: function(date, jsEvent, ui) {
-          self.calendarDropHandler(date, jsEvent);
-        },
-        eventClick: function(calEvent, jsEvent, view) {
-          self.eventClickHandler(calEvent);
-        },
-        dayRender: this.setNotWorkingDayCalendar
-      });
+    $('#calendar').fullCalendar({
+      weekends: true,
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+      navLinks: true,
+      editable: false,
+      eventLimit: false,
+      events: this.calendarEvents,
+      droppable: true,
+      drop: function(date, jsEvent, ui) {
+        self.calendarDropHandler(date, jsEvent);
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+        self.eventClickHandler(calEvent);
+      },
+      dayRender: this.setNotWorkingDayCalendar,
+      viewRender: function(view, element) {
+        self.viewRenderHandler(view, element);
+      }
+    });
+
+    (<any>$("#hoursOne")).TouchSpin({
+        min: 1,
+        max: 24
+    }).on('change', function() {
+      self.taskModel.hours = $("#hoursOne").val();
+      self.showSaveTask();
+    });
+  }
+
+  viewRenderHandler(view, element) {
+    // const date = $('#calendar').fullCalendar('getDate');
+
+    // const month_int = date.month();
+
+    //const data = $('#calendar').fullCalendar("month");
+
+   const calendarMonth = view.start.add(1, 'M');
+
+   this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
+
+    this.getModel();
   }
 
   eventClickHandler(calEvent) {
     const task = this.model.calendar.find(x => x.id == calEvent.id);
     if (task.status === this.licenseStatus) { return; }
-    this.editTask(task);
+    const cloned = Object.assign({}, task);
+    this.editTask(cloned);
   }
 
   editTask(task) {
     this.taskModel = task;
+    $("#hoursOne").val(this.taskModel.hours);
     this.taskModel.date = new Date(task.date);
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
     if (storedTask == null) {
@@ -202,9 +229,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   getModel() {
+    const calendarDate = this.calendarCurrentDateText;
+
     this.messageService.showLoading();
 
-    this.subscription = this.worktimeService.get(moment().format('YYYY-MM-DD')).subscribe(response => {
+    this.subscription = this.worktimeService.get(calendarDate).subscribe(response => {
       this.messageService.closeLoading();
       this.model = response.data;
       this.updateCalendarEvents();
@@ -219,7 +248,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.calendarEvents = this.translateToEvent(this.model.calendar);
     $('#calendar').fullCalendar('removeEventSources', null);
     $('#calendar').fullCalendar('addEventSource', this.calendarEvents);
-    $('#calendarControl').droppable();
   }
 
   sendHours() {
@@ -237,18 +265,18 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   showEditModal(isNew = true) {
+    $("#hoursOne").prop('disabled', false);
+    this.editModalConfig.acceptButton = true;
+    this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
     if (isNew) {
       this.taskModel = new WorkTimeTaskModel();
-      this.editModalConfig.acceptButton = true;
-      this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
     } else {
       this.updateModalTaskCombo();
-      if (this.taskModel.status !== this.draftStatus && this.taskModel.status !== this.rejectedStatus) {
+      if (this.taskModel.status !== this.draftStatus
+        && this.taskModel.status !== this.rejectedStatus) {
         this.editModalConfig.acceptButton = false;
         this.editModalConfig.cancelButtonText = 'ACTIONS.close';
-      } else {
-        this.editModalConfig.acceptButton = true;
-        this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+        $("#hoursOne").prop('disabled', true);
       }
     }
     this.showSaveTask();
@@ -321,6 +349,13 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.errorHandlerService.handleErrors(error);
       this.editModal.isLoading = false;
     });
+  }
+
+  canEditTask() {
+    const taskModel = this.taskModel;
+    return (taskModel.status === 0
+        || taskModel.status === this.draftStatus
+        || taskModel.status === this.rejectedStatus);
   }
 
   showSaveTask() {
