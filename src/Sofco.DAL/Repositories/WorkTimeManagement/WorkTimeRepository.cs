@@ -111,7 +111,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeid}");
         }
 
-        public int GetTotalHoursByDate(DateTime date, int currentUserId)
+        public decimal GetTotalHoursByDate(DateTime date, int currentUserId)
         {
             return context.WorkTimes
                 .Where(x => x.UserId == currentUserId 

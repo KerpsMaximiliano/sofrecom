@@ -3,7 +3,6 @@ using Sofco.Core.DAL.Common;
 using System.Collections.Generic;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -16,5 +15,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Allocation> GetByEmployee(int id);
         ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
         void RemoveAllocationByAnalytic(int analyticId, DateTime today);
+        ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

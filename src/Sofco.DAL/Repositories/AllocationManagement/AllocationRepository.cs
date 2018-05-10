@@ -50,6 +50,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
+                .ToList();
+        }
+
         public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)
         {
             IQueryable<Allocation> query = context.Allocations

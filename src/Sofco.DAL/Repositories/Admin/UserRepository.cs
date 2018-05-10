@@ -151,6 +151,11 @@ namespace Sofco.DAL.Repositories.Admin
             }).FirstOrDefault();
         }
 
+        public User GetByEmail(string email)
+        {
+            return context.Users.SingleOrDefault(x => x.Email == email);
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;
