@@ -15,5 +15,7 @@
         public decimal BusinessHours { get; set; }
 
         public decimal HoursUntilToday { get; set; }
+
+        public decimal HoursWithLicense { get; set; }
     }
 }
