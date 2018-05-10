@@ -10,7 +10,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
     {
         Response<WorkTimeModel> Get(DateTime date);
 
-        Response<WorkTime> Add(WorkTimeAddModel model);
+        Response<WorkTime> Save(WorkTimeAddModel model);
 
         Response<IList<HoursApprovedModel>> GetHoursApproved(WorktimeHoursApprovedParams model);
 

@@ -63,3 +63,9 @@ dd {
 :host ::ng-deep .eventTask  {
     cursor: default;
 }
+
+:host ::ng-deep .bootstrap-touchspin .btn-primary {
+    background-color: #efefef;
+    border-color: #efefef;
+    color: dimgrey;
+}

@@ -144,6 +144,9 @@
   <data name="DateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.dateRequired</value>
   </data>
+  <data name="DeleteError" xml:space="preserve">
+    <value>workTimeManagement/workTime.deleteError</value>
+  </data>
   <data name="EmployeeRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.employeeRequired</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="WrongApprover" xml:space="preserve">
     <value>workTimeManagement/workTime.wrongApprover</value>
+  </data>
+  <data name="WrongStatus" xml:space="preserve">
+    <value>workTimeManagement/workTime.wrongStatus</value>
   </data>
   <data name="YearError" xml:space="preserve">
     <value>workTimeManagement/workTime.yearError</value>

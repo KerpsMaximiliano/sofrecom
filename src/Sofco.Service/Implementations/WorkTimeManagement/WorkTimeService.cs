@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -82,7 +81,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     result.Data.Resume.BusinessHours += 8;
 
-                    if (startDate.Date <= DateTime.UtcNow)
+                    if (startDate.Date <= DateTime.UtcNow.Date)
                     {
                         result.Data.Resume.HoursUntilToday += 8;
                     }
@@ -92,7 +91,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        public Response<WorkTime> Add(WorkTimeAddModel model)
+        public Response<WorkTime> Save(WorkTimeAddModel model)
         {
             var response = new Response<WorkTime>();
 
@@ -100,6 +99,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             SetCurrentUser(model);
 
+            WorkTimeValidationHandler.ValidateStatus(response, model);
             WorkTimeValidationHandler.ValidateEmployee(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateAnalytic(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUser(response, unitOfWork, model);
@@ -114,7 +114,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var workTime = model.CreateDomain();
 
-                unitOfWork.WorkTimeRepository.Insert(workTime);
+                unitOfWork.WorkTimeRepository.Save(workTime);
+
                 unitOfWork.Save();
 
                 response.Data = workTime;

@@ -223,7 +223,7 @@ namespace Sofco.Service.Implementations.Rrhh
                 var history = GetHistory(license, model);
                 unitOfWork.LicenseRepository.AddHistory(history);
 
-                // Generates the worktimes for all license days
+                // Generates all worktimes between license days
                 if (license.Status == LicenseStatus.Draft)
                 {
                     GenerateWorkTimes(license);
@@ -237,6 +237,20 @@ namespace Sofco.Service.Implementations.Rrhh
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            try
+            {
+                // Remove all worktimes between license days
+                if (model.Status == LicenseStatus.Cancelled || model.Status == LicenseStatus.Rejected)
+                {
+                    unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.DeleteError);
             }
 
             SendMail(license, response, licenseStatusHandler, model);
@@ -316,7 +330,7 @@ namespace Sofco.Service.Implementations.Rrhh
             worktime.EmployeeId = license.EmployeeId;
             worktime.UserId = user.Id;
             worktime.UserComment = license.Type.Description;
-            worktime.CreationDate = DateTime.UtcNow;
+            worktime.CreationDate = DateTime.UtcNow.Date;
             worktime.Status = WorkTimeStatus.Sent;
             worktime.Date = startDate.Date;
             worktime.TaskId = license.Type.TaskId;

@@ -21,7 +21,6 @@ import { TaskService } from 'app/services/admin/task.service';
 import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
-import { debug } from 'util';
 
 @Component({
     selector: 'app-worktime',
@@ -54,6 +53,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   private textKey = 'text';
   private subscription: Subscription;
   private calendarEvents: any[] = new Array();
+  private calendarCurrentDateText = "";
 
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
@@ -105,31 +105,75 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   calendarInit() {
-      const self = this;
+    const self = this;
 
-      $('#calendar').fullCalendar({
-        weekends: true,
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay,listWeek'
-        },
-        navLinks: true,
-        editable: false,
-        eventLimit: false,
-        events: this.calendarEvents,
-        droppable: true,
-        drop: function(date, jsEvent, ui) {
-          self.calendarDropHandler(date, jsEvent);
-        },
-        eventClick: function(calEvent, jsEvent, view) {
-          console.log('---> className : ' + calEvent.className);
-        },
-        dayRender: this.setDayCalendar
-      });
+    $('#calendar').fullCalendar({
+      weekends: true,
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+      navLinks: true,
+      editable: false,
+      eventLimit: false,
+      events: this.calendarEvents,
+      droppable: true,
+      drop: function(date, jsEvent, ui) {
+        self.calendarDropHandler(date, jsEvent);
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+        self.eventClickHandler(calEvent);
+      },
+      dayRender: this.setNotWorkingDayCalendar,
+      viewRender: function(view, element) {
+        self.viewRenderHandler(view, element);
+      }
+    });
+
+    (<any>$("#hoursOne")).TouchSpin({
+        min: 1,
+        max: 24
+    }).on('change', function() {
+      self.taskModel.hours = $("#hoursOne").val();
+      self.showSaveTask();
+    });
   }
 
-  setDayCalendar(date, cell) {
+  viewRenderHandler(view, element) {
+    // const date = $('#calendar').fullCalendar('getDate');
+
+    // const month_int = date.month();
+
+    //const data = $('#calendar').fullCalendar("month");
+
+   const calendarMonth = view.start.add(1, 'M');
+
+   this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
+
+    this.getModel();
+  }
+
+  eventClickHandler(calEvent) {
+    const task = this.model.calendar.find(x => x.id == calEvent.id);
+    if (task.status === this.licenseStatus) { return; }
+    const cloned = Object.assign({}, task);
+    this.editTask(cloned);
+  }
+
+  editTask(task) {
+    this.taskModel = task;
+    $("#hoursOne").val(this.taskModel.hours);
+    this.taskModel.date = new Date(task.date);
+    const storedTask = this.allTasks.find(x => x.id == task.taskId);
+    if (storedTask == null) {
+      return;
+    }
+    this.taskModel.categoryId = storedTask.categoryId;
+    this.showEditModal(false);
+  }
+
+  setNotWorkingDayCalendar(date, cell) {
     if (date.isoWeekday() > 5) {
       cell.css("background-color", '#EFEFEF');
     }
@@ -185,9 +229,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   getModel() {
+    const calendarDate = this.calendarCurrentDateText;
+
     this.messageService.showLoading();
 
-    this.subscription = this.worktimeService.get(moment().format('YYYY-MM-DD')).subscribe(response => {
+    this.subscription = this.worktimeService.get(calendarDate).subscribe(response => {
       this.messageService.closeLoading();
       this.model = response.data;
       this.updateCalendarEvents();
@@ -202,7 +248,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.calendarEvents = this.translateToEvent(this.model.calendar);
     $('#calendar').fullCalendar('removeEventSources', null);
     $('#calendar').fullCalendar('addEventSource', this.calendarEvents);
-    $('#calendarControl').droppable();
   }
 
   sendHours() {
@@ -219,8 +264,21 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
   }
 
-  showEditModal() {
-    this.taskModel = new WorkTimeTaskModel();
+  showEditModal(isNew = true) {
+    $("#hoursOne").prop('disabled', false);
+    this.editModalConfig.acceptButton = true;
+    this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+    if (isNew) {
+      this.taskModel = new WorkTimeTaskModel();
+    } else {
+      this.updateModalTaskCombo();
+      if (this.taskModel.status !== this.draftStatus
+        && this.taskModel.status !== this.rejectedStatus) {
+        this.editModalConfig.acceptButton = false;
+        this.editModalConfig.cancelButtonText = 'ACTIONS.close';
+        $("#hoursOne").prop('disabled', true);
+      }
+    }
     this.showSaveTask();
     this.editModal.show();
   }
@@ -274,6 +332,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.showSaveTask();
   }
 
+  updateModalTaskCombo() {
+    this.tasks = this.allTasks.filter(x => x.categoryId == this.taskModel.categoryId);
+  }
+
   saveTask() {
     this.editModal.isLoading = true;
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
@@ -289,8 +351,23 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
   }
 
+  canEditTask() {
+    const taskModel = this.taskModel;
+    return (taskModel.status === 0
+        || taskModel.status === this.draftStatus
+        || taskModel.status === this.rejectedStatus);
+  }
+
   showSaveTask() {
     const taskModel = this.taskModel;
+
+    if (taskModel.status !== 0
+        && taskModel.status !== this.draftStatus
+        && taskModel.status !== this.rejectedStatus) {
+      this.editModal.isSaveEnabled = false;
+      return;
+    }
+
     if (taskModel.analyticId == 0) {
       this.editModal.isSaveEnabled = false;
       return;
@@ -332,7 +409,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
-    const className = (item.status === this.draftStatus) ? '' : 'eventTask';
+    const className = (item.status !== this.licenseStatus) ? '' : 'eventTask';
     return {
       id: item.id,
       title: item.taskName,
@@ -436,11 +513,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     },
     error => {
       this.errorHandlerService.handleErrors(error);
-      this.removeLastEvent();
+      this.getModel();
     });
-  }
-
-  removeLastEvent() {
-    this.getModel();
   }
 }

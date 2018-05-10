@@ -6,4 +6,5 @@ export class WorkTimeTaskModel {
     public hours = 1;
     public date = new Date();
     public userComment = "";
+    public status = 0;
 }
