@@ -765,7 +765,8 @@
             "pendingToApprove": "Pendientes de aprobación",
             "totalResume": "Total resumen",
             "workingHours": "Horas Laborales",
-            "currentHoursToDate": "Horas a la fecha"
+            "currentHoursToDate": "Horas a la fecha",
+            "resumeLicense": "No laborable"
         },
         "Draft": "Borrador",
         "Sent": "Enviada",

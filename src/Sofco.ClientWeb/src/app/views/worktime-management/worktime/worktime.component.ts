@@ -40,7 +40,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public sentTaskColor = '#1d84c6';
   public approvedTaskColor = '#1cb394';
   public rejectedTaskColor = '#ea5865';
-  public licenseTaskColor = '#808080';
+  public licenseTaskColor = '#AFAFAF';
   public taskColors: any[] = new Array();
 
   public analytics: any[] = new Array();
@@ -131,22 +131,16 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       }
     });
 
-    (<any>$("#hoursOne")).TouchSpin({
+    (<any>$("#hoursControl")).TouchSpin({
         min: 1,
         max: 24
     }).on('change', function() {
-      self.taskModel.hours = $("#hoursOne").val();
+      self.taskModel.hours = $("#hoursControl").val();
       self.showSaveTask();
     });
   }
 
   viewRenderHandler(view, element) {
-    // const date = $('#calendar').fullCalendar('getDate');
-
-    // const month_int = date.month();
-
-    //const data = $('#calendar').fullCalendar("month");
-
    const calendarMonth = view.start.add(1, 'M');
 
    this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
@@ -163,7 +157,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   editTask(task) {
     this.taskModel = task;
-    $("#hoursOne").val(this.taskModel.hours);
+    $("#hoursControl").val(this.taskModel.hours);
     this.taskModel.date = new Date(task.date);
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
     if (storedTask == null) {
@@ -265,7 +259,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   showEditModal(isNew = true) {
-    $("#hoursOne").prop('disabled', false);
+    $("#hoursControl").prop('disabled', false);
     this.editModalConfig.acceptButton = true;
     this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
     if (isNew) {
@@ -276,7 +270,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
         && this.taskModel.status !== this.rejectedStatus) {
         this.editModalConfig.acceptButton = false;
         this.editModalConfig.cancelButtonText = 'ACTIONS.close';
-        $("#hoursOne").prop('disabled', true);
+        $("#hoursControl").prop('disabled', true);
       }
     }
     this.showSaveTask();
@@ -351,13 +345,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
   }
 
-  canEditTask() {
-    const taskModel = this.taskModel;
-    return (taskModel.status === 0
-        || taskModel.status === this.draftStatus
-        || taskModel.status === this.rejectedStatus);
-  }
-
   showSaveTask() {
     const taskModel = this.taskModel;
 
@@ -410,9 +397,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
     const className = (item.status !== this.licenseStatus) ? '' : 'eventTask';
+    const title = item.hours + ' h - ' + item.taskName;
     return {
       id: item.id,
-      title: item.taskName,
+      title: title,
       start: item.date,
       color: color,
       allDay: true,
