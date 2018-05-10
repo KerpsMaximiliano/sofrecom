@@ -122,7 +122,22 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             Update(workTime);
         }
 
-        public int GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id)
+        public void RemoveBetweenDays(int licenseEmployeeId, DateTime licenseStartDate, DateTime licenseEndDate)
+        {
+            context.Database.ExecuteSqlCommand($"DELETE FROM app.worktimes where employeeid = {licenseEmployeeId} AND date >= '{licenseStartDate:yyyy-MM-dd}' and date <= '{licenseEndDate:yyyy-MM-dd}'");
+        }
+
+        public decimal GetTotalHoursByDate(DateTime date, int currentUserId)
+        {
+            return context.WorkTimes
+                .Where(x => x.UserId == currentUserId
+                            && x.Date.Month == date.Month
+                            && x.Date.Day == date.Day)
+                .Select(s => s.Hours)
+                .Sum();
+        }
+
+        public decimal GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id)
         {
             return context.WorkTimes
                 .Where(x => x.UserId == currentUserId 

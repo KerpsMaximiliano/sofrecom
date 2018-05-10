@@ -38,7 +38,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public DateTime Date { get; set; }
 
-        public int Hours { get; set; }
+        public decimal Hours { get; set; }
 
         public string Comments { get; set; }
 

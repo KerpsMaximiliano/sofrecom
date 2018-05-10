@@ -71,8 +71,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours),
                 HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours),
                 HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
-                HoursPendingApproved =
-                    result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours)
+                HoursPendingApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours),
+                HoursWithLicense = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours)
             };
 
             while (startDate.Date <= endDate.Date)
@@ -81,7 +81,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     result.Data.Resume.BusinessHours += 8;
 
-                    if (startDate.Date <= DateTime.UtcNow)
+                    if (startDate.Date <= DateTime.UtcNow.Date)
                     {
                         result.Data.Resume.HoursUntilToday += 8;
                     }

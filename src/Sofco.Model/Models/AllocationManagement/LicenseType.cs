@@ -13,6 +13,8 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public bool WithPayment { get; set; }
 
+        public int TaskId { get; set; }
+
         public ICollection<License> Licenses { get; set; }
     }
 }

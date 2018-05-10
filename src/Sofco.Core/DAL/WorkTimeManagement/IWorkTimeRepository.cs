@@ -12,7 +12,9 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         IList<WorkTime> Search(WorktimeHoursApprovedParams model);
 
-        int GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id);
+        decimal GetTotalHoursByDate(DateTime date, int currentUserId);
+
+        decimal GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id);
 
         IList<WorkTime> SearchPending(WorktimeHoursPendingParams model, bool isManagerOrDirector, int currentUserId);
 
@@ -23,5 +25,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void SendHours(int employeeid);
 
         void Save(WorkTime workTime);
+
+        void RemoveBetweenDays(int licenseEmployeeId, DateTime licenseStartDate, DateTime licenseEndDate);
     }
 }

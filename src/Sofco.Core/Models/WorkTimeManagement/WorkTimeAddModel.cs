@@ -41,7 +41,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
             domain.Source = Source;
             domain.UserComment = UserComment;
 
-            domain.CreationDate = DateTime.UtcNow;
+            domain.CreationDate = DateTime.UtcNow.Date;
             domain.Status = WorkTimeStatus.Draft;
 
             return domain;
