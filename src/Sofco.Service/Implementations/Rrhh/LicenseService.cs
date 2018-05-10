@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.Rrhh
             worktime.UserId = user.Id;
             worktime.UserComment = license.Type.Description;
             worktime.CreationDate = DateTime.UtcNow.Date;
-            worktime.Status = WorkTimeStatus.Sent;
+            worktime.Status = WorkTimeStatus.License;
             worktime.Date = startDate.Date;
             worktime.TaskId = license.Type.TaskId;
 

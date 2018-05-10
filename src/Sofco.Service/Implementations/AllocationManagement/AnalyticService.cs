@@ -33,12 +33,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
-        private readonly IUserData userData;
         private readonly IEmployeeData employeeData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService, 
-            IUserData userData, IEmployeeData employeeData)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
+            ICrmService crmService, IEmployeeData employeeData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -47,7 +46,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
-            this.userData = userData;
             this.employeeData = employeeData;
         }
 
