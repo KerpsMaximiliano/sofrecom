@@ -199,6 +199,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         /// <summary>
         ///   Looks up a localized string similar to workTimeManagement/workTime.searchNotFound.
         /// </summary>
+        public static string ReportWarning {
+            get {
+                return ResourceManager.GetString("ReportWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.searchNotFound.
+        /// </summary>
         public static string SearchNotFound {
             get {
                 return ResourceManager.GetString("SearchNotFound", resourceCulture);
@@ -265,6 +274,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string WrongStatus {
             get {
                 return ResourceManager.GetString("WrongStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.yearAndMonthRequired.
+        /// </summary>
+        public static string YearAndMonthRequired {
+            get {
+                return ResourceManager.GetString("YearAndMonthRequired", resourceCulture);
             }
         }
         

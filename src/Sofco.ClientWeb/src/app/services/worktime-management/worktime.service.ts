@@ -28,6 +28,10 @@ export class WorktimeService {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
 
+  createReport(model) {
+    return this.http.post<any>(`${this.apiUrl}/report`, model);
+  }
+
   approve(id) {
     return this.http.put<any>(`${this.apiUrl}/${id}/approve`, {});
   }

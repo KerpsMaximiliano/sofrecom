@@ -142,6 +142,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MailSubjectResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="Months.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Months.resx</DependentUpon>
+    </Compile>
     <Compile Update="Rrhh\License.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -254,6 +259,10 @@
     <EmbeddedResource Update="Mails\MailSubjectResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailSubjectResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Months.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Months.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\License.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

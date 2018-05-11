@@ -18,14 +18,17 @@ import { WorktimeService } from 'app/services/worktime-management/worktime.servi
 import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
 import { WorkTimeStatusApproveComponent } from 'app/views/worktime-management/status-approve/status-approve.component';
 import { WorkTimeStatusRejectComponent } from 'app/views/worktime-management/status-reject/status-reject.component';
+import { UtilsService } from 'app/services/common/utils.service';
+import { WorkTimeReportComponent } from 'app/views/worktime-management/report/worktime-report.component';
 
 @NgModule({
-  declarations: [WorkTimeComponent, WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent],
+  declarations: [WorkTimeComponent, WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
+                 WorkTimeReportComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
     TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule],
 
-  providers   : [WorktimeService],
+  providers   : [WorktimeService, UtilsService],
 
   exports     : []
 })

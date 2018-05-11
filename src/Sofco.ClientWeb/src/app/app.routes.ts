@@ -69,6 +69,7 @@ import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.componen
 import { WorkTimeComponent } from './views/worktime-management/worktime/worktime.component';
 import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
 import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
+import { WorkTimeReportComponent } from './views/worktime-management/report/worktime-report.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -271,8 +272,9 @@ export const ROUTES:Routes = [
     children: [
       {
         path: 'workTime', children:[
-          { path: "", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "WORKT" } },
-          { path: "approval", component: WorkTimeApprovalComponent, canActivate: [AuthGuard] }
+          { path: "load", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "WORKT" } },
+          { path: "approval", component: WorkTimeApprovalComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "APPRO" } },
+          { path: "report", component: WorkTimeReportComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "REPOR" } }
         ]
       }
     ]

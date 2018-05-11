@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sofco.Resources.Admin {
+namespace Sofco.Resources {
     using System;
     using System.Reflection;
     
@@ -23,14 +23,14 @@ namespace Sofco.Resources.Admin {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Module {
+    public class Months {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Module() {
+        internal Months() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace Sofco.Resources.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Module", typeof(Module).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Months", typeof(Months).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,56 +62,110 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.created.
+        ///   Busca una cadena traducida similar a months.april.
         /// </summary>
-        public static string Created {
+        public static string April {
             get {
-                return ResourceManager.GetString("Created", resourceCulture);
+                return ResourceManager.GetString("April", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.disabled.
+        ///   Busca una cadena traducida similar a months.august.
         /// </summary>
-        public static string Disabled {
+        public static string August {
             get {
-                return ResourceManager.GetString("Disabled", resourceCulture);
+                return ResourceManager.GetString("August", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.enabled.
+        ///   Busca una cadena traducida similar a months.december.
         /// </summary>
-        public static string Enabled {
+        public static string December {
             get {
-                return ResourceManager.GetString("Enabled", resourceCulture);
+                return ResourceManager.GetString("December", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.functionalitiesUpdated.
+        ///   Busca una cadena traducida similar a months.february.
         /// </summary>
-        public static string FunctionalitiesUpdated {
+        public static string February {
             get {
-                return ResourceManager.GetString("FunctionalitiesUpdated", resourceCulture);
+                return ResourceManager.GetString("February", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.notFound.
+        ///   Busca una cadena traducida similar a months.january.
         /// </summary>
-        public static string NotFound {
+        public static string January {
             get {
-                return ResourceManager.GetString("NotFound", resourceCulture);
+                return ResourceManager.GetString("January", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/module.updated.
+        ///   Busca una cadena traducida similar a months.july.
         /// </summary>
-        public static string Updated {
+        public static string July {
             get {
-                return ResourceManager.GetString("Updated", resourceCulture);
+                return ResourceManager.GetString("July", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.june.
+        /// </summary>
+        public static string June {
+            get {
+                return ResourceManager.GetString("June", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.march.
+        /// </summary>
+        public static string March {
+            get {
+                return ResourceManager.GetString("March", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.may.
+        /// </summary>
+        public static string May {
+            get {
+                return ResourceManager.GetString("May", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.november.
+        /// </summary>
+        public static string November {
+            get {
+                return ResourceManager.GetString("November", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.october.
+        /// </summary>
+        public static string October {
+            get {
+                return ResourceManager.GetString("October", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a months.september.
+        /// </summary>
+        public static string September {
+            get {
+                return ResourceManager.GetString("September", resourceCulture);
             }
         }
     }
