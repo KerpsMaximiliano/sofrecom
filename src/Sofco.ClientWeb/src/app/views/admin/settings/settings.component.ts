@@ -22,8 +22,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   licenseTypes: Array<any> = new Array();
   jobSettings: Array<any> = new Array();
 
-
-
   constructor(
       private service: SettingsService,
       private messageService: MessageService,

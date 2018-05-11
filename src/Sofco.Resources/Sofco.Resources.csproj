@@ -17,6 +17,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Category.resx</DependentUpon>
     </Compile>
+    <Compile Update="Admin\Group.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Group.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Module.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Module.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Role.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Role.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Setting.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Setting.resx</DependentUpon>
+    </Compile>
     <Compile Update="Admin\Task.Designer.cs">
       <DependentUpon>Category - Copia.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -31,6 +51,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Functionality.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\User.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>User.resx</DependentUpon>
     </Compile>
     <Compile Update="AllocationManagement\Allocation.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -135,6 +160,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Admin\Group.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Group.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Module.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Module.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Role.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Role.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Setting.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Setting.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Admin\Task.resx">
       <LastGenOutput>Task.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -142,6 +183,10 @@
     <EmbeddedResource Update="Admin\Functionality.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Functionality.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\User.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>User.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
