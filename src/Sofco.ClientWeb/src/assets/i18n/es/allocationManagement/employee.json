@@ -6,7 +6,7 @@
     "nameRequired": "El nombre del recurso es requerido",
     "employeesNotFound": "No se han encontrado resultados con los parametros seleccionados",
     "updateSuccess": "Empleado actualizado exitosamente",
-    "categoriesAdded": "Se han agregado las categorias seleccionas a los recursos seleccionados",
+    "categoriesAdded": "Se han agregado las categorías seleccionadas a los recursos seleccionados",
     "businessHoursEmpty": "El horario laboral no puede estar vacio",
     "businessHoursUpdated": "Horas por contrato actualizadas correctamente",
     "businessHoursWrong": "La jornada laboral no puede ser menor a 1 hora y mayor a 8"
