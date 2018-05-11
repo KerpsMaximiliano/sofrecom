@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
@@ -14,11 +15,14 @@ namespace Sofco.Service.Implementations.Admin
     {
         private readonly IUnitOfWork unitOfWork;
 
+        private readonly ISettingData settingData;
+
         private Dictionary<string, Func<Setting, Response<Setting>>> validationDicts;
 
-        public SettingService(IUnitOfWork unitOfWork)
+        public SettingService(IUnitOfWork unitOfWork, ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
+            this.settingData = settingData;
 
             InitValidations();
         }
@@ -46,6 +50,8 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
 
             unitOfWork.SettingRepository.Save(settings);
+
+            settingData.ClearKeys();
 
             response.Data = settings;
 

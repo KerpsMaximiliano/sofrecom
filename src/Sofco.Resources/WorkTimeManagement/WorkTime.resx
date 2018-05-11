@@ -151,7 +151,7 @@
     <value>workTimeManagement/workTime.employeeRequired</value>
   </data>
   <data name="HoursMaxError" xml:space="preserve">
-    <value>workTimeManagement/workTime.hoursMaxError</value>
+    <value>workTimeManagement/workTime.hoursMaxError?{0}</value>
   </data>
   <data name="HoursWrong" xml:space="preserve">
     <value>workTimeManagement/workTime.hoursWrong</value>
