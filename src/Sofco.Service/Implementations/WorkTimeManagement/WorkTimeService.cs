@@ -10,6 +10,7 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.Validations;
 using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -24,11 +25,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly ILogMailer<WorkTimeService> logger;
 
-        public WorkTimeService(ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData)
+        private readonly IWorkTimeValidation workTimeValidation;
+
+        public WorkTimeService(ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData, IWorkTimeValidation workTimeValidation)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.employeeData = employeeData;
+            this.workTimeValidation = workTimeValidation;
             this.logger = logger;
         }
 
@@ -104,9 +108,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             WorkTimeValidationHandler.ValidateAnalytic(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUser(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateDate(response, unitOfWork, model);
-            WorkTimeValidationHandler.ValidateHours(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateTask(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUserComment(response, model);
+            workTimeValidation.ValidateHours(response, model);
 
             if (response.HasErrors()) return response;
 

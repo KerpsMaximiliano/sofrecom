@@ -103,6 +103,17 @@ namespace Sofco.Cache
             redis.KeyExpire(cacheKey, cacheExpire);
         }
 
+        public void DeletePatternKey(string pattern)
+        {
+            var endpoint = redis.Multiplexer.GetEndPoints().First();
+
+            var server = redis.Multiplexer.GetServer(endpoint);
+
+            var keys = server.Keys(redis.Database, pattern).ToArray();
+
+            redis.KeyDelete(keys);
+        }
+
         private string Serialize(object obj)
         {
             return JsonConvert.SerializeObject(obj, serializerSettings);

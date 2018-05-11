@@ -12,7 +12,7 @@ namespace Sofco.Core.DAL.Admin
 
         void Save(Setting setting);
 
-        Setting GetByKey(string examdaysallowtogether);
+        Setting GetByKey(string key);
 
         ICollection<Setting> GetHolidaysValues();
 

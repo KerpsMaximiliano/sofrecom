@@ -44,6 +44,7 @@
         "assets/js/vfs_fonts.js",
         "assets/js/pdfjs/pdf.js",
         "assets/styles/plugins/datepicker/bootstrap-datepicker.js",
+        "assets/js/common.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/datatables.net-buttons/js/dataTables.buttons.js",
