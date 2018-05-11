@@ -23,14 +23,14 @@ namespace Sofco.Resources.Admin {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Module {
+    public class Setting {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Module() {
+        internal Setting() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace Sofco.Resources.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Module", typeof(Module).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Admin.Setting", typeof(Setting).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,56 +62,11 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to admin/module.created.
+        ///   Looks up a localized string similar to admin/setting.wrongWorkingHoursPerDaysMax.
         /// </summary>
-        public static string Created {
+        public static string WrongWorkingHoursPerDaysMax {
             get {
-                return ResourceManager.GetString("Created", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to admin/module.disabled.
-        /// </summary>
-        public static string Disabled {
-            get {
-                return ResourceManager.GetString("Disabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to admin/module.enabled.
-        /// </summary>
-        public static string Enabled {
-            get {
-                return ResourceManager.GetString("Enabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to admin/module.functionalitiesUpdated.
-        /// </summary>
-        public static string FunctionalitiesUpdated {
-            get {
-                return ResourceManager.GetString("FunctionalitiesUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to admin/module.notFound.
-        /// </summary>
-        public static string NotFound {
-            get {
-                return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to admin/module.updated.
-        /// </summary>
-        public static string Updated {
-            get {
-                return ResourceManager.GetString("Updated", resourceCulture);
+                return ResourceManager.GetString("WrongWorkingHoursPerDaysMax", resourceCulture);
             }
         }
     }
