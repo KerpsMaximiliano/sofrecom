@@ -117,6 +117,10 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         this.router.navigate([`/profile/licenses/add`]);
     }
 
+    goToTimeSheet(){
+        this.router.navigate([`/workTimeManagement/workTime/load`]);
+    }
+
     getLicenses(){
         this.getDataSubscrip = this.licenseService.getByEmployee(this.resourceId).subscribe(data => {
             this.licenses = data;

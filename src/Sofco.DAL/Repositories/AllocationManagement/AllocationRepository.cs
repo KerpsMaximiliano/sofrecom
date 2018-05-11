@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
@@ -55,6 +56,29 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations
                 .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
                 .ToList();
+        }
+
+        public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
+        {
+            IQueryable<Allocation> query = context.Allocations
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Where(x => x.StartDate.Date == new DateTime(parameters.Year, parameters.Month, 1).Date);
+
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+                query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+
+            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
+                query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
+
+            if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
+                query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
+                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
+
+            return query.ToList();
         }
 
         public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)

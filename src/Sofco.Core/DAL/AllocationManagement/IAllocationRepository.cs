@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL.Common;
 using System.Collections.Generic;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 
@@ -16,5 +17,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
         void RemoveAllocationByAnalytic(int analyticId, DateTime today);
         ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
+        ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters);
     }
 }

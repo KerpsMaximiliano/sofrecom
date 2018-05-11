@@ -117,82 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddSuccess" xml:space="preserve">
-    <value>workTimeManagement/workTime.addSuccess</value>
+  <data name="April" xml:space="preserve">
+    <value>months.april</value>
   </data>
-  <data name="AnalyticRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.analyticRequired</value>
+  <data name="August" xml:space="preserve">
+    <value>months.august</value>
   </data>
-  <data name="ApprovedSuccess" xml:space="preserve">
-    <value>workTimeManagement/workTime.approvedSuccess</value>
+  <data name="December" xml:space="preserve">
+    <value>months.december</value>
   </data>
-  <data name="ApprovedWithSomeErrors" xml:space="preserve">
-    <value>workTimeManagement/workTime.approvedWithSomeErrors</value>
+  <data name="February" xml:space="preserve">
+    <value>months.february</value>
   </data>
-  <data name="ApproverAdded" xml:space="preserve">
-    <value>workTimeManagement/workTime.approverAdded</value>
+  <data name="January" xml:space="preserve">
+    <value>months.january</value>
   </data>
-  <data name="ApproverDeleted" xml:space="preserve">
-    <value>workTimeManagement/workTime.approverDeleted</value>
+  <data name="July" xml:space="preserve">
+    <value>months.july</value>
   </data>
-  <data name="CannotChangeStatus" xml:space="preserve">
-    <value>workTimeManagement/workTime.cannotChangeStatus</value>
+  <data name="June" xml:space="preserve">
+    <value>months.june</value>
   </data>
-  <data name="DateOutOfRangeError" xml:space="preserve">
-    <value>workTimeManagement/workTime.dateOutOfRange</value>
+  <data name="March" xml:space="preserve">
+    <value>months.march</value>
   </data>
-  <data name="DateRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.dateRequired</value>
+  <data name="May" xml:space="preserve">
+    <value>months.may</value>
   </data>
-  <data name="DeleteError" xml:space="preserve">
-    <value>workTimeManagement/workTime.deleteError</value>
+  <data name="November" xml:space="preserve">
+    <value>months.november</value>
   </data>
-  <data name="EmployeeRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.employeeRequired</value>
+  <data name="October" xml:space="preserve">
+    <value>months.october</value>
   </data>
-  <data name="HoursMaxError" xml:space="preserve">
-    <value>workTimeManagement/workTime.hoursMaxError</value>
-  </data>
-  <data name="HoursWrong" xml:space="preserve">
-    <value>workTimeManagement/workTime.hoursWrong</value>
-  </data>
-  <data name="MonthError" xml:space="preserve">
-    <value>workTimeManagement/workTime.monthError</value>
-  </data>
-  <data name="RejectedSuccess" xml:space="preserve">
-    <value>workTimeManagement/workTime.rejectedSuccess</value>
-  </data>
-  <data name="ReportWarning" xml:space="preserve">
-    <value>workTimeManagement/workTime.reportWarning</value>
-  </data>
-  <data name="SearchNotFound" xml:space="preserve">
-    <value>workTimeManagement/workTime.searchNotFound</value>
-  </data>
-  <data name="SentSuccess" xml:space="preserve">
-    <value>workTimeManagement/workTime.sentSuccess</value>
-  </data>
-  <data name="TaskRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.taskRequired</value>
-  </data>
-  <data name="UserCommentMaxLengthError" xml:space="preserve">
-    <value>workTimeManagement/workTime.userCommentMaxLengthError</value>
-  </data>
-  <data name="UserRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.userRequired</value>
-  </data>
-  <data name="WorkTimeNotFound" xml:space="preserve">
-    <value>workTimeManagement/workTime.workTimeNotFound</value>
-  </data>
-  <data name="WrongApprover" xml:space="preserve">
-    <value>workTimeManagement/workTime.wrongApprover</value>
-  </data>
-  <data name="WrongStatus" xml:space="preserve">
-    <value>workTimeManagement/workTime.wrongStatus</value>
-  </data>
-  <data name="YearAndMonthRequired" xml:space="preserve">
-    <value>workTimeManagement/workTime.yearAndMonthRequired</value>
-  </data>
-  <data name="YearError" xml:space="preserve">
-    <value>workTimeManagement/workTime.yearError</value>
+  <data name="September" xml:space="preserve">
+    <value>months.september</value>
   </data>
 </root>

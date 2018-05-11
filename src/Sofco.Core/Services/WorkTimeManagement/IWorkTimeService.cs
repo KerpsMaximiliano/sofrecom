@@ -25,5 +25,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response ApproveAll(List<int> hourIds);
 
         Response Send();
+
+        Response<IList<WorkTimeReportModel>> CreateReport(ReportParams parameters);
     }
 }

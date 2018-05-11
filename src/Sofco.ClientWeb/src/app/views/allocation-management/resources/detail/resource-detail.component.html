@@ -27,8 +27,8 @@
                 <h4 class="m-t-md">{{ model?.profile }}</h4>
  
                 <div class="row m-t-lg">
-                    <!-- <div class="col-sm-3" *ngIf="!isRrhh">
-                        <div class="widget-custom lazur-bg" >
+                    <div class="col-sm-3" *ngIf="!isRrhh">
+                        <div class="widget-custom lazur-bg" (click)="goToTimeSheet()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
                                     <i class="fa fa-clock-o fa-2x"></i>
@@ -38,7 +38,7 @@
                                 </div>  
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     <!-- <div class="col-sm-3" *ngIf="!isRrhh">
                         <div class="widget-custom lazur-bg" >
                             <div class="row vertical-align">

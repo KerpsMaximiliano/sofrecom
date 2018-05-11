@@ -10,6 +10,7 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -313,6 +314,74 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             return response;
+        }
+
+        public Response<IList<WorkTimeReportModel>> CreateReport(ReportParams parameters)
+        {
+            var response = new Response<IList<WorkTimeReportModel>>();
+
+            if (parameters.Year == 0 || parameters.Month == 0)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.YearAndMonthRequired);
+                return response;
+            }
+
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorktimeReport(parameters);
+
+            response.Data = new List<WorkTimeReportModel>();
+
+            foreach (var allocation in allocations)
+            {
+                var model = new WorkTimeReportModel();
+
+                if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
+                {
+                    if (response.Messages.All(x => x.Type != MessageType.Warning))
+                        response.AddWarning(Resources.WorkTimeManagement.WorkTime.ReportWarning);
+
+                    continue;
+                }
+
+                if(allocation.Percentage == 0) continue;
+
+                model.Client = allocation.Analytic.ClientExternalName;
+                model.Analytic = $"{allocation.Analytic.Name} - {allocation.Analytic.Service}";
+                model.Manager = allocation.Analytic.Manager.Name;
+                model.Employee = allocation.Employee.Name;
+                model.MonthYear = $"{parameters.Month}-{parameters.Year}";
+                model.Facturability = allocation.Employee.BillingPercentage;
+                model.AllocationPercentage = allocation.Percentage;
+                model.HoursMustLoad = CalculateHoursToLoad(allocation);
+                model.HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, allocation.StartDate, allocation.AnalyticId);
+
+                model.Result = model.HoursLoaded >= model.HoursMustLoad;
+
+                response.Data.Add(model);
+            }
+
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+
+            return response;
+        }
+
+        private decimal CalculateHoursToLoad(Allocation allocation)
+        {
+            var startDate = allocation.StartDate.Date;
+            var endDate = new DateTime(allocation.StartDate.Year, allocation.StartDate.Month, DateTime.DaysInMonth(allocation.StartDate.Year, allocation.StartDate.Month));
+            var businessDays = 0;
+
+            while (startDate.Date <= endDate.Date)
+            {
+                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
+                    businessDays++;
+
+                startDate = startDate.AddDays(1);
+            }
+
+            return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
         }
 
         private void SetCurrentUser(WorkTimeAddModel workTimeAdd)

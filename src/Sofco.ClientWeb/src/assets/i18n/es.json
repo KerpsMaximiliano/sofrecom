@@ -752,6 +752,7 @@
         "comments": "Comentarios",
         "status": "Estado",
         "monthYear": "Mes-Año",
+        "month": "Mes",
         "workTime": {
             "title": "Cargas de Horas",
             "calendar": "Calendario",
@@ -767,10 +768,39 @@
             "workingHours": "Horas Laborales",
             "currentHoursToDate": "Horas a la fecha"
         },
+        "report": {
+            "title": "Estimado vs Insumido",
+            "client": "Cliente",
+            "analytic": "Analitica-Servicio",
+            "manager": "Gerente",
+            "employee": "Recurso",
+            "interval": "Periodo",
+            "facturability": "% Facturab.",
+            "allocationPercentage": "% Asig",
+            "hoursMustLoad": "Hs. a justificar",
+            "hoursLoaded": "Hs. Cargadas",
+            "result": "Resultado",
+            "accomplished": "Cumplido",
+            "notAccomplished": "No Cumplido"
+        },
         "Draft": "Borrador",
         "Sent": "Enviada",
         "Approved": "Aprobada",
         "Rejected": "Rechazada",
         "License": "Licencia"
+    },
+    "months": {
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
     }
 }  
