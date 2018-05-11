@@ -104,7 +104,8 @@
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
             "StartDateHolidays": "Fecha de inicio período vacacional",
             "jobsSettingTitle": "Parámetros de Jobs",
-            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes)."
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
+            "WorkingHoursPerDaysMax": "Tope jornada laboral"
         }
     },
     "billing":{
