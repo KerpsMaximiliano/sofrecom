@@ -35,6 +35,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     }
  
     getAllocations(analyticId, dateSince, months){
+        this.model = [];
         this.showTimeLine = false;
 
         this.getAllSubscrip = this.analyticService.getTimelineResources(analyticId, moment(dateSince).format('YYYY-MM-DD'), months).subscribe(data => {
