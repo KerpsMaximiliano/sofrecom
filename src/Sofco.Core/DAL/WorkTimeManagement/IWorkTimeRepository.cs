@@ -29,5 +29,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void RemoveBetweenDays(int licenseEmployeeId, DateTime licenseStartDate, DateTime licenseEndDate);
 
         decimal GetTotalHoursBetweenDays(int allocationEmployeeId, DateTime allocationStartDate, int analyticId);
+
+        decimal GetPendingHoursByEmployeeId(int employeeId);
     }
 }

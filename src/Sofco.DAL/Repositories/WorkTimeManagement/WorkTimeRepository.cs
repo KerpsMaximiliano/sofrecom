@@ -139,6 +139,14 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Sum();
         }
 
+        public decimal GetPendingHoursByEmployeeId(int employeeId)
+        {
+            return context.WorkTimes
+                .Where(s => s.EmployeeId == employeeId)
+                .Select(s => s.Hours)
+                .Sum();
+        }
+
         public decimal GetTotalHoursByDate(DateTime date, int currentUserId)
         {
             return context.WorkTimes

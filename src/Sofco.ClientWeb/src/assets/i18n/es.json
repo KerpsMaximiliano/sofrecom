@@ -500,7 +500,8 @@
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
                 "start": "Ingreso"
-            }
+            },
+            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de carga a la fecha."
         },
         "news": {
             "title": "Novedades",
