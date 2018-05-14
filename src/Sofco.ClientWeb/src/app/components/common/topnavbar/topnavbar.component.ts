@@ -7,6 +7,7 @@ import { AuthenticationService } from "app/services/common/authentication.servic
 import { Configuration } from "app/services/common/configuration";
 import { MenuService } from "app/services/admin/menu.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { UserInfoService } from '../../../services/common/user-info.service';
 declare var jQuery: any;
 
 @Component({
@@ -60,13 +61,11 @@ export class TopNavbarComponent {
     this.router.navigate(['/login']);
   }
 
-  setEmployeeId(){
-    if (Cookie.get('userInfo')){
-      const userApplicant = JSON.parse(Cookie.get('userInfo'));
+  setEmployeeId() {
+    const userInfo = UserInfoService.getUserInfo();
 
-      if (userApplicant && userApplicant.employeeId && userApplicant.name){
-          this.employeeId = userApplicant.employeeId;
-      }
+    if (userInfo && userInfo.employeeId && userInfo.name) {
+        this.employeeId = userInfo.employeeId;
     }
   }
 
