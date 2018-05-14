@@ -44,9 +44,9 @@ namespace Sofco.DAL.Repositories.Admin
             context.SaveChanges();
         }
 
-        public Setting GetByKey(string examdaysallowtogether)
+        public Setting GetByKey(string key)
         {
-            return context.Settings.SingleOrDefault(x => x.Key.Equals(examdaysallowtogether));
+            return context.Settings.SingleOrDefault(x => x.Key.Equals(key));
         }
 
         public ICollection<Setting> GetHolidaysValues()

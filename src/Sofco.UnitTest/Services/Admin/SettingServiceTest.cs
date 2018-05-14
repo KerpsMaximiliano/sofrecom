@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Model.Models.Admin;
@@ -13,6 +14,7 @@ namespace Sofco.UnitTest.Services.Admin
     {
         private Mock<ISettingRepository> globalSettingRepository;
         private Mock<IUnitOfWork> unitOfWork;
+        private Mock<ISettingData> settingDataMock;
 
         private SettingService sut;
 
@@ -31,7 +33,9 @@ namespace Sofco.UnitTest.Services.Admin
                 });
             globalSettingRepository.Setup(s => s.Save(It.IsAny<List<Setting>>()));
 
-            sut = new SettingService(unitOfWork.Object);
+            settingDataMock = new Mock<ISettingData>();
+
+            sut = new SettingService(unitOfWork.Object, settingDataMock.Object);
         }
 
         [Test]

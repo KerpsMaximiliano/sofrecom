@@ -11,8 +11,6 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     {
         private const int UserCommentMaxLength = 500;
 
-        private const int AllowedHoursPerDay = 12;
-
         public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.EmployeeId <= 0)
@@ -70,24 +68,6 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 {
                     response.AddError(Resources.Admin.Task.NotFound);
                 }
-            }
-        }
-        public static void ValidateHours(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
-        {
-            if (model.Hours < 1)
-            {
-                response.AddError(Resources.WorkTimeManagement.WorkTime.HoursWrong);
-
-                return;
-            }
-
-            var totalHours = unitOfWork.WorkTimeRepository.GetTotalHoursByDateExceptCurrentId(model.Date, model.UserId, model.Id);
-
-            totalHours += model.Hours;
-
-            if (totalHours > AllowedHoursPerDay)
-            {
-                response.AddError(Resources.WorkTimeManagement.WorkTime.HoursMaxError);
             }
         }
 
