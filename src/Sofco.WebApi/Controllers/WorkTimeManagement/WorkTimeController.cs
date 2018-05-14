@@ -91,10 +91,26 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return Ok(analytics);
         }
 
+        [HttpGet("status")]
+        public IActionResult GetStatus()
+        {
+            var status = workTimeService.GetStatus();
+
+            return Ok(status);
+        }
+
         [HttpPost("report")]
         public IActionResult Report([FromBody] ReportParams parameters)
         {
             var response = workTimeService.CreateReport(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] SearchParams parameters)
+        {
+            var response = workTimeService.Search(parameters);
 
             return this.CreateResponse(response);
         }

@@ -143,6 +143,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.datesRequired.
+        /// </summary>
+        public static string DatesRequired {
+            get {
+                return ResourceManager.GetString("DatesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.deleteError.
         /// </summary>
         public static string DeleteError {

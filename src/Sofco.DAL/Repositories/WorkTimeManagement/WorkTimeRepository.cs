@@ -27,7 +27,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
-        public IList<WorkTime> Search(WorktimeHoursApprovedParams parameters)
+        public IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams parameters)
         {
             IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License);
 
@@ -137,6 +137,34 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                             (x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License) && x.EmployeeId == employeeId)
                 .Select(s => s.Hours)
                 .Sum();
+        }
+
+        public IList<WorkTime> Search(SearchParams parameters)
+        {
+            IQueryable<WorkTime> query = context.WorkTimes
+                .Include(x => x.Employee)
+                .Include(x => x.Task)
+                    .ThenInclude(x => x.Category)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Where(x => x.Date.Date >= parameters.StartDate.GetValueOrDefault().Date && x.Date.Date <= parameters.EndDate.GetValueOrDefault().Date);
+
+            if (parameters.Status > 0)
+                query = query.Where(x => x.Status == (WorkTimeStatus) parameters.Status);
+
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+                query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+
+            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
+                query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
+
+            if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
+                query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
+                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
+
+            return query.ToList();
         }
 
         public decimal GetTotalHoursByDate(DateTime date, int currentUserId)

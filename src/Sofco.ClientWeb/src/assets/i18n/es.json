@@ -717,6 +717,7 @@
     "Consumed": "Consumida",
     "Draft": "Borrador",
     "Pending": "Pendiente Aprobación",
+    "License": "Licencia",
     "ApprovePending": "Aprobada / Documentación pendiente",
     "AuthPending": "Pendiente Autorización",
     "Differente100": "<> 100",
@@ -784,6 +785,16 @@
             "result": "Resultado",
             "accomplished": "Cumplido",
             "notAccomplished": "No Cumplido"
+        },
+        "query": {
+            "title": "Consulta horas cargadas",
+            "query": "Consulta",
+            "profile": "Perfil",
+            "category": "Categoria",
+            "task": "Tarea",
+            "date": "Fecha",
+            "hours": "Horas",
+            "status": "Estado"
         },
         "Draft": "Borrador",
         "Sent": "Enviada",

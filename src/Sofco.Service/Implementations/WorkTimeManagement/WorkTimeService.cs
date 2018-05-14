@@ -154,7 +154,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (response.HasErrors()) return response;
 
-            var list = unitOfWork.WorkTimeRepository.Search(model);
+            var list = unitOfWork.WorkTimeRepository.SearchApproved(model);
 
             if (!list.Any())
             {
@@ -365,6 +365,72 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             return response;
+        }
+
+        public Response<IList<WorkTimeSearchItemResult>> Search(SearchParams parameters)
+        {
+            var response = new Response<IList<WorkTimeSearchItemResult>>();
+
+            if (!parameters.StartDate.HasValue || parameters.StartDate == DateTime.MinValue || 
+                !parameters.EndDate.HasValue || parameters.EndDate == DateTime.MinValue)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DatesRequired);
+                return response;
+            }
+
+            var worktimes = unitOfWork.WorkTimeRepository.Search(parameters);
+
+            response.Data = new List<WorkTimeSearchItemResult>();
+
+            foreach (var worktime in worktimes)
+            {
+                var model = new WorkTimeSearchItemResult();
+
+                if (worktime.Analytic != null)
+                {
+                    model.Client = worktime.Analytic.ClientExternalName;
+                    model.Analytic = $"{worktime.Analytic.Name} - {worktime.Analytic.Service}";
+                    model.Manager = worktime.Analytic.Manager.Name;
+                }
+
+                if (worktime.Employee != null)
+                {
+                    model.Employee = $"{worktime.Employee.EmployeeNumber} - {worktime.Employee.Name}";
+                    model.Profile = worktime.Employee.Profile;
+                }
+
+                if (worktime.Task != null)
+                {
+                    model.Task = worktime.Task.Description;
+
+                    if (worktime.Task.Category != null)
+                    {
+                        model.Category = worktime.Task.Category.Description;
+                    }
+                }
+               
+                model.Date = worktime.Date;
+                model.Hours = worktime.Hours;
+                model.Status = worktime.Status.ToString();
+
+                response.Data.Add(model);
+            }
+
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+
+            return response;
+        }
+
+        public IEnumerable<Option> GetStatus()
+        {
+            yield return new Option { Id = (int)WorkTimeStatus.Draft, Text = WorkTimeStatus.Draft.ToString() };
+            yield return new Option { Id = (int)WorkTimeStatus.Sent, Text = WorkTimeStatus.Sent.ToString() };
+            yield return new Option { Id = (int)WorkTimeStatus.Rejected, Text = WorkTimeStatus.Rejected.ToString() };
+            yield return new Option { Id = (int)WorkTimeStatus.Approved, Text = WorkTimeStatus.Approved.ToString() };
+            yield return new Option { Id = (int)WorkTimeStatus.License, Text = WorkTimeStatus.License.ToString() };
         }
 
         private decimal CalculateHoursToLoad(Allocation allocation)

@@ -10,7 +10,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     {
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
 
-        IList<WorkTime> Search(WorktimeHoursApprovedParams model);
+        IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams model);
 
         decimal GetTotalHoursByDate(DateTime date, int currentUserId);
 
@@ -29,5 +29,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void RemoveBetweenDays(int licenseEmployeeId, DateTime licenseStartDate, DateTime licenseEndDate);
 
         decimal GetTotalHoursBetweenDays(int allocationEmployeeId, DateTime allocationStartDate, int analyticId);
+
+        IList<WorkTime> Search(SearchParams parameters);
     }
 }
