@@ -40,7 +40,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
     public searchModel = {
         startDate: null,
-        endate: null,
+        endDate: null,
         status: 0,
         clientId: 0,
         managerId: 0,
@@ -190,7 +190,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     clean(){
         this.searchModel = {
             startDate: null,
-            endate: null,
+            endDate: null,
             status: 0,
             clientId: 0,
             managerId: 0,
