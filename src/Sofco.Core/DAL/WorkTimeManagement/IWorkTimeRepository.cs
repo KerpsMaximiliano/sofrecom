@@ -30,6 +30,8 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         decimal GetTotalHoursBetweenDays(int allocationEmployeeId, DateTime allocationStartDate, int analyticId);
 
+        decimal GetPendingHoursByEmployeeId(int employeeId);
+
         IList<WorkTime> Search(SearchParams parameters);
     }
 }

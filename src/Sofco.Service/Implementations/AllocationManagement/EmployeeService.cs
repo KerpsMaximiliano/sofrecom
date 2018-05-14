@@ -268,6 +268,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return employees.Select(x => new UnemployeeListItemModel(x)).ToList();
         }
 
+        public Response<EmployeeWorkingPendingHoursModel> GetPendingWorkingHours(int employeeId)
+        {
+            var pendingHours = unitOfWork.WorkTimeRepository.GetPendingHoursByEmployeeId(employeeId);
+
+            var result = new Response<EmployeeWorkingPendingHoursModel>
+            {
+                Data = new EmployeeWorkingPendingHoursModel
+                {
+                    EmployeeId = employeeId,
+                    PendingHours = pendingHours
+                }
+            };
+
+            return result;
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

@@ -31,5 +31,7 @@ namespace Sofco.Core.Services.AllocationManagement
         IList<UnemployeeListItemModel> GetUnemployees(UnemployeeSearchParameters parameters);
 
         Response<IList<EmployeeCategoryOption>> GetCurrentCategories();
+
+        Response<EmployeeWorkingPendingHoursModel> GetPendingWorkingHours(int employeeId);
     }
 }

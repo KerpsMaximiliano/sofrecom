@@ -67,4 +67,8 @@ export class EmployeeService {
   getCurrentCategories() {
     return this.http.get<any>(`${this.baseUrl}/employees/currentCategories`);
   }
+
+  getPendingHours(id) {
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/pendingWorkingHours`);
+  }
 }

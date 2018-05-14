@@ -132,5 +132,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/pendingWorkingHours")]
+        public IActionResult PendingWorkingHours(int id)
+        {
+            var response = employeeService.GetPendingWorkingHours(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

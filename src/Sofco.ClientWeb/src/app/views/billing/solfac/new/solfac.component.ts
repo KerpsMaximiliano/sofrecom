@@ -16,6 +16,7 @@ import { CustomerService } from 'app/services/billing/customer.service';
 import { Hito } from 'app/models/billing/solfac/hito';
 import { ServiceService } from 'app/services/billing/service.service';
 import { CertificatesService } from 'app/services/billing/certificates.service';
+import { UserInfoService } from '../../../../services/common/user-info.service';
 
 declare var $:any;
 
@@ -161,8 +162,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       if(multipleProjects){
         this.setDataForMultipleProjects(multipleProjects)
-      }
-      else{
+      } else {
         this.setDataForSingleProject();
       }
     
@@ -174,10 +174,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.analytic = service.analytic;
         this.model.manager = service.manager;
         this.model.managerId = service.managerId;
-      }
-      else{
+      } else {
         this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
-          this.model.imputationNumber1 = data.analytic; 
+          this.model.imputationNumber1 = data.analytic;
           this.model.analytic = data.analytic;
           this.model.manager = data.manager;
           this.model.managerId = data.managerId;
@@ -190,19 +189,18 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
 
-        if(customer.paymentTermCode == 0){
+        if (customer.paymentTermCode == 0){
           customer.paymentTermCode = 1;
         }
-        
+
         this.model.paymentTermId = customer.paymentTermCode;
-      }
-      else{
+      } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.nombre;
           this.model.clientName = data.contact;
           this.model.celphone = data.telephone;
 
-          if(customer.paymentTermCode == 0){
+          if (customer.paymentTermCode == 0){
             customer.paymentTermCode = 1;
           }
 
@@ -218,15 +216,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.serviceId = sessionStorage.getItem("serviceId");
       this.model.service = sessionStorage.getItem("serviceName");
 
-      if(Cookie.get('userInfo')){
-        var userApplicant = JSON.parse(Cookie.get('userInfo'));
+      const userInfo = UserInfoService.getUserInfo();
 
-        if(userApplicant && userApplicant.id && userApplicant.name){
-          this.model.userApplicantId = userApplicant.id;
-          this.model.userApplicantName = userApplicant.name;
-        }
+      if (userInfo && userInfo.id && userInfo.name) {
+        this.model.userApplicantId = userInfo.id;
+        this.model.userApplicantName = userInfo.name;
       }
-      
+
       this.setCurrencySymbol(this.model.currencyId.toString());
       this.getCertificatesAvailable();
     }
