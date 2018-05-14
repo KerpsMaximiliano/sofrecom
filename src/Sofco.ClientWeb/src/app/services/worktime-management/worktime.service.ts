@@ -24,12 +24,20 @@ export class WorktimeService {
     return this.http.get<any>(`${this.apiUrl}/${date}`);
   }
 
+  getStatus() {
+    return this.http.get<any>(`${this.apiUrl}/status`);
+  }
+
   post(model) {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
 
   createReport(model) {
     return this.http.post<any>(`${this.apiUrl}/report`, model);
+  }
+
+  search(model) {
+    return this.http.post<any>(`${this.apiUrl}/search`, model);
   }
 
   approve(id) {

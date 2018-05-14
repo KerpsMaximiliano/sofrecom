@@ -144,6 +144,9 @@
   <data name="DateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.dateRequired</value>
   </data>
+  <data name="DatesRequired" xml:space="preserve">
+    <value>workTimeManagement/workTime.datesRequired</value>
+  </data>
   <data name="DeleteError" xml:space="preserve">
     <value>workTimeManagement/workTime.deleteError</value>
   </data>

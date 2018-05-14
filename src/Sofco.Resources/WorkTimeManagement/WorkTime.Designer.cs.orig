@@ -143,6 +143,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+<<<<<<< HEAD
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.datesRequired.
         /// </summary>
         public static string DatesRequired {
@@ -152,6 +153,10 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.deleteError.
+=======
+        ///   Looks up a localized string similar to workTimeManagement/workTime.deleteError.
+>>>>>>> 77619a784293cea1b34705f2039c948c21139ebd
         /// </summary>
         public static string DeleteError {
             get {

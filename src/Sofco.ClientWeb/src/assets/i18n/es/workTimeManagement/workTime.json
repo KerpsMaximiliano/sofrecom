@@ -23,5 +23,6 @@
     "sentSuccess": "Horas enviadas correctamente",
     "wrongStatus": "No se permite modificar la tarea con el estado actual.",
     "deleteError": "Ocurrio un error al eliminar las horas de trabajo cargadas",
-    "yearAndMonthRequired": "Mes y Año son requeridos"
+    "yearAndMonthRequired": "Mes y Año son requeridos",
+    "datesRequired": "Las fechas son requeridas"
 }

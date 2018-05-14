@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Core.Models.WorkTimeManagement
+﻿namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class ReportParams
     {
