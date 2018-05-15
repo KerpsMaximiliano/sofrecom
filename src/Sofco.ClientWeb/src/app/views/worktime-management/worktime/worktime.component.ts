@@ -518,9 +518,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const dayTask = task.date.getUTCDate();
     const monthTask = task.date.getUTCMonth();
 
-    const dayEvents: Array<any> = events.filter(x => x.start.date() === dayTask && x.start.month() === monthTask);
+    const dayEvents: Array<any> = events.filter(x => x.start.date() === dayTask
+      && x.start.month() === monthTask
+      && x.id !== task.id);
 
-    let totalHours = 0;
+    let totalHours = parseInt(task.hours.toString());
     for (const item of dayEvents) { totalHours += item.hours; }
 
     if (totalHours > this.appSetting.WorkingHoursPerDaysMax) {
