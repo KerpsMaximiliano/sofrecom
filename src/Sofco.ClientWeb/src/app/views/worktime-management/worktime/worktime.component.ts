@@ -21,6 +21,7 @@ import { TaskService } from 'app/services/admin/task.service';
 import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
+import { AppSetting } from 'app/services/common/app-setting';
 
 @Component({
     selector: 'app-worktime',
@@ -82,7 +83,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private dataTableService: DataTableService,
       private messageService: MessageService,
       private i18nService: I18nService,
-      private router: Router) {
+      private router: Router,
+      private appSetting: AppSetting) {
   }
 
   ngOnInit() {
@@ -211,7 +213,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     taskModel.analyticId = analyticId;
     taskModel.taskId = taskId;
     taskModel.hours = hours;
-    taskModel.date = date;
+    taskModel.date = date.toDate();
 
     this.saveDropTask(taskModel);
   }
@@ -331,6 +333,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   saveTask() {
+    if (!this.validateHoursPerDay(this.taskModel)) { return; }
+
     this.editModal.isLoading = true;
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.isLoading = false;
@@ -404,7 +408,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       start: item.date,
       color: color,
       allDay: true,
-      className: className
+      className: className,
+      hours: item.hours
     };
   }
 
@@ -495,6 +500,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   saveDropTask(taskModel: WorkTimeTaskModel) {
+    if (!this.validateHoursPerDay(taskModel)) { return; }
+
     this.subscription = this.worktimeService.post(taskModel).subscribe(res => {
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
@@ -503,5 +510,25 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.errorHandlerService.handleErrors(error);
       this.getModel();
     });
+  }
+
+  validateHoursPerDay(task: WorkTimeTaskModel) {
+    const events = (<any>$('#calendar')).fullCalendar('clientEvents');
+
+    const dayTask = task.date.getUTCDate();
+    const monthTask = task.date.getUTCMonth();
+
+    const dayEvents: Array<any> = events.filter(x => x.start.date() === dayTask && x.start.month() === monthTask);
+
+    let totalHours = 0;
+    for (const item of dayEvents) { totalHours += item.hours; }
+
+    if (totalHours > this.appSetting.WorkingHoursPerDaysMax) {
+      this.messageService.showErrorByFolder("workTimeManagement/workTime", "hoursMaxError?" + this.appSetting.WorkingHoursPerDaysMax);
+      (<any>$('#calendar')).fullCalendar('removeEvents', function(evt) { return evt.id === 0; });
+      return false;
+    }
+
+    return true;
   }
 }

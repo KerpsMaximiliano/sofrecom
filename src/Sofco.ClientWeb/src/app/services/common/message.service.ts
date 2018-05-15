@@ -21,17 +21,7 @@ export class MessageService {
 
     showMessages(messages: Message[]) {
         messages.forEach((value, index) => {
-            let code = value.code;
-            let parms = null;
-            if (code.indexOf('?') > -1) {
-                code = value.code.split('?')[0];
-                parms = value.code.split('?')[1].split(',');
-            }
-            let msg = this.i18nService.translate(value.folder, code);
-
-            if (parms != null) {
-                msg = msg.format(...parms);
-            }
+            const msg = this.i18nService.translate(value.folder, value.code);
 
             switch (value.type) {
                 case 0: this.toastrService.success(msg); break;
