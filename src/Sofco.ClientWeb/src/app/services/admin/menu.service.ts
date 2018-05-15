@@ -5,6 +5,7 @@ import { Service } from 'app/services/common/service';
 import { Menu } from 'app/models/admin/menu';
 import { HttpClient } from '@angular/common/http';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { UserInfoService } from '../common/user-info.service';
 
 @Injectable()
 export class MenuService {
@@ -47,15 +48,14 @@ export class MenuService {
         }
 
         if (!this.currentUser) {
-            this.currentUser = Cookie.get('currentUser')
+            this.currentUser = Cookie.get('currentUser');
         }
 
-        const userInfo = Cookie.get("userInfo");
+        const userInfo = UserInfoService.getUserInfo();
 
         if (userInfo) {
-            const jsonParsed = JSON.parse(userInfo);
-            this.currentUser = decodeURIComponent(jsonParsed.name);
-            this.user = jsonParsed;
+            this.currentUser = userInfo.name;
+            this.user = userInfo;
         }
     }
 

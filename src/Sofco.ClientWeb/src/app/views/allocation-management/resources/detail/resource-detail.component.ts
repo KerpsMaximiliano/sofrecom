@@ -9,6 +9,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { UserInfoService } from "../../../../services/common/user-info.service";
 
 @Component({
     selector: 'resource-detail',
@@ -63,16 +64,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
             var dataJson = JSON.parse(data);
 
-            if(!dataJson.fromRrhh){
-                if(Cookie.get('userInfo')){
-                    var userApplicant = JSON.parse(Cookie.get('userInfo'));
-            
-                    if(userApplicant && userApplicant.employeeId){
-                        if(userApplicant.employeeId != this.resourceId){
-                            this.router.navigate([`/403`]);
-                            return;
-                        }
-                    }
+            if (!dataJson.fromRrhh) {
+                const userInfo = UserInfoService.getUserInfo();
+
+                if (userInfo && userInfo.employeeId && userInfo.employeeId != this.resourceId) {
+                    this.router.navigate([`/403`]);
+                    return;
                 }
             }
 
