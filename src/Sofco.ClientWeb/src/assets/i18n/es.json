@@ -801,7 +801,11 @@
         "Sent": "Enviada",
         "Approved": "Aprobada",
         "Rejected": "Rechazada",
-        "License": "Licencia"
+        "License": "Licencia",
+        "holidays": {
+            "title": "ABM Feriados",
+            "importExternalData": "Importar feriados de fuente externa"
+        }
     },
     "months": {
         "january": "Enero",
