@@ -208,32 +208,29 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 foreach (var month in allocationDto.Months)
                 {
-                    var allocation = allocationsBetweenDays.SingleOrDefault(x => x.Id == month.AllocationId);
-
-                    if (month.AllocationId > 0 && allocation != null)
+                    if (month.AllocationId > 0)
                     {
-                        if (month.Updated)
-                        {
-                            allocation.Percentage = month.Percentage.GetValueOrDefault();
-                            unitOfWork.AllocationRepository.UpdatePercentage(allocation);
-                        }
+                        var allocation = allocationsBetweenDays.SingleOrDefault(x => x.Id == month.AllocationId);
 
-                        allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
-                        unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+                        if (allocation != null)
+                        {
+                            if (month.Updated)
+                            {
+                                allocation.Percentage = month.Percentage.GetValueOrDefault();
+                                unitOfWork.AllocationRepository.UpdatePercentage(allocation);
+                            }
+
+                            allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+                            unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+                        }
+                        else
+                        {
+                            InsertNewAllocation(allocationDto, month);
+                        }
                     }
                     else
                     {
-                        allocation = new Allocation
-                        {
-                            Id = 0,
-                            AnalyticId = allocationDto.AnalyticId,
-                            StartDate = month.Date.Date,
-                            Percentage = month.Percentage.GetValueOrDefault(),
-                            EmployeeId = allocationDto.EmployeeId,
-                            ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date
-                        };
-
-                        unitOfWork.AllocationRepository.Insert(allocation);
+                        InsertNewAllocation(allocationDto, month);
                     }
                 }
 
@@ -246,6 +243,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(ex);
             }
+        }
+
+        private void InsertNewAllocation(AllocationDto allocationDto, AllocationMonthDto month)
+        {
+            Allocation allocation = new Allocation
+            {
+                Id = 0,
+                AnalyticId = allocationDto.AnalyticId,
+                StartDate = month.Date.Date,
+                Percentage = month.Percentage.GetValueOrDefault(),
+                EmployeeId = allocationDto.EmployeeId,
+                ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date
+            };
+            unitOfWork.AllocationRepository.Insert(allocation);
         }
     }
 }
