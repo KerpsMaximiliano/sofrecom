@@ -6,14 +6,13 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
-using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Rrhh
 {
     public interface ILicenseService
     {
-        Response<string> Add(License createDomain);
+        Response<string> Add(LicenseAddModel createDomain);
         Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file);
         IList<LicenseListItem> GetByStatus(LicenseStatus statusId);
         IList<LicenseListItem> Search(LicenseSearchParams parameters);

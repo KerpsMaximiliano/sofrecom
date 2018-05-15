@@ -2,7 +2,7 @@
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Rrhh;
 
-namespace Sofco.WebApi.Models.Rrhh
+namespace Sofco.Core.Models.Rrhh
 {
     public class LicenseAddModel
     {

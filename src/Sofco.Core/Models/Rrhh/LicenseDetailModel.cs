@@ -41,6 +41,7 @@ namespace Sofco.Core.Models.Rrhh
             {
                 TypeId = license.TypeId;
                 TypeName = license.Type.Description;
+                CertificateRequired = license.Type.CertificateRequired;
             }
 
             if (license.Sector != null)
@@ -57,6 +58,8 @@ namespace Sofco.Core.Models.Rrhh
                     Files.Add(new Option { Id = licenseFile.FileId, Text = licenseFile.File.FileName });
             }
         }
+
+        public bool CertificateRequired { get; set; }
 
         public string StatusName { get; set; }
         public DateTime CreationDate { get; }

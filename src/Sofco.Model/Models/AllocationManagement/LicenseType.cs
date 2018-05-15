@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sofco.Common.Domains;
+﻿using System.Collections.Generic;
 using Sofco.Model.Models.Rrhh;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -14,6 +12,8 @@ namespace Sofco.Model.Models.AllocationManagement
         public bool WithPayment { get; set; }
 
         public int TaskId { get; set; }
+
+        public bool CertificateRequired { get; set; }
 
         public ICollection<License> Licenses { get; set; }
     }
