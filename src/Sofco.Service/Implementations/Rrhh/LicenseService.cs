@@ -22,6 +22,7 @@ using Sofco.Data.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
@@ -55,9 +56,10 @@ namespace Sofco.Service.Implementations.Rrhh
             this.licenseFileManager = licenseFileManager;
         }
 
-        public Response<string> Add(License domain)
+        public Response<string> Add(LicenseAddModel model)
         {
             var response = new Response<string>();
+            var domain = model.CreateDomain();
 
             LicenseValidationHandler.ValidateEmployee(response, domain, unitOfWork);
             LicenseValidationHandler.ValidateManager(response, domain, unitOfWork);
@@ -83,6 +85,11 @@ namespace Sofco.Service.Implementations.Rrhh
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            if (!response.HasErrors())
+            {
+                UpdateStatus(model, response, domain.Type);
             }
 
             return response;
@@ -237,6 +244,7 @@ namespace Sofco.Service.Implementations.Rrhh
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+                return response;
             }
 
             try
@@ -418,6 +426,34 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        private void UpdateStatus(LicenseAddModel model, Response<string> response, LicenseType licenseType)
+        {
+            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = licenseType.CertificateRequired ? LicenseStatus.ApprovePending : LicenseStatus.Approved,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
+            else
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.AuthPending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams);
+                response.AddMessages(statusResponse.Messages);
+            }
         }
     }
 }
