@@ -182,7 +182,7 @@ export const ROUTES:Routes = [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
-        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {

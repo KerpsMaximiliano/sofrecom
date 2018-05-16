@@ -300,6 +300,8 @@ namespace Sofco.Service.Implementations.Rrhh
 
             var user = unitOfWork.UserRepository.GetByEmail(license.Employee.Email);
 
+            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle("492-00000");
+
             while (startDate.Date <= endDate.Date)
             {
                 if (startDate.DayOfWeek == DayOfWeek.Saturday || startDate.DayOfWeek == DayOfWeek.Sunday)
@@ -316,7 +318,7 @@ namespace Sofco.Service.Implementations.Rrhh
                 {
                     var worktime = BuildWorkTime(license, startDate, user);
 
-                    worktime.AnalyticId = 74;
+                    worktime.AnalyticId = analyticBank.Id;
                     worktime.Hours = 8;
 
                     unitOfWork.WorkTimeRepository.Insert(worktime);
@@ -327,7 +329,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     {
                         var worktime = BuildWorkTime(license, startDate, user);
 
-                        worktime.AnalyticId = 74;
+                        worktime.AnalyticId = analyticBank.Id;
                         worktime.Hours = 8;
 
                         unitOfWork.WorkTimeRepository.Insert(worktime);
