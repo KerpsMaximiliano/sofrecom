@@ -98,11 +98,29 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.changeStatusError.
+        /// </summary>
+        public static string ChangeStatusError {
+            get {
+                return ResourceManager.GetString("ChangeStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.commentsRequired.
         /// </summary>
         public static string CommentsRequired {
             get {
                 return ResourceManager.GetString("CommentsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.datesLessThanToday.
+        /// </summary>
+        public static string DatesLessThanToday {
+            get {
+                return ResourceManager.GetString("DatesLessThanToday", resourceCulture);
             }
         }
         
@@ -184,6 +202,15 @@ namespace Sofco.Resources.Rrhh {
         public static string FileAdded {
             get {
                 return ResourceManager.GetString("FileAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.generateWorkTimesError.
+        /// </summary>
+        public static string GenerateWorkTimesError {
+            get {
+                return ResourceManager.GetString("GenerateWorkTimesError", resourceCulture);
             }
         }
         

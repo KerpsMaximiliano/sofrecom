@@ -134,6 +134,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     initGrid(){
         var params = {
             selector: "#licenseStatusApproved",
+            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
         this.datatableService.destroy(params.selector);

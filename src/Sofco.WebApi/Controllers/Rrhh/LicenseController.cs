@@ -132,7 +132,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody]LicenseStatusChangeModel model)
         {
-            var response = licenseService.ChangeStatus(id, model);
+            var response = licenseService.ChangeStatus(id, model, null);
 
             return this.CreateResponse(response);
         }
