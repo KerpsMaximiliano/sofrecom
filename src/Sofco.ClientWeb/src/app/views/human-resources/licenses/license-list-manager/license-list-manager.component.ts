@@ -56,7 +56,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
 
     initGrid(){
         var params = {
-            selector: "#allLicenses"
+            selector: "#allLicenses",
+            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
         this.datatableService.destroy(params.selector);

@@ -129,8 +129,14 @@
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>rrhh/license.cannotChangeStatus</value>
   </data>
+  <data name="ChangeStatusError" xml:space="preserve">
+    <value>rrhh/license.changeStatusError</value>
+  </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>rrhh/license.commentsRequired</value>
+  </data>
+  <data name="DatesLessThanToday" xml:space="preserve">
+    <value>rrhh/license.datesLessThanToday</value>
   </data>
   <data name="DatesRequired" xml:space="preserve">
     <value>rrhh/license.datesRequired</value>
@@ -158,6 +164,9 @@
   </data>
   <data name="FileAdded" xml:space="preserve">
     <value>rrhh/license.fileAdded</value>
+  </data>
+  <data name="GenerateWorkTimesError" xml:space="preserve">
+    <value>rrhh/license.generateWorkTimesError</value>
   </data>
   <data name="LicenseTypeNotFound" xml:space="preserve">
     <value>rrhh/license.licenseTypeNotFound</value>
