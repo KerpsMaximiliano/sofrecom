@@ -60,7 +60,7 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var users = userService.GetManagers();
 
-            return Ok(users.Select(x => new SelectListModel { Id = x.Id.ToString(), Text = x.Name }));
+            return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }));
         }
 
         [HttpGet("{id}/detail")]
