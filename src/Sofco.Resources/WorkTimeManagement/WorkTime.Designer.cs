@@ -143,7 +143,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workTimeManagement/workTime.datesRequired.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.datesRequired.
         /// </summary>
         public static string DatesRequired {
             get {
@@ -152,6 +152,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to workTimeManagement/workTime.deleteError.
         /// </summary>
         public static string DeleteError {
             get {
@@ -205,7 +206,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to workTimeManagement/workTime.searchNotFound.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.reportWarning.
         /// </summary>
         public static string ReportWarning {
             get {
@@ -214,7 +215,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workTimeManagement/workTime.searchNotFound.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.searchNotFound.
         /// </summary>
         public static string SearchNotFound {
             get {
@@ -286,7 +287,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workTimeManagement/workTime.yearAndMonthRequired.
+        ///   Looks up a localized string similar to workTimeManagement/workTime.yearAndMonthRequired.
         /// </summary>
         public static string YearAndMonthRequired {
             get {
