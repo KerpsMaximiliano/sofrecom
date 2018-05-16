@@ -231,15 +231,20 @@ namespace Sofco.UnitTest.Services.AllocationManagement
                 Months = new List<AllocationMonthDto>
                 {
                     new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 1, 1), Updated = true },
-                    new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 2, 1), Updated = true },
-                    new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 3, 1), Updated = true }
+                    new AllocationMonthDto { AllocationId = 2, Percentage = 100, Date = new DateTime(2018, 2, 1), Updated = true },
+                    new AllocationMonthDto { AllocationId = 3, Percentage = 100, Date = new DateTime(2018, 3, 1), Updated = true }
                 }
             };
 
             analyticRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
             employeeRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
 
-            allocationRepositoryMock.Setup(x => x.GetAllocationsBetweenDays(parameters.EmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new Collection<Allocation>());
+            allocationRepositoryMock.Setup(x => x.GetAllocationsBetweenDays(parameters.EmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new Collection<Allocation>
+            {
+                new Allocation { Id = 1, Percentage = 50, StartDate = new DateTime(2018, 1, 1), AnalyticId = 1 },
+                new Allocation { Id = 2, Percentage = 50, StartDate = new DateTime(2018, 2, 1), AnalyticId = 1 },
+                new Allocation { Id = 3, Percentage = 50, StartDate = new DateTime(2018, 3, 1), AnalyticId = 1 }
+            });
 
             var response = sut.Add(parameters);
 
@@ -248,7 +253,6 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             allocationRepositoryMock.Verify(x => x.UpdatePercentage(It.IsAny<Allocation>()), Times.Exactly(3));
             unitOfWork.Verify(s => s.Save(), Times.Once);
         }
-
 
         [TestCase]
         public void UpdateJustOneAllocation()
@@ -261,15 +265,20 @@ namespace Sofco.UnitTest.Services.AllocationManagement
                 Months = new List<AllocationMonthDto>
                 {
                     new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 1, 1), Updated = true },
-                    new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 2, 1), Updated = false },
-                    new AllocationMonthDto { AllocationId = 1, Percentage = 100, Date = new DateTime(2018, 3, 1), Updated = false }
+                    new AllocationMonthDto { AllocationId = 2, Percentage = 100, Date = new DateTime(2018, 2, 1), Updated = false },
+                    new AllocationMonthDto { AllocationId = 3, Percentage = 100, Date = new DateTime(2018, 3, 1), Updated = false }
                 }
             };
 
             analyticRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
             employeeRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
 
-            allocationRepositoryMock.Setup(x => x.GetAllocationsBetweenDays(parameters.EmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new Collection<Allocation>());
+            allocationRepositoryMock.Setup(x => x.GetAllocationsBetweenDays(parameters.EmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new Collection<Allocation>
+            {
+                new Allocation { Id = 1, Percentage = 50, StartDate = new DateTime(2018, 1, 1), AnalyticId = 1 },
+                new Allocation { Id = 2, Percentage = 50, StartDate = new DateTime(2018, 2, 1), AnalyticId = 1 },
+                new Allocation { Id = 3, Percentage = 50, StartDate = new DateTime(2018, 3, 1), AnalyticId = 1 }
+            });
 
             var response = sut.Add(parameters);
 

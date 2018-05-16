@@ -81,6 +81,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return query.ToList();
         }
 
+        public bool Exist(int allocationId)
+        {
+            return context.Allocations.Any(x => x.Id == allocationId);
+        }
+
         public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)
         {
             IQueryable<Allocation> query = context.Allocations

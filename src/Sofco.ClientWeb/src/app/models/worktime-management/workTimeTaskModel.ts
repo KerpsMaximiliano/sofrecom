@@ -3,7 +3,7 @@ export class WorkTimeTaskModel {
     public analyticId = 0;
     public categoryId = 0;
     public taskId = 0;
-    public hours = 1;
+    public hours = 8;
     public date = new Date();
     public userComment = "";
     public status = 0;

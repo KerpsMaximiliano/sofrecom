@@ -25,9 +25,17 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
-            if (parameters.IsRrhh && (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.AuthPending || license.Status == LicenseStatus.Rejected))
+            if (parameters.IsRrhh)
             {
-                response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                if (license.Status == LicenseStatus.AuthPending || license.Status == LicenseStatus.Rejected)
+                {
+                    response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                }
+
+                if (license.Status == LicenseStatus.Draft && license.Type.CertificateRequired)
+                {
+                    response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                }
             }
         }
 
@@ -86,3 +94,4 @@ namespace Sofco.Framework.StatusHandlers.License
         }
     }
 }
+

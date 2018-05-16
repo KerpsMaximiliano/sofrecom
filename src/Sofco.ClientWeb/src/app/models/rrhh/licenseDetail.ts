@@ -22,6 +22,7 @@ export class LicenseDetail {
     public examDescription: string;
     public status: LicenseStatus;
     public statusName: string;
+    public certificateRequired: boolean;
 
     public files: Array<any> = new Array<any>();
 
