@@ -1,5 +1,6 @@
 ﻿using System;
 using Sofco.Common.Domains;
+using Sofco.Model.Enums;
 
 namespace Sofco.Model.Models.WorkTimeManagement
 {
@@ -9,7 +10,7 @@ namespace Sofco.Model.Models.WorkTimeManagement
 
         public string Name { get; set; }
 
-        public string DataSource { get; set; }
+        public HolidayDataSource DataSource { get; set; }
 
         public DateTime? Created { get; set; }
 

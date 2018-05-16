@@ -6,6 +6,8 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 {
     public interface IHolidayRepository : IBaseRepository<Holiday>
     {
-        IList<Holiday> Get(int year);
+        List<Holiday> Get(int year);
+
+        void Save(Holiday holiday);
     }
 }
