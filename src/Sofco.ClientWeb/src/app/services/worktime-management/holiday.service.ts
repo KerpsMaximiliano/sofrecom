@@ -19,4 +19,8 @@ export class HolidayService {
   post(model) {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
+
+  importExternalData() {
+    return this.http.post<any>(`${this.apiUrl}/importExternalData`, null);
+  }
 }

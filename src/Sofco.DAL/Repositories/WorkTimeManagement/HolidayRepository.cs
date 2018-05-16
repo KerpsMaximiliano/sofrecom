@@ -23,12 +23,48 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (holiday.Id == 0)
             {
                 Insert(holiday);
+
+                context.SaveChanges();
                 return;
             }
 
             Update(holiday);
 
             context.SaveChanges();
+        }
+
+        public void SaveFromExternalData(List<Holiday> holidays)
+        {
+            foreach (var holiday in holidays)
+            {
+                SaveFromExternalData(holiday);
+            }
+        }
+
+        private void SaveFromExternalData(Holiday holiday)
+        {
+            var stored = GetStored(holiday);
+
+            if (stored == null)
+            {
+                Insert(holiday);
+
+                context.SaveChanges();
+
+                return;
+            }
+
+            stored.Modified = DateTime.UtcNow;
+
+            context.SaveChanges();
+        }
+
+        private Holiday GetStored(Holiday data)
+        {
+            return context.Holidays.FirstOrDefault(x =>
+                x.Name == data.Name
+                && x.Date.Month == data.Date.Month
+                && x.Date.Year == data.Date.Year);
         }
 
         private new void Update(Holiday holiday)

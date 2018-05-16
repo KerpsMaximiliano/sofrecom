@@ -802,11 +802,12 @@
         "Approved": "Aprobada",
         "Rejected": "Rechazada",
         "License": "Licencia",
-        "holidays": {
+        "holiday": {
             "title": "ABM Feriados",
             "importExternalData": "Importar feriados de fuente externa",
             "name": "Nombre",
-            "date": "Fecha"
+            "date": "Fecha",
+            "newHoliday": "Crear feriado"
         }
     },
     "months": {
