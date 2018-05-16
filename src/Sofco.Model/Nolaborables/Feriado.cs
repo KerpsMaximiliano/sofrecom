@@ -1,4 +1,4 @@
-﻿namespace Sofco.Domain.Nolaborables
+﻿namespace Sofco.Model.Nolaborables
 {
     public class Feriado
     {
