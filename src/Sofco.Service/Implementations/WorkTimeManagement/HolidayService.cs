@@ -2,10 +2,9 @@
 using AutoMapper;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
-using Sofco.Domain.Nolaborables;
-using Sofco.Domain.Rh.Tiger;
 using Sofco.Framework.NolaborablesServices.Interfaces;
 using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Model.Nolaborables;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement

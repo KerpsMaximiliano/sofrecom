@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sofco.Domain.Nolaborables\Sofco.Domain.Nolaborables.csproj" />
     <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
     <ProjectReference Include="..\Sofco.Resources\Sofco.Resources.csproj" />

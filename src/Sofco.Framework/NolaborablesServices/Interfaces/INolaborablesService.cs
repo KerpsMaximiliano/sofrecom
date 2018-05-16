@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Domain.Nolaborables;
+using Sofco.Model.Nolaborables;
 
 namespace Sofco.Framework.NolaborablesServices.Interfaces
 {

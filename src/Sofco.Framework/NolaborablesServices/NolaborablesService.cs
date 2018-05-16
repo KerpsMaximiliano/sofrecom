@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Core.Logger;
-using Sofco.Domain.Nolaborables;
 using Sofco.Framework.NolaborablesServices.Interfaces;
+using Sofco.Model.Nolaborables;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Framework.NolaborablesServices

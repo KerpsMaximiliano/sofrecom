@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoMapper;
-using Sofco.Domain.Nolaborables;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Model.Nolaborables;
 
 namespace Sofco.Service.MapProfiles
 {
@@ -20,8 +20,7 @@ namespace Sofco.Service.MapProfiles
                     var day = int.Parse(f.Dia);
                     var date = new DateTime(f.Year, month, day, 0, 0, 0, DateTimeKind.Utc);
                     return date;
-                }))
-                ;
+                }));
         }
     }
 }
