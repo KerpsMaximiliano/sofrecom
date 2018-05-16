@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20180406124307_WorkTimeApproval.Designer.cs" />
     <Compile Remove="Migrations\20180425193107_WorkTimeApprovalNull.cs" />
     <Compile Remove="Migrations\20180425193107_WorkTimeApprovalNull.Designer.cs" />
+    <Compile Remove="Migrations\20180516145429_Holiday.cs" />
+    <Compile Remove="Migrations\20180516145429_Holiday.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
