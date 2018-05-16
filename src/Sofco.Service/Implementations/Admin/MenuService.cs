@@ -51,13 +51,6 @@ namespace Sofco.Service.Implementations.Admin
                 roles.Add(solfacDelegateRole);
             }
 
-            //if (userDelegateRepository.HasUserDelegate(userName))
-            //{
-            //    var solfacDelegateRole = unitOfWork.RoleRepository.GetByCode(appSetting.HourApprovalCode);
-
-            //    roles.Add(solfacDelegateRole);
-            //}
-
             var modules = unitOfWork.MenuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
 
             var model = new MenuResponseModel();

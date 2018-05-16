@@ -25,17 +25,15 @@
                 <table class="table table-striped" id="categoryTable" width="100%">
                     <thead>
                         <tr>
-                            <th>{{ 'ADMIN.category.description' | translate }}</th>
-                            <th>{{ 'ADMIN.category.startDate' | translate }}</th>
-                            <th>{{ 'ADMIN.category.endDate' | translate }}</th>
+                            <th>{{ 'workTimeManagement.holidays.name' | translate }}</th>
+                            <th>{{ 'workTimeManagement.holidays.date' | translate }}</th>
                             <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let category of categories">
-                            <td>{{ category.description }}</td>
-                            <td>{{ category.startDate | date: 'dd/MM/yyyy' }}</td>
-                            <td>{{ category.endDate | date: 'dd/MM/yyyy' }}</td>
+                        <tr *ngFor="let item of holidays">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
                             <td class="text-center column-xs">
 
                             </td>

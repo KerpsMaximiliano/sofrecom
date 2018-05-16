@@ -804,7 +804,9 @@
         "License": "Licencia",
         "holidays": {
             "title": "ABM Feriados",
-            "importExternalData": "Importar feriados de fuente externa"
+            "importExternalData": "Importar feriados de fuente externa",
+            "name": "Nombre",
+            "date": "Fecha"
         }
     },
     "months": {

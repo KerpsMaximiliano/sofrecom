@@ -22,6 +22,7 @@ import { UtilsService } from 'app/services/common/utils.service';
 import { WorkTimeReportComponent } from 'app/views/worktime-management/report/worktime-report.component';
 import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
 import { HolidaysComponent } from './holidays/holidays.component';
+import { HolidayService } from 'app/services/worktime-management/holiday.service';
 
 @NgModule({
   declarations: [WorkTimeComponent, WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
@@ -30,7 +31,7 @@ import { HolidaysComponent } from './holidays/holidays.component';
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
     TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule],
 
-  providers   : [WorktimeService, UtilsService],
+  providers   : [WorktimeService, UtilsService, HolidayService],
 
   exports     : []
 })
