@@ -80,7 +80,7 @@
             "add": "Agregar Categoria",
             "edit": "Editar Categoria",
             "task": "Categorias de Tareas",
-            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas, confirma la acción?"
+            "areYouSureAdd": "Al aceptar se agregan las categorías seleccionadas a las previamente asignadas"
         },
         "task": {
             "admin": "Administracion de tareas",
@@ -104,7 +104,8 @@
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
             "StartDateHolidays": "Fecha de inicio período vacacional",
             "jobsSettingTitle": "Parámetros de Jobs",
-            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes)."
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
+            "WorkingHoursPerDaysMax": "Tope jornada laboral"
         }
     },
     "billing":{
@@ -456,8 +457,10 @@
         },
         "resources": {
             "listTitle": "Listado de Recursos",
+            "listTitleInactives": "Listado de Recursos Inactivos",
             "search": "Busqueda de Recursos",
             "title": "Recursos",
+            "titleInactive": "Recursos Inactivos",
             "list": "Listado",
             "profile": "Perfil del empleado",
             "recipients": "Con Copia (CC)",
@@ -479,6 +482,12 @@
             "businessHoursDescription": "Horario",
             "businessHoursModal": "Actualizacion horas por contrato",
             "hoursByContract": "Horas por Contrato",
+            "dateFrom": "Fecha Desde",
+            "dateTo": "Fecha Hasta",
+            "startDate": "Fecha Ingreso",
+            "endDate": "Fecha Baja",
+            "reason": "Motivo",
+            "comments": "Comentarios",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
@@ -491,11 +500,13 @@
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
                 "start": "Ingreso"
-            }
+            },
+            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de carga a la fecha."
         },
         "news": {
             "title": "Novedades",
             "listTitle": "Listado de Novedades",
+            "endReasonTypes": "Motivos",
             "grid": {
                 "employeeNumber": "Legajo",
                 "name":"Nombre",
@@ -547,7 +558,8 @@
                 "name": "Nombre",
                 "client": "Cliente",
                 "commercialManager": "Ejecutivo de Cuenta",
-                "status": "Estado"
+                "status": "Estado",
+                "allocationPercentage": "% Asig"
             },
             "status": {
                 "open": "Abierta",
@@ -560,10 +572,8 @@
             "delegate": {
                 "title": "Delegar aprobación horas",
                 "delegateAction": "Delegar",
-                "client": "Cliente",
                 "approvers": "Autorizadores",
                 "saveSuccess": "Autorizador agregado correctamente.",
-                "service": "Servicio",
                 "manager": "Gerente",
                 "approver": "Autorizador",
                 "employee": "Recurso",
@@ -599,7 +609,8 @@
             "type": "Licencia",
             "start": "Inicio",
             "end": "Fin",
-            "days": "Días (habiles)",
+            "creation": "Alta",
+            "days": "Días",
             "goce": "Goce",
             "status": "Estado",
             "managed": "Licencias Gestionadas",
@@ -608,14 +619,17 @@
             "pending": "Licencias Pendientes de Aprobación",
             "load": "Cargar Licencia",
             "report": "Generar Reporte",
-            "holidaysPending": "Vacaciones Pendientes",
+            "holidaysPendingByLaw": "Vacaciones Pendientes",
+            "holidaysPending": "Vacaciones Pendientes (habiles)",
             "hasCertificate": "Certificado",
             "detail": "Detalle de la Licencia",
             "detailTitle": "Detalle",
             "fileDelivered": "Entregó Documentación",
             "extraHolidays": "Vacaciones extra acordadas",
             "holidaysByLaw": "Vacaciones por ley",
-            "finalizeExtraHolidays": "Finalizar Acuerdo"
+            "finalizeExtraHolidays": "Finalizar Acuerdo",
+            "cancelComments": "Se debe agregar un motivo para cancelar",
+            "addCancelComments": "Ingrese los motivos para cancelar"
         }
     },
     "ACTIONS":{
@@ -667,7 +681,10 @@
         "notifyUnsubscribe": "Notifcar baja",
         "goHere": "Ingrese Aqui",
         "pendingDocumentation": "Documentación Pendiente",
-        "authorize": "Autorizar"
+        "authorize": "Autorizar",
+        "approveSelected": "Aprobar seleccionados",
+        "sessionExpiredTitle": "La sesion ha expirado...",
+        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -680,7 +697,7 @@
     "Sent": "Pendiente Aprobación",
     "Approved": "Aprobado",
     "Related": "Relacionado",
-    "Cancelled": "Anulado",
+    "Cancelled": "Anulado/a",
     "Proyectado": "Proyectado",
     "Pendiente": "Pendiente",
     "Cerrado": "Cerrado",
@@ -701,8 +718,16 @@
     "Consumed": "Consumida",
     "Draft": "Borrador",
     "Pending": "Pendiente Aprobación",
+    "License": "Licencia",
     "ApprovePending": "Aprobada / Documentación pendiente",
     "AuthPending": "Pendiente Autorización",
+    "Differente100": "<> 100",
+    "Equals100": "= 100",
+    "Different0": "<> 0",
+    "Equals0": "= 0",
+    "Between0And50": "> 0 y < 50",
+    "Between50And75": "> 50 y < 75",
+    "Between75And99": "> 75 y < 99",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -715,5 +740,87 @@
             "amount": "Importe"
         },
         "dateRange": "Desde - hasta"
+    },
+    "workTimeManagement": {
+        "title": "Gestión de Horas",
+        "approval": "Aprobacion",
+        "approvalHours": "Aprobacion de horas",
+        "hoursPending": "Horas Pendientes de Aprobación",
+        "hoursApproved": "Horas Aprobadas",
+        "analytic": "Analitica-Servicio",
+        "employee": "Legajo-Nombre",
+        "task":"Tarea",
+        "date": "Fecha",
+        "hours": "Horas",
+        "comments": "Comentarios",
+        "status": "Estado",
+        "monthYear": "Mes-Año",
+        "month": "Mes",
+        "workTime": {
+            "title": "Cargas de Horas",
+            "calendar": "Calendario",
+            "sendHours": "Enviar horas",
+            "loadNewTask": "Cargar nueva tarea",
+            "taskPreloaded": "Tareas Pre-Cargadas",
+            "resume": "Resumen",
+            "approved": "Aprobadas",
+            "rejected": "Rechazadas",
+            "pendingToSend": "Pendientes de envío",
+            "pendingToApprove": "Pendientes de aprobación",
+            "totalResume": "Total resumen",
+            "workingHours": "Horas Laborales",
+            "currentHoursToDate": "Horas a la fecha",
+            "resumeLicense": "No laborable"
+        },
+        "report": {
+            "title": "Estimado vs Insumido",
+            "client": "Cliente",
+            "analytic": "Analitica-Servicio",
+            "manager": "Gerente",
+            "employee": "Recurso",
+            "interval": "Periodo",
+            "facturability": "% Facturab.",
+            "allocationPercentage": "% Asig",
+            "hoursMustLoad": "Hs. a justificar",
+            "hoursLoaded": "Hs. Cargadas",
+            "result": "Resultado",
+            "accomplished": "Cumplido",
+            "notAccomplished": "No Cumplido"
+        },
+        "query": {
+            "title": "Consulta horas cargadas",
+            "query": "Consulta",
+            "profile": "Perfil",
+            "category": "Categoria",
+            "task": "Tarea",
+            "date": "Fecha",
+            "hours": "Horas",
+            "status": "Estado"
+        },
+        "Draft": "Borrador",
+        "Sent": "Enviada",
+        "Approved": "Aprobada",
+        "Rejected": "Rechazada",
+        "License": "Licencia",
+        "holidays": {
+            "title": "ABM Feriados",
+            "importExternalData": "Importar feriados de fuente externa",
+            "name": "Nombre",
+            "date": "Fecha"
+        }
+    },
+    "months": {
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
     }
 }  

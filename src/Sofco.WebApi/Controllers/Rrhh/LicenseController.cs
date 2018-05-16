@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,12 +53,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [HttpPost]
         public IActionResult Post([FromBody] LicenseAddModel model)
         {
-            var response = licenseService.Add(model.CreateDomain());
-
-            if (response.HasErrors())
-                return BadRequest(response);
-
-            UpdateStatus(model, response);
+            var response = licenseService.Add(model);
 
             return this.CreateResponse(response);
         }
@@ -138,7 +132,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody]LicenseStatusChangeModel model)
         {
-            var response = licenseService.ChangeStatus(id, model);
+            var response = licenseService.ChangeStatus(id, model, null);
 
             return this.CreateResponse(response);
         }
@@ -176,34 +170,6 @@ namespace Sofco.WebApi.Controllers.Rrhh
             var response = licenseService.FileDelivered(id);
 
             return this.CreateResponse(response);
-        }
-
-        private void UpdateStatus(LicenseAddModel model, Response<string> response)
-        {
-            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
-            {
-                var statusParams = new LicenseStatusChangeModel
-                {
-                    Status = LicenseStatus.ApprovePending,
-                    UserId = model.UserId,
-                    IsRrhh = model.IsRrhh
-                };
-
-                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
-                response.AddMessages(statusResponse.Messages);
-            }
-            else
-            {
-                var statusParams = new LicenseStatusChangeModel
-                {
-                    Status = LicenseStatus.AuthPending,
-                    UserId = model.UserId,
-                    IsRrhh = model.IsRrhh
-                };
-
-                var statusResponse = licenseService.ChangeStatus(Convert.ToInt32(response.Data), statusParams);
-                response.AddMessages(statusResponse.Messages);
-            }
         }
     }
 }

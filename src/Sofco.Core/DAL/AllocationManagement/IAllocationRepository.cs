@@ -1,9 +1,9 @@
 ﻿using System;
 using Sofco.Core.DAL.Common;
 using System.Collections.Generic;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -15,7 +15,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetByService(string serviceId);
         ICollection<Allocation> GetByEmployee(int id);
         ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
-        IList<decimal> GetAllPercentages();
         void RemoveAllocationByAnalytic(int analyticId, DateTime today);
+        ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
+        ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters);
+        bool Exist(int allocationId);
     }
 }

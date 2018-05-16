@@ -47,11 +47,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 if (response.HasErrors()) return response;
 
-                SaveAllocation(allocation, response);
+                SaveAllocation(allocation, response, allocationsBetweenDays);
             }
             else
             {
-                SaveAllocation(allocation, response);
+                SaveAllocation(allocation, response, allocationsBetweenDays);
             }
 
             return response;
@@ -117,7 +117,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     if (!allocationDto.ReleaseDate.HasValue)
                     {
-                        allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date ?? DateTime.UtcNow;
+                        allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date == DateTime.MinValue ? null : allocationMonth?.ReleaseDate.Date;
                     }
 
                     allocationDto.Months.Add(allocationMonthDto);
@@ -142,7 +142,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
 
             var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
-         
+
             if (employees.Any())
             {
                 foreach (var employee in employees)
@@ -153,8 +153,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     {
 
                         if (parameters.AnalyticId.HasValue && parameters.AnalyticId != allocation.AnalyticId) continue;
-                        if (parameters.Percentage.HasValue && parameters.Percentage != 999 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
-                        if (parameters.Percentage.HasValue && parameters.Percentage == 999 && allocation.Months.All(x => x.Percentage == 100)) continue;
+                        //if (parameters.Percentage.HasValue && parameters.Percentage != (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
+                        //if (parameters.Percentage.HasValue && parameters.Percentage == (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage == 100)) continue;
+
+                        if (parameters.Percentage.HasValue && parameters.Percentage > 0 &&
+                            !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() &&
+                                                       x.Percentage <= parameters.EndPercentage.GetValueOrDefault())) continue;
 
                         var analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
 
@@ -187,41 +191,46 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public IList<decimal> GetAllPercentages()
+        public IEnumerable<OptionPercentage> GetAllPercentages()
         {
-            return unitOfWork.AllocationRepository.GetAllPercentages();
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Differente100, Text = AllocationPercentage.Differente100.ToString(), StartValue = 0, EndValue = 99 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Equals100, Text = AllocationPercentage.Equals100.ToString(), StartValue = 100, EndValue = 100 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Different0, Text = AllocationPercentage.Different0.ToString(), StartValue = 1, EndValue = 100 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Equals0, Text = AllocationPercentage.Equals0.ToString(), StartValue = 0, EndValue = 0 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between0And50, Text = AllocationPercentage.Between0And50.ToString(), StartValue = 0, EndValue = 50 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between50And75, Text = AllocationPercentage.Between50And75.ToString(), StartValue = 50, EndValue = 75 };
+            yield return new OptionPercentage { Id = (int)AllocationPercentage.Between75And99, Text = AllocationPercentage.Between75And99.ToString(), StartValue = 75, EndValue = 99 };
         }
 
-        private void SaveAllocation(AllocationDto allocationDto, Response response)
+        private void SaveAllocation(AllocationDto allocationDto, Response response, ICollection<Allocation> allocationsBetweenDays)
         {
             try
             {
                 foreach (var month in allocationDto.Months)
                 {
-                    var allocation = new Allocation();
-
                     if (month.AllocationId > 0)
                     {
-                        allocation.Id = month.AllocationId;
+                        var allocation = allocationsBetweenDays.SingleOrDefault(x => x.Id == month.AllocationId);
 
-                        if (month.Updated)
+                        if (allocation != null)
                         {
-                            allocation.Percentage = month.Percentage.GetValueOrDefault();
-                            unitOfWork.AllocationRepository.UpdatePercentage(allocation);
-                        }
+                            if (month.Updated)
+                            {
+                                allocation.Percentage = month.Percentage.GetValueOrDefault();
+                                unitOfWork.AllocationRepository.UpdatePercentage(allocation);
+                            }
 
-                        allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
-                        unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+                            allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+                            unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+                        }
+                        else
+                        {
+                            InsertNewAllocation(allocationDto, month);
+                        }
                     }
                     else
                     {
-                        allocation.AnalyticId = allocationDto.AnalyticId;
-                        allocation.StartDate = month.Date.Date;
-                        allocation.Percentage = month.Percentage.GetValueOrDefault();
-                        allocation.EmployeeId = allocationDto.EmployeeId;
-                        allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
-
-                        unitOfWork.AllocationRepository.Insert(allocation);
+                        InsertNewAllocation(allocationDto, month);
                     }
                 }
 
@@ -234,6 +243,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(ex);
             }
+        }
+
+        private void InsertNewAllocation(AllocationDto allocationDto, AllocationMonthDto month)
+        {
+            Allocation allocation = new Allocation
+            {
+                Id = 0,
+                AnalyticId = allocationDto.AnalyticId,
+                StartDate = month.Date.Date,
+                Percentage = month.Percentage.GetValueOrDefault(),
+                EmployeeId = allocationDto.EmployeeId,
+                ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date
+            };
+            unitOfWork.AllocationRepository.Insert(allocation);
         }
     }
 }

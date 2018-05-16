@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -90,5 +91,9 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<Allocation> Allocations { get; set; }
 
         public ICollection<Billing.PurchaseOrder> PurchaseOrders { get; set; }
+
+        public ICollection<WorkTime> WorkTimes { get; set; }
+
+        public ICollection<WorkTimeApproval> WorkTimeApprovals { get; set; }
     }
 }

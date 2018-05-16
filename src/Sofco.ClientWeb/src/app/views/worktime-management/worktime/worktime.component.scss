@@ -1,0 +1,79 @@
+dt {
+    float: left;
+    clear: left;
+    width: 180px;
+    text-align: left;
+    font-weight: normal;
+    padding: 10px;
+    margin-right: 10px;
+
+    -webkit-border-radius: 10px 0px 0px 10px;
+    -moz-border-radius: 10px 0px 0px 10px;
+    -border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 0px 0px 10px;
+    border-right:1px solid white;
+}
+
+dd {
+    padding-top:10px;
+    padding-right: 20px;
+    -webkit-border-radius: 0px 10px 10px 0px;
+    -moz-border-radius: 0px 10px 10px 0px;
+    -border-radius: 0px 10px 10px 0px;
+    border-radius: 0px 10px 10px 0px;
+    margin-bottom:5px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.task-panel-head {
+    background-color: #0e9aef;
+    color: white;
+}
+
+.task-item-row {
+    margin-left: 1px;
+    margin-bottom: 2px;
+    display: table;
+    width: 100%;
+}
+
+.task-item {
+    display: table-cell;
+    width:250px;
+}
+
+.task-item-close {
+    display: table-cell;
+    width: 20px;
+    padding-top:5px;
+}
+
+.task-item-drag {
+    color:whitesmoke; 
+    margin-right:2px;
+    padding:2px;
+}
+
+.ibox-task
+ {
+    padding-bottom: 0px;
+}
+
+:host ::ng-deep .eventTask  {
+    cursor: default;
+}
+
+:host ::ng-deep .bootstrap-touchspin .btn-primary {
+    background-color: #efefef;
+    border-color: #efefef;
+    color: dimgrey;
+}
+
+.ibox-task-title {
+    border-style: none!important;
+}
+.bg-license {
+    background-color: #AFAFAF;
+    color: white;
+}

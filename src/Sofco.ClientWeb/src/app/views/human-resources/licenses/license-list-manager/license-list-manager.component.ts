@@ -8,6 +8,7 @@ import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { UserInfoService } from "../../../../services/common/user-info.service";
 
 @Component({
     selector: 'license-list-manager',
@@ -32,12 +33,10 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if(Cookie.get('userInfo')){
-            var userApplicant = JSON.parse(Cookie.get('userInfo'));
+        const userInfo = UserInfoService.getUserInfo();
 
-            if(userApplicant && userApplicant.id){
-                this.managerId = userApplicant.id;
-            }
+        if(userInfo && userInfo.id){
+            this.managerId = userInfo.id;
         }
 
         this.getAllLicenses();
@@ -57,7 +56,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
 
     initGrid(){
         var params = {
-            selector: "#allLicenses"
+            selector: "#allLicenses",
+            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
         this.datatableService.destroy(params.selector);

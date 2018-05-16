@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.Admin;
@@ -20,9 +22,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Any(x => x.Id == id);
         }
 
-        public IList<Allocation> GetResources(int id)
+        public IList<Allocation> GetTimelineResources(int id, DateTime startDate, DateTime endDate)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate).Include(x => x.Employee).ToList().AsReadOnly();
+        }
+
+        public IList<Employee> GetResources(int id)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).Select(x => x.Employee).Distinct().ToList().AsReadOnly();
         }
 
         public Analytic GetLastAnalytic(int costCenterId)
@@ -79,12 +86,50 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Analytic> GetAnalyticsByManagers(int id)
         {
-            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id).ToList();
+            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id && x.Status == AnalyticStatus.Open).ToList();
         }
 
         public List<Analytic> GetByManagerId(int managerId)
         {
             return context.Analytics.Where(x => x.ManagerId == managerId).ToList();
+        }
+
+        public List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId)
+        {
+            return context.Analytics
+                .Where(x => x.ManagerId == managerId || x.DirectorId == managerId
+                && x.Status == AnalyticStatus.Open)
+                .Select(s => new AnalyticLiteModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Title = s.Title
+                }).ToList();
+        }
+
+        public AnalyticLiteModel GetAnalyticLiteById(int id)
+        {
+            return context.Analytics.Where(s => s.Id == id).Select(s => new AnalyticLiteModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Title = s.Title
+            }).FirstOrDefault();
+
+        }
+
+        public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1))
+                .Include(x => x.Analytic)
+                .Select(x => new Analytic
+                {
+                    Id = x.AnalyticId,
+                    Title = x.Analytic.Title,
+                    Name = x.Analytic.Name
+                })
+                .ToList();
         }
     }
 }

@@ -20,6 +20,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}`);
   }
 
+  getTimelineResources(id, dateSince, months) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources/timeline/${dateSince}/${months}`);
+  }
+
   getResources(id) {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources`);
   }
@@ -50,5 +54,9 @@ export class AnalyticService {
 
   close(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
+  }
+
+  getByCurrentUser() {
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
   }
 }

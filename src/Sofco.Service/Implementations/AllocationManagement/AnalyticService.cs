@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -31,9 +33,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
+        private readonly IEmployeeData employeeData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, ICrmService crmService)
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
+            ICrmService crmService, IEmployeeData employeeData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -42,6 +46,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
+            this.employeeData = employeeData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -60,6 +65,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 ServiceId = x.ServiceId
 
             }).ToList();
+        }
+
+        public IList<Option> GetResources(int id)
+        {
+            var list = unitOfWork.AnalyticRepository.GetResources(id);
+
+            return list.Select(x => new Option {Id = x.Id, Text = $"{x.EmployeeNumber}-{x.Name}"}).ToList();
+        }
+
+        public Response<List<Option>> GetByCurrentUser()
+        {
+            var employeeId = employeeData.GetCurrentEmployee().Id;
+
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
         }
 
         public ICollection<Analytic> GetAll()
@@ -96,11 +117,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<IList<Allocation>> GetResources(int id)
+        public Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months)
         {
             var response = new Response<IList<Allocation>>();
 
-            var resources = unitOfWork.AnalyticRepository.GetResources(id);
+            var startDate = new DateTime(dateSince.Year, dateSince.Month, 1);
+            var endDateAux = dateSince.AddMonths(months-1);
+            var endDate = new DateTime(endDateAux.Year, endDateAux.Month, DateTime.DaysInMonth(endDateAux.Year, endDateAux.Month));
+
+            var resources = unitOfWork.AnalyticRepository.GetTimelineResources(id, startDate, endDate);
 
             if (!resources.Any())
             {
@@ -287,7 +312,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             catch (Exception ex)
             {
                 response.AddWarning(Resources.Common.ErrorSendMail);
-                this.logger.LogError(ex);
+                logger.LogError(ex);
             }
         }
 

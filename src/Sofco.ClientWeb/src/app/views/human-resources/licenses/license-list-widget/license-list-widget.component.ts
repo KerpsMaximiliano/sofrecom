@@ -55,11 +55,11 @@ export class LicenseListWidget implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.getDataSubscrip) this.getDataSubscrip.unsubscribe();
     }
-
+ 
     initGrid(){
         var params = {
             selector: "#licenseStatus-" + this.statusId,
-            scrollX: true
+            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
         this.datatableService.init2(params);

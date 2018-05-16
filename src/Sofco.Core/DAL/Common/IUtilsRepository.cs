@@ -18,5 +18,6 @@ namespace Sofco.Core.DAL.Common
         IList<SoftwareLaw> GetSoftwareLaws();
         IList<ServiceType> GetServiceTypes();
         IList<Sector> GetSectors();
+        IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
     }
 }

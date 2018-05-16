@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Extensions;
 
@@ -24,10 +25,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPut("{id}")]
+        public IActionResult Delete(int id, [FromBody] NewsDeleteModel model)
         {
-            var response = employeeNewsService.Delete(id);
+            var response = employeeNewsService.Delete(id, model);
 
             return this.CreateResponse(response);
         }

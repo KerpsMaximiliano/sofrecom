@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sofco.Common.Security;
+﻿using System.Collections.Generic;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
@@ -24,7 +22,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeRepository = employeeRepository;
         }
 
-
         public Response<List<WorkTimeApproval>> GetAll()
         {
             return new Response<List<WorkTimeApproval>>
@@ -44,17 +41,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             workTimeApprovalRepository.Save(workTimeApprovals);
 
-            return new Response<List<WorkTimeApproval>>
-            {
-                Data = workTimeApprovals
-            };
+            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
+            response.Data = workTimeApprovals;
+
+            return response;
         }
 
         public Response Delete(int workTimeApprovalId)
         {
             workTimeApprovalRepository.Delete(workTimeApprovalId);
 
-            return new Response();
+            var response = new Response();
+            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+
+            return response;
         }
 
         private Response<List<WorkTimeApproval>> ValidateSave(List<WorkTimeApproval> workTimeApprovals)
@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             foreach (var workTimeApproval in workTimeApprovals)
             {
                 if (workTimeApproval.ApprovalUserId == 0
-                    || workTimeApproval.ServiceId == Guid.Empty
+                    || workTimeApproval.AnalyticId == 0
                     || workTimeApproval.EmployeeId == 0)
                 {
                     response.AddError(Resources.Common.ErrorSave);

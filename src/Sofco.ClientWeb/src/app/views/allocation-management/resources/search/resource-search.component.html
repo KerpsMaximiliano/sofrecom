@@ -21,9 +21,9 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h5 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()">
-                        {{'allocationManagement.resources.search' | translate }}
-                        <i id="search-icon" class="fa fa-angle-down"></i>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
+                        <span>{{'allocationManagement.resources.search' | translate }}</span>
+                        <i id="search-icon" class="fa fa-minus fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
                 </h5>
             </div>
@@ -108,8 +108,8 @@
                         <td>{{ resource.profile}}</td>
                         <td>{{ resource.technology}}</td>
                         <td class="column-sm">
-                            <button title="{{'ACTIONS.notifyUnsubscribe' | translate }}" class="btn btn-danger btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openModal(resource)"><i class="fa fa-user-times"></i></button>
-                            <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)"><i class="fa fa-user-plus"></i></button>
+                            <button title="{{'ACTIONS.notifyUnsubscribe' | translate }}" class="btn btn-danger btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openEndEmployeeModal(resource)"><i class="fa fa-user-times"></i></button>
+                            <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)" *ngIf="menuService.hasFunctionality('ALLOC', 'ADRES')"><i class="fa fa-user-plus"></i></button>
                             <button title="{{'allocationManagement.resources.profile' | translate }}" class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()"><i class="fa fa-eye"></i></button>
                         </td>
                     </tr>
@@ -135,6 +135,12 @@
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.news.grid.endDate' | translate }}</label>
         <date-picker [(date)]="endDate"></date-picker>
+    </div>
+
+    <div class="form-group" *ngIf="pendingWorkingHours">
+        <div class="alert alert-warning">
+            {{'allocationManagement.resources.pendingWorkingHoursAlert' | translate }}
+        </div>
     </div>
 </ng2-modal> 
 

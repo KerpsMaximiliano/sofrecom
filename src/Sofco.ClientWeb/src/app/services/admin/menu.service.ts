@@ -5,6 +5,7 @@ import { Service } from 'app/services/common/service';
 import { Menu } from 'app/models/admin/menu';
 import { HttpClient } from '@angular/common/http';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { UserInfoService } from '../common/user-info.service';
 
 @Injectable()
 export class MenuService {
@@ -30,8 +31,7 @@ export class MenuService {
 
         if (!this.menu) {
             const menu = JSON.parse(localStorage.getItem('menu'));
-            if (menu != null)
-            {
+            if (menu != null) {
                 this.menu = menu.menus;
                 this.userIsDirector = menu.isDirector;
                 this.userIsManager = menu.isManager;
@@ -47,16 +47,15 @@ export class MenuService {
             }
         }
 
-        if (!this.currentUser){
-            this.currentUser = Cookie.get('currentUser')
+        if (!this.currentUser) {
+            this.currentUser = Cookie.get('currentUser');
         }
 
-        var userInfo = Cookie.get("userInfo");
+        const userInfo = UserInfoService.getUserInfo();
 
-        if(userInfo){
-            var jsonParsed = JSON.parse(userInfo);
-            this.currentUser = jsonParsed.name;
-            this.user = jsonParsed;
+        if (userInfo) {
+            this.currentUser = userInfo.name;
+            this.user = userInfo;
         }
     }
 
@@ -64,42 +63,46 @@ export class MenuService {
        return this.http.get<any>(`${this.baseUrl}/menu/`);
     }
 
-    hasModule(module: string){
-        return this.menu.findIndex(x => x.module == module) > -1;
+    hasModule(module: string) {
+        return this.menu.findIndex(x => x.module === module) > -1;
     }
 
-    hasFunctionality(module: string, functionality: string){
-        return this.menu.findIndex(x => x.module == module && x.functionality == functionality) > -1;
+    hasFunctionality(module: string, functionality: string) {
+        return this.menu.findIndex(x => x.module === module && x.functionality === functionality) > -1;
     }
 
-    hasAdminMenu(){
-       if(this.hasModule("USR") || this.hasModule("GRP") || this.hasModule("ROL") || this.hasModule("MOD") || this.hasModule("FUNC")){
+    hasAdminMenu() {
+       if (this.hasModule("USR") || this.hasModule("GRP") || this.hasModule("ROL") || this.hasModule("MOD") || this.hasModule("FUNC")){
             return true;
        }
-
        return false;
     }
 
-    hasBillingMenu(){
-       if(this.hasModule("SOLFA")){
+    hasBillingMenu() {
+        if (this.hasModule("SOLFA")) {
             return true;
        }
-
        return false;
     }
 
-    hasAllocationManagementMenu(){
-        if(this.hasModule("ALLOC")){
+    hasAllocationManagementMenu() {
+        if (this.hasModule("ALLOC")) {
             return true;
-       }
-
-       return false;
+        }
+        return false;
     }
 
-    hasReportMenu(){
-        if(this.hasModule("REPOR")){
+    hasReportMenu() {
+        if (this.hasModule("REPOR")) {
              return true;
         }
-         return false;
-     }
+        return false;
+    }
+
+    hasWorkTimeManagement() {
+        if (this.hasModule("WOTIM")) {
+            return true;
+       }
+       return false;
+    }
 }

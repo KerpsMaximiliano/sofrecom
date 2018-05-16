@@ -50,7 +50,8 @@
         <a href="#"><i class="fa fa-users"></i> <span class="nav-label">{{'allocationManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('allocationManagement')}">
             <li [ngClass]="{active: activeRoute('resources')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/resources']">{{'allocationManagement.resources.title' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('employees')}" *ngIf="menuService.hasFunctionality('ALLOC', 'NEWSQ')"><a [routerLink]="['/allocationManagement/employees/news']">{{'allocationManagement.news.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('unemployees')}" *ngIf="menuService.hasFunctionality('ALLOC', 'VWUEM')"><a [routerLink]="['/allocationManagement/unemployees']">{{'allocationManagement.resources.titleInactive' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('news')}" *ngIf="menuService.hasFunctionality('ALLOC', 'NEWSQ')"><a [routerLink]="['/allocationManagement/employees/news']">{{'allocationManagement.news.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('allocationsReport')}" *ngIf="menuService.hasFunctionality('ALLOC', 'QUERY')"><a [routerLink]="['/allocationManagement/allocationsReport']">{{'allocationManagement.report.report' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a [routerLink]="['/allocationManagement/licenses/rrhh']">{{'rrhh.licenses' | translate }} (RRHH)</a></li>
             <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a [routerLink]="['/allocationManagement/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
@@ -58,13 +59,26 @@
         </ul>
       </li> 
 
+      <!-- WorkTimeManagement-->
+      <li [ngClass]="{active: activeRoute('workTimeManagement')}" *ngIf="menuService.hasWorkTimeManagement()">
+        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'workTimeManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('workTimeManagement')}">
+          <li [ngClass]="{active: activeRoute('holidays')}"  *ngIf="menuService.hasFunctionality('WOTIM', 'HOLID')"><a [routerLink]="['/workTimeManagement/holidays']">{{'workTimeManagement.holidays.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('load')}" *ngIf="menuService.hasFunctionality('WOTIM', 'WORKT')"><a [routerLink]="['/workTimeManagement/workTime/load']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('approval')}" *ngIf="menuService.hasFunctionality('WOTIM', 'APPRO')"><a [routerLink]="['/workTimeManagement/workTime/approval']">{{'workTimeManagement.approvalHours' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasFunctionality('WOTIM', 'REPOR')"><a [routerLink]="['/workTimeManagement/workTime/report']">{{'workTimeManagement.report.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('WOTIM', 'QUERY')"><a [routerLink]="['/workTimeManagement/workTime/search']">{{'workTimeManagement.query.query' | translate }}</a></li>
+        </ul>
+      </li>
+
       <!--REPORT-->
-      <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
+      <!-- <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('report')}">
           <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
         </ul>
-      </li>
+      </li> -->
+      
     </ul>
 
   </div>

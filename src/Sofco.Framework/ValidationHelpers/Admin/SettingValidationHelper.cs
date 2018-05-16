@@ -48,5 +48,25 @@ namespace Sofco.Framework.ValidationHelpers.Admin
 
             return response;
         }
+
+        public static Response<Setting> ValidateWorkingHoursPerDaysMax(Setting setting)
+        {
+            var response = new Response<Setting>();
+
+            var value = setting.Value;
+
+            if (!int.TryParse(value, out var data))
+            {
+                response.AddError(Resources.Admin.Setting.WrongWorkingHoursPerDaysMax);
+
+                return response;
+            }
+
+            if (data >= 1 && data <= 24) return response;
+
+            response.AddError(Resources.Admin.Setting.WrongWorkingHoursPerDaysMax);
+
+            return response;
+        }
     }
 }

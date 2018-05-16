@@ -7,7 +7,6 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.Resources.Mails;
 
@@ -26,9 +25,17 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
-            if (parameters.IsRrhh && (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.AuthPending || license.Status == LicenseStatus.Rejected))
+            if (parameters.IsRrhh)
             {
-                response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                if (license.Status == LicenseStatus.AuthPending || license.Status == LicenseStatus.Rejected)
+                {
+                    response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                }
+
+                if (license.Status == LicenseStatus.Draft && license.Type.CertificateRequired)
+                {
+                    response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                }
             }
         }
 
@@ -40,6 +47,16 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.TypeId == 1)
             {
                 license.Employee.HolidaysPending -= license.DaysQuantity;
+
+                if (license.Employee.HolidaysPending == 0)
+                {
+                    license.Employee.HolidaysPendingByLaw = 0;
+                }
+                else
+                {
+                    license.Employee.HolidaysPendingByLaw -= license.DaysQuantityByLaw;
+                }
+
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
@@ -77,3 +94,4 @@ namespace Sofco.Framework.StatusHandlers.License
         }
     }
 }
+

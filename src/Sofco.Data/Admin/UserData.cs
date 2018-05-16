@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -13,17 +14,21 @@ namespace Sofco.Data.Admin
         private const string UserByUserNamCacheKey = "urn:users:userName:{0}";
         private const string UserByMangerIdCacheKey = "urn:users:managerId:{0}";
         private const string UserLiteByMangerIdCacheKey = "urn:userLites:id:{0}";
+        private const string UserLiteByUserNameCacheKey = "urn:userLites:userName:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
 
+        private readonly ISessionManager sessionManager;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public UserData(ICacheManager cacheManager, IUnitOfWork unitOfWork)
+        public UserData(ICacheManager cacheManager, IUnitOfWork unitOfWork, ISessionManager sessionManager)
         {
             this.cacheManager = cacheManager;
             this.unitOfWork = unitOfWork;
+            this.sessionManager = sessionManager;
         }
 
         public User GetByExternalManagerId(string managerId)
@@ -52,6 +57,20 @@ namespace Sofco.Data.Admin
             return cacheManager.Get(string.Format(UserLiteByMangerIdCacheKey, userId),
                 () => unitOfWork.UserRepository.GetUserLiteById(userId),
                 cacheExpire);
+        }
+
+        public UserLiteModel GetUserLiteByUserName(string userName)
+        {
+            return cacheManager.Get(string.Format(UserLiteByUserNameCacheKey, userName),
+                () => unitOfWork.UserRepository.GetUserLiteByUserName(userName),
+                cacheExpire);
+        }
+
+        public UserLiteModel GetCurrentUser()
+        {
+            var currentUserName = sessionManager.GetUserName();
+
+            return GetUserLiteByUserName(currentUserName);
         }
     }
 }

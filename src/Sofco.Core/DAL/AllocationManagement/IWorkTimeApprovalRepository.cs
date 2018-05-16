@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -12,6 +11,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void Delete(int workTimeApprovalId);
 
-        List<WorkTimeApproval> GetByServiceIds(List<Guid> serviceIds);
+        List<WorkTimeApproval> GetByAnalyticId(int analyticId);
+
+        List<Analytic> GetByAnalyticApproval(int currentUserId);
     }
 }

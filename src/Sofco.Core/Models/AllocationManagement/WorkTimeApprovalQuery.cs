@@ -1,12 +1,8 @@
-﻿using System;
-
-namespace Sofco.Core.Models.AllocationManagement
+﻿namespace Sofco.Core.Models.AllocationManagement
 {
     public class WorkTimeApprovalQuery
     {
-        public Guid CustomerId { get; set; }
-
-        public Guid ServiceId { get; set; }
+        public int AnalyticId { get; set; }
 
         public int ApprovalId { get; set; }
     }

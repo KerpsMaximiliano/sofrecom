@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -8,7 +10,9 @@ namespace Sofco.Core.DAL.AllocationManagement
     {
         bool Exist(int id);
 
-        IList<Allocation> GetResources(int id);
+        IList<Allocation> GetTimelineResources(int id, DateTime startDate, DateTime endDate);
+
+        IList<Employee> GetResources(int id);
 
         Analytic GetLastAnalytic(int costCenterId);
 
@@ -29,5 +33,11 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Analytic> GetAnalyticsByManagers(int id);
 
         List<Analytic> GetByManagerId(int managerId);
+
+        List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId);
+
+        AnalyticLiteModel GetAnalyticLiteById(int id);
+
+        IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId);
     }
 }

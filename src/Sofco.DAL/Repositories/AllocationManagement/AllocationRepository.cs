@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Utils;
@@ -50,6 +51,41 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
+                .ToList();
+        }
+
+        public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
+        {
+            IQueryable<Allocation> query = context.Allocations
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Where(x => x.StartDate.Date == new DateTime(parameters.Year, parameters.Month, 1).Date);
+
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+                query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+
+            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
+                query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
+
+            if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
+                query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
+
+            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
+                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
+
+            return query.ToList();
+        }
+
+        public bool Exist(int allocationId)
+        {
+            return context.Allocations.Any(x => x.Id == allocationId);
+        }
+
         public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)
         {
             IQueryable<Allocation> query = context.Allocations
@@ -65,20 +101,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!parameters.IncludeStaff)
                 query = query.Where(x => x.Employee.BillingPercentage != 0);
 
-            if (parameters.Percentage.HasValue)
-            {
-                if (parameters.Percentage == 999)
-                    query = query.Where(x => x.Percentage != 100);
-                else
-                    query = query.Where(x => x.Percentage == parameters.Percentage);
-            }
+            //if (parameters.Percentage.HasValue)
+            //{
+            //    if (parameters.Percentage == 999)
+            //        query = query.Where(x => x.Percentage != 100);
+            //    else
+            //        query = query.Where(x => x.Percentage == parameters.Percentage);
+            //}
 
             return query.Select(x => x.Employee).Distinct().ToList();
-        }
-
-        public IList<decimal> GetAllPercentages()
-        {
-            return context.Allocations.Select(x => x.Percentage).Distinct().ToList();
         }
 
         public void RemoveAllocationByAnalytic(int analyticId, DateTime today)

@@ -7,12 +7,14 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.Report;
 using Sofco.DAL.Repositories.Rrhh;
+using Sofco.DAL.Repositories.WorkTimeManagement;
 
 namespace Sofco.DAL
 {
@@ -75,6 +77,13 @@ namespace Sofco.DAL
         private IUtilsRepository utilsRepository;
         private IFileRepository fileRepository;
         private IUserDelegateRepository userDelegateRepository;
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        private IWorkTimeRepository workTimeRepository;
+        private IWorkTimeApprovalRepository workTimeApprovalRepository;
 
         #endregion
 
@@ -146,6 +155,13 @@ namespace Sofco.DAL
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
         public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
 
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        public IWorkTimeRepository WorkTimeRepository => workTimeRepository ?? (workTimeRepository = new WorkTimeRepository(context));
+        public IWorkTimeApprovalRepository WorkTimeApprovalRepository => workTimeApprovalRepository ?? (workTimeApprovalRepository = new WorkTimeApprovalRepository(context));
 
         #endregion
 

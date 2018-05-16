@@ -33,5 +33,9 @@ namespace Sofco.Core.DAL.Admin
         UserLiteModel GetUserLiteById(int userId);
 
         bool HasManagersGroup(string userMail);
+
+        UserLiteModel GetUserLiteByUserName(string userName);
+
+        User GetByEmail(string email);
     }
 }

@@ -123,11 +123,20 @@
   <data name="AuthPendingSuccess" xml:space="preserve">
     <value>rrhh/license.authPendingSuccess</value>
   </data>
+  <data name="CancelledSuccess" xml:space="preserve">
+    <value>rrhh/license.cancelledSuccess</value>
+  </data>
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>rrhh/license.cannotChangeStatus</value>
   </data>
+  <data name="ChangeStatusError" xml:space="preserve">
+    <value>rrhh/license.changeStatusError</value>
+  </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>rrhh/license.commentsRequired</value>
+  </data>
+  <data name="DatesLessThanToday" xml:space="preserve">
+    <value>rrhh/license.datesLessThanToday</value>
   </data>
   <data name="DatesRequired" xml:space="preserve">
     <value>rrhh/license.datesRequired</value>
@@ -156,6 +165,9 @@
   <data name="FileAdded" xml:space="preserve">
     <value>rrhh/license.fileAdded</value>
   </data>
+  <data name="GenerateWorkTimesError" xml:space="preserve">
+    <value>rrhh/license.generateWorkTimesError</value>
+  </data>
   <data name="LicenseTypeNotFound" xml:space="preserve">
     <value>rrhh/license.licenseTypeNotFound</value>
   </data>
@@ -182,6 +194,9 @@
   </data>
   <data name="SectorRequired" xml:space="preserve">
     <value>rrhh/license.sectorRequired</value>
+  </data>
+  <data name="StartDateIsWeekend" xml:space="preserve">
+    <value>rrhh/license.startDateIsWeekend</value>
   </data>
   <data name="TypeRequired" xml:space="preserve">
     <value>rrhh/license.typeRequired</value>

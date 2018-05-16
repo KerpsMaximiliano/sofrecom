@@ -1,0 +1,147 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'workTimeManagement.workTime.title' | translate }}</h2>
+        <ol class="breadcrumb no-print">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>{{'workTimeManagement.title' | translate }}</li>
+            <li class="active">
+                <strong>{{'workTimeManagement.workTime.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+    
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="row">
+
+        <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>{{ 'workTimeManagement.workTime.calendar' | translate }}</h3>
+                        </div>
+                        <div class="col-md-6 text-right"><button class="btn btn-primary" (click)="sendHours()"> {{ 'workTimeManagement.workTime.sendHours' | translate }} <i class="fa fa-arrow-circle-right"></i></button></div>
+                    </div>
+                    <hr>
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="ibox ibox-task">
+                <div class="ibox-content">
+                    <button class="btn btn-success" style="width:100%" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
+
+                    <div class="row">
+                        <div class="ibox ibox-task">
+                            <div class="ibox-title ibox-task-title">
+                                <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
+                                <iboxtools #boxtools></iboxtools>
+                            </div>
+                            <div class="ibox-content ibox-task external-events">
+                                <div id='external-events' *ngFor="let item of recentAnalyticTasks; let i = index; let last = last">
+                                    <div class="panel-group" id="accordion{{ i }}" (loaded)="taskReady()">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading task-panel-head">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" [href]="'#collapse'+i">{{ item.analytic }}</a>
+                                                </h5>
+                                            </div>
+                                            <div [id]="'collapse'+i" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                    <div class='bg-success row task-item-row' *ngFor="let taskItem of item.tasks; let t = index">
+                                                        <div class='external-event bg-success task-item' 
+                                                            [attr.data-task]="taskItem.task"
+                                                            [attr.data-color]="draftTaskColor"
+                                                            [attr.data-taskId]="taskItem.taskId"
+                                                            [attr.data-analyticId]="taskItem.analyticId"
+                                                            [attr.data-hours]="taskItem.hours"
+                                                            >{{ taskItem.task }} - {{ taskItem.hours }} hs</div>
+                                                        <a class="task-item-close" (click)="removeTask(taskItem)">
+                                                            <i class="fa fa-close text-white"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{ 'workTimeManagement.workTime.resume' | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <dl class="dl-horizontal">
+                        <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
+                        <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
+                        <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
+                        <dd class="bg-danger">{{ model?.resume?.hoursRejected }} hs</dd>
+                        <dt class="bg-warning">{{ 'workTimeManagement.workTime.pendingToSend' | translate }}</dt>
+                        <dd class="bg-warning">{{ model?.resume?.hoursPending }} hs</dd>
+                        <dt class="bg-success">{{ 'workTimeManagement.workTime.pendingToApprove' | translate }}</dt>
+                        <dd class="bg-success">{{ model?.resume?.hoursPendingApproved }} hs</dd>
+                        <dt class="bg-license">{{ 'workTimeManagement.workTime.resumeLicense' | translate }}</dt>
+                        <dd class="bg-license">{{ model?.resume?.hoursWithLicense }} hs</dd>
+
+                        <dt>{{ 'workTimeManagement.workTime.totalResume' | translate }}</dt>
+                        <dd>{{ model?.resume?.total }} hs</dd>
+                        <hr style="margin:0px">
+                        <dt>{{ 'workTimeManagement.workTime.workingHours' | translate }}</dt>
+                        <dd>{{ model?.resume?.businessHours }} hs</dd>
+                        <dt>{{ 'workTimeManagement.workTime.currentHoursToDate' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursUntilToday }} hs</dd>
+                    </dl>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()">
+
+    <form role="form">
+        <div class="form-group">
+            <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
+                </div>
+                <div class="col-md-6">
+                    <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>{{'workTimeManagement.date' | translate }}</label>
+                    <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
+                </div>
+                <div class="col-md-3">
+                    <label>{{'workTimeManagement.hours' | translate }}</label>
+                    <input id="hoursControl" type="text" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>{{'workTimeManagement.comments' | translate }}</label>
+            <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
+        </div>
+    </form>
+
+</ng2-modal>

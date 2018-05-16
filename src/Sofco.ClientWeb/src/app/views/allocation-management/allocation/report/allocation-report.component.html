@@ -64,7 +64,7 @@
                         <label class="control-label"> {{ 'allocationManagement.allocation.percentages' | translate }} </label>
                         <select select2 class="form-control" id="percentageId">
                             <option value="0">Seleccione una opción</option>
-                            <option *ngFor="let percentage of percentages" [value]="percentage?.id">{{ percentage?.text }}</option>
+                            <option *ngFor="let percentage of percentages" [value]="percentage?.id">{{ percentage?.text | translate }}</option>
                         </select>
                     </div>
                 </div>

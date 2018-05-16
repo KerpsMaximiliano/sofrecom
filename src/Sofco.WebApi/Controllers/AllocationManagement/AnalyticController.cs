@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -67,10 +68,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(analyticService.GetOptions());
         }
 
-        [HttpGet("{id}/resources")]
-        public IActionResult GetResources(int id)
+        [HttpGet("{id}/resources/timeline/{dateSince}/{months}")]
+        public IActionResult GetTimelineResources(int id, DateTime dateSince, int months)
         {
-            var responseResources = analyticService.GetResources(id);
+            var responseResources = analyticService.GetTimelineResources(id, dateSince, months);
 
             var model = responseResources.Data.Select(x => new ResourceForAnalyticsModel(x));
 
@@ -79,6 +80,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             response.AddMessages(responseResources.Messages);
 
             return Ok(response);
+        }
+
+        [HttpGet("{id}/resources")]
+        public IActionResult GetResources(int id)
+        {
+            return Ok(analyticService.GetResources(id));
         }
 
         [HttpPost]
@@ -109,6 +116,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Close(int id)
         {
             var response = analyticService.Close(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("options/currentUser")]
+        public IActionResult GetByCurrentUser()
+        {
+            var response = analyticService.GetByCurrentUser();
 
             return this.CreateResponse(response);
         }

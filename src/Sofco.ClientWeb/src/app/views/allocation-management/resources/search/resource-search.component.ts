@@ -59,7 +59,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     };
 
     public endDate: Date = new Date();
-    public isLoading: boolean = false;
+    public isLoading = false;
+    public pendingWorkingHours = false;
 
     getAllSubscrip: Subscription;
     getAllEmployeesSubscrip: Subscription;
@@ -68,6 +69,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     getAnalyticSubscrip: Subscription;
     getCategorySubscrip: Subscription;
     addCategoriesSubscrip: Subscription;
+    subscrip: Subscription;
 
     constructor(private router: Router,
                 public menuService: MenuService,
@@ -77,10 +79,11 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 private categoryService: CategoryService,
                 private analyticService: AnalyticService,
                 private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){}
- 
+                private errorHandlerService: ErrorHandlerService) {
+    }
+
     ngOnInit(): void {
-        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -106,20 +109,31 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
 
-    openModal(resource){
+    openEndEmployeeModal(resource) {
         this.resourceSelected = resource;
+        this.subscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
+            this.showEndEmployeeModal(res.data);
+        },
+        error => {
+            this.confirmModal.hide();
+            this.errorHandlerService.handleErrors(error)
+        });
+    }
+
+    showEndEmployeeModal(data) {
+        this.pendingWorkingHours = data.pendingHours > 0;
         this.confirmModal.show();
     }
 
-    sendUnsubscribeNotification(){
-        var json = {
+    sendUnsubscribeNotification() {
+        const json = {
             receipents: $('#userId').val(),
             endDate: this.endDate
         }
 
         this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
             this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
+            if (data.messages) this.messageService.showMessages(data.messages);
         },
         error => {
             this.confirmModal.hide();
@@ -180,17 +194,17 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            return false;
     }
 
-    search(){
+    search() {
         this.messageService.showLoading();
 
         this.getAllEmployeesSubscrip = this.employeeService.search(this.searchModel).subscribe(response => {
             this.resources = response.data;
-            
-            if(response.messages) {
+
+            if (response.messages) {
                 this.initGrid();
                 this.messageService.showMessages(response.messages);
             }
-           
+
             this.messageService.closeLoading();
             this.collapse();
 
@@ -245,10 +259,10 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     changeIcon(){
         if($("#collapseOne").hasClass('in')){
-            $("#search-icon").toggleClass('fa-angle-down').toggleClass('fa-angle-left');
+            $("#search-icon").toggleClass('fa-minus').toggleClass('fa-plus');
         }
         else{
-            $("#search-icon").toggleClass('fa-angle-left').toggleClass('fa-angle-down');
+            $("#search-icon").toggleClass('fa-plus').toggleClass('fa-minus');
         } 
     }
 

@@ -15,7 +15,7 @@ namespace Sofco.Core.Models.Rrhh
             StartDate = license.StartDate;
             EndDate = license.EndDate;
             WithPayment = license.WithPayment;
-            DaysQuantity = license.DaysQuantity;
+            DaysQuantity = license.DaysQuantityByLaw;
             HasCertificate = license.HasCertificate;
             Parcial = license.Parcial;
             Final = license.Final;
@@ -23,6 +23,7 @@ namespace Sofco.Core.Models.Rrhh
             ExamDescription = license.ExamDescription;
             Status = license.Status;
             StatusName = license.Status.ToString();
+            CreationDate = license.CreationDate;
 
             if (license.Employee != null)
             {
@@ -40,6 +41,7 @@ namespace Sofco.Core.Models.Rrhh
             {
                 TypeId = license.TypeId;
                 TypeName = license.Type.Description;
+                CertificateRequired = license.Type.CertificateRequired;
             }
 
             if (license.Sector != null)
@@ -57,8 +59,10 @@ namespace Sofco.Core.Models.Rrhh
             }
         }
 
-        public string StatusName { get; set; }
+        public bool CertificateRequired { get; set; }
 
+        public string StatusName { get; set; }
+        public DateTime CreationDate { get; }
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 

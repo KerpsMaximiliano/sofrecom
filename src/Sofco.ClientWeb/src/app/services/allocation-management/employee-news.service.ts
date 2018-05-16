@@ -16,8 +16,8 @@ export class EmployeeNewsService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  delete(id){
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  delete(id, json){
+    return this.http.put<any>(`${this.apiUrl}/${id}`, json);
   }
 
   add(id){
@@ -26,5 +26,9 @@ export class EmployeeNewsService {
 
   cancel(id){
     return this.http.post<any>(`${this.apiUrl}/cancel/${id}`, {});
+  }
+
+  getTypeEndReasons() {
+    return this.http.get<any>(`${this.service.UrlApi}/utils/employeeTypeEndReasons`);
   }
 }

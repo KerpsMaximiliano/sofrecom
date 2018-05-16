@@ -136,6 +136,21 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Busca una cadena traducida similar a RRHH: &lt;/br&gt;
+        ///Se ha &lt;strong&gt; Cancelado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///Motivo: {1}
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Recurso: &lt;/br&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt; Cancelada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///Motivo: {1}.
+        /// </summary>
+        public static string LicenseCancelledMessage {
+            get {
+                return ResourceManager.GetString("LicenseCancelledMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a RRHH: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
         ///&lt;/br&gt;&lt;/br&gt;
         ///Recurso: &lt;/br&gt;

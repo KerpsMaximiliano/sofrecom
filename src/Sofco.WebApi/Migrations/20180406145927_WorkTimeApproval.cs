@@ -30,13 +30,6 @@ namespace Sofco.WebApi.Migrations
                 {
                     table.PrimaryKey("PK_WorkTimeApprovals", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkTimeApprovals_ServiceId_UserId_ApprovalUserId",
-                schema: "app",
-                table: "WorkTimeApprovals",
-                columns: new[] { "ServiceId", "UserId", "ApprovalUserId" },
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

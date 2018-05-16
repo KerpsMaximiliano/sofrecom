@@ -19,16 +19,22 @@ import { I18nService } from 'app/services/common/i18n.service';
 export class NewsComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
+    public endReasonTypes: any[] = new Array<any>();
 
     getAllSubscrip: Subscription;
     deleteSubscrip: Subscription;
+    getEndReasonTypeSubscrip: Subscription;
 
     newsToConfirm: any;
     indexToConfirm: number;
     confirmBodyAction: string;
 
+    public endReasonType: number = 0;
+
     public isLoading: boolean = false;
 
+    public rejectComments: string;
+ 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -38,6 +44,16 @@ export class NewsComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel",
         false
+    );
+
+    @ViewChild('deleteModal') deleteModal;
+    public deleteModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "deleteModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     constructor(private employeeService: EmployeeService,
@@ -51,6 +67,17 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.getAll();
+        this.getEndReasonTypes();
+    }
+
+    ngOnDestroy(): void {
+        if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+        if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
+        if(this.getEndReasonTypeSubscrip) this.getEndReasonTypeSubscrip.unsubscribe();
+    }
+
+    getAll(){
         this.messageService.showLoading();
 
         this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
@@ -64,9 +91,13 @@ export class NewsComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
-        if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
-        if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
+    getEndReasonTypes(){
+        this.getEndReasonTypeSubscrip = this.employeeNewsService.getTypeEndReasons().subscribe(response => {
+            this.endReasonTypes = response;
+        },
+        error => {
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     showConfirmCancel(news, index){
@@ -90,7 +121,8 @@ export class NewsComponent implements OnInit, OnDestroy {
     showConfirmDelete(news, index){
         this.newsToConfirm = news;
         this.indexToConfirm = index;
-        this.confirmModal.show();
+        this.rejectComments = news.endReason;
+        this.deleteModal.show();
         this.confirm = this.delete;
         this.confirmBodyAction = this.i18nService.translateByKey('ACTIONS.confirm') +" "+ this.i18nService.translateByKey(news.status)
     }
@@ -134,13 +166,18 @@ export class NewsComponent implements OnInit, OnDestroy {
     delete(){
         this.isLoading = true;
 
-        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id).subscribe(data => {
+        var json = {
+            comments: this.rejectComments,
+            type: this.endReasonType
+        }
+
+        this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id, json).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
             this.isLoading = false;
-            this.confirmModal.hide();
+            this.deleteModal.hide();
         },
         error => {
             this.isLoading = false;

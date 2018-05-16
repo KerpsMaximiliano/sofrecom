@@ -11,5 +11,8 @@ namespace Sofco.Core.Services.Common
         IList<Currency> GetCurrencies();
         IList<PaymentTerm> GetPaymentTerms();
         IList<Sector> GetSectors();
+        IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
+        IEnumerable<Option> GetMonths();
+        IEnumerable<Option> GetYears();
     }
 }

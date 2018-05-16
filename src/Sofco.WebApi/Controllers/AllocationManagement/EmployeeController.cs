@@ -30,6 +30,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpPost("search/unemployees")]
+        public IActionResult GetUnemployees([FromBody] UnemployeeSearchParameters parameters)
+        {
+            var model = employeeService.GetUnemployees(parameters);
+
+            return Ok(model);
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
@@ -113,6 +121,22 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult UpdateBusinessHours(int id, [FromBody] EmployeeBusinessHoursParams model)
         {
             var response = employeeService.UpdateBusinessHours(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("currentCategories")]
+        public IActionResult GetCurrentCategories()
+        {
+            var response = employeeService.GetCurrentCategories();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/pendingWorkingHours")]
+        public IActionResult PendingWorkingHours(int id)
+        {
+            var response = employeeService.GetPendingWorkingHours(id);
 
             return this.CreateResponse(response);
         }

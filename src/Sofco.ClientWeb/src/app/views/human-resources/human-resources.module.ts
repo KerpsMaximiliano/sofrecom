@@ -24,10 +24,12 @@ import { LicensePendingComponent } from 'app/views/human-resources/licenses/work
 import { LicenseRejectComponent } from 'app/views/human-resources/licenses/workflow/reject/reject.component';
 import { LicenseHistoryComponent } from 'app/views/human-resources/licenses/history/license-history.component';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
+import { LicenseCancelComponent } from 'app/views/human-resources/licenses/workflow/cancelled/cancelled.component';
+import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
 
 @NgModule({
   declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
-                LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent],
+                LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],

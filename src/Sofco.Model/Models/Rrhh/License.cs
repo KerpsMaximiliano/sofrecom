@@ -47,5 +47,7 @@ namespace Sofco.Model.Models.Rrhh
         public ICollection<LicenseFile> LicenseFiles { get; set; }
 
         public ICollection<LicenseHistory> Histories { get; set; }
+
+        public int DaysQuantityByLaw { get; set; }
     }
 }

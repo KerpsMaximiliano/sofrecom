@@ -23,6 +23,7 @@ export class Ng2ModalComponent implements OnInit {
   @Input() size;
 
   @Input() isLoading: boolean = false;
+  @Input() isSaveEnabled: boolean = true;
 
   constructor() { }
 
@@ -32,7 +33,8 @@ export class Ng2ModalComponent implements OnInit {
   show(){
     setTimeout(() => {
       $('#' + this.config.id).modal({
-        backdrop: this.config.closeIcon ? 'true' : 'static'
+        backdrop: 'static',
+        keyboard: false
       });
     });
   }

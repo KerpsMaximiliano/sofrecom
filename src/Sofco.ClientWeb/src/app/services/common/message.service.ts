@@ -9,7 +9,7 @@ declare var swal: any;
 @Injectable()
 export class MessageService {
     private errorConfig:ToastConfig;
-    
+
     constructor(private toastrService: ToastrService,
                 private i18nService: I18nService) {
                     this.errorConfig = new ToastConfig();
@@ -21,10 +21,9 @@ export class MessageService {
 
     showMessages(messages: Message[]) {
         messages.forEach((value, index) => {
-
             const msg = this.i18nService.translate(value.folder, value.code);
 
-            switch(value.type){
+            switch (value.type) {
                 case 0: this.toastrService.success(msg); break;
                 case 1: this.toastrService.error(msg, 'Error', this.errorConfig); break;
                 case 2: this.toastrService.warning(msg); break;

@@ -2,8 +2,8 @@
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License
-{
-    public class OthersLicense : ILicenseValidator
+{ 
+    public class OthersLicense : LicenseValidator, ILicenseValidator
     {
         public void Validate(Response response, Model.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
         {
@@ -13,8 +13,12 @@ namespace Sofco.Framework.StatusHandlers.License
             }
             else
             {
-                var days = domain.EndDate.Date.Subtract(domain.StartDate.Date).Days + 1;
-                domain.DaysQuantity = days;
+                //Item 1 = Working Days
+                //Item 2 = Total Days 
+                var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
+
+                domain.DaysQuantity = tupla.Item1;
+                domain.DaysQuantityByLaw = tupla.Item2;
             }
         }
     }

@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Relationships;
@@ -40,8 +41,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public void UpdateEndDate(Employee employeeToChange)
         {
+            context.Entry(employeeToChange).Property("CreatedByUser").IsModified = true;
             context.Entry(employeeToChange).Property("Modified").IsModified = true;
             context.Entry(employeeToChange).Property("EndDate").IsModified = true;
+            context.Entry(employeeToChange).Property("EndReason").IsModified = true;
+            context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
@@ -89,18 +93,39 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
         }
 
-        public IList<EmployeeCategory> GetEmployeeCategories(int id)
+        public IList<EmployeeCategory> GetEmployeeCategories(int employeeId)
         {
             return context.EmployeeCategories
                 .Include(x => x.Category)
                     .ThenInclude(x => x.Tasks)
-                .Where(x => x.EmployeeId == id && x.Category.Active).ToList();
+                .Where(x => x.EmployeeId == employeeId && x.Category.Active).ToList();
         }
 
         public void UpdateBusinessHours(Employee employee)
         {
             context.Entry(employee).Property("BusinessHours").IsModified = true;
             context.Entry(employee).Property("BusinessHoursDescription").IsModified = true;
+        }
+
+        public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
+        {
+            return context.Employees.Where(x => employeeNumbers.Contains(x.EmployeeNumber)).ToList();
+        }
+
+        public IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters)
+        {
+            IQueryable<Employee> query = context.Employees.Include(x => x.TypeEndReason).Where(x => x.EndDate.HasValue);
+
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
+                query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
+
+            if (parameters.StartDate.HasValue)
+                query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date >= parameters.StartDate.Value.Date);
+
+            if (parameters.EndDate.HasValue)
+                query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date <= parameters.EndDate.Value.Date);
+
+            return query.ToList();
         }
 
         public void Save(List<Employee> employees)

@@ -17,6 +17,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Category.resx</DependentUpon>
     </Compile>
+    <Compile Update="Admin\Group.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Group.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Module.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Module.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Role.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Role.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Setting.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Setting.resx</DependentUpon>
+    </Compile>
     <Compile Update="Admin\Task.Designer.cs">
       <DependentUpon>Category - Copia.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -31,6 +51,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Functionality.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\User.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>User.resx</DependentUpon>
     </Compile>
     <Compile Update="AllocationManagement\Allocation.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -52,12 +77,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Employee.resx</DependentUpon>
     </Compile>
-    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
-      <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="AllocationManagement\EmployeeSyncAction - Copia.Designer.cs">
+    <Compile Update="AllocationManagement\EmployeeSyncAction.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EmployeeSyncAction.resx</DependentUpon>
@@ -102,6 +122,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Common.resx</DependentUpon>
     </Compile>
+    <Compile Update="Mails\MailCommonResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MailCommonResource.resx</DependentUpon>
+    </Compile>
     <Compile Update="Mails\MailMessageResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -117,14 +142,40 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MailSubjectResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="Months.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Months.resx</DependentUpon>
+    </Compile>
     <Compile Update="Rrhh\License.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>License.resx</DependentUpon>
     </Compile>
+    <Compile Update="WorkTimeManagement\WorkTime.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WorkTime.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Admin\Group.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Group.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Module.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Module.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Role.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Role.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Setting.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Setting.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Admin\Task.resx">
       <LastGenOutput>Task.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -132,6 +183,10 @@
     <EmbeddedResource Update="Admin\Functionality.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Functionality.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\User.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>User.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -155,7 +210,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\EmployeeSyncAction.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmployeeSyncAction - Copia.Designer.cs</LastGenOutput>
+      <LastGenOutput>EmployeeSyncAction.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\TimeApproval.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -189,6 +244,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Common.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Mails\MailCommonResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MailCommonResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Mails\MailMessageResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailMessageResource.Designer.cs</LastGenOutput>
@@ -201,9 +260,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailSubjectResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Months.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Months.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\License.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>License.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="WorkTimeManagement\WorkTime.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkTime.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

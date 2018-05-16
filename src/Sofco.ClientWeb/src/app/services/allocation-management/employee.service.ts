@@ -40,6 +40,10 @@ export class EmployeeService {
     return this.http.post<any>(`${this.baseUrl}/employees/search`, model);
   }
 
+  searchUnemployees(model) {
+    return this.http.post<any>(`${this.baseUrl}/employees/search/unemployees`, model);
+  }
+
   sendUnsubscribeNotification(employeeName, json){
     return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json);
   }
@@ -58,5 +62,13 @@ export class EmployeeService {
 
   updateBusinessHours(id, json){
     return this.http.put<any>(`${this.baseUrl}/employees/${id}/businessHours`, json);
+  }
+
+  getCurrentCategories() {
+    return this.http.get<any>(`${this.baseUrl}/employees/currentCategories`);
+  }
+
+  getPendingHours(id) {
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/pendingWorkingHours`);
   }
 }

@@ -6,9 +6,9 @@ import { UsersComponent } from './views/admin/users/user-list/users.component';
 import { UserDetailComponent } from './views/admin/users/user-detail/user-detail.component';
 import { GroupsComponent } from './views/admin/groups/group-list/groups.component';
 import { FunctionalitiesComponent } from './views/admin/functionalities/functionalities.component';
-import {Routes} from "@angular/router";
-import {BlankLayoutComponent} from "./components/common/layouts/blankLayout.component";
-import {BasicLayoutComponent} from "./components/common/layouts/basicLayout.component";
+import { Routes } from "@angular/router";
+import { BlankLayoutComponent } from "./components/common/layouts/blankLayout.component";
+import { BasicLayoutComponent } from "./components/common/layouts/basicLayout.component";
 import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 import { GroupAddComponent } from "app/views/admin/groups/group-add/group-add.component";
@@ -66,6 +66,12 @@ import { CategoryListComponent } from 'app/views/admin/category/list/category-li
 import { TaskAddComponent } from 'app/views/admin/tasks/add/task-add.component';
 import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.component';
 import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
+import { WorkTimeComponent } from './views/worktime-management/worktime/worktime.component';
+import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
+import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
+import { WorkTimeReportComponent } from './views/worktime-management/report/worktime-report.component';
+import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
+import { HolidaysComponent } from './views/worktime-management/holidays/holidays.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -111,10 +117,10 @@ export const ROUTES:Routes = [
         { path: 'add', component: TaskAddComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "ADD" } },
         { path: ':id/edit', component: TaskEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
       ]},
-      
-      { path: 'settings', children:[
+
+      { path: 'settings', children: [
         {path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
-      ]},
+      ]}
     ]
   },
 
@@ -122,8 +128,8 @@ export const ROUTES:Routes = [
     path: 'billing', component: BasicLayoutComponent,
     children: [
       { path: 'customers', children:[
-        { path:"", component: CustomersComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
-        { path:":customerId/services", children: [
+        { path: "", component: CustomersComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
+        { path: ":customerId/services", children: [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/purchaseOrders", component: PurchaseOrdersByServiceComponent, canActivate: [AuthGuard] },
@@ -171,12 +177,12 @@ export const ROUTES:Routes = [
   {
     path: 'contracts', component: BasicLayoutComponent,
     children: [
-      { path:"analytics", 
+      { path: "analytics",
       children: [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
-        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]},
       {
@@ -194,26 +200,27 @@ export const ROUTES:Routes = [
     children: [
       { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
       {
-        path: "resources", 
+        path: "resources",
         children: [
-          { path:"", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
-          { path:":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWPRO" } },
-          { path:":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
+          { path: "", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
+          { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWPRO" } },
+          { path: ":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
       {
-        path: "employees", 
+        path: "employees",
         children: [
-          { path:"news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
+          { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
         ]
       },
+      { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
       {
-        path:"licenses",
+        path: "licenses",
         children: [
-          { path:"add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
-          { path:"rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
-          { path:"managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
-          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] } 
+          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
+          { path: "rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
+          { path: "managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
+          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
       },
       {
@@ -221,7 +228,7 @@ export const ROUTES:Routes = [
         children: [
           { path: "delegate", component: WorkTimeApprovalDelegateComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "TAPDE" } }
         ]
-      }
+      },
     ]
   },
 
@@ -259,6 +266,26 @@ export const ROUTES:Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: '403', component: ForbiddenComponent, canActivate: [AuthGuard] }
+    ]
+  },
+
+  {
+    path: 'workTimeManagement', component: BasicLayoutComponent,
+    children: [
+      {
+        path: 'workTime', children:[
+          { path: "load", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "WORKT" } },
+          { path: "approval", component: WorkTimeApprovalComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "APPRO" } },
+          { path: "report", component: WorkTimeReportComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "REPOR" } },
+          { path: "search", component: WorkTimeSearchComponent, canActivate: [AuthGuard] }
+        ]
+      },
+      {
+        path: 'holidays',
+        children: [
+          { path: "", component: HolidaysComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "HOLID" } }
+        ]
+      },
     ]
   },
 

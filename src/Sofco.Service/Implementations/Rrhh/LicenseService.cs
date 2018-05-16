@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using OfficeOpenXml;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
@@ -15,10 +17,14 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
+using Sofco.Data.Admin;
+using Sofco.Data.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Rrhh;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using File = Sofco.Model.Models.Common.File;
@@ -50,13 +56,14 @@ namespace Sofco.Service.Implementations.Rrhh
             this.licenseFileManager = licenseFileManager;
         }
 
-        public Response<string> Add(License domain)
+        public Response<string> Add(LicenseAddModel model)
         {
             var response = new Response<string>();
+            var domain = model.CreateDomain();
 
             LicenseValidationHandler.ValidateEmployee(response, domain, unitOfWork);
             LicenseValidationHandler.ValidateManager(response, domain, unitOfWork);
-            LicenseValidationHandler.ValidateDates(response, domain);
+            LicenseValidationHandler.ValidateDates(response, domain, model.IsRrhh);
             LicenseValidationHandler.ValidateSector(response, domain);
             LicenseValidationHandler.ValidateLicenseType(response, domain);
 
@@ -78,6 +85,28 @@ namespace Sofco.Service.Implementations.Rrhh
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            var license = LicenseValidationHandler.FindFull(domain.Id, response, unitOfWork);
+
+            try
+            {
+                // Generates all worktimes between license days
+                if (license.Status == LicenseStatus.Draft)
+                {
+                    GenerateWorkTimes(license);
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Rrhh.License.GenerateWorkTimesError);
+            }
+
+            if (!response.HasErrors())
+            {
+                UpdateStatus(model, response, domain.Type, license);
             }
 
             return response;
@@ -197,11 +226,13 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public Response ChangeStatus(int id, LicenseStatusChangeModel model)
+        public Response ChangeStatus(int id, LicenseStatusChangeModel model, License license)
         {
             var response = new Response();
 
-            var license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
+            if (license == null)
+                license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
+
             var licenseStatusHandler = licenseStatusFactory.GetInstance(model.Status);
 
             try
@@ -218,19 +249,123 @@ namespace Sofco.Service.Implementations.Rrhh
                 var history = GetHistory(license, model);
                 unitOfWork.LicenseRepository.AddHistory(history);
 
-                // Save4
+                // Save
                 unitOfWork.Save();
                 response.AddSuccess(licenseStatusHandler.GetSuccessMessage());
             }
             catch (Exception e)
             {
                 logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
+
+                if (response.Messages.Any(x => x.Type == MessageType.Success))
+                {
+                    response.AddWarning(Resources.Rrhh.License.ChangeStatusError);
+                }
+                else
+                {
+                    response.AddError(Resources.Rrhh.License.ChangeStatusError);
+                }
+                
+                return response;
+            }
+
+            try
+            {
+                // Remove all worktimes between license days
+                if (model.Status == LicenseStatus.Cancelled || model.Status == LicenseStatus.Rejected)
+                {
+                    unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.DeleteError);
             }
 
             SendMail(license, response, licenseStatusHandler, model);
 
             return response;
+        }
+
+        private void GenerateWorkTimes(License license)
+        {
+            var startDate = license.StartDate;
+            var endDate = license.EndDate;
+
+            var allocationStartDate = new DateTime(startDate.Year, startDate.Month, 1);
+            var allocationEndDate = new DateTime(endDate.Year, endDate.Month, 1);
+
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(license.EmployeeId, allocationStartDate, allocationEndDate);
+
+            var user = unitOfWork.UserRepository.GetByEmail(license.Employee.Email);
+
+            while (startDate.Date <= endDate.Date)
+            {
+                if (startDate.DayOfWeek == DayOfWeek.Saturday || startDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    startDate = startDate.AddDays(1);
+                    continue;
+                }
+
+                var startDateOfMonth = new DateTime(startDate.Year, startDate.Month, 1);
+
+                var allocationsInMonth = allocations.Where(x => x.StartDate == startDateOfMonth).ToList();
+
+                if (!allocationsInMonth.Any())
+                {
+                    var worktime = BuildWorkTime(license, startDate, user);
+
+                    worktime.AnalyticId = 74;
+                    worktime.Hours = 8;
+
+                    unitOfWork.WorkTimeRepository.Insert(worktime);
+                }
+                else
+                {
+                    if (allocationsInMonth.All(x => x.Percentage == 0))
+                    {
+                        var worktime = BuildWorkTime(license, startDate, user);
+
+                        worktime.AnalyticId = 74;
+                        worktime.Hours = 8;
+
+                        unitOfWork.WorkTimeRepository.Insert(worktime);
+                    }
+                    else
+                    {
+                        foreach (var allocation in allocationsInMonth)
+                        {
+                            if (allocation.Percentage > 0)
+                            {
+                                var worktime = BuildWorkTime(license, startDate, user);
+
+                                worktime.AnalyticId = allocation.AnalyticId;
+                                worktime.Hours = (8 * allocation.Percentage) / 100;
+
+                                unitOfWork.WorkTimeRepository.Insert(worktime);
+                            }
+                        }
+                    }
+                }
+
+                startDate = startDate.AddDays(1);
+            }
+        }
+
+        private WorkTime BuildWorkTime(License license, DateTime startDate, Model.Models.Admin.User user)
+        {
+            var worktime = new WorkTime();
+
+            worktime.EmployeeId = license.EmployeeId;
+            worktime.UserId = user.Id;
+            worktime.UserComment = license.Type.Description;
+            worktime.CreationDate = DateTime.UtcNow.Date;
+            worktime.Status = WorkTimeStatus.License;
+            worktime.Date = startDate.Date;
+            worktime.TaskId = license.Type.TaskId;
+
+            return worktime;
         }
 
         private void SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters)
@@ -313,6 +448,34 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        private void UpdateStatus(LicenseAddModel model, Response<string> response, LicenseType licenseType, License license)
+        {
+            if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = licenseType.CertificateRequired ? LicenseStatus.ApprovePending : LicenseStatus.Approved,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams, license);
+                response.AddMessages(statusResponse.Messages);
+            }
+            else
+            {
+                var statusParams = new LicenseStatusChangeModel
+                {
+                    Status = LicenseStatus.AuthPending,
+                    UserId = model.UserId,
+                    IsRrhh = model.IsRrhh
+                };
+
+                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams, license);
+                response.AddMessages(statusResponse.Messages);
+            }
         }
     }
 }

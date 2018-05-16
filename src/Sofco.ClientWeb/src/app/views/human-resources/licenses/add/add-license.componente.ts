@@ -10,6 +10,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { License } from "../../../../models/rrhh/license";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { UserInfoService } from "../../../../services/common/user-info.service";
 
 declare var $: any;
 
@@ -69,19 +70,16 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(dataJson) this.fromProfile = dataJson.fromProfile;
 
         if(this.fromProfile){
-            if(Cookie.get('userInfo')){
-                var userApplicant = JSON.parse(Cookie.get('userInfo'));
-        
-                if(userApplicant && userApplicant.employeeId && userApplicant.name){
-                    this.model.employeeId = userApplicant.employeeId;
-                    this.userApplicantName = userApplicant.name;
-                }
+            const userInfo = UserInfoService.getUserInfo();
+
+            if(userInfo && userInfo.employeeId && userInfo.name){
+                this.model.employeeId = userInfo.employeeId;
+                this.userApplicantName = userInfo.name;
             }
-        }
-        else{
+        } else {
             this.getEmployees();
         }
-        
+
         this.getManagers();
         this.getLicenceTypes();
         this.getSectors();

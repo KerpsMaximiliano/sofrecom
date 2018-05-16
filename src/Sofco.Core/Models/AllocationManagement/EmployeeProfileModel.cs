@@ -47,6 +47,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public int HolidaysPending { get; set; }
 
+        public int HolidaysPendingByLaw { get; set; }
+
         public int HolidaysByLaw { get; set; }
 
         public int ExtraHolidaysQuantity { get; set; }

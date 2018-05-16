@@ -41,39 +41,60 @@ export class I18nService {
 
     }
 
-    translate(folder, code){
-        var lang = this.config.currLang;
+    translate(folder, code) {
+        const lang = this.config.currLang;
 
-        if(!folder || folder == null || folder == '') return;
+        if (!folder || folder == null || folder == '') return;
 
-        var translateFile = require(`../../../assets/i18n/${lang}/${folder}.json`);
+        const translateFile = require(`../../../assets/i18n/${lang}/${folder}.json`);
 
-        var value = "";
+        if (!translateFile || !code) return "";
 
-        if(!translateFile) return value;
+        let value = "";
 
-        if(code){
-            var keySplitted = code.split(".");
+        const keySplitted = code.split(".");
 
-            if(keySplitted.length > 1){
+        if (keySplitted.length > 1) {
 
-                var arraySliced = keySplitted.slice(1, keySplitted.length);
-                
-                var obj = translateFile[keySplitted[0]];
+            const arraySliced = keySplitted.slice(1, keySplitted.length);
 
-                arraySliced.forEach(element => {
-                    obj = obj[element];
-                });
+            let obj = translateFile[keySplitted[0]];
 
-                if(obj) return obj;
-            }
-            else{
-                value = translateFile[code];
-                if(value) return value;
-            }
+            arraySliced.forEach(element => {
+                obj = obj[element];
+            });
+
+            if (obj) return obj;
+        } else {
+            const rawCode = this.trimCode(code);
+
+            value = this.processWithParameters(code, translateFile[rawCode]);
+
+            if (value) return value;
         }
 
         return "";
+    }
 
+    trimCode(code: string): string {
+        if (code.indexOf('?') > -1) {
+            code = code.split('?')[0];
+        }
+
+        return code;
+    }
+
+    processWithParameters(code: string, msg: any): string {
+        let parms = null;
+
+        if (code.indexOf('?') > -1) {
+            parms = code.split('?')[1].split(',');
+        }
+
+        if (parms != null) {
+            msg = msg.format(...parms);
+        }
+
+        return msg;
     }
 }

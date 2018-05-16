@@ -9,6 +9,7 @@ import { AuthenticationService } from "app/services/common/authentication.servic
 import { MenuService } from "app/services/admin/menu.service";
 import { UserService } from "app/services/admin/user.service";
 import { CryptographyService } from 'app/services/common/cryptography.service';
+import { UserInfoService } from '../../../services/common/user-info.service';
 
 @Component({
   selector: 'app-login',
@@ -54,8 +55,9 @@ export class LoginComponent implements OnInit {
         this.userSubscrip = this.userService.getByEmail().subscribe(
             response => {
                 const userData = response;
-                Cookie.set('userInfo', JSON.stringify(userData));
-                this.menuService.currentUser = userData.name;
+                const userName = userData.name;
+                UserInfoService.setUserInfo(userData);
+                this.menuService.currentUser = userName;
                 this.menuService.user = userData;
             },
             error => this.errorHandlerService.handleErrors(error)

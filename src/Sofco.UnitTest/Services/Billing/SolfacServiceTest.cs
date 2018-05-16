@@ -12,7 +12,6 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
-using Sofco.DAL;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;

@@ -14,12 +14,13 @@ namespace Sofco.Resources.Admin {
     
     
     /// <summary>
-    ///    Clase de recurso fuertemente tipada para buscar cadenas localizadas, etc.
+    ///   Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
     /// </summary>
     // StronglyTypedResourceBuilder generó automáticamente esta clase
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class User {
@@ -28,11 +29,12 @@ namespace Sofco.Resources.Admin {
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal User() {
         }
         
         /// <summary>
-        ///    Devuelve la instancia de ResourceManager en caché que usa la clase.
+        ///   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Resources.ResourceManager ResourceManager {
@@ -46,8 +48,8 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Reemplaza la propiedad CurrentUICulture del subproceso actual para todas
-        ///    las búsquedas de recursos que usan esta clase de recursos fuertemente tipada.
+        ///   Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+        ///   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Globalization.CultureInfo Culture {
@@ -60,7 +62,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.alreadyExist.
+        ///   Busca una cadena traducida similar a admin/user.alreadyExist.
         /// </summary>
         public static string AlreadyExist {
             get {
@@ -69,7 +71,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.created.
+        ///   Busca una cadena traducida similar a admin/user.created.
         /// </summary>
         public static string Created {
             get {
@@ -78,7 +80,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.disabled.
+        ///   Busca una cadena traducida similar a admin/user.disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -87,7 +89,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.enabled.
+        ///   Busca una cadena traducida similar a admin/user.enabled.
         /// </summary>
         public static string Enabled {
             get {
@@ -96,7 +98,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.groupAssigned.
+        ///   Busca una cadena traducida similar a admin/user.groupAssigned.
         /// </summary>
         public static string GroupAssigned {
             get {
@@ -105,7 +107,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.groupRemoved.
+        ///   Busca una cadena traducida similar a admin/user.groupRemoved.
         /// </summary>
         public static string GroupRemoved {
             get {
@@ -114,7 +116,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.loginFailed.
+        ///   Busca una cadena traducida similar a admin/user.loginFailed.
         /// </summary>
         public static string LoginFailed {
             get {
@@ -123,7 +125,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.notFound.
+        ///   Busca una cadena traducida similar a admin/user.notFound.
         /// </summary>
         public static string NotFound {
             get {
@@ -132,7 +134,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.userGroupsUpdated.
+        ///   Busca una cadena traducida similar a admin/user.userGroupsUpdated.
         /// </summary>
         public static string UserGroupsUpdated {
             get {
@@ -141,7 +143,7 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
-        ///    Busca una cadena localizada similar a admin/user.userInactive.
+        ///   Busca una cadena traducida similar a admin/user.userInactive.
         /// </summary>
         public static string UserInactive {
             get {

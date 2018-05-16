@@ -29,10 +29,12 @@
         "assets/styles/plugins/datepicker/datepicker.css",
         "styles.scss",
         "../node_modules/toastr-ng2/toastr.css",
-        "../node_modules/sweetalert2/dist/sweetalert2.min.css"
+        "../node_modules/sweetalert2/dist/sweetalert2.min.css",
+        "../node_modules/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/jquery-ui-dist/jquery-ui.js",
         "../node_modules/select2/dist/js/select2.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/metismenu/dist/metisMenu.js",
@@ -42,6 +44,7 @@
         "assets/js/vfs_fonts.js",
         "assets/js/pdfjs/pdf.js",
         "assets/styles/plugins/datepicker/bootstrap-datepicker.js",
+        "assets/js/common.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/datatables.net-buttons/js/dataTables.buttons.js",
@@ -51,7 +54,10 @@
         "../node_modules/jszip/dist/jszip.min.js",
         "../node_modules/datatables.net-buttons/js/buttons.html5.js",
         "../node_modules/moment/min/moment.min.js",
-        "../node_modules/sweetalert2/dist/sweetalert2.min.js"
+        "../node_modules/sweetalert2/dist/sweetalert2.min.js",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.js",
+        "../node_modules/fullcalendar/dist/locale/es.js",
+        "../node_modules/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
