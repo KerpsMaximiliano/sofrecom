@@ -109,7 +109,7 @@
                         <td>{{ resource.technology}}</td>
                         <td class="column-sm">
                             <button title="{{'ACTIONS.notifyUnsubscribe' | translate }}" class="btn btn-danger btn-xs" *ngIf="canSendUnsubscribeNotification()" (click)="openEndEmployeeModal(resource)"><i class="fa fa-user-times"></i></button>
-                            <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)"><i class="fa fa-user-plus"></i></button>
+                            <button title="{{'ACTIONS.assign' | translate }}" class="btn btn-primary btn-xs" (click)="goToAssignAnalytics(resource)" *ngIf="menuService.hasFunctionality('ALLOC', 'ADRES')"><i class="fa fa-user-plus"></i></button>
                             <button title="{{'allocationManagement.resources.profile' | translate }}" class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()"><i class="fa fa-eye"></i></button>
                         </td>
                     </tr>
