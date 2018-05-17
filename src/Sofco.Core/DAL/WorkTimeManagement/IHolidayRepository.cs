@@ -9,5 +9,9 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         List<Holiday> Get(int year);
 
         void Save(Holiday holiday);
+
+        void SaveFromExternalData(List<Holiday> holidays);
+
+        void Delete(int holidayId);
     }
 }
