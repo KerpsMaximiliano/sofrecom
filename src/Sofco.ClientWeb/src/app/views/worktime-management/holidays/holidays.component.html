@@ -17,6 +17,13 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h4 class="pull-left">{{ 'workTimeManagement.holiday.title' | translate }}</h4>
+
+            <div style="width:100%">
+                <div style="width:200px; margin: 0 auto">
+                    <input id="yearControl" type="text" class="form-control" style="text-align: center" name="selectedYear" [(ngModel)]="selectedYear">
+                </div>
+            </div>
+
             <div class="ibox-tools">
                 <button class="btn btn-primary" (click)="importExternalData()"> {{ 'workTimeManagement.holiday.importExternalData' | translate }} <i class="fa fa-download"></i></button>
                 <br>
@@ -37,7 +44,8 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center column-xs">
-
+                            <button class="btn btn-warning btn-xs" (click)="editHoliday(item)"><span class="fa fa-edit" title="YYYY"></span></button>
+                            <button class="btn btn-danger btn-xs" (click)="deleteHoliday(item)"><span class="fa fa-trash" title="XXXX"></span></button>
                         </td>
                     </tr>
                 </tbody>
@@ -57,5 +65,12 @@
         <date-picker #dateControl [(date)]="holidayModel.date" (dateChange)="showSaveModal()"></date-picker>
     </div>
 </form>
+</ng2-modal>
 
+<ng2-modal [config]="confirmImportModalConfig" #confirmImportModal (accept)="processImport()">
+    <h4>{{ 'workTimeManagement.holiday.importConfirm' | translate }}</h4>
+</ng2-modal>
+
+<ng2-modal [config]="confirmDeleteModalConfig" #confirmDeleteModal (accept)="processDelete()">
+    <h4>{{ 'workTimeManagement.holiday.deleteConfirm' | translate }}</h4>
 </ng2-modal>

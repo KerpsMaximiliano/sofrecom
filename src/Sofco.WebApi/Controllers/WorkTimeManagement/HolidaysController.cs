@@ -34,12 +34,18 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return this.CreateResponse(response);
         }
 
-        [HttpPost("importExternalData")]
-        public IActionResult ImportExternalData()
+        [HttpPost("importExternalData/{year}")]
+        public IActionResult ImportExternalData(int year)
         {
-            var currentYear = DateTime.UtcNow.Year;
+            var response = service.ImportExternalData(year);
 
-            var response = service.ImportExternalData(currentYear);
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = service.Delete(id);
 
             return this.CreateResponse(response);
         }

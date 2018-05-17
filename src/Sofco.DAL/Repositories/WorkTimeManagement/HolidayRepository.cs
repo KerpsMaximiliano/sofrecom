@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.WorkTimeManagement;
@@ -15,7 +16,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
         public List<Holiday> Get(int year)
         {
-            return context.Holidays.Where(s => s.Date.Year == year).ToList();
+            return context.Holidays.Where(s => s.Date.ToUniversalTime().Year == year).OrderBy(s => s.Date).ToList();
         }
 
         public void Save(Holiday holiday)
@@ -39,6 +40,15 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             {
                 SaveFromExternalData(holiday);
             }
+        }
+
+        public void Delete(int holidayId)
+        {
+            var item = new Holiday { Id = holidayId };
+
+            context.Entry(item).State = EntityState.Deleted;
+
+            context.SaveChanges();
         }
 
         private void SaveFromExternalData(Holiday holiday)

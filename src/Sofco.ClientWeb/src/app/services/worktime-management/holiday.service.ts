@@ -12,15 +12,19 @@ export class HolidayService {
     this.apiUrl = this.service.UrlApi + '/holidays';
   }
 
-  get() {
-    return this.http.get<any>(`${this.apiUrl}/2018`);
+  get(year) {
+    return this.http.get<any>(`${this.apiUrl}/${year}`);
   }
 
   post(model) {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
 
-  importExternalData() {
-    return this.http.post<any>(`${this.apiUrl}/importExternalData`, null);
+  importExternalData(year) {
+    return this.http.post<any>(`${this.apiUrl}/importExternalData/${year}`, null);
+  }
+
+  delete(id: number) {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 }
