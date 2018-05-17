@@ -11,5 +11,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response<Holiday> Post(Holiday model);
 
         Response<List<Holiday>> ImportExternalData(int year);
+
+        Response Delete(int holidayId);
     }
 }

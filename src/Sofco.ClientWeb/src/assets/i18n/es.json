@@ -807,7 +807,9 @@
             "importExternalData": "Importar feriados de fuente externa",
             "name": "Nombre",
             "date": "Fecha",
-            "newHoliday": "Crear feriado"
+            "newHoliday": "Crear feriado",
+            "importConfirm": "Confirma importar feriados desde una fuente externa?",
+            "deleteConfirm": "Confirma eliminar el feriado seleccionado?"
         }
     },
     "months": {

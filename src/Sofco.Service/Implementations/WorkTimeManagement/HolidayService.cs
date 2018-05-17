@@ -48,6 +48,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return new Response<List<Holiday>>{ Data = holidays };
         }
 
+        public Response Delete(int holidayId)
+        {
+            repository.Delete(holidayId);
+
+            return new Response();
+        }
+
         private List<Holiday> Translate(List<Feriado> feriados)
         {
             return mapper.Map<List<Feriado>, List<Holiday>>(feriados);
