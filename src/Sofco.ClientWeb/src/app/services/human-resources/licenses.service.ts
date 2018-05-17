@@ -73,6 +73,19 @@ export class LicenseService {
     return this.http.delete<any>(`${this.baseUrl}/licenses/file/${id}`);
   }
 
+  getFile(id){
+    return this.http.get<any>(`${this.baseUrl}/licenses/file/${id}`);
+  }
+
+  exportFile(id){
+    return this.http.get(`${this.baseUrl}/licenses/file/${id}`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+   }).map((res: any) => {
+     return new Blob([res.body], { type: 'application/octet-stream' });
+   });
+  }
+
   createReport() {
     return this.http.get(`${this.baseUrl}/licenses/report`,
      {
