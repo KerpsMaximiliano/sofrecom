@@ -134,6 +134,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.AllocationRepository.GetByService(serviceId);
         }
 
+        public ICollection<Employee> GetByEmployeesByAnalytic(int analyticId)
+        {
+            return unitOfWork.AllocationRepository.GetByAnalyticId(analyticId);
+        }
+
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
         {
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);

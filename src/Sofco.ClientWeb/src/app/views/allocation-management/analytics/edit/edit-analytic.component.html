@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-            <h2> {{ form.model.title }} - {{ form.model.name }} <label class="label label-primary">{{ getStatus() }}</label> </h2>
+        <h2> {{ form.model.title }} - {{ form.model.name }} <label class="label label-primary">{{ getStatus() }}</label> </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -26,6 +26,10 @@
             <div class="btn-right">
                 <button *ngIf="form.model.clientExternalId && form.model.serviceId" class="btn btn-success btn-outline dim" (click)="goToPurchaseOrders()"> 
                     {{'billing.purchaseOrder.title' | translate }} <i class="fa fa-file"></i> 
+                </button>
+
+                <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
+                    {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
                 </button>
 
                 <button *ngIf="form.model.clientExternalId && form.model.serviceId" class="btn btn-success btn-outline dim" (click)="goToProjects()"> 
