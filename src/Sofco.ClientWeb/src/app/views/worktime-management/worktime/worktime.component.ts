@@ -118,7 +118,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
         center: 'title',
         right: 'month'
       },
-      navLinks: true,
+      navLinks: false,
       editable: false,
       eventLimit: false,
       events: this.calendarEvents,
