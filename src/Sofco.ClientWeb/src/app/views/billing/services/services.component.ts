@@ -59,7 +59,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     initGrid(){
       var params = {
         selector: '#serviceTable',
-        columnDefs: [ {"aTargets": [1, 2], "sType": "date-uk"} ]
+        columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
       this.datatableService.init2(params);

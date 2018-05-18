@@ -39,13 +39,14 @@ import { DateRangePickerModule } from 'app/components/date-range-picker/date-ran
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { WorkTimeApprovalDelegateComponent } from 'app/views/allocation-management/worktime/worktime-approval-delegate/worktime-approval-delegate.component';
 import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
+import { ResourceByAnalyticComponent } from 'app/views/allocation-management/resources/by-analytic/resource-by-analytic.component';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddAllocationComponent, ResourceTimelineComponent, AddAllocationByResourceComponent, AllocationAssignmentTableComponent,
     ResourceSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent, NewsComponent,
     EditAnalyticComponent, ResourceByServiceComponent, ResourceDetailComponent, AllocationReportComponent, ViewAnalyticComponent, EditCostCenterComponent,
-    WorkTimeApprovalDelegateComponent
+    WorkTimeApprovalDelegateComponent, ResourceByAnalyticComponent
   ],
   imports: [
     BrowserModule,

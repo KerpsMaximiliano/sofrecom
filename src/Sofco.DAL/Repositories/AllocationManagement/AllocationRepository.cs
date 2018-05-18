@@ -43,6 +43,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Employee> GetByAnalyticId(int analyticId)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .Where(x => x.AnalyticId == analyticId)
+                .Select(x => x.Employee)
+                .Distinct()
+                .ToList();
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations

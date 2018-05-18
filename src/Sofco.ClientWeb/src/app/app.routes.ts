@@ -72,6 +72,7 @@ import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/
 import { WorkTimeReportComponent } from './views/worktime-management/report/worktime-report.component';
 import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
 import { HolidaysComponent } from './views/worktime-management/holidays/holidays.component';
+import { ResourceByAnalyticComponent } from 'app/views/allocation-management/resources/by-analytic/resource-by-analytic.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -184,6 +185,7 @@ export const ROUTES:Routes = [
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
         { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
+        { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
       ]},
       {
         path: "costCenter",
