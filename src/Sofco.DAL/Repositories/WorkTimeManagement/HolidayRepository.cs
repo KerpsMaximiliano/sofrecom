@@ -19,6 +19,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             return context.Holidays.Where(s => s.Date.ToUniversalTime().Year == year).OrderBy(s => s.Date).ToList();
         }
 
+        public List<Holiday> Get(int year, int month)
+        {
+            return context.Holidays.Where(s => s.Date.ToUniversalTime().Year == year && s.Date.ToUniversalTime().Month == month).OrderBy(s => s.Date).ToList();
+        }
+
         public void Save(Holiday holiday)
         {
             if (holiday.Id == 0)

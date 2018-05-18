@@ -84,6 +84,7 @@ namespace Sofco.DAL
 
         private IWorkTimeRepository workTimeRepository;
         private IWorkTimeApprovalRepository workTimeApprovalRepository;
+        private IHolidayRepository holidayRepository;
 
         #endregion
 
@@ -161,7 +162,10 @@ namespace Sofco.DAL
         #region WorkTimeManagement
 
         public IWorkTimeRepository WorkTimeRepository => workTimeRepository ?? (workTimeRepository = new WorkTimeRepository(context));
+
         public IWorkTimeApprovalRepository WorkTimeApprovalRepository => workTimeApprovalRepository ?? (workTimeApprovalRepository = new WorkTimeApprovalRepository(context));
+
+        public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
 

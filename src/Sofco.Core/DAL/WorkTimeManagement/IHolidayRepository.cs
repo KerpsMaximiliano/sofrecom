@@ -8,6 +8,8 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     {
         List<Holiday> Get(int year);
 
+        List<Holiday> Get(int year, int month);
+
         void Save(Holiday holiday);
 
         void SaveFromExternalData(List<Holiday> holidays);
