@@ -501,7 +501,7 @@
                 "percentage": "Facturabilidad",
                 "start": "Ingreso"
             },
-            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de carga a la fecha."
+            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
         },
         "news": {
             "title": "Novedades",
@@ -678,7 +678,7 @@
         "unsubscribe": "Dar de baja",
         "searchAll": "Ver Todo",
         "changeDates": "Cambiar Fechas",
-        "notifyUnsubscribe": "Notifcar baja",
+        "notifyUnsubscribe": "Notificar baja",
         "goHere": "Ingrese Aqui",
         "pendingDocumentation": "Documentación Pendiente",
         "authorize": "Autorizar",

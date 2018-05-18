@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="contact-buttons text-center">
-                    <a class="btn btn-danger btn-sm m-t-xs m-r-xs m-l-xs" (click)="openModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></a>
+                    <a class="btn btn-danger btn-sm m-t-xs m-r-xs m-l-xs" (click)="openEndEmployeeModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></a>
                     <a class="btn btn-primary btn-sm m-t-xs m-r-xs" (click)="goToAssignAnalytics(resource)" title="{{'ACTIONS.assign' | translate }}"><i class="fa fa-user-plus"></i></a>
                     <a class="btn btn-success btn-sm m-t-xs m-r-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()" title="{{'allocationManagement.resources.profile' | translate }}"><i class="fa fa-eye"></i></a>
                     <a class="btn btn-warning btn-sm m-t-xs m-r-xs" (click)="openCategoryModal(resource)" title="{{'ADMIN.category.add' | translate }}"><i class="fa fa-tasks"></i></a>
@@ -73,6 +73,12 @@
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.news.grid.endDate' | translate }}</label>
         <date-picker [(date)]="endDate"></date-picker>
+    </div>
+
+    <div class="form-group" *ngIf="pendingWorkingHours">
+        <div class="alert alert-warning">
+            {{'allocationManagement.resources.pendingWorkingHoursAlert' | translate }}
+        </div>
     </div>
 </ng2-modal> 
 

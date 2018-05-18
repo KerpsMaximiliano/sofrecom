@@ -28,7 +28,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
+    );
 
     @ViewChild('categoriesModal') categoriesModal;
     public categoriesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -38,8 +38,8 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
-    
+    );
+
     public resources: any[] = new Array<any>();
     public categories: any[] = new Array<any>();
     public users: any[] = new Array<any>();
@@ -57,6 +57,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
     getAllEmployeesSubscrip: Subscription;
     getCategorySubscrip: Subscription;
     addCategoriesSubscrip: Subscription;
+    public pendingWorkingHours = false;
 
     constructor(private router: Router,
                 public menuService: MenuService,
@@ -78,7 +79,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
             this.getAll();
           });
 
-        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -136,9 +137,20 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
 
-    openModal(resource){
-        this.resourceSelected = resource;
+    openModal(data) {
+        this.pendingWorkingHours = data.pendingHours > 0;
         this.confirmModal.show();
+    }
+
+    openEndEmployeeModal(resource) {
+        this.resourceSelected = resource;
+        this.getAllEmployeesSubscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
+            this.openModal(res.data);
+        },
+        error => {
+            this.confirmModal.hide();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     openCategoryModal(resource){
@@ -147,18 +159,18 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
     }
 
     sendUnsubscribeNotification(){
-        var json = {
+        const json = {
             receipents: $('#userId').val(),
             endDate: this.endDate
-        }
+        };
 
         this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
             this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
+            if (data.messages) this.messageService.showMessages(data.messages);
         },
         error => {
             this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error)
+            this.errorHandlerService.handleErrors(error);
         });
     }
 
