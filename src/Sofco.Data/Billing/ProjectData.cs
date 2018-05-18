@@ -12,7 +12,7 @@ namespace Sofco.Data.Billing
 {
     public class ProjectData : IProjectData
     {
-        private const string ProjectsCacheKey = "urn:services:{0}:projects:{1}:all";
+        private const string ProjectsCacheKey = "urn:services:{0}:projects:all";
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
