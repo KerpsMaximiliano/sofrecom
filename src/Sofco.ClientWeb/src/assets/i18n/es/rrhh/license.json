@@ -25,5 +25,8 @@
     "updateSuccess": "La licencia se actualizo correctamente",
     "wrongCertificateMonthQuantity": "El dia del mes debe ser mayor o igual a 1 y menor o igual a 28",
     "startDateIsWeekend": "La licencia debe comenzar en día lunes o el siguiente hábil si aquél fuese feriado.",
-    "cancelledSuccess": "La licencia fue cancelada correctamente"
+    "cancelledSuccess": "La licencia fue cancelada correctamente",
+    "changeStatusError": "Ocurrio un error al cambiar el estado. Consulte con RRHH",
+    "generateWorkTimesError": "Ocurrio un error al generar las horas",
+    "datesLessThanToday": "Las fechas no pueden ser menor a la fecha de hoy"
 }

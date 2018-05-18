@@ -25,11 +25,15 @@
                     {{'billing.purchaseOrder.title' | translate }} <i class="fa fa-file"></i> 
                 </button>
 
+                <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
+                    {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
+                </button>
+
                 <button class="btn btn-success btn-outline dim" (click)="goToProjects()" *ngIf="showClientButton"> 
                     {{'billing.project.title' | translate }} <i class="fa fa-building"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2"> 
+                <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('ALLOC', 'CLOSE')"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>   
             </div>

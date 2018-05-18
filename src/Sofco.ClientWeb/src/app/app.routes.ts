@@ -71,6 +71,8 @@ import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approva
 import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
 import { WorkTimeReportComponent } from './views/worktime-management/report/worktime-report.component';
 import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
+import { HolidaysComponent } from './views/worktime-management/holidays/holidays.component';
+import { ResourceByAnalyticComponent } from 'app/views/allocation-management/resources/by-analytic/resource-by-analytic.component';
 
 export const ROUTES:Routes = [
   // Main redirect
@@ -117,9 +119,9 @@ export const ROUTES:Routes = [
         { path: ':id/edit', component: TaskEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
       ]},
 
-      { path: 'settings', children:[
+      { path: 'settings', children: [
         {path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
-      ]},
+      ]}
     ]
   },
 
@@ -181,8 +183,9 @@ export const ROUTES:Routes = [
         { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
-        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANVIW" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
+        { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
       ]},
       {
         path: "costCenter",
@@ -219,7 +222,7 @@ export const ROUTES:Routes = [
           { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
           { path: "rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
           { path: "managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
-          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] } 
+          { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
       },
       {
@@ -227,7 +230,7 @@ export const ROUTES:Routes = [
         children: [
           { path: "delegate", component: WorkTimeApprovalDelegateComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "TAPDE" } }
         ]
-      }
+      },
     ]
   },
 
@@ -278,7 +281,13 @@ export const ROUTES:Routes = [
           { path: "report", component: WorkTimeReportComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "REPOR" } },
           { path: "search", component: WorkTimeSearchComponent, canActivate: [AuthGuard] }
         ]
-      }
+      },
+      {
+        path: 'holidays',
+        children: [
+          { path: "", component: HolidaysComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "HOLID" } }
+        ]
+      },
     ]
   },
 

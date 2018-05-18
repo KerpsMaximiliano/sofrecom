@@ -92,7 +92,7 @@ declare var moment: any;
             columns: columns,
             title: title,
             withExport: true,
-            columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ]
+            columnDefs: [ {'aTargets': [2, 3], "sType": "date-uk"} ]
           }
 
           this.dataTableService.destroy(params.selector);

@@ -39,7 +39,7 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
             }
         }
 
-        public static void ValidateDates(Response response, License domain)
+        public static void ValidateDates(Response response, License domain, bool isRrhh)
         {
             if (domain.StartDate == DateTime.MinValue || domain.EndDate == DateTime.MinValue)
             {
@@ -55,6 +55,11 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
                 if (domain.StartDate.Date > domain.EndDate.Date)
                 {
                     response.AddError(Resources.Rrhh.License.EndDateLessThanStartDate);
+                }
+
+                if (!isRrhh && (domain.StartDate.Date < DateTime.UtcNow.Date || domain.EndDate.Date < DateTime.UtcNow.Date))
+                {
+                    response.AddError(Resources.Rrhh.License.DatesLessThanToday);
                 }
             }
         }

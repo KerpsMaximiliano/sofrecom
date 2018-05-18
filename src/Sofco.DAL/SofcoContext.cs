@@ -70,6 +70,8 @@ namespace Sofco.DAL
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
 
+        public DbSet<Holiday> Holidays { get; set; }
+
         // Human Resources
         public DbSet<License> Licenses { get; set; }
         public DbSet<LicenseHistory> LicenseHistories { get; set; }

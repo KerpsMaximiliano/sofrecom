@@ -801,7 +801,16 @@
         "Sent": "Enviada",
         "Approved": "Aprobada",
         "Rejected": "Rechazada",
-        "License": "Licencia"
+        "License": "Licencia",
+        "holiday": {
+            "title": "ABM Feriados",
+            "importExternalData": "Importar feriados de fuente externa",
+            "name": "Nombre",
+            "date": "Fecha",
+            "newHoliday": "Crear feriado",
+            "importConfirm": "Confirma importar feriados desde una fuente externa?",
+            "deleteConfirm": "Confirma eliminar el feriado seleccionado?"
+        }
     },
     "months": {
         "january": "Enero",

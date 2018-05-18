@@ -57,6 +57,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 FillResume(result, startDate, endDate);
 
+                var dateUtc = date.ToUniversalTime();
+
+                result.Data.Holidays = unitOfWork.HolidayRepository.Get(dateUtc.Year, dateUtc.Month);
+
                 return result;
             }
             catch (Exception e)

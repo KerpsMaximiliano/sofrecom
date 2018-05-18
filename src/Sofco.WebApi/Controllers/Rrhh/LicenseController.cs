@@ -2,7 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Models.Rrhh;
+using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -19,11 +22,15 @@ namespace Sofco.WebApi.Controllers.Rrhh
     {
         private readonly ILicenseTypeService licenseTypeService;
         private readonly ILicenseService licenseService;
+        private readonly IFileService fileService;
+        private readonly FileConfig fileConfig;
 
-        public LicenseController(ILicenseTypeService licenseTypeService, ILicenseService licenseService)
+        public LicenseController(ILicenseTypeService licenseTypeService, ILicenseService licenseService, IFileService fileService, IOptions<FileConfig> fileOptions)
         {
             this.licenseTypeService = licenseTypeService;
             this.licenseService = licenseService;
+            this.fileService = fileService;
+            fileConfig = fileOptions.Value;
         }
 
         [HttpGet("types")]
@@ -128,11 +135,22 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return this.CreateResponse(response);
         }
 
+        [HttpGet("file/{id}")]
+        public IActionResult GetFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.LicensesPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
         [HttpPost]
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody]LicenseStatusChangeModel model)
         {
-            var response = licenseService.ChangeStatus(id, model);
+            var response = licenseService.ChangeStatus(id, model, null);
 
             return this.CreateResponse(response);
         }

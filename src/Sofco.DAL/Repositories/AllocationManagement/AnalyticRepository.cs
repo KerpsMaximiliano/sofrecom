@@ -131,5 +131,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 })
                 .ToList();
         }
+
+        public Analytic GetByTitle(string title)
+        {
+            return context.Analytics.SingleOrDefault(x => x.Title == title);
+        }
     }
 }

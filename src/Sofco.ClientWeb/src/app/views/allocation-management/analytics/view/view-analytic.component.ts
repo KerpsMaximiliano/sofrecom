@@ -6,6 +6,7 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
 
@@ -36,6 +37,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
                 private router: Router,
                 private i18nService: I18nService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService){
@@ -103,6 +105,13 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     goToProjects() {
+        sessionStorage.setItem('customerName', this.form.model.clientExternalName);
+        sessionStorage.setItem('serviceName', this.form.model.service);
         this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
+    }
+
+    goToResources(){
+        sessionStorage.setItem('analyticName', this.form.model.title + ' - ' + this.form.model.name);
+        this.router.navigate([`/contracts/analytics/${this.form.model.id}/resources`]);
     }
 }

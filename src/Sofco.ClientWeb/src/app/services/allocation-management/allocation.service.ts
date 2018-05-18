@@ -32,6 +32,10 @@ export class AllocationService {
     return this.http.get<any>(`${this.baseUrl}/allocations/service/${serviceId}`);
   }
 
+  getAllocationsByAnalytic(analyticId) {
+    return this.http.get<any>(`${this.baseUrl}/allocations/analytic/${analyticId}`);
+  }
+
   createReport(parameters) {
     return this.http.post<any>(`${this.baseUrl}/allocations/report`, parameters);
   }
