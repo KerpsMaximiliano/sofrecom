@@ -70,8 +70,10 @@ namespace Sofco.Core.DAL
         #region WorkTimeManagement
 
         IWorkTimeRepository WorkTimeRepository { get; }
+
         IWorkTimeApprovalRepository WorkTimeApprovalRepository { get; }
 
+        IHolidayRepository HolidayRepository { get; }
         #endregion
 
         void Save();

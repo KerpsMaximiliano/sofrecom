@@ -118,8 +118,9 @@
                 </div>
                 <div class="panel-body">
                     <ul class="todo-list small-list">
-                        <li *ngFor="let file of model.files; let i = index">
+                        <li *ngFor="let file of model.files; let i = index" (click)="exportExcel(file.id, file.text)">
                             <span class="m-l-xs pointer">{{file.text}}</span>
+                            <i class="fa fa-download"></i>
                             <a class="pull-right" (click)="openConfirmModal(file.id, i)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
                         </li>
                     </ul>
@@ -133,4 +134,4 @@
 
 <ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
-</ng2-modal>
+</ng2-modal> 

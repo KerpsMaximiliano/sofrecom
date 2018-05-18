@@ -11,6 +11,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { LicenseDetail } from "app/models/rrhh/licenseDetail";
 import { Option } from "../../../../models/option";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'license-detail',
@@ -43,7 +44,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
-
+ 
     constructor(private licenseService: LicenseService,
                 private router: Router,
                 public menuService: MenuService,
@@ -129,5 +130,12 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
           },
           err => this.errorHandlerService.handleErrors(err),
           () => this.messageService.closeLoading());
+    }
+
+    exportExcel(id, name){
+        this.licenseService.exportFile(id).subscribe(file => {
+            FileSaver.saveAs(file, name);
+        },
+        err => this.errorHandlerService.handleErrors(err));
     }
 } 
