@@ -43,6 +43,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Employee> GetByAnalyticId(int analyticId)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .Where(x => x.AnalyticId == analyticId)
+                .Select(x => x.Employee)
+                .Distinct()
+                .ToList();
+        }
+
+        public void DeleteAllocationWithReleaseDateNull()
+        {
+            context.Database.ExecuteSqlCommand("delete from app.allocations where releasedate = '0001-01-01 00:00:00.0000000'");
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations

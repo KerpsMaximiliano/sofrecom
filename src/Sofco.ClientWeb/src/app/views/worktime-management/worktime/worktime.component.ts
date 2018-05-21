@@ -49,12 +49,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public allTasks: any[] = new Array();
   public tasks: any[] = new Array();
   public recentAnalyticTasks: any[] = new Array();
+  public holidays: any[] = new Array();
 
   private idKey = 'id';
   private textKey = 'text';
   private subscription: Subscription;
   private calendarEvents: any[] = new Array();
   private calendarCurrentDateText = "";
+  private calendarCurrentDate = new Date();
 
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
@@ -114,9 +116,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay,listWeek'
+        right: 'month'
       },
-      navLinks: true,
+      navLinks: false,
       editable: false,
       eventLimit: false,
       events: this.calendarEvents,
@@ -127,9 +129,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       eventClick: function(calEvent, jsEvent, view) {
         self.eventClickHandler(calEvent);
       },
-      dayRender: this.setNotWorkingDayCalendar,
+      dayRender: function(date, cell) {
+        self.setNotWorkingDayCalendar(date, cell);
+      },
       viewRender: function(view, element) {
         self.viewRenderHandler(view, element);
+      },
+      eventAfterAllRender: function(view) {
+        self.eventAfterAllRender(view);
       }
     });
 
@@ -145,6 +152,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   viewRenderHandler(view, element) {
    const calendarMonth = view.start.add(1, 'M');
 
+   this.calendarCurrentDate = calendarMonth;
    this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
 
     this.getModel();
@@ -532,5 +540,27 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     }
 
     return true;
+  }
+
+  private eventAfterAllRender(view) {
+    const self = this;
+    $('.fc-day:not(.fc-disabled-day)').each(function(index, element) {
+      const calendarDate = (<any>element).dataset.date;
+
+      const holidays = self.model.holidays;
+
+      if (holidays == undefined) { return; }
+
+      let isHoliday = false;
+
+      for (const item of holidays) {
+        const holidayDate = moment(item.date).format('YYYY-MM-DD');
+        if (holidayDate === calendarDate) { isHoliday = true; }
+      }
+
+      if (!isHoliday) { return; }
+
+      $(this).css('background-color', '#EFEFEF');
+    });
   }
 }

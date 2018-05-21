@@ -80,14 +80,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
-                var result = new List<CrmProject>();
-                foreach (var item in userNames)
-                {
-                    result.AddRange(projectData.GetProjects(serviceId, item));
-                }
-
-                response.Data = result.DistinctBy(x => x.Id);
+                response.Data = projectData.GetProjects(serviceId);
             }
             catch (Exception ex)
             {

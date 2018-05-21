@@ -44,6 +44,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(resources.Select(x => new EmployeeViewModel(x)));
         }
 
+        [HttpGet("analytic/{analyticId}")]
+        public IActionResult GetByAnalytic(int analyticId)
+        {
+            var resources = allocationService.GetByEmployeesByAnalytic(analyticId);
+
+            return Ok(resources.Select(x => new EmployeeViewModel(x)));
+        }
+
         [HttpPost("report")]
         public IActionResult Report([FromBody] AllocationReportParams parameters)
         {

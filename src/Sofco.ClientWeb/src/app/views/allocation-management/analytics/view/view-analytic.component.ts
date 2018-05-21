@@ -105,6 +105,13 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     goToProjects() {
+        sessionStorage.setItem('customerName', this.form.model.clientExternalName);
+        sessionStorage.setItem('serviceName', this.form.model.service);
         this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
+    }
+
+    goToResources(){
+        sessionStorage.setItem('analyticName', this.form.model.title + ' - ' + this.form.model.name);
+        this.router.navigate([`/contracts/analytics/${this.form.model.id}/resources`]);
     }
 }

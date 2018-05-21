@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Model.Models.WorkTimeManagement;
@@ -33,10 +34,18 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return this.CreateResponse(response);
         }
 
-        [HttpPut("importExternalData/{year}")]
+        [HttpPost("importExternalData/{year}")]
         public IActionResult ImportExternalData(int year)
         {
             var response = service.ImportExternalData(year);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = service.Delete(id);
 
             return this.CreateResponse(response);
         }

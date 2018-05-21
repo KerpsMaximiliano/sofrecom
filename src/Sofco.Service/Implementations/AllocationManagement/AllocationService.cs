@@ -88,7 +88,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var allocationDto = new AllocationDto();
                 allocationDto.EmployeeId = employeeId;
 
-                var allocation = allocations.Where(x => x.AnalyticId == analyticId);
+                var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
                 if (allocation.Any())
                 {
@@ -132,6 +132,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public ICollection<Employee> GetByService(string serviceId)
         {
             return unitOfWork.AllocationRepository.GetByService(serviceId);
+        }
+
+        public ICollection<Employee> GetByEmployeesByAnalytic(int analyticId)
+        {
+            return unitOfWork.AllocationRepository.GetByAnalyticId(analyticId);
         }
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
@@ -235,6 +240,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 }
 
                 unitOfWork.Save();
+
+                unitOfWork.AllocationRepository.DeleteAllocationWithReleaseDateNull();
 
                 response.AddSuccess(Resources.AllocationManagement.Allocation.Added);
             }

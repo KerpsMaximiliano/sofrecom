@@ -38,7 +38,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.serviceId = params['serviceId'];
         this.customerName = sessionStorage.getItem('customerName');
         this.serviceName = sessionStorage.getItem('serviceName');
-        this.getAll();
+        sessionStorage.setItem('customerId', this.customerId);
+        sessionStorage.setItem('serviceId', this.serviceId);
+        this.getAll(); 
         this.getIfIsRelated();
       });
     }
@@ -75,7 +77,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     initGrid(){
       var params = {
         selector: '#projectTable',
-        columnDefs: [ {"aTargets": [5, 6], "sType": "date-uk"} ]
+        columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
       this.datatableService.init2(params);
@@ -124,14 +126,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   
     goToResources(){
-      var customerId = sessionStorage.getItem('customerId');
-      var serviceId = sessionStorage.getItem('serviceId');
-      this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/resources`]);
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/resources`]);
     }
   
     goToPurchaseOrders(){
-      var customerId = sessionStorage.getItem('customerId');
-      var serviceId = sessionStorage.getItem('serviceId');
-      this.router.navigate([`/billing/customers/${customerId}/services/${serviceId}/purchaseOrders`]);
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/purchaseOrders`]);
     }
 }

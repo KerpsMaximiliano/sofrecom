@@ -76,12 +76,12 @@ export class SolfacAccountControlComponent implements OnInit {
             return;
         };
 
-        this.customerService.getById(id).subscribe(data => {
-            this.selected = data;
+        this.customerService.getById(id).subscribe(res => {
+            this.selected = res.data;
             this.modelChange.emit(this.model);
         },
         err => {
-            this.errorHandlerService.handleErrors(err)
+            this.errorHandlerService.handleErrors(err);
         });
     }
 

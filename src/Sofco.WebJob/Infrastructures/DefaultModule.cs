@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -12,13 +13,16 @@ using Sofco.DAL;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.WebJob.Jobs.Interfaces;
+using StackExchange.Redis;
 
 namespace Sofco.WebJob.Infrastructures
 {
     public class DefaultModule : Module
     {
+        private const string ManagerAssemblyEndName = "Manager";
         private const string ServiceAssemblyEndName = "Service";
         private const string ClientAssemblyEndName = "Client";
+        private const string DataAssemblyEndName = "Data";
 
         public IConfigurationRoot Configuration { get; set; }
 
@@ -32,6 +36,14 @@ namespace Sofco.WebJob.Infrastructures
 
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(s => s.Name.EndsWith(ServiceAssemblyEndName))
+                .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(ManagerAssemblyEndName))
+                .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(DataAssemblyEndName))
                 .AsImplementedInterfaces();
 
             builder.RegisterType<MailBuilder>()
@@ -51,6 +63,8 @@ namespace Sofco.WebJob.Infrastructures
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
+            RegisterRedisDependencies(builder);
+
             RegisterLogger(builder);
         }
 
@@ -61,6 +75,24 @@ namespace Sofco.WebJob.Infrastructures
 
             builder.RegisterGeneric(typeof(LogMailer<>))
                 .As(typeof(ILogMailer<>));
+        }
+
+        private void RegisterRedisDependencies(ContainerBuilder builder)
+        {
+            builder.Register(c =>
+                {
+                    var redisConfig = Configuration["Redis:ConnectionString"];
+
+                    var lazyConnection =
+                        new Lazy<ConnectionMultiplexer>(
+                            () => ConnectionMultiplexer.Connect(redisConfig));
+                    return lazyConnection.Value;
+                })
+                .As<ConnectionMultiplexer>()
+                .SingleInstance();
+
+            builder.Register(c => c.Resolve<Lazy<ConnectionMultiplexer>>().Value.GetDatabase())
+                .As<IDatabase>();
         }
     }
 }

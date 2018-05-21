@@ -19,5 +19,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
         ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters);
         bool Exist(int allocationId);
+        ICollection<Employee> GetByAnalyticId(int analyticId);
+        void DeleteAllocationWithReleaseDateNull();
     }
 }
