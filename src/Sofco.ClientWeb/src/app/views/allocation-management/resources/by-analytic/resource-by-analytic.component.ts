@@ -55,6 +55,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
     getAllEmployeesSubscrip: Subscription;
     getCategorySubscrip: Subscription;
     addCategoriesSubscrip: Subscription;
+    public pendingWorkingHours = false;
 
     constructor(private router: Router,
                 public menuService: MenuService,
@@ -121,9 +122,20 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
 
-    openModal(resource){
-        this.resourceSelected = resource;
+    openModal(data) {
+        this.pendingWorkingHours = data.pendingHours > 0;
         this.confirmModal.show();
+    }
+
+    openEndEmployeeModal(resource) {
+        this.resourceSelected = resource;
+        this.getAllEmployeesSubscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
+            this.openModal(res.data);
+        },
+        error => {
+            this.confirmModal.hide();
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 
     openCategoryModal(resource){
