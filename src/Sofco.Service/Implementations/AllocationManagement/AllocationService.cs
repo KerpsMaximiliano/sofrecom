@@ -88,7 +88,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var allocationDto = new AllocationDto();
                 allocationDto.EmployeeId = employeeId;
 
-                var allocation = allocations.Where(x => x.AnalyticId == analyticId);
+                var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
                 if (allocation.Any())
                 {
@@ -240,6 +240,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 }
 
                 unitOfWork.Save();
+
+                unitOfWork.AllocationRepository.DeleteAllocationWithReleaseDateNull();
 
                 response.AddSuccess(Resources.AllocationManagement.Allocation.Added);
             }

@@ -20,5 +20,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters);
         bool Exist(int allocationId);
         ICollection<Employee> GetByAnalyticId(int analyticId);
+        void DeleteAllocationWithReleaseDateNull();
     }
 }
