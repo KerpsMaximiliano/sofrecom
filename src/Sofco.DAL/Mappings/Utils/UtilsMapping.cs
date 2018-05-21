@@ -17,7 +17,7 @@ namespace Sofco.DAL.Mappings.Utils
 
             // Primary Key
             builder.Entity<ImputationNumber>().HasKey(_ => _.Id);
-            builder.Entity<ImputationNumber>().Property(_ => _.Text).HasMaxLength(10);
+            builder.Entity<ImputationNumber>().Property(_ => _.Text).HasMaxLength(50);
 
             // Primary Key
             builder.Entity<Currency>().HasKey(_ => _.Id);
