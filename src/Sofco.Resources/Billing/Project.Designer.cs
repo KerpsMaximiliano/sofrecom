@@ -80,6 +80,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/projects.hitoCreated.
+        /// </summary>
+        public static string HitoCreated {
+            get {
+                return ResourceManager.GetString("HitoCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/projects.hitoSplitted.
         /// </summary>
         public static string HitoSplitted {

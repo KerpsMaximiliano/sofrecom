@@ -120,6 +120,9 @@
   <data name="CrmGeneralError" xml:space="preserve">
     <value>common.crmGeneralError</value>
   </data>
+  <data name="CurrencyRequired" xml:space="preserve">
+    <value>common.currencyRequired</value>
+  </data>
   <data name="ErrorSave" xml:space="preserve">
     <value>common.errorSave</value>
   </data>

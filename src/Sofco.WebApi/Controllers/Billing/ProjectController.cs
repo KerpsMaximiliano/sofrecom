@@ -68,14 +68,5 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpPost]
-        [Route("hitos/new")]
-        public async Task<IActionResult> SplitHito([FromBody] HitoSplittedParams hito)
-        {
-            var response = await solfacService.SplitHito(hito);
-
-            return this.CreateResponse(response);
-        }
     }
 }

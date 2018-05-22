@@ -30,8 +30,6 @@ namespace Sofco.Core.Services.Billing
         Response<List<Invoice>> AddInvoices(int id, IList<int> invoices);
         Response<Solfac> Validate(Solfac solfac);
         Response DeleteDetail(int id);
-        Task<Response> SplitHito(HitoSplittedParams hito);
-
         Response<Solfac> Post(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId);
         Response DeleteSolfacCertificate(int id, int certificateId);
         Response<IList<Certificate>> AddCertificates(int id, IList<int> certificates);

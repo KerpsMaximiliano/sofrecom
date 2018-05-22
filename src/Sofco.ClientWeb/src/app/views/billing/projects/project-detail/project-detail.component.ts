@@ -12,6 +12,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';
 import { ServiceService } from '../../../../services/billing/service.service';
+import { NewHito } from '../../../../models/billing/solfac/newHito';
 
 @Component({
   selector: 'app-project-detail',
@@ -55,6 +56,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
+    @ViewChild('newHito') newHito;
 
     @ViewChild('closeHitoModal') closeHitoModal;
     public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -349,6 +351,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
+    canCreateHito(){
+        let hitos = this.getHitosSelected();
+        return hitos.length == 0;
+    }
+
     canSplit(){
         if(!this.menuService.hasFunctionality('SOLFA', 'SPLIH')) return false;
 
@@ -446,6 +453,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.splitHito.openModal(hito);
     }
 
+    createHito(){
+        var hito = new NewHito();
+        hito = this.translateHito(hito);
+
+        this.newHito.openModal(hito);
+    }
+
     createSolfac() {
         sessionStorage.removeItem(this.documentTypeKey);
         
@@ -467,7 +481,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
         this.generateSolfac();
     }
-
+ 
     translateHito(hito:any) {
         hito.projectId = this.projectId;
         hito.managerId = this.project.ownerId;
