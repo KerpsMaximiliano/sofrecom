@@ -7,5 +7,6 @@
     "hitoQuantityBetween2and5": "La cantidad de hitos a dividir debe ser entre 2 y 5",
     "hitoSplittedRequired": "Antes de guardar debe dividir el hito",
     "nameRequired": "El nombre es requerido",
-    "monthRequired": "El mes es requerido"
+    "monthRequired": "El mes es requerido",
+    "hitoCreated": "Hito fue creado correctamente. Se actualizó correctamente CRM"
 }

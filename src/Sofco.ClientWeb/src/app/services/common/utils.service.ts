@@ -19,4 +19,8 @@ export class UtilsService {
   getYears() {
     return this.http.get<any>(`${this.apiUrl}/years`);
   }
+
+  getCurrencies() {
+    return this.http.get<any>(`${this.apiUrl}/currencies`);
+  }
 }

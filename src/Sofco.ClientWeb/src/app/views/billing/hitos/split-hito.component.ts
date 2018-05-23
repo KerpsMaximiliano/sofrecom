@@ -71,7 +71,7 @@ export class SplitHitoComponent implements OnDestroy  {
 
     this.btnDisabled = true;
 
-    this.subscrip = this.projectService.createNewHito(this.hito).subscribe(data => {
+    this.subscrip = this.projectService.spltHito(this.hito).subscribe(data => {
         this.btnDisabled = false;
 
         if(data.messages) this.messageService.showMessages(data.messages);

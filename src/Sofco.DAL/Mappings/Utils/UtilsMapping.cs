@@ -17,11 +17,13 @@ namespace Sofco.DAL.Mappings.Utils
 
             // Primary Key
             builder.Entity<ImputationNumber>().HasKey(_ => _.Id);
-            builder.Entity<ImputationNumber>().Property(_ => _.Text).HasMaxLength(10);
+            builder.Entity<ImputationNumber>().Property(_ => _.Text).HasMaxLength(50);
 
             // Primary Key
             builder.Entity<Currency>().HasKey(_ => _.Id);
             builder.Entity<Currency>().Property(_ => _.Text).HasMaxLength(15);
+            builder.Entity<Currency>().Property(_ => _.CrmDevelopmentId).HasMaxLength(100);
+            builder.Entity<Currency>().Property(_ => _.CrmProductionId).HasMaxLength(100);
 
             // Primary Key
             builder.Entity<Solution>().HasKey(_ => _.Id);

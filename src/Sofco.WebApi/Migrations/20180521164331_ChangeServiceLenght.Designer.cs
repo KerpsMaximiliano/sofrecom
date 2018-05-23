@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180521164331_ChangeServiceLenght")]
+    partial class ChangeServiceLenght
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -1323,12 +1324,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CrmDevelopmentId")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CrmProductionId")
-                        .HasMaxLength(100);
-
                     b.Property<string>("Text")
                         .HasMaxLength(15);
 
@@ -1368,7 +1363,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text")
-                        .HasMaxLength(50);
+                        .HasMaxLength(10);
 
                     b.HasKey("Id");
 

@@ -48,5 +48,13 @@ namespace Sofco.WebApi.Controllers
 
             return Ok(years);
         }
+
+        [HttpGet("currencies")]
+        public IActionResult GetCurrencies()
+        {
+            var currencies = utilsService.GetCurrencies();
+
+            return Ok(currencies);
+        }
     }
 }

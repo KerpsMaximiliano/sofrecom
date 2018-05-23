@@ -123,6 +123,9 @@
   <data name="HitoAmmoutRequired" xml:space="preserve">
     <value>billing/projects.hitoAmmoutRequired</value>
   </data>
+  <data name="HitoCreated" xml:space="preserve">
+    <value>billing/projects.hitoCreated</value>
+  </data>
   <data name="HitoSplitted" xml:space="preserve">
     <value>billing/projects.hitoSplitted</value>
   </data>
