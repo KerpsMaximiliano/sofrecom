@@ -24,7 +24,7 @@ namespace Sofco.Core.Services.Rrhh
         Response ChangeStatus(int id, LicenseStatusChangeModel model, License license);
         Response<LicenseDetailModel> GetById(int id);
         ICollection<LicenseHistoryModel> GetHistories(int id);
-        ExcelPackage GetLicenseReport();
+        Response<byte[]> GetLicenseReport(ReportParams parameters);
         Response FileDelivered(int id);
     }
 }

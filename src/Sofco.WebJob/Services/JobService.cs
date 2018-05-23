@@ -39,8 +39,6 @@ namespace Sofco.WebJob.Services
 
             var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
 
-            RecurringJob.AddOrUpdate<ISolfacJob>(JobNames.Solfac, j => j.Execute(), Cron.Daily(8), localTimeZone);
-
             RecurringJob.AddOrUpdate<IAzureJob>(JobNames.Azure, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeSyncJob>(JobNames.TigerEmployeeSync, j => j.Execute(), Cron.Daily(7), localTimeZone);

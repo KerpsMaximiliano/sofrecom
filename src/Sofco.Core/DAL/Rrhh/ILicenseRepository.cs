@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Rrhh;
@@ -24,5 +25,6 @@ namespace Sofco.Core.DAL.Rrhh
         ICollection<LicenseHistory> GetHistories(int id);
 
         List<License> GetPendingCertificates();
+        IList<License> GetLicensesReport(ReportParams parameters);
     }
 }

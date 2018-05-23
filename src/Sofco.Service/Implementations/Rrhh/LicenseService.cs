@@ -420,11 +420,28 @@ namespace Sofco.Service.Implementations.Rrhh
             return history;
         }
 
-        public ExcelPackage GetLicenseReport()
+        public Response<byte[]> GetLicenseReport(ReportParams parameters)
         {
-            var licenses = unitOfWork.LicenseRepository.GetLicensesLastMonth();
+            var response = new Response<byte[]>();
 
-            return licenseFileManager.CreateLicenseReportExcel(licenses);
+            if (parameters.StartDate == DateTime.MinValue || parameters.EndDate == DateTime.MinValue)
+            {
+                response.AddError(Resources.Rrhh.License.DatesRequired);
+            }
+            else if(parameters.StartDate.Date > parameters.EndDate.Date)
+            {
+                response.AddError(Resources.Rrhh.License.EndDateLessThanStartDate);
+            }
+
+            if (response.HasErrors()) return response;
+ 
+            var licenses = unitOfWork.LicenseRepository.GetLicensesReport(parameters);
+
+            var excel = licenseFileManager.CreateLicenseReportExcel(licenses);
+
+            response.Data = excel.GetAsByteArray();
+
+            return response;
         }
 
         public Response FileDelivered(int id)
