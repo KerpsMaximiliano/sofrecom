@@ -70,6 +70,7 @@ namespace Sofco.Service.Implementations.Rrhh
             if (response.HasErrors()) return response;
 
             LicenseValidationHandler.ValidateDays(response, domain, unitOfWork);
+            LicenseValidationHandler.ValidateApplicantNotEqualManager(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;
 

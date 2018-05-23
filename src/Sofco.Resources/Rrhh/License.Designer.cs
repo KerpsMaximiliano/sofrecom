@@ -233,6 +233,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.managerEqualsEmployee.
+        /// </summary>
+        public static string ManagerEqualsEmployee {
+            get {
+                return ResourceManager.GetString("ManagerEqualsEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.managerNotFound.
         /// </summary>
         public static string ManagerNotFound {
