@@ -53,6 +53,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public int ExtraHolidaysQuantity { get; set; }
 
+        public int ExtraHolidaysQuantityByLaw { get; set; }
+
         public bool HasExtraHolidays { get; set; }
 
         public DateTime StartDate { get; set; }
