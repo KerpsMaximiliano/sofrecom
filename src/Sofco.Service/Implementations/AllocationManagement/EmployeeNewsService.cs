@@ -235,7 +235,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Recipients = recipients,
                     EmployeeNumber = employeeToChange.EmployeeNumber,
                     Name = employeeToChange.Name,
-                    EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("d")
+                    EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy")
                 };
 
                 var mail = mailBuilder.GetEmail(data);
