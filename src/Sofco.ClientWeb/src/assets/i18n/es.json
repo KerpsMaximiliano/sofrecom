@@ -146,6 +146,7 @@
             "grid": {
                 "name": "Nombre",
                 "analytic": "Analítica",
+                "opportunity": "Oportunidad",
                 "purchaseOrder": "Orden compra",
                 "incomes": "Ingresos Estimados",
                 "startDate": "Fecha Inicio",
