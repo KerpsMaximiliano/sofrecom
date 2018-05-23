@@ -47,6 +47,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     public startDate: Date = new Date();
     public endDate: Date = new Date();
 
+    public isLoading: boolean = false;
+
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
         private router: Router,
@@ -172,9 +174,11 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         }
 
         this.messageService.showLoading();
+        this.isLoading = true;
  
         this.licenseService.createReport(json).subscribe(file => {
             this.reportModal.hide();
+            this.isLoading = false;
             this.messageService.closeLoading();
 
             var startDateName = `${this.startDate.getFullYear()}-${this.startDate.getMonth() == 0 ? 12 : this.startDate.getMonth()}`;
@@ -183,6 +187,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             FileSaver.saveAs(file, `${startDateName} - ${endDateName} Licencias.xlsx`);
         },
         err => {
+            this.isLoading = false;
             this.reportModal.hide();
             this.errorHandlerService.handleErrors(err);
         });

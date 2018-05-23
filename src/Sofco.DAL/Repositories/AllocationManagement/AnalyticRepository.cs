@@ -44,8 +44,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Analytic> GetAnalyticsByEmployee(int employeeId)
         {
+            var today = DateTime.UtcNow;
+
             return context.Allocations
-                .Where(x => x.EmployeeId == employeeId)
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Month == today.Month && x.StartDate.Year == today.Year)
                 .Include(x => x.Analytic).ThenInclude(x => x.Manager)
                 .Select(x => new Analytic
                 {
