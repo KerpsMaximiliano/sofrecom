@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
@@ -59,10 +58,14 @@ export class LoginComponent implements OnInit {
                 UserInfoService.setUserInfo(userData);
                 this.menuService.currentUser = userName;
                 this.menuService.user = userData;
+
+                this.getMenuData();
             },
             error => this.errorHandlerService.handleErrors(error)
         );
+    }
 
+    getMenuData(){
         this.menuSubscrip = this.menuService.get().subscribe(
             response => {
                 const menu = response.data;
@@ -83,6 +86,8 @@ export class LoginComponent implements OnInit {
                 this.menuService.pmoMail = menu.pmoMail;
                 this.menuService.rrhhMail = menu.rrhhMail;
                 this.menuService.sellerMail = menu.sellerMail;
+
+                this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || `/profile/${this.menuService.user.employeeId}`;
 
                 this.router.navigate([this.returnUrl]);
             },

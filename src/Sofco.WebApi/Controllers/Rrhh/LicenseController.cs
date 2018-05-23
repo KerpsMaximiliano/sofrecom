@@ -163,15 +163,18 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return Ok(histories);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("report")]
-        public IActionResult Report()
+        public IActionResult Report([FromBody] ReportParams parameters)
         {
             try
             {
-                var excel = licenseService.GetLicenseReport();
+                var response = licenseService.GetLicenseReport(parameters);
 
-                return File(excel.GetAsByteArray(), "application/octet-stream", "licencias");
+                if (response.HasErrors())
+                    return BadRequest(response);
+
+                return File(response.Data, "application/octet-stream", string.Empty);
             }
             catch
             {

@@ -86,10 +86,12 @@ export class LicenseService {
    });
   }
 
-  createReport() {
-    return this.http.get(`${this.baseUrl}/licenses/report`,
-     {
-       responseType: 'blob'
-     });
+  createReport(json) {
+    return this.http.post(`${this.baseUrl}/licenses/report`, json, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+   }).map((res: any) => {
+     return new Blob([res.body], { type: 'application/octet-stream' });
+   });
   }
 }

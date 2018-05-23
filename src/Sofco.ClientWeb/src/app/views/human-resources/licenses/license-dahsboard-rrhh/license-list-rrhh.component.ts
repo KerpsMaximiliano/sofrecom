@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Component } from "@angular/core";
+import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
 import { LicenseService } from "app/services/human-resources/licenses.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -9,6 +9,7 @@ import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
 import * as FileSaver from "file-saver";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -18,6 +19,16 @@ declare var $: any;
     styleUrls: ['./license-list-rrhh.component.scss']
 })
 export class LicenseListRrhh implements OnInit, OnDestroy {
+
+    @ViewChild('reportModal') reportModal;
+    public reportModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "reportModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     public pending: number = LicenseStatus.Pending;
     public authPending: number = LicenseStatus.AuthPending;
@@ -32,6 +43,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     public licensesTypes: any[] = new Array();
 
     public licensesTypeId: any;
+
+    public startDate: Date = new Date();
+    public endDate: Date = new Date();
 
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
@@ -152,17 +166,24 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     createReport(){
-        this.messageService.showLoading();
+        var json = {
+            startDate: this.startDate.toUTCString(),
+            endDate: this.endDate.toUTCString()
+        }
 
-        this.licenseService.createReport().subscribe(file => {
+        this.messageService.showLoading();
+ 
+        this.licenseService.createReport(json).subscribe(file => {
+            this.reportModal.hide();
             this.messageService.closeLoading();
 
-            var date = new Date();
+            var startDateName = `${this.startDate.getFullYear()}-${this.startDate.getMonth() == 0 ? 12 : this.startDate.getMonth()}`;
+            var endDateName = `${this.endDate.getFullYear()}-${this.endDate.getMonth() == 0 ? 12 : this.endDate.getMonth()}`;
 
-            FileSaver.saveAs(file, `${date.getFullYear()}-${date.getMonth() == 0 ? 12 : date.getMonth()} Licencias.xlsx`);
+            FileSaver.saveAs(file, `${startDateName} - ${endDateName} Licencias.xlsx`);
         },
         err => {
-            this.messageService.closeLoading();
+            this.reportModal.hide();
             this.errorHandlerService.handleErrors(err);
         });
     }

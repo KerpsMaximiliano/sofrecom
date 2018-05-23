@@ -15,7 +15,7 @@
         <div class="col-sm-12">
             <div class="btn-right">
                 <button class="btn btn-sm btn-success btn-outline dim" (click)="goToAdd()"> {{ 'rrhh.license.load' | translate }} <i class="fa fa-plus"></i></button>
-                <button class="btn btn-sm btn-success btn-outline dim" (click)="createReport()"> {{ 'rrhh.license.report' | translate }} <i class="fa fa-file"></i></button>
+                <button class="btn btn-sm btn-success btn-outline dim" (click)="reportModal.show()"> {{ 'rrhh.license.report' | translate }} <i class="fa fa-file"></i></button>
             </div>
         </div>
     </div>
@@ -98,3 +98,20 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="reportModalConfig" #reportModal (accept)="createReport()" [isLoading]="isLoading">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
+                <date-picker [(date)]="startDate"></date-picker>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
+                <date-picker [(date)]="endDate"></date-picker>
+            </div>
+        </div>
+    </div>
+</ng2-modal> 
