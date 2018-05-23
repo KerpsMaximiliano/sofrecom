@@ -8,5 +8,9 @@ namespace Sofco.Model.Utils
     {
         public IList<Solfac> Solfacs { get; set; }
         public ICollection<Analytic> Analytics { get; set; }
+
+        public string CrmProductionId { get; set; }
+
+        public string CrmDevelopmentId { get; set; }
     }
 }

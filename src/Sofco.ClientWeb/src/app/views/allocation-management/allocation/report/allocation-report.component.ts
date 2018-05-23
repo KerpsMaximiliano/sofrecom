@@ -146,17 +146,10 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-
-        this.model.monthsHeader.forEach((element, index) => {
-            columns.push(index + 9);
-        });
-
         var title = `PMO Report ${moment(this.dateSince).format("YYYYMMDD")} - ${moment(this.dateTo).format("YYYYMMDD")}`;
 
         var options = { 
             selector: "#resourcesTable",
-            columns: columns,
             title: title,
             withExport: true
         };

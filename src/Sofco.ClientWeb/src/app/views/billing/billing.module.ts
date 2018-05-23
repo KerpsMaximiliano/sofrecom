@@ -70,6 +70,7 @@ import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { PurchaseOrderFormEditComponent } from 'app/views/billing/purchaseOrder/form-edit/purchaseOrder-form-edit.component';
 import { NgxInactivity } from 'ngx-inactivity';
+import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -81,7 +82,7 @@ import { NgxInactivity } from 'ngx-inactivity';
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 PurchaseOrderFormEditComponent],
+                 PurchaseOrderFormEditComponent, NewHitoComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 

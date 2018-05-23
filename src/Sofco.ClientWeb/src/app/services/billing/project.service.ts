@@ -37,7 +37,11 @@ export class ProjectService {
   }
 
   createNewHito(hito) {
-    return this.http.post<any>(`${this.baseUrl}/projects/hitos/new`, hito);
+    return this.http.post<any>(`${this.baseUrl}/hitos`, hito);
+  }
+
+  spltHito(hito) {
+    return this.http.post<any>(`${this.baseUrl}/hitos/split`, hito);
   }
 
   closeHito(id) {

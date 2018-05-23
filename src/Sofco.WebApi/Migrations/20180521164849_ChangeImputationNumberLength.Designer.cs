@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180521164849_ChangeImputationNumberLength")]
+    partial class ChangeImputationNumberLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -1322,12 +1323,6 @@ namespace Sofco.WebApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CrmDevelopmentId")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CrmProductionId")
-                        .HasMaxLength(100);
 
                     b.Property<string>("Text")
                         .HasMaxLength(15);

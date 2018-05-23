@@ -126,6 +126,7 @@
                                     </table>
 
                                     <div class="button-group">
+                                        <button *ngIf="canCreateHito()" (click)="createHito()" type="button" class="btn btn-success btn-sm">{{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="createSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
                                         <button *ngIf="canCreateCreditNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canCreateDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 
@@ -196,6 +197,7 @@
 </div>
 
 <split-hito #splitHito (hitosReload)="getHitos()"></split-hito>
+<new-hito #newHito (hitosReload)="getHitos()"></new-hito>
 
 <ng2-modal [config]="closeHitoModalConfig" #closeHitoModal (accept)="closeHito()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
