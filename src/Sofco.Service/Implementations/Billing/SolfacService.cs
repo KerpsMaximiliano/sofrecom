@@ -637,14 +637,6 @@ namespace Sofco.Service.Implementations.Billing
         {
             var result = CreateSolfac(solfac, invoicesId, certificatesId);
 
-            if (result.HasErrors())
-                return result;
-
-            if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
-                return result;
-
-            crmInvoiceService.UpdateHitoStatus(result.Data.Hitos.ToList(), HitoStatus.Pending);
-
             return result;
         }
 
