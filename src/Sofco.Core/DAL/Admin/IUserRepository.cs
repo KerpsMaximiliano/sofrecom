@@ -37,5 +37,7 @@ namespace Sofco.Core.DAL.Admin
         UserLiteModel GetUserLiteByUserName(string userName);
 
         User GetByEmail(string email);
+
+        IList<User> GetAuthorizers();
     }
 }

@@ -35,5 +35,7 @@ namespace Sofco.Core.Services.Admin
         bool HasRrhhGroup();
 
         bool HasManagerGroup();
+
+        IList<User> GetAuthorizers();
     }
 }

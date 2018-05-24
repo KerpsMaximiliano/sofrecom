@@ -290,6 +290,11 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.HasManagersGroup(sessionManager.GetUserEmail());
         }
 
+        public IList<User> GetAuthorizers()
+        {
+            return unitOfWork.UserRepository.GetAuthorizers();
+        }
+
         private UserModel Translate(User user)
         {
             return mapper.Map<User, UserModel>(user);

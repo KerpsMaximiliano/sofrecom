@@ -14,8 +14,6 @@ namespace Sofco.DAL.Repositories.Admin
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private const string ManagerDescription = "Gerentes";
-
         private readonly EmailConfig emailConfig;
 
         public UserRepository(SofcoContext context, IOptions<EmailConfig> emailConfig) : base(context)
@@ -41,7 +39,7 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users
                 .Include(x => x.UserGroups)
                     .ThenInclude(x => x.Group)
-                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Description.Equals("Directores")));
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == emailConfig.DirectorsCode));
         }
 
         public IList<User> GetDirectors()
@@ -49,7 +47,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals("Directores"))
+                .Where(x => x.Group.Code == emailConfig.DirectorsCode)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -60,7 +58,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Description.Equals(ManagerDescription) || x.Group.Code == emailConfig.DirectorsCode)
+                .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -156,6 +154,18 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users.SingleOrDefault(x => x.Email == email);
         }
 
+        public IList<User> GetAuthorizers()
+        {
+            var userGroups = context.UserGroup
+                .Include(x => x.Group)
+                .Include(x => x.User)
+                .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode || x.Group.Code == emailConfig.AuthCode)
+                .Distinct()
+                .ToList();
+
+            return userGroups.Select(x => x.User).ToList();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;
@@ -178,7 +188,7 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => 
                 x.UserName.Equals(userName) 
-                && x.UserGroups.Any(s => s.Group.Description.Equals(ManagerDescription)));
+                && x.UserGroups.Any(s => s.Group.Code == emailConfig.ManagersCode));
         }
 
         public bool HasRrhhGroup(string userMail)

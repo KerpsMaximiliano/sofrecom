@@ -30,6 +30,8 @@
 
         public string ComercialCode { get; set; }
 
+        public string AuthCode { get; set; }
+
         public string MailDevFolder { get; set; }
 
         public string SupportMailTo { get; set; }

@@ -24,6 +24,10 @@ export class LicenseService {
     return this.http.get<any>(`${this.baseUrl}/utils/sectors`);
   }
 
+  getAuthorizers() {
+    return this.http.get<any>(`${this.baseUrl}/licenses/authorizers`);
+  }
+
   getByStatus(statusId) {
     return this.http.get<any>(`${this.baseUrl}/licenses/status/${statusId}`);
   }
