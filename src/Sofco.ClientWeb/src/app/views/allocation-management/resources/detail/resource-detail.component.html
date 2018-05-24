@@ -104,13 +104,17 @@
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
                         <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong>{{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
                         <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
-                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
-                        <td *ngIf="model?.hasExtraHolidays"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantity }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                    </tr>
+                    <tr *ngIf="model?.hasExtraHolidays">
+                        <td></td>
+                        <td></td>
+                        <td><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -146,8 +150,8 @@
                                 <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.name }}</dd>
 
-                                <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
-                                <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+                                <dt *ngIf="isRrhh">{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
+                                <dd *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
 
                                 <dt>{{'allocationManagement.resources.businessHours' | translate }}</dt>
                                 <dd>{{ model?.businessHours }} hs</dd>
