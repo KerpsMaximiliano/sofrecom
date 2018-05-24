@@ -150,8 +150,8 @@
                                 <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
                                 <dd>{{ model?.prepaidHealth?.name }}</dd>
 
-                                <dt>{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
-                                <dd>{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+                                <dt *ngIf="isRrhh">{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
+                                <dd *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
 
                                 <dt>{{'allocationManagement.resources.businessHours' | translate }}</dt>
                                 <dd>{{ model?.businessHours }} hs</dd>

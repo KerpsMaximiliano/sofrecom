@@ -154,7 +154,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     getManagers(){
-        this.getManagersSubscrip = this.employeeService.getManagers().subscribe(data => {
+        this.getManagersSubscrip = this.licenseService.getAuthorizers().subscribe(data => {
             this.managers = data;
             this.model.managerId = 0;
         },
