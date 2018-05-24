@@ -32,13 +32,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
-                                <date-picker [(date)]="model.startDate"></date-picker>
+                                <date-picker #startDate [(date)]="model.startDate"></date-picker>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
-                                <date-picker [(date)]="model.endDate"></date-picker>
+                                <date-picker #endDate [(date)]="model.endDate"></date-picker>
                             </div>
                         </div>
                     </div>
@@ -90,6 +90,7 @@
                 <div class="ibox-footer">
                     <button (click)="back()" class="btn btn-success" type="button"> <i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
                     <button (click)="add()" *ngIf="model.id == null" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                    <button (click)="refresh()" *ngIf="model.id != null" class="btn btn-success" type="button">Cargar nueva <i class="fa fa-refresh"></i> </button>
                 </div>
             </div>
         </div>

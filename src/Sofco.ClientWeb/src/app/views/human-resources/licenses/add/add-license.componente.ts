@@ -56,6 +56,9 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('startDate') startDate;
+    @ViewChild('endDate') endDate;
+
     constructor(private licenseService: LicenseService,
                 private employeeService: EmployeeService,
                 private router: Router,
@@ -217,5 +220,25 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
           },
           err => this.errorHandlerService.handleErrors(err),
          () => this.confirmModal.hide());
+    }
+
+    refresh(){
+        this.model.managerId = 0;
+        this.model.sectorId = 0;
+        this.model.employeeId = "0";
+        this.model.startDate = null;
+        this.model.endDate = null;
+        this.model.comments = "";
+        this.model.daysQuantity = 0;
+        this.model.examDescription = "";
+        this.model.final = false;
+        this.model.parcial = false;
+        this.model.hasCertificate = false;
+        this.model.id = null;
+        this.model.withPayment = true;
+        this.model.typeId = 0;
+
+        this.startDate.clean();
+        this.endDate.clean();
     }
 } 

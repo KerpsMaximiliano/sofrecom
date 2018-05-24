@@ -215,6 +215,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.licensePendingLessThan0.
+        /// </summary>
+        public static string LicensePendingLessThan0 {
+            get {
+                return ResourceManager.GetString("LicensePendingLessThan0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.licenseTypeNotFound.
         /// </summary>
         public static string LicenseTypeNotFound {
