@@ -7,16 +7,16 @@ import { environment } from '../../../environments/environment'
 @Injectable()
 export class  Configuration {
 
-    UrlApi : string;
-    crmCloseStatusCode : string;
+    UrlApi: string;
+    crmCloseStatusCode: string;
 
-    public currLang: string = 'es';
+    public spanishLang = 'es';
+    public currLang = 'es';
 
     constructor(public tr: TranslateService){
-        tr.addLangs(["en", "es", "fr"]);
-        let browserLang = tr.getBrowserLang();
-        tr.setDefaultLang(browserLang);
-        tr.use(this.currLang);
+        tr.addLangs(["es"]);
+        tr.setDefaultLang(this.spanishLang);
+        tr.use(this.spanishLang);
 
         this.UrlApi = environment.urlApi;
         this.crmCloseStatusCode = environment.crmCloseStatusCode;
