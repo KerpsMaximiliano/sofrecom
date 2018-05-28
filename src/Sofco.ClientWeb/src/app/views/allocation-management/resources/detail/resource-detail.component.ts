@@ -186,4 +186,16 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
         return false;
     }
+
+    canAddLicense(){
+        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
+
+        return false;
+    }
+
+    canAddWorkTime(){
+        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
+
+        return false;
+    }
 } 

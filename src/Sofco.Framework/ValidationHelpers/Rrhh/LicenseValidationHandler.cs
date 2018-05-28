@@ -121,5 +121,17 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
                 response.AddError(Resources.Rrhh.License.ManagerEqualsEmployee);
             }
         }
+        
+        public static void ValidateDatesOverlaped(Response response, License domain, IUnitOfWork unitOfWork)
+        {
+            if (domain.StartDate != DateTime.MinValue && domain.EndDate != DateTime.MinValue && domain.EmployeeId > 0)
+            {
+                if (unitOfWork.LicenseRepository.AreDatesOverlaped(domain.StartDate.Date, domain.EndDate.Date,
+                    domain.EmployeeId))
+                {
+                    response.AddError(Resources.Rrhh.License.DatesOverlaped);
+                }
+            }
+        }
     }
 }

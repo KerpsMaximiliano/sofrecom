@@ -27,7 +27,7 @@
                 <h4 class="m-t-md">{{ model?.profile }}</h4>
  
                 <div class="row m-t-lg">
-                    <div class="col-sm-3" *ngIf="!isRrhh">
+                    <div class="col-sm-3" *ngIf="canAddWorkTime()">
                         <div class="widget-custom lazur-bg" (click)="goToTimeSheet()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="col-sm-3" *ngIf="!isRrhh">
+                    <div class="col-sm-3" *ngIf="canAddLicense()">
                         <div class="widget-custom lazur-bg" (click)="goToLicenses()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
@@ -104,17 +104,17 @@
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
                         <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td><strong>{{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
                         <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
                         <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
-                        <td><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr *ngIf="model?.hasExtraHolidays">
                         <td></td>
                         <td></td>
-                        <td><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>

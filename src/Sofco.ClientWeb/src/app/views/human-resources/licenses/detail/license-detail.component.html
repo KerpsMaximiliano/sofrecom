@@ -22,7 +22,7 @@
                 </button>
 
                 <status-auth-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-auth-pending>
-                <status-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)" [certificateRequired]="model.certificateRequired"></status-pending>
+                <status-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)" [certificateRequired]="model.certificateRequired" [hasCertificate]="model.hasCertificate"></status-pending>
                 <status-reject [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-reject>
                 <status-cancel [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-cancel>
             </div>

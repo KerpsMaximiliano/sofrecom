@@ -160,10 +160,9 @@ namespace Sofco.DAL.Repositories.Admin
                 .Include(x => x.Group)
                 .Include(x => x.User)
                 .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode || x.Group.Code == emailConfig.AuthCode)
-                .Distinct()
                 .ToList();
 
-            return userGroups.Select(x => x.User).ToList();
+            return userGroups.Select(x => x.User).Distinct().ToList();
         }
 
         public bool HasCdgGroup(string userMail)

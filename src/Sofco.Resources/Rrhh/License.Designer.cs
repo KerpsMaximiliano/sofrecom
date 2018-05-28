@@ -125,6 +125,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.datesOverlaped.
+        /// </summary>
+        public static string DatesOverlaped {
+            get {
+                return ResourceManager.GetString("DatesOverlaped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.datesRequired.
         /// </summary>
         public static string DatesRequired {
@@ -211,6 +220,15 @@ namespace Sofco.Resources.Rrhh {
         public static string GenerateWorkTimesError {
             get {
                 return ResourceManager.GetString("GenerateWorkTimesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.licensePendingLessThan0.
+        /// </summary>
+        public static string LicensePendingLessThan0 {
+            get {
+                return ResourceManager.GetString("LicensePendingLessThan0", resourceCulture);
             }
         }
         

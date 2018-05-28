@@ -56,11 +56,14 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('startDate') startDate;
+    @ViewChild('endDate') endDate;
+
     constructor(private licenseService: LicenseService,
                 private employeeService: EmployeeService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){}
 
@@ -95,10 +98,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        if(this.menuService.userIsRrhh){
-            this.router.navigate(['/allocationManagement/licenses/rrhh']);
-        }
-        else{
+        if(!this.menuService.userIsRrhh){
             this.router.navigate(['/profile/' + this.model.employeeId]);
         }
     }
@@ -217,5 +217,24 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
           },
           err => this.errorHandlerService.handleErrors(err),
          () => this.confirmModal.hide());
+    }
+
+    refresh(){
+        this.model.managerId = 0;
+        this.model.sectorId = 0;
+        this.model.startDate = null;
+        this.model.endDate = null;
+        this.model.comments = "";
+        this.model.daysQuantity = 0;
+        this.model.examDescription = "";
+        this.model.final = false;
+        this.model.parcial = false;
+        this.model.hasCertificate = false;
+        this.model.id = null;
+        this.model.withPayment = true;
+        this.model.typeId = 0;
+
+        this.startDate.clean();
+        this.endDate.clean();
     }
 } 
