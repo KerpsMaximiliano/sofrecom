@@ -34,8 +34,12 @@
 
         public string MailDevFolder { get; set; }
 
-        public string SupportMailTo { get; set; }
+        public string SupportMailRecipients { get; set; }
 
         public string SupportMailLogTitle { get; set; }
+
+        public string SupportMailResendRecipients { get; set; }
+
+        public string SupportMailResendTitle { get; set; }
     }
 }
