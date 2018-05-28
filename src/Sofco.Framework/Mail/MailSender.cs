@@ -28,8 +28,9 @@ namespace Sofco.Framework.Mail
         private readonly int smtpPort;
         private readonly string smtpDomain;
         private readonly string mailDevFolder;
-        private readonly string mailLogSubject;
-        private readonly string mailLogTo;
+        private readonly string supportMailLogTitle;
+        private readonly string supportMailResendRecipients;
+        private readonly string supportMailResendTitle;
 
         public MailSender(IHostingEnvironment environment, 
             IOptions<EmailConfig> emailConfigOption, 
@@ -44,8 +45,9 @@ namespace Sofco.Framework.Mail
             smtpPort = emailConfig.SmtpPort;
             smtpDomain = emailConfig.SmtpDomain;
             mailDevFolder = emailConfig.MailDevFolder;
-            mailLogSubject = emailConfig.SupportMailLogTitle;
-            mailLogTo = emailConfig.SupportMailTo;
+            supportMailLogTitle = emailConfig.SupportMailLogTitle;
+            supportMailResendRecipients = emailConfig.SupportMailResendRecipients;
+            supportMailResendTitle = emailConfig.SupportMailResendTitle;
         }
 
         /// <summary>
@@ -167,13 +169,15 @@ namespace Sofco.Framework.Mail
 
             foreach (var msg in messages)
             {
+                if(msg.Subject == supportMailLogTitle) continue;
+
                 var logMail = new MimeMessage();
 
-                AddRecipients(logMail, mailLogTo);
+                AddRecipients(logMail, supportMailResendRecipients);
 
                 logMail.From.AddRange(msg.From);
 
-                logMail.Subject = mailLogSubject.Replace("LogError", msg.Subject);
+                logMail.Subject = $"{supportMailResendTitle}{msg.Subject}";
 
                 var body = new StringBuilder();
 
@@ -199,7 +203,7 @@ namespace Sofco.Framework.Mail
 
             var list = recipients.Select(item => item.Name);
 
-            body.AppendFormat("Email to: {0}<br><br>", string.Join(",", list));
+            body.AppendFormat("Email send to: {0}<br><br><hr>", string.Join(",", list));
 
             return body.ToString();
         }

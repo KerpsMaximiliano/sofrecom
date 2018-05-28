@@ -10,7 +10,7 @@ namespace Sofco.Common.Security
         private readonly IHttpContextAccessor contextAccessor;
         private readonly string currentDomain;
 
-        public SessionManager(IHttpContextAccessor contextAccessor, IOptions<AppSetting> appOptions)
+        public SessionManager(IOptions<AppSetting> appOptions, IHttpContextAccessor contextAccessor = null)
         {
             this.contextAccessor = contextAccessor;
             currentDomain = appOptions.Value.Domain;

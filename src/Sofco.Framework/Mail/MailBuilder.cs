@@ -72,10 +72,9 @@ namespace Sofco.Framework.Mail
                 {MailContentKey.Content, string.Empty}
             };
 
-            var recipients = emailConfig.SupportMailTo;
+            var recipients = emailConfig.SupportMailRecipients;
 
             return GetEmail(MailType.Default, recipients, subject, data);
-
         }
 
         public Email GetSupportEmail(string subject, Dictionary<string, string> mailContents)
