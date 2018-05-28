@@ -28,5 +28,6 @@
     "cancelledSuccess": "La licencia fue cancelada correctamente",
     "changeStatusError": "Ocurrio un error al cambiar el estado. Consulte con RRHH",
     "generateWorkTimesError": "Ocurrio un error al generar las horas",
-    "datesLessThanToday": "Las fechas no pueden ser menor a la fecha de hoy"
+    "datesLessThanToday": "Las fechas no pueden ser menor a la fecha de hoy",
+    "datesOverlaped": "La fecha de la licencia que se quiere cargar coincide con alguna fecha de otra licencia ya cargada en el sistema"
 }

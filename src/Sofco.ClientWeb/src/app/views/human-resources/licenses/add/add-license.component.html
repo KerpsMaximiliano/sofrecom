@@ -22,7 +22,7 @@
                             <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.name }}</option>
                         </select>
                     </div>
-
+ 
                     <div class="form-group" *ngIf="fromProfile == true">
                         <label style="font-size: 16px"> {{'rrhh.license.employee' | translate }} : </label>
                         <span style="font-size: 16px">{{ userApplicantName }}</span>
@@ -88,7 +88,7 @@
                     <select-two [label]="'rrhh.license.sector'" [(value)]="model.sectorId" [options]="sectors"></select-two>
                 </div>
                 <div class="ibox-footer">
-                    <button (click)="back()" class="btn btn-success" type="button"> <i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+                    <button (click)="back()" *ngIf="!menuService.userIsRrhh" class="btn btn-success" type="button"> <i class="fa fa-user"></i> {{'ACTIONS.viewProfile' | translate }} </button>
                     <button (click)="add()" *ngIf="model.id == null" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
                     <button (click)="refresh()" *ngIf="model.id != null" class="btn btn-success" type="button">Cargar nueva <i class="fa fa-refresh"></i> </button>
                 </div>

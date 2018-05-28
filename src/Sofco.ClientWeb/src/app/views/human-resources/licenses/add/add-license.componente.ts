@@ -63,7 +63,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private menuService: MenuService,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){}
 
@@ -98,10 +98,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        if(this.menuService.userIsRrhh){
-            this.router.navigate(['/allocationManagement/licenses/rrhh']);
-        }
-        else{
+        if(!this.menuService.userIsRrhh){
             this.router.navigate(['/profile/' + this.model.employeeId]);
         }
     }
@@ -225,7 +222,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     refresh(){
         this.model.managerId = 0;
         this.model.sectorId = 0;
-        this.model.employeeId = "0";
         this.model.startDate = null;
         this.model.endDate = null;
         this.model.comments = "";

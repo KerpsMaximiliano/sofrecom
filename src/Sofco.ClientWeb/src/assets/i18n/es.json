@@ -688,7 +688,8 @@
         "authorize": "Autorizar",
         "approveSelected": "Aprobar seleccionados",
         "sessionExpiredTitle": "La sesion ha expirado...",
-        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema"
+        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema",
+        "viewProfile": "Ver Perfil"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -761,7 +762,7 @@
         "monthYear": "Mes-Año",
         "month": "Mes",
         "workTime": {
-            "title": "Cargas de Horas",
+            "title": "Carga de Horas",
             "calendar": "Calendario",
             "sendHours": "Enviar horas",
             "loadNewTask": "Cargar nueva tarea",

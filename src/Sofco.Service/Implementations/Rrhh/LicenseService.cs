@@ -61,6 +61,7 @@ namespace Sofco.Service.Implementations.Rrhh
             LicenseValidationHandler.ValidateDates(response, domain, model.IsRrhh);
             LicenseValidationHandler.ValidateSector(response, domain);
             LicenseValidationHandler.ValidateLicenseType(response, domain);
+            LicenseValidationHandler.ValidateDatesOverlaped(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;
 

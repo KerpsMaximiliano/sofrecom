@@ -125,6 +125,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.datesOverlaped.
+        /// </summary>
+        public static string DatesOverlaped {
+            get {
+                return ResourceManager.GetString("DatesOverlaped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.datesRequired.
         /// </summary>
         public static string DatesRequired {
