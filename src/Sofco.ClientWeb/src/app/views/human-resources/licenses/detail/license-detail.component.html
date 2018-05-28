@@ -14,8 +14,6 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
-            <button class="btn btn-success btn-outline dim" (click)="back()"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
-
             <div class="btn-right">
                 <button class="btn btn-success btn-outline dim" (click)="fileDelivered()" *ngIf="menuService.userIsRrhh && !model.hasCertificate && model.certificateRequired"> 
                     {{'rrhh.license.fileDelivered' | translate }}
