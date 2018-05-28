@@ -71,6 +71,15 @@
         </ul>
       </li>
 
+      <!-- Profile-->
+      <li [ngClass]="{active: activeRoute('profile')}">
+        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Mis Acciones</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('workTimeManagement')}">
+          <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA')"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('load')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/workTimeManagement/workTime/load']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
+        </ul>
+      </li>
+
       <!--REPORT-->
       <!-- <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>

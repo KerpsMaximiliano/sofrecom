@@ -219,7 +219,7 @@ export const ROUTES:Routes = [
       {
         path: "licenses",
         children: [
-          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "CTRLI", functionality: "ALTA" } } ,
+          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "PROFI", functionality: "ALTA" } } ,
           { path: "rrhh", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
           { path: "managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
@@ -241,7 +241,7 @@ export const ROUTES:Routes = [
       {
         path: "licenses",
         children: [
-          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "CTRLI", functionality: "ALTA" } } ,
+          { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: true, module: "PROFI", functionality: "ALTA" } } ,
         ]
       }]
   },
@@ -276,7 +276,7 @@ export const ROUTES:Routes = [
     children: [
       {
         path: 'workTime', children:[
-          { path: "load", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "WORKT" } },
+          { path: "load", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "WORKT" } },
           { path: "approval", component: WorkTimeApprovalComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "APPRO" } },
           { path: "report", component: WorkTimeReportComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "REPOR" } },
           { path: "search", component: WorkTimeSearchComponent, canActivate: [AuthGuard] }
