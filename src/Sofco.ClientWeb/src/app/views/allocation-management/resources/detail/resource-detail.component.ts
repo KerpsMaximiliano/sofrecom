@@ -115,7 +115,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     goToTimeSheet(){
-        this.router.navigate([`/workTimeManagement/workTime/load`]);
+        this.router.navigate([`/profile/workTime`]);
     }
 
     getLicenses(){
