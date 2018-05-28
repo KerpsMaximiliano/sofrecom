@@ -112,7 +112,7 @@
                         <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr *ngIf="model?.hasExtraHolidays">
-                        <td></td>
+                        <td><strong>{{'allocationManagement.resources.grid.examDaysTaken' | translate }} {{'rrhh.license.days' | translate }}: </strong> {{ model?.examDaysTaken }}</td>
                         <td></td>
                         <td *ngIf="isRrhh"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>

@@ -38,7 +38,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public string Location { get; set; }
 
         public string Province { get; set; }
-
+         
         public string Country { get; set; }
 
         public HealthInsurance HealthInsurance { get; set; }
@@ -61,6 +61,9 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public int BusinessHours { get; set; }
 
+        public int ExamDaysTaken { get; set; }
+
         public string BusinessHoursDescription { get; set; }
+
     }
 }

@@ -501,7 +501,8 @@
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
-                "start": "Ingreso"
+                "start": "Ingreso",
+                "examDaysTaken": "Días examen tomados"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
         },
@@ -763,7 +764,7 @@
         "monthYear": "Mes-Año",
         "month": "Mes",
         "workTime": {
-            "title": "Carga de Horas",
+            "title": "Cargar Horas",
             "calendar": "Calendario",
             "sendHours": "Enviar horas",
             "loadNewTask": "Cargar nueva tarea",
