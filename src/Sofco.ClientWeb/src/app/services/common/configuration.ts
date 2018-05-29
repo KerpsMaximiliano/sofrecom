@@ -14,7 +14,7 @@ export class  Configuration {
     public currLang = 'es';
 
     constructor(public tr: TranslateService){
-        tr.addLangs(["es"]);
+        tr.addLangs([this.spanishLang]);
         tr.setDefaultLang(this.spanishLang);
         tr.use(this.spanishLang);
 
@@ -23,8 +23,9 @@ export class  Configuration {
     }
 
     setCurrLang(currLang: string){
-        this.currLang = currLang;
-        this.tr.use(this.currLang);
+        return;
+        // this.currLang = currLang;
+        // this.tr.use(this.currLang);
     }
 
     getHeaders(){
@@ -34,7 +35,7 @@ export class  Configuration {
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
         headers.append('Authorization', 'Bearer '+ token);
-        
+
         return headers;
     }
 
