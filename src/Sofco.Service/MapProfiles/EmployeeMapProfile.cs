@@ -50,11 +50,14 @@ namespace Sofco.Service.MapProfiles
             CreateMap<EmployeeHistory, EmployeeHistoryModel>()
                 .AfterMap((src, dest) =>
                 {
-                    var data = JsonConvert.DeserializeObject<Employee>(src.EmployeeData);
+                    if (!string.IsNullOrWhiteSpace(src.EmployeeData))
+                    {
+                        var data = JsonConvert.DeserializeObject<Employee>(src.EmployeeData);
 
-                    dest.Profile = data.Profile;
-                    dest.Seniority = data.Seniority;
-                    dest.Technology = data.Technology;
+                        dest.Profile = data.Profile;
+                        dest.Seniority = data.Seniority;
+                        dest.Technology = data.Technology;
+                    }
                 });
 
             CreateMap<Employee, EmployeeProfileModel>()
