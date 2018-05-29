@@ -26,7 +26,7 @@ export class TopNavbarComponent {
         private router: Router,
         public menuService: MenuService){
 
-        var lang = Cookie.get("lang");
+        var lang = 'es';
 
         if(lang){
           configService.setCurrLang(lang);
