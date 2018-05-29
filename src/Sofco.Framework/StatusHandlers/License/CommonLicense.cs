@@ -13,7 +13,7 @@ namespace Sofco.Framework.StatusHandlers.License
             //Item 2 = Total Days 
             var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
 
-            if (licenseType.Days > 0 && tupla.Item1 > licenseType.Days)
+            if (licenseType.Days > 0 && tupla.Item2 > licenseType.Days)
             {
                 response.AddError(Resources.Rrhh.License.DaysWrong);
             }
