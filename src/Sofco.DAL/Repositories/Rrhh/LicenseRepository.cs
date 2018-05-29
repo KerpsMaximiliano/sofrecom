@@ -144,9 +144,10 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public bool AreDatesOverlaped(DateTime startDate, DateTime endDate, int employeeId)
         {
-            return context.Licenses.Any(x => x.EmployeeId == employeeId && 
-            (startDate >= x.StartDate.Date && startDate <= x.EndDate.Date ||
-             endDate >= x.StartDate.Date && endDate <= x.EndDate.Date));
+            return context.Licenses.Any(x => x.EmployeeId == employeeId &&
+                                             x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected &&
+                                             (startDate >= x.StartDate.Date && startDate <= x.EndDate.Date ||
+                                              endDate >= x.StartDate.Date && endDate <= x.EndDate.Date));
         }
     }
 }
