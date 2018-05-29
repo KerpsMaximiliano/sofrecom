@@ -73,32 +73,19 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             }
         }
 
-        public static void CheckNameAndDescription(Response response, Analytic analytic)
+        public static void CheckName(Response response, Analytic analytic)
         {
             if (string.IsNullOrWhiteSpace(analytic.Name))
             {
                 response.AddError(Resources.AllocationManagement.Analytic.NameIsRequired);
             }
-
-            if (string.IsNullOrWhiteSpace(analytic.Description))
-            {
-                response.AddError(Resources.AllocationManagement.Analytic.DescriptionIsRequired);
-            }
         }
 
         public static void CheckDirector(Response response, Analytic analytic)
         {
-            if (analytic.DirectorId <= 0)
+            if (analytic.SectorId <= 0)
             {
                 response.AddError(Resources.AllocationManagement.Analytic.DirectorIsRequired);
-            }
-        }
-
-        public static void CheckCurrency(Response response, Analytic analytic)
-        {
-            if (!analytic.CurrencyId.HasValue || analytic.CurrencyId <= 0)
-            {
-                response.AddError(Resources.AllocationManagement.Analytic.CurrencyIsRequired);
             }
         }
 

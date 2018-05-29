@@ -65,6 +65,15 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.form.model = data;
                 this.showClientButton = this.form.model.clientExternalId != null;
+
+                this.form.customerId = this.form.model.clientExternalId;
+                this.form.serviceId = this.form.model.serviceId;
+
+                this.form.getServices();
+
+                setTimeout(() => {
+                    $('#userId').val(this.form.model.usersQv).trigger('change');
+                }, 1000);
             },
             error => {
                 this.messageService.closeLoading();
@@ -98,10 +107,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
             case 2: return this.i18nService.translateByKey("allocationManagement.analytics.status.close");
             case 3: return this.i18nService.translateByKey("allocationManagement.analytics.status.closeForExpenses");
         }
-    }
-
-    goToPurchaseOrders() {
-        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
     }
 
     goToProjects() {

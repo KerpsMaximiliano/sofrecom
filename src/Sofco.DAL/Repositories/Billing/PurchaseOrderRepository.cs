@@ -46,20 +46,5 @@ namespace Sofco.DAL.Repositories.Billing
 
             return query.ToList();
         }
-
-        public ICollection<PurchaseOrder> GetByService(string serviceId)
-        {
-            var analytic =  context.Analytics
-                .Include(x => x.PurchaseOrders)
-                .ThenInclude(x => x.File)
-                .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
-
-            if (analytic != null && analytic.PurchaseOrders.Any())
-            {
-                return analytic.PurchaseOrders;
-            }
-
-            return new List<PurchaseOrder>();
-        }
     }
 }

@@ -34,8 +34,8 @@ namespace Sofco.Model.Models.AllocationManagement
 
         public DateTime EndDateContract { get; set; }
 
-        public int DirectorId { get; set; }
-        public User Director { get; set; }
+        public int SectorId { get; set; }
+        public Sector Sector { get; set; }
 
         public int? ManagerId { get; set; }
         public User Manager { get; set; }
@@ -43,16 +43,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public int? CommercialManagerId { get; set; }
         public User CommercialManager { get; set; }
 
-        public bool? EvalProp { get; set; }
-
         public string Proposal { get; set; }
-
-        public int? CurrencyId { get; set; }
-        public Currency Currency { get; set; }
-
-        public string AmountEarned { get; set; }
-
-        public string AmountProject { get; set; }
 
         public AnalyticStatus Status { get; set; }
 
@@ -62,25 +53,13 @@ namespace Sofco.Model.Models.AllocationManagement
         public int? TechnologyId { get; set; }
         public Technology Technology { get; set; }
 
-        public string Description { get; set; }
-
-        public int? ProductId { get; set; }
-        public Product Product { get; set; }
-
         public DateTime CreationDate { get; set; }
-
-        public string ClientProjectTfs { get; set; }
 
         public int? ClientGroupId { get; set; }
         public ClientGroup ClientGroup { get; set; }
 
-        public int? PurchaseOrderId { get; set; }
-        public PurchaseOrder PurchaseOrder { get; set; }
-
         public int? ServiceTypeId { get; set; }
         public ServiceType ServiceType { get; set; }
-
-        public bool BugsAccess { get; set; }
 
         public string UsersQv { get; set; }
 
@@ -89,8 +68,6 @@ namespace Sofco.Model.Models.AllocationManagement
         public SoftwareLaw SoftwareLaw { get; set; }
 
         public ICollection<Allocation> Allocations { get; set; }
-
-        public ICollection<Billing.PurchaseOrder> PurchaseOrders { get; set; }
 
         public ICollection<WorkTime> WorkTimes { get; set; }
 

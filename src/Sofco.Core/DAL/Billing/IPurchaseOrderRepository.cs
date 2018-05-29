@@ -10,6 +10,5 @@ namespace Sofco.Core.DAL.Billing
         bool Exist(int purchaseOrderId);
         PurchaseOrder GetById(int purchaseOrderId);
         ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters);
-        ICollection<PurchaseOrder> GetByService(string serviceId);
     }
 }

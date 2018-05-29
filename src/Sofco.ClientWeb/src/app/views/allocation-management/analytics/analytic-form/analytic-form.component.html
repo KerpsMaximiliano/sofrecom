@@ -85,7 +85,12 @@
                 </div>
             </div>
             <div class="col-sm-6">
-
+                <div class="form-group">
+                    <label class="control-label"> {{'ADMIN.USERS.TITLE' | translate }} </label>
+                    <select select2 class="form-control" id="userId" multiple>
+                        <option *ngFor="let user of users" [value]="user?.id">{{ user.text }}</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

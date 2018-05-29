@@ -9,6 +9,7 @@ import { CostCenterService } from "app/services/allocation-management/cost-cente
 import { MenuService } from "app/services/admin/menu.service";
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { ServiceService } from "../../../../services/billing/service.service";
+import { UserService } from "../../../../services/admin/user.service";
 
 @Component({
     selector: 'analytic-form',
@@ -22,6 +23,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     public model: any = {};
     public services: any[] = new Array();
     public customers: any[] = new Array();
+    public users: any[] = new Array();
 
     public customerId: string = "0";
     public serviceId: string = "0";
@@ -36,6 +38,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 private costCenter: CostCenterService,
                 private router: Router,
                 private customerService: CustomerService,
+                private userService: UserService,
                 private serviceService: ServiceService,
                 private menuService: MenuService,
                 private messageService: MessageService,
@@ -46,6 +49,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         let analyticWithProject = sessionStorage.getItem('analyticWithProject');
 
         this.getCustomers();
+        this.getUsers();
 
         this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(
             data => {
@@ -71,16 +75,12 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
         if(this.mode == 'new'){
             this.model.activityId = 1;
-            this.model.currencyId = 1;
 
             if(analyticWithProject == 'yes'){
                 this.model.clientExternalId = sessionStorage.getItem('customerId');
                 this.model.clientExternalName = sessionStorage.getItem('customerName');
                 this.model.serviceId = sessionStorage.getItem('serviceId');
                 this.model.service = sessionStorage.getItem('serviceName');
-                // this.model.contractNumber = project.purchaseOrder;
-                // this.model.amountEarned = project.totalAmmount; 
-                // this.model.currencyId = this.getCurrencyId(service.currency);
                 this.model.solutionId = service.solutionTypeId;
                 this.model.technologyId = service.technologyTypeId;
                 this.model.serviceTypeId = service.serviceTypeId;
@@ -88,7 +88,6 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             else{
                 this.model.clientExternalName = 'No Aplica';
                 this.model.service = 'No Aplica';
-                this.model.contractNumber = 'No Aplica';
             }
            
             this.model.startDateContract = new Date();
@@ -112,12 +111,13 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             err => this.errorHandlerService.handleErrors(err));
     }
 
-    getCurrencyId(currency){
-        switch(currency){
-            case "Peso": { return 1; }
-            case "Dolar": { return 2; }
-            case "Euro": { return 3; }
-        }
+    getUsers(){
+        this.userService.getOptions().subscribe(data => {
+            this.users = data;
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err)
+        });
     }
 
     getCustomers() {
@@ -134,26 +134,42 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     }
 
     customerChange(){
-        this.model.clientExternalName = this.customerId;
+        this.model.clientExternalId = this.customerId;
+
+        var customers = this.customers.filter(x => x.id == this.customerId);
+
+        if(customers.length > 0){
+            this.model.clientExternalName = customers[0].text;
+        }
 
         this.serviceId = "0";
         this.services = [];
 
         if(this.customerId != "0"){
-            this.messageService.showLoading();
-            
-            this.serviceService.getOptions(this.customerId).subscribe(d => {
-                this.messageService.closeLoading();
-                this.services = d.data;
-            },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            this.getServices();
         }
     }
 
+    getServices(){
+        this.messageService.showLoading();
+            
+        this.serviceService.getOptions(this.customerId).subscribe(d => {
+            this.messageService.closeLoading();
+            this.services = d.data;
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
+    }
+
     serviceChange(){
-        this.model.service = this.serviceId;
+        this.model.serviceId = this.serviceId;
+
+        var services = this.services.filter(x => x.id == this.serviceId);
+
+        if(services.length > 0){
+            this.model.service = services[0].text;
+        }
     }
 }

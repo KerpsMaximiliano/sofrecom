@@ -32,7 +32,6 @@ namespace Sofco.Model.Models.Admin
 
         public string ExternalManagerId { get; set; }
 
-        public ICollection<Analytic> Analytics1 { get; set; }
         public ICollection<Analytic> Analytics2 { get; set; }
         public ICollection<Analytic> Analytics3 { get; set; }
 
