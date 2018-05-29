@@ -77,10 +77,6 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         if(this.fileDeliveredSubscrip) this.fileDeliveredSubscrip.unsubscribe();
     }
 
-    back(){
-        window.history.back();
-    }
-
     configUploader(){
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
