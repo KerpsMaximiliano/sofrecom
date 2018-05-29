@@ -32,7 +32,12 @@ namespace Sofco.WebApi.Models.AllocationManagement
             TechnologyId = domain.TechnologyId;
             ClientGroupId = domain.ClientGroupId;
             ServiceTypeId = domain.ServiceTypeId;
-            UsersQv = domain.UsersQv.Split(';');
+
+            if (!string.IsNullOrWhiteSpace(domain.UsersQv))
+            {
+                UsersQv = domain.UsersQv.Split(';');
+            }
+            
             CostCenterId = domain.CostCenterId;
             Status = domain.Status;
             CreationDate = domain.CreationDate;
