@@ -60,10 +60,13 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.form.model = data;
 
-                this.form.customerId = this.form.model.clientExternalId;
-                this.form.serviceId = this.form.model.serviceId;
+                if(this.form.model.customerId){
+                    
+                    this.form.customerId = this.form.model.clientExternalId;
+                    this.form.serviceId = this.form.model.serviceId;
 
-                this.form.getServices();
+                    this.form.getServices();
+                }
 
                 setTimeout(() => {
                     $('#userId').val(this.form.model.usersQv).trigger('change');
