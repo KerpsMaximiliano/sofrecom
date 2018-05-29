@@ -27,7 +27,7 @@
                 <h4 class="m-t-md">{{ model?.profile }}</h4>
  
                 <div class="row m-t-lg">
-                    <div class="col-sm-3" *ngIf="!isRrhh">
+                    <div class="col-sm-3" *ngIf="canAddWorkTime()">
                         <div class="widget-custom lazur-bg" (click)="goToTimeSheet()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="col-sm-3" *ngIf="!isRrhh">
+                    <div class="col-sm-3" *ngIf="canAddLicense()">
                         <div class="widget-custom lazur-bg" (click)="goToLicenses()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">

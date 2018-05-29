@@ -205,7 +205,7 @@ export const ROUTES:Routes = [
         path: "resources",
         children: [
           { path: "", component: ResourceSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "LSTRE" } },
-          { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWPRO" } },
+          { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "PROFI", functionality: "VWPRO" } },
           { path: ":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         ]
       },
@@ -237,6 +237,7 @@ export const ROUTES:Routes = [
   {
     path: 'profile', component: BasicLayoutComponent,
     children: [
+      { path: "workTime", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "WORKT" } },
       { path: ":id", component: ResourceDetailComponent, canActivate: [AuthGuard], data: { fromRrhh: false } },
       {
         path: "licenses",
@@ -276,7 +277,6 @@ export const ROUTES:Routes = [
     children: [
       {
         path: 'workTime', children:[
-          { path: "load", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "WORKT" } },
           { path: "approval", component: WorkTimeApprovalComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "APPRO" } },
           { path: "report", component: WorkTimeReportComponent, canActivate: [AuthGuard], data: { module: "WOTIM", functionality: "REPOR" } },
           { path: "search", component: WorkTimeSearchComponent, canActivate: [AuthGuard] }

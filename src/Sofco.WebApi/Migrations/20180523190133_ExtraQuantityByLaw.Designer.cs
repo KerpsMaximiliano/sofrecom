@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180523190133_ExtraQuantityByLaw")]
+    partial class ExtraQuantityByLaw
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")

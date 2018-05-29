@@ -125,7 +125,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
     }
 
     canViewProfile(){
-        return this.menuService.hasFunctionality('ALLOC', 'VWPRO');
+        return this.menuService.hasFunctionality('PROFI', 'VWPRO');
     }
 
     goToAssignAnalytics(resource){
