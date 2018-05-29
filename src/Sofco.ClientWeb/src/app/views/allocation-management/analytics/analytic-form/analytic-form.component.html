@@ -3,16 +3,25 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.title' | translate }}</label>
-                    <input type="text" class="form-control" id="title" [(ngModel)]="model.title" data-mask="999-*9999" [disabled]="mode == 'edit'">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
                     <label class="control-label">{{ 'contracts.costCenter.title' | translate }}</label>
                     <select class="form-control m-b" [(ngModel)]="model.costCenterId" (ngModelChange)="costCenterChange()" [disabled]="mode == 'edit'">
                         <option *ngFor="let costCenter of costCenters" [value]="costCenter?.id">{{costCenter?.text}}</option>
                     </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.title' | translate }}</label>
+                    <input type="text" class="form-control" id="title" [(ngModel)]="model.title" data-mask="999-*9999" [disabled]="mode == 'edit'">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.name' | translate }}</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.name">
                 </div>
             </div>
         </div>
@@ -33,35 +42,19 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.name' | translate }}</label>
-                    <input type="text" class="form-control" [(ngModel)]="model.name">
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.description' | translate }}</label>
-                    <textarea class="form-control" rows="5" [(ngModel)]="model.description"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <select-two [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                <!-- <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.client' | translate }}</label>
                     <input type="text" disabled class="form-control" [ngModel]="model?.clientExternalName">
-                </div>
+                </div> -->
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
+                <select-two [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                <!-- <div class="form-group">
                     <label class="control-label">{{ 'allocationManagement.analytics.add.service' | translate }}</label>
                     <input type="text" disabled class="form-control" [ngModel]="model?.service">
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -85,48 +78,60 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <icheck  [(checked)]="model.evalProp" [disabled]="mode == 'view'">
-                        <label class="control-label">{{ 'allocationManagement.analytics.add.evalProp' | translate }}</label> 
-                    </icheck>
-                </div>
-                <div class="form-group">
-                    <icheck  [(checked)]="model.bugsAccess" [disabled]="mode == 'view'">
-                        <label class="control-label">{{ 'allocationManagement.analytics.add.bugsAccess' | translate }}</label> 
-                    </icheck>
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.group' | translate }}</label>
+                    <select class="form-control m-b" [(ngModel)]="model.clientGroupId">
+                        <option *ngFor="let clientGroup of options?.clientGroups" [value]="clientGroup?.id">{{clientGroup?.text}}</option>
+                    </select>
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.amountEarned' | translate }}</label>
-                    <input type="text" class="form-control" [(ngModel)]="model.amountEarned">
-                </div>
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.amountProject' | translate }}</label>
-                    <input type="text" class="form-control" [(ngModel)]="model.amountProject">
-                </div>
+
             </div>
         </div>
     </div>
 
     <div class="col-sm-5">
         <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.director' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.directorId">
-                <option *ngFor="let director of options?.directors" [value]="director?.id">{{director?.text}}</option>
+            <label class="control-label">{{ 'allocationManagement.analytics.add.direction' | translate }}</label>
+            <select class="form-control m-b" [(ngModel)]="model.sectorId">
+                <option *ngFor="let sector of options?.sectors" [value]="sector?.id">{{sector?.text}}</option>
             </select>
         </div>
+
         <div class="form-group">
             <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
             <select class="form-control m-b" [(ngModel)]="model.managerId">
                 <option *ngFor="let manager of options?.managers" [value]="manager?.id">{{manager?.text}}</option>
             </select>
         </div>
+
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.solution' | translate }}</label>
+            <select class="form-control m-b" [(ngModel)]="model.solutionId">
+                <option *ngFor="let solution of options?.solutions" [value]="solution?.id">{{solution?.text}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.technology' | translate }}</label>
+            <select class="form-control m-b" [(ngModel)]="model.technologyId">
+                <option *ngFor="let technology of options?.technologies" [value]="technology?.id">{{technology?.text}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.serviceType' | translate }}</label>
+            <select class="form-control m-b" [(ngModel)]="model.serviceTypeId">
+                <option *ngFor="let serviceType of options?.serviceTypes" [value]="serviceType?.id">{{serviceType?.text}}</option>
+            </select>
+        </div>
+
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.currency' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.currencyId">
-                        <option *ngFor="let currency of options?.currencies" [value]="currency?.id">{{currency?.text}}</option>
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.softwareLaw' | translate }}</label>
+                    <select class="form-control m-b" [(ngModel)]="model.softwareLawId">
+                        <option *ngFor="let softwareLaw of options?.softwareLaws" [value]="softwareLaw?.id">{{softwareLaw?.text}}</option>
                     </select>
                 </div>
             </div>
@@ -138,48 +143,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.solution' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.solutionId">
-                <option *ngFor="let solution of options?.solutions" [value]="solution?.id">{{solution?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.technology' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.technologyId">
-                <option *ngFor="let technology of options?.technologies" [value]="technology?.id">{{technology?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.serviceType' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.serviceTypeId">
-                <option *ngFor="let serviceType of options?.serviceTypes" [value]="serviceType?.id">{{serviceType?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.product' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.productId">
-                <option *ngFor="let product of options?.products" [value]="product?.id">{{product?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.group' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.clientGroupId">
-                <option *ngFor="let clientGroup of options?.clientGroups" [value]="clientGroup?.id">{{clientGroup?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.purchaseOrder' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.purchaseOrderId">
-                <option *ngFor="let purchaseOrder of options?.purchaseOrders" [value]="purchaseOrder?.id">{{purchaseOrder?.text}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.softwareLaw' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.softwareLawId">
-                <option *ngFor="let softwareLaw of options?.softwareLaws" [value]="softwareLaw?.id">{{softwareLaw?.text}}</option>
-            </select>
         </div>
     </div>
 </div>
