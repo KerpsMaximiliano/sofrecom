@@ -28,7 +28,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             foreach (var employeeWorkTimeApproval in employees)
             {
-                employeeWorkTimeApproval.WorkTimeApproval = null;
+                if (employeeWorkTimeApproval.WorkTimeApproval != null)
+                {
+                    employeeWorkTimeApproval.WorkTimeApproval.Analytic = null;
+                }
             }
         }
     }
