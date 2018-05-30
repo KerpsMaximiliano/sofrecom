@@ -18,7 +18,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Employee GetByEmail(string email);
 
-        void Save(List<Employee> employees);
+        void Update(List<Employee> employees);
 
         List<Employee> GetByEndDate(DateTime today);
 
