@@ -4,7 +4,7 @@
     "titleInvalid": "El formato del titulo no es correcto",
     "nameIsRequired": "El nombre es requerido",
     "descriptionIsRequired": "La descripcion es requerida",
-    "directorIsRequired": "El director es requerido",
+    "directorIsRequired": "La direccíon es requerido",
     "currencyIsRequired": "La moneda es requerida",
     "saveSuccess": "Analítica creada exitosamente",
     "costCenterIsRequired": "Centro de costos es requerido",

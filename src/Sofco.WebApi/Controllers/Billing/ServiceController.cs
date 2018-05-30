@@ -45,14 +45,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
-        [HttpGet("{serviceId}/purchaseOrders")]
-        public IActionResult GetPurchaseOrders(string serviceId)
-        {
-            var purchaseOrders = purchaseOrderService.GetByService(serviceId);
-
-            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
-        }
-
         [HttpGet("{serviceId}/analytic")]
         public IActionResult GetAnalyticByService(string serviceId)
         {

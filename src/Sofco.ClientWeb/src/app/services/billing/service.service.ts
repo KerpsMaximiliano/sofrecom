@@ -23,8 +23,4 @@ export class ServiceService {
   getById(customerId, serviceId) {
     return this.http.get<any>(`${this.apiUrl}/${serviceId}/account/${customerId}`);
   }
-
-  getPurchaseOrders(serviceId) {
-    return this.http.get<any>(`${this.apiUrl}/${serviceId}/purchaseOrders`);
-  }
 }

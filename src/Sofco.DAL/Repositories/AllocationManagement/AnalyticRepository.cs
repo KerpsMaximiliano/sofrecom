@@ -88,7 +88,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Analytic> GetAnalyticsByManagers(int id)
         {
-            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id && x.Status == AnalyticStatus.Open).ToList();
+            return context.Analytics.Where(x => x.ManagerId == id && x.Status == AnalyticStatus.Open).ToList();
         }
 
         public List<Analytic> GetByManagerId(int managerId)
@@ -99,7 +99,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId)
         {
             return context.Analytics
-                .Where(x => x.ManagerId == managerId || x.DirectorId == managerId
+                .Where(x => x.ManagerId == managerId
                 && x.Status == AnalyticStatus.Open)
                 .Select(s => new AnalyticLiteModel
                 {

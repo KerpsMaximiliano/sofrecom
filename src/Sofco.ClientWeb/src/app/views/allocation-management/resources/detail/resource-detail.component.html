@@ -111,10 +111,10 @@
                         <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
                         <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
-                    <tr *ngIf="model?.hasExtraHolidays">
-                        <td><strong>{{'allocationManagement.resources.grid.examDaysTaken' | translate }} {{'rrhh.license.days' | translate }}: </strong> {{ model?.examDaysTaken }}</td>
+                    <tr>
+                        <td><strong>{{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.days' | translate }}</td>
                         <td></td>
-                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td *ngIf="model?.hasExtraHolidays && isRrhh"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>

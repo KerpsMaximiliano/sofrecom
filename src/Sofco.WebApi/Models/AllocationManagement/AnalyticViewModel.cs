@@ -25,23 +25,19 @@ namespace Sofco.WebApi.Models.AllocationManagement
             StartDateContract = domain.StartDateContract;
             EndDateContract = domain.EndDateContract;
             CommercialManagerId = domain.CommercialManagerId;
-            DirectorId = domain.DirectorId;
+            SectorId = domain.SectorId;
             ManagerId = domain.ManagerId;
-            EvalProp = domain.EvalProp;
             Proposal = domain.Proposal;
-            CurrencyId = domain.CurrencyId;
-            AmountEarned = domain.AmountEarned;
-            AmountProject = domain.AmountProject;
             SolutionId = domain.SolutionId;
             TechnologyId = domain.TechnologyId;
-            Description = domain.Description;
-            ProductId = domain.ProductId;
-            ClientProjectTfs = domain.ClientProjectTfs;
             ClientGroupId = domain.ClientGroupId;
-            PurchaseOrderId = domain.PurchaseOrderId;
             ServiceTypeId = domain.ServiceTypeId;
-            BugsAccess = domain.BugsAccess;
-            UsersQv = domain.UsersQv;
+
+            if (!string.IsNullOrWhiteSpace(domain.UsersQv))
+            {
+                UsersQv = domain.UsersQv.Split(';');
+            }
+            
             CostCenterId = domain.CostCenterId;
             Status = domain.Status;
             CreationDate = domain.CreationDate;
@@ -73,41 +69,23 @@ namespace Sofco.WebApi.Models.AllocationManagement
 
         public int? CommercialManagerId { get; set; }
 
-        public int DirectorId { get; set; }
+        public int SectorId { get; set; }
 
         public int? ManagerId { get; set; }
 
-        public bool? EvalProp { get; set; }
-
         public string Proposal { get; set; }
-
-        public int? CurrencyId { get; set; }
-
-        public string AmountEarned { get; set; }
-
-        public string AmountProject { get; set; }
 
         public int? SolutionId { get; set; }
 
         public int? TechnologyId { get; set; }
 
-        public string Description { get; set; }
-
-        public int? ProductId { get; set; }
-
         public DateTime CreationDate { get; set; }
-
-        public string ClientProjectTfs { get; set; }
 
         public int? ClientGroupId { get; set; }
 
-        public int? PurchaseOrderId { get; set; }
-
         public int? ServiceTypeId { get; set; }
 
-        public bool BugsAccess { get; set; }
-
-        public string UsersQv { get; set; }
+        public string[] UsersQv { get; set; }
 
         public AnalyticStatus Status { get; set; }
 
@@ -129,31 +107,22 @@ namespace Sofco.WebApi.Models.AllocationManagement
             domain.Title = Title;
             domain.Name = Name;
             domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
-            domain.Service = Service;
             domain.ServiceId = ServiceId;
+            domain.ClientExternalName = ClientExternalId == "0" ? "No Aplica" : ClientExternalName;
+            domain.Service = ServiceId == "0" ? "No Aplica" : Service;
             domain.SoftwareLawId = SoftwareLawId;
             domain.ActivityId = ActivityId;
             domain.StartDateContract = StartDateContract.Date;
             domain.EndDateContract = EndDateContract.Date;
             domain.CommercialManagerId = CommercialManagerId;
-            domain.DirectorId = DirectorId;
+            domain.SectorId = SectorId;
             domain.ManagerId = ManagerId;
-            domain.EvalProp = EvalProp;
             domain.Proposal = Proposal;
-            domain.CurrencyId = CurrencyId;
-            domain.AmountEarned = AmountEarned;
-            domain.AmountProject = AmountProject;
             domain.SolutionId = SolutionId;
             domain.TechnologyId = TechnologyId;
-            domain.Description = Description;
-            domain.ProductId = ProductId;
-            domain.ClientProjectTfs = ClientProjectTfs;
             domain.ClientGroupId = ClientGroupId;
-            domain.PurchaseOrderId = PurchaseOrderId;
             domain.ServiceTypeId = ServiceTypeId;
-            domain.BugsAccess = BugsAccess;
-            domain.UsersQv = UsersQv;
+            domain.UsersQv = string.Join(";", UsersQv);
             domain.CostCenterId = CostCenterId;
         }
     }
