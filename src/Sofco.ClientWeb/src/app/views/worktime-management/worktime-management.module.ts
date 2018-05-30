@@ -4,6 +4,7 @@ import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.mo
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ICheckModule } from "app/components/icheck/icheck.module";
+import { PCheckModule } from "app/components/pcheck/pcheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUploadModule } from 'ng2-file-upload';
@@ -29,7 +30,7 @@ import { HolidayService } from 'app/services/worktime-management/holiday.service
                  WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-    TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule],
+    TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, PCheckModule],
 
   providers   : [WorktimeService, UtilsService, HolidayService],
 

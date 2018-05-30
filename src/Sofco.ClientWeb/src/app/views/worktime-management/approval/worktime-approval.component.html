@@ -57,7 +57,7 @@
                         <tbody>
                             <tr *ngFor="let item of hoursPending; let i = index">
                                 <td class="column-xs text-center">
-                                    <icheck [(checked)]="item.selected"></icheck>
+                                    <pcheck [(checked)]="item.selected"></pcheck>
                                 </td>
                                 <td class="column-xlg">{{ item.analytic }}</td>
                                 <td class="column-xlg">{{ item.employee }}</td>
