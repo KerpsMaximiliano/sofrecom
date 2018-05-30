@@ -110,5 +110,28 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
 
             return license;
         }
+
+        public static void ValidateApplicantNotEqualManager(Response response, License domain, IUnitOfWork unitOfWork)
+        {
+            var employee = unitOfWork.EmployeeRepository.GetSingle(x => x.Id == domain.EmployeeId);
+            var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+            if (domain.ManagerId == user.Id)
+            {
+                response.AddError(Resources.Rrhh.License.ManagerEqualsEmployee);
+            }
+        }
+        
+        public static void ValidateDatesOverlaped(Response response, License domain, IUnitOfWork unitOfWork)
+        {
+            if (domain.StartDate != DateTime.MinValue && domain.EndDate != DateTime.MinValue && domain.EmployeeId > 0)
+            {
+                if (unitOfWork.LicenseRepository.AreDatesOverlaped(domain.StartDate.Date, domain.EndDate.Date,
+                    domain.EmployeeId))
+                {
+                    response.AddError(Resources.Rrhh.License.DatesOverlaped);
+                }
+            }
+        }
     }
 }

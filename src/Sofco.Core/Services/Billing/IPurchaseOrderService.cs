@@ -17,6 +17,5 @@ namespace Sofco.Core.Services.Billing
         Response Update(PurchaseOrder domain);
         ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters);
         Response DeleteFile(int id);
-        ICollection<PurchaseOrder> GetByService(string serviceId);
     }
 }

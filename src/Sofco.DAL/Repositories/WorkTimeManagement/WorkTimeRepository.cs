@@ -54,7 +54,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
-                .Where(x => x.Status == WorkTimeStatus.Sent && (x.Analytic.ManagerId == currentUserId || x.Analytic.DirectorId == currentUserId));
+                .Where(x => x.Status == WorkTimeStatus.Sent && x.Analytic.ManagerId == currentUserId);
 
             IQueryable<WorkTime> query2 = from worktime in context.WorkTimes
                                           from worktimeApproval in context.WorkTimeApprovals

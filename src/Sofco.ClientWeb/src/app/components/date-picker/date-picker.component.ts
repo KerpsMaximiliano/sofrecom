@@ -46,6 +46,10 @@ export class DatePickerComponent implements OnInit{
             this.element.nativeElement.value = moment(changes.date.currentValue).format('DD/MM/YYYY');
         }
     }
+
+    clean(){
+        this.element.nativeElement.value = '';
+    }
     
     setDate(){
         var value = this.element.nativeElement.value;

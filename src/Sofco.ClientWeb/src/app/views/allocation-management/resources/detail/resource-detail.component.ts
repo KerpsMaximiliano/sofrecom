@@ -115,7 +115,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     goToTimeSheet(){
-        this.router.navigate([`/workTimeManagement/workTime/load`]);
+        this.router.navigate([`/profile/workTime`]);
     }
 
     getLicenses(){
@@ -183,6 +183,18 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if(this.businessHours > 0 && this.businessHoursDescription && this.businessHoursDescription != ''){
             return true;
         }
+
+        return false;
+    }
+
+    canAddLicense(){
+        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
+
+        return false;
+    }
+
+    canAddWorkTime(){
+        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
 
         return false;
     }

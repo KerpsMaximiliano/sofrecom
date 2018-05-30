@@ -225,7 +225,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var analitycs = unitOfWork.AnalyticRepository.GetAnalyticsByEmployee(employeeToChange.Id);
 
                 var mails = new List<string> { mailPmo };
-                mails.AddRange(analitycs.Select(x => x.Manager.Email).Distinct());
+
+                mails.AddRange(from analityc in analitycs where !string.IsNullOrWhiteSpace(analityc.Manager.Email) select analityc.Manager.Email);
 
                 var recipients = string.Join(";", mails.Distinct());
 
@@ -234,7 +235,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Recipients = recipients,
                     EmployeeNumber = employeeToChange.EmployeeNumber,
                     Name = employeeToChange.Name,
-                    EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("d")
+                    EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy")
                 };
 
                 var mail = mailBuilder.GetEmail(data);

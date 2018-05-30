@@ -125,6 +125,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.datesOverlaped.
+        /// </summary>
+        public static string DatesOverlaped {
+            get {
+                return ResourceManager.GetString("DatesOverlaped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.datesRequired.
         /// </summary>
         public static string DatesRequired {
@@ -215,6 +224,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.licensePendingLessThan0.
+        /// </summary>
+        public static string LicensePendingLessThan0 {
+            get {
+                return ResourceManager.GetString("LicensePendingLessThan0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.licenseTypeNotFound.
         /// </summary>
         public static string LicenseTypeNotFound {
@@ -229,6 +247,15 @@ namespace Sofco.Resources.Rrhh {
         public static string LicenseTypeUpdate {
             get {
                 return ResourceManager.GetString("LicenseTypeUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.managerEqualsEmployee.
+        /// </summary>
+        public static string ManagerEqualsEmployee {
+            get {
+                return ResourceManager.GetString("ManagerEqualsEmployee", resourceCulture);
             }
         }
         

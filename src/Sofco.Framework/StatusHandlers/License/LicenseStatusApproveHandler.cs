@@ -36,6 +36,16 @@ namespace Sofco.Framework.StatusHandlers.License
                 {
                     response.AddError(Resources.Rrhh.License.CannotChangeStatus);
                 }
+
+                if (license.TypeId == 1 && license.Employee.HolidaysPending - license.DaysQuantity < 0)
+                {
+                    response.AddError(Resources.Rrhh.License.DaysWrong);
+                }
+
+                if (license.TypeId == 7 && license.Employee.ExamDaysTaken + license.DaysQuantity > license.Type.Days)
+                {
+                    response.AddError(Resources.Rrhh.License.ExamDaysTakenExceeded);
+                }
             }
         }
 
@@ -75,7 +85,7 @@ namespace Sofco.Framework.StatusHandlers.License
         public IMailData GetEmailData(Model.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
-            var body = string.Format(MailMessageResource.LicenseApproveMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail");
+            var body = string.Format(MailMessageResource.LicenseApproveMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail", license.Type.Description);
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 

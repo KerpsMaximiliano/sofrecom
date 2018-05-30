@@ -29,6 +29,7 @@ export class LicensePendingComponent implements OnDestroy  {
   @Input() employeeId: number;
   @Input() status: string;
   @Input() certificateRequired: boolean;
+  @Input() hasCertificate: boolean;
 
   @Output() history: EventEmitter<any> = new EventEmitter();
   @Output() updateStatus: EventEmitter<any> = new EventEmitter();
@@ -54,6 +55,8 @@ export class LicensePendingComponent implements OnDestroy  {
     if(!this.menuService.hasFunctionality('CTRLI', 'APROB') || this.menuService.user.employeeId == this.employeeId) return false;
 
     if(!this.certificateRequired) return false;
+
+    if(this.hasCertificate) return false;
 
     if(this.licenseId > 0 && this.menuService.userIsRrhh && this.status == LicenseStatus[LicenseStatus.Pending]){
         return true;

@@ -243,7 +243,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     canViewProfile(){
-        return this.menuService.hasFunctionality('ALLOC', 'VWPRO');
+        return this.menuService.hasFunctionality('PROFI', 'VWPRO');
     }
 
     collapse(){

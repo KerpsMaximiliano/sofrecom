@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Logger.Interfaces;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -19,13 +20,17 @@ namespace Sofco.Framework.Logger
 
         private readonly IMailSender mailSender;
 
-        public LogMailer(ILoggerWrapper<T> logger, IMailBuilder mailBuilder, IMailSender mailSender, IOptions<EmailConfig> emailConfigOption)
+        private readonly ISessionManager sessionManager;
+
+        public LogMailer(ILoggerWrapper<T> logger, IMailBuilder mailBuilder, IMailSender mailSender, IOptions<EmailConfig> emailConfigOption, ISessionManager sessionManager)
         {
             this.logger = logger;
 
             this.mailBuilder = mailBuilder;
 
             this.mailSender = mailSender;
+
+            this.sessionManager = sessionManager;
 
             mailLogSubject = emailConfigOption.Value.SupportMailLogTitle;
         }
@@ -55,11 +60,27 @@ namespace Sofco.Framework.Logger
                 ? exception.Message
                 : message + MessageDelimiter + exception.Message;
 
-            var content = msg + "<br><br>" + exception.StackTrace;
+            var content = GetUserName() + msg + "<br><br>" + exception.StackTrace;
 
             var mail = mailBuilder.GetSupportEmail(mailLogSubject, content);
 
             mailSender.Send(mail);
+        }
+
+        private string GetUserName()
+        {
+            var result = string.Empty;
+
+            try
+            {
+                result = "Username: <b>" + sessionManager.GetUserName() + "</b><br><br>";
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return result;
         }
     }
 }

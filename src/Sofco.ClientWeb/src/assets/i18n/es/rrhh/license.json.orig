@@ -1,0 +1,37 @@
+{
+    "employeeRequired": "El solicitante es requerido",
+    "employeeNotFound": "Solicitante no encontrado",
+    "managerRequired": "El superior es requerido",
+    "managerNotFound": "Superior no encontrado",
+    "datesRequired": "Las fechas son requeridas",
+    "endDateLessThanStartDate": "La fecha de fin no puede ser menor a la fecha de inicio",
+    "sectorRequired": "El sector es requerido",
+    "typeRequired": "El motivo de la licencia es requerido",
+    "saveSuccess": "Licencia ha sido cargada en el sistema exitosamente",
+    "daysWrong": "Las fechas ingresadas exceden la cantidad de dias permitidos de acuerdo al tipo de licencia seleccionada",
+    "examDaysTakenExceeded": "Se excedieron los dias por examen anuales",
+    "examDescriptionRequired": "La asignatura a rendir es requerida",
+    "commentsRequired": "Los comentarios son requeridos",
+    "notFound": "Licencia no encontrada",
+    "fileAdded": "Archivo cargado exitosamente",
+    "licenseTypeUpdate": "Licencias actualizadas",
+    "examTypeRequired": "Debe seleccionar un tipo de examen",
+    "rejectSuccess": "La licencia ha sido rechazada exitosamente",
+    "pendingSuccess": "La licencia quedo en Pendiente de Aprobación correctamente",
+    "cannotChangeStatus": "No se puede cambiar el estado",
+    "authPendingSuccess": "La licencia quedo en Pendiente de Autorización correctamente",
+    "approveSuccess": "La licencia ha sido aprobada exitosamente",
+    "approvePendingSuccess": "La licencia quedo en Aprobada / Documetanción Pendiente correctamente",
+    "updateSuccess": "La licencia se actualizo correctamente",
+    "wrongCertificateMonthQuantity": "El dia del mes debe ser mayor o igual a 1 y menor o igual a 28",
+    "startDateIsWeekend": "La licencia debe comenzar en día lunes o el siguiente hábil si aquél fuese feriado.",
+    "cancelledSuccess": "La licencia fue cancelada correctamente",
+    "changeStatusError": "Ocurrio un error al cambiar el estado. Consulte con RRHH",
+    "generateWorkTimesError": "Ocurrio un error al generar las horas",
+    "datesLessThanToday": "Las fechas no pueden ser menor a la fecha de hoy",
+<<<<<<< HEAD
+    "managerEqualsEmployee": "El solicitante no puede ser igual al superior"
+=======
+    "datesOverlaped": "La fecha de la licencia que se quiere cargar coincide con alguna fecha de otra licencia ya cargada en el sistema"
+>>>>>>> master
+}

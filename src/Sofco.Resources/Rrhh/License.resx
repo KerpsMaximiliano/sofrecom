@@ -138,6 +138,9 @@
   <data name="DatesLessThanToday" xml:space="preserve">
     <value>rrhh/license.datesLessThanToday</value>
   </data>
+  <data name="DatesOverlaped" xml:space="preserve">
+    <value>rrhh/license.datesOverlaped</value>
+  </data>
   <data name="DatesRequired" xml:space="preserve">
     <value>rrhh/license.datesRequired</value>
   </data>
@@ -168,11 +171,17 @@
   <data name="GenerateWorkTimesError" xml:space="preserve">
     <value>rrhh/license.generateWorkTimesError</value>
   </data>
+  <data name="LicensePendingLessThan0" xml:space="preserve">
+    <value>rrhh/license.licensePendingLessThan0</value>
+  </data>
   <data name="LicenseTypeNotFound" xml:space="preserve">
     <value>rrhh/license.licenseTypeNotFound</value>
   </data>
   <data name="LicenseTypeUpdate" xml:space="preserve">
     <value>rrhh/license.licenseTypeUpdate</value>
+  </data>
+  <data name="ManagerEqualsEmployee" xml:space="preserve">
+    <value>rrhh/license.managerEqualsEmployee</value>
   </data>
   <data name="ManagerNotFound" xml:space="preserve">
     <value>rrhh/license.managerNotFound</value>

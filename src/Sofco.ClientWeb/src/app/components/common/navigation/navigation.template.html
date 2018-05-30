@@ -64,10 +64,18 @@
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'workTimeManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('workTimeManagement')}">
           <li [ngClass]="{active: activeRoute('holidays')}"  *ngIf="menuService.hasFunctionality('WOTIM', 'HOLID')"><a [routerLink]="['/workTimeManagement/holidays']">{{'workTimeManagement.holiday.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('load')}" *ngIf="menuService.hasFunctionality('WOTIM', 'WORKT')"><a [routerLink]="['/workTimeManagement/workTime/load']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('approval')}" *ngIf="menuService.hasFunctionality('WOTIM', 'APPRO')"><a [routerLink]="['/workTimeManagement/workTime/approval']">{{'workTimeManagement.approvalHours' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasFunctionality('WOTIM', 'REPOR')"><a [routerLink]="['/workTimeManagement/workTime/report']">{{'workTimeManagement.report.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('WOTIM', 'QUERY')"><a [routerLink]="['/workTimeManagement/workTime/search']">{{'workTimeManagement.query.query' | translate }}</a></li>
+        </ul>
+      </li>
+
+      <!-- Profile-->
+      <li [ngClass]="{active: activeRoute('profile')}">
+        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Mis Acciones</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('profile')}">
+          <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA')"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/profile/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
         </ul>
       </li>
 

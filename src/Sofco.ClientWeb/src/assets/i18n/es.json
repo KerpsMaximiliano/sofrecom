@@ -146,6 +146,7 @@
             "grid": {
                 "name": "Nombre",
                 "analytic": "Analítica",
+                "opportunity": "Oportunidad",
                 "purchaseOrder": "Orden compra",
                 "incomes": "Ingresos Estimados",
                 "startDate": "Fecha Inicio",
@@ -463,7 +464,7 @@
             "title": "Recursos",
             "titleInactive": "Recursos Inactivos",
             "list": "Listado",
-            "profile": "Perfil del empleado",
+            "profile": "Perfil",
             "recipients": "Con Copia (CC)",
             "recipient": "Destinatario",
             "empty": "El proyecto no tiene recursos asignados. Para asignar nuevos recursos dirijase a la analitica.",
@@ -500,7 +501,8 @@
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
-                "start": "Ingreso"
+                "start": "Ingreso",
+                "examDaysTaken": "Días examen tomados"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
         },
@@ -544,6 +546,7 @@
                 "amountProject": "Monto del proyecto",
                 "proposal": "Propuesta",
                 "director": "Director",
+                "direction": "Direccíon",
                 "manager": "Gerente",
                 "currency":"Moneda",
                 "activity": "Actividad",
@@ -603,10 +606,13 @@
             "sector": "Sector",
             "attachments": "Archivos Adjuntos",
             "exam": "Días por examen",
-            "marrige": "Días por Matrimonio",
-            "born": "Días por Nacimiento",
+            "marrige": "Días por matrimonio",
+            "born": "Días por paternidad",
             "deadParent": "Días por fallecimiento familiar directo",
             "deadBrother": "Días por fallecimiento hermano",
+            "maternite": "Días por maternidad",
+            "move": "Días por mudanza",
+            "personalFormalities": "Días por tramites personales",
             "type": "Licencia",
             "start": "Inicio",
             "end": "Fin",
@@ -685,7 +691,8 @@
         "authorize": "Autorizar",
         "approveSelected": "Aprobar seleccionados",
         "sessionExpiredTitle": "La sesion ha expirado...",
-        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema"
+        "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema",
+        "viewProfile": "Ver Perfil"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -720,7 +727,7 @@
     "Draft": "Borrador",
     "Pending": "Pendiente Aprobación",
     "License": "Licencia",
-    "ApprovePending": "Aprobada / Documentación pendiente",
+    "ApprovePending": "Documentación pendiente",
     "AuthPending": "Pendiente Autorización",
     "Differente100": "<> 100",
     "Equals100": "= 100",
@@ -758,7 +765,7 @@
         "monthYear": "Mes-Año",
         "month": "Mes",
         "workTime": {
-            "title": "Cargas de Horas",
+            "title": "Cargar Horas",
             "calendar": "Calendario",
             "sendHours": "Enviar horas",
             "loadNewTask": "Cargar nueva tarea",

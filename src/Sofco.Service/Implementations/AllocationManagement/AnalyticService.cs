@@ -93,9 +93,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var options = new AnalyticOptions();
 
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
-            options.Directors = unitOfWork.UserRepository.GetDirectors().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sectors = unitOfWork.UtilsRepository.GetSectors().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
+            options.Managers = unitOfWork.UserRepository.GetManagers().Distinct().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Technologies = unitOfWork.UtilsRepository.GetTechnologies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
@@ -143,9 +143,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             AnalyticValidationHelper.CheckTitle(response, analytic, unitOfWork.CostCenterRepository);
             AnalyticValidationHelper.CheckIfTitleExist(response, analytic, unitOfWork.AnalyticRepository);
-            AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
+            AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
-            AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
             AnalyticValidationHelper.CheckService(response, analytic, unitOfWork.AnalyticRepository);
 
@@ -205,9 +204,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = new Response<Analytic>();
 
             AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
-            AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
+            AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
-            AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
 
             if (response.HasErrors()) return response;
@@ -288,11 +286,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
 
-                var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                if(director != null) recipientsList.Add(director.Email);
                 if(manager != null) recipientsList.Add(manager.Email);
                 if(seller != null) recipientsList.Add(seller.Email);
 

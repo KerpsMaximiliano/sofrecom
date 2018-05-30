@@ -252,14 +252,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("ActivityId");
 
-                    b.Property<string>("AmountEarned")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("AmountProject")
-                        .HasMaxLength(500);
-
-                    b.Property<bool>("BugsAccess");
-
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(150);
 
@@ -268,37 +260,23 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("ClientGroupId");
 
-                    b.Property<string>("ClientProjectTfs")
-                        .HasMaxLength(150);
-
                     b.Property<int?>("CommercialManagerId");
 
                     b.Property<int>("CostCenterId");
 
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<int?>("CurrencyId");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500);
-
-                    b.Property<int>("DirectorId");
-
                     b.Property<DateTime>("EndDateContract");
-
-                    b.Property<bool?>("EvalProp");
 
                     b.Property<int?>("ManagerId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(200);
 
-                    b.Property<int?>("ProductId");
-
                     b.Property<string>("Proposal")
                         .HasMaxLength(200);
 
-                    b.Property<int?>("PurchaseOrderId");
+                    b.Property<int>("SectorId");
 
                     b.Property<string>("Service")
                         .HasMaxLength(200);
@@ -335,15 +313,9 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("CostCenterId");
 
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("DirectorId");
-
                     b.HasIndex("ManagerId");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseOrderId");
+                    b.HasIndex("SectorId");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -415,6 +387,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("ExamDaysTaken");
 
                     b.Property<int>("ExtraHolidaysQuantity");
+
+                    b.Property<int>("ExtraHolidaysQuantityByLaw");
 
                     b.Property<bool>("HasExtraHolidays");
 
@@ -1548,26 +1522,14 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.Currency", "Currency")
-                        .WithMany("Analytics")
-                        .HasForeignKey("CurrencyId");
-
-                    b.HasOne("Sofco.Model.Models.Admin.User", "Director")
-                        .WithMany("Analytics1")
-                        .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
                         .WithMany("Analytics2")
                         .HasForeignKey("ManagerId");
 
-                    b.HasOne("Sofco.Model.Utils.Product", "Product")
+                    b.HasOne("Sofco.Model.Utils.Sector", "Sector")
                         .WithMany("Analytics")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("Sofco.Model.Utils.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("Analytics")
-                        .HasForeignKey("PurchaseOrderId");
+                        .HasForeignKey("SectorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Model.Utils.ServiceType", "ServiceType")
                         .WithMany("Analytics")
@@ -1654,7 +1616,7 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
                 {
                     b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("PurchaseOrders")
+                        .WithMany()
                         .HasForeignKey("AnalyticId")
                         .OnDelete(DeleteBehavior.Cascade);
 

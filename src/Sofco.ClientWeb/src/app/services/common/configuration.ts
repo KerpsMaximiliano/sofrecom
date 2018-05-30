@@ -7,24 +7,25 @@ import { environment } from '../../../environments/environment'
 @Injectable()
 export class  Configuration {
 
-    UrlApi : string;
-    crmCloseStatusCode : string;
+    UrlApi: string;
+    crmCloseStatusCode: string;
 
-    public currLang: string = 'es';
+    public spanishLang = 'es';
+    public currLang = 'es';
 
     constructor(public tr: TranslateService){
-        tr.addLangs(["en", "es", "fr"]);
-        let browserLang = tr.getBrowserLang();
-        tr.setDefaultLang(browserLang);
-        tr.use(this.currLang);
+        tr.addLangs([this.spanishLang]);
+        tr.setDefaultLang(this.spanishLang);
+        tr.use(this.spanishLang);
 
         this.UrlApi = environment.urlApi;
         this.crmCloseStatusCode = environment.crmCloseStatusCode;
     }
 
     setCurrLang(currLang: string){
-        this.currLang = currLang;
-        this.tr.use(this.currLang);
+        return;
+        // this.currLang = currLang;
+        // this.tr.use(this.currLang);
     }
 
     getHeaders(){
@@ -34,7 +35,7 @@ export class  Configuration {
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
         headers.append('Authorization', 'Bearer '+ token);
-        
+
         return headers;
     }
 

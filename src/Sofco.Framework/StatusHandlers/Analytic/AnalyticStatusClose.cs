@@ -35,10 +35,8 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
             recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
 
-            var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
             var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
 
-            if (director != null) recipientsList.Add(director.Email);
             if (manager != null) recipientsList.Add(manager.Email);
 
             var recipients = string.Join(";", recipientsList.Distinct());

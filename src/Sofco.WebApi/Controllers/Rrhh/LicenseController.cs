@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Rrhh;
+using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Model.DTO;
@@ -24,13 +26,15 @@ namespace Sofco.WebApi.Controllers.Rrhh
         private readonly ILicenseService licenseService;
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
+        private readonly IUserService userService;
 
-        public LicenseController(ILicenseTypeService licenseTypeService, ILicenseService licenseService, IFileService fileService, IOptions<FileConfig> fileOptions)
+        public LicenseController(ILicenseTypeService licenseTypeService, ILicenseService licenseService, IFileService fileService, IUserService userService, IOptions<FileConfig> fileOptions)
         {
             this.licenseTypeService = licenseTypeService;
             this.licenseService = licenseService;
             this.fileService = fileService;
             fileConfig = fileOptions.Value;
+            this.userService = userService;
         }
 
         [HttpGet("types")]
@@ -163,15 +167,18 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return Ok(histories);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("report")]
-        public IActionResult Report()
+        public IActionResult Report([FromBody] ReportParams parameters)
         {
             try
             {
-                var excel = licenseService.GetLicenseReport();
+                var response = licenseService.GetLicenseReport(parameters);
 
-                return File(excel.GetAsByteArray(), "application/octet-stream", "licencias");
+                if (response.HasErrors())
+                    return BadRequest(response);
+
+                return File(response.Data, "application/octet-stream", string.Empty);
             }
             catch
             {
@@ -189,5 +196,14 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             return this.CreateResponse(response);
         }
-    }
+
+        [HttpGet]
+        [Route("authorizers")]
+        public IActionResult GetAuthorizers()
+        {
+            var users = userService.GetAuthorizers();
+
+            return Ok(users.Select(x => new Option() { Id = x.Id, Text = x.Name }));
+        }
+    } 
 }

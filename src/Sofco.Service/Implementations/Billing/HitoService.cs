@@ -90,7 +90,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            hito.MoneyId = environment.IsProduction() ? currency.CrmProductionId : currency.CrmDevelopmentId;
+            hito.MoneyId = environment.EnvironmentName.Equals("azgap01wp") ? currency.CrmProductionId : currency.CrmDevelopmentId;
 
             using (var client = new HttpClient())
             {

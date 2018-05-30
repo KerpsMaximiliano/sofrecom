@@ -5,7 +5,7 @@ namespace Sofco.Model.Utils
     public class AnalyticOptions
     {
         public IList<Option> Activities { get; set; }
-        public IList<Option> Directors { get; set; }
+        public IList<Option> Sectors { get; set; }
         public IList<ListItem<string>> Managers { get; set; }
         public IList<Option> Currencies { get; set; }
         public IList<Option> Solutions { get; set; }

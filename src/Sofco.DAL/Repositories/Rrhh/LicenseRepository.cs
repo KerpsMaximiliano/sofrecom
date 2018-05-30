@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.Models.Rrhh;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -130,6 +131,23 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Type)
                 .Where(s => !s.HasCertificate && s.Status == LicenseStatus.ApprovePending)
                 .ToList();
+        }
+
+        public IList<License> GetLicensesReport(ReportParams parameters)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Type)
+                .Where(x => x.StartDate.Date >= parameters.StartDate.Date && x.StartDate.Date <= parameters.EndDate.Date)
+                .ToList();
+        }
+
+        public bool AreDatesOverlaped(DateTime startDate, DateTime endDate, int employeeId)
+        {
+            return context.Licenses.Any(x => x.EmployeeId == employeeId &&
+                                             x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected &&
+                                             (startDate >= x.StartDate.Date && startDate <= x.EndDate.Date ||
+                                              endDate >= x.StartDate.Date && endDate <= x.EndDate.Date));
         }
     }
 }

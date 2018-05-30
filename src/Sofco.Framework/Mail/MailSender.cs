@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MailKit.Net.Smtp;
@@ -27,6 +28,9 @@ namespace Sofco.Framework.Mail
         private readonly int smtpPort;
         private readonly string smtpDomain;
         private readonly string mailDevFolder;
+        private readonly string supportMailLogTitle;
+        private readonly string supportMailResendRecipients;
+        private readonly string supportMailResendTitle;
 
         public MailSender(IHostingEnvironment environment, 
             IOptions<EmailConfig> emailConfigOption, 
@@ -41,6 +45,9 @@ namespace Sofco.Framework.Mail
             smtpPort = emailConfig.SmtpPort;
             smtpDomain = emailConfig.SmtpDomain;
             mailDevFolder = emailConfig.MailDevFolder;
+            supportMailLogTitle = emailConfig.SupportMailLogTitle;
+            supportMailResendRecipients = emailConfig.SupportMailResendRecipients;
+            supportMailResendTitle = emailConfig.SupportMailResendTitle;
         }
 
         /// <summary>
@@ -52,8 +59,11 @@ namespace Sofco.Framework.Mail
         public void Send(string recipients, string subject, string body)
         {
             var message = new MimeMessage();
+
             message.From.Add(new MailboxAddress(fromDisplayName, fromEmail));
+
             AddRecipients(message, recipients);
+
             message.Subject = subject;
 
             var bodyBuilder = new BodyBuilder { HtmlBody = body };
@@ -116,6 +126,8 @@ namespace Sofco.Framework.Mail
 
         private void SendMessages(List<MimeMessage> messages)
         {
+            AddLogSentMails(messages);
+
             if (IsDevelopment())
             {
                 foreach(var message in messages)
@@ -149,6 +161,51 @@ namespace Sofco.Framework.Mail
 
                 client.Disconnect(true);
             }
+        }
+
+        private void AddLogSentMails(List<MimeMessage> messages)
+        {
+            var result = new List<MimeMessage>();
+
+            foreach (var msg in messages)
+            {
+                if(msg.Subject == supportMailLogTitle) continue;
+
+                var logMail = new MimeMessage();
+
+                AddRecipients(logMail, supportMailResendRecipients);
+
+                logMail.From.AddRange(msg.From);
+
+                logMail.Subject = $"{supportMailResendTitle}{msg.Subject}";
+
+                var body = new StringBuilder();
+
+                body.Append(BuildMailInfo(msg.To));
+
+                body.Append(msg.HtmlBody);
+
+                var bodyBuilder = new BodyBuilder { HtmlBody = body.ToString() };
+
+                logMail.Body = bodyBuilder.ToMessageBody();
+
+                result.Add(logMail);
+            }
+
+            messages.AddRange(result);
+        }
+
+        private string BuildMailInfo(InternetAddressList recipients)
+        {
+            var body = new StringBuilder();
+
+            body.Append("<html><head><style>body { font-family:Sans-serif;font-size:10pt; }</style></head><body>");
+
+            var list = recipients.Select(item => item.Name);
+
+            body.AppendFormat("Email send to: {0}<br><br><hr>", string.Join(",", list));
+
+            return body.ToString();
         }
     }
 }

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using OfficeOpenXml;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
@@ -17,8 +14,6 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
-using Sofco.Data.Admin;
-using Sofco.Data.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.Rrhh;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -66,10 +61,12 @@ namespace Sofco.Service.Implementations.Rrhh
             LicenseValidationHandler.ValidateDates(response, domain, model.IsRrhh);
             LicenseValidationHandler.ValidateSector(response, domain);
             LicenseValidationHandler.ValidateLicenseType(response, domain);
+            LicenseValidationHandler.ValidateDatesOverlaped(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;
 
             LicenseValidationHandler.ValidateDays(response, domain, unitOfWork);
+            LicenseValidationHandler.ValidateApplicantNotEqualManager(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;
 
@@ -420,11 +417,28 @@ namespace Sofco.Service.Implementations.Rrhh
             return history;
         }
 
-        public ExcelPackage GetLicenseReport()
+        public Response<byte[]> GetLicenseReport(ReportParams parameters)
         {
-            var licenses = unitOfWork.LicenseRepository.GetLicensesLastMonth();
+            var response = new Response<byte[]>();
 
-            return licenseFileManager.CreateLicenseReportExcel(licenses);
+            if (parameters.StartDate == DateTime.MinValue || parameters.EndDate == DateTime.MinValue)
+            {
+                response.AddError(Resources.Rrhh.License.DatesRequired);
+            }
+            else if(parameters.StartDate.Date > parameters.EndDate.Date)
+            {
+                response.AddError(Resources.Rrhh.License.EndDateLessThanStartDate);
+            }
+
+            if (response.HasErrors()) return response;
+ 
+            var licenses = unitOfWork.LicenseRepository.GetLicensesReport(parameters);
+
+            var excel = licenseFileManager.CreateLicenseReportExcel(licenses);
+
+            response.Data = excel.GetAsByteArray();
+
+            return response;
         }
 
         public Response FileDelivered(int id)

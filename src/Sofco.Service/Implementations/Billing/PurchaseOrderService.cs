@@ -203,11 +203,6 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public ICollection<PurchaseOrder> GetByService(string serviceId)
-        {
-            return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
-        }
-
         private static void Validate(PurchaseOrder domain, Response<PurchaseOrder> response)
         {
             PurchaseOrderValidationHelper.ValidateTitle(response, domain);
