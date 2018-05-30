@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]List<WorkTimeApproval> workTimeApprovals)
+        public IActionResult Post([FromBody]List<WorkTimeApprovalModel> workTimeApprovals)
         {
             var response = service.Save(workTimeApprovals);
 

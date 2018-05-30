@@ -19,7 +19,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var employees = employeeWorkTimeManager.GetByCurrentServices(query);
 
+            RemoveCircularReference(employees);
+
             return new Response<List<EmployeeWorkTimeApproval>>{ Data = employees };
+        }
+
+        private void RemoveCircularReference(List<EmployeeWorkTimeApproval> employees)
+        {
+            foreach (var employeeWorkTimeApproval in employees)
+            {
+                if (employeeWorkTimeApproval.WorkTimeApproval != null)
+                {
+                    employeeWorkTimeApproval.WorkTimeApproval.Analytic = null;
+                }
+            }
         }
     }
 }
