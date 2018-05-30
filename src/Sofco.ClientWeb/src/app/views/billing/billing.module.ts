@@ -7,6 +7,7 @@ import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
+import { PCheckModule } from 'app/components/pcheck/pcheck.module';
 
 import { CustomerService } from 'app/services/billing/customer.service';
 import { ProjectService } from 'app/services/billing/project.service';
@@ -86,7 +87,7 @@ import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule],
+                 DatePickerModule, PCheckModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService],

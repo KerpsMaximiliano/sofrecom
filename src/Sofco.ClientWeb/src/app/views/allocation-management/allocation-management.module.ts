@@ -26,6 +26,7 @@ import { ListCostCenterComponent } from 'app/views/allocation-management/cost-ce
 import { NewAnalyticComponent } from 'app/views/allocation-management/analytics/new/new-analytic.component';
 import { AnalyticFormComponent } from 'app/views/allocation-management/analytics/analytic-form/analytic-form.component';
 import { ICheckModule } from 'app/components/icheck/icheck.module';
+import { PCheckModule } from 'app/components/pcheck/pcheck.module';
 import { NewsComponent } from 'app/views/allocation-management/news/news.component';
 import { EditAnalyticComponent } from 'app/views/allocation-management/analytics/edit/edit-analytic.component';
 import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
@@ -62,7 +63,8 @@ import { ResourceByAnalyticComponent } from 'app/views/allocation-management/res
     IboxtoolsModule,
     ICheckModule,
     NumbersOnlyModule,
-    Ng2ModalModule
+    Ng2ModalModule,
+    PCheckModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, EmployeeNewsService, WorkTimeApprovalDelegateService ],
   exports: [],
