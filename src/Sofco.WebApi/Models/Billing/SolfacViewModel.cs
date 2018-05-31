@@ -77,6 +77,8 @@ namespace Sofco.WebApi.Models.Billing
 
         public string ParticularSteps { get; set; }
 
+        public int? PurchaseOrderId { get; set; }
+
         public int PaymentTermId { get; set; }
 
         public ICollection<HitoViewModel> Hitos { get; set; }
@@ -123,7 +125,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.BusinessName = BusinessName;
             solfac.CelPhone = CelPhone;
             solfac.Status = StatusId;
-            solfac.ContractNumber = ContractNumber;
+            solfac.PurchaseOrderId = PurchaseOrderId;
             solfac.Project = Project;
             solfac.DocumentTypeId = DocumentType.GetValueOrDefault();
             solfac.UserApplicantId = UserApplicantId.GetValueOrDefault();

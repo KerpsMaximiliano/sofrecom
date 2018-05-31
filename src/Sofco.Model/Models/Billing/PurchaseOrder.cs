@@ -39,6 +39,10 @@ namespace Sofco.Model.Models.Billing
 
         public decimal Ammount { get; set; }
 
+        public decimal Balance { get; set; }
+
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
+
+        public ICollection<Solfac> Solfacs { get; set; }
     }
 }

@@ -132,11 +132,11 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         },
         err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     viewFile(purchaseOrder){
         if(purchaseOrder.fileName.endsWith('.pdf')){
-            this.purchaseOrderService.getFile(purchaseOrder.fileId).subscribe(file => {
-                this.pdfViewer.renderFile(file);
+            this.purchaseOrderService.getFile(purchaseOrder.fileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
             },
             err => this.errorHandlerService.handleErrors(err));
         }

@@ -27,7 +27,6 @@ namespace Sofco.WebApi.Models.Billing
             CurrencyId = domain.CurrencyId;
             UserApplicantId = domain.UserApplicantId;
             DocumentTypeId = domain.DocumentType.Id;
-            ContractNumber = domain.ContractNumber;
             CapitalPercentage = domain.CapitalPercentage;
             BuenosAiresPercentage = domain.BuenosAiresPercentage;
             OtherProvince1Percentage = domain.OtherProvince1Percentage;
@@ -49,6 +48,7 @@ namespace Sofco.WebApi.Models.Billing
             IntegratorId = domain.IntegratorId;
             ManagerId = domain.ManagerId;
             Manager = domain.Manager;
+            PurchaseOrderId = domain.PurchaseOrderId;
 
             if (domain.ProjectId.Contains(";"))
             {
@@ -120,7 +120,7 @@ namespace Sofco.WebApi.Models.Billing
 
         public string StatusName { get; set; }
 
-        public string ContractNumber { get; set; }
+        public int? PurchaseOrderId { get; set; }
 
         public string DocumentType { get; set; }
 
@@ -133,6 +133,8 @@ namespace Sofco.WebApi.Models.Billing
         public string CustomerId { get; set; }
 
         public int CurrencyId { get; set; }
+
+        public string ContractNumber { get; set; }
 
         public string ImputationNumber1 { get; set; }
 
@@ -211,7 +213,7 @@ namespace Sofco.WebApi.Models.Billing
             solfac.BusinessName = BusinessName;
             solfac.CelPhone = CelPhone;
             solfac.Status = StatusId;
-            solfac.ContractNumber = ContractNumber;
+            solfac.PurchaseOrderId = PurchaseOrderId;
             solfac.Project = Project;
             solfac.DocumentTypeId = DocumentTypeId;
             solfac.UserApplicantId = UserApplicantId;

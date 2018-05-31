@@ -14,12 +14,14 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<PurchaseOrder>().Property(_ => _.ClientExternalId).HasMaxLength(150);
             builder.Entity<PurchaseOrder>().Property(_ => _.Description).HasMaxLength(1000);
             builder.Entity<PurchaseOrder>().Property(_ => _.ClientExternalName).HasMaxLength(150);
-            builder.Entity<PurchaseOrder>().Property(_ => _.Number).HasMaxLength(20);
+            builder.Entity<PurchaseOrder>().Property(_ => _.Number).HasMaxLength(150);
             builder.Entity<PurchaseOrder>().Property(_ => _.UpdateByUser).HasMaxLength(25);
 
             builder.Entity<PurchaseOrder>().HasOne(x => x.Currency).WithMany(x => x.PurchaseOrders).HasForeignKey(x => x.CurrencyId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<PurchaseOrder>().HasOne(x => x.File).WithMany().HasForeignKey(x => x.FileId);
+
+            builder.Entity<PurchaseOrder>().HasMany(x => x.Solfacs).WithOne(x => x.PurchaseOrder).HasForeignKey(x => x.PurchaseOrderId);
         }
     }
 }

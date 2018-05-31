@@ -231,7 +231,7 @@
             "title": "Ordenes de Compra",
             "add": "Alta",
             "edit": "Editar",
-            "search": "Busqueda",
+            "search": "Busqueda", 
             "parameters": "Parametros de busqueda",
             "noOrdersFound": "No hay ordenes de compra cargadas",
             "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
@@ -250,7 +250,7 @@
                 "company": "Compañia",
                 "comercial": "Comercial",
                 "project": "Proyecto",
-                "description": "Descriptción",
+                "description": "Descripción",
                 "analytic": "Analítica" 
             }
         },

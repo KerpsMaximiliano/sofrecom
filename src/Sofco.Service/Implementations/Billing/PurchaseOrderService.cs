@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -171,7 +169,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.PurchaseOrderRepository.Update(domain);
                 unitOfWork.Save();
 
-                response.AddSuccess(Resources.Billing.PurchaseOrder.SaveSuccess);
+                response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
 
                 response.Data = domain;
             }
@@ -230,6 +228,11 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public IList<PurchaseOrder> GetByService(string serviceId)
+        {
+            return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
+        }
+
         private static void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
         {
             PurchaseOrderValidationHelper.ValidateNumber(response, model);
@@ -238,6 +241,7 @@ namespace Sofco.Service.Implementations.Billing
             PurchaseOrderValidationHelper.ValidateArea(response, model);
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);
             PurchaseOrderValidationHelper.ValidateDates(response, model);
+            PurchaseOrderValidationHelper.ValidateAmmount(response, model);
         }
     }
 }

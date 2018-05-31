@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180531191112_Refactor")]
+    partial class Refactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -804,7 +805,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int?>("FileId");
 
                     b.Property<string>("Number")
-                        .HasMaxLength(150);
+                        .HasMaxLength(20);
 
                     b.Property<DateTime>("ReceptionDate");
 

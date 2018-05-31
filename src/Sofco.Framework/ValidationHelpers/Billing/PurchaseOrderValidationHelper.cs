@@ -98,5 +98,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
             }
         }
+
+        public static void ValidateAmmount(Response response, PurchaseOrderModel model)
+        {
+            if (model.Ammount <= 0)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
+            }
+        }
     }
 }

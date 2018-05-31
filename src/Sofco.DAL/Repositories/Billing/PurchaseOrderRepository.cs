@@ -32,6 +32,21 @@ namespace Sofco.DAL.Repositories.Billing
             return context.PurchaseOrderFiles.Include(x => x.File).Include(x => x.PurchaseOrderAnalytics).SingleOrDefault(x => x.Id == purchaseOrderId);
         }
 
+        public IList<PurchaseOrder> GetByService(string serviceId)
+        {
+            return context.PurchaseOrderAnalytics.Include(x => x.PurchaseOrder)
+                .Include(x => x.Analytic)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Select(x => x.PurchaseOrder)
+                .Distinct()
+                .ToList();
+        }
+
+        public void UpdateBalance(PurchaseOrder ocToModif)
+        {
+            context.Entry(ocToModif).Property("Balance").IsModified = true;
+        }
+
         public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
         {
             IQueryable<PurchaseOrder> query = context.PurchaseOrderFiles

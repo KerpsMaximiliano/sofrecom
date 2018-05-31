@@ -159,7 +159,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err)
         });
     }
-
+ 
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
             this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {

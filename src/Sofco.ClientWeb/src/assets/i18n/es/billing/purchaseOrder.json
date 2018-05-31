@@ -5,12 +5,14 @@
     "comercialManagerIsRequired": "Manager Comercial es requerido",
     "numberIsRequired": "Numero es requerido",
     "saveSuccess": "Orden de Compra creada exitosamente",
+    "updateSuccess": "Orden de Compra actualizada exitosamente",
     "notFound": "Orden de Compra no encontrada",
     "fileAdded": "Archivo subido exitosamente",
     "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados",
     "projectIsRequired": "El proyecto es requerido",
     "currencyIsRequired": "La moneda es requerida",
     "datesRequired": "Fecha desde y hasta son requeridas",
-    "endDateLessThanStartDate": "La fehca hasta no puede ser menor a fecha desde",
-    "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas"
+    "endDateLessThanStartDate": "La fechca hasta no puede ser menor a fecha desde",
+    "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
+    "ammountRequired": "El monto es requerido y tiene que ser mayor a 0"
 }

@@ -8,7 +8,7 @@ export class Solfac {
         public celphone: string,
         public statusName: string,
         public statusId: string,
-        public contractNumber: string,
+        public purchaseOrderId: number,
         public project: string,
         public documentType: number,
         public userApplicantId: number,

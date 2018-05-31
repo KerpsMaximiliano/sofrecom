@@ -13,5 +13,7 @@ namespace Sofco.Core.DAL.Billing
         ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters);
         void AddPurchaseOrderAnalytic(PurchaseOrderAnalytic purchaseOrderAnalytic);
         PurchaseOrder GetWithAnalyticsById(int purchaseOrderId);
+        IList<PurchaseOrder> GetByService(string serviceId);
+        void UpdateBalance(PurchaseOrder ocToModif);
     }
 }

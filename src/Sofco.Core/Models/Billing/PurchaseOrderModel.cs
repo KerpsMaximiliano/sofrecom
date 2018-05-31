@@ -50,6 +50,7 @@ namespace Sofco.Core.Models.Billing
             domain.Area = Area;
             domain.Description = Description;
             domain.Ammount = Ammount;
+            domain.Balance = Ammount;
 
             domain.Status = PurchaseOrderStatus.Valid;
             domain.UpdateDate = DateTime.UtcNow;
