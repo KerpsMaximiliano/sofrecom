@@ -1,8 +1,9 @@
 ﻿using System;
 using Sofco.Common.Domains;
 using Sofco.Model.Models.Admin;
+using Sofco.Model.Models.AllocationManagement;
 
-namespace Sofco.Model.Models.AllocationManagement
+namespace Sofco.Model.Models.WorkTimeManagement
 {
     public class WorkTimeApproval : BaseEntity, IEntityDate
     {

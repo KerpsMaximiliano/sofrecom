@@ -4,7 +4,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement

@@ -2,6 +2,8 @@
 {
     public class WorkTimeApprovalModel
     {
+        public int Id { get; set; }
+
         public int AnalyticId { get; set; }
 
         public int ApprovalUserId { get; set; }

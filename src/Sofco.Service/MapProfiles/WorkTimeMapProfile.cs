@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Service.MapProfiles
 {
@@ -9,6 +9,10 @@ namespace Sofco.Service.MapProfiles
         public WorkTimeMapProfile()
         {
             CreateMap<WorkTimeApprovalModel, WorkTimeApproval>();
+
+            CreateMap<WorkTimeApproval, WorkTimeApprovalModel>();
+
+            CreateMap<WorkTimeApprovalEmployee, WorkTimeApprovalEmployeeModel>();
         }
     }
 }

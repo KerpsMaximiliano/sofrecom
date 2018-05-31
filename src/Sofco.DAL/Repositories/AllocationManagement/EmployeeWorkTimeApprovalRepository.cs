@@ -4,9 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
-using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -19,7 +20,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             parameter = new WorkTimeApprovalQuery();
         }
 
-        public List<EmployeeWorkTimeApproval> Get(WorkTimeApprovalQuery query)
+        public List<WorkTimeApprovalEmployee> Get(WorkTimeApprovalQuery query)
         {
             parameter = query;
 
@@ -54,7 +55,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return result.ToList();
         }
 
-        public List<EmployeeWorkTimeApproval> GetByAnalytics(List<int> analyticIds, int approvalId)
+        public List<WorkTimeApprovalEmployee> GetByAnalytics(List<int> analyticIds, int approvalId)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
                 && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId) 
@@ -80,7 +81,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return result.ToList();
         }
 
-        public EmployeeWorkTimeApproval Translate(Employee employee, IEnumerable<WorkTimeApproval> workTimeApprovals)
+        public WorkTimeApprovalEmployee Translate(Employee employee, IEnumerable<WorkTimeApproval> workTimeApprovals)
         {
             var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
             if (parameter.AnalyticId > 0)
@@ -91,7 +92,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var firstWorkTimeApproval = workTimeApprovals.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
 
-            return new EmployeeWorkTimeApproval
+            return new WorkTimeApprovalEmployee
             {
                 EmployeeId = employee.Id.ToString(),
                 Name = employee.Name,
