@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -15,7 +15,7 @@ declare var $: any;
     templateUrl: './add-purchaseOrder.component.html',
     styleUrls: ['./add-purchaseOrder.component.scss']
 })
-export class NewPurchaseOrderComponent implements OnDestroy {
+export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
@@ -30,10 +30,17 @@ export class NewPurchaseOrderComponent implements OnDestroy {
     public creationDate: string;
     public fileId: number;
 
+    public alertDisable: boolean = true;
+ 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
+    }
+
+    ngOnInit(): void {
+        this.form.model.currencyId = 0;
+        this.form.model.clientExternalId = 0;
     }
 
     ngOnDestroy(): void {
@@ -47,6 +54,8 @@ export class NewPurchaseOrderComponent implements OnDestroy {
 
         this.form.model.clientExternalName = client ? client.text : '';
 
+        this.form.model.analyticIds = $('#analytics').val();
+
         this.form.model.receptionDate = new Date();
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
@@ -56,6 +65,8 @@ export class NewPurchaseOrderComponent implements OnDestroy {
 
                 this.form.model.id = response.data.id
                 this.uploaderConfig();
+
+                this.alertDisable = false;
             },
             err => {
                 this.messageService.closeLoading();
@@ -75,6 +86,7 @@ export class NewPurchaseOrderComponent implements OnDestroy {
             if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
 
             if(dataJson){
+                this.alertDisable = true;
                 this.fileName = dataJson.data.fileName;
                 this.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.fileId = dataJson.data.id;

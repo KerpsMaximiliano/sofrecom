@@ -129,6 +129,18 @@
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
   </data>
+  <data name="CurrencyIsRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.currencyIsRequired</value>
+  </data>
+  <data name="DatesRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.datesRequired</value>
+  </data>
+  <data name="EndDateLessThanStartDate" xml:space="preserve">
+    <value>billing/purchaseOrder.endDateLessThanStartDate</value>
+  </data>
+  <data name="ErrorToSaveAnalytics" xml:space="preserve">
+    <value>billing/purchaseOrder.errorToSaveAnalytics</value>
+  </data>
   <data name="FileAdded" xml:space="preserve">
     <value>billing/purchaseOrder.fileAdded</value>
   </data>

@@ -1,35 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Common;
+using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.Billing
 {
     public class PurchaseOrder : BaseEntity
     {
-        public string Title { get; set; }
-
         public string Number { get; set; }
 
         public string ClientExternalId { get; set; }
 
         public string ClientExternalName { get; set; }
 
-        public int ManagerId { get; set; }
-        public User Manager { get; set; }
-
-        public int CommercialManagerId { get; set; }
-        public User CommercialManager { get; set; }
-
-        public int AnalyticId { get; set; }
-        public Analytic Analytic { get; set; }
-
         public DateTime ReceptionDate { get; set; }
 
         public string Area { get; set; }
-
-        public int Year { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 
@@ -40,6 +28,17 @@ namespace Sofco.Model.Models.Billing
         public int? FileId { get; set; }
         public File File { get; set; }
 
-        public string ProjectId { get; set; }
+        public int CurrencyId { get; set; }
+        public Currency Currency { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Ammount { get; set; }
+
+        public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
     }
 }

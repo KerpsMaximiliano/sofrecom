@@ -98,6 +98,42 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.currencyIsRequired.
+        /// </summary>
+        public static string CurrencyIsRequired {
+            get {
+                return ResourceManager.GetString("CurrencyIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.datesRequired.
+        /// </summary>
+        public static string DatesRequired {
+            get {
+                return ResourceManager.GetString("DatesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.endDateLessThanStartDate.
+        /// </summary>
+        public static string EndDateLessThanStartDate {
+            get {
+                return ResourceManager.GetString("EndDateLessThanStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.errorToSaveAnalytics.
+        /// </summary>
+        public static string ErrorToSaveAnalytics {
+            get {
+                return ResourceManager.GetString("ErrorToSaveAnalytics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.fileAdded.
         /// </summary>
         public static string FileAdded {

@@ -13,12 +13,12 @@ namespace Sofco.WebApi.Controllers.Billing
     public class ServiceController : Controller
     {
         private readonly IServicesService servicesService;
-        private readonly IPurchaseOrderService purchaseOrderService;
+        private readonly IProjectService projectService;
 
-        public ServiceController(IServicesService servicesService, IPurchaseOrderService purchaseOrderService)
+        public ServiceController(IServicesService servicesService, IProjectService projectService)
         {
             this.servicesService = servicesService;
-            this.purchaseOrderService = purchaseOrderService;
+            this.projectService = projectService;
         }
 
         [HttpGet("{customerId}/options")]
@@ -43,6 +43,14 @@ namespace Sofco.WebApi.Controllers.Billing
             var response = servicesService.GetService(serviceId, customerId);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet("{serviceId}/opportunities")]
+        public IActionResult GetOpportunities(string serviceId)
+        {
+            var respone = projectService.GetOpportunities(serviceId);
+
+            return this.CreateResponse(respone);
         }
 
         [HttpGet("{serviceId}/analytic")]

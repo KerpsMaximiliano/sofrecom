@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.AllocationManagement
@@ -72,5 +73,7 @@ namespace Sofco.Model.Models.AllocationManagement
         public ICollection<WorkTime> WorkTimes { get; set; }
 
         public ICollection<WorkTimeApproval> WorkTimeApprovals { get; set; }
+
+        public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
     }
 }

@@ -3,13 +3,14 @@
     "areaIsRequired": "Area es requerida",
     "clientIsRequired": "Cliente es requerida",
     "comercialManagerIsRequired": "Manager Comercial es requerido",
-    "managerIsRequired": "Gerente es requerido",
     "numberIsRequired": "Numero es requerido",
     "saveSuccess": "Orden de Compra creada exitosamente",
-    "titleIsRequired": "Titulo es requerido",
-    "yearIsRequired": "Año invalido",
     "notFound": "Orden de Compra no encontrada",
     "fileAdded": "Archivo subido exitosamente",
     "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados",
-    "projectIsRequired": "El proyecto es requerido"
+    "projectIsRequired": "El proyecto es requerido",
+    "currencyIsRequired": "La moneda es requerida",
+    "datesRequired": "Fecha desde y hasta son requeridas",
+    "endDateLessThanStartDate": "La fehca hasta no puede ser menor a fecha desde",
+    "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas"
 }

@@ -9,6 +9,7 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
@@ -28,8 +29,8 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISessionManager sessionManager;
         private readonly ISolfacDelegateData solfacDelegateData;
 
-        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, 
-            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, 
+        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions,
+            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger,
             ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData,
             IOptions<EmailConfig> emailOptions)
         {
@@ -57,7 +58,7 @@ namespace Sofco.Service.Implementations.Billing
                     hitoCrm.SolfacId = existHito.SolfacId;
                 }
 
-                if (!hitoCrm.Status.Equals("Pendiente") 
+                if (!hitoCrm.Status.Equals("Pendiente")
                     && !hitoCrm.Status.Equals("Proyectado") || existHito != null)
                 {
                     hitoCrm.Billed = true;
@@ -98,7 +99,7 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<SelectListModel>>
             {
                 Data = result
-                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -120,6 +121,19 @@ namespace Sofco.Service.Implementations.Billing
 
             response.Data = project;
             return response;
+        }
+
+        public Response<IList<OpportunityOption>> GetOpportunities(string serviceId)
+        {
+            var result = GetProjects(serviceId).Data;
+
+            return new Response<IList<OpportunityOption>>
+            {
+                Data = result
+                    .Select(x => new OpportunityOption { Id = x.OpportunityId, Text = $"{x.OpportunityNumber} - {x.OpportunityName}", ProjectId = x.Id })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
         }
     }
 }

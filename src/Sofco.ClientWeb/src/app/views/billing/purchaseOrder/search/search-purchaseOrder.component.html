@@ -1,97 +1,91 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-12">
-            <h2>{{'billing.purchaseOrder.searchTitle' | translate }}</h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-                </li>
-                <li>
-                    <a>{{'billing.title' | translate }}</a>
-                </li>
-                <li>
-                    {{'billing.purchaseOrder.title' | translate }}
-                </li>
-                <li class="active">
-                    <strong>{{'billing.purchaseOrder.search' | translate }}</strong>
-                </li>
-            </ol>
-        </div>
+    <div class="col-lg-12">
+        <h2>{{'billing.purchaseOrder.searchTitle' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                {{'billing.purchaseOrder.title' | translate }}
+            </li>
+            <li class="active">
+                <strong>{{'billing.purchaseOrder.search' | translate }}</strong>
+            </li>
+        </ol>
     </div>
+</div>
     
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h4 class="pull-left">{{'billing.purchaseOrder.parameters' | translate }}</h4>
-                
-                <div class="ibox-tools">
-                    <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
-                    </div>
-                    <div class="col-sm-3">
-                        <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses"></select-two>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="control-label">{{'billing.purchaseOrder.fields.year' | translate }}</label>
-                            <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="year" >
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ibox-footer">
-                <div class="text-right">
-                    <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                    <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
-                </div>
-            </div>
-        </div>
-    
-        <div class="row" *ngIf="data.length > 0">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-    
-                        <table class="table table-striped" id="purchaseOrderTable" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>{{'billing.purchaseOrder.fields.title' | translate }}</th>
-                                    <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
-                                    <th>{{'billing.purchaseOrder.fields.analytic' | translate }}</th>
-                                    <th>{{'billing.purchaseOrder.fields.year' | translate }}</th>
-                                    <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
-                                    <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let purchaseOrder of data">
-                                    <td>{{purchaseOrder.title}}</td>
-                                    <td>{{purchaseOrder.client}}</td>
-                                    <td>{{purchaseOrder.analytic}}</td>
-                                    <td>{{purchaseOrder.year}}</td>
-                                    <td class="text-center"> <label class="label" [ngClass]="(purchaseOrder.status == 'Valid') ? 'label-primary' : 'label-warning'">{{ purchaseOrder.status | translate }}</label> </td>
-                                    <td class="text-center column-xs">
-                                        <button class="btn btn-warning btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-edit"></i></button>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h4 class="pull-left">{{'billing.purchaseOrder.parameters' | translate }}</h4>
             
-                                        <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
-                                            <i class="fa fa-download"></i>
-                                        </button>
+            <div class="ibox-tools">
+                <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
+                </div>
+                <div class="col-sm-3">
+                    <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses"></select-two>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <div class="text-right">
+                <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
 
-                                        <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>       
-                    </div>
+    <div class="row" *ngIf="data.length > 0">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+
+                    <table class="table table-striped" id="purchaseOrderTable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
+                                <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
+                                <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            <tr *ngFor="let purchaseOrder of data">
+                                <td>{{ purchaseOrder.number }}</td>
+                                <td>{{ purchaseOrder.client }}</td>
+                                <td>{{ purchaseOrder.currencyDescription }}</td>
+                                <td>{{ purchaseOrder.ammount }}</td>
+                                <td class="text-center"> <label class="label" [ngClass]="(purchaseOrder.status == 'Valid') ? 'label-primary' : 'label-warning'">{{ purchaseOrder.status | translate }}</label> </td>
+                                <td class="text-center column-xs">
+                                    <button class="btn btn-warning btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-edit"></i></button>
+        
+                                    <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
+                                        <i class="fa fa-download"></i>
+                                    </button>
+
+                                    <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>       
                 </div>
             </div>
         </div>
     </div>
-    
-    <pdf-viewer #pdfViewer></pdf-viewer>
+</div>
+
+<pdf-viewer #pdfViewer></pdf-viewer>

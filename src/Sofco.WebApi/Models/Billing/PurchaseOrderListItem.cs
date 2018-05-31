@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Models.Billing;
+﻿using Sofco.Model.Utils;
+using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.WebApi.Models.Billing
 {
@@ -7,13 +8,15 @@ namespace Sofco.WebApi.Models.Billing
         public PurchaseOrderListItem(PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
-            Title = purchaseOrder.Title;
+            Number = purchaseOrder.Number;
             Client = purchaseOrder.ClientExternalName;
-            Year = purchaseOrder.Year;
             Status = purchaseOrder.Status.ToString();
+            Ammount = purchaseOrder.Ammount;
 
-            if (purchaseOrder.Analytic != null)
-                Analytic = $"{purchaseOrder.Analytic.Title} - {purchaseOrder.Analytic.Name}";
+            if (purchaseOrder.Currency != null)
+            {
+                CurrencyDescription = purchaseOrder.Currency.Text;
+            }
 
             if (purchaseOrder.File != null)
             {
@@ -25,20 +28,20 @@ namespace Sofco.WebApi.Models.Billing
 
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string Number { get; set; }
 
         public string Client { get; set; }
 
-        public int Year { get; set; }
-
         public string Status { get; set; }
-
-        public string Analytic { get; set; }
 
         public int FileId { get; set; }
 
         public string FileName { get; set; }
 
         public string CreationDate { get; set; }
+
+        public string CurrencyDescription { get; set; }
+
+        public decimal Ammount { get; set; }
     }
 }

@@ -44,7 +44,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         if(data){
             this.statusId = data.statusId;
-            this.year = data.year;
             this.customerId = data.clientId;
 
             this.search();
@@ -91,8 +90,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         var parameters = {
             clientId: this.customerId,
-            statusId: this.statusId,
-            year: this.year | 0
+            statusId: this.statusId
         }
 
         this.getAllSubscrip = this.purchaseOrderService.search(parameters).subscribe(response => {
@@ -121,7 +119,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     clean(){
         this.customerId = "0";
         this.statusId = "0";
-        this.year = null;
 
         this.datatableService.destroy('#purchaseOrderTable');
         this.data = new Array();
