@@ -569,7 +569,8 @@
                 "open": "Abierta",
                 "closeForExpenses": "Cerrada para costos",
                 "close": "Cerrada"
-            }
+            },
+            "search": "Búsqueda de Analiticas"
         },
         "confirmBody": "Esta seguro que desea seguir con la acción de ",
         "workTimeApproval": {

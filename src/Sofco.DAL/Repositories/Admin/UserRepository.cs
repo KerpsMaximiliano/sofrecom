@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Extensions;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Models.Admin;
@@ -61,7 +62,7 @@ namespace Sofco.DAL.Repositories.Admin
                 .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode)
                 .ToList();
 
-            return userGroups.Select(x => x.User).ToList();
+            return userGroups.Select(x => x.User).ToList().DistinctBy(s => s.Name);
         }
 
         public IList<User> GetSellers()
