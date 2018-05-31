@@ -1,8 +1,6 @@
-﻿using Sofco.Model.Models.AllocationManagement;
-
-namespace Sofco.Core.Models.AllocationManagement
+﻿namespace Sofco.Model.Models.WorkTimeManagement
 {
-    public class EmployeeWorkTimeApproval
+    public class WorkTimeApprovalEmployee
     {
         public string EmployeeId { get; set; }
 

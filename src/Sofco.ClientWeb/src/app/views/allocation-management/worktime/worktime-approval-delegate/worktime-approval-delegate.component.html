@@ -78,8 +78,8 @@
                 <tbody>
                     <tr *ngFor="let item of workTimeApprovals">
                         <td class="column-xs text-center" width="20">
-                            <icheck [(checked)]="item.checked" *ngIf="item.analyticId != null">
-                            </icheck>
+                            <pcheck [(checked)]="item.checked" *ngIf="item.analyticId != null">
+                            </pcheck>
                         </td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.analytic }}</td>

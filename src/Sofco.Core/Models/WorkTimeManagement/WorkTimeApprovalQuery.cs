@@ -1,4 +1,4 @@
-﻿namespace Sofco.Core.Models.AllocationManagement
+﻿namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class WorkTimeApprovalQuery
     {

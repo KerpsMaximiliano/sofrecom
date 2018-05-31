@@ -128,7 +128,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return query.ToList();
         }
 
-        public void Save(List<Employee> employees)
+        public void Update(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());
 
@@ -142,9 +142,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                         .First(s => s.EmployeeNumber == item.EmployeeNumber);
 
                     Update(updateItem, item);
-                } else
-                {
-                    Insert(item);
                 }
             }
 
