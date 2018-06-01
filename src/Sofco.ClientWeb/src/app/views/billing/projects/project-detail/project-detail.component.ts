@@ -151,6 +151,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
         }
     }
+ 
+    resolveHitoLabel(hito){
+        if(hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0){
+            return 'label-pending-related';
+        }
+        
+        return `label-${hito.status}`
+    }
 
     getHitos(){
         this.getHitosSubscrip = this.projectService.getHitos(this.projectId).subscribe(d => {

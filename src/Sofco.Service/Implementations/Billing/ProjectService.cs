@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security.Interfaces;
-using Sofco.Common.Extensions;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.Logger;
@@ -26,21 +23,15 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
-        private readonly ISessionManager sessionManager;
-        private readonly ISolfacDelegateData solfacDelegateData;
 
         public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions,
-            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger,
-            ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData,
-            IOptions<EmailConfig> emailOptions)
+            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
             this.logger = logger;
-            this.sessionManager = sessionManager;
-            this.solfacDelegateData = solfacDelegateData;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)

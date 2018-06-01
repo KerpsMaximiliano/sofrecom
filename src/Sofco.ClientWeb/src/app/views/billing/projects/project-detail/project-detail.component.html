@@ -119,7 +119,7 @@
                                                 <td>{{ hito.startDate | date:'dd/MM/yyyy' }}</td>
                                                 <td>{{ hito.month }}</td>
                                                 <td>
-                                                    <span class="label label-{{hito.status}}">{{ hito.status | translate }}</span> 
+                                                    <span class="label {{ resolveHitoLabel(hito) }}">{{ hito.status | translate }}</span> 
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -107,8 +107,8 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.PurchaseOrder != null)
             {
-                var ocToModif = new PurchaseOrder { Id = solfac.PurchaseOrder.Id, Balance = solfac.PurchaseOrder.Balance - solfac.TotalAmount };
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(ocToModif);
+                solfac.PurchaseOrder.Balance -= solfac.TotalAmount; 
+                unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
             }
         }
 
