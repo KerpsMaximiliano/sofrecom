@@ -9,13 +9,49 @@
                 {{'contracts.title' | translate }}
             </li>
             <li class="active">
-                <strong> {{ 'allocationManagement.analytics.title' | translate }} </strong>
+                <strong>{{ 'allocationManagement.analytics.title' | translate }}</strong>
             </li>
         </ol>
     </div>
 </div>
  
 <div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="ibox">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-success">
+                <div class="panel-heading pointer" (click)="collapse()">
+                    <h5 class="panel-title">
+                        {{'allocationManagement.analytics.search' | translate }}
+                        <i id="search-icon" class="fa fa-minus fa-2x pull-right" style="line-height: 0.7"></i>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="searchCriteriaChange()"></select-two>
+                            </div>
+                            <div class="col-sm-4">
+                                    <select-two [label]="'billing.solfac.customers'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                            </div>
+                            <div class="col-sm-4">
+                                <select-two [label]="'billing.service.title'" [(value)]="serviceId" [options]="services" (valueChange)="searchCriteriaChange()"></select-two>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <select-two [label]="'allocationManagement.analytics.grid.status'" [(value)]="analyticStatusId" [options]="analyticStatus" (valueChange)="searchCriteriaChange()"></select-two>
+                            </div>
+                            <div class="col-sm-4">
+                                <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="managerId" [options]="managers" (valueChange)="searchCriteriaChange()"></select-two>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h4 class="pull-left">{{ 'allocationManagement.analytics.title' | translate }}</h4>
@@ -23,7 +59,7 @@
             <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
                 <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
-        </div> 
+        </div>
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
             <spinner></spinner>
 

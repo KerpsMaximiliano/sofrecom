@@ -59,4 +59,8 @@ export class AnalyticService {
   getByCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
   }
+
+  get(query) {
+    return this.http.post<any>(`${this.baseUrl}/analytics/search`, query);
+  }
 }

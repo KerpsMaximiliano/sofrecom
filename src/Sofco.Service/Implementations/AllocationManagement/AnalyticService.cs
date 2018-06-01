@@ -5,14 +5,15 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
@@ -34,10 +35,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
+        private readonly IMapper mapper;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
-            ICrmService crmService, IEmployeeData employeeData)
+            ICrmService crmService, IEmployeeData employeeData, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -47,6 +49,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
             this.employeeData = employeeData;
+            this.mapper = mapper;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -81,6 +84,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
+        }
+
+        public Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters)
+        {
+            var response = new Response<List<AnalyticSearchViewModel>>
+            {
+                Data = Translate(unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters))
+            };
+
+            return response;
         }
 
         public ICollection<Analytic> GetAll()
@@ -336,6 +349,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     response.AddError(Resources.Common.ErrorSave);
                 }
             }
+        }
+
+        private List<AnalyticSearchViewModel> Translate(List<Analytic> data)
+        {
+            return data.Select(x => new AnalyticSearchViewModel(x)).ToList();
         }
     }
 }
