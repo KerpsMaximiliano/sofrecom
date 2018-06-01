@@ -148,12 +148,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 query = query.Where(x => x.Id == searchCriteria.AnalyticId);
             }
 
-            if (!string.IsNullOrEmpty(searchCriteria.CustomerId) && searchCriteria.CustomerId != "0")
+            if (!string.IsNullOrEmpty(searchCriteria.CustomerId))
             {
                 query = query.Where(x => x.ClientExternalId == searchCriteria.CustomerId);
             }
 
-            if (!string.IsNullOrEmpty(searchCriteria.ServiceId) && searchCriteria.ServiceId != "0")
+            if (!string.IsNullOrEmpty(searchCriteria.ServiceId))
             {
                 query = query.Where(x => x.ServiceId == searchCriteria.ServiceId);
             }

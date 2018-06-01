@@ -56,26 +56,28 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        const data = JSON.parse(sessionStorage.getItem('analyticSearchCriteria'));
+        if (data) {
+            this.analyticId = data.analyticId;
+            this.customerId = data.customerId;
+            this.serviceId = data.serviceId;
+            this.analyticStatusId = data.analyticStatusId;
+            this.managerId = data.managerId;
+        }
         this.getCustomers();
         this.getAnalytics();
         this.getAnalyticStatus();
         this.getManagers();
+        if (this.customerId != null) {
+            this.getServices();
+        }
     }
 
     getAnalytics() {
         this.getAllSubscrip = this.analyticService.getAll().subscribe(data => {
             this.analytics = this.mapAnalyticToSelect(data);
-            this.model = data;
             this.loading = false;
-
-            const options = {
-                selector: "#analyticsTable",
-                withExport: true,
-                title: "Analiticas",
-                columns: [0, 1, 2, 3, 4]
-            };
-
-            this.dataTableService.init2(options);
+            this.searchCriteriaChange();
         },
         error => this.errorHandlerService.handleErrors(error));
     }
@@ -132,19 +134,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    mapToSelect(data: Array<any>): Array<any> {
-        const result = new Array<any>();
-        data.forEach(s => {
-            const text = s[this.textKey];
-            result.push({
-                id: s[this.idKey],
-                text: text,
-                selected: false
-            });
-        });
-        return result;
-    }
-
     mapAnalyticToSelect(data: Array<any>): Array<any> {
         data.forEach(x => x.text = x.title + ' - ' + x.name);
         return data;
@@ -160,13 +149,16 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     customerChange() {
+        this.serviceId = null;
         this.searchCriteriaChange();
         this.getServices();
     }
 
     getServices() {
         this.services = [];
-        if (this.customerId == 0) return;
+
+        if (this.customerId == 0 || this.customerId == null) return;
+
         this.messageService.showLoading();
 
         this.serviceService.getOptions(this.customerId).subscribe(d => {
@@ -199,6 +191,8 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     searchCriteriaChange() {
+        this.serviceId = this.serviceId === "0" ? null : this.serviceId;
+        this.customerId = this.customerId === "0" ? null : this.customerId;
         const searchCriteria = {
             analyticId: this.analyticId,
             customerId: this.customerId,
@@ -224,7 +218,12 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
             this.dataTableService.destroy(options.selector);
             this.dataTableService.init2(options);
+            this.storeSearchCriteria(searchCriteria);
         },
         error => this.errorHandlerService.handleErrors(error));
+    }
+
+    storeSearchCriteria(searchCriteria) {
+        sessionStorage.setItem('analyticSearchCriteria', JSON.stringify(searchCriteria));
     }
 }
