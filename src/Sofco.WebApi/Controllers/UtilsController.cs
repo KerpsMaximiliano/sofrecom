@@ -22,7 +22,7 @@ namespace Sofco.WebApi.Controllers
         {
             var sectors = utilsService.GetSectors();
 
-            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }));
+            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }).OrderBy(x => x.Text));
         }
 
         [HttpGet("employeeTypeEndReasons")]
@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers
         {
             var sectors = utilsService.GetEmployeeTypeEndReasons();
 
-            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }));
+            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }).OrderBy(x => x.Text));
         }
 
         [HttpGet("months")]

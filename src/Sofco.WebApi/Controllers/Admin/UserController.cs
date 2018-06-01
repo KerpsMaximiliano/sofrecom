@@ -51,7 +51,7 @@ namespace Sofco.WebApi.Controllers.Admin
             foreach (var user in users)
                 model.Add(new UserSelectListItem { Id = user.Id.ToString(), Text = user.Name, UserName = user.UserName, Email = user.Email, ExternalId = user.ExternalManagerId });
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Text));
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace Sofco.WebApi.Controllers.Admin
         {
             var users = userService.GetManagers();
 
-            return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }));
+            return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }).OrderBy(x => x.Text));
         }
 
         [HttpGet("{id}/detail")]

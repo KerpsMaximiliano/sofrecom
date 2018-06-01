@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var model = employeeService.GetAll().Select(x => new EmployeeViewModel(x));
 
-            return Ok(model);
+            return Ok(model.OrderBy(x => x.Name));
         }
 
         [HttpPost("search/unemployees")]
@@ -43,7 +43,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var options = new List<Option>();
 
-            options.AddRange(employeeService.GetAll().Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
+            options.AddRange(employeeService.GetAll().OrderBy(x => x.Name).Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
 
             return Ok(options);
         }
