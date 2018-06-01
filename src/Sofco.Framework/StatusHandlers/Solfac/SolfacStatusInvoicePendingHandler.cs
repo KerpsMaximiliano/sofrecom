@@ -86,14 +86,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(url);
-                HttpResponseMessage response;
 
                 foreach (var item in hitos)
                 {
                     try
                     {
                         var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+
+                        var response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();
                     }
