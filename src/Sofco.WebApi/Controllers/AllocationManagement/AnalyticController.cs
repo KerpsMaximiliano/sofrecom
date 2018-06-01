@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
@@ -124,6 +126,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetByCurrentUser()
         {
             var response = analyticService.GetByCurrentUser();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("search")]
+        public IActionResult GetByParameters([FromBody] AnalyticSearchParameters query)
+        {
+            var response = analyticService.Get(query);
 
             return this.CreateResponse(response);
         }

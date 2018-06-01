@@ -138,5 +138,37 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Analytics.SingleOrDefault(x => x.Title == title);
         }
+
+        public List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria)
+        {
+            IQueryable<Analytic> query = context.Analytics;
+
+            if (searchCriteria.AnalyticId > 0)
+            {
+                query = query.Where(x => x.Id == searchCriteria.AnalyticId);
+            }
+
+            if (!string.IsNullOrEmpty(searchCriteria.CustomerId))
+            {
+                query = query.Where(x => x.ClientExternalId == searchCriteria.CustomerId);
+            }
+
+            if (!string.IsNullOrEmpty(searchCriteria.ServiceId))
+            {
+                query = query.Where(x => x.ServiceId == searchCriteria.ServiceId);
+            }
+
+            if (searchCriteria.AnalyticStatusId > 0)
+            {
+                query = query.Where(x => (int)x.Status == searchCriteria.AnalyticStatusId);
+            }
+
+            if (searchCriteria.ManagerId > 0)
+            {
+                query = query.Where(x => x.ManagerId == searchCriteria.ManagerId);
+            }
+
+            return query.ToList();
+        }
     }
 }
