@@ -289,7 +289,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             try
             {
                 var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
-                var body = string.Format(MailMessageResource.AddAnalytic, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);

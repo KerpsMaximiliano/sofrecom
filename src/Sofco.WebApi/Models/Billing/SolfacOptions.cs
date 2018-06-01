@@ -15,5 +15,7 @@ namespace Sofco.WebApi.Models.Billing
         public IList<Option> Currencies { get; set; }
 
         public IList<Option> PaymentTerms { get; set; }
+
+        public IList<Option> PurchaseOrders { get; set; }
     }
 }

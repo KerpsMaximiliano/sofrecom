@@ -42,6 +42,7 @@ namespace Sofco.DAL
         public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
         public DbSet<LicenseFile> LicenseFiles { get; set; }
         public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
+        public DbSet<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -135,6 +136,7 @@ namespace Sofco.DAL
             builder.MapTasks();
             builder.MapEmployeeCategory();
             builder.MapWorkTime();
+            builder.MapPurchaseOrderAnalytic();
         }
     }
 }

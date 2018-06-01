@@ -134,7 +134,7 @@ namespace Sofco.UnitTest.Services.Billing
                 DocumentTypeId = 1,
                 BuenosAiresPercentage = 100,
                 PaymentTermId = 1,
-                ContractNumber = "1",
+                PurchaseOrderId = 1,
                 ImputationNumber1 = "1",
                 UserApplicantId = 1,
                 TotalAmount = 100,

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180530151321_ChangePurchaseOrder")]
+    partial class ChangePurchaseOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -580,6 +581,39 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("PrepaidHealths");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.WorkTimeApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalyticId");
+
+                    b.Property<int>("ApprovalUserId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<string>("CreatedUser")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<DateTime?>("Modified");
+
+                    b.Property<string>("ModifiedUser")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovalUserId");
+
+                    b.HasIndex("AnalyticId", "EmployeeId", "ApprovalUserId")
+                        .IsUnique();
+
+                    b.ToTable("WorkTimeApprovals");
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.Certificate", b =>
                 {
                     b.Property<int>("Id")
@@ -783,10 +817,10 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Ammount");
 
+                    b.Property<int>("AnalyticId");
+
                     b.Property<string>("Area")
                         .HasMaxLength(150);
-
-                    b.Property<decimal>("Balance");
 
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(150);
@@ -804,6 +838,15 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int?>("FileId");
 
                     b.Property<string>("Number")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("OpportunityDescription")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("OpportunityId")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("ProjectId")
                         .HasMaxLength(150);
 
                     b.Property<DateTime>("ReceptionDate");
@@ -818,6 +861,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<DateTime>("UpdateDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
 
                     b.HasIndex("CurrencyId");
 
@@ -847,6 +892,9 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("ClientName")
                         .HasMaxLength(100);
+
+                    b.Property<string>("ContractNumber")
+                        .HasMaxLength(1000);
 
                     b.Property<int>("CurrencyId");
 
@@ -902,8 +950,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("Province3Id");
 
-                    b.Property<int?>("PurchaseOrderId");
-
                     b.Property<string>("Service");
 
                     b.Property<string>("ServiceId");
@@ -929,8 +975,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ImputationNumber3Id");
 
                     b.HasIndex("PaymentTermId");
-
-                    b.HasIndex("PurchaseOrderId");
 
                     b.HasIndex("UserApplicantId");
 
@@ -1177,39 +1221,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("WorkTimes");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.WorkTimeManagement.WorkTimeApproval", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnalyticId");
-
-                    b.Property<int>("ApprovalUserId");
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<string>("CreatedUser")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("EmployeeId");
-
-                    b.Property<DateTime?>("Modified");
-
-                    b.Property<string>("ModifiedUser")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovalUserId");
-
-                    b.HasIndex("AnalyticId", "EmployeeId", "ApprovalUserId")
-                        .IsUnique();
-
-                    b.ToTable("WorkTimeApprovals");
-                });
-
             modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>
                 {
                     b.Property<int>("CategoryId");
@@ -1234,19 +1245,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("FileId");
 
                     b.ToTable("LicenseFiles");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Relationships.PurchaseOrderAnalytic", b =>
-                {
-                    b.Property<int>("PurchaseOrderId");
-
-                    b.Property<int>("AnalyticId");
-
-                    b.HasKey("PurchaseOrderId", "AnalyticId");
-
-                    b.HasIndex("AnalyticId");
-
-                    b.ToTable("PurchaseOrderAnalytics");
                 });
 
             modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
@@ -1564,6 +1562,18 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("TypeEndReasonId");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.WorkTimeApproval", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("WorkTimeApprovals")
+                        .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
+                        .WithMany()
+                        .HasForeignKey("ApprovalUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sofco.Model.Models.Billing.Certificate", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Common.File", "File")
@@ -1612,6 +1622,11 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
                 {
+                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Sofco.Model.Utils.Currency", "Currency")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("CurrencyId");
@@ -1642,10 +1657,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Solfacs")
                         .HasForeignKey("PaymentTermId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("Solfacs")
-                        .HasForeignKey("PurchaseOrderId");
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")
@@ -1726,18 +1737,6 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.WorkTimeManagement.WorkTimeApproval", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("WorkTimeApprovals")
-                        .HasForeignKey("AnalyticId");
-
-                    b.HasOne("Sofco.Model.Models.Admin.User", "ApprovalUser")
-                        .WithMany()
-                        .HasForeignKey("ApprovalUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Sofco.Model.Relationships.EmployeeCategory", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Admin.Category", "Category")
@@ -1761,19 +1760,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Rrhh.License", "License")
                         .WithMany("LicenseFiles")
                         .HasForeignKey("LicenseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Relationships.PurchaseOrderAnalytic", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("PurchaseOrderAnalytics")
-                        .HasForeignKey("AnalyticId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("PurchaseOrderAnalytics")
-                        .HasForeignKey("PurchaseOrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

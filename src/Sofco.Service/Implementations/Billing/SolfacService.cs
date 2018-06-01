@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
@@ -595,7 +592,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<List<Invoice>> { Data = new List<Invoice>() };
 
-            var solfac = SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
+            SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
 
             if (response.HasErrors()) return response;
 

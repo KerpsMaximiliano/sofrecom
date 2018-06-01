@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AmmountRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.ammountRequired</value>
+  </data>
   <data name="AnalyticIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.analyticIsRequired</value>
   </data>
@@ -128,6 +131,18 @@
   </data>
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
+  </data>
+  <data name="CurrencyIsRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.currencyIsRequired</value>
+  </data>
+  <data name="DatesRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.datesRequired</value>
+  </data>
+  <data name="EndDateLessThanStartDate" xml:space="preserve">
+    <value>billing/purchaseOrder.endDateLessThanStartDate</value>
+  </data>
+  <data name="ErrorToSaveAnalytics" xml:space="preserve">
+    <value>billing/purchaseOrder.errorToSaveAnalytics</value>
   </data>
   <data name="FileAdded" xml:space="preserve">
     <value>billing/purchaseOrder.fileAdded</value>
@@ -152,6 +167,9 @@
   </data>
   <data name="TitleIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.titleIsRequired</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.updateSuccess</value>
   </data>
   <data name="YearIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.yearIsRequired</value>

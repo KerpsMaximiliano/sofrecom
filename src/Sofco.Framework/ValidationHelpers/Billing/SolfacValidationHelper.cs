@@ -167,7 +167,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateContractNumber(Solfac solfac, Response response)
         {
-            if (string.IsNullOrWhiteSpace(solfac.ContractNumber))
+            if (!solfac.PurchaseOrderId.HasValue || solfac.PurchaseOrderId <= 0)
             {
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ContractNumberEmpty, MessageType.Error));
             }

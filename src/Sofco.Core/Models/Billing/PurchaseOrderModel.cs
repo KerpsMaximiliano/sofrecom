@@ -2,10 +2,12 @@
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
-namespace Sofco.WebApi.Models.Billing
+namespace Sofco.Core.Models.Billing
 {
-    public class PurchaseOrderViewModel
+    public class PurchaseOrderModel
     {
+        public int Id { get; set; }
+
         public string Number { get; set; }
 
         public string ClientExternalId { get; set; }
@@ -30,6 +32,10 @@ namespace Sofco.WebApi.Models.Billing
 
         public PurchaseOrderStatus Status { get; set; }
 
+        public int FileId { get; set; }
+
+        public string FileName { get; set; }
+
         public PurchaseOrder CreateDomain(string userName)
         {
             var domain = new PurchaseOrder();
@@ -44,12 +50,40 @@ namespace Sofco.WebApi.Models.Billing
             domain.Area = Area;
             domain.Description = Description;
             domain.Ammount = Ammount;
+            domain.Balance = Ammount;
 
             domain.Status = PurchaseOrderStatus.Valid;
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
 
             return domain;
+        }
+
+        public void UpdateDomain(PurchaseOrder domain, string userName)
+        {
+            FillData(domain);
+
+            domain.Status = Status;
+
+            if (FileId > 0)
+                domain.FileId = FileId;
+
+            domain.UpdateDate = DateTime.UtcNow;
+            domain.UpdateByUser = userName;
+        }
+
+        private void FillData(PurchaseOrder domain)
+        {
+            domain.Number = Number;
+            domain.ClientExternalId = ClientExternalId;
+            domain.ClientExternalName = ClientExternalName;
+            domain.CurrencyId = CurrencyId;
+            domain.StartDate = StartDate;
+            domain.EndDate = EndDate;
+            domain.ReceptionDate = ReceptionDate;
+            domain.Area = Area;
+            domain.Description = Description;
+            domain.Ammount = Ammount;
         }
     }
 }

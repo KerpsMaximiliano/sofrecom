@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
@@ -35,12 +35,6 @@ namespace Sofco.WebApi.Controllers.Billing
             fileConfig = fileOptions.Value;
         }
 
-        [HttpGet("formOptions")]
-        public IActionResult GetFormOptions()
-        {
-            return Ok(purchaseOrderService.GetFormOptions());
-        }
-
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -53,21 +47,17 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PurchaseOrderViewModel model)
+        public IActionResult Post([FromBody] PurchaseOrderModel model)
         {
-            var domain = model.CreateDomain(sessionManager.GetUserName());
-
-            var response = await purchaseOrderService.Add(domain);
+            var response = purchaseOrderService.Add(model);
 
             return this.CreateResponse(response);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] PurchaseOrderEditViewModel model)
+        public IActionResult Put([FromBody] PurchaseOrderModel model)
         {
-            var domain = model.CreateDomain(sessionManager.GetUserName());
-
-            var response = purchaseOrderService.Update(domain);
+            var response = purchaseOrderService.Update(model);
 
             return this.CreateResponse(response);
         }

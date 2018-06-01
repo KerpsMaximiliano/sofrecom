@@ -52,6 +52,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.form.model.currencyId = 0;
+        this.form.model.clientExternalId = 0;
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
 
@@ -64,6 +67,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();
                 }
+
+                setTimeout(() => {
+                    $('#analytics').val(this.form.model.analyticIds).trigger('change');
+                }, 500);
             },
             error => {
                 this.messageService.closeLoading();
@@ -83,6 +90,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
         var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
         this.form.model.clientExternalName = client ? client.text : '';
+        this.form.model.analyticIds = $('#analytics').val();
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
             response => {
@@ -151,7 +159,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err)
         });
     }
-
+ 
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
             this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {

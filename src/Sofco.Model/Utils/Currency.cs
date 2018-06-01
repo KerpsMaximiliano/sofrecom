@@ -7,6 +7,8 @@ namespace Sofco.Model.Utils
     {
         public IList<Solfac> Solfacs { get; set; }
 
+        public IList<Models.Billing.PurchaseOrder> PurchaseOrders { get; set; }
+
         public string CrmProductionId { get; set; }
 
         public string CrmDevelopmentId { get; set; }

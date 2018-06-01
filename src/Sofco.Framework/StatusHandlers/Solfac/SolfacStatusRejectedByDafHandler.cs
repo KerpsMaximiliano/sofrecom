@@ -10,6 +10,7 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
+using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -86,6 +87,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
+
+            if (solfac.PurchaseOrder != null)
+            {
+                var ocToModif = new PurchaseOrder { Id = solfac.PurchaseOrder.Id, Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount };
+                unitOfWork.PurchaseOrderRepository.UpdateBalance(ocToModif);
+            }
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)

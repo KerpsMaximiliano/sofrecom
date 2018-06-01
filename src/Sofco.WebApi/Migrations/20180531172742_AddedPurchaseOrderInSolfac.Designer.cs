@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180531172742_AddedPurchaseOrderInSolfac")]
+    partial class AddedPurchaseOrderInSolfac
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -786,8 +787,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Area")
                         .HasMaxLength(150);
 
-                    b.Property<decimal>("Balance");
-
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(150);
 
@@ -804,7 +803,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int?>("FileId");
 
                     b.Property<string>("Number")
-                        .HasMaxLength(150);
+                        .HasMaxLength(20);
 
                     b.Property<DateTime>("ReceptionDate");
 
@@ -904,6 +903,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("PurchaseOrderId");
 
+                    b.Property<int?>("PurchaseOrderId1");
+
                     b.Property<string>("Service");
 
                     b.Property<string>("ServiceId");
@@ -931,6 +932,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("PaymentTermId");
 
                     b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("PurchaseOrderId1");
 
                     b.HasIndex("UserApplicantId");
 
@@ -1643,9 +1646,13 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("PaymentTermId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
+                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder")
                         .WithMany("Solfacs")
                         .HasForeignKey("PurchaseOrderId");
+
+                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
+                        .WithMany()
+                        .HasForeignKey("PurchaseOrderId1");
 
                     b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")

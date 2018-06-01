@@ -1,13 +1,17 @@
+<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
+
 <div class="form-group">
-    <label class="control-label">{{'billing.purchaseOrder.fields.title' | translate }}</label>
-    <input type="text" class="form-control" [(ngModel)]="model.title">
+    <label class="control-label"> {{'billing.purchaseOrder.fields.analytic' | translate }} </label>
+    <select select2 class="form-control" id="analytics" multiple>
+        <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{ analytic.text }}</option>
+    </select>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.number' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="model.number">
+            <input type="text" maxlength="150" class="form-control" [(ngModel)]="model.number">
         </div>
     </div>
     <div class="col-sm-6">
@@ -18,36 +22,51 @@
     </div>
 </div>
 
-<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
-
-<select-two [label]="'allocationManagement.analytics.title'" [(value)]="model.analyticId" [options]="analytics" (valueChange)="analyticChange()"></select-two>
-
-<select-two [label]="'billing.solfac.project'" [(value)]="model.projectId" [options]="projects"></select-two>
-
-<select-two [label]="'allocationManagement.analytics.add.commercialManager'" [(value)]="model.commercialManagerId" [options]="options?.sellers"></select-two>
-
-<select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="model.managerId" [options]="options?.managers"></select-two>
-
 <div class="row">
     <div class="col-sm-6">
         <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.year' | translate }}</label>
-            <input type="number" min="2015" max="2099" class="form-control" [(ngModel)]="model.year">
+            <label class="control-label">{{'billing.purchaseOrder.fields.startDate' | translate }}</label>
+            <date-picker [(date)]="model.startDate"></date-picker>
         </div>
     </div>
     <div class="col-sm-6">
-        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
-
-        <div class="radio radio-info radio-inline">
-            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
-            <label for="area"> Comercial </label>
-        </div>
-        <div class="radio radio-inline radio-info">
-            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
-            <label for="area2"> Compañia </label>
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.endDate' | translate }}</label>
+            <date-picker [(date)]="model.endDate"></date-picker>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-sm-6">
+        <select-two [label]="'billing.purchaseOrder.fields.currency'" [(value)]="model.currencyId" [options]="currencies"></select-two>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.ammount' | translate }}</label>
+            <input type="number" class="form-control" myNumberOnly min="1" [(ngModel)]="model.ammount">
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-sm-12">
+        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
 
+        <div class="radio radio-info radio-inline">
+            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
+            <label for="area"> {{'billing.purchaseOrder.fields.comercial' | translate }} </label>
+        </div>
+        <div class="radio radio-inline radio-info">
+            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
+            <label for="area2"> {{'billing.purchaseOrder.fields.company' | translate }} </label>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="form-group">
+    <label class="control-label">{{'billing.purchaseOrder.fields.description' | translate }}</label>
+    <textarea class="form-control" maxlength="1000" name="description" rows="10" [(ngModel)]="model.description"></textarea>
+</div>

@@ -35,9 +35,6 @@ namespace Sofco.Model.Models.Admin
         public ICollection<Analytic> Analytics2 { get; set; }
         public ICollection<Analytic> Analytics3 { get; set; }
 
-        public ICollection<PurchaseOrder> PurchaseOrder1 { get; set; }
-        public ICollection<PurchaseOrder> PurchaseOrder2 { get; set; }
-
         public ICollection<License> Licenses { get; set; }
 
         public ICollection<WorkTime> WorkTimes1 { get; set; }

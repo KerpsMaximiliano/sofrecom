@@ -35,6 +35,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public invoices: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
     public certificates: Option[] = new Array<Option>();
+    public purchaseOrders: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
     public integratorProject: any;
@@ -48,8 +49,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
     getCertificateAvailableSubscrip: Subscription;
-
-    public test;
 
     isCreditNoteSolfacType:boolean = false;
     isDebitNoteSolfacType:boolean = false;
@@ -89,7 +88,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     setDataForMultipleProjects(multipleProjects){
       this.multipleProjects = true;
       this.projectId = multipleProjects.ids;
-      this.model.contractNumber = multipleProjects.purchaseOrders;
       this.model.project = multipleProjects.names;
       this.model.projectId = multipleProjects.ids;
       this.model.imputationNumber1 = multipleProjects.analytics; 
@@ -122,7 +120,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.getInvoicesOptions(project.id);
       this.projectId = project.id;
-      this.model.contractNumber = project.purchaseOrder;
       this.model.project = project.nombre;
       this.model.projectId = project.id;
       this.model.integrator = project.integrator;
@@ -156,7 +153,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setNewModel(){
       var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
-      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
       this.model.totalAmount = 0;
       this.model.documentType = 1;
 
@@ -235,12 +231,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
  
     getOptions() {
-      this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId")).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers;
         this.paymentTerms = data.paymentTerms;
+        this.purchaseOrders = data.purchaseOrders;
         this.updateDocumentTypes();
       },
       err => this.errorHandlerService.handleErrors(err));

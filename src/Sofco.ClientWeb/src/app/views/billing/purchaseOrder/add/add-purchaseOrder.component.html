@@ -19,6 +19,10 @@
 </div>
     
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="alert alert-info" *ngIf="!alertDisable">
+        {{'billing.purchaseOrder.fileMissing' | translate }}
+    </div>
+
     <div class="row">
         <div class="col-sm-7">
             <div class="ibox">
@@ -27,7 +31,7 @@
                 </div>
                 <div class="ibox-footer">
                     <button *ngIf="!showUploader" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-                    <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/purchaseOrders']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                    <a *ngIf="alertDisable" class="btn btn-link btn-success text-white" [routerLink]="['/billing/purchaseOrders']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                 </div>
             </div>
         </div>

@@ -24,13 +24,17 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly ISolfacService solfacService;
         private readonly ICertificateService certificateService;
         private readonly EmailConfig emailConfig;
+        private readonly IPurchaseOrderService purchaseOrderService;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, ICertificateService certificateService)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, 
+                                IOptions<EmailConfig> emailConfig, ICertificateService certificateService,
+                                IPurchaseOrderService purchaseOrderService)
         {
             this.utilsService = utilsService;
             this.solfacService = solfacService;
             this.emailConfig = emailConfig.Value;
             this.certificateService = certificateService;
+            this.purchaseOrderService = purchaseOrderService;
         }
 
         [HttpPost]
@@ -86,8 +90,8 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet]
-        [Route("options")]
-        public IActionResult FormOptions()
+        [Route("options/{serviceId}")]
+        public IActionResult FormOptions(string serviceId)
         {
             var options = new SolfacOptions
             {
@@ -95,7 +99,8 @@ namespace Sofco.WebApi.Controllers.Billing
                 DocumentTypes = utilsService.GetDocumentTypes().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 Provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
-                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList()
+                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                PurchaseOrders = purchaseOrderService.GetByService(serviceId).Select(x => new Option { Id = x.Id, Text = x.Number }).ToList()
             };
 
             return Ok(options);

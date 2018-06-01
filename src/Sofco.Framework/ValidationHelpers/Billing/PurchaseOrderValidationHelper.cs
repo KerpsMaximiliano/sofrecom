@@ -1,4 +1,7 @@
-﻿using Sofco.Core.DAL;
+﻿using System;
+using System.Linq;
+using Sofco.Core.DAL;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
@@ -6,15 +9,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 {
     public static class PurchaseOrderValidationHelper
     {
-        public static void ValidateTitle(Response response, PurchaseOrder domain)
-        {
-            if (string.IsNullOrWhiteSpace(domain.Title))
-            {
-                response.AddError(Resources.Billing.PurchaseOrder.TitleIsRequired);
-            }
-        }
-
-        public static void ValidateNumber(Response response, PurchaseOrder domain)
+        public static void ValidateNumber(Response response, PurchaseOrderModel domain)
         {
             if (string.IsNullOrWhiteSpace(domain.Number))
             {
@@ -22,15 +17,23 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateAnalytic(Response response, PurchaseOrder domain)
+        public static void ValidateAnalytic(Response response, PurchaseOrderModel domain)
         {
-            if (domain.AnalyticId == 0)
+            if (!domain.AnalyticIds.Any())
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AnalyticIsRequired);
             }
         }
 
-        public static void ValidateClient(Response response, PurchaseOrder domain)
+        public static void ValidateCurrency(Response response, PurchaseOrderModel domain)
+        {
+            if (domain.CurrencyId == 0)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CurrencyIsRequired);
+            }
+        }
+
+        public static void ValidateClient(Response response, PurchaseOrderModel domain)
         {
             if (string.IsNullOrWhiteSpace(domain.ClientExternalId))
             {
@@ -38,35 +41,11 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateComercialManager(Response response, PurchaseOrder domain)
-        {
-            if (domain.CommercialManagerId == 0)
-            {
-                response.AddError(Resources.Billing.PurchaseOrder.ComercialManagerIsRequired);
-            }
-        }
-
-        public static void ValidateManager(Response response, PurchaseOrder domain)
-        {
-            if (domain.ManagerId == 0)
-            {
-                response.AddError(Resources.Billing.PurchaseOrder.ManagerIsRequired);
-            }
-        }
-
-        public static void ValidateArea(Response response, PurchaseOrder domain)
+        public static void ValidateArea(Response response, PurchaseOrderModel domain)
         {
             if (string.IsNullOrWhiteSpace(domain.Area))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AreaIsRequired);
-            }
-        }
-
-        public static void ValidateYear(Response response, PurchaseOrder domain)
-        {
-            if (domain.Year < 2015 && domain.Year > 2099)
-            {
-                response.AddError(Resources.Billing.PurchaseOrder.YearIsRequired);
             }
         }
 
@@ -82,9 +61,21 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             return purchaseOrder;
         }
 
-        public static void Exist(Response<PurchaseOrder> response, PurchaseOrder domain, IUnitOfWork unitOfWork)
+        public static PurchaseOrder FindWithAnalytic(int purchaseOrderId, Response response, IUnitOfWork unitOfWork)
         {
-            var exist = unitOfWork.PurchaseOrderRepository.Exist(domain.Id);
+            var purchaseOrder = unitOfWork.PurchaseOrderRepository.GetWithAnalyticsById(purchaseOrderId);
+
+            if (purchaseOrder == null)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NotFound);
+            }
+
+            return purchaseOrder;
+        }
+
+        public static void Exist(Response<PurchaseOrder> response, PurchaseOrderModel model, IUnitOfWork unitOfWork)
+        {
+            var exist = unitOfWork.PurchaseOrderRepository.Exist(model.Id);
 
             if (!exist)
             {
@@ -92,11 +83,27 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateProject(Response<PurchaseOrder> response, PurchaseOrder domain)
+        public static void ValidateDates(Response response, PurchaseOrderModel domain)
         {
-            if (string.IsNullOrWhiteSpace(domain.ProjectId) || domain.ProjectId.Equals("0"))
+            if (domain.StartDate == DateTime.MinValue || domain.EndDate == DateTime.MinValue)
             {
-                response.AddError(Resources.Billing.PurchaseOrder.ProjectIsRequired);
+                response.AddError(Resources.Billing.PurchaseOrder.DatesRequired);
+            }
+            else
+            {
+                if (domain.StartDate.Date > domain.EndDate.Date)
+                {
+                    response.AddError(Resources.Billing.PurchaseOrder.EndDateLessThanStartDate);
+                }
+
+            }
+        }
+
+        public static void ValidateAmmount(Response response, PurchaseOrderModel model)
+        {
+            if (model.Ammount <= 0)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
             }
         }
     }

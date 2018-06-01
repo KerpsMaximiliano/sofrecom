@@ -70,7 +70,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     $('#userId').val(this.form.model.usersQv).trigger('change');
-                }, 1000);
+                }, 500);
             },
             error => {
                 this.messageService.closeLoading();

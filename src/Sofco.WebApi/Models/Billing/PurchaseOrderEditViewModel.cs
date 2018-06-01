@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -13,18 +14,23 @@ namespace Sofco.WebApi.Models.Billing
         public PurchaseOrderEditViewModel(PurchaseOrder domain)
         {
             Id = domain.Id;
-            Title = domain.Title;
             Number = domain.Number;
             ClientExternalId = domain.ClientExternalId;
             ClientExternalName = domain.ClientExternalName;
-            ManagerId = domain.ManagerId;
-            CommercialManagerId = domain.CommercialManagerId;
-            AnalyticId = domain.AnalyticId;
             ReceptionDate = domain.ReceptionDate;
             Area = domain.Area;
-            Year = domain.Year;
             Status = domain.Status;
-            ProjectId = domain.ProjectId;
+            CurrencyId = domain.CurrencyId;
+            StartDate = domain.StartDate;
+            EndDate = domain.EndDate;
+            ReceptionDate = domain.ReceptionDate;
+            Description = domain.Description;
+            Ammount = domain.Ammount;
+
+            if (domain.PurchaseOrderAnalytics.Any())
+            {
+                AnalyticIds = domain.PurchaseOrderAnalytics.Select(x => x.AnalyticId).ToArray();
+            }
 
             if (domain.File != null)
             {
@@ -36,8 +42,6 @@ namespace Sofco.WebApi.Models.Billing
 
         public int Id { get; set; }
 
-        public string Title { get; set; }
-
         public string Number { get; set; }
 
         public string ClientExternalId { get; set; }
@@ -46,17 +50,25 @@ namespace Sofco.WebApi.Models.Billing
 
         public string ProjectId { get; set; }
 
-        public int ManagerId { get; set; }
+        public string OpportunityId { get; set; }
 
-        public int CommercialManagerId { get; set; }
+        public string OpportunityDescription { get; set; }
 
         public int AnalyticId { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         public DateTime ReceptionDate { get; set; }
 
         public string Area { get; set; }
 
-        public int Year { get; set; }
+        public string Description { get; set; }
+
+        public decimal Ammount { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 
@@ -66,31 +78,6 @@ namespace Sofco.WebApi.Models.Billing
 
         public string CreationDate { get; set; }
 
-        public PurchaseOrder CreateDomain(string userName)
-        {
-            var domain = new PurchaseOrder();
-
-            domain.Id = Id;
-            domain.Title = Title;
-            domain.Number = Number;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
-            domain.ManagerId = ManagerId;
-            domain.CommercialManagerId = CommercialManagerId;
-            domain.AnalyticId = AnalyticId;
-            domain.ReceptionDate = ReceptionDate;
-            domain.Area = Area;
-            domain.Year = Year;
-            domain.Status = Status;
-            domain.ProjectId = ProjectId;
-
-            if (FileId > 0)
-                domain.FileId = FileId;
-
-            domain.UpdateDate = DateTime.UtcNow;
-            domain.UpdateByUser = userName;
-
-            return domain;
-        }
+        public int[] AnalyticIds { get; set; }
     }
 }
