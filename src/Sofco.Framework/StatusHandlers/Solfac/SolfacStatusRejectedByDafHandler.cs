@@ -10,7 +10,6 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -88,11 +87,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
 
-            if (solfac.PurchaseOrder != null)
-            {
-                var ocToModif = new PurchaseOrder { Id = solfac.PurchaseOrder.Id, Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount };
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(ocToModif);
-            }
+            if (solfac.PurchaseOrder == null) return;
+
+            solfac.PurchaseOrder.Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount;
+
+            unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
         }
 
         public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
@@ -100,14 +99,18 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(url);
-                HttpResponseMessage response;
 
                 foreach (var item in hitos)
                 {
                     try
                     {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
+                        var purchaseOrder = solfac.PurchaseOrder.Number;
+
+                        var stringContent = new StringContent(
+                            $"StatusCode={(int)GetHitoStatus()}&PurchaseOrder={purchaseOrder}",
+                            Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                        var response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
 
                         response.EnsureSuccessStatusCode();
                     }
