@@ -19,7 +19,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             this.unitOfWork = unitOfWork;
         }
 
-        private string MailBody = "<font size='3'>" +
+        private string mailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "La SOLFAC del asunto ha sido RECHAZADA por Dirección de administración y finanzas, por el siguiente motivo: </br>" +
@@ -46,7 +46,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (!response.HasErrors())
             {
-                MailBody = MailBody.Replace("*", parameters.Comment);
+                mailBody = mailBody.Replace("*", parameters.Comment);
             }
             
             return response;
@@ -56,7 +56,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
-            return string.Format(MailBody, link);
+            return string.Format(mailBody, link);
         }
 
         private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
