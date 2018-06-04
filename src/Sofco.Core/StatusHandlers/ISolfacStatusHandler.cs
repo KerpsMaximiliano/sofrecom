@@ -10,9 +10,13 @@ namespace Sofco.Core.StatusHandlers
     public interface ISolfacStatusHandler
     {
         Response Validate(Solfac solfac, SolfacStatusParams parameters);
+
         string GetSuccessMessage();
+
         void SaveStatus(Solfac solfac, SolfacStatusParams parameters);
+
         void UpdateHitos(ICollection<string> getHitosIdsBySolfacId, Solfac solfac, string url);
+
         void SendMail(IMailSender mailSender, Solfac solfac, EmailConfig emailConfig);
     }
 }
