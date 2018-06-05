@@ -6,8 +6,10 @@ using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
+using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.DAL.Repositories.Billing
 {
@@ -34,7 +36,25 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<PurchaseOrder> GetByService(string serviceId)
         {
-            return context.PurchaseOrderAnalytics.Include(x => x.PurchaseOrder)
+            var ocsLite = context.PurchaseOrderAnalytics
+                .Include(x => x.PurchaseOrder)
+                .Include(x => x.Analytic)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Select(x => x.PurchaseOrderId)
+                .Distinct()
+                .ToList();
+
+            return context.PurchaseOrderFiles
+                .Include(x => x.File)
+                .Include(x => x.Currency)
+                .Where(x => ocsLite.Contains(x.Id))
+                .ToList();
+        }
+
+        public IList<PurchaseOrder> GetByServiceLite(string serviceId)
+        {
+            return context.PurchaseOrderAnalytics
+                .Include(x => x.PurchaseOrder)
                 .Include(x => x.Analytic)
                 .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
                 .Select(x => x.PurchaseOrder)

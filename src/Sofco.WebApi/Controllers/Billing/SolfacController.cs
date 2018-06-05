@@ -100,7 +100,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 Provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
-                PurchaseOrders = purchaseOrderService.GetByService(serviceId).Select(x => new Option { Id = x.Id, Text = x.Number }).ToList()
+                PurchaseOrders = purchaseOrderService.GetByServiceLite(serviceId).Select(x => new Option { Id = x.Id, Text = x.Number }).ToList()
             };
 
             return Ok(options);

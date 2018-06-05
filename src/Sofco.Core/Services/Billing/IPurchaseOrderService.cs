@@ -18,5 +18,7 @@ namespace Sofco.Core.Services.Billing
         ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters);
         Response DeleteFile(int id);
         IList<PurchaseOrder> GetByService(string serviceId);
+
+        IList<PurchaseOrder> GetByServiceLite(string serviceId);
     }
 }

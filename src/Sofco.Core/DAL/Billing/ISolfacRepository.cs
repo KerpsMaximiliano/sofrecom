@@ -36,5 +36,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Hito> GetHitosBySolfacId(int solfacId);
 
         decimal GetTotalAmountById(int solfacId);
+
+        IEnumerable<Solfac> GetByProjectWithPurchaseOrder(string projectId);
     }
 }

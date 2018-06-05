@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Models.Billing;
@@ -23,14 +24,16 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
+        private readonly IUnitOfWork unitOfWork;
 
         public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions,
-            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger)
+            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, IUnitOfWork unitOfWork)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
+            this.unitOfWork = unitOfWork;
             this.logger = logger;
         }
 
@@ -125,6 +128,48 @@ namespace Sofco.Service.Implementations.Billing
                     .OrderBy(x => x.Text)
                     .ToList()
             };
+        }
+
+        public IList<PurchaseOrderWidgetModel> GetPurchaseOrders(string projectId)
+        {
+            var list = new List<PurchaseOrderWidgetModel>();
+
+            var solfacs = unitOfWork.SolfacRepository.GetByProjectWithPurchaseOrder(projectId);
+
+            foreach (var solfac in solfacs)
+            {
+                if(solfac.PurchaseOrder == null) continue;
+
+                var oc = list.SingleOrDefault(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number));
+
+                if (oc == null)
+                {
+                    var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = solfac.PurchaseOrder.Balance, Currency = solfac.PurchaseOrder.Currency.Text };
+
+                    SetPurchaseOrderValues(solfac, newOc);
+
+                    list.Add(newOc);
+                }
+                else
+                {
+                    SetPurchaseOrderValues(solfac, oc);
+                }
+            }
+
+            return list;
+        }
+
+        private void SetPurchaseOrderValues(Model.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)
+        {
+            switch (solfac.Status)
+            {
+                case SolfacStatus.InvoicePending:
+                case SolfacStatus.PendingByManagementControl: newOc.BillingPendingAmmount += solfac.TotalAmount; break;
+
+                case SolfacStatus.Invoiced: newOc.CashPendingAmmount += solfac.TotalAmount; break;
+
+                case SolfacStatus.AmountCashed: newOc.AmmountCashed += solfac.TotalAmount; break;
+            }
         }
     }
 }

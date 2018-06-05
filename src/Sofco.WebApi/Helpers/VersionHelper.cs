@@ -4,7 +4,7 @@
     {
         private const int Major = 1;
 
-        private const int Minor = 29;
+        private const int Minor = 30;
 
         private const int Revision = 156;
 

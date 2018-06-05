@@ -57,6 +57,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
     @ViewChild('newHito') newHito;
+    @ViewChild('ocs') ocs;
 
     @ViewChild('closeHitoModal') closeHitoModal;
     public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -97,6 +98,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.getSolfacs(this.projectId);
             this.getHitos();
             this.getInvoices(this.projectId);
+            this.ocs.getAll(this.projectId);
         });
     }
 
@@ -168,7 +170,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
 
             this.initHitosGrid();
-            this.calculateIncomesPending();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -206,8 +207,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.initSolfacGrid();
-
-            this.calculateIncomes();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -221,37 +220,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.datatableService.init2(params);
     }
 
-    calculateIncomesPending(){
-        this.hitos.forEach((item, index) => {
-            if(item.statusCode == "1" || item.statusCode == '717620002'){
-                this.incomesPendingArray[this.getCurrencyId(item.money)-1].value += item.ammount;
-            }
-        });
-    }
-
-    calculateIncomes() {
-        this.incomes[0].value = this.project.realIncomes;
-        
-        this.solfacs.forEach((item, index) => {
-            if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
-                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesBilledArray[item.currencyId-1].value -= item.totalAmount;
-                }
-                else{
-                    this.incomesBilledArray[item.currencyId-1].value += item.totalAmount;
-                }
-            }
-
-            if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
-                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesCashedArray[item.currencyId-1].value -= item.totalAmount;
-                }
-                else{
-                    this.incomesCashedArray[item.currencyId-1].value += item.totalAmount;
-                }
-            }
-        });
-    }
 
     generateSolfac() {
         var hitos = this.getHitosSelected();

@@ -53,15 +53,15 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
-      // this.messageService.showLoading();
+      this.messageService.showLoading();
 
-      // this.getAllSubscrip = this.service.getPurchaseOrders(this.serviceId).subscribe(d => {
-      //   this.messageService.closeLoading();
-      //   this.purchaseOrders = d;
-      // },
-      // err => {
-      //   this.errorHandlerService.handleErrors(err)
-      // });
+      this.getAllSubscrip = this.service.getPurchaseOrders(this.serviceId).subscribe(d => {
+        this.messageService.closeLoading();
+        this.purchaseOrders = d;
+      },
+      err => {
+        this.errorHandlerService.handleErrors(err)
+      });
     }
 
     goToProjects(){
