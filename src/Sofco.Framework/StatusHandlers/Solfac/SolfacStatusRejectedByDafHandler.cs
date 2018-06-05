@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Config;
+using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -10,7 +9,6 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -18,12 +16,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork)
+        private readonly ICrmInvoiceService crmInvoiceService;
+
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService)
         {
             this.unitOfWork = unitOfWork;
+            this.crmInvoiceService = crmInvoiceService;
         }
 
-        private string MailBody = "<font size='3'>" +
+        private string mailBody = "<font size='3'>" +
                                             "<span style='font-size:12pt'>" +
                                                 "Estimados, </br></br>" +
                                                 "La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: </br>" +
@@ -50,7 +51,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (!response.HasErrors())
             {
-                MailBody = MailBody.Replace("*", parameters.Comment);
+                mailBody = mailBody.Replace("*", parameters.Comment);
             }
             
             return response;
@@ -60,7 +61,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
-            return string.Format(MailBody, link);
+            return string.Format(mailBody, link);
         }
 
         private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
@@ -88,34 +89,16 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
 
-            if (solfac.PurchaseOrder != null)
-            {
-                var ocToModif = new PurchaseOrder { Id = solfac.PurchaseOrder.Id, Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount };
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(ocToModif);
-            }
+            if (solfac.PurchaseOrder == null) return;
+
+            solfac.PurchaseOrder.Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount;
+
+            unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
         }
 
-        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                HttpResponseMessage response;
-
-                foreach (var item in hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
+            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
         public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)

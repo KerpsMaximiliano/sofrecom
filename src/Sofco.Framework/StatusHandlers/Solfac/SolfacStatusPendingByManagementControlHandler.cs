@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Config;
+using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -10,7 +9,6 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -18,9 +16,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork)
+        private readonly ICrmInvoiceService crmInvoiceService;
+
+        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService)
         {
             this.unitOfWork = unitOfWork;
+            this.crmInvoiceService = crmInvoiceService;
         }
 
         private const string MailBody = "<font size='3'>" +
@@ -85,7 +86,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        private string GetRecipients(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        private string GetRecipients(EmailConfig emailConfig)
         {
             return unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
         }
@@ -105,41 +106,23 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
 
-            if (solfac.PurchaseOrder != null)
-            {
-                solfac.PurchaseOrder.Balance -= solfac.TotalAmount; 
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
-            }
+            if (solfac.PurchaseOrder == null) return;
+
+            solfac.PurchaseOrder.Balance = solfac.PurchaseOrder.Balance - solfac.TotalAmount;
+
+            unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
         }
 
-        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                HttpResponseMessage response;
-
-                foreach (var item in hitos)
-                {
-                    try
-                    {
-                        var stringContent = new StringContent($"StatusCode={(int)GetHitoStatus()}", Encoding.UTF8, "application/x-www-form-urlencoded");
-                        response = await client.PutAsync($"/api/InvoiceMilestone/{item}", stringContent);
-
-                        response.EnsureSuccessStatusCode();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
+            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
         public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subjectToCdg = GetSubjectMail(solfac);
             var bodyToCdg = GetBodyMail(solfac, emailConfig.SiteUrl);
-            var recipientsToCdg = GetRecipients(solfac, emailConfig);
+            var recipientsToCdg = GetRecipients(emailConfig);
 
             mailSender.Send(recipientsToCdg, subjectToCdg, bodyToCdg);
 
