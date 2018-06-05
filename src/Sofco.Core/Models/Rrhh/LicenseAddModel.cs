@@ -45,8 +45,8 @@ namespace Sofco.Core.Models.Rrhh
             domain.EmployeeId = EmployeeId;
             domain.ManagerId = ManagerId;
             domain.SectorId = SectorId;
-            domain.StartDate = StartDate.GetValueOrDefault();
-            domain.EndDate = EndDate.GetValueOrDefault();
+            domain.StartDate = StartDate.GetValueOrDefault().Date;
+            domain.EndDate = EndDate.GetValueOrDefault().Date;
             domain.TypeId = TypeId;
             domain.WithPayment = WithPayment;
             domain.DaysQuantity = DaysQuantity;
