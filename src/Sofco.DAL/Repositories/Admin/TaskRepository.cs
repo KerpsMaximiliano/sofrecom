@@ -40,7 +40,7 @@ namespace Sofco.DAL.Repositories.Admin
 
         public new IList<Task> GetAll()
         {
-            return context.Tasks.Include(x => x.Category).Where(x => x.Active).ToList().AsReadOnly();
+            return context.Tasks.Include(x => x.Category).ToList().AsReadOnly();
         }
     }
 }

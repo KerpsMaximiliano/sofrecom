@@ -460,7 +460,7 @@
         },
         "report": { 
             "title": "Reporte de Recursos",
-            "report": "Reporte",
+            "report": "Reporte Asignaciones",
             "includeStaff": "Incluir Staff",
             "grid": {
                 "analytic": "Analítica",
