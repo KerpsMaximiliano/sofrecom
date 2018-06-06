@@ -20,12 +20,10 @@ namespace Sofco.WebApi.Models.Billing
             ReceptionDate = domain.ReceptionDate;
             Area = domain.Area;
             Status = domain.Status;
-            CurrencyId = domain.CurrencyId;
             StartDate = domain.StartDate;
             EndDate = domain.EndDate;
             ReceptionDate = domain.ReceptionDate;
             Description = domain.Description;
-            Ammount = domain.Ammount;
 
             if (domain.PurchaseOrderAnalytics.Any())
             {
@@ -56,8 +54,6 @@ namespace Sofco.WebApi.Models.Billing
 
         public int AnalyticId { get; set; }
 
-        public int CurrencyId { get; set; }
-
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -67,8 +63,6 @@ namespace Sofco.WebApi.Models.Billing
         public string Area { get; set; }
 
         public string Description { get; set; }
-
-        public decimal Ammount { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 

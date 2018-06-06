@@ -222,6 +222,7 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Solfacs.Where(x => x.ProjectId.Contains(projectId))
                 .Include(x => x.PurchaseOrder)
+                    .ThenInclude(x => x.AmmountDetails)
                     .ThenInclude(x => x.Currency)
                 .ToList();
         }

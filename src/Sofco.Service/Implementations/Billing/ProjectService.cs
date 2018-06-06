@@ -144,11 +144,14 @@ namespace Sofco.Service.Implementations.Billing
 
                 if (oc == null)
                 {
-                    var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = solfac.PurchaseOrder.Balance, Currency = solfac.PurchaseOrder.Currency.Text };
+                    foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
+                    {
+                        var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = detail.Balance, Currency = detail.Currency.Text };
 
-                    SetPurchaseOrderValues(solfac, newOc);
+                        SetPurchaseOrderValues(solfac, newOc);
 
-                    list.Add(newOc);
+                        list.Add(newOc);
+                    }
                 }
                 else
                 {

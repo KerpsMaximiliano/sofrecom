@@ -44,7 +44,7 @@
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.ammount' | translate }}</label>
-            <input type="number" class="form-control" myNumberOnly min="1" [(ngModel)]="model.ammount">
+            <input type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="model.ammount">
         </div>
     </div>
 </div>

@@ -26,7 +26,11 @@ namespace Sofco.DAL.Repositories.Billing
 
         public PurchaseOrder GetById(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Include(x => x.File).SingleOrDefault(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrderFiles
+                .Include(x => x.File)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .SingleOrDefault(x => x.Id == purchaseOrderId);
         }
 
         public PurchaseOrder GetWithAnalyticsById(int purchaseOrderId)
@@ -46,7 +50,8 @@ namespace Sofco.DAL.Repositories.Billing
 
             return context.PurchaseOrderFiles
                 .Include(x => x.File)
-                .Include(x => x.Currency)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
                 .Where(x => ocsLite.Contains(x.Id))
                 .ToList();
         }
@@ -70,7 +75,8 @@ namespace Sofco.DAL.Repositories.Billing
         public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
         {
             IQueryable<PurchaseOrder> query = context.PurchaseOrderFiles
-                .Include(x => x.Currency)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
                 .Include(x => x.File);
 
             if (parameters != null)

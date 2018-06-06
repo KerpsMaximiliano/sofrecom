@@ -11,12 +11,6 @@ namespace Sofco.WebApi.Models.Billing
             Number = purchaseOrder.Number;
             Client = purchaseOrder.ClientExternalName;
             Status = purchaseOrder.Status.ToString();
-            Ammount = purchaseOrder.Ammount;
-
-            if (purchaseOrder.Currency != null)
-            {
-                CurrencyDescription = purchaseOrder.Currency.Text;
-            }
 
             if (purchaseOrder.File != null)
             {
@@ -39,9 +33,5 @@ namespace Sofco.WebApi.Models.Billing
         public string FileName { get; set; }
 
         public string CreationDate { get; set; }
-
-        public string CurrencyDescription { get; set; }
-
-        public decimal Ammount { get; set; }
     }
 }

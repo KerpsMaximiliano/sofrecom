@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -36,6 +38,8 @@ namespace Sofco.Core.Models.Billing
 
         public string FileName { get; set; }
 
+        public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
+
         public PurchaseOrder CreateDomain(string userName)
         {
             var domain = new PurchaseOrder();
@@ -43,18 +47,23 @@ namespace Sofco.Core.Models.Billing
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
-            domain.CurrencyId = CurrencyId;
             domain.StartDate = StartDate;
             domain.EndDate = EndDate;
             domain.ReceptionDate = ReceptionDate;
             domain.Area = Area;
             domain.Description = Description;
-            domain.Ammount = Ammount;
-            domain.Balance = Ammount;
 
             domain.Status = PurchaseOrderStatus.Valid;
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
+
+            domain.AmmountDetails = AmmountDetails.Select(x => new PurchaseOrderAmmountDetail
+            {
+                CurrencyId = x.CurrencyId,
+                Balance = x.Balance,
+                Ammount = x.Ammount
+            })
+            .ToList();
 
             return domain;
         }
@@ -77,13 +86,11 @@ namespace Sofco.Core.Models.Billing
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
-            domain.CurrencyId = CurrencyId;
             domain.StartDate = StartDate;
             domain.EndDate = EndDate;
             domain.ReceptionDate = ReceptionDate;
             domain.Area = Area;
             domain.Description = Description;
-            domain.Ammount = Ammount;
         }
     }
 }
