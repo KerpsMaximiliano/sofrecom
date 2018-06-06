@@ -176,7 +176,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     format( data ) {
-        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px; width:100%">' +
+        return '<table cellpadding="5" cellspacing="0" border="0" style="margin-left:50px;padding-left:50px; width:100%">' +
             '<thead>' +
                 '<th>Solfac</th>' +
                 '<th>Hito</th>' +
