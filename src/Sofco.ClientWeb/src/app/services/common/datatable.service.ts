@@ -4,7 +4,7 @@ declare var $: any;
 
 @Injectable()
 export class DataTableService {
-    
+
     constructor(private config: Configuration) { }
 
     destroy(selector){

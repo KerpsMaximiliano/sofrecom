@@ -14,7 +14,8 @@ declare var moment: any;
 
 @Component({
   selector: 'purchase-order-search',
-  templateUrl: './search-purchaseOrder.component.html'
+  templateUrl: './search-purchaseOrder.component.html',
+  styleUrls: ['./search-purchaseOrder.component.css']
 })
 export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
   
@@ -109,11 +110,43 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4];
-        var title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
+        const self = this;
+
+        const columns = [{
+            "className":      'details-control',
+            "orderable":      false,
+            "data":           null,
+            "defaultContent": ''
+        }, 0, 1, 2, 3, 4];
+
+        const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
         this.datatableService.destroy('#purchaseOrderTable');
+
         this.datatableService.initWithExportButtons('#purchaseOrderTable', columns, title);
+
+        $(document).ready(function() {
+            $('#purchaseOrderTable tbody').on('click', 'td.details-control', function () {
+                const datatable = $('#purchaseOrderTable').DataTable();
+                const tr = $(this).closest('tr');
+                const tdi = tr.find("i.fa");
+                const row = datatable.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    tdi.first().removeClass('fa-minus-square');
+                    tdi.first().addClass('fa-plus-square');
+                } else {
+                    // Open this row
+                    row.child(self.format(row.data())).show();
+                    tr.addClass('shown');
+                    tdi.first().removeClass('fa-plus-square');
+                    tdi.first().addClass('fa-minus-square');
+                }
+            });
+        });
     }
 
     clean(){
@@ -140,5 +173,26 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
         }
+    }
+
+    format( data ) {
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px; width:100%">' +
+            '<thead>' +
+                '<th>Solfac</th>' +
+                '<th>Hito</th>' +
+                '<th>Fecha</th>' +
+                '<th>Moneda</th>' +
+                '<th>Monto</th>' +
+                '<th>Estado</th>' +
+            '</thead>' +
+            '<tbody><tr>' +
+                '<td>129</td>' +
+                '<td>Mes 1</td>' +
+                '<td>02/04/2018</td>' +
+                '<td>$</td>' +
+                '<td>101</td>' +
+                '<td>Facturado</td>' +
+            '</tr></tbody>' +
+        '</table>';
     }
 }

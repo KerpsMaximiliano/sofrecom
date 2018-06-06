@@ -182,9 +182,19 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
+        public Response<List<PurchaseOrderSearchResult>> Search(SearchPurchaseOrderParams parameters)
         {
-            return unitOfWork.PurchaseOrderRepository.Search(parameters);
+            var result = unitOfWork.PurchaseOrderRepository.Search(parameters);
+
+            var response = new Response<List<PurchaseOrderSearchResult>>
+            {
+                Data = result.Select(x => new PurchaseOrderSearchResult(x)).ToList()
+            };
+
+            if (!result.Any())
+                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
+
+            return response;
         }
 
         public Response DeleteFile(int id)

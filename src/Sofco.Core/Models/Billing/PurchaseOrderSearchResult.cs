@@ -1,17 +1,17 @@
-﻿using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
+﻿using Sofco.Model.Models.Billing;
 
-namespace Sofco.WebApi.Models.Billing
+namespace Sofco.Core.Models.Billing
 {
-    public class PurchaseOrderListItem
+    public class PurchaseOrderSearchResult
     {
-        public PurchaseOrderListItem(PurchaseOrder purchaseOrder)
+        public PurchaseOrderSearchResult(PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
             Number = purchaseOrder.Number;
             Client = purchaseOrder.ClientExternalName;
             Status = purchaseOrder.Status.ToString();
             Ammount = purchaseOrder.Ammount;
+            Balance = purchaseOrder.Balance;
 
             if (purchaseOrder.Currency != null)
             {
@@ -43,5 +43,7 @@ namespace Sofco.WebApi.Models.Billing
         public string CurrencyDescription { get; set; }
 
         public decimal Ammount { get; set; }
+
+        public decimal Balance { get; set; }
     }
 }

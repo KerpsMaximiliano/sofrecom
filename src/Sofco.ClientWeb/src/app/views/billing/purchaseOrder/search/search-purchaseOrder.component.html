@@ -50,23 +50,30 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
 
+                    <table id="example" class="display" width="100%"></table>
+                    <hr>
+
                     <table class="table table-striped" id="purchaseOrderTable" width="100%">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
                                 <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
                                 <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
                                 <th>{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.balance' | translate }}</th>
                                 <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
                                 <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                             </tr>
                         </thead> 
                         <tbody>
                             <tr *ngFor="let purchaseOrder of data">
+                                <td class="details-control"><i class="fa fa-plus-square"></i></td>
                                 <td>{{ purchaseOrder.number }}</td>
                                 <td>{{ purchaseOrder.client }}</td>
                                 <td>{{ purchaseOrder.currencyDescription }}</td>
                                 <td>{{ purchaseOrder.ammount }}</td>
+                                <td>{{ purchaseOrder.balance }}</td>
                                 <td class="text-center"> <label class="label" [ngClass]="(purchaseOrder.status == 'Valid') ? 'label-primary' : 'label-warning'">{{ purchaseOrder.status | translate }}</label> </td>
                                 <td class="text-center column-xs">
                                     <button class="btn btn-warning btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-edit"></i></button>

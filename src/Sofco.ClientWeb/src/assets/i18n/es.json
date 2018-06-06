@@ -251,7 +251,8 @@
                 "comercial": "Comercial",
                 "project": "Proyecto",
                 "description": "Descripción",
-                "analytic": "Analítica" 
+                "analytic": "Analítica",
+                "balance": "Saldo"
             }
         },
         "solfac":{
