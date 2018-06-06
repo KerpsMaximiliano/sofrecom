@@ -14,7 +14,7 @@ namespace Sofco.Core.DAL.Common
         IList<Technology> GetTechnologies();
         IList<Product> GetProducts();
         IList<ClientGroup> GetClientGroups();
-        IList<PurchaseOrder> GetPurchaseOrders();
+        IList<PurchaseOrderOptions> GetPurchaseOrderOptions();
         IList<SoftwareLaw> GetSoftwareLaws();
         IList<ServiceType> GetServiceTypes();
         IList<Sector> GetSectors();
