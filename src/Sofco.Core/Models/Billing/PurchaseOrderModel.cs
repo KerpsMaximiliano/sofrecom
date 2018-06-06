@@ -60,7 +60,7 @@ namespace Sofco.Core.Models.Billing
             domain.AmmountDetails = AmmountDetails.Select(x => new PurchaseOrderAmmountDetail
             {
                 CurrencyId = x.CurrencyId,
-                Balance = x.Balance,
+                Balance = x.Ammount,
                 Ammount = x.Ammount
             })
             .ToList();

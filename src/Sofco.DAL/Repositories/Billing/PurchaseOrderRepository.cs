@@ -6,6 +6,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
@@ -65,9 +66,9 @@ namespace Sofco.DAL.Repositories.Billing
                 .ToList();
         }
 
-        public void UpdateBalance(PurchaseOrder ocToModif)
+        public void UpdateBalance(PurchaseOrderAmmountDetail detail)
         {
-            context.Entry(ocToModif).Property("Balance").IsModified = true;
+            context.Entry(detail).Property("Balance").IsModified = true;
         }
 
         public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)

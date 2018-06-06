@@ -95,7 +95,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (detail != null) detail.Balance = detail.Balance + solfac.TotalAmount;
 
-            unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
+            unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
         }
 
         public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)

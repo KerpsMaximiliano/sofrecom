@@ -1,4 +1,6 @@
-﻿using Sofco.Model.Utils;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.WebApi.Models.Billing
@@ -18,6 +20,8 @@ namespace Sofco.WebApi.Models.Billing
                 FileName = purchaseOrder.File.FileName;
                 CreationDate = purchaseOrder.File.CreationDate.ToString("d");
             }
+
+            Details = purchaseOrder.AmmountDetails.Select(x => new AmmountDetailItem { Currency = x.Currency.Text, Balance = x.Balance }).ToList();
         }
 
         public int Id { get; set; }
@@ -33,5 +37,7 @@ namespace Sofco.WebApi.Models.Billing
         public string FileName { get; set; }
 
         public string CreationDate { get; set; }
+
+        public IList<AmmountDetailItem> Details { get; set; }
     }
 }

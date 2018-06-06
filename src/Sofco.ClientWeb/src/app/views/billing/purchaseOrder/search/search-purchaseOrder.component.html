@@ -55,8 +55,9 @@
                             <tr>
                                 <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
                                 <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
+
+                                <th *ngFor="let header of currencyHeaders">{{ header }}</th>
+
                                 <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
                                 <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                             </tr>
@@ -65,8 +66,9 @@
                             <tr *ngFor="let purchaseOrder of data">
                                 <td>{{ purchaseOrder.number }}</td>
                                 <td>{{ purchaseOrder.client }}</td>
-                                <td>{{ purchaseOrder.currencyDescription }}</td>
-                                <td>{{ purchaseOrder.ammount }}</td>
+
+                                <td *ngFor="let detail of purchaseOrder.details">{{ detail.balance }}</td>
+
                                 <td class="text-center"> <label class="label" [ngClass]="(purchaseOrder.status == 'Valid') ? 'label-primary' : 'label-warning'">{{ purchaseOrder.status | translate }}</label> </td>
                                 <td class="text-center column-xs">
                                     <button class="btn btn-warning btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-edit"></i></button>

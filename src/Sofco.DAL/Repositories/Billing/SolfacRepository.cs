@@ -37,7 +37,10 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Solfacs
                 .Include(x => x.UserApplicant)
                 .Include(x => x.PurchaseOrder)
-                .Include(x => x.Hitos).ThenInclude(x => x.Details)
+                    .ThenInclude(x => x.AmmountDetails)
+                        .ThenInclude(x => x.Currency)
+                .Include(x => x.Hitos)
+                    .ThenInclude(x => x.Details)
                 .SingleOrDefault(x => x.Id == id);
         }
 

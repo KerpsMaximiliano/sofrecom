@@ -14,7 +14,7 @@ namespace Sofco.Core.DAL.Billing
         void AddPurchaseOrderAnalytic(PurchaseOrderAnalytic purchaseOrderAnalytic);
         PurchaseOrder GetWithAnalyticsById(int purchaseOrderId);
         IList<PurchaseOrder> GetByService(string serviceId);
-        void UpdateBalance(PurchaseOrder ocToModif);
+        void UpdateBalance(PurchaseOrderAmmountDetail detail);
 
         IList<PurchaseOrder> GetByServiceLite(string serviceId);
     }

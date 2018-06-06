@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.Billing
 {

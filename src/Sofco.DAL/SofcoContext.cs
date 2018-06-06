@@ -43,6 +43,7 @@ namespace Sofco.DAL
         public DbSet<LicenseFile> LicenseFiles { get; set; }
         public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
         public DbSet<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
+        public DbSet<PurchaseOrderAmmountDetail> PurchaseOrderAmmountDetails { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
