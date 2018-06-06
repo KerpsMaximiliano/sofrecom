@@ -92,7 +92,7 @@ namespace Sofco.DAL
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
-        public DbSet<Model.Utils.PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderOptions> PurchaseOrderOptions { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
 

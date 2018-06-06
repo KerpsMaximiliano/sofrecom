@@ -6,9 +6,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.DAL.Repositories.Billing
