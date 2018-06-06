@@ -140,19 +140,30 @@ namespace Sofco.Service.Implementations.Billing
             {
                 if(solfac.PurchaseOrder == null) continue;
 
-                var oc = list.SingleOrDefault(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number));
+                var ocs = list.Where(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number));
 
-                if (oc == null)
+                if (!ocs.Any())
                 {
-                    var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = solfac.PurchaseOrder.Balance, Currency = solfac.PurchaseOrder.Currency.Text };
+                    foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
+                    {
+                        var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = detail.Balance, Currency = detail.Currency.Text };
 
-                    SetPurchaseOrderValues(solfac, newOc);
+                        if (detail.CurrencyId == solfac.CurrencyId)
+                            SetPurchaseOrderValues(solfac, newOc);
 
-                    list.Add(newOc);
+                        list.Add(newOc);
+                    }
                 }
                 else
                 {
-                    SetPurchaseOrderValues(solfac, oc);
+                    foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
+                    {
+                        if (detail.CurrencyId == solfac.CurrencyId)
+                        {
+                            var oc = list.SingleOrDefault(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number) && x.Currency.Equals(detail.Currency.Text));
+                            SetPurchaseOrderValues(solfac, oc);
+                        }
+                    }
                 }
             }
 

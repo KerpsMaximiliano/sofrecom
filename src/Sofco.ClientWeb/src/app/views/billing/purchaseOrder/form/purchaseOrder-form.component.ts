@@ -19,7 +19,7 @@ import { UtilsService } from "../../../../services/common/utils.service";
 export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     public options: any;
-    public model: any = {};
+    public model: any = { ammountDetails: new Array() };
     public customers: Option[] = new Array<Option>();
     public analytics: any[] = new Array();
     public projects: any[] = new Array();
@@ -55,6 +55,10 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getCurrencies(){
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
             this.currencies = d;
+
+            this.currencies.forEach((item, index) => {
+                this.model.ammountDetails.push({ currencyId: item.id, text: item.text, ammount: 0, balance: 0 });
+            });
         },
         err => this.errorHandlerService.handleErrors(err));
     }

@@ -43,6 +43,7 @@ namespace Sofco.DAL
         public DbSet<LicenseFile> LicenseFiles { get; set; }
         public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
         public DbSet<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
+        public DbSet<PurchaseOrderAmmountDetail> PurchaseOrderAmmountDetails { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -52,7 +53,7 @@ namespace Sofco.DAL
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
-        public DbSet<Model.Models.Billing.PurchaseOrder> PurchaseOrderFiles { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings

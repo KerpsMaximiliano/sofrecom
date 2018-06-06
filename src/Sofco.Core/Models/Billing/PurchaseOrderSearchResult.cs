@@ -1,4 +1,5 @@
 ﻿using Sofco.Model.Models.Billing;
+using System.Linq;
 
 namespace Sofco.Core.Models.Billing
 {
@@ -24,6 +25,8 @@ namespace Sofco.Core.Models.Billing
                 FileName = purchaseOrder.File.FileName;
                 CreationDate = purchaseOrder.File.CreationDate.ToString("d");
             }
+
+            Details = purchaseOrder.AmmountDetails.Select(x => new AmmountDetailItem { Currency = x.Currency.Text, Balance = x.Balance }).ToList();
         }
 
         public int Id { get; set; }
@@ -40,9 +43,7 @@ namespace Sofco.Core.Models.Billing
 
         public string CreationDate { get; set; }
 
-        public string CurrencyDescription { get; set; }
-
-        public decimal Ammount { get; set; }
+        public IList<AmmountDetailItem> Details { get; set; }
 
         public decimal Balance { get; set; }
     }

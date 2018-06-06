@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.Billing
 {
@@ -28,21 +27,16 @@ namespace Sofco.Model.Models.Billing
         public int? FileId { get; set; }
         public File File { get; set; }
 
-        public int CurrencyId { get; set; }
-        public Currency Currency { get; set; }
-
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
 
         public string Description { get; set; }
 
-        public decimal Ammount { get; set; }
-
-        public decimal Balance { get; set; }
-
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<Solfac> Solfacs { get; set; }
+
+        public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
     }
 }

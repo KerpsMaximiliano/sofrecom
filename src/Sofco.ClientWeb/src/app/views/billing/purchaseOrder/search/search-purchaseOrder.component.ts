@@ -20,6 +20,7 @@ declare var moment: any;
 export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
   
     public data: any[] = new Array();
+    public currencyHeaders: any[] = new Array();
 
     public customers: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
@@ -87,6 +88,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     search() {
+        this.currencyHeaders = [];
         this.messageService.showLoading();
 
         var parameters = {
@@ -102,6 +104,14 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
                 this.data = response.data;
                 sessionStorage.setItem('lastPurchaseOrderQuery', JSON.stringify(parameters));
+
+                if(this.data.length > 0){
+                   var first = this.data[0];
+
+                   first.details.forEach(element => {
+                       this.currencyHeaders.push(element.currency);
+                   });
+                }
 
                this.initGrid();
             }, 500)

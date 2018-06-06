@@ -91,9 +91,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.PurchaseOrder == null) return;
 
-            solfac.PurchaseOrder.Balance = solfac.PurchaseOrder.Balance + solfac.TotalAmount;
+            var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
 
-            unitOfWork.PurchaseOrderRepository.UpdateBalance(solfac.PurchaseOrder);
+            if (detail != null) detail.Balance = detail.Balance + solfac.TotalAmount;
+
+            unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
         }
 
         public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)

@@ -10,9 +10,9 @@
     "fileAdded": "Archivo subido exitosamente",
     "searchEmpty": "No se han encontrado resultados con los parametros de busqueda ingresados",
     "projectIsRequired": "El proyecto es requerido",
-    "currencyIsRequired": "La moneda es requerida",
+    "currencyIsRequired": "Las monedas son requeridas",
     "datesRequired": "Fecha desde y hasta son requeridas",
     "endDateLessThanStartDate": "La fechca hasta no puede ser menor a fecha desde",
     "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
-    "ammountRequired": "El monto es requerido y tiene que ser mayor a 0"
+    "ammountRequired": "Los montos no pueden ser menor a 0"
 }

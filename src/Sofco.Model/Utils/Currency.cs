@@ -12,5 +12,7 @@ namespace Sofco.Model.Utils
         public string CrmProductionId { get; set; }
 
         public string CrmDevelopmentId { get; set; }
+
+        public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
     }
 }
