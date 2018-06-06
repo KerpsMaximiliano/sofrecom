@@ -18,5 +18,7 @@ namespace Sofco.Core.Services.Billing
         Response<CrmProject> GetProjectById(string projectId);
 
         Response<IList<OpportunityOption>> GetOpportunities(string serviceId);
+
+        IList<PurchaseOrderWidgetModel> GetPurchaseOrders(string projectId);
     }
 }

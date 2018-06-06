@@ -31,21 +31,6 @@
 </div>
 
 <div class="wrapper wrapper-content-project-detail animated fadeInRight">
-    <div class="row">
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomes'" [style]="'label-success'" [incomes]="incomes"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesPending'" [style]="'label-warning'" [incomes]="incomesPendingArray"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesBilled'" [style]="'label-Facturado'" [incomes]="incomesBilledArray"></widget-currency>
-        </div>
-        <div class="col-md-3">
-            <widget-currency [label]="'billing.project.detail.incomesCashed'" [style]="'label-Pagado'" [incomes]="incomesCashedArray"></widget-currency>
-        </div>
-    </div>
-
     <div class="ibox">
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
             <spinner></spinner>
@@ -91,6 +76,7 @@
                                     <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
+                                    <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.purchaseOrder.title' | translate }}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -183,6 +169,10 @@
                                     <div class="button-group" *ngIf="canCreateInvoice()">
                                         <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
                                     </div>
+                                </div>
+
+                                <div class="tab-pane" id="tab-4" >
+                                    <project-purchase-orders #ocs></project-purchase-orders>
                                 </div>
                             </div>
                         </div>

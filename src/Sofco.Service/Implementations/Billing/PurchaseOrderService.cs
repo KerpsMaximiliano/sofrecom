@@ -243,6 +243,11 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
         }
 
+        public IList<PurchaseOrder> GetByServiceLite(string serviceId)
+        {
+            return unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
+        }
+
         private static void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
         {
             PurchaseOrderValidationHelper.ValidateNumber(response, model);

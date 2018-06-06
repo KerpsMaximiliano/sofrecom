@@ -24,5 +24,7 @@ namespace Sofco.Core.Services.Billing
         Response DeleteFile(int id);
 
         IList<PurchaseOrder> GetByService(string serviceId);
+
+        IList<PurchaseOrder> GetByServiceLite(string serviceId);
     }
 }

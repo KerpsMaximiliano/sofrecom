@@ -229,6 +229,7 @@
             "editTitle": "Editar orden de compra",
             "searchTitle": "Busqueda Ordenes de Compra",
             "title": "Ordenes de Compra",
+            "name": "Orden de Compra",
             "add": "Alta",
             "edit": "Editar",
             "search": "Busqueda", 
@@ -246,13 +247,17 @@
                 "endDate": "Fecha Hasta",
                 "opportunity": "Oportunidad",
                 "currency": "Moneda",
+                "balance": "Saldo",
                 "ammount": "Monto",
                 "company": "Compañia",
                 "comercial": "Comercial",
                 "project": "Proyecto",
                 "description": "Descripción",
                 "analytic": "Analítica",
-                "balance": "Saldo"
+                "balance": "Saldo",
+                "billingPendingAmmount": "Pendiente a Facturar", 
+                "cashPendingAmmount": "Pendiente a Cobrar", 
+                "ammountCashed": "Ingresos Cobrados"
             }
         },
         "solfac":{
@@ -456,7 +461,7 @@
         },
         "report": { 
             "title": "Reporte de Recursos",
-            "report": "Reporte",
+            "report": "Reporte Asignaciones",
             "includeStaff": "Incluir Staff",
             "grid": {
                 "analytic": "Analítica",

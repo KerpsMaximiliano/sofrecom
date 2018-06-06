@@ -46,9 +46,9 @@ namespace Sofco.DAL.Repositories.Common
             return _context.ClientGroups.ToList().AsReadOnly();
         }
 
-        public IList<PurchaseOrder> GetPurchaseOrders()
+        public IList<PurchaseOrderOptions> GetPurchaseOrderOptions()
         {
-            return _context.PurchaseOrders.ToList().AsReadOnly();
+            return _context.PurchaseOrderOptions.ToList().AsReadOnly();
         }
 
         public IList<ServiceType> GetServiceTypes()
