@@ -8,7 +8,6 @@ using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
 namespace Sofco.DAL.Repositories.Billing
 {
@@ -20,12 +19,12 @@ namespace Sofco.DAL.Repositories.Billing
 
         public bool Exist(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Any(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrders.Any(x => x.Id == purchaseOrderId);
         }
 
         public PurchaseOrder GetById(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles
+            return context.PurchaseOrders
                 .Include(x => x.File)
                 .Include(x => x.AmmountDetails)
                     .ThenInclude(x => x.Currency)
@@ -34,7 +33,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public PurchaseOrder GetWithAnalyticsById(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Include(x => x.File).Include(x => x.PurchaseOrderAnalytics).SingleOrDefault(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrders.Include(x => x.File).Include(x => x.PurchaseOrderAnalytics).SingleOrDefault(x => x.Id == purchaseOrderId);
         }
 
         public IList<PurchaseOrder> GetByService(string serviceId)
@@ -47,7 +46,7 @@ namespace Sofco.DAL.Repositories.Billing
                 .Distinct()
                 .ToList();
 
-            return context.PurchaseOrderFiles
+            return context.PurchaseOrders
                 .Include(x => x.File)
                 .Include(x => x.AmmountDetails)
                     .ThenInclude(x => x.Currency)
@@ -73,7 +72,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
         {
-            IQueryable<PurchaseOrder> query = context.PurchaseOrderFiles
+            IQueryable<PurchaseOrder> query = context.PurchaseOrders
                 .Include(x => x.AmmountDetails)
                     .ThenInclude(x => x.Currency)
                 .Include(x => x.File);
