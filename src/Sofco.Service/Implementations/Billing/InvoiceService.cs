@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -22,10 +24,12 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IMailSender mailSender;
         private readonly ISessionManager sessionManager;
         private readonly EmailConfig emailConfig;
+        private readonly ILogMailer<InvoiceService> logger;
 
         public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
             IOptions<EmailConfig> emailOptions,
+            ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
@@ -33,6 +37,7 @@ namespace Sofco.Service.Implementations.Billing
             this.mailSender = mailSender;
             this.sessionManager = sessionManager;
             this.emailConfig = emailOptions.Value;
+            this.logger = logger;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -97,8 +102,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceCreated, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -131,8 +137,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -181,8 +188,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -241,8 +249,9 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -251,8 +260,9 @@ namespace Sofco.Service.Implementations.Billing
                 // Send Mail
                 invoiceStatusHandler.SendMail(mailSender, invoice, emailConfig);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSendMail, MessageType.Error));
             }
 
@@ -289,8 +299,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.Billing.Invoice.Deleted, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -333,8 +344,9 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.Data = invoiceToClone;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 

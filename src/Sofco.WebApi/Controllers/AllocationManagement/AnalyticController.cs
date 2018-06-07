@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
+using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
@@ -136,6 +137,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var response = analyticService.Get(query);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("report")]
+        public IActionResult Report([FromBody] List<int> analytics)
+        {
+            var response = analyticService.CreateReport(analytics);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
         }
     }
 }

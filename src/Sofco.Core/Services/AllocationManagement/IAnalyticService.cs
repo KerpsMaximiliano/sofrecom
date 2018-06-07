@@ -35,5 +35,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<List<Option>> GetByCurrentUser();
 
         Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters);
+
+        Response<byte[]> CreateReport(List<int> analytics);
     }
 }

@@ -63,4 +63,13 @@ export class AnalyticService {
   get(query) {
     return this.http.post<any>(`${this.baseUrl}/analytics/search`, query);
   }
+
+  createReport(ids){
+    return this.http.post(`${this.baseUrl}/analytics/report`, ids, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    });
+  }
 }

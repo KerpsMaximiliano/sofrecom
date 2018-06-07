@@ -11,6 +11,7 @@ import { Option } from "app/models/option";
 import { CustomerService } from "app/services/billing/customer.service";
 import { ServiceService } from "app/services/billing/service.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'analytic-search',
@@ -225,5 +226,20 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     storeSearchCriteria(searchCriteria) {
         sessionStorage.setItem('analyticSearchCriteria', JSON.stringify(searchCriteria));
+    } 
+
+    export(){
+        var ids = this.model.map(item => item.id);
+        
+        this.messageService.showLoading();
+ 
+        this.analyticService.createReport(ids).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `Reporte Analiticas.xlsx`);
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }
