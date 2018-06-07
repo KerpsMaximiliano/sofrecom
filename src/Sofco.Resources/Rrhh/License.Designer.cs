@@ -251,6 +251,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.licenseTypeValueRequired.
+        /// </summary>
+        public static string LicenseTypeValueRequired {
+            get {
+                return ResourceManager.GetString("LicenseTypeValueRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.managerEqualsEmployee.
         /// </summary>
         public static string ManagerEqualsEmployee {

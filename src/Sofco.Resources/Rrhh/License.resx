@@ -180,6 +180,9 @@
   <data name="LicenseTypeUpdate" xml:space="preserve">
     <value>rrhh/license.licenseTypeUpdate</value>
   </data>
+  <data name="LicenseTypeValueRequired" xml:space="preserve">
+    <value>rrhh/license.licenseTypeValueRequired</value>
+  </data>
   <data name="ManagerEqualsEmployee" xml:space="preserve">
     <value>rrhh/license.managerEqualsEmployee</value>
   </data>
