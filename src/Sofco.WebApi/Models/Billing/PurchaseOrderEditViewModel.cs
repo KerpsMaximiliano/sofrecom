@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Models.Billing
                     {
                         CurrencyId = x.CurrencyId,
                         Ammount = x.Ammount,
-                        Enable = true,
+                        Enable = false,
                         CurrencyDescription = x.Currency.Text
                     })
                     .ToList();
