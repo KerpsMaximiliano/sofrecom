@@ -226,7 +226,7 @@
         },
         "purchaseOrder": {
             "addTitle": "Alta orden de compra",
-            "editTitle": "Editar orden de compra",
+            "editTitle": "Detalle orden de compra",
             "searchTitle": "Busqueda Ordenes de Compra",
             "title": "Ordenes de Compra",
             "name": "Orden de Compra",
