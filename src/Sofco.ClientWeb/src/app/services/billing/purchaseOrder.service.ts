@@ -60,5 +60,9 @@ export class PurchaseOrderService {
      return new Blob([res.body], { type: 'application/octet-stream' });
    });
  }
+
+ getReport(params) {
+  return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);
+ }
 }
 

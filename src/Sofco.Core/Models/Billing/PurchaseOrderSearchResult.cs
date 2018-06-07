@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Models.Billing;
+﻿using System.Collections.Generic;
+using Sofco.Model.Models.Billing;
 using System.Linq;
 
 namespace Sofco.Core.Models.Billing
@@ -11,13 +12,6 @@ namespace Sofco.Core.Models.Billing
             Number = purchaseOrder.Number;
             Client = purchaseOrder.ClientExternalName;
             Status = purchaseOrder.Status.ToString();
-            Ammount = purchaseOrder.Ammount;
-            Balance = purchaseOrder.Balance;
-
-            if (purchaseOrder.Currency != null)
-            {
-                CurrencyDescription = purchaseOrder.Currency.Text;
-            }
 
             if (purchaseOrder.File != null)
             {
@@ -26,7 +20,7 @@ namespace Sofco.Core.Models.Billing
                 CreationDate = purchaseOrder.File.CreationDate.ToString("d");
             }
 
-            Details = purchaseOrder.AmmountDetails.Select(x => new AmmountDetailItem { Currency = x.Currency.Text, Balance = x.Balance }).ToList();
+            Details = purchaseOrder.AmmountDetails.Select(x => new AmmountDetailModel { Currency = x.Currency.Text, Balance = x.Balance }).ToList();
         }
 
         public int Id { get; set; }
@@ -43,7 +37,7 @@ namespace Sofco.Core.Models.Billing
 
         public string CreationDate { get; set; }
 
-        public IList<AmmountDetailItem> Details { get; set; }
+        public IList<AmmountDetailModel> Details { get; set; }
 
         public decimal Balance { get; set; }
     }

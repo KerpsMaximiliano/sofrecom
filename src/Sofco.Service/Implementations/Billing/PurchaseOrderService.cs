@@ -31,7 +31,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.fileConfig = fileOptions.Value;
+            fileConfig = fileOptions.Value;
             this.userData = userData;
         }
 

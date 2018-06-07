@@ -3,6 +3,7 @@ using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Common;
+using Sofco.DAL.Mappings.Reports;
 using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.DAL.Mappings.WorkTimeManagement;
@@ -138,6 +139,8 @@ namespace Sofco.DAL
             builder.MapEmployeeCategory();
             builder.MapWorkTime();
             builder.MapPurchaseOrderAnalytic();
+            builder.MapPurchaseOrderBalanceView();
+            builder.MapPurchaseOrderBalanceDetailView();
         }
     }
 }
