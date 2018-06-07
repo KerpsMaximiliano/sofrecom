@@ -211,10 +211,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.loading = false;
 
             const options = {
-                selector: "#analyticsTable",
-                withExport: true,
-                title: "Analiticas",
-                columns: [0, 1, 2, 3, 4]
+                selector: "#analyticsTable"
             };
 
             this.dataTableService.destroy(options.selector);

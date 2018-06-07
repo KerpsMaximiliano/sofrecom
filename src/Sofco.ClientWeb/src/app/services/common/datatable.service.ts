@@ -11,41 +11,6 @@ export class DataTableService {
         $(selector).DataTable().destroy();
     }
 
-    initWithExportButtons(selector, columns, title){
-        var lang = {};
-        if(this.config.currLang == "es" || this.config.currLang == "fr"){
-          lang = this.getLanguageEs();
-        }
-
-        setTimeout(()=>{
-            $( document ).ready(function() {
-                var options: any = {
-                    oSearch: { "bSmart": false, "bRegex": true },
-                    dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        {
-                            extend: 'excelHtml5', title: title,
-                            exportOptions: {
-                                columns: columns
-                            }
-                        },
-                        {
-                          extend: 'pdfHtml5', title: title,
-                            exportOptions: {
-                                columns: columns
-                            }
-                        }
-                      ],
-                    responsive: true, 
-                    language: lang,
-                }
-
-                // if(scroll) options.scrollX = true;
-                $(selector).DataTable(options);
-            });
-        });
-    }
-
     init2(params){
         var lang = {};
         if(this.config.currLang == "es" || this.config.currLang == "fr"){

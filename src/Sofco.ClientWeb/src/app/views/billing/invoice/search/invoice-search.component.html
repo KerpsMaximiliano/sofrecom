@@ -14,7 +14,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -89,7 +89,7 @@
                                 <th>{{'billing.invoice.excelFileName' | translate }}</th>
                                 <th>{{'billing.invoice.account' | translate }}</th>
                                 <th>{{'billing.invoice.project' | translate }}</th>
-                                <th>{{'billing.invoice.user' | translate }}</th>
+                                <th>{{'billing.invoice.createdDate' | translate }}</th>
                                 <th class="text-center">{{'billing.invoice.status' | translate }}</th>
                             </tr>
                         </thead>
@@ -99,7 +99,7 @@
                                 <td title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
                                 <td>{{invoice.accountName}}</td>
                                 <td>{{invoice.project}}</td>
-                                <td>{{invoice.user}}</td>
+                                <td>{{invoice.createdDate | date: 'dd/MM/yyyy'}}</td>
                                 <td class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
                             </tr>
                         </tbody>
