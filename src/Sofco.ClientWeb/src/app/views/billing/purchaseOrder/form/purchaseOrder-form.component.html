@@ -37,17 +37,14 @@
     </div>
 </div>
 
+<label class="control-label">{{'billing.purchaseOrder.fields.currency' | translate }} - {{'billing.purchaseOrder.fields.ammount' | translate }}</label>
 <div class="row" *ngFor="let item of model?.ammountDetails">
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.currency' | translate }}</label>
-            <input type="text" class="form-control" value="{{ item.text }}" disabled>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label">{{'billing.purchaseOrder.fields.ammount' | translate }}</label>
-            <input type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+    <div class="col-sm-12">
+        <div class="input-group m-b">
+            <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
+            <input [disabled]="!item.enable" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+            <span *ngIf="mode == 'new' && !item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable">Habilitar</span> 
+            <span *ngIf="mode == 'new' && item.enable" class="input-group-addon pointer bg-muted" (click)="item.enable = !item.enable">Deshabilitar</span> 
         </div>
     </div>
 </div>

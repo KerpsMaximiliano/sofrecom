@@ -27,7 +27,11 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateCurrency(Response response, PurchaseOrderModel domain)
         {
-            if (domain.AmmountDetails.Any(x => x.CurrencyId <= 0))
+            if (domain.AmmountDetails.All(x => !x.Enable))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CurrencyIsRequired);
+            }
+            else if(domain.AmmountDetails.Any(x => x.Enable && x.Ammount < 0))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.CurrencyIsRequired);
             }

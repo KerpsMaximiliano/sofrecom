@@ -34,7 +34,12 @@ namespace Sofco.DAL.Repositories.Billing
 
         public PurchaseOrder GetWithAnalyticsById(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Include(x => x.File).Include(x => x.PurchaseOrderAnalytics).SingleOrDefault(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrderFiles
+                .Include(x => x.File)
+                .Include(x => x.PurchaseOrderAnalytics)
+                .Include(x => x.AmmountDetails)
+                .ThenInclude(x => x.Currency)
+                .SingleOrDefault(x => x.Id == purchaseOrderId);
         }
 
         public IList<PurchaseOrder> GetByService(string serviceId)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
@@ -35,6 +37,18 @@ namespace Sofco.WebApi.Models.Billing
                 FileId = domain.FileId.GetValueOrDefault();
                 FileName = domain.File.FileName;
                 CreationDate = domain.File.CreationDate.ToString("d");
+            }
+
+            if (domain.AmmountDetails != null)
+            {
+                AmmountDetails = domain.AmmountDetails.Select(x => new PurchaseOrderAmmountDetailModel
+                    {
+                        CurrencyId = x.CurrencyId,
+                        Ammount = x.Ammount,
+                        Enable = true,
+                        CurrencyDescription = x.Currency.Text
+                    })
+                    .ToList();
             }
         }
 
@@ -73,5 +87,7 @@ namespace Sofco.WebApi.Models.Billing
         public string CreationDate { get; set; }
 
         public int[] AnalyticIds { get; set; }
+
+        public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
     }
 }

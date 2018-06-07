@@ -57,7 +57,7 @@ namespace Sofco.Core.Models.Billing
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
 
-            domain.AmmountDetails = AmmountDetails.Select(x => new PurchaseOrderAmmountDetail
+            domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
             {
                 CurrencyId = x.CurrencyId,
                 Balance = x.Ammount,
