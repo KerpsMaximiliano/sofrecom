@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Model.Models.Report
+namespace Sofco.Model.Models.Reports
 {
     public class SolfacReportParams
     {

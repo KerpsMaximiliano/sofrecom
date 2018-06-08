@@ -3,9 +3,9 @@ using System.Linq;
 using Sofco.Core.DAL.Report;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.Report;
+using Sofco.Model.Models.Reports;
 
-namespace Sofco.DAL.Repositories.Report
+namespace Sofco.DAL.Repositories.Reports
 {
     public class SolfacReportRepository : BaseRepository<Solfac>, ISolfacReportRepository
     {

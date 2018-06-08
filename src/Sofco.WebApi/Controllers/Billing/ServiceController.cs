@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Extensions;
 using Sofco.WebApi.Models.AllocationManagement;
@@ -76,7 +77,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var purchaseOrders = purchaseOrderService.GetByService(serviceId);
 
-            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
+            return Ok(purchaseOrders.Select(x => new PurchaseOrderSearchResult(x)));
         }
     }
 }

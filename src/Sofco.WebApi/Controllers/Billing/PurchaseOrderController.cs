@@ -114,15 +114,9 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
         {
-            var purchaseOrders = purchaseOrderService.Search(parameters);
+            var response = purchaseOrderService.Search(parameters);
 
-            var response = new Response<List<PurchaseOrderListItem>>();
-            response.Data = purchaseOrders.Select(x => new PurchaseOrderListItem(x)).ToList();
-
-            if (!purchaseOrders.Any())
-                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("status")]

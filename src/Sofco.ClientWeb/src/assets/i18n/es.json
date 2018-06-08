@@ -254,6 +254,7 @@
                 "project": "Proyecto",
                 "description": "Descripción",
                 "analytic": "Analítica",
+                "balance": "Saldo",
                 "billingPendingAmmount": "Pendiente a Facturar", 
                 "cashPendingAmmount": "Pendiente a Cobrar", 
                 "ammountCashed": "Ingresos Cobrados"
