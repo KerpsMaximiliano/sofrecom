@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Views;
-using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Reports;
 
-namespace Sofco.DAL.Repositories.Report
+namespace Sofco.DAL.Repositories.Reports
 {
-    public class PurchaseOrderBalanceViewRepository : BaseRepository<PurchaseOrderBalanceView>, IPurchaseOrderBalanceViewRepository
+    public class PurchaseOrderBalanceViewRepository : IPurchaseOrderBalanceViewRepository
     {
         private readonly DbSet<PurchaseOrderBalanceView> purchaseOrderBalanceViews;
 
         private readonly DbSet<PurchaseOrderBalanceDetailView> purchaseOrderBalanceDetailViews;
 
-        public PurchaseOrderBalanceViewRepository(SofcoContext context) : base(context)
+        public PurchaseOrderBalanceViewRepository(ReportContext context)
         {
             purchaseOrderBalanceViews = context.Set<PurchaseOrderBalanceView>();
 

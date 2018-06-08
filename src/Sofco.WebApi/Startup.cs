@@ -82,6 +82,7 @@ namespace Sofco.WebApi
 
             containerBuilder.RegisterModule(new DefaultModule { Configuration = Configuration });
             containerBuilder.RegisterModule(new AutoMapperModule());
+            containerBuilder.RegisterModule(new DatabaseModule { Configuration = Configuration });
 
             containerBuilder.Populate(services);
 
