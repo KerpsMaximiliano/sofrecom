@@ -11,6 +11,7 @@ using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
@@ -35,11 +36,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
-        private readonly IMapper mapper;
+        private readonly IAnalyticFileManager analyticFileManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
-            ICrmService crmService, IEmployeeData employeeData, IMapper mapper)
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -49,7 +50,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
             this.employeeData = employeeData;
-            this.mapper = mapper;
+            this.analyticFileManager = analyticFileManager;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -92,6 +93,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 Data = Translate(unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters))
             };
+
+            return response;
+        }
+
+        public Response<byte[]> CreateReport(List<int> analytics)
+        {
+            var response = new Response<byte[]>();
+
+            var list = unitOfWork.AnalyticRepository.GetForReport(analytics);
+
+            var excel = analyticFileManager.CreateAnalyticReportExcel(list);
+
+            response.Data = excel.GetAsByteArray();
 
             return response;
         }

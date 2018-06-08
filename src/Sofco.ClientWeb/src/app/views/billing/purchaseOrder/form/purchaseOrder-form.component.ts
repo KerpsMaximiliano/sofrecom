@@ -14,7 +14,8 @@ import { UtilsService } from "../../../../services/common/utils.service";
 
 @Component({
     selector: 'purchase-order-form',
-    templateUrl: './purchaseOrder-form.component.html'
+    templateUrl: './purchaseOrder-form.component.html',
+    styleUrls: ['./purchaseOrder-form.component.scss']
 })
 export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
@@ -43,7 +44,10 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getCustomers();
-        this.getCurrencies();
+
+        if(this.mode == 'new'){
+            this.getCurrencies();
+        }
     }
 
     ngOnDestroy(): void {
@@ -57,7 +61,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
             this.currencies = d;
 
             this.currencies.forEach((item, index) => {
-                this.model.ammountDetails.push({ currencyId: item.id, text: item.text, ammount: 0, balance: 0 });
+                this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
             });
         },
         err => this.errorHandlerService.handleErrors(err));

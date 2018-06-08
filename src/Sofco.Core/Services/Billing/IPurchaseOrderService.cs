@@ -17,14 +17,12 @@ namespace Sofco.Core.Services.Billing
 
         Response<PurchaseOrder> GetById(int id);
 
-        Response Update(PurchaseOrderModel model);
 
         Response<List<PurchaseOrderSearchResult>> Search(SearchPurchaseOrderParams parameters);
 
         Response DeleteFile(int id);
 
         IList<PurchaseOrder> GetByService(string serviceId);
-
         IList<PurchaseOrder> GetByServiceLite(string serviceId);
     }
 }

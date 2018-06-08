@@ -27,7 +27,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateCurrency(Response response, PurchaseOrderModel domain)
         {
-            if (domain.AmmountDetails.Any(x => x.CurrencyId <= 0))
+            if (domain.AmmountDetails.All(x => !x.Enable))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.CurrencyIsRequired);
             }
@@ -101,7 +101,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateAmmount(Response response, PurchaseOrderModel model)
         {
-            if (model.AmmountDetails.Any(x => x.Ammount < 0))
+            if (model.AmmountDetails.Any(x => x.Enable && (x.Ammount < 0 || x.Ammount > 99999999)))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
             }

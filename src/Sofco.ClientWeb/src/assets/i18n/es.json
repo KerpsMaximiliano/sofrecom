@@ -226,7 +226,7 @@
         },
         "purchaseOrder": {
             "addTitle": "Alta orden de compra",
-            "editTitle": "Editar orden de compra",
+            "editTitle": "Detalle orden de compra",
             "searchTitle": "Busqueda Ordenes de Compra",
             "title": "Ordenes de Compra",
             "name": "Orden de Compra",
@@ -388,7 +388,8 @@
             "includeInvoiceNumber": "Incluya número de remito antes de aprobar",
             "excelUploaded": "Se ha importado el excel exitosamente. Puede dejar el remito en borrador o enviarlo a la DAF para su aprobación",
             "draft": "Dejar en borrador",
-            "createAndExport": "Crear y Exportar",
+            "create": "Crear",
+            "export": "Exportar nuevo",
             "pdfAddedSucces": "PDF importado correctamente",
             "excelAddedSucces": "Excel importado correctamente",
             "invoiceNumberRequired": "El número de remito es requerido",

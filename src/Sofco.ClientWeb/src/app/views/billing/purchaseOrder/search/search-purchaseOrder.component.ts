@@ -119,6 +119,13 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
+        var params = {
+            selector: '#purchaseOrderTable',
+            columns: columns,
+            title: title,
+            withExport: true
+          }
+
         this.datatableService.destroy('#purchaseOrderTable');
 
         this.datatableService.initWithExportButtons('#purchaseOrderTable', columns, title);

@@ -170,5 +170,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             return query.ToList();
         }
+
+        public List<Analytic> GetForReport(List<int> analytics)
+        {
+            return context.Analytics
+                .Include(x => x.Activity)
+                .Include(x => x.CostCenter)
+                .Include(x => x.ClientGroup)
+                .Include(x => x.Manager)
+                .Include(x => x.CommercialManager)
+                .Include(x => x.Sector)
+                .Include(x => x.ServiceType)
+                .Include(x => x.SoftwareLaw)
+                .Include(x => x.Solution)
+                .Include(x => x.Technology)
+                .Where(x => analytics.Contains(x.Id))
+                .ToList();
+        }
     }
 }

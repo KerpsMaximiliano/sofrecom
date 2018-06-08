@@ -40,7 +40,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
-    public filterByDates = true;
+    public filterByDates = false;
 
     constructor(
         private router: Router,
@@ -225,6 +225,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             selector: '#solfacsTable',
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             columns: columns,
+            order: [[ 4, "desc" ]],
             title: title,
             withExport: true
           }

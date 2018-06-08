@@ -57,6 +57,7 @@
             <h4 class="pull-left">{{ 'allocationManagement.analytics.title' | translate }}</h4>
             
             <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+                <button *ngIf="model.length > 0" class="btn btn-success btn-sm" (click)="export()"> {{ 'ACTIONS.export' | translate }} <i class="fa fa-download"></i></button>
                 <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>

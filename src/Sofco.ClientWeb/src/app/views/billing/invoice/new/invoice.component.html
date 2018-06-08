@@ -137,7 +137,8 @@
         <div class="ibox-footer">
             <div class="text-right">
                 <button *ngIf="model.id == 0" class="btn btn-danger" (click)="cancel()"><i class="fa fa-times"></i> {{'ACTIONS.cancel' | translate }} </button>
-                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> {{'billing.invoice.createAndExport' | translate }} </button>
+                <button *ngIf="model.id == 0" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i> {{'billing.invoice.create' | translate }} </button>
+                <button *ngIf="model.id != 0" class="btn btn-primary" (click)="exportToExcel()"><i class="fa fa-download"></i> {{'billing.invoice.export' | translate }} </button>
             </div>
         </div>
     </div>

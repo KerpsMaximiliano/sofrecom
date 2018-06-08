@@ -14,5 +14,5 @@
     "datesRequired": "Fecha desde y hasta son requeridas",
     "endDateLessThanStartDate": "La fechca hasta no puede ser menor a fecha desde",
     "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
-    "ammountRequired": "Los montos no pueden ser menor a 0"
+    "ammountRequired": "Los montos no pueden ser menor a 0 ni mayor a 99.999.999"
 }

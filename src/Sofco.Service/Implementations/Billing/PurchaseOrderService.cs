@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -126,58 +125,6 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<PurchaseOrder>();
 
             response.Data = PurchaseOrderValidationHelper.FindWithAnalytic(id, response, unitOfWork);
-
-            return response;
-        }
-
-        public Response Update(PurchaseOrderModel model)
-        {
-            var response = new Response<PurchaseOrder>();
-
-            PurchaseOrderValidationHelper.Exist(response, model, unitOfWork);
-
-            if (response.HasErrors()) return response;
-
-            Validate(model, response);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                var domain = PurchaseOrderValidationHelper.FindWithAnalytic(model.Id, response, unitOfWork);
-
-                model.UpdateDomain(domain, userData.GetCurrentUser().UserName);
-
-                var aux = domain.PurchaseOrderAnalytics.ToList();
-
-                foreach (var orderAnalytic in aux)
-                {
-                    if (model.AnalyticIds.All(x => x != orderAnalytic.AnalyticId))
-                    {
-                        domain.PurchaseOrderAnalytics.Remove(orderAnalytic);
-                    }
-                }
-
-                foreach (var analyticId in model.AnalyticIds)
-                {
-                    if (domain.PurchaseOrderAnalytics.All(x => x.AnalyticId != analyticId))
-                    {
-                        domain.PurchaseOrderAnalytics.Add(new PurchaseOrderAnalytic { AnalyticId = analyticId, PurchaseOrderId = domain.Id });
-                    }
-                }
-
-                unitOfWork.PurchaseOrderRepository.Update(domain);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
-
-                response.Data = domain;
-            }
-            catch (Exception e)
-            {
-                response.AddError(Resources.Common.ErrorSave);
-                logger.LogError(e);
-            }
 
             return response;
         }

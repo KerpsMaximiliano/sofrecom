@@ -17,5 +17,13 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
 
             return licenseType;
         }
+
+        public static void ValidateValue(int value, Response response)
+        {
+            if (value <= 0)
+            {
+                response.AddError(Resources.Rrhh.License.LicenseTypeValueRequired);
+            }
+        }
     }
 }
