@@ -12,8 +12,8 @@ namespace Sofco.Core.Models.Rrhh
         public LicenseDetailModel(License license)
         {
             Id = license.Id;
-            StartDate = license.StartDate;
-            EndDate = license.EndDate;
+            StartDate = license.StartDate.Date;
+            EndDate = license.EndDate.Date;
             WithPayment = license.WithPayment;
             DaysQuantity = license.DaysQuantityByLaw;
             HasCertificate = license.HasCertificate;
@@ -23,7 +23,7 @@ namespace Sofco.Core.Models.Rrhh
             ExamDescription = license.ExamDescription;
             Status = license.Status;
             StatusName = license.Status.ToString();
-            CreationDate = license.CreationDate;
+            CreationDate = license.CreationDate.Date;
 
             if (license.Employee != null)
             {

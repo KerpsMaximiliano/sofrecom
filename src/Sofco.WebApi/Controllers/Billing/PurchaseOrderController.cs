@@ -14,7 +14,6 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -43,7 +42,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new PurchaseOrderEditViewModel(response.Data));
+            return Ok(new PurchaseOrderEditModel(response.Data));
         }
 
         [HttpPost]
