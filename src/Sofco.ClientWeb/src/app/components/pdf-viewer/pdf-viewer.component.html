@@ -1,3 +1,13 @@
 <ng2-modal [config]="pdfModalConfig" #pdfModal (accept)="close()" [size]="'modal-lg'">
-    <canvas id="the-canvas" class="pdfcanvas border-left-right border-top-bottom"></canvas>
-</ng2-modal>  
+    <div class="text-center pdf-toolbar">
+        <div class="btn-group">
+            <button id="prev" class="btn btn-white" (click)="onPrevPage()"><i class="fa fa-long-arrow-left"></i> <span class="hidden-xs">Anterior</span></button>
+            <button id="next" class="btn btn-white" (click)="onNextPage()"><i class="fa fa-long-arrow-right"></i> <span class="hidden-xs">Proxima</span></button>
+            <span class="btn btn-white hidden-xs">Pagina: {{ pageNum }} / {{ documentPagesNumber }}</span>
+        </div>
+    </div>
+
+    <div class="text-center m-t-md">
+        <canvas id="the-canvas" class="pdfcanvas border-left-right border-top-bottom"></canvas>
+    </div>
+</ng2-modal>   
