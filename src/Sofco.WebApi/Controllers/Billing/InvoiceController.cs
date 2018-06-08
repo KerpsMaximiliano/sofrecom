@@ -4,16 +4,15 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.FileManager;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -70,7 +69,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var invoices = invoiceService.GetByProject(projectId);
 
-            var model = invoices.Select(x => new InvoiceRowDetailViewModel(x));
+            var model = invoices.Select(x => new InvoiceRowDetailModel(x));
 
             return Ok(model);
         }
@@ -242,7 +241,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("{id}/status")]
-        public IActionResult ChangeStatus(int id, [FromBody] InvoiceStatusChangeViewModel model)
+        public IActionResult ChangeStatus(int id, [FromBody] InvoiceStatusChangeModel model)
         {
             var response = invoiceService.ChangeStatus(id, model.Status, emailConfig, new InvoiceStatusParams { Comment = model.Comment, InvoiceNumber = model.InvoiceNumber, UserId = model.UserId });
 
@@ -287,7 +286,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var histories = invoiceService.GetHistories(id);
 
-            var list = histories.Select(x => new InvoiceHistoryViewModel(x));
+            var list = histories.Select(x => new InvoiceHistoryModel(x));
 
             return Ok(list);
         }

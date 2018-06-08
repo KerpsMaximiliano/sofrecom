@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Sofco.Common.Domains;
+using Sofco.Core.Models;
 
 namespace Sofco.WebApi.Models
 {

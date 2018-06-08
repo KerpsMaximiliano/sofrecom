@@ -7,7 +7,6 @@ using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -25,7 +24,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet]
         public IActionResult Get()
         {
-            var model = employeeService.GetAll().Select(x => new EmployeeViewModel(x));
+            var model = employeeService.GetAll().Select(x => new EmployeeModel(x));
 
             return Ok(model.OrderBy(x => x.Name));
         }
@@ -70,9 +69,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var searchResponse = employeeService.Search(parameters);
 
             var response =
-                new Response<IEnumerable<EmployeeViewModel>>
+                new Response<IEnumerable<EmployeeModel>>
                 {
-                    Data = searchResponse.Data.Select(x => new EmployeeViewModel(x)),
+                    Data = searchResponse.Data.Select(x => new EmployeeModel(x)),
                     Messages = searchResponse.Messages
                 };
 

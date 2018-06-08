@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -61,7 +60,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var analytic = servicesService.GetAnalyticByService(serviceId);
 
-            var model = new AnalyticViewModel();
+            var model = new AnalyticModel();
 
             if (analytic != null)
             {
