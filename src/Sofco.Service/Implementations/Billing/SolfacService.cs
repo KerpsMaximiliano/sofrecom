@@ -399,7 +399,7 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
-            SolfacValidationHelper.ValidateContractNumber(solfac, response);
+            SolfacValidationHelper.ValidateContractNumber(solfac, response, unitOfWork);
             SolfacValidationHelper.ValidateImputationNumber(solfac, response);
             SolfacValidationHelper.ValidateBusinessName(solfac, response);
 

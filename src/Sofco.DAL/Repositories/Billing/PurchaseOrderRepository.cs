@@ -70,6 +70,11 @@ namespace Sofco.DAL.Repositories.Billing
                 .ToList();
         }
 
+        public bool HasAmmountDetails(int solfacCurrencyId, int solfacPurchaseOrderId)
+        {
+            return context.PurchaseOrderAmmountDetails.Any(x => x.PurchaseOrderId == solfacPurchaseOrderId && x.CurrencyId == solfacCurrencyId);
+        }
+
         public void UpdateBalance(PurchaseOrderAmmountDetail detail)
         {
             context.Entry(detail).Property("Balance").IsModified = true;
