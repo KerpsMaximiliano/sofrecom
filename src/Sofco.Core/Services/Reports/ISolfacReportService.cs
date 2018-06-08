@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Models.Report;
+using Sofco.Model.Models.Reports;
 
 namespace Sofco.Core.Services.Reports
 {

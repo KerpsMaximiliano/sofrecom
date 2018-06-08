@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
@@ -86,7 +83,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             solfac.CashedDate = parameters.CashedDate;
         }
 
-        public async void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
         {
             crmInvoiceService.UpdateHitosStatusAndBillingDate(hitos.ToList(), GetHitoStatus(), solfac.CashedDate.GetValueOrDefault());
         }
