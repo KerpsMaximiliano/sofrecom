@@ -96,7 +96,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         }
 
         this.getAllSubscrip = this.purchaseOrderService.getReport(parameters).subscribe(response => {
-
             setTimeout(() => {
                 this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
@@ -115,15 +114,24 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             "orderable": false,
             "data": null,
             "defaultContent": ''
-        }, 0, 1, 2, 3, 4];
+        }, 0, 1, 2, 3, 4, 5, 6, 7];
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
+
+        const self = this;
 
         const params = {
             selector: '#purchaseOrderTable',
             columns: columns,
             title: title,
-            withExport: true
+            withExport: true,
+            customizeExcelExport: this.customizeExcelExport,
+            customizeExcelExportData: function(data) {
+                self.customizeExcelExportData(data);
+            },
+            columnDefs: [{
+                "targets": [ 1 ], "visible": false, "searchable": false
+            }]
         }
 
         this.datatableService.destroy('#purchaseOrderTable');
@@ -171,14 +179,14 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             tbody += this.getRowDetailForma(x);
         });
 
-        return '<table class="table table-striped" cellpadding="5" cellspacing="0" border="0" style="margin-left:10px;padding-left:10px; width:100%">' +
+        return '<table class="table table-striped">' +
             '<thead>' +
                 '<th>' + this.i18nService.translateByKey('report.solfacs.title') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.hito.title') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.date') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('billing.solfac.status') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.currency') + '</th>' +
                 '<th class="column-xs text-right">' + this.i18nService.translateByKey('billing.solfac.amount') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.amount') + '</th>' +
             '</thead>' +
             '<tbody>' + tbody + '</tbody>' +
         '</table>';
@@ -189,9 +197,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 '<td>' + item.solfacId + '</td>' +
                 '<td>' + item.description + '</td>' +
                 '<td>' + moment(item.updatedDate).format("DD/MM/YYYY") + '</td>' +
+                '<td class="column-lg">' + this.i18nService.translateByKey(item.statusText) + '</td>' +
                 '<td>' + item.currencyText + '</td>' +
                 '<td class="column-xs text-right">' + item.total + '</td>' +
-                '<td class="column-lg">' + this.i18nService.translateByKey(item.statusText) + '</td>' +
                 '</tr>';
     }
 
@@ -221,5 +229,53 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 }
             });
         });
+    }
+
+    customizeExcelExport(xlsx) {
+        const sheet = xlsx.xl.worksheets['sheet1.xml'];
+        $('row:first c', sheet).attr( 's', '7' );
+        $('row:nth-child(2) c', sheet).attr( 's', '22' );
+    }
+
+    customizeExcelExportData(data) {
+        const self = this;
+        const idPos = 1;
+        data.header.splice(0, 2);
+        const dataBody = data.body;
+        const result = [];
+        for(let index = 0; index < dataBody.length; index++) {
+            const dataBodyItem = dataBody[index];
+            const itemId = dataBodyItem[idPos];
+            dataBodyItem.splice(0, 2);
+            result.push(dataBodyItem);
+            const item = self.data.find(x => x.id == itemId);
+            const details = item.details;
+            const rowData = [];
+            let rowItem = this.getExportSubHeader();
+            result.push(rowItem);
+            details.forEach(d => {
+                rowItem = this.getExportSubBody(d);
+                result.push(rowItem);
+            });
+        };
+        data.body = result;
+    }
+
+    getExportSubHeader() {
+        return ['',
+            this.i18nService.translateByKey('report.solfacs.title'),
+            this.i18nService.translateByKey('billing.hito.title'),
+            this.i18nService.translateByKey('billing.solfac.date'),
+            this.i18nService.translateByKey('billing.solfac.status'),
+            this.i18nService.translateByKey('billing.solfac.amount')];
+    }
+
+    getExportSubBody(d) {
+        return ['',
+            d.solfacId,
+            d.description,
+            moment(d.updatedDate).format("DD/MM/YYYY"),
+            this.i18nService.translateByKey(d.statusText),
+            d.total];
     }
 }
