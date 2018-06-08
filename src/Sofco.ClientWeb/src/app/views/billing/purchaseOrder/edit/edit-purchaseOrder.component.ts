@@ -70,10 +70,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
-                }, 500);
+                }, 1000);
 
                 $('input').attr('disabled', 'disabled');
-                $('select').attr('disabled', 'disabled');
+                $('#customer-select select').attr('disabled', 'disabled');
                 $('input[type=file]').removeAttr('disabled');
             },
             error => {
@@ -154,5 +154,20 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
         }
+    }
+
+    update() {
+        this.messageService.showLoading();
+        this.form.model.analyticIds = $('#analytics').val();
+
+        this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
+            response => {
+                this.messageService.closeLoading();
+                if(response.messages) this.messageService.showMessages(response.messages);
+            },
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 }  
