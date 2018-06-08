@@ -172,10 +172,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         reportRow.Manager = analytic.Manager?.Name;
                         reportRow.Percentage = employee.BillingPercentage;
                         reportRow.Profile = employee.Profile;
-                        reportRow.ResourceName = employee.Name;
+                        reportRow.ResourceName = $"{employee.EmployeeNumber} - {employee.Name}";
                         reportRow.Seniority = employee.Seniority;
                         reportRow.Technology = employee.Technology;
-                        reportRow.Analytic = allocation.AnalyticTitle;
+                        reportRow.Analytic = $"{allocation.AnalyticTitle} - {analytic.Name}";
 
                         for (int i = 0; i < allocation.Months.Count; i++)
                         {
