@@ -24,6 +24,15 @@ export class PdfViewerComponent implements OnInit, OnDestroy  {
     canvas: any;
     ctx: any;
 
+    pdfDoc: any;
+
+    public documentPagesNumber: number;
+    public pageNum: number = 1;
+    scale: number = 1;
+    pageRendering: boolean;
+    pageNumPending: number;
+    zoomRange: number = 0.25
+
     constructor() { }
 
     ngOnInit(): void {
@@ -50,24 +59,55 @@ export class PdfViewerComponent implements OnInit, OnDestroy  {
     render(pdfData){
         var self = this;
         PDFJS.getDocument({data: pdfData}).then(function (pdfDoc_) {
-            var pageNumber = 1;
-            pdfDoc_.getPage(pageNumber).then(function(page) {
-                
-                var scale = 1;
-                var viewport = page.getViewport(scale);
-            
-                // Prepare canvas using PDF page dimensions
-                self.canvas.height = viewport.height;
-                self.canvas.width = viewport.width;
-            
-                // Render PDF page into canvas context
-                var renderContext = {
-                    canvasContext: self.ctx,
-                    viewport: viewport
-                };
+            self.pdfDoc = pdfDoc_;
+            self.documentPagesNumber = self.pdfDoc.numPages;
 
-                page.render(renderContext);
-            });
+            self.renderPage(self, self.pageNum);
         });
+    }
+
+    renderPage(self, num){
+        this.pageRendering = true;
+
+        self.pdfDoc.getPage(num).then(function(page) {
+                
+            var viewport = page.getViewport(self.scale);
+        
+            // Prepare canvas using PDF page dimensions
+            self.canvas.height = viewport.height;
+            self.canvas.width = viewport.width;
+        
+            // Render PDF page into canvas context
+            var renderContext = {
+                canvasContext: self.ctx,
+                viewport: viewport
+            };
+
+            page.render(renderContext);
+        });
+    }
+
+    queueRenderPage(){
+        if (this.pageRendering) {
+            this.pageNumPending = this.pageNum;
+        } else {
+            this.renderPage(this, this.pageNum);
+        }
+    }
+
+    onPrevPage(){
+        if (this.pageNum <= 1) {
+            return;
+        }
+        this.pageNum--;
+        this.renderPage(this, this.pageNum);
+    }
+
+    onNextPage() {
+        if (this.pageNum >= this.pdfDoc.numPages) {
+            return;
+        }
+        this.pageNum++;
+        this.renderPage(this, this.pageNum);
     }
 }
