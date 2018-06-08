@@ -38,15 +38,24 @@ export class DataTableService {
                 }
 
                 if(params.withExport){
-                    options.dom = '<"html5buttons"B>lTfgitp';
-                    options.buttons = [
-                        {
-                            extend: 'excelHtml5', title: params.title,
-                            exportOptions: {
-                                columns: params.columns
-                            }
+                    const excelExport: any = {
+                        extend: 'excelHtml5',
+                        title: params.title,
+                        exportOptions: {
+                            columns: params.columns
                         }
-                      ];
+                    };
+
+                    if(params.customizeExcelExport){
+                        excelExport.customize = params.customizeExcelExport;
+                    }
+
+                    if(params.customizeExcelExportData){
+                        excelExport.customizeData = params.customizeExcelExportData;
+                    }
+
+                    options.dom = '<"html5buttons"B>lTfgitp';
+                    options.buttons = [ excelExport ];
                 }
 
                 $(params.selector).DataTable(options);

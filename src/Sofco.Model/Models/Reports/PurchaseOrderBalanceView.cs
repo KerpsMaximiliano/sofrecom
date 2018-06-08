@@ -18,10 +18,10 @@ namespace Sofco.Model.Models.Reports
 
         public string CurrencyText { get; set; }
 
-        public decimal Ammount { get; set; }
+        public decimal? Ammount { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 
-        public decimal Balance { get; set; }
+        public decimal? Balance { get; set; }
     }
 }

@@ -3,4 +3,22 @@ BEGIN
 	EXEC sp_executesql N'CREATE SCHEMA report'
 END
 
-GRANT SELECT ON SCHEMA ::report TO GapsApp
+IF EXISTS (SELECT name FROM [sys].[database_principals] WHERE name = 'GapsApp')
+BEGIN
+	GRANT SELECT ON SCHEMA ::report TO GapsApp
+END
+
+IF EXISTS (SELECT name FROM [sys].[database_principals] WHERE name = 'sofcoDB_login')
+BEGIN
+	GRANT SELECT ON SCHEMA ::report TO sofcoDB_login
+END
+
+IF EXISTS (SELECT name FROM [sys].[database_principals] WHERE name = 'gapsdb_qa_login')
+BEGIN
+	GRANT SELECT ON SCHEMA ::report TO gapsdb_qa_login
+END
+
+IF EXISTS (SELECT name FROM [sys].[database_principals] WHERE name = 'GAPDB_login')
+BEGIN
+	GRANT SELECT ON SCHEMA ::report TO GAPDB_login
+END
