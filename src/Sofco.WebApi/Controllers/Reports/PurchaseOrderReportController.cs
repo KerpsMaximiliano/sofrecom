@@ -24,6 +24,5 @@ namespace Sofco.WebApi.Controllers.Reports
 
             return this.CreateResponse(response);
         }
-
     }
 }
