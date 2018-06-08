@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Services.Admin;
 using Sofco.Framework.ValidationHelpers.Admin;
 using Sofco.Model.Enums;
@@ -12,10 +13,12 @@ namespace Sofco.Service.Implementations.Admin
     public class GroupService : IGroupService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<GroupService> logger;
 
-        public GroupService(IUnitOfWork unitOfWork)
+        public GroupService(IUnitOfWork unitOfWork, ILogMailer<GroupService> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public Response<Group> Active(int id, bool active)
@@ -92,8 +95,9 @@ namespace Sofco.Service.Implementations.Admin
                 response.Data = group;
                 response.AddSuccess(Resources.Admin.Group.Created);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 
@@ -135,9 +139,10 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Group.Updated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -171,11 +176,20 @@ namespace Sofco.Service.Implementations.Admin
 
             if (response.HasErrors()) return response;
 
-            response.Data.Role = role;
-            unitOfWork.GroupRepository.Update(response.Data);
-            unitOfWork.GroupRepository.Save();
+            try
+            {
+                response.Data.Role = role;
+                unitOfWork.GroupRepository.Update(response.Data);
+                unitOfWork.GroupRepository.Save();
 
-            response.AddSuccess(Resources.Admin.Group.RoleAssigned);
+                response.AddSuccess(Resources.Admin.Group.RoleAssigned);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
             return response;
         }
 
@@ -187,11 +201,20 @@ namespace Sofco.Service.Implementations.Admin
 
             if (response.HasErrors()) return response;
 
-            response.Data.Role = null;
-            unitOfWork.GroupRepository.Update(response.Data);
-            unitOfWork.Save();
+            try
+            {
+                response.Data.Role = null;
+                unitOfWork.GroupRepository.Update(response.Data);
+                unitOfWork.Save();
 
-            response.AddSuccess(Resources.Admin.Group.RoleRemoved);
+                response.AddSuccess(Resources.Admin.Group.RoleRemoved);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+   
             return response;
         }
 

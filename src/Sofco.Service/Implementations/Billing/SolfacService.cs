@@ -325,11 +325,19 @@ namespace Sofco.Service.Implementations.Billing
                 File = fileAsArrayBytes
             };
 
-            unitOfWork.SolfacRepository.SaveAttachment(attachment);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.SolfacRepository.SaveAttachment(attachment);
+                unitOfWork.Save();
 
-            response.Data = attachment;
-            response.AddSuccess(Resources.Billing.Solfac.FileAdded);
+                response.Data = attachment;
+                response.AddSuccess(Resources.Billing.Solfac.FileAdded);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
