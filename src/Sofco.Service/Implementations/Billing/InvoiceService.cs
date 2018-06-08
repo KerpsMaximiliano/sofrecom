@@ -105,7 +105,7 @@ namespace Sofco.Service.Implementations.Billing
             catch(Exception e)
             {
                 logger.LogError(e);
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -140,7 +140,7 @@ namespace Sofco.Service.Implementations.Billing
             catch(Exception e)
             {
                 logger.LogError(e);
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

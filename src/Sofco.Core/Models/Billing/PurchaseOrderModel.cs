@@ -44,14 +44,7 @@ namespace Sofco.Core.Models.Billing
         {
             var domain = new PurchaseOrder();
 
-            domain.Number = Number;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
-            domain.StartDate = StartDate;
-            domain.EndDate = EndDate;
-            domain.ReceptionDate = ReceptionDate;
-            domain.Area = Area;
-            domain.Description = Description;
+            FillData(domain);
 
             domain.Status = PurchaseOrderStatus.Valid;
             domain.UpdateDate = DateTime.UtcNow;
@@ -70,8 +63,7 @@ namespace Sofco.Core.Models.Billing
 
         public void UpdateDomain(PurchaseOrder domain, string userName)
         {
-            FillData(domain);
-
+            domain.Description = Description;
             domain.Status = Status;
 
             if (FileId > 0)

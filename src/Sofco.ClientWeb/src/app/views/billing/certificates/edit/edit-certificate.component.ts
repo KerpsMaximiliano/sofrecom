@@ -20,6 +20,7 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
 
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('pdfViewer') pdfViewer;
 
     updateSubscrip: Subscription;
     getSubscrip: Subscription;
@@ -146,5 +147,14 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    viewFile(){
+        if(this.form.model.fileName.endsWith('.pdf')){
+            this.certificateService.getFile(this.form.model.fileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 }  

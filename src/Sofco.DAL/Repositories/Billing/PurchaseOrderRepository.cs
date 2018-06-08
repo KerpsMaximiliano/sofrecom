@@ -37,7 +37,7 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.File)
                 .Include(x => x.PurchaseOrderAnalytics)
                 .Include(x => x.AmmountDetails)
-                .ThenInclude(x => x.Currency)
+                    .ThenInclude(x => x.Currency)
                 .SingleOrDefault(x => x.Id == purchaseOrderId);
         }
 

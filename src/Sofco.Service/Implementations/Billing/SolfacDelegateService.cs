@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
@@ -21,8 +23,15 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICustomerData customerData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
+        private readonly ILogMailer<SolfacDelegateService> logger;
 
-        public SolfacDelegateService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IServiceData serviceData, IMapper mapper, IUserData userData, ICustomerData customerData)
+        public SolfacDelegateService(IUnitOfWork unitOfWork, 
+            ISessionManager sessionManager, 
+            IServiceData serviceData,
+            ILogMailer<SolfacDelegateService> logger,
+            IMapper mapper, 
+            IUserData userData, 
+            ICustomerData customerData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
@@ -81,11 +90,19 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            userDelegate.CreatedUser = sessionManager.GetUserName();
+            try
+            {
+                userDelegate.CreatedUser = sessionManager.GetUserName();
 
-            userDelegate.Type = UserDelegateType.Solfac;
+                userDelegate.Type = UserDelegateType.Solfac;
 
-            response.Data = unitOfWork.UserDelegateRepository.Save(userDelegate);
+                response.Data = unitOfWork.UserDelegateRepository.Save(userDelegate);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }

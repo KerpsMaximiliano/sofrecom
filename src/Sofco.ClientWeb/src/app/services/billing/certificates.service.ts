@@ -44,6 +44,10 @@ export class CertificatesService {
     return this.http.get<any>(`${this.baseUrl}/certificates/client/${client}`);
   }
 
+  getFile(id){
+    return this.http.get<any>(`${this.baseUrl}/certificates/${id}/file`);
+  }
+
   exportFile(id) {
     return this.http.get(`${this.baseUrl}/certificates/export/${id}`, {
       responseType: 'arraybuffer',

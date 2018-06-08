@@ -44,17 +44,9 @@
         <div class="row">
             <div class="col-sm-6">
                 <select-two [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
-                <!-- <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.client' | translate }}</label>
-                    <input type="text" disabled class="form-control" [ngModel]="model?.clientExternalName">
-                </div> -->
             </div>
             <div class="col-sm-6">
                 <select-two [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
-                <!-- <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.service' | translate }}</label>
-                    <input type="text" disabled class="form-control" [ngModel]="model?.service">
-                </div> -->
             </div>
         </div>
 

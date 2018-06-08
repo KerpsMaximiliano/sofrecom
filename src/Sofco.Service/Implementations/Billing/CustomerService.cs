@@ -6,6 +6,7 @@ using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm.Billing;
@@ -21,14 +22,21 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly ISessionManager sessionManager;
         private readonly ISolfacDelegateData solfacDelegateData;
+        private readonly ILogMailer<CustomerService> logger;
 
-        public CustomerService(ICustomerData customerData, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData)
+        public CustomerService(ICustomerData customerData, 
+            ICrmHttpClient client, 
+            IOptions<CrmConfig> crmOptions, 
+            ISessionManager sessionManager,
+            ILogMailer<CustomerService> logger,
+            ISolfacDelegateData solfacDelegateData)
         {
             this.customerData = customerData;
             this.client = client;
             this.sessionManager = sessionManager;
             this.solfacDelegateData = solfacDelegateData;
             crmConfig = crmOptions.Value;
+            this.logger = logger;
         }
 
         public Response<List<CrmCustomer>> GetCustomers()
@@ -43,8 +51,9 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     result.AddRange(customerData.GetCustomers(item).ToList());
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    logger.LogError(e);
                     response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }

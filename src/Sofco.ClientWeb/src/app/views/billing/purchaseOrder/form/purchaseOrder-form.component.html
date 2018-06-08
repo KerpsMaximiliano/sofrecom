@@ -1,4 +1,4 @@
-<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
+<select-two id="customer-select" [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
 
 <div class="form-group">
     <label class="control-label"> {{'billing.purchaseOrder.fields.analytic' | translate }} </label>

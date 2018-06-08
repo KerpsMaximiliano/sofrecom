@@ -111,6 +111,17 @@ namespace Sofco.WebApi.Controllers.Billing
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
+        [HttpGet("{id}/file")]
+        public IActionResult GetFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.CertificatesPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchCertificateParams parameters)
         {

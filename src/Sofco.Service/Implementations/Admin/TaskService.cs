@@ -130,8 +130,9 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Task.Updated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 

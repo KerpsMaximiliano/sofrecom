@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Logger;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Models.WorkTimeManagement;
@@ -19,11 +21,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly IMapper mapper;
 
-        public WorkTimeApprovalService(IWorkTimeApprovalRepository workTimeApprovalRepository, IUserData userData, IEmployeeRepository employeeRepository, IMapper mapper)
+        private readonly ILogMailer<WorkTimeApprovalService> logger;
+
+        public WorkTimeApprovalService(IWorkTimeApprovalRepository workTimeApprovalRepository, 
+            IUserData userData, 
+            IEmployeeRepository employeeRepository,
+            ILogMailer<WorkTimeApprovalService> logger,
+            IMapper mapper)
         {
             this.workTimeApprovalRepository = workTimeApprovalRepository;
             this.userData = userData;
             this.employeeRepository = employeeRepository;
+            this.logger = logger;
             this.mapper = mapper;
         }
 
@@ -42,22 +51,39 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (response.HasErrors())
                 return response;
 
-            ResolveUserId(workTimeApprovals);
+            try
+            {
+                ResolveUserId(workTimeApprovals);
 
-            workTimeApprovalRepository.Save(Translate(workTimeApprovals));
+                workTimeApprovalRepository.Save(Translate(workTimeApprovals));
 
-            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
-            response.Data = workTimeApprovals;
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
+                response.Data = workTimeApprovals;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
 
         public Response Delete(int workTimeApprovalId)
         {
-            workTimeApprovalRepository.Delete(workTimeApprovalId);
-
             var response = new Response();
-            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+
+            try
+            {
+                workTimeApprovalRepository.Delete(workTimeApprovalId);
+
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }

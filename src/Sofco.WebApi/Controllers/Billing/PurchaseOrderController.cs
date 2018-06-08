@@ -54,6 +54,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] PurchaseOrderModel model)
+        {
+            var response = purchaseOrderService.Update(model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpDelete("{id}/file")]
         public IActionResult DeleteFile(int id)
         {

@@ -101,11 +101,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<byte[]>();
 
-            var list = unitOfWork.AnalyticRepository.GetForReport(analytics);
+            try
+            {
+                var list = unitOfWork.AnalyticRepository.GetForReport(analytics);
 
-            var excel = analyticFileManager.CreateAnalyticReportExcel(list);
+                var excel = analyticFileManager.CreateAnalyticReportExcel(list);
 
-            response.Data = excel.GetAsByteArray();
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ExportFileError);
+            }
 
             return response;
         }

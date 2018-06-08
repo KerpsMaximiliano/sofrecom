@@ -77,13 +77,15 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.activityId = 1;
 
             if(analyticWithProject == 'yes'){
-                this.model.clientExternalId = sessionStorage.getItem('customerId');
+                this.model.clientExternalId = this.customerId = sessionStorage.getItem('customerId');
                 this.model.clientExternalName = sessionStorage.getItem('customerName');
-                this.model.serviceId = sessionStorage.getItem('serviceId');
+                this.model.serviceId = this.serviceId = sessionStorage.getItem('serviceId');
                 this.model.service = sessionStorage.getItem('serviceName');
                 this.model.solutionId = service.solutionTypeId;
                 this.model.technologyId = service.technologyTypeId;
                 this.model.serviceTypeId = service.serviceTypeId;
+
+                this.getServices();
             }
             else{
                 this.model.clientExternalName = 'No Aplica';

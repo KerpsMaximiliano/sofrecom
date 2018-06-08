@@ -50,10 +50,10 @@ namespace Sofco.Service.Implementations.Billing
 
                     response.Messages.Add(new Message(Resources.Billing.Solfac.CloseHito, MessageType.Success));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    response.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Error));
-                    return response;
+                    logger.LogError(e);
+                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
                 }
             }
 
@@ -70,12 +70,20 @@ namespace Sofco.Service.Implementations.Billing
             {
                 client.BaseAddress = new Uri(crmConfig.Url);
 
-                await UpdateFirstHito(response, hito, client);
-                await CreateNewHito(response, hito, client);
-
-                if (!response.HasErrors())
+                try
                 {
-                    response.AddSuccess(Resources.Billing.Project.HitoSplitted);
+                    await UpdateFirstHito(response, hito, client);
+                    await CreateNewHito(response, hito, client);
+
+                    if (!response.HasErrors())
+                    {
+                        response.AddSuccess(Resources.Billing.Project.HitoSplitted);
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
                 }
             }
 
@@ -96,11 +104,19 @@ namespace Sofco.Service.Implementations.Billing
             {
                 client.BaseAddress = new Uri(crmConfig.Url);
 
-                await CreateNewHito(response, hito, client);
-
-                if (!response.HasErrors())
+                try
                 {
-                    response.AddSuccess(Resources.Billing.Project.HitoCreated);
+                    await CreateNewHito(response, hito, client);
+
+                    if (!response.HasErrors())
+                    {
+                        response.AddSuccess(Resources.Billing.Project.HitoCreated);
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
                 }
             }
 
