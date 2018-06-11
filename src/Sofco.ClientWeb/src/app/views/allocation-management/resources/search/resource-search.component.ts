@@ -273,11 +273,11 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     changeIcon(){
         if($("#collapseOne").hasClass('in')){
-            $("#search-icon").toggleClass('fa-minus').toggleClass('fa-plus');
+            $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         }
         else{
-            $("#search-icon").toggleClass('fa-plus').toggleClass('fa-minus');
-        } 
+            $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        }
     }
 
     addCategoryDisabled(){
