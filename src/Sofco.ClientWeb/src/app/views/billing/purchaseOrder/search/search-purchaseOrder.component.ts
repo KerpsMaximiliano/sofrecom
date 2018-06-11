@@ -22,6 +22,12 @@ declare var moment: any;
 export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     public data: any[] = new Array();
+    
+    public analytics: any[] = new Array();
+    public opportunities: any[] = new Array();
+    public purchaseOrders: any[] = new Array();
+    public projectManagers: any[] = new Array();
+    public accountManagers: any[] = new Array();
 
     public customers: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
@@ -307,5 +313,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     searchCriteriaChange() {
         this.customerId = this.customerId === "0" ? null : this.customerId;
+    }
+
+    customerChange() {
+        
     }
 }
