@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -165,11 +166,18 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateContractNumber(Solfac solfac, Response response)
+        public static void ValidateContractNumber(Solfac solfac, Response response, IUnitOfWork unitOfWork)
         {
             if (!solfac.PurchaseOrderId.HasValue || solfac.PurchaseOrderId <= 0)
             {
                 response.Messages.Add(new Message(Resources.Billing.Solfac.ContractNumberEmpty, MessageType.Error));
+            }
+            else
+            {
+                if (!unitOfWork.PurchaseOrderRepository.HasAmmountDetails(solfac.CurrencyId, solfac.PurchaseOrderId.Value))
+                {
+                    response.AddError(Resources.Billing.Solfac.PurchaseOrderWithWrongCurrency);
+                }
             }
         }
 
