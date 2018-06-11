@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Model.DTO
 {
@@ -8,7 +9,7 @@ namespace Sofco.Model.DTO
 
         public DateTime EndDate { get; set; }
 
-        public int? AnalyticId { get; set; }
+        public IList<int> AnalyticIds { get; set; }
 
         public int? EmployeeId { get; set; }
 

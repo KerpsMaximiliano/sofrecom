@@ -108,8 +108,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Employee)
                 .Where(x => x.StartDate >= parameters.StartDate && x.StartDate <= parameters.EndDate);
 
-            if (parameters.AnalyticId.HasValue)
-                query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+            if (parameters.AnalyticIds.Any())
+                query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));
 
             if (parameters.EmployeeId.HasValue)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
