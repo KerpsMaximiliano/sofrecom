@@ -32,6 +32,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<ISessionManager> sessionManagerMock;
+        private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -47,6 +48,7 @@ namespace Sofco.UnitTest.Services.Billing
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             sessionManagerMock = new Mock<ISessionManager>();
+            purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
 
             var optionsMock = new Mock<IOptions<CrmConfig>>();
             optionsMock.SetupGet(s => s.Value).Returns(crmConfigMock.Object);
@@ -56,13 +58,15 @@ namespace Sofco.UnitTest.Services.Billing
             unitOfWork.Setup(x => x.SolfacRepository).Returns(solfacRepositoryMock.Object);
             unitOfWork.Setup(x => x.InvoiceRepository).Returns(invoiceRepositoryMock.Object);
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
+            unitOfWork.Setup(x => x.PurchaseOrderRepository).Returns(purchaseOrderRepositoryMock.Object);
 
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
             solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
 
             crmInvoiceServiceMock.Setup(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>())).Returns(new Response());
-
             crmInvoiceServiceMock.Setup(s => s.CreateHitoBySolfac(It.IsAny<Solfac>())).Returns(new Result<string>("1"));
+
+            purchaseOrderRepositoryMock.Setup(s => s.HasAmmountDetails(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
             sut = new SolfacService(solfacStatusFactoryMock.Object,
                 unitOfWork.Object,
