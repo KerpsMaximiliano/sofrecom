@@ -43,5 +43,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers);
 
         IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters);
+
+        void Save(List<Employee> employees);
     }
 }

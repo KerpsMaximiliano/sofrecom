@@ -9,5 +9,7 @@ namespace Sofco.Repository.Rh.Repositories.Interfaces
         IList<TigerEmployee> GetWithStartDate(DateTime startDate);
 
         IList<TigerEmployee> GetWithEndDate(DateTime endDate);
+
+        List<TigerEmployee> GetByLegajs(int[] legajs);
     }
 }
