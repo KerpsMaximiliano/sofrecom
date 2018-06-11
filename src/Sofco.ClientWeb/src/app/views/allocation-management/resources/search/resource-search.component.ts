@@ -11,6 +11,7 @@ import { UserService } from "app/services/admin/user.service";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { CategoryService } from "../../../../services/admin/category.service";
 
+declare var moment: any;
 declare var $: any;
 
 @Component({
@@ -55,7 +56,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         profile: "",
         technology: "",
         percentage: null,
-        analyticId: 0
+        analyticId: 0,
+        employeeNumber: ""
     };
 
     public endDate: Date = new Date();
@@ -175,6 +177,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.profile = "";
         this.searchModel.seniority = "";
         this.searchModel.technology = "";
+        this.searchModel.employeeNumber = "";
         this.searchModel.percentage = null;
         this.searchModel.analyticId = 0;
         this.resources = [];
@@ -186,6 +189,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            !this.searchModel.profile && this.searchModel.profile == "" &&
            !this.searchModel.seniority && this.searchModel.seniority == "" &&
            !this.searchModel.technology && this.searchModel.technology == "" && 
+           !this.searchModel.employeeNumber && this.searchModel.employeeNumber == "" && 
            !this.searchModel.analyticId && this.searchModel.analyticId == 0 && 
            !this.searchModel.percentage && this.searchModel.percentage == null){
                return true;
@@ -233,7 +237,17 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var options = { selector: "#resourcesTable" };
+        var columns = [1, 2, 3, 4, 5];
+        var title = `Recursos-${moment(new Date()).format("YYYYMMDD")}`;
+
+        var options = { 
+            selector: "#resourcesTable",
+            columns: columns,
+            title: title,
+            columnDefs: [ {'aTargets': [2], "sType": "date-uk"} ],
+            withExport: true,
+         };
+
         this.dataTableService.destroy(options.selector);
         this.dataTableService.init2(options);
     }

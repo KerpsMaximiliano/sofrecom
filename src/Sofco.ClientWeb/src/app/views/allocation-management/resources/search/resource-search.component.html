@@ -38,32 +38,40 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
+                                <label class="control-label">{{'allocationManagement.resources.grid.employeeNumber' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.employeeNumber' | translate }}" type="text" [(ngModel)]="searchModel.employeeNumber">
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.profile' | translate }}</label>
                                 <input class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
+                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
+                            </div>
+                        </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
                                 <input class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
                                 <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
                         </div>
                     </div>
                 </div>
