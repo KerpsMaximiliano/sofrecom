@@ -18,7 +18,7 @@ declare var moment: any;
     styleUrls: ['./allocation-report.component.scss']
 })
 export class AllocationReportComponent implements OnInit, OnDestroy {
-
+ 
     public model: any;
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
@@ -84,8 +84,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
             if(this.lastQuery){
                 setTimeout(() => {
-                    $('#analyticId').val(this.lastQuery.analyticId == null ? 0 : this.lastQuery.analyticId).trigger('change');
-                }, 0);
+                    $('#analyticId').val(this.lastQuery.analyticIds).trigger('change');
+                }, 1000);
             }
         },
         error => this.errorHandlerService.handleErrors(error));
@@ -109,7 +109,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             startDate: this.dateSince,
             endDate: this.dateTo,
             includeStaff: this.includeStaff,
-            analyticId: $('#analyticId').val() == 0 ? null : $('#analyticId').val(),
+            analyticIds: $('#analyticId').val(),
             employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
             percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),
             startPercentage: 0,
@@ -179,7 +179,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     clean(){
         this.dateSince = new Date();
         this.dateTo = new Date();
-        $('#analyticId').val(0).trigger('change');
+        $('#analyticId').val(null).trigger('change');
         $('#employeeId').val(0).trigger('change');
         $('#percentageId').val('').trigger('change');
         sessionStorage.removeItem('lastReportQuery')

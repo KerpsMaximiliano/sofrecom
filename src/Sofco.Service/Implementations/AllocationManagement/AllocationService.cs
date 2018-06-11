@@ -148,6 +148,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
 
+            var diccionaryAnalytics = new Dictionary<int, Analytic>();
+
             if (employees.Any())
             {
                 foreach (var employee in employees)
@@ -157,7 +159,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     foreach (var allocation in allocationResponse.Allocations)
                     {
 
-                        if (parameters.AnalyticId.HasValue && parameters.AnalyticId != allocation.AnalyticId) continue;
+                        if (parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
                         //if (parameters.Percentage.HasValue && parameters.Percentage != (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
                         //if (parameters.Percentage.HasValue && parameters.Percentage == (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage == 100)) continue;
 
@@ -165,17 +167,28 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() &&
                                                        x.Percentage <= parameters.EndPercentage.GetValueOrDefault())) continue;
 
-                        var analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
+                        Analytic analytic;
 
-                        var reportRow = new AllocationReportRow();
+                        if (diccionaryAnalytics.ContainsKey(allocation.AnalyticId))
+                        {
+                            diccionaryAnalytics.TryGetValue(allocation.AnalyticId, out analytic);
+                        }
+                        else
+                        {
+                            analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
+                            diccionaryAnalytics.Add(allocation.AnalyticId, analytic);
+                        }
 
-                        reportRow.Manager = analytic.Manager?.Name;
-                        reportRow.Percentage = employee.BillingPercentage;
-                        reportRow.Profile = employee.Profile;
-                        reportRow.ResourceName = $"{employee.EmployeeNumber} - {employee.Name}";
-                        reportRow.Seniority = employee.Seniority;
-                        reportRow.Technology = employee.Technology;
-                        reportRow.Analytic = $"{allocation.AnalyticTitle} - {analytic.Name}";
+                        var reportRow = new AllocationReportRow
+                        {
+                            Manager = analytic?.Manager?.Name,
+                            Percentage = employee.BillingPercentage,
+                            Profile = employee.Profile,
+                            ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",
+                            Seniority = employee.Seniority,
+                            Technology = employee.Technology,
+                            Analytic = $"{allocation.AnalyticTitle} - {analytic?.Name}"
+                        };
 
                         for (int i = 0; i < allocation.Months.Count; i++)
                         {
