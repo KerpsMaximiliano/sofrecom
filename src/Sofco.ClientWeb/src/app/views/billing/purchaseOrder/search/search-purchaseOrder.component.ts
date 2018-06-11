@@ -10,6 +10,7 @@ import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
+import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 declare var $: any;
 declare var moment: any;
 
@@ -25,8 +26,17 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     public customers: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
 
-    public customerId: string = "0";
-    public statusId: string = "0";
+    public analyticId: any;
+    public opportunityId: any;
+    public purchaseOrderId: any;
+    public projectManagerId: any;
+    public accountManagerId: any;
+    public startDate: Date;
+    public endDate: Date;
+    public dateFilter = true;
+
+    public customerId = "0";
+    public statusId = "0";
     public year;
 
     getAllSubscrip: Subscription;
@@ -38,19 +48,18 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         private customerService: CustomerService,
         private messageService: MessageService,
         private purchaseOrderService: PurchaseOrderService,
+        private analyticService: AnalyticService,
         private datatableService: DataTableService,
         private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
         const data = JSON.parse(sessionStorage.getItem('lastPurchaseOrderQuery'));
-        if(data){
+        if (data){
             this.statusId = data.statusId;
             this.customerId = data.clientId;
-
             this.search();
         }
-
         this.getCustomers();
         this.getStatuses();
     }
@@ -277,5 +286,22 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             moment(d.updatedDate).format("DD/MM/YYYY"),
             this.i18nService.translateByKey(d.statusText),
             d.total];
+    }
+
+    collapse() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#collapseOne").removeClass('in');
+        } else {
+            $("#collapseOne").addClass('in');
+        }
+        this.changeIcon();
+    }
+
+    changeIcon() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        } else {
+            $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
     }
 }

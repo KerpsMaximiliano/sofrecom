@@ -258,7 +258,9 @@
                 "billingPendingAmmount": "Pendiente a Facturar", 
                 "cashPendingAmmount": "Pendiente a Cobrar", 
                 "ammountCashed": "Ingresos Cobrados"
-            }
+            },
+            "projectManager": "Gerente de Proyecto",
+            "accountManager": "Gerente de Cuenta"
         },
         "solfac":{
             "title": "Solicitud Facturación",
