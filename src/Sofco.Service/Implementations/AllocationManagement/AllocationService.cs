@@ -90,6 +90,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
+                if(allocation.All(x => x.Percentage == 0)) continue;
+
                 if (allocation.Any())
                 {
                     var first = allocation.FirstOrDefault();
@@ -248,7 +250,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     }
                     else
                     {
-                        InsertNewAllocation(allocationDto, month);
+                        var allocation = unitOfWork.AllocationRepository.GetSingle(x => x.AnalyticId == allocationDto.AnalyticId &&
+                                                                                        x.EmployeeId == allocationDto.EmployeeId &&
+                                                                                        x.StartDate.Date == month.Date.Date);
+
+                        if (allocation == null)
+                        {
+                            InsertNewAllocation(allocationDto, month);
+                        }
+                        else
+                        {
+                            allocation.Percentage = month.Percentage.GetValueOrDefault();
+                            unitOfWork.AllocationRepository.UpdatePercentage(allocation);
+                            allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
+                            unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+                        }
                     }
                 }
 
