@@ -131,8 +131,7 @@ Saludos</value>
     <value>Existen novedades que necesitan su confirmacion, por favor acceder a la lista a traves del siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;</value>
   </data>
   <data name="InvoiceRequestAnnulment" xml:space="preserve">
-    <value>Anulación de remitos &lt;/br&gt;
-Se solicita la anulación de los siguientes remitos: &lt;/br&gt;
+    <value>Se solicita la anulación de los siguientes remitos: &lt;/br&gt;
 {0}</value>
   </data>
   <data name="LicenseApproveMessage" xml:space="preserve">
