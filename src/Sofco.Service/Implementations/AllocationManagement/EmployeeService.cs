@@ -290,7 +290,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var employeeAllocations = unitOfWork.AllocationRepository.GetByEmployee(employee.Id);
 
-            var analitycs = employeeAllocations.Select(x => x.Analytic).Distinct();
+            var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            var analitycs = employeeAllocations.Where(x => x.Percentage > 0 && x.StartDate.Date == date).Select(x => x.Analytic).Distinct();
 
             foreach (var analityc in analitycs)
             {

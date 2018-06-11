@@ -150,6 +150,7 @@
                                     <table class="table table-striped" id="invoiceTable" width="100%">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th width="120">{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
                                                 <th>{{'billing.invoice.excelFileName' | translate }}</th>
                                                 <th width="150" class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
@@ -157,17 +158,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let invoice of invoices" (click)="goToInvoiceDetail(invoice)" class="pointer" >
-                                                <td>{{ invoice.invoiceNumber }}</td>
-                                                <td>{{ invoice.excelFileName }}</td>
-                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
-                                                <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
+                                            <tr *ngFor="let invoice of invoices" class="pointer" >
+                                                <td class="col-lg-1">
+                                                    <pcheck [(checked)]="invoice.selected"></pcheck>
+                                                </td>
+                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.invoiceNumber }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.excelFileName }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
 
                                     <div class="button-group" *ngIf="canCreateInvoice()">
                                         <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-warning" *ngIf="canAskForAnnulment()" (click)="askForAnnulment()"> {{'billing.project.detail.invoices.askAnnulment' | translate }} <i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
 

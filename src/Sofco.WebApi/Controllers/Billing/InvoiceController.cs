@@ -291,6 +291,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(list);
         }
 
+        [HttpPost("requestAnnulment")]
+        public IActionResult RequestAnnulment([FromBody] IList<int> invoices)
+        {
+            var response = invoiceService.RequestAnnulment(invoices);
+
+            return this.CreateResponse(response);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)InvoiceStatus.SendPending, Text = InvoiceStatus.SendPending.ToString() };

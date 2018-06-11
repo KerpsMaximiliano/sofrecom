@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
@@ -13,7 +14,9 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -25,10 +28,12 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISessionManager sessionManager;
         private readonly EmailConfig emailConfig;
         private readonly ILogMailer<InvoiceService> logger;
+        private readonly IMailBuilder mailBuilder;
 
         public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
             IOptions<EmailConfig> emailOptions,
+            IMailBuilder mailBuilder,
             ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager)
         {
@@ -38,6 +43,7 @@ namespace Sofco.Service.Implementations.Billing
             this.sessionManager = sessionManager;
             this.emailConfig = emailOptions.Value;
             this.logger = logger;
+            this.mailBuilder = mailBuilder;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -356,6 +362,45 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<InvoiceHistory> GetHistories(int id)
         {
             return unitOfWork.InvoiceRepository.GetHistories(id);
+        }
+
+        public Response RequestAnnulment(IList<int> invoiceIds)
+        {
+            var response = new Response();
+
+            var invoices = unitOfWork.InvoiceRepository.GetByIds(invoiceIds);
+
+            if (!invoices.Any()) return response;
+
+            try
+            {
+                var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileName}</a>");
+
+                var subject = MailSubjectResource.InvoiceRequestAnnulment;
+                var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString));
+
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+
+                var data = new InvoiceRequestAnnulmentData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = mailDaf
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
+
+                response.AddSuccess(Resources.Billing.Invoice.RequestAnnulmentSent);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(Resources.Common.ErrorSendMail);
+                logger.LogError(ex);
+            }
+
+            return response;
         }
 
         private InvoiceHistory GetHistory(int invoiceId, InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)

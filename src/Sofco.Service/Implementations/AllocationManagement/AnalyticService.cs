@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;

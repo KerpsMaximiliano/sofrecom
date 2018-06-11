@@ -13,6 +13,8 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';
 import { ServiceService } from '../../../../services/billing/service.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
+import { InvoiceStatus } from '../../../../models/enums/invoiceStatus';
+import { InvoiceService } from '../../../../services/billing/invoice.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -73,6 +75,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private projectService: ProjectService,
+        private invoiceService: InvoiceService,
         private datatableService: DataTableService,
         private messageService: MessageService,
         public menuService: MenuService,
@@ -463,5 +466,42 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.managerId = this.project.ownerId;
         hito.opportunityId = this.project.opportunityId;
         return hito;
+    }
+
+    canAskForAnnulment(){
+        var invoicesSelectedCount = 0;
+
+        var invoices = this.invoices.filter(invoice => {
+
+            if(invoice.selected && invoice.selected == true){
+              invoicesSelectedCount++;
+
+              if(invoice.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] || invoice.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]){
+                    return invoice;
+                }
+            }
+
+            return null;
+        });
+
+        if(invoices.length == 0) return false;
+        if(invoices.length != invoicesSelectedCount) return false;
+
+        return true;
+    }
+
+    askForAnnulment(){
+        var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.id);
+
+        this.messageService.showLoading();
+
+        this.invoiceService.askForAnnulment(invoicesIds).subscribe(data => {
+            this.messageService.closeLoading();
+            if(data.messages) this.messageService.showMessages(data.messages);
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }
