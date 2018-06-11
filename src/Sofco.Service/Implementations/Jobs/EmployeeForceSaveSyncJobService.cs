@@ -37,6 +37,13 @@ namespace Sofco.Service.Implementations.Jobs
             unitOfWork.EmployeeRepository.Update(employees);
         }
 
+        public void AddEmployee()
+        {
+            var employees = Translate(tigerEmployeeRepository.GetByLegajs(new []{ 1008 }).ToList());
+
+            unitOfWork.EmployeeRepository.Save(employees);
+        }
+
         private List<Employee> Translate(List<TigerEmployee> tigerEmployees)
         {
             return mapper.Map<List<TigerEmployee>, List<Employee>>(tigerEmployees);

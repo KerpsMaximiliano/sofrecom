@@ -131,6 +131,30 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return query.ToList();
         }
 
+        public void Save(List<Employee> employees)
+        {
+            var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());
+
+            var storedNumbers = storedItems.Select(s => s.EmployeeNumber).ToList();
+
+            foreach (var item in employees)
+            {
+                if (storedNumbers.Contains(item.EmployeeNumber))
+                {
+                    var updateItem = storedItems
+                        .First(s => s.EmployeeNumber == item.EmployeeNumber);
+
+                    Update(updateItem, item);
+                }
+                else
+                {
+                    Insert(item);
+                }
+            }
+
+            context.SaveChanges();
+        }
+
         public void Update(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());

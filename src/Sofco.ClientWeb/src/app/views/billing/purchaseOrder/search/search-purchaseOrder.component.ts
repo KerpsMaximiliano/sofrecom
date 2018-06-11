@@ -304,4 +304,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         }
     }
+
+    searchCriteriaChange() {
+        this.customerId = this.customerId === "0" ? null : this.customerId;
+    }
 }
