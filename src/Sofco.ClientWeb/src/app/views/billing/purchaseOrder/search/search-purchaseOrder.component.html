@@ -21,19 +21,49 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-title">
-            <h4 class="pull-left">{{'billing.purchaseOrder.parameters' | translate }}</h4>
-            
             <div class="ibox-tools">
                 <button class="btn btn-primary btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>
+
         <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-6">
-                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
-                </div>
-                <div class="col-sm-3">
-                    <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses"></select-two>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-success">
+                    <div class="panel-heading pointer" (click)="collapse()">
+                        <h5 class="panel-title">
+                            {{'billing.purchaseOrder.parameters' | translate }}
+                            <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="searchCriteriaChange()"></select-two>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.project.grid.opportunity'" [(value)]="opportunityId" [options]="opportunities" (valueChange)="customerChange()"></select-two>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.purchaseOrder.name'" [(value)]="purchaseOrderId" [options]="purchaseOrders" (valueChange)="searchCriteriaChange()"></select-two>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.purchaseOrder.projectManager'" [(value)]="projectManagerId" [options]="projectManagers" (valueChange)="searchCriteriaChange()"></select-two>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.purchaseOrder.accountManager'" [(value)]="accountManagerId" [options]="accountManagers" (valueChange)="searchCriteriaChange()"></select-two>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses"></select-two>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +96,7 @@
                                 <th class="text-right">{{'billing.purchaseOrder.fields.balance' | translate }}</th>
                                 <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                             </tr>
-                        </thead> 
+                        </thead>
                         <tbody>
                             <tr *ngFor="let purchaseOrder of data">
                                 <td [ngClass]="purchaseOrder.details.length > 0 ? 'details-control' : ''">
