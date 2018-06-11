@@ -37,7 +37,7 @@ namespace Sofco.Framework.FileManager.Rrhh
             for (int i = 0; i < licenses.Count; i++)
             {
                 var index = i + 2;
-
+                 
                 sheet.Cells[$"A{index}"].Value = licenses[i].Employee.EmployeeNumber;
                 sheet.Cells[$"B{index}"].Value = licenses[i].Employee.Name;
                 sheet.Cells[$"C{index}"].Value = licenses[i].Type.Description;

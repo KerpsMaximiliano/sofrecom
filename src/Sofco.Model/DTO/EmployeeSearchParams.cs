@@ -6,6 +6,7 @@
         public string Seniority { get; set; }
         public string Profile { get; set; }
         public string Technology { get; set; }
+        public string EmployeeNumber { get; set; }
         public int? Percentage { get; set; }
         public int? AnalyticId { get; set; }
     }

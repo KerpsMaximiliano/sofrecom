@@ -518,8 +518,7 @@
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
-                "start": "Ingreso",
-                "examDaysTaken": "Días examen tomados"
+                "start": "Ingreso"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
         },

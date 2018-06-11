@@ -55,7 +55,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         profile: "",
         technology: "",
         percentage: null,
-        analyticId: 0
+        analyticId: 0,
+        employeeNumber: ""
     };
 
     public endDate: Date = new Date();
@@ -175,6 +176,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.profile = "";
         this.searchModel.seniority = "";
         this.searchModel.technology = "";
+        this.searchModel.employeeNumber = "";
         this.searchModel.percentage = null;
         this.searchModel.analyticId = 0;
         this.resources = [];
@@ -186,6 +188,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            !this.searchModel.profile && this.searchModel.profile == "" &&
            !this.searchModel.seniority && this.searchModel.seniority == "" &&
            !this.searchModel.technology && this.searchModel.technology == "" && 
+           !this.searchModel.employeeNumber && this.searchModel.employeeNumber == "" && 
            !this.searchModel.analyticId && this.searchModel.analyticId == 0 && 
            !this.searchModel.percentage && this.searchModel.percentage == null){
                return true;
