@@ -3,5 +3,7 @@
     public interface IEmployeeForceSaveSyncJobService
     {
         void SyncSave();
+
+        void AddEmployee();
     }
 }

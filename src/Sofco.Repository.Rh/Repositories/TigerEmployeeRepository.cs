@@ -68,5 +68,18 @@ FROM
                 .FromSql(sql, endDateSqlParameter)
                 .ToList();
         }
+
+        public List<TigerEmployee> GetByLegajs(int[] legajs)
+        {
+            var sql = string.Format("{0} WHERE {1}",
+                TigerEmployeeSql,
+                @" legaj IN (@legajs) ");
+
+            var sqlParameter = new SqlParameter("@legajs", string.Join(",", legajs));
+
+            return TigerEmployeeSet
+                .FromSql(sql, sqlParameter)
+                .ToList();
+        }
     }
 }
