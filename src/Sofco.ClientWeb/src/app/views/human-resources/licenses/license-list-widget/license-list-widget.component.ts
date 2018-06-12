@@ -9,6 +9,8 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Router } from "@angular/router";
 
+declare var moment: any;
+
 @Component({
     selector: 'license-list-widget',
     templateUrl: './license-list-widget.component.html'
@@ -57,8 +59,14 @@ export class LicenseListWidget implements OnInit, OnDestroy {
     }
  
     initGrid(){
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7];
+        var title = `Licencias-${moment(new Date()).format("YYYYMMDD")}`;
+
         var params = {
             selector: "#licenseStatus-" + this.statusId,
+            columns: columns,
+            title: title,
+            withExport: true,
             columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 

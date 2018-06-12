@@ -10,6 +10,8 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 
+declare var moment: any;
+
 @Component({
     selector: 'license-list-manager',
     templateUrl: './license-list-manager.component.html',
@@ -55,8 +57,14 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     initGrid(){
+        var columns = [0, 1, 2, 3, 4, 5, 6];
+        var title = `Licencias-Pendientes-${moment(new Date()).format("YYYYMMDD")}`;
+
         var params = {
-            selector: "#allLicenses",
+            selector: "#allLicenses", 
+            columns: columns,
+            title: title,
+            withExport: true,
             columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
