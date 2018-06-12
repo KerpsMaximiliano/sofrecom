@@ -198,6 +198,9 @@
   <data name="Reject" xml:space="preserve">
     <value>billing/invoice.reject</value>
   </data>
+  <data name="RequestAnnulmentSent" xml:space="preserve">
+    <value>billing/invoice.requestAnnulmentSent</value>
+  </data>
   <data name="SentToDaf" xml:space="preserve">
     <value>billing/invoice.sentToDaf</value>
   </data>

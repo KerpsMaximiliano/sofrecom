@@ -172,7 +172,8 @@
                     "invoiceNumber": "Número remito",
                     "date": "Fecha",
                     "status": "Estado",
-                    "create": "Crear remito"
+                    "create": "Crear remito",
+                    "askAnnulment": "Pedir Anulación"
                 },
                 "milestone": {
                     "title": "Hitos",

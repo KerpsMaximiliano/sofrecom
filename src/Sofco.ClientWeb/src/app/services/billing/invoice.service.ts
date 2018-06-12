@@ -93,4 +93,8 @@ export class InvoiceService {
   getHistories(invoiceId) {
     return this.http.get<any>(`${this.baseUrl}/invoices/${invoiceId}/histories`);
   }
+
+  askForAnnulment(ids) {
+    return this.http.post<any>(`${this.baseUrl}/invoices/requestAnnulment`, ids);
+ }
 }

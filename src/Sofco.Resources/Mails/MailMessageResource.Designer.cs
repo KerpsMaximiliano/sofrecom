@@ -99,7 +99,17 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Se solicita la anulación de los siguientes remitos: &lt;/br&gt;
+        ///{0}.
+        /// </summary>
+        public static string InvoiceRequestAnnulment {
+            get {
+                return ResourceManager.GetString("InvoiceRequestAnnulment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
         ///RRHH, Autorizador, Recuros: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///.
@@ -111,7 +121,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
         ///RRHH: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
         ///&lt;/br&gt;&lt;/br&gt;
@@ -125,7 +135,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
         ///RRHH: &lt;/br&gt;
         ///Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;/br&gt;&lt;/br&gt;
         ///Autorizador: &lt;/br&gt;
@@ -138,7 +148,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
         ///RRHH: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Cancelado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///Motivo: {1}
@@ -154,7 +164,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
         ///RRHH: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
         ///&lt;/br&gt;&lt;/br&gt;
@@ -168,7 +178,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
         ///RRHH: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///Motivo: {1}

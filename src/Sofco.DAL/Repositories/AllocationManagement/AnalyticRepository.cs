@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Allocation> GetTimelineResources(int id, DateTime startDate, DateTime endDate)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate).Include(x => x.Employee).ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate && x.Percentage > 0).Include(x => x.Employee).ToList().AsReadOnly();
         }
 
         public IList<Employee> GetResources(int id)

@@ -305,6 +305,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/invoice.requestAnnulmentSent.
+        /// </summary>
+        public static string RequestAnnulmentSent {
+            get {
+                return ResourceManager.GetString("RequestAnnulmentSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/invoice.sentToDaf.
         /// </summary>
         public static string SentToDaf {

@@ -23,5 +23,7 @@ namespace Sofco.Core.Models.Billing
         public string InvoiceStatus { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        public bool Selected { get; set; }
     }
 }

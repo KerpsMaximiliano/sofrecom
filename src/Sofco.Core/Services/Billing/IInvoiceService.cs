@@ -22,5 +22,6 @@ namespace Sofco.Core.Services.Billing
         Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters);
         Response<Invoice> Clone(int id);
         ICollection<InvoiceHistory> GetHistories(int id);
+        Response RequestAnnulment(IList<int> invoices);
     }
 }
