@@ -63,6 +63,15 @@ namespace Sofco.WebApi.Controllers.Admin
             return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }).OrderBy(x => x.Text));
         }
 
+        [HttpGet]
+        [Route("commercialManagers")]
+        public IActionResult GetCommercialManagers()
+        {
+            var response = userService.GetCommercialManagers();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}/detail")]
         public IActionResult Detail(int id)
         {

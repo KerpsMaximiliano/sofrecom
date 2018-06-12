@@ -223,13 +223,13 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     storeSearchCriteria(searchCriteria) {
         sessionStorage.setItem('analyticSearchCriteria', JSON.stringify(searchCriteria));
-    } 
+    }
 
     export(){
-        var ids = this.model.map(item => item.id);
-        
+        const ids = this.model.map(item => item.id);
+
         this.messageService.showLoading();
- 
+
         this.analyticService.createReport(ids).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, `Reporte Analiticas.xlsx`);
