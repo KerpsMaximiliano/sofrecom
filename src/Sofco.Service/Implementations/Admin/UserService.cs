@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
@@ -278,6 +279,28 @@ namespace Sofco.Service.Implementations.Admin
         public ICollection<User> GetManagers()
         {
             return unitOfWork.UserRepository.GetManagers();
+        }
+
+        public Response<List<UserSelectListItem>> GetCommercialManagers()
+        {
+            var result = unitOfWork.UserRepository.GetCommercialManagers();
+
+            var response = new Response<List<UserSelectListItem>>
+            {
+                Data = result.Select(x =>
+                        new UserSelectListItem
+                        {
+                            Id = x.Id.ToString(),
+                            Text = x.Name,
+                            ExternalId = x.ExternalManagerId,
+                            UserName = x.UserName,
+                            Email = x.Email
+                        })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
         }
 
         public bool HasRrhhGroup()

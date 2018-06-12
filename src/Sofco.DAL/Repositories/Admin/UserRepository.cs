@@ -65,6 +65,17 @@ namespace Sofco.DAL.Repositories.Admin
             return userGroups.Select(x => x.User).ToList().DistinctBy(s => s.Name);
         }
 
+        public IList<User> GetCommercialManagers()
+        {
+            var result = context.Analytics
+                .Include(x => x.CommercialManager)
+                .Where(x => x.CommercialManagerId > 0)
+                .Select(x => x.CommercialManager)
+                .Distinct();
+
+            return result.ToList();
+        }
+
         public IList<User> GetSellers()
         {
             var sellerCode = emailConfig.SellerCode;

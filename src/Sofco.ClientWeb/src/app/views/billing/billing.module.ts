@@ -8,6 +8,7 @@ import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
 import { PCheckModule } from 'app/components/pcheck/pcheck.module';
+import { DateRangePickerModule } from 'app/components/date-range-picker/date-range.picker.module';
 
 import { CustomerService } from 'app/services/billing/customer.service';
 import { ProjectService } from 'app/services/billing/project.service';
@@ -87,7 +88,7 @@ import { ProjectPurchaseOrdersComponent } from 'app/views/billing/projects/proje
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule],
+                 DatePickerModule, PCheckModule, DateRangePickerModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService],

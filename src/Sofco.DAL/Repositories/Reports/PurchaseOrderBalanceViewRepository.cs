@@ -33,9 +33,46 @@ namespace Sofco.DAL.Repositories.Reports
 
                 if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
                     query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
+
+                if (parameters.StartDate.HasValue && parameters.StartDate != DateTime.MinValue)
+                    query = query.Where(x => x.ReceptionDate >= parameters.StartDate);
+
+                if (parameters.EndDate.HasValue && parameters.EndDate != DateTime.MinValue)
+                    query = query.Where(x => x.ReceptionDate <= parameters.EndDate);
             }
 
-            return query.ToList();
+            var result = query.ToList();
+
+            if (parameters == null) return result;
+
+            if (parameters.AnalyticId.HasValue)
+            {
+                result = result.Where(s =>
+                {
+                    var analyticIds = s.AnalyticIds.Split(',').Select(int.Parse).Distinct();
+                    return analyticIds.Contains(parameters.AnalyticId.Value);
+                }).ToList();
+            }
+
+            if (parameters.ManagerId.HasValue)
+            {
+                result = result.Where(s =>
+                {
+                    var managerIds = s.ManagerIds.Split(',').Select(int.Parse).Distinct();
+                    return managerIds.Contains(parameters.ManagerId.Value);
+                }).ToList();
+            }
+
+            if (parameters.CommercialManagerId.HasValue)
+            {
+                result = result.Where(s =>
+                {
+                    var commercialManagerIds = s.CommercialManagerIds.Split(',').Select(int.Parse).Distinct();
+                    return commercialManagerIds.Contains(parameters.CommercialManagerId.Value);
+                }).ToList();
+            }
+
+            return result;
         }
 
         public List<PurchaseOrderBalanceDetailView> GetByPurchaseOrderIds(List<int> purchaseOrderIds)
