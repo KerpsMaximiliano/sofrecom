@@ -223,7 +223,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     initTable() {
         const options = { selector: "#resourcesTable" };
         this.dataTableService.destroy(options.selector);
-        this.dataTableService.init2(options);
+        this.dataTableService.initialize(options);
     }
 
     goToAdd() {

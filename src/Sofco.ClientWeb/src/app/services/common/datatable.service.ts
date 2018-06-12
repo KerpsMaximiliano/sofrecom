@@ -11,7 +11,7 @@ export class DataTableService {
         $(selector).DataTable().destroy();
     }
 
-    init2(params){
+    initialize(params){
         var lang = {};
         if(this.config.currLang == "es" || this.config.currLang == "fr"){
           lang = this.getLanguageEs();
@@ -63,33 +63,12 @@ export class DataTableService {
         });
     }
 
-    init(selector, scroll){
-        var lang = {};
-        if(this.config.currLang == "es" || this.config.currLang == "fr"){
-          lang = this.getLanguageEs();
-        }
-
-        setTimeout(()=>{
-            $( document ).ready(function() {
-                var options: any = {
-                    oSearch: { "bSmart": false, "bRegex": true },
-                    // scrollX: false,
-                    responsive: true, 
-                    language: lang,
-                }
-
-                // if(scroll) options.scrollX = true;
-                $(selector).DataTable(options);
-            });
-        });
-    }
-
-    adjustColumns(){
-        setTimeout(()=>{
-            $('.dataTables_scrollHeadInner').css("width", "100%");
-            $('.dataTables_scrollHeadInner table').css("width", "100%");
-        }, 1000);
-    }
+    // adjustColumns(){
+    //     setTimeout(()=>{
+    //         $('.dataTables_scrollHeadInner').css("width", "100%");
+    //         $('.dataTables_scrollHeadInner table').css("width", "100%");
+    //     }, 1000);
+    // }
 
     getLanguageEs(){
        var language =

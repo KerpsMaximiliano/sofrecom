@@ -56,7 +56,7 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
 
     initTable() {
         this.dataTableService.destroy('#delegateTable');
-        this.dataTableService.init2({
+        this.dataTableService.initialize({
             selector: '#delegateTable',
             order: [[ 0, 'asc' ]]
         });

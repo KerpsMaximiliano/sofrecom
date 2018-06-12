@@ -33,7 +33,7 @@ export class ProjectPurchaseOrdersComponent implements OnDestroy {
         }
 
         this.datatableService.destroy(params.selector);
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
       },
       err => {
         this.errorHandlerService.handleErrors(err);

@@ -162,7 +162,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             }
 
             this.dataTableService.destroy(options.selector);
-            this.dataTableService.init2(options);
+            this.dataTableService.initialize(options);
         }, 500);
        
         setTimeout(() => {

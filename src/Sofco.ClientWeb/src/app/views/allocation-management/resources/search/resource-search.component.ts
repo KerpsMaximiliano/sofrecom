@@ -249,7 +249,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
          };
 
         this.dataTableService.destroy(options.selector);
-        this.dataTableService.init2(options);
+        this.dataTableService.initialize(options);
     }
 
     goToProfile(resource){

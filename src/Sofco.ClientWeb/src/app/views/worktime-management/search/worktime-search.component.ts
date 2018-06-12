@@ -153,7 +153,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         };
 
         this.dataTableService.destroy(options.selector); 
-        this.dataTableService.init2(options);
+        this.dataTableService.initialize(options);
         this.gridIsVisible = true;
 
         setTimeout(() => {

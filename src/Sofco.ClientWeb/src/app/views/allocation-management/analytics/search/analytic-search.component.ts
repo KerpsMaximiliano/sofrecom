@@ -215,7 +215,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             };
 
             this.dataTableService.destroy(options.selector);
-            this.dataTableService.init2(options);
+            this.dataTableService.initialize(options);
             this.storeSearchCriteria(searchCriteria);
         },
         error => this.errorHandlerService.handleErrors(error));

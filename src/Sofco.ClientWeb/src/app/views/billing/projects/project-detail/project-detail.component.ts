@@ -184,7 +184,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
   
         this.datatableService.destroy(params.selector);
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     getInvoices(projectId){
@@ -202,7 +202,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
           columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     getSolfacs(projectId){
@@ -220,7 +220,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
           columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
 

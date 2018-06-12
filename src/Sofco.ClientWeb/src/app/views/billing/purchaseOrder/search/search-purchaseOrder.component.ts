@@ -175,7 +175,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         this.datatableService.destroy('#purchaseOrderTable');
 
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
 
         this.updateTableDetail();
     }

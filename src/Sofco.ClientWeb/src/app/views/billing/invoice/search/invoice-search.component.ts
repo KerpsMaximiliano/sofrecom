@@ -200,7 +200,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
           }
     
-          this.datatableService.init2(params);
+          this.datatableService.initialize(params);
     }
 
     clean(){

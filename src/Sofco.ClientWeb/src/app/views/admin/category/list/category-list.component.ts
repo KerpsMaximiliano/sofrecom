@@ -139,6 +139,6 @@ declare var moment: any;
           }
 
           this.dataTableService.destroy(params.selector);
-          this.dataTableService.init2(params);
+          this.dataTableService.initialize(params);
     }
   }

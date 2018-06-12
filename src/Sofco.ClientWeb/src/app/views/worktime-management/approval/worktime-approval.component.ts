@@ -175,7 +175,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     initGrid(options){
         this.datatableService.destroy(options.selector);
-        this.datatableService.init2(options);
+        this.datatableService.initialize(options);
     }
 
     showComments(item){
