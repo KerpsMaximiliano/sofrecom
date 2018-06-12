@@ -30,7 +30,10 @@ namespace Sofco.Core.Services.Admin
         bool HasDafGroup();
 
         bool HasCdgGroup();
+
         ICollection<User> GetManagers();
+
+        Response<List<UserSelectListItem>> GetCommercialManagers();
 
         bool HasRrhhGroup();
 

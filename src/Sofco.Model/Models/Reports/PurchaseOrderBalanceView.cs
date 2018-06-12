@@ -1,4 +1,5 @@
-﻿using Sofco.Model.Enums;
+﻿using System;
+using Sofco.Model.Enums;
 
 namespace Sofco.Model.Models.Reports
 {
@@ -14,7 +15,7 @@ namespace Sofco.Model.Models.Reports
 
         public string ClientExternalName { get; set; }
 
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         public string CurrencyText { get; set; }
 
@@ -23,5 +24,13 @@ namespace Sofco.Model.Models.Reports
         public PurchaseOrderStatus Status { get; set; }
 
         public decimal? Balance { get; set; }
+
+        public DateTime ReceptionDate { get; set; }
+
+        public string AnalyticIds { get; set; }
+
+        public string ManagerIds { get; set; }
+
+        public string CommercialManagerIds { get; set; }
     }
 }

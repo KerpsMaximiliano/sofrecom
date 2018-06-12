@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Option } from "app/models/option";
@@ -11,6 +11,9 @@ import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service
 import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
+import { EmployeeService } from '../../../../services/allocation-management/employee.service';
+import { DateRangePickerComponent } from '../../../../components/date-range-picker/date-range-picker.component';
+import { UserService } from '../../../../services/admin/user.service';
 declare var $: any;
 declare var moment: any;
 
@@ -22,12 +25,11 @@ declare var moment: any;
 export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     public data: any[] = new Array();
-    
+
     public analytics: any[] = new Array();
-    public opportunities: any[] = new Array();
     public purchaseOrders: any[] = new Array();
     public projectManagers: any[] = new Array();
-    public accountManagers: any[] = new Array();
+    public commercialManagers: any[] = new Array();
 
     public customers: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
@@ -36,18 +38,21 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     public opportunityId: any;
     public purchaseOrderId: any;
     public projectManagerId: any;
-    public accountManagerId: any;
+    public commercialManagerId: any;
     public startDate: Date;
     public endDate: Date;
     public dateFilter = true;
+    public filterByDates = true;
 
     public customerId = "0";
     public statusId = "0";
     public year;
+    private storeSessionName = "purchaseOrderSearchCriteria";
 
-    getAllSubscrip: Subscription;
+    suscription: Subscription;
 
     @ViewChild('pdfViewer') pdfViewer;
+    @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
     constructor(
         private router: Router,
@@ -55,23 +60,46 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private purchaseOrderService: PurchaseOrderService,
         private analyticService: AnalyticService,
+        private employeeService: EmployeeService,
+        private userService: UserService,
         private datatableService: DataTableService,
         private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
-        const data = JSON.parse(sessionStorage.getItem('lastPurchaseOrderQuery'));
+        this.getCustomers();
+        this.getAnalytics();
+        this.getManagers();
+        this.getCommercialManagers();
+        this.getStatuses();
+        const data = JSON.parse(sessionStorage.getItem(this.storeSessionName));
         if (data){
             this.statusId = data.statusId;
             this.customerId = data.clientId;
-            this.search();
+            this.analyticId = data.analyticId;
+            this.statusId = data.statusId;
+            this.projectManagerId = data.managerId;
+            this.commercialManagerId = data.commercialManagerId;
+            this.startDate = data.startDate;
+            this.endDate = data.endDate;
+            this.filterByDates = data.filterByDates;
         }
-        this.getCustomers();
-        this.getStatuses();
+    }
+
+    ngAfterViewInit() {
+        const data = JSON.parse(sessionStorage.getItem(this.storeSessionName));
+        if (data){
+            if(this.startDate) {
+                this.dateRangePicker.start = moment(this.startDate);
+            }
+            if(this.endDate) {
+                this.dateRangePicker.end = moment(this.endDate);
+            }
+        }
     }
 
     ngOnDestroy(){
-      if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if(this.suscription) this.suscription.unsubscribe();
     }
 
     gotToEdit(data) {
@@ -102,23 +130,19 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         });
     }
 
-    search() {
+    getReport(parameters) {
         this.messageService.showLoading();
 
-        const parameters = {
-            clientId: this.customerId,
-            statusId: this.statusId
-        }
-
-        this.getAllSubscrip = this.purchaseOrderService.getReport(parameters).subscribe(response => {
+        this.suscription = this.purchaseOrderService.getReport(parameters).subscribe(response => {
             setTimeout(() => {
                 this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
 
                 this.data = response.data;
-                sessionStorage.setItem('lastPurchaseOrderQuery', JSON.stringify(parameters));
+                sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
                 this.initGrid();
             }, 500);
+            this.storeSearchCriteria(parameters);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -163,7 +187,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         this.datatableService.destroy('#purchaseOrderTable');
         this.data = new Array();
 
-        sessionStorage.removeItem('lastPurchaseOrderQuery');
+        sessionStorage.removeItem(this.storeSessionName);
     }
 
     export(purchaseOrder){
@@ -313,9 +337,58 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     searchCriteriaChange() {
         this.customerId = this.customerId === "0" ? null : this.customerId;
+        this.statusId = this.statusId === "0" ? null : this.statusId;
+        this.analyticId = this.analyticId === "0" ? null : this.analyticId;
+        this.projectManagerId = this.projectManagerId === "0" ? null : this.projectManagerId;
+        this.commercialManagerId = this.commercialManagerId === "0" ? null : this.commercialManagerId;
+        this.startDate = null;
+        this.endDate = null;
+        if(this.dateRangePicker) {
+            this.startDate = this.filterByDates ? this.dateRangePicker.start.toDate() : null;
+            this.endDate = this.filterByDates ? this.dateRangePicker.end.toDate() : null;
+        }
+        const searchCriteria = {
+            clientId: this.customerId,
+            statusId: this.statusId,
+            analyticId: this.analyticId,
+            managerId: this.projectManagerId,
+            commercialManagerId: this.commercialManagerId,
+            startDate: this.startDate,
+            endDate: this.endDate
+        };
+
+        this.getReport(searchCriteria);
     }
 
-    customerChange() {
-        
+    storeSearchCriteria(searchCriteria) {
+        searchCriteria.filterByDates = this.filterByDates;
+        sessionStorage.setItem(this.storeSessionName, JSON.stringify(searchCriteria));
+    }
+
+    getAnalytics() {
+        this.suscription = this.analyticService.getAll().subscribe(data => {
+            this.analytics = this.mapAnalyticToSelect(data);
+            this.searchCriteriaChange();
+        },
+        error => this.errorHandlerService.handleErrors(error));
+    }
+
+    mapAnalyticToSelect(data: Array<any>): Array<any> {
+        data.forEach(x => x.text = x.title + ' - ' + x.name);
+        return data;
+    }
+
+    getManagers() {
+        this.suscription = this.employeeService.getManagers().subscribe(data => {
+            this.projectManagers = data;
+        },
+        error => this.errorHandlerService.handleErrors(error));
+    }
+
+    getCommercialManagers() {
+        this.suscription = this.userService.getCommercialManagers().subscribe(res => {
+            this.commercialManagers = res.data;
+        },
+        error => this.errorHandlerService.handleErrors(error));
     }
 }

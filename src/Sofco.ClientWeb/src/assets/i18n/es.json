@@ -216,7 +216,7 @@
             "add": "Alta",
             "edit": "Editar",
             "search": "Busqueda",
-            "parameters": "Parametros de busqueda",
+            "parameters": "Parámetros de búsqueda",
             "noOrdersFound": "No hay certificados cargados",
             "fields": {
                 "name": "Nombre",
@@ -233,7 +233,7 @@
             "add": "Alta",
             "edit": "Editar",
             "search": "Busqueda", 
-            "parameters": "Parametros de busqueda",
+            "parameters": "Parámetros de búsqueda",
             "noOrdersFound": "No hay ordenes de compra cargadas",
             "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
             "fields": {
@@ -254,13 +254,12 @@
                 "project": "Proyecto",
                 "description": "Descripción",
                 "analytic": "Analítica",
-                "balance": "Saldo",
                 "billingPendingAmmount": "Pendiente a Facturar", 
                 "cashPendingAmmount": "Pendiente a Cobrar", 
                 "ammountCashed": "Ingresos Cobrados"
             },
             "projectManager": "Gerente de Proyecto",
-            "accountManager": "Gerente de Cuenta"
+            "commercialManager": "Gerente de Cuenta"
         },
         "solfac":{
             "title": "Solicitud Facturación",
@@ -767,7 +766,9 @@
             "invoiceDate": "invoiceDate",
             "amount": "Importe"
         },
-        "dateRange": "Desde - hasta"
+        "dateRange": "Desde - hasta",
+        "dayOfWeek": "Lu Ma Mie Ju Vie Sa Do",
+        "monthNames": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic"
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",

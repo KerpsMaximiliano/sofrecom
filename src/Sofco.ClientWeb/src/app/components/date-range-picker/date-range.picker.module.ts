@@ -8,7 +8,7 @@ import { DateRangePickerComponent } from 'app/components/date-range-picker/date-
   imports: [
     CommonModule, Daterangepicker
   ],
-  declarations: [ 
+  declarations: [
     DateRangePickerComponent
   ],
   providers: [
