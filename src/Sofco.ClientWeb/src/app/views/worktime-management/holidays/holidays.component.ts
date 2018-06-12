@@ -142,10 +142,8 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   }
 
   processImport() {
-    this.confirmImportModal.isLoading = true;
+    this.confirmImportModal.hide();
     this.subscription = this.holidayService.importExternalData(this.selectedYear).subscribe(res => {
-      this.confirmImportModal.isLoading = false;
-      this.confirmImportModal.hide();
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getHolidays();
     },
@@ -156,10 +154,8 @@ export class HolidaysComponent implements OnInit, OnDestroy {
 
   processDelete() {
     const id = this.holidayModel.id;
-    this.confirmDeleteModal.isLoading = true;
+    this.confirmDeleteModal.hide();
     this.subscription = this.holidayService.delete(id).subscribe(response => {
-      this.confirmDeleteModal.isLoading = false;
-      this.confirmDeleteModal.hide();
       if (response.messages) this.messageService.showMessages(response.messages);
       this.getHolidays();
     },
