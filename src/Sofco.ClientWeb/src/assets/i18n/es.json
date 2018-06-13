@@ -770,7 +770,8 @@
         },
         "dateRange": "Desde - hasta",
         "dayOfWeek": "Lu Ma Mie Ju Vie Sa Do",
-        "monthNames": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic"
+        "monthNames": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic",
+        "resultNotFound": "No se encontraron datos."
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
