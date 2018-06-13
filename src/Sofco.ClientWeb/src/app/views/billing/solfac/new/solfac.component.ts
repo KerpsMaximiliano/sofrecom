@@ -74,6 +74,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this.getOptions();
       this.setNewModel();
+
+      $('#currency-select select').attr('disabled', 'disabled');
     }
 
     ngOnDestroy(){

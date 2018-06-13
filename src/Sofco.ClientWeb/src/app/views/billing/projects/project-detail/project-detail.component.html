@@ -76,7 +76,7 @@
                                     <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
-                                    <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.purchaseOrder.title' | translate }}</a></li>
+                                    <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.balance' | translate }}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -125,8 +125,9 @@
                                     <table class="table table-striped" id="solfacTable" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>{{'billing.project.detail.requests.project' | translate }}</th>
-                                                <th>{{'billing.project.detail.requests.businessName' | translate }}</th>
+                                                <!-- <th>{{'billing.project.detail.requests.project' | translate }}</th> -->
+                                                <!-- <th>{{'billing.project.detail.requests.businessName' | translate }}</th> -->
+                                                <th>{{'billing.purchaseOrder.name' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.docType' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.date' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.total' | translate }}</th>
@@ -135,10 +136,11 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let solfac of solfacs" (click)="goToSolfacDetail(solfac)" class="pointer">
-                                                <td>{{solfac.project}}</td>
-                                                <td>{{solfac.businessName}}</td>
-                                                <td>{{solfac.documentTypeName}}</td>
-                                                <td>{{solfac.startDate | date:'dd/MM/yyyy'}}</td>
+                                                <!-- <td>{{solfac.project}}</td> -->
+                                                <!-- <td>{{solfac.businessName}}</td> -->
+                                                <td>{{ solfac.purchaseOrder }}</td>
+                                                <td>{{ solfac.documentTypeName }}</td>
+                                                <td>{{ solfac.startDate | date:'dd/MM/yyyy' }}</td>
                                                 <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>
                                                 <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                                             </tr>

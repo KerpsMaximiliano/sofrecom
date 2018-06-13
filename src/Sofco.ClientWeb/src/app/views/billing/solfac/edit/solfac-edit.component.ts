@@ -94,6 +94,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getInvoices();
       });
+
+      $('#currency-select select').attr('disabled', 'disabled');
     }
  
     ngOnDestroy(){

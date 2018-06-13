@@ -29,7 +29,9 @@ namespace Sofco.DAL.Repositories.Billing
         public IList<Solfac> GetByProject(string projectId)
         {
             return context.Solfacs.Where(x => x.ProjectId.Contains(projectId))
-                .Include(x => x.DocumentType).ToList();
+                .Include(x => x.DocumentType)
+                .Include(x => x.PurchaseOrder)
+                .ToList();
         }
 
         public Solfac GetByIdWithUser(int id)
@@ -59,6 +61,7 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.ImputationNumber)
+                .Include(x => x.PurchaseOrder)
                 .Include(x => x.PaymentTerm)
                 .Include(x => x.Hitos).ThenInclude(x => x.Details)
                 .SingleOrDefault(x => x.Id == id);

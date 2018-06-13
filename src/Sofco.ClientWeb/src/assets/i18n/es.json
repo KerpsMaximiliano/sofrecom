@@ -167,6 +167,7 @@
                 "serviceType": "Tipo de Servicio",
                 "solutionType": "Tipo de Solución",
                 "technology": "Tipo de Tecnología",
+                "balance": "Resumen",
                 "invoices": {
                     "title": "Remitos",
                     "invoiceNumber": "Número remito",

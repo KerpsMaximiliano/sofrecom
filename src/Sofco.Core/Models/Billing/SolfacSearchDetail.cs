@@ -27,6 +27,9 @@ namespace Sofco.Core.Models.Billing
             InvoiceDate = domain.InvoiceDate;
             InvoiceCode = domain.InvoiceCode;
 
+            if (domain.PurchaseOrder != null)
+                PurchaseOrder = domain.PurchaseOrder.Number;
+
             if (domain.ProjectId.Contains(";"))
             {
                 var split = domain.ProjectId.Split(';');
@@ -45,6 +48,8 @@ namespace Sofco.Core.Models.Billing
         public string Project { get; set; }
 
         public string BusinessName { get; set; }
+
+        public string PurchaseOrder { get; set; }
 
         public string DocumentTypeName { get; set; }
 

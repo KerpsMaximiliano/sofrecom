@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <select-two [label]="'billing.solfac.currency'" [(value)]="model.currencyId" [options]="currencies" (valueChange)="setCurrencySymbol(model.currencyId)"></select-two>
+                            <select-two id="currency-select" [label]="'billing.solfac.currency'" [(value)]="model.currencyId" [options]="currencies" (valueChange)="setCurrencySymbol(model.currencyId)"></select-two>
                         </div>
                         <div class="col-sm-6" *ngIf="model.remito">
                             <div class="form-group">

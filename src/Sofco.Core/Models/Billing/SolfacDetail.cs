@@ -80,6 +80,9 @@ namespace Sofco.Core.Models.Billing
             if (domain.PaymentTerm != null)
                 PaymentTermName = domain.PaymentTerm.Text;
 
+            if (domain.PurchaseOrder != null)
+                ContractNumber = domain.PurchaseOrder.Number;
+
             Hitos = new List<HitoModel>();
             Details = new List<HitoDetailModel>();
 
