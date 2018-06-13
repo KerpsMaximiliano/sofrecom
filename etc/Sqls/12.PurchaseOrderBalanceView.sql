@@ -10,7 +10,7 @@ SELECT
 	poad.Ammount,
 	po.Status,
 	po.ReceptionDate,
-	SUM(hit.Total) as Balance,
+	poad.Ammount - SUM(hit.Total) as Balance,
 	STRING_AGG(an.Id, ',') as AnalyticIds,
 	STRING_AGG(an.ManagerId, ',') as ManagerIds,
 	STRING_AGG(an.CommercialManagerId, ',') as CommercialManagerIds
