@@ -64,7 +64,9 @@
             </div>
         </div>
     </div>
-
+    <div class="row" *ngIf="data.length == 0">
+        <div class="col-lg-12">{{'report.resultNotFound' | translate }}</div>
+    </div>
     <div class="row" *ngIf="data.length > 0">
         <div class="col-lg-12">
             <div class="ibox">

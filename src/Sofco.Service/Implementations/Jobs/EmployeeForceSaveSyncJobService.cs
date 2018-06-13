@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void AddEmployee()
         {
-            var employees = Translate(tigerEmployeeRepository.GetByLegajs(new []{ 1008 }).ToList());
+            var employees = Translate(tigerEmployeeRepository.GetByLegajs(new []{ 1003 }).ToList());
 
             unitOfWork.EmployeeRepository.Save(employees);
         }
