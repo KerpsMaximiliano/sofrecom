@@ -175,6 +175,8 @@ namespace Sofco.Service.Implementations.Billing
             switch (solfac.Status)
             {
                 case SolfacStatus.InvoicePending:
+                case SolfacStatus.ManagementControlRejected:
+                case SolfacStatus.RejectedByDaf:
                 case SolfacStatus.PendingByManagementControl: newOc.BillingPendingAmmount += solfac.TotalAmount; break;
 
                 case SolfacStatus.Invoiced: newOc.CashPendingAmmount += solfac.TotalAmount; break;
