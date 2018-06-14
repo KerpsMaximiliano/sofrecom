@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { HolidayService } from 'app/services/worktime-management/holiday.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { DataTableService } from 'app/services/common/datatable.service';
 
 @Component({
   selector: 'app-holidays',
@@ -48,6 +49,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   constructor(
       private messageService: MessageService,
       private holidayService: HolidayService,
+      private datatableService: DataTableService,
       private errorHandlerService: ErrorHandlerService) {
   }
 
@@ -73,14 +75,11 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   }
 
   getHolidays() {
-    this.messageService.showLoading();
-
     this.subscription = this.holidayService.get(this.selectedYear).subscribe(response => {
-      this.messageService.closeLoading();
       this.holidays = response.data;
+      this.initGrid();
     },
     error => {
-      this.messageService.closeLoading();
       this.errorHandlerService.handleErrors(error);
     });
   }
@@ -162,5 +161,19 @@ export class HolidaysComponent implements OnInit, OnDestroy {
     err => {
         this.errorHandlerService.handleErrors(err);
     });
+  }
+
+  initGrid() {
+    const columns = [0, 1, 2];
+
+    const params = {
+        selector: '#holidaysTable',
+        columns: columns,
+        withExport: false
+    };
+
+    this.datatableService.destroy('#holidaysTable');
+
+    this.datatableService.initialize(params);
   }
 }

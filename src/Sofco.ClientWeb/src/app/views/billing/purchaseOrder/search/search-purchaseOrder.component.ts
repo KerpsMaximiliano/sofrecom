@@ -77,7 +77,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             this.statusId = data.statusId;
             this.customerId = data.clientId;
             this.analyticId = data.analyticId;
-            this.statusId = data.statusId;
             this.projectManagerId = data.managerId;
             this.commercialManagerId = data.commercialManagerId;
             this.startDate = data.startDate;
@@ -178,16 +177,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         this.datatableService.initialize(params);
 
         this.updateTableDetail();
-    }
-
-    clean(){
-        this.customerId = "0";
-        this.statusId = "0";
-
-        this.datatableService.destroy('#purchaseOrderTable');
-        this.data = new Array();
-
-        sessionStorage.removeItem(this.storeSessionName);
     }
 
     export(purchaseOrder){
@@ -390,5 +379,20 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             this.commercialManagers = res.data;
         },
         error => this.errorHandlerService.handleErrors(error));
+    }
+
+    clean() {
+        this.customerId = "0";
+        this.analyticId = "0";
+        this.projectManagerId = "0";
+        this.commercialManagerId = "0";
+        this.statusId = "0";
+        this.filterByDates = true;
+
+        sessionStorage.removeItem(this.storeSessionName);
+
+        setTimeout(() => {
+            this.searchCriteriaChange();
+        }, 100);
     }
 }
