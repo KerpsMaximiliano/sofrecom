@@ -355,7 +355,8 @@
                 "createdUser": "Creado por",
                 "createdDate": "Fecha creación",
                 "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?"
-            }
+            },
+            "hitosSelectedDataError": "Ocurrió un error al recuperar el hito seleccionado, por favor vuelva al inicio clickeando en el siguiente bóton."
         },
         "invoice":{
             "title": "Remitos",
