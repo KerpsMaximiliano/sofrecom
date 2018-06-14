@@ -257,6 +257,8 @@ namespace Sofco.Core.Models.Billing
                     hito.Details.Add(domainDetail);
                 }
 
+                hito.Total = hito.Details.Sum(x => x.Total);
+
                 solfac.Hitos.Add(hito);
             }
 
