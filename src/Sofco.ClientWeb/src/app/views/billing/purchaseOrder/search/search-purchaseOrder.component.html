@@ -84,8 +84,8 @@
                                 <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
                                 <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
                                 <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
-                                <th class="text-right">{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
-                                <th class="text-right">{{'billing.purchaseOrder.fields.balance' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
+                                <th>{{'billing.purchaseOrder.fields.balance' | translate }}</th>
                                 <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                             </tr>
                         </thead>
@@ -99,8 +99,8 @@
                                 <td>{{ purchaseOrder.clientExternalName }}</td>
                                 <td class="text-center"> <label class="label" [ngClass]="(purchaseOrder.statusId == 1) ? 'label-primary' : 'label-warning'">{{ purchaseOrder.statusText | translate }}</label> </td>
                                 <td>{{ purchaseOrder.currencyText }}</td>
-                                <td class="text-right">{{ purchaseOrder.ammount }}</td>
-                                <td class="text-right">{{ purchaseOrder.balance }}</td>
+                                <td>{{ purchaseOrder.ammount }}</td>
+                                <td>{{ purchaseOrder.balance }}</td>
                                 <td class="text-center column-xs">
                                     <button class="btn btn-warning btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-edit"></i></button>
         
