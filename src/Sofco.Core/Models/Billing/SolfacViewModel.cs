@@ -163,6 +163,8 @@ namespace Sofco.Core.Models.Billing
 
                 hito.Details.AddRange(details.Select(x => x.CreateDomain()));
 
+                hito.Total = hito.Details.Sum(x => x.Total);
+
                 solfac.Hitos.Add(hito);
             }
 
