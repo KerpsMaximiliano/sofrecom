@@ -16,9 +16,13 @@ SELECT
 	STRING_AGG(an.CommercialManagerId, ',') as CommercialManagerIds
 FROM app.PurchaseOrders po
 LEFT JOIN app.PurchaseOrderAmmountDetails poad ON poad.PurchaseOrderId = po.Id
-LEFT JOIN app.Solfacs sf ON sf.PurchaseOrderId = poad.PurchaseOrderId AND sf.CurrencyId = poad.CurrencyId
+LEFT JOIN app.PurchaseOrderAnalytics poan ON poan.PurchaseOrderId = po.id
+LEFT JOIN app.Analytics an ON an.Id = poan.AnalyticId
+LEFT JOIN app.Solfacs sf ON 
+		sf.PurchaseOrderId = poad.PurchaseOrderId 
+		AND sf.CurrencyId = poad.CurrencyId
+		AND sf.ServiceId = an.ServiceId
 LEFT JOIN app.Hitos hit ON hit.SolfacId = sf.Id
 LEFT JOIN app.Currencies cur ON cur.Id = poad.CurrencyId
-LEFT JOIN app.Analytics an ON an.ClientExternalId = po.ClientExternalId
 GROUP BY 
 	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, po.Status
