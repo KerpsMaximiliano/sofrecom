@@ -642,6 +642,14 @@ pre {
   }
   
   .datepicker table tr td, .datepicker table tr th {
-  height: 50px;
+    height: 50px;
   }
   
+  .ibox:hover {
+    box-shadow: inset 0 0 0 #121415, 0px 0px 0px 0px #121415, 0px 6px 15px rgb(109, 105, 105);
+    transition: box-shadow 0.7s ease-in-out;
+}
+
+.ibox {
+    transition: box-shadow 0.7s ease-in-out;
+}
