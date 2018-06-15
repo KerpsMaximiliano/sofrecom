@@ -19,13 +19,6 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "PurchaseOrderFiles");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                nullable: true,
-                oldClrType: typeof(int));
-
             migrationBuilder.CreateTable(
                 name: "PurchaseOrderAmmountDetails",
                 schema: "app",
@@ -67,14 +60,6 @@ namespace Sofco.WebApi.Migrations
             migrationBuilder.DropTable(
                 name: "PurchaseOrderAmmountDetails",
                 schema: "app");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldNullable: true);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Ammount",

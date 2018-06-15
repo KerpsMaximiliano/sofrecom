@@ -30,12 +30,6 @@ namespace Sofco.WebApi.Migrations
                 table: "PurchaseOrderFiles");
 
             migrationBuilder.RenameColumn(
-                name: "Year",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                newName: "CurrencyId");
-
-            migrationBuilder.RenameColumn(
                 name: "Title",
                 schema: "app",
                 table: "PurchaseOrderFiles",
@@ -75,36 +69,10 @@ namespace Sofco.WebApi.Migrations
                 table: "PurchaseOrderFiles",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrderFiles_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                column: "CurrencyId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PurchaseOrderFiles_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                column: "CurrencyId",
-                principalSchema: "app",
-                principalTable: "Currencies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_PurchaseOrderFiles_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles");
-
-            migrationBuilder.DropIndex(
-                name: "IX_PurchaseOrderFiles_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles");
-
             migrationBuilder.DropColumn(
                 name: "Ammount",
                 schema: "app",
@@ -135,12 +103,6 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "PurchaseOrderFiles",
                 newName: "Title");
-
-            migrationBuilder.RenameColumn(
-                name: "CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                newName: "Year");
 
             migrationBuilder.AddColumn<int>(
                 name: "CommercialManagerId",

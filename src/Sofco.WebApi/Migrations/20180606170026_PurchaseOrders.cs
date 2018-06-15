@@ -21,11 +21,6 @@ namespace Sofco.WebApi.Migrations
                 column: "Id");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_PurchaseOrderFiles_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_PurchaseOrderFiles_Files_FileId",
                 schema: "app",
                 table: "PurchaseOrderFiles");
@@ -55,27 +50,11 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 newName: "PurchaseOrders");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_PurchaseOrderFiles_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrders",
-                newName: "IX_PurchaseOrders_CurrencyId");
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_PurchaseOrders",
                 schema: "app",
                 table: "PurchaseOrders",
                 column: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PurchaseOrders_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrders",
-                column: "CurrencyId",
-                principalSchema: "app",
-                principalTable: "Currencies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_PurchaseOrders_Files_FileId",
@@ -121,11 +100,6 @@ namespace Sofco.WebApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_PurchaseOrders_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrders");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_PurchaseOrders_Files_FileId",
                 schema: "app",
                 table: "PurchaseOrders");
@@ -161,27 +135,11 @@ namespace Sofco.WebApi.Migrations
                 table: "PurchaseOrderFiles",
                 newName: "IX_PurchaseOrderFiles_FileId");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_PurchaseOrders_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                newName: "IX_PurchaseOrderFiles_CurrencyId");
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_PurchaseOrderFiles",
                 schema: "app",
                 table: "PurchaseOrderFiles",
                 column: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PurchaseOrderFiles_Currencies_CurrencyId",
-                schema: "app",
-                table: "PurchaseOrderFiles",
-                column: "CurrencyId",
-                principalSchema: "app",
-                principalTable: "Currencies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_PurchaseOrderFiles_Files_FileId",

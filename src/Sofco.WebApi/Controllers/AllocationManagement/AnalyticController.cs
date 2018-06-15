@@ -59,7 +59,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new Core.Models.AllocationManagement.AnalyticModel(response.Data));
+            return Ok(new AnalyticModel(response.Data));
         }
 
         [HttpGet("formOptions")]
