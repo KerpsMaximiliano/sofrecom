@@ -43,6 +43,9 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getAnalytic();
+
+        $('#customer-select select').attr('disabled', 'disabled');
+        $('#service-select select').attr('disabled', 'disabled');
     }
 
     ngOnDestroy(): void {

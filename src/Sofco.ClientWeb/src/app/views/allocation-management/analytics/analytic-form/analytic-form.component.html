@@ -43,10 +43,10 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                <select-two id="customer-select" [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
             </div>
             <div class="col-sm-6">
-                <select-two [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                <select-two id="service-select" [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
             </div>
         </div>
 

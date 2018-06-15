@@ -1,14 +1,11 @@
 import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Message } from 'app/models/message';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { AuthenticationService } from "app/services/common/authentication.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { UserService } from "app/services/admin/user.service";
-import { CryptographyService } from 'app/services/common/cryptography.service';
 import { UserInfoService } from '../../../services/common/user-info.service';
 
 @Component({
@@ -30,21 +27,22 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private menuService: MenuService,
-        private messageService: MessageService,
         private userService: UserService,
-        private cryptoService: CryptographyService,
         private errorHandlerService: ErrorHandlerService) { }
 
     ngOnInit() {
     }
 
     login() {
-        this.messageService.showLoginLoading();
+        this.loading = true;
 
         this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(
             data => { this.onLoginSucces(data); },
-            error => this.errorHandlerService.handleErrors(error));
+            error => { 
+                this.errorHandlerService.handleErrors(error);
+                this.loading = false;
+            });
     }
 
     onLoginSucces(data) {
@@ -61,15 +59,14 @@ export class LoginComponent implements OnInit {
 
                 this.getMenuData();
             },
-            error => this.errorHandlerService.handleErrors(error)
-        );
+            error => this.errorHandlerService.handleErrors(error));
     }
 
     getMenuData(){
         this.menuSubscrip = this.menuService.get().subscribe(
             response => {
                 const menu = response.data;
-                this.messageService.closeLoading();
+                this.loading = false;
 
                 localStorage.setItem('menu', JSON.stringify(menu));
                 Cookie.set("currentUser", this.model.username);

@@ -73,6 +73,7 @@ export class BasicLayoutComponent {
   }
 
   handleInactivityCallback(){
+    localStorage.setItem('mustLogout', "true");
     this.inactivityModal.show();
   }
 

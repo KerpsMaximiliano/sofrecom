@@ -11,7 +11,7 @@
             <div class="form-group">
                 <input type="password" class="form-control" name="password" [(ngModel)]="model.password" placeholder="{{'HOME.password' | translate }}" required="">
             </div>
-            <button type="submit" class="btn btn-success block full-width m-b">{{'HOME.login' | translate }}</button>
+            <button type="submit" [ladda]="loading" class="btn btn-success block full-width m-b">{{'HOME.login' | translate }}</button>
         </form>
 
         <div class="support"><strong>Soporte</strong>: <a href="mailto:gaps@sofrecom.com.ar">gaps@sofrecom.com.ar</a></div>
