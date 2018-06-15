@@ -211,8 +211,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         return '<table class="table table-striped">' +
             '<thead>' +
-                '<th>' + this.i18nService.translateByKey('allocationManagement.analytics.title') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.hito.title') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('billing.solfac.analytic') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('billing.solfac.hito') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.status') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.currency') + '</th>' +
@@ -293,8 +293,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     getExportSubHeader() {
         return ['',
-            this.i18nService.translateByKey('allocationManagement.analytics.title'),
-            this.i18nService.translateByKey('billing.hito.title'),
+            this.i18nService.translateByKey('billing.solfac.analytic'),
+            this.i18nService.translateByKey('billing.solfac.hito'),
             this.i18nService.translateByKey('billing.solfac.date'),
             this.i18nService.translateByKey('billing.solfac.status'),
             this.i18nService.translateByKey('billing.solfac.amount')];
