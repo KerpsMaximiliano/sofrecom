@@ -11,6 +11,8 @@ namespace Sofco.DAL.Repositories.Reports
 {
     public class PurchaseOrderBalanceViewRepository : IPurchaseOrderBalanceViewRepository
     {
+        private const int Limit = 1000;
+
         private readonly DbSet<PurchaseOrderBalanceView> purchaseOrderBalanceViews;
 
         private readonly DbSet<PurchaseOrderBalanceDetailView> purchaseOrderBalanceDetailViews;
@@ -26,30 +28,30 @@ namespace Sofco.DAL.Repositories.Reports
         {
             IQueryable<PurchaseOrderBalanceView> query = purchaseOrderBalanceViews;
 
-            if (parameters != null)
-            {
-                if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                    query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
+            if (!IsValidParameters(parameters)) return query.Take(Limit).ToList();
 
-                if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
-                    query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
+            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
+                query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
 
-                if (parameters.StartDate.HasValue && parameters.StartDate != DateTime.MinValue)
-                    query = query.Where(x => x.ReceptionDate >= parameters.StartDate);
+            if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
+                query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
 
-                if (parameters.EndDate.HasValue && parameters.EndDate != DateTime.MinValue)
-                    query = query.Where(x => x.ReceptionDate <= parameters.EndDate);
-            }
+            if (parameters.StartDate.HasValue && parameters.StartDate != DateTime.MinValue)
+                query = query.Where(x => x.ReceptionDate >= parameters.StartDate);
+
+            if (parameters.EndDate.HasValue && parameters.EndDate != DateTime.MinValue)
+                query = query.Where(x => x.ReceptionDate <= parameters.EndDate);
 
             var result = query.ToList();
-
-            if (parameters == null) return result;
 
             if (parameters.AnalyticId.HasValue)
             {
                 result = result.Where(s =>
                 {
+                    if (s.AnalyticIds == null) return false;
+
                     var analyticIds = s.AnalyticIds.Split(',').Select(int.Parse).Distinct();
+
                     return analyticIds.Contains(parameters.AnalyticId.Value);
                 }).ToList();
             }
@@ -58,7 +60,10 @@ namespace Sofco.DAL.Repositories.Reports
             {
                 result = result.Where(s =>
                 {
+                    if (s.ManagerIds == null) return false;
+
                     var managerIds = s.ManagerIds.Split(',').Select(int.Parse).Distinct();
+
                     return managerIds.Contains(parameters.ManagerId.Value);
                 }).ToList();
             }
@@ -67,7 +72,10 @@ namespace Sofco.DAL.Repositories.Reports
             {
                 result = result.Where(s =>
                 {
+                    if (s.CommercialManagerIds == null) return false;
+
                     var commercialManagerIds = s.CommercialManagerIds.Split(',').Select(int.Parse).Distinct();
+
                     return commercialManagerIds.Contains(parameters.CommercialManagerId.Value);
                 }).ToList();
             }
@@ -81,6 +89,24 @@ namespace Sofco.DAL.Repositories.Reports
                 .Where(s => purchaseOrderIds.Contains(s.PurchaseOrderId));
 
             return query.ToList();
+        }
+
+        private bool IsValidParameters(SearchPurchaseOrderParams parameters)
+        {
+            if (parameters == null) return false;
+
+            if (parameters.AnalyticId == null
+                && parameters.ClientId == null
+                && parameters.StatusId == null
+                && parameters.CommercialManagerId == null
+                && parameters.ManagerId == null
+                && parameters.StartDate == null
+                && parameters.EndDate == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

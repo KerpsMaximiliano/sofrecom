@@ -23,5 +23,7 @@ namespace Sofco.Core.Models.Reports
         public string CurrencyText { get; set; }
 
         public int PurchaseOrderId { get; set; }
+
+        public string Analytic { get; set; }
     }
 }
