@@ -211,7 +211,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
         return '<table class="table table-striped">' +
             '<thead>' +
-                '<th>' + this.i18nService.translateByKey('report.solfacs.title') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('allocationManagement.analytics.title') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.hito.title') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.status') + '</th>' +
@@ -224,7 +224,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     getRowDetailForma(item) {
         return '<tr>' +
-                '<td>' + item.solfacId + '</td>' +
+                '<td>' + item.analytic + '</td>' +
                 '<td>' + item.description + '</td>' +
                 '<td>' + moment(item.updatedDate).format("DD/MM/YYYY") + '</td>' +
                 '<td class="column-lg">' + this.i18nService.translateByKey(item.statusText) + '</td>' +
@@ -293,7 +293,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     getExportSubHeader() {
         return ['',
-            this.i18nService.translateByKey('report.solfacs.title'),
+            this.i18nService.translateByKey('allocationManagement.analytics.title'),
             this.i18nService.translateByKey('billing.hito.title'),
             this.i18nService.translateByKey('billing.solfac.date'),
             this.i18nService.translateByKey('billing.solfac.status'),
@@ -302,7 +302,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     getExportSubBody(d) {
         return ['',
-            d.solfacId,
+            d.analytic,
             d.description,
             moment(d.updatedDate).format("DD/MM/YYYY"),
             this.i18nService.translateByKey(d.statusText),

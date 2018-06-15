@@ -22,5 +22,9 @@ namespace Sofco.Model.Models.Reports
         public SolfacStatus Status { get; set; }
 
         public int PurchaseOrderId { get; set; }
+
+        public string Analytic { get; set; }
+
+        public string AnalyticName { get; set; }
     }
 }
