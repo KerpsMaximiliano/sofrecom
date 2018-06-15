@@ -86,11 +86,7 @@ namespace Sofco.Framework.CrmServices
 
             foreach (var item in hitos)
             {
-                var sum = item.Details.Sum(x => x.Total);
-
-                if (sum == item.Total) continue;
-
-                var content = $"Ammount={sum}";
+                var content = $"Ammount={item.Total}";
 
                 ProcessUpdateHitos(item.ExternalHitoId, content);
 

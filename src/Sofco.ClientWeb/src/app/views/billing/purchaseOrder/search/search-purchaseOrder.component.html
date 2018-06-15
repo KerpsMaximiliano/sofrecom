@@ -19,6 +19,14 @@
 </div>
     
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-right">
+                <button class="btn btn-primary btn-outline dim" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+    </div>
+
     <div class="panel-group" id="accordion">
         <div class="panel panel-success">
             <div class="panel-heading pointer" (click)="collapse()">
@@ -78,10 +86,6 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <div class="btn-right m-l-lg">
-                        <button class="btn btn-primary" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
-                    </div>
-
                     <table class="table table-striped" id="purchaseOrderTable" width="100%">
                         <thead>
                             <tr>
