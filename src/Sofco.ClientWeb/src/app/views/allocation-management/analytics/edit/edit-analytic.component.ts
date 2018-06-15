@@ -60,7 +60,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.form.model = data;
 
-                if(this.form.model.customerId){
+                if(this.form.model.clientExternalId){
                     
                     this.form.customerId = this.form.model.clientExternalId;
                     this.form.serviceId = this.form.model.serviceId;
