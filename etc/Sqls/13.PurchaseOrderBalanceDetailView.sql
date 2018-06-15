@@ -2,7 +2,7 @@ CREATE OR ALTER VIEW report.PurchaseOrderBalanceDetailView AS
 SELECT
 		hit.Id,
 		sf.Analytic,
-		an.Name,
+		an.Name as AnalyticName,
 		sf.Id as SolfacId,
 		hit.Description,
 		sf.UpdatedDate,
