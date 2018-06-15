@@ -1,19 +1,18 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit,  OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Option } from "app/models/option";
 import { CustomerService } from "app/services/billing/customer.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
-import { EmployeeService } from '../../../../services/allocation-management/employee.service';
-import { DateRangePickerComponent } from '../../../../components/date-range-picker/date-range-picker.component';
-import { UserService } from '../../../../services/admin/user.service';
+import { EmployeeService } from 'app/services/allocation-management/employee.service';
+import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
+import { UserService } from 'app/services/admin/user.service';
 declare var $: any;
 declare var moment: any;
 
@@ -45,7 +44,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     public filterByDates = true;
 
     public customerId = "0";
-    public statusId = "0";
+    public statusId = "1";
     public year;
     private storeSessionName = "purchaseOrderSearchCriteria";
 
@@ -140,6 +139,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 this.data = response.data;
                 sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
                 this.initGrid();
+                if(this.data.length == 0) {
+                    this.showEmptyData();
+                }
             }, 500);
             this.storeSearchCriteria(parameters);
         },
@@ -394,5 +396,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.searchCriteriaChange();
         }, 100);
+    }
+
+    showEmptyData() {
+        this.messageService.showWarning("report.resultNotFound");
     }
 }
