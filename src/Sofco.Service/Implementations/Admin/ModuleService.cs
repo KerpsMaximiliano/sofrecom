@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Model.Utils;
 using Sofco.Model.Enums;
 using Sofco.Core.Services.Admin;
@@ -11,10 +12,12 @@ namespace Sofco.Service.Implementations.Admin
     public class ModuleService : IModuleService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<ModuleService> logger;
 
-        public ModuleService(IUnitOfWork unitOfWork)
+        public ModuleService(IUnitOfWork unitOfWork, ILogMailer<ModuleService> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public Response<Module> Active(int id, bool active)
@@ -71,8 +74,9 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Module.Updated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 

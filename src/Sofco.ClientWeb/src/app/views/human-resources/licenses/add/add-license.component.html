@@ -55,7 +55,7 @@
 
                     <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes"></select-two>
 
-                    <div class="form-group" [hidden]="model.typeId != 13">
+                    <div class="form-group" [hidden]="model.typeId != 13 && model.typeId != 14">
                         <label class="control-label">{{'rrhh.license.comments' | translate }}</label>
                         <input type="text" class="form-control" maxlength="200" [(ngModel)]="model.comments">
                     </div>

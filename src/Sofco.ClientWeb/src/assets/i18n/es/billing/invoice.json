@@ -25,5 +25,6 @@
     "zipCodeRequired": "El código postal es requerido",
     "cityRequired": "La ciudad es requerida",
     "provinceRequired": "La provincia es requerida",
-    "countryRequired": "El país es requerido"
+    "countryRequired": "El país es requerido",
+    "requestAnnulmentSent": "El pedido de anulación de los remito fue enviado exitosamente"
 }

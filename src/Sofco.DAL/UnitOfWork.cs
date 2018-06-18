@@ -12,7 +12,7 @@ using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.DAL.Repositories.Report;
+using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.WorkTimeManagement;
 

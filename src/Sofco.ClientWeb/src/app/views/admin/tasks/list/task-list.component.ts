@@ -84,7 +84,7 @@ declare var moment: any;
     }
 
     initGrid(){
-        var columns = [0, 1, 2];
+        var columns = [0, 1, 2, 3];
         var title = `Tareas-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {
@@ -96,6 +96,6 @@ declare var moment: any;
           }
 
           this.dataTableService.destroy(params.selector);
-          this.dataTableService.init2(params);
+          this.dataTableService.initialize(params);
     }
   }

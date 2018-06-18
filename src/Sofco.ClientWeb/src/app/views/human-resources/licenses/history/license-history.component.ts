@@ -40,8 +40,9 @@ export class LicenseHistoryComponent implements OnInit, OnDestroy {
         this.getHistoriesSubscrip = this.licenseService.getHistories(id).subscribe(d => {
             this.histories = d;
 
-            this.datatableService.destroy('#historyTable');
-            this.datatableService.init('#historyTable', false);
+            var options = { selector: "#historyTable" }
+            this.datatableService.destroy(options.selector);
+            this.datatableService.initialize(options);
         },
         err => this.errorHandlerService.handleErrors(err));
     }

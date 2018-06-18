@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <select-two [label]="'billing.solfac.currency'" [(value)]="model.currencyId" [options]="currencies" (valueChange)="setCurrencySymbol(model.currencyId)"></select-two>
+                            <select-two id="currency-select" [label]="'billing.solfac.currency'" [(value)]="model.currencyId" [options]="currencies" (valueChange)="setCurrencySymbol(model.currencyId)"></select-two>
                         </div>
                         <div class="col-sm-6" *ngIf="model.remito">
                             <div class="form-group">
@@ -105,14 +105,14 @@
 
                     <!-- Numero de imputacion-->
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.imputationNumber' | translate }}</label>
                                 <input type="text" name="imputationNumber1" [(ngModel)]="model.imputationNumber1" class="form-control"> 
                             </div>
                         </div>
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <select-two [label]="'billing.solfac.activity'" [(value)]="model.imputationNumber3" [options]="imputationNumbers"></select-two>
                         </div>
                     </div>
@@ -120,10 +120,7 @@
                     <!-- Numero de contrato -->
                     <div class="row">
                         <div class="col-lg-6 col-md-5 col-sm-5">
-                            <div class="form-group">
-                                <label class="control-label">{{'billing.solfac.contractNumber' | translate }}</label>
-                                <input type="text" class="form-control" [(ngModel)]="model.contractNumber">
-                            </div>
+                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders"></select-two>
                         </div>
                     </div>
 
@@ -210,11 +207,6 @@
                             <dl class="dl-horizontal">
                                 <dt><strong>{{'billing.solfac.milestone.totalAmount' | translate }} :</strong></dt>
                                 <dd class="total-amount detail-total">{{ currencySymbol }} {{ model.totalAmount | number: '1.2-2' }}</dd>
-
-                                <!-- <dt><strong>{{'billing.solfac.milestone.withTax' | translate }} </strong></dt>
-                                <dd>
-                                    <icheck [(checked)]="model.withTax"></icheck>
-                                </dd> -->
                             </dl>
                         </div>
                     </div>

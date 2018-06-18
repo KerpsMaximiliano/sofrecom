@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -13,11 +13,13 @@ namespace Sofco.WebApi.Controllers.Billing
     public class ServiceController : Controller
     {
         private readonly IServicesService servicesService;
+        private readonly IProjectService projectService;
         private readonly IPurchaseOrderService purchaseOrderService;
 
-        public ServiceController(IServicesService servicesService, IPurchaseOrderService purchaseOrderService)
+        public ServiceController(IServicesService servicesService, IProjectService projectService, IPurchaseOrderService purchaseOrderService)
         {
             this.servicesService = servicesService;
+            this.projectService = projectService;
             this.purchaseOrderService = purchaseOrderService;
         }
 
@@ -45,12 +47,12 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
-        [HttpGet("{serviceId}/purchaseOrders")]
-        public IActionResult GetPurchaseOrders(string serviceId)
+        [HttpGet("{serviceId}/opportunities")]
+        public IActionResult GetOpportunities(string serviceId)
         {
-            var purchaseOrders = purchaseOrderService.GetByService(serviceId);
+            var respone = projectService.GetOpportunities(serviceId);
 
-            return Ok(purchaseOrders.Select(x => new PurchaseOrderListItem(x)));
+            return this.CreateResponse(respone);
         }
 
         [HttpGet("{serviceId}/analytic")]
@@ -58,7 +60,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var analytic = servicesService.GetAnalyticByService(serviceId);
 
-            var model = new AnalyticViewModel();
+            var model = new AnalyticModel();
 
             if (analytic != null)
             {
@@ -67,6 +69,14 @@ namespace Sofco.WebApi.Controllers.Billing
             }
 
             return Ok(model);
+        }
+
+        [HttpGet("{serviceId}/purchaseOrders")]
+        public IActionResult GetPurchaseOrders(string serviceId)
+        {
+            var purchaseOrders = purchaseOrderService.GetByService(serviceId);
+
+            return Ok(purchaseOrders.Select(x => new PurchaseOrderSearchResult(x)));
         }
     }
 }

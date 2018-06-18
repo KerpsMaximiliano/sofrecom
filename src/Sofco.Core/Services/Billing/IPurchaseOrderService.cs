@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
@@ -10,13 +11,19 @@ namespace Sofco.Core.Services.Billing
 {
     public interface IPurchaseOrderService
     {
-        PurchaseOrderOptions GetFormOptions();
-        Task<Response<PurchaseOrder>> Add(PurchaseOrder domain);
+        Response<PurchaseOrder> Add(PurchaseOrderModel model);
+
         Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName);
+
         Response<PurchaseOrder> GetById(int id);
-        Response Update(PurchaseOrder domain);
-        ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters);
+
+
+        Response<List<PurchaseOrderSearchResult>> Search(SearchPurchaseOrderParams parameters);
+
         Response DeleteFile(int id);
-        ICollection<PurchaseOrder> GetByService(string serviceId);
+
+        IList<PurchaseOrder> GetByService(string serviceId);
+        IList<PurchaseOrder> GetByServiceLite(string serviceId);
+        Response Update(PurchaseOrderModel model);
     }
 }

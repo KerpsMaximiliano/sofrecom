@@ -11,6 +11,7 @@ import { LoginComponent } from "app/views/appviews/login/login.component";
 import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { CryptographyService } from 'app/services/common/cryptography.service';
+import { LaddaModule } from 'angular2-ladda';
 
 @NgModule({
   declarations: [
@@ -21,11 +22,12 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
   imports: [
     BrowserModule,
     RouterModule,
-    PeityModule,
+    PeityModule, 
     SparklineModule,
     FormsModule,
     TranslateModule,
-    SpinnerModule
+    SpinnerModule,
+    LaddaModule
   ],
   exports: [
     StarterViewComponent,

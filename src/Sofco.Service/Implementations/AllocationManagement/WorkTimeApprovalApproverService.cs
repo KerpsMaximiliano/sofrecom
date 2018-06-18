@@ -3,7 +3,7 @@ using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.Admin;
-using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
 

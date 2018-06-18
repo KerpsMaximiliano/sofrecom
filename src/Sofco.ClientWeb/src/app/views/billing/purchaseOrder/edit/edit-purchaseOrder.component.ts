@@ -52,6 +52,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.form.model.currencyId = 0;
+        this.form.model.clientExternalId = 0;
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
 
@@ -64,6 +67,14 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();
                 }
+
+                setTimeout(() => {
+                    $('#analytics').val(this.form.model.analyticIds).trigger('change');
+                }, 1000);
+
+                $('input').attr('disabled', 'disabled');
+                $('#customer-select select').attr('disabled', 'disabled');
+                $('input[type=file]').removeAttr('disabled');
             },
             error => {
                 this.messageService.closeLoading();
@@ -77,22 +88,6 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
-    }
-
-    update() {
-        this.messageService.showLoading();
-        var client = this.form.customers.find(x => x.id == this.form.model.clientExternalId);
-        this.form.model.clientExternalName = client ? client.text : '';
-
-        this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
-            response => {
-                this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
-            },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
     }
 
     uploaderConfig(){
@@ -151,7 +146,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err)
         });
     }
-
+ 
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
             this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {
@@ -159,5 +154,20 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
         }
+    }
+
+    update() {
+        this.messageService.showLoading();
+        this.form.model.analyticIds = $('#analytics').val();
+
+        this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
+            response => {
+                this.messageService.closeLoading();
+                if(response.messages) this.messageService.showMessages(response.messages);
+            },
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 }  

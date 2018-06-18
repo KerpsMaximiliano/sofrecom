@@ -5,6 +5,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

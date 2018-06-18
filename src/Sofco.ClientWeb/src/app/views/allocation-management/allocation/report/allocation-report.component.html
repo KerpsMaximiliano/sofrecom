@@ -14,7 +14,7 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -44,8 +44,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
-                        <select select2 class="form-control" id="analyticId">
-                            <option value="0">Seleccione una opción</option>
+                        <select select2 class="form-control" id="analyticId" multiple>
                             <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
                         </select>
                     </div>

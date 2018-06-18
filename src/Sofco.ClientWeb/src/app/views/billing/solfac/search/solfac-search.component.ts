@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -8,7 +8,6 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { ServiceService } from "app/services/billing/service.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { UserService } from "app/services/admin/user.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
@@ -40,11 +39,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
-    public filterByDates = true;
+    public filterByDates = false;
 
     constructor(
         private router: Router,
-        private activatedRoute: ActivatedRoute,
         private service: SolfacService,
         private customerService: CustomerService,
         private employeeService: EmployeeService,
@@ -53,7 +51,6 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private projectService: ProjectService,
         private menuService: MenuService,
         private datatableService: DataTableService,
-        private userService: UserService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
@@ -225,12 +222,13 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             selector: '#solfacsTable',
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             columns: columns,
+            order: [[ 4, "desc" ]],
             title: title,
             withExport: true
           }
 
         this.datatableService.destroy('#solfacsTable');
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     clean() {

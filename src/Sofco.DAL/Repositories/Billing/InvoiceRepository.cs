@@ -239,5 +239,16 @@ namespace Sofco.DAL.Repositories.Billing
         {
             context.Entry(invoiceToModif).Property("PdfFileName").IsModified = true;
         }
+
+        public IList<Invoice> GetByIds(IList<int> invoiceIds)
+        {
+            return context.Invoices.Where(x => invoiceIds.Contains(x.Id)).Select(x => new Invoice
+                {
+                    Id = x.Id,
+                    ExcelFileName = x.ExcelFileName,
+                    ProjectId = x.ProjectId
+                })
+                .ToList();
+        }
     }
 }

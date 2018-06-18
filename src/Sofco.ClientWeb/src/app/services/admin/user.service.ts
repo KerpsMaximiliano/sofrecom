@@ -58,4 +58,8 @@ export class UserService {
     unassignGroup(userId: number, groupId: number) {
         return this.http.delete<any>(`${this.baseUrl}/users/${userId}/group/${groupId}`);
     }
+
+    getCommercialManagers() {
+        return this.http.get<any>(`${this.baseUrl}/users/commercialManagers`);
+    }
 }

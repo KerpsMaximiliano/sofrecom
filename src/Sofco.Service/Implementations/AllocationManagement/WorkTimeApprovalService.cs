@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.Logger;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -15,11 +19,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly IEmployeeRepository employeeRepository;
 
-        public WorkTimeApprovalService(IWorkTimeApprovalRepository workTimeApprovalRepository, IUserData userData, IEmployeeRepository employeeRepository)
+        private readonly IMapper mapper;
+
+        private readonly ILogMailer<WorkTimeApprovalService> logger;
+
+        public WorkTimeApprovalService(IWorkTimeApprovalRepository workTimeApprovalRepository, 
+            IUserData userData, 
+            IEmployeeRepository employeeRepository,
+            ILogMailer<WorkTimeApprovalService> logger,
+            IMapper mapper)
         {
             this.workTimeApprovalRepository = workTimeApprovalRepository;
             this.userData = userData;
             this.employeeRepository = employeeRepository;
+            this.logger = logger;
+            this.mapper = mapper;
         }
 
         public Response<List<WorkTimeApproval>> GetAll()
@@ -30,36 +44,53 @@ namespace Sofco.Service.Implementations.AllocationManagement
             };
         }
 
-        public Response<List<WorkTimeApproval>> Save(List<WorkTimeApproval> workTimeApprovals)
+        public Response<List<WorkTimeApprovalModel>> Save(List<WorkTimeApprovalModel> workTimeApprovals)
         {
             var response = ValidateSave(workTimeApprovals);
 
             if (response.HasErrors())
                 return response;
 
-            ResolveUserId(workTimeApprovals);
+            try
+            {
+                ResolveUserId(workTimeApprovals);
 
-            workTimeApprovalRepository.Save(workTimeApprovals);
+                workTimeApprovalRepository.Save(Translate(workTimeApprovals));
 
-            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
-            response.Data = workTimeApprovals;
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
+                response.Data = workTimeApprovals;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
 
         public Response Delete(int workTimeApprovalId)
         {
-            workTimeApprovalRepository.Delete(workTimeApprovalId);
-
             var response = new Response();
-            response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+
+            try
+            {
+                workTimeApprovalRepository.Delete(workTimeApprovalId);
+
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
 
-        private Response<List<WorkTimeApproval>> ValidateSave(List<WorkTimeApproval> workTimeApprovals)
+        private Response<List<WorkTimeApprovalModel>> ValidateSave(List<WorkTimeApprovalModel> workTimeApprovals)
         {
-            var response = new Response<List<WorkTimeApproval>>();
+            var response = new Response<List<WorkTimeApprovalModel>>();
 
             if (workTimeApprovals == null)
             {
@@ -81,7 +112,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        private void ResolveUserId(List<WorkTimeApproval> workTimeApprovals)
+        private void ResolveUserId(List<WorkTimeApprovalModel> workTimeApprovals)
         {
             foreach (var workTimeApproval in workTimeApprovals)
             {
@@ -98,6 +129,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     workTimeApproval.UserId = user.Id;
                 }
             }
+        }
+
+        private List<WorkTimeApproval> Translate(List<WorkTimeApprovalModel> workTimeApprovalModels)
+        {
+            return mapper.Map<List<WorkTimeApprovalModel>, List<WorkTimeApproval>>(workTimeApprovalModels);
         }
     }
 }

@@ -22,10 +22,11 @@ namespace Sofco.Model.Models.Billing
         public string BusinessName { get; set; }
         public string CelPhone { get; set; }
         public SolfacStatus Status { get; set; }
-        public string ContractNumber { get; set; }
+
         public string InvoiceCode { get; set; }
 
         public decimal TotalAmount { get; set; }
+
         public bool WithTax { get; set; }
 
         public decimal CapitalPercentage { get; set; }
@@ -37,6 +38,7 @@ namespace Sofco.Model.Models.Billing
         public int Province2Id { get; set; }
         public int Province3Id { get; set; }
         public string ParticularSteps { get; set; }
+
         public string Analytic { get; set; }
 
         public ICollection<Hito> Hitos { get; set; }
@@ -87,5 +89,8 @@ namespace Sofco.Model.Models.Billing
         public string ManagerId { get; set; }
 
         public ICollection<SolfacCertificate> SolfacCertificates { get; set; }
+
+        public int? PurchaseOrderId { get; set; }
+        public PurchaseOrder PurchaseOrder { get; set; }
     }
 }

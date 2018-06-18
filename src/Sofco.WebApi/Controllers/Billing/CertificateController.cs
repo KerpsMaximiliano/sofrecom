@@ -3,17 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -42,7 +41,7 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new CertificateEditViewModel(response.Data));
+            return Ok(new CertificateEditModel(response.Data));
         }
 
         [HttpGet("client/{client}")]
@@ -54,7 +53,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CertificateViewModel model)
+        public IActionResult Post([FromBody] CertificateModel model)
         {
             var domain = model.CreateDomain(sessionManager.GetUserName());
 
@@ -64,7 +63,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] CertificateEditViewModel model)
+        public IActionResult Put([FromBody] CertificateEditModel model)
         {
             var domain = model.CreateDomain(sessionManager.GetUserName());
 
@@ -109,6 +108,17 @@ namespace Sofco.WebApi.Controllers.Billing
                 return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
+        [HttpGet("{id}/file")]
+        public IActionResult GetFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.CertificatesPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(response);
         }
 
         [HttpPost("search")]

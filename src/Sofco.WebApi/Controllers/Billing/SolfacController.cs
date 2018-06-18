@@ -3,16 +3,15 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -24,13 +23,17 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly ISolfacService solfacService;
         private readonly ICertificateService certificateService;
         private readonly EmailConfig emailConfig;
+        private readonly IPurchaseOrderService purchaseOrderService;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, ICertificateService certificateService)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, 
+                                IOptions<EmailConfig> emailConfig, ICertificateService certificateService,
+                                IPurchaseOrderService purchaseOrderService)
         {
             this.utilsService = utilsService;
             this.solfacService = solfacService;
             this.emailConfig = emailConfig.Value;
             this.certificateService = certificateService;
+            this.purchaseOrderService = purchaseOrderService;
         }
 
         [HttpPost]
@@ -86,8 +89,8 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet]
-        [Route("options")]
-        public IActionResult FormOptions()
+        [Route("options/{serviceId}")]
+        public IActionResult FormOptions(string serviceId)
         {
             var options = new SolfacOptions
             {
@@ -95,7 +98,8 @@ namespace Sofco.WebApi.Controllers.Billing
                 DocumentTypes = utilsService.GetDocumentTypes().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 Provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
-                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList()
+                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
+                PurchaseOrders = purchaseOrderService.GetByServiceLite(serviceId).Select(x => new Option { Id = x.Id, Text = x.Number }).ToList()
             };
 
             return Ok(options);
@@ -178,7 +182,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("{id}/status")]
-        public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeViewModel model)
+        public IActionResult ChangeStatus(int id, [FromBody] SolfacStatusChangeModel model)
         {
             var solfacStatusParams = model.CreateStatusParams();
 
@@ -241,7 +245,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var histories = solfacService.GetHistories(id);
 
-            var list = histories.Select(x => new SolfacHistoryViewModel(x));
+            var list = histories.Select(x => new SolfacHistoryModel(x));
 
             return Ok(list);
         }
@@ -268,10 +272,10 @@ namespace Sofco.WebApi.Controllers.Billing
                     if (response.HasErrors())
                         return BadRequest(response);
 
-                    var responseFile = new Response<SolfacAttachmentViewModel>
+                    var responseFile = new Response<SolfacAttachmentModel>
                     {
                         Messages = response.Messages,
-                        Data = new SolfacAttachmentViewModel(response.Data)
+                        Data = new SolfacAttachmentModel(response.Data)
                     };
 
                     return Ok(responseFile);
@@ -293,7 +297,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var files = solfacService.GetFiles(solfacId);
 
-            return Ok(files.Select(x => new SolfacAttachmentViewModel(x)));
+            return Ok(files.Select(x => new SolfacAttachmentModel(x)));
         }
 
         [HttpGet]
@@ -380,7 +384,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var certificates = certificateService.GetBySolfac(id);
 
-            return Ok(certificates.Select(x => new CertificateFileViewModel(x)));
+            return Ok(certificates.Select(x => new CertificateFileModel(x)));
         }
 
         [HttpDelete]
@@ -401,11 +405,11 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors())
                 return BadRequest(response);
 
-            var responseModel = new Response<IList<CertificateFileViewModel>> { Messages = response.Messages, Data = new List<CertificateFileViewModel>() };
+            var responseModel = new Response<IList<CertificateFileModel>> { Messages = response.Messages, Data = new List<CertificateFileModel>() };
 
             foreach (var certificate in response.Data)
             {
-                responseModel.Data.Add(new CertificateFileViewModel(certificate));
+                responseModel.Data.Add(new CertificateFileModel(certificate));
             }
 
             return Ok(responseModel);

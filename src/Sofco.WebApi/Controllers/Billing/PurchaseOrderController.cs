@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
@@ -14,7 +14,6 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.Billing;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -35,12 +34,6 @@ namespace Sofco.WebApi.Controllers.Billing
             fileConfig = fileOptions.Value;
         }
 
-        [HttpGet("formOptions")]
-        public IActionResult GetFormOptions()
-        {
-            return Ok(purchaseOrderService.GetFormOptions());
-        }
-
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -49,25 +42,21 @@ namespace Sofco.WebApi.Controllers.Billing
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new PurchaseOrderEditViewModel(response.Data));
+            return Ok(new PurchaseOrderEditModel(response.Data));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PurchaseOrderViewModel model)
+        public IActionResult Post([FromBody] PurchaseOrderModel model)
         {
-            var domain = model.CreateDomain(sessionManager.GetUserName());
-
-            var response = await purchaseOrderService.Add(domain);
+            var response = purchaseOrderService.Add(model);
 
             return this.CreateResponse(response);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] PurchaseOrderEditViewModel model)
+        public IActionResult Put([FromBody] PurchaseOrderModel model)
         {
-            var domain = model.CreateDomain(sessionManager.GetUserName());
-
-            var response = purchaseOrderService.Update(domain);
+            var response = purchaseOrderService.Update(model);
 
             return this.CreateResponse(response);
         }
@@ -124,15 +113,9 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPost("search")]
         public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
         {
-            var purchaseOrders = purchaseOrderService.Search(parameters);
+            var response = purchaseOrderService.Search(parameters);
 
-            var response = new Response<List<PurchaseOrderListItem>>();
-            response.Data = purchaseOrders.Select(x => new PurchaseOrderListItem(x)).ToList();
-
-            if (!purchaseOrders.Any())
-                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
-
-            return Ok(response);
+            return this.CreateResponse(response);
         }
 
         [HttpGet("status")]

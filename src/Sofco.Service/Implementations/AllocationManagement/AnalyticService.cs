@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
@@ -34,10 +35,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
+        private readonly IAnalyticFileManager analyticFileManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
-            ICrmService crmService, IEmployeeData employeeData)
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -47,6 +49,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
             this.employeeData = employeeData;
+            this.analyticFileManager = analyticFileManager;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -83,6 +86,37 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return new Response<List<Option>> { Data = result };
         }
 
+        public Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters)
+        {
+            var response = new Response<List<AnalyticSearchViewModel>>
+            {
+                Data = Translate(unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters))
+            };
+
+            return response;
+        }
+
+        public Response<byte[]> CreateReport(List<int> analytics)
+        {
+            var response = new Response<byte[]>();
+
+            try
+            {
+                var list = unitOfWork.AnalyticRepository.GetForReport(analytics);
+
+                var excel = analyticFileManager.CreateAnalyticReportExcel(list);
+
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ExportFileError);
+            }
+
+            return response;
+        }
+
         public ICollection<Analytic> GetAll()
         {
             return unitOfWork.AnalyticRepository.GetAllReadOnly();
@@ -93,15 +127,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var options = new AnalyticOptions();
 
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
-            options.Directors = unitOfWork.UserRepository.GetDirectors().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            options.Sectors = unitOfWork.UtilsRepository.GetSectors().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Managers = unitOfWork.UserRepository.GetManagers().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
+            options.Managers = unitOfWork.UserRepository.GetManagers().Distinct().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Technologies = unitOfWork.UtilsRepository.GetTechnologies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Products = unitOfWork.UtilsRepository.GetProducts().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.ClientGroups = unitOfWork.UtilsRepository.GetClientGroups().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
-            options.PurchaseOrders = unitOfWork.UtilsRepository.GetPurchaseOrders().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
+            options.PurchaseOrders = unitOfWork.UtilsRepository.GetPurchaseOrderOptions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.SoftwareLaws = unitOfWork.UtilsRepository.GetSoftwareLaws().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.ServiceTypes = unitOfWork.UtilsRepository.GetServiceTypes().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
 
@@ -143,9 +177,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             AnalyticValidationHelper.CheckTitle(response, analytic, unitOfWork.CostCenterRepository);
             AnalyticValidationHelper.CheckIfTitleExist(response, analytic, unitOfWork.AnalyticRepository);
-            AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
+            AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
-            AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
             AnalyticValidationHelper.CheckService(response, analytic, unitOfWork.AnalyticRepository);
 
@@ -205,9 +238,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = new Response<Analytic>();
 
             AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
-            AnalyticValidationHelper.CheckNameAndDescription(response, analytic);
+            AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
-            AnalyticValidationHelper.CheckCurrency(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
 
             if (response.HasErrors()) return response;
@@ -278,7 +310,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             try
             {
                 var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
-                var body = string.Format(MailMessageResource.AddAnalytic, analytic.Name, $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
@@ -288,11 +320,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
 
-                var director = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.DirectorId);
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                if(director != null) recipientsList.Add(director.Email);
                 if(manager != null) recipientsList.Add(manager.Email);
                 if(seller != null) recipientsList.Add(seller.Email);
 
@@ -340,6 +370,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     response.AddError(Resources.Common.ErrorSave);
                 }
             }
+        }
+
+        private List<AnalyticSearchViewModel> Translate(List<Analytic> data)
+        {
+            return data.Select(x => new AnalyticSearchViewModel(x)).ToList();
         }
     }
 }

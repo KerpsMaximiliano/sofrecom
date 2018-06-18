@@ -29,6 +29,7 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             var response = new Response();
 
+            LicenseTypeValidationHandler.ValidateValue(value, response);
             var licenseType = LicenseTypeValidationHandler.Find(response, typeId, unitOfWork);
 
             if (response.HasErrors()) return response;

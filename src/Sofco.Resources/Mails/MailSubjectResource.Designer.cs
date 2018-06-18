@@ -116,6 +116,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Anulación de remitos.
+        /// </summary>
+        public static string InvoiceRequestAnnulment {
+            get {
+                return ResourceManager.GetString("InvoiceRequestAnnulment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancelación de licencia - {0}.
         /// </summary>
         public static string LicenseCancelledTitle {

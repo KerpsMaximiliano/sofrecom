@@ -51,7 +51,10 @@ export class ServicesComponent implements OnInit, OnDestroy {
       },
       err => {
         this.messageService.closeLoading();
-        this.datatableService.init('#serviceTable', true);
+
+        var options = { selector: "#serviceTable" }
+        this.datatableService.initialize(options);
+
         this.errorHandlerService.handleErrors(err)
       });
     }
@@ -62,7 +65,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
-      this.datatableService.init2(params);
+      this.datatableService.initialize(params);
     }
 
     goToProjects(service){

@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="ibox-content">
-            <table class="table table-striped" id="categoryTable" width="100%">
+            <table class="table table-striped" id="holidaysTable" width="100%">
                 <thead>
                     <tr>
                         <th>{{ 'workTimeManagement.holiday.name' | translate }}</th>
@@ -44,8 +44,8 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center column-xs">
-                            <button class="btn btn-warning btn-xs" (click)="editHoliday(item)"><span class="fa fa-edit" title="YYYY"></span></button>
-                            <button class="btn btn-danger btn-xs" (click)="deleteHoliday(item)"><span class="fa fa-trash" title="XXXX"></span></button>
+                            <button class="btn btn-warning btn-xs" (click)="editHoliday(item)"><span class="fa fa-edit"></span></button>
+                            <button class="btn btn-danger btn-xs" (click)="deleteHoliday(item)"><span class="fa fa-trash"></span></button>
                         </td>
                     </tr>
                 </tbody>

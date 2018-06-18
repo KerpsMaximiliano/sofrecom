@@ -69,7 +69,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
         };
 
         this.datatableService.destroy(params.selector);
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     goToDetail(item){

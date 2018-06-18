@@ -41,5 +41,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId);
 
         Analytic GetByTitle(string title);
+
+        List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria);
+
+        List<Analytic> GetForReport(List<int> analytics);
     }
 }

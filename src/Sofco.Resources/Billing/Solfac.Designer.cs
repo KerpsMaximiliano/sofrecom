@@ -440,6 +440,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/solfac.purchaseOrderWithWrongCurrency.
+        /// </summary>
+        public static string PurchaseOrderWithWrongCurrency {
+            get {
+                return ResourceManager.GetString("PurchaseOrderWithWrongCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/solfac.solfacCreated.
         /// </summary>
         public static string SolfacCreated {

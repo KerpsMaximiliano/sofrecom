@@ -20,11 +20,15 @@ export class ServiceService {
     return this.http.get<any>(`${this.apiUrl}/${customerId}/options`);
   }
 
-  getById(customerId, serviceId) {
-    return this.http.get<any>(`${this.apiUrl}/${serviceId}/account/${customerId}`);
+  getOpportunities(serviceId){
+    return this.http.get<any>(`${this.apiUrl}/${serviceId}/opportunities`);
   }
 
-  getPurchaseOrders(serviceId) {
+  getPurchaseOrders(serviceId){
     return this.http.get<any>(`${this.apiUrl}/${serviceId}/purchaseOrders`);
+  }
+
+  getById(customerId, serviceId) {
+    return this.http.get<any>(`${this.apiUrl}/${serviceId}/account/${customerId}`);
   }
 }

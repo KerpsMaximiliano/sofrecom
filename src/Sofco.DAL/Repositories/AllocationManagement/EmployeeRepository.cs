@@ -64,6 +64,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!string.IsNullOrWhiteSpace(parameters.Technology))
                 query = query.Where(x => x.Technology != null && x.Technology.ToLowerInvariant().Contains(parameters.Technology.ToLowerInvariant()));
 
+            if (!string.IsNullOrWhiteSpace(parameters.EmployeeNumber))
+                query = query.Where(x => x.EmployeeNumber != null && x.EmployeeNumber.ToLowerInvariant().Contains(parameters.EmployeeNumber.ToLowerInvariant()));
+
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 
@@ -134,6 +137,30 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var storedNumbers = storedItems.Select(s => s.EmployeeNumber).ToList();
 
+            foreach (var item in employees)
+            {
+                if (storedNumbers.Contains(item.EmployeeNumber))
+                {
+                    var updateItem = storedItems
+                        .First(s => s.EmployeeNumber == item.EmployeeNumber);
+
+                    Update(updateItem, item);
+                }
+                else
+                {
+                    Insert(item);
+                }
+            }
+
+            context.SaveChanges();
+        }
+
+        public void Update(List<Employee> employees)
+        {
+            var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());
+
+            var storedNumbers = storedItems.Select(s => s.EmployeeNumber).ToList();
+
             foreach(var item in employees)
             {
                 if(storedNumbers.Contains(item.EmployeeNumber))
@@ -142,9 +169,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                         .First(s => s.EmployeeNumber == item.EmployeeNumber);
 
                     Update(updateItem, item);
-                } else
-                {
-                    Insert(item);
                 }
             }
 

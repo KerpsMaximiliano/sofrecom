@@ -40,7 +40,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
-    public filterByDates = true;
+    public filterByDates = false;
 
     constructor(
         private router: Router,
@@ -185,17 +185,22 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         },
         err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     showUserApplicantFilter(){
         return this.menuService.userIsDirector || this.menuService.userIsDaf || this.menuService.userIsCdg;
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5];
-        var title = `REMITOS-${moment(new Date()).format("YYYYMMDD")}`;
-
-        this.datatableService.destroy('#invoiceTable');
-        this.datatableService.initWithExportButtons('#invoiceTable', columns, title);
+        var params = {
+            selector: '#invoiceTable',
+            withExport: true,
+            order: [[ 4, "desc" ]],
+            title: `REMITOS-${moment(new Date()).format("YYYYMMDD")}`,
+            columns: [0, 1, 2, 3, 4, 5],
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
+          }
+    
+          this.datatableService.initialize(params);
     }
 
     clean(){

@@ -97,11 +97,18 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid() {
-        const columns = [0, 1, 2];
-        const title = `Certificados-${moment(new Date()).format("YYYYMMDD")}`;
+        var columns = [0, 1, 2];
+        var title = `Certificados-${moment(new Date()).format("YYYYMMDD")}`;
+
+        var params = {
+            selector: '#certificateTable',
+            columns: columns,
+            title: title,
+            withExport: true
+          }
 
         this.datatableService.destroy('#certificateTable');
-        this.datatableService.initWithExportButtons('#certificateTable', columns, title);
+        this.datatableService.initialize(params);
     }
 
     clean() {

@@ -54,5 +54,6 @@
     "closeHito": "Hito cerrado correctamente",
     "businessNameRequired": "La razón social es requerida",
     "detailsRequired": "Se debe ingresar al menos un detalle",
-    "delegateSaveMangerOnlyError": "Solo los gerentes estan autorizados a delegar."
+    "delegateSaveMangerOnlyError": "Solo los gerentes estan autorizados a delegar.",
+    "purchaseOrderWithWrongCurrency": "La moneda seleccionada no corresponde con la orden de compra"
 }

@@ -70,7 +70,7 @@ export class LicenseListWidget implements OnInit, OnDestroy {
             columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     goToDetail(item){

@@ -6,19 +6,19 @@ import { SolfacService } from "app/services/billing/solfac.service";
 import { Option } from "app/models/option";
 import { Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { MessageService } from "app/services/common/message.service";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { Hito } from 'app/models/billing/solfac/hito';
 import { ServiceService } from 'app/services/billing/service.service';
 import { CertificatesService } from 'app/services/billing/certificates.service';
 import { UserInfoService } from '../../../../services/common/user-info.service';
+import { I18nService } from 'app/services/common/i18n.service';
 
 declare var $:any;
+declare var swal: any;
 
 @Component({
   selector: 'app-solfac',
@@ -35,6 +35,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public invoices: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
     public certificates: Option[] = new Array<Option>();
+    public purchaseOrders: Option[] = new Array<Option>();
     public currencySymbol: string = "$";
     private projectId: string = "";
     public integratorProject: any;
@@ -48,8 +49,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
     getCertificateAvailableSubscrip: Subscription;
-
-    public test;
 
     isCreditNoteSolfacType:boolean = false;
     isDebitNoteSolfacType:boolean = false;
@@ -70,11 +69,14 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
                 private errorHandlerService: ErrorHandlerService,
+                private i18nService: I18nService,
                 private router: Router) { }
 
     ngOnInit() {
       this.getOptions();
       this.setNewModel();
+
+      $('#currency-select select').attr('disabled', 'disabled');
     }
 
     ngOnDestroy(){
@@ -89,7 +91,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
     setDataForMultipleProjects(multipleProjects){
       this.multipleProjects = true;
       this.projectId = multipleProjects.ids;
-      this.model.contractNumber = multipleProjects.purchaseOrders;
       this.model.project = multipleProjects.names;
       this.model.projectId = multipleProjects.ids;
       this.model.imputationNumber1 = multipleProjects.analytics; 
@@ -117,17 +118,16 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setDataForSingleProject(){
       var project = JSON.parse(sessionStorage.getItem('projectDetail'));
-      
+
       this.integratorProject = project;
 
       this.getInvoicesOptions(project.id);
       this.projectId = project.id;
-      this.model.contractNumber = project.purchaseOrder;
       this.model.project = project.nombre;
       this.model.projectId = project.id;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-      
+
       this.model.remito = project.remito;
       this.model.analytic = project.analytic;
       this.model.imputationNumber1 = project.analytic;
@@ -136,6 +136,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.details = new Array<HitoDetail>();
 
       var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
+
+      if(!this.validateHitos(hitos)) return;
 
       hitos.forEach(hito => {
         var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.money, hito.opportunityId, hito.managerId);
@@ -156,7 +158,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     setNewModel(){
       var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
-      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
       this.model.totalAmount = 0;
       this.model.documentType = 1;
 
@@ -235,12 +236,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
  
     getOptions() {
-      this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId")).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers;
         this.paymentTerms = data.paymentTerms;
+        this.purchaseOrders = data.purchaseOrders;
         this.updateDocumentTypes();
       },
       err => this.errorHandlerService.handleErrors(err));
@@ -391,5 +393,24 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.certificates = data;
       },
       err => this.errorHandlerService.handleErrors(err));
+    }
+
+    validateHitos(hitos) {
+      let isValid = true;
+
+      if(hitos == null) {
+        swal({
+          type: 'error',
+          title: 'Error',
+          html: '<h4>' + this.i18nService.translateByKey('billing.solfac.hitosSelectedDataError') + '</h4>',
+        }).then((result) => {
+          if (result.value) {
+            window.location.href = '/';
+          }
+        });
+        isValid = false;
+      }
+
+      return isValid;
     }
 }

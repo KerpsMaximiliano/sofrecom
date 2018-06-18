@@ -107,7 +107,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     initGrid(){
         const options = { selector: '#analyticsTable', columnDefs: [ {'aTargets': [5], "sType": "date-uk"} ], order: [[ 5, "desc" ]] };
-        this.dataTableService.init2(options);
+        this.dataTableService.initialize(options);
     }
 
     goToLicenses(){
@@ -127,7 +127,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 columnDefs: [ {'aTargets': [2, 4, 5], "sType": "date-uk"} ]
             };
     
-            this.dataTableService.init2(params);
+            this.dataTableService.initialize(params);
         },
         error => {});
     }
@@ -152,7 +152,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
             var params = { selector: "#tasksTable" };
     
-            this.dataTableService.init2(params);
+            this.dataTableService.initialize(params);
         },
         error => { this.errorHandlerService.handleErrors(error) });
     }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -59,7 +59,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new AnalyticViewModel(response.Data));
+            return Ok(new AnalyticModel(response.Data));
         }
 
         [HttpGet("formOptions")]
@@ -89,7 +89,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AnalyticViewModel model)
+        public async Task<IActionResult> Post([FromBody] Core.Models.AllocationManagement.AnalyticModel model)
         {
             var response = await analyticService.Add(model.CreateDomain());
 
@@ -97,7 +97,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] AnalyticEditViewModel model)
+        public IActionResult Put([FromBody] AnalyticModel model)
         {
             var response = analyticService.Update(model.CreateDomain());
 
@@ -126,6 +126,25 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var response = analyticService.GetByCurrentUser();
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("search")]
+        public IActionResult GetByParameters([FromBody] AnalyticSearchParameters query)
+        {
+            var response = analyticService.Get(query);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("report")]
+        public IActionResult Report([FromBody] List<int> analytics)
+        {
+            var response = analyticService.CreateReport(analytics);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
         }
     }
 }

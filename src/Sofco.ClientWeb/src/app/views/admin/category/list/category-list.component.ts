@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { CategoryService } from "app/services/admin/category.service";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { MenuService } from "../../../../services/admin/menu.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 declare var moment: any;
 
 @Component({
@@ -14,11 +15,25 @@ declare var moment: any;
   })
   export class CategoryListComponent implements OnInit, OnDestroy {
 
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
     public categories: any[] = new Array(); 
 
     public getSubscrip: Subscription;
     public deactivateSubscrip: Subscription;
     public activateSubscrip: Subscription;
+
+    private categorySelected;
+
+    public isLoading: boolean = false;
 
     constructor(private messageService: MessageService,
                 private router: Router,
@@ -56,31 +71,59 @@ declare var moment: any;
     }
 
     habInhabClick(category){
+        this.categorySelected = category
+
         if (category.active){
-            this.deactivate(category);
+            this.confirm = this.deactivate;    
         } else {
-            this.activate(category);
+            this.confirm = this.activate; 
         }
+
+        this.confirmModal.show();
     }
 
-    deactivate(category){
-        this.deactivateSubscrip = this.categoryService.active(category.id, false).subscribe(
+    confirm(){}
+    
+    deactivate(){
+        this.isLoading = true;
+
+        this.deactivateSubscrip = this.categoryService.active(this.categorySelected.id, false).subscribe(
             data => {
+                this.isLoading = false;
+                this.confirmModal.hide();
+
                 if(data.messages) this.messageService.showMessages(data.messages);
-                category.active = false;
-                category.endDate = moment.now();
+                this.categorySelected.active = false;
+                this.categorySelected.endDate = moment.now();
+
+                this.categorySelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => { 
+                this.isLoading = false;
+                this.confirmModal.hide();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
   
-    activate(category){
-        this.activateSubscrip = this.categoryService.active(category.id, true).subscribe(
+    activate(){
+        this.isLoading = true;
+        
+        this.activateSubscrip = this.categoryService.active(this.categorySelected.id, true).subscribe(
             data => {
+                this.isLoading = false;
+                this.confirmModal.hide();
+
                 if(data.messages) this.messageService.showMessages(data.messages);
-                category.active = true;
-                category.endDate = null;
+                this.categorySelected.active = true;
+                this.categorySelected.endDate = null;
+
+                this.categorySelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => { 
+                this.isLoading = false;
+                this.confirmModal.hide();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 
     initGrid(){
@@ -96,6 +139,6 @@ declare var moment: any;
           }
 
           this.dataTableService.destroy(params.selector);
-          this.dataTableService.init2(params);
+          this.dataTableService.initialize(params);
     }
   }

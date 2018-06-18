@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.WebApi.Extensions;
 

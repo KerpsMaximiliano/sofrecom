@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
@@ -8,12 +7,9 @@ import { CryptographyService } from "app/services/common/cryptography.service";
 
 @Injectable()
 export class AuthenticationService {
-    private baseUrl: string;
-
     constructor(private http: Http,
                 private service: Service,
                 private cryptoService: CryptographyService) {
-        this.baseUrl = this.service.UrlApi;
     }
 
     login(username: string, password: string) {
@@ -34,5 +30,6 @@ export class AuthenticationService {
         Cookie.deleteAll();
         sessionStorage.clear();
         localStorage.removeItem('menu');
+        localStorage.removeItem('mustLogout');
     }
 }

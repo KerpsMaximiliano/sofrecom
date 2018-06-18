@@ -31,6 +31,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
     public paymentTerms: Option[] = new Array<Option>();
+    public purchaseOrders: Option[] = new Array<Option>();
     public users: any[] = new Array();
     public currencySymbol: string = "$";
 
@@ -93,6 +94,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.getUserOptions();
         this.getInvoices();
       });
+
+      $('#currency-select select').attr('disabled', 'disabled');
     }
  
     ngOnDestroy(){
@@ -163,10 +166,11 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     getOptions(){
-      this.getOptionsSubs = this.solfacService.getOptions().subscribe(data => {
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId")).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
+        this.purchaseOrders = data.purchaseOrders;
         this.imputationNumbers = data.imputationNumbers; 
         this.paymentTerms = data.paymentTerms;
 

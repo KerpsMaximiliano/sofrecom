@@ -103,29 +103,30 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     save(){
         this.messageService.showLoading();
 
-        this.service.add(this.model).subscribe(
-            data => {
-            this.configUploader(data.data.id);
+        this.service.add(this.model).subscribe(data => {
+                this.messageService.closeLoading();
 
-            this.model.id = data.data.id;
+                if(data.messages) this.messageService.showMessages(data.messages);
 
-            this.exportToExcel(data.messages);
+                this.configUploader(data.data.id);
+
+                this.model.id = data.data.id;
             },
             err => {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
     }
-
+ 
     cancel(){
       this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
     }
 
-    exportToExcel(messages){
+    exportToExcel(){
+        this.messageService.showLoading();
+
         this.service.export(this.model).subscribe(file => {
             this.messageService.closeLoading();
-            if(messages) this.messageService.showMessages(messages);
-
             FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },
         err => {

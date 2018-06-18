@@ -13,6 +13,8 @@ import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';
 import { ServiceService } from '../../../../services/billing/service.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
+import { InvoiceStatus } from '../../../../models/enums/invoiceStatus';
+import { InvoiceService } from '../../../../services/billing/invoice.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -57,6 +59,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     @ViewChild('hito') hito;
     @ViewChild('splitHito') splitHito;
     @ViewChild('newHito') newHito;
+    @ViewChild('ocs') ocs;
 
     @ViewChild('closeHitoModal') closeHitoModal;
     public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -72,6 +75,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private projectService: ProjectService,
+        private invoiceService: InvoiceService,
         private datatableService: DataTableService,
         private messageService: MessageService,
         public menuService: MenuService,
@@ -97,6 +101,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.getSolfacs(this.projectId);
             this.getHitos();
             this.getInvoices(this.projectId);
+            this.ocs.getAll(this.projectId);
         });
     }
 
@@ -151,6 +156,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
         }
     }
+ 
+    resolveHitoLabel(hito){
+        if(hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0){
+            return 'label-pending-related';
+        }
+        
+        return `label-${hito.status}`
+    }
 
     getHitos(){
         this.getHitosSubscrip = this.projectService.getHitos(this.projectId).subscribe(d => {
@@ -160,7 +173,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
 
             this.initHitosGrid();
-            this.calculateIncomesPending();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -172,7 +184,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         }
   
         this.datatableService.destroy(params.selector);
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     getInvoices(projectId){
@@ -190,7 +202,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
           columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
     getSolfacs(projectId){
@@ -198,8 +210,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.initSolfacGrid();
-
-            this.calculateIncomes();
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -210,40 +220,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
           columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
-        this.datatableService.init2(params);
+        this.datatableService.initialize(params);
     }
 
-    calculateIncomesPending(){
-        this.hitos.forEach((item, index) => {
-            if(item.statusCode == "1" || item.statusCode == '717620002'){
-                this.incomesPendingArray[this.getCurrencyId(item.money)-1].value += item.ammount;
-            }
-        });
-    }
-
-    calculateIncomes() {
-        this.incomes[0].value = this.project.realIncomes;
-        
-        this.solfacs.forEach((item, index) => {
-            if(item.statusName == SolfacStatus[SolfacStatus.Invoiced]){
-                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesBilledArray[item.currencyId-1].value -= item.totalAmount;
-                }
-                else{
-                    this.incomesBilledArray[item.currencyId-1].value += item.totalAmount;
-                }
-            }
-
-            if(item.statusName == SolfacStatus[SolfacStatus.AmountCashed]){
-                if(item.documentTypeId == DocumentTypes.CreditNoteA || item.documentTypeId == DocumentTypes.CreditNoteB){
-                    this.incomesCashedArray[item.currencyId-1].value -= item.totalAmount;
-                }
-                else{
-                    this.incomesCashedArray[item.currencyId-1].value += item.totalAmount;
-                }
-            }
-        });
-    }
 
     generateSolfac() {
         var hitos = this.getHitosSelected();
@@ -487,5 +466,42 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         hito.managerId = this.project.ownerId;
         hito.opportunityId = this.project.opportunityId;
         return hito;
+    }
+
+    canAskForAnnulment(){
+        var invoicesSelectedCount = 0;
+
+        var invoices = this.invoices.filter(invoice => {
+
+            if(invoice.selected && invoice.selected == true){
+              invoicesSelectedCount++;
+
+              if(invoice.invoiceStatus == InvoiceStatus[InvoiceStatus.Sent] || invoice.invoiceStatus == InvoiceStatus[InvoiceStatus.Approved]){
+                    return invoice;
+                }
+            }
+
+            return null;
+        });
+
+        if(invoices.length == 0) return false;
+        if(invoices.length != invoicesSelectedCount) return false;
+
+        return true;
+    }
+
+    askForAnnulment(){
+        var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.id);
+
+        this.messageService.showLoading();
+
+        this.invoiceService.askForAnnulment(invoicesIds).subscribe(data => {
+            this.messageService.closeLoading();
+            if(data.messages) this.messageService.showMessages(data.messages);
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }

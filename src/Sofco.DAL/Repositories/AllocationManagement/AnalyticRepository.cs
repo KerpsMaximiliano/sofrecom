@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Allocation> GetTimelineResources(int id, DateTime startDate, DateTime endDate)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate).Include(x => x.Employee).ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.StartDate >= startDate && x.StartDate <= endDate && x.Percentage > 0).Include(x => x.Employee).ToList().AsReadOnly();
         }
 
         public IList<Employee> GetResources(int id)
@@ -88,7 +88,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Analytic> GetAnalyticsByManagers(int id)
         {
-            return context.Analytics.Where(x => x.ManagerId == id || x.DirectorId == id && x.Status == AnalyticStatus.Open).ToList();
+            return context.Analytics.Where(x => x.ManagerId == id && x.Status == AnalyticStatus.Open).ToList();
         }
 
         public List<Analytic> GetByManagerId(int managerId)
@@ -99,7 +99,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId)
         {
             return context.Analytics
-                .Where(x => x.ManagerId == managerId || x.DirectorId == managerId
+                .Where(x => x.ManagerId == managerId
                 && x.Status == AnalyticStatus.Open)
                 .Select(s => new AnalyticLiteModel
                 {
@@ -137,6 +137,55 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Analytic GetByTitle(string title)
         {
             return context.Analytics.SingleOrDefault(x => x.Title == title);
+        }
+
+        public List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria)
+        {
+            IQueryable<Analytic> query = context.Analytics;
+
+            if (searchCriteria.AnalyticId > 0)
+            {
+                query = query.Where(x => x.Id == searchCriteria.AnalyticId);
+            }
+
+            if (!string.IsNullOrEmpty(searchCriteria.CustomerId))
+            {
+                query = query.Where(x => x.ClientExternalId == searchCriteria.CustomerId);
+            }
+
+            if (!string.IsNullOrEmpty(searchCriteria.ServiceId))
+            {
+                query = query.Where(x => x.ServiceId == searchCriteria.ServiceId);
+            }
+
+            if (searchCriteria.AnalyticStatusId > 0)
+            {
+                query = query.Where(x => (int)x.Status == searchCriteria.AnalyticStatusId);
+            }
+
+            if (searchCriteria.ManagerId > 0)
+            {
+                query = query.Where(x => x.ManagerId == searchCriteria.ManagerId);
+            }
+
+            return query.ToList();
+        }
+
+        public List<Analytic> GetForReport(List<int> analytics)
+        {
+            return context.Analytics
+                .Include(x => x.Activity)
+                .Include(x => x.CostCenter)
+                .Include(x => x.ClientGroup)
+                .Include(x => x.Manager)
+                .Include(x => x.CommercialManager)
+                .Include(x => x.Sector)
+                .Include(x => x.ServiceType)
+                .Include(x => x.SoftwareLaw)
+                .Include(x => x.Solution)
+                .Include(x => x.Technology)
+                .Where(x => analytics.Contains(x.Id))
+                .ToList();
         }
     }
 }

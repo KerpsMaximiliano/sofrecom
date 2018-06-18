@@ -1,0 +1,22 @@
+<table class="table table-striped" id="purchaseOrderTable" width="100%">
+    <thead>
+        <tr>
+            <th>{{'billing.purchaseOrder.name' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.balance' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.billingPendingAmmount' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.cashPendingAmmount' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.ammountCashed' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of purchaseOrders" class="pointer" >
+            <td>{{ item.purchaseOrder }}</td>
+            <td>{{ item.currency }}</td>
+            <td>{{ item.balance }}</td>
+            <td>{{ item.billingPendingAmmount }}</td>
+            <td>{{ item.cashPendingAmmount }}</td>
+            <td>{{ item.ammountCashed }}</td>
+        </tr>
+    </tbody>
+</table>

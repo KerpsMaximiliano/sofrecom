@@ -76,7 +76,7 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
           }
 
           this.dataTableService.destroy(params.selector);
-          this.dataTableService.init2(params);
+          this.dataTableService.initialize(params);
     }
 
     goToAdd(){

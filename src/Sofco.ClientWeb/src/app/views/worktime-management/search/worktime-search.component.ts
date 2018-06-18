@@ -153,7 +153,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         };
 
         this.dataTableService.destroy(options.selector); 
-        this.dataTableService.init2(options);
+        this.dataTableService.initialize(options);
         this.gridIsVisible = true;
 
         setTimeout(() => {
@@ -180,10 +180,10 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
     changeIcon(){
         if($("#collapseOne").hasClass('in')){
-            $("#search-icon").toggleClass('fa-minus').toggleClass('fa-plus');
+            $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         }
         else{
-            $("#search-icon").toggleClass('fa-plus').toggleClass('fa-minus');
+            $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
     }
     

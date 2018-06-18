@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security.Interfaces;
-using Sofco.Common.Extensions;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
@@ -25,21 +24,17 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
-        private readonly ISessionManager sessionManager;
-        private readonly ISolfacDelegateData solfacDelegateData;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions, 
-            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, 
-            ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData,
-            IOptions<EmailConfig> emailOptions)
+        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions,
+            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, IUnitOfWork unitOfWork)
         {
             this.solfacService = solfacService;
             crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.client = client;
+            this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.sessionManager = sessionManager;
-            this.solfacDelegateData = solfacDelegateData;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)
@@ -57,7 +52,7 @@ namespace Sofco.Service.Implementations.Billing
                     hitoCrm.SolfacId = existHito.SolfacId;
                 }
 
-                if (!hitoCrm.Status.Equals("Pendiente") 
+                if (!hitoCrm.Status.Equals("Pendiente")
                     && !hitoCrm.Status.Equals("Proyectado") || existHito != null)
                 {
                     hitoCrm.Billed = true;
@@ -98,7 +93,7 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<SelectListModel>>
             {
                 Data = result
-                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -120,6 +115,74 @@ namespace Sofco.Service.Implementations.Billing
 
             response.Data = project;
             return response;
+        }
+
+        public Response<IList<OpportunityOption>> GetOpportunities(string serviceId)
+        {
+            var result = GetProjects(serviceId).Data;
+
+            return new Response<IList<OpportunityOption>>
+            {
+                Data = result
+                    .Select(x => new OpportunityOption { Id = x.OpportunityId, Text = $"{x.OpportunityNumber} - {x.OpportunityName}", ProjectId = x.Id })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+        }
+
+        public IList<PurchaseOrderWidgetModel> GetPurchaseOrders(string projectId)
+        {
+            var list = new List<PurchaseOrderWidgetModel>();
+
+            var solfacs = unitOfWork.SolfacRepository.GetByProjectWithPurchaseOrder(projectId);
+
+            foreach (var solfac in solfacs)
+            {
+                if(solfac.PurchaseOrder == null) continue;
+
+                var ocs = list.Where(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number));
+
+                if (!ocs.Any())
+                {
+                    foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
+                    {
+                        var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = detail.Balance, Currency = detail.Currency.Text };
+
+                        if (detail.CurrencyId == solfac.CurrencyId)
+                            SetPurchaseOrderValues(solfac, newOc);
+
+                        list.Add(newOc);
+                    }
+                }
+                else
+                {
+                    foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
+                    {
+                        if (detail.CurrencyId == solfac.CurrencyId)
+                        {
+                            var oc = list.SingleOrDefault(x => x.PurchaseOrder.Equals(solfac.PurchaseOrder.Number) && x.Currency.Equals(detail.Currency.Text));
+                            SetPurchaseOrderValues(solfac, oc);
+                        }
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        private void SetPurchaseOrderValues(Model.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)
+        {
+            switch (solfac.Status)
+            {
+                case SolfacStatus.InvoicePending:
+                case SolfacStatus.ManagementControlRejected:
+                case SolfacStatus.RejectedByDaf:
+                case SolfacStatus.PendingByManagementControl: newOc.BillingPendingAmmount += solfac.TotalAmount; break;
+
+                case SolfacStatus.Invoiced: newOc.CashPendingAmmount += solfac.TotalAmount; break;
+
+                case SolfacStatus.AmountCashed: newOc.AmmountCashed += solfac.TotalAmount; break;
+            }
         }
     }
 }

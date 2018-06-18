@@ -43,9 +43,9 @@ export class InvoiceHistoryComponent implements OnInit, OnDestroy {
         this.getHistoriesSubscrip = this.invoiceService.getHistories(this.invoiceId).subscribe(d => {
             this.histories = d;
 
-            this.datatableService.destroy('#historyTable');
-            this.datatableService.init('#historyTable', false);
-            //this.datatableService.adjustColumns();
+            var options = { selector: "#historyTable" }
+            this.datatableService.destroy(options.selector);
+            this.datatableService.initialize(options);
         },
         err => this.errorHandlerService.handleErrors(err));
     }

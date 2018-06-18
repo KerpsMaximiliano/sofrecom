@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Model.Utils;
 using Sofco.Model.Relationships;
 using Sofco.Core.Services.Admin;
@@ -12,10 +13,12 @@ namespace Sofco.Service.Implementations.Admin
     public class RoleService : IRoleService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<RoleService> logger;
 
-        public RoleService(IUnitOfWork unitOfWork)
+        public RoleService(IUnitOfWork unitOfWork, ILogMailer<RoleService> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public Response<Role> Active(int id, bool active)
@@ -37,11 +40,20 @@ namespace Sofco.Service.Implementations.Admin
                     entity.EndDate = DateTime.Now;
                 }
 
-                unitOfWork.RoleRepository.Update(entity);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.RoleRepository.Update(entity);
+                    unitOfWork.Save();
 
-                response.Data = entity;
-                response.AddSuccess(active ? Resources.Admin.Role.Enabled : Resources.Admin.Role.Disabled);
+                    response.Data = entity;
+                    response.AddSuccess(active ? Resources.Admin.Role.Enabled : Resources.Admin.Role.Disabled);
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                    response.AddError(Resources.Common.ErrorSave);
+                }
+  
                 return response;
             }
 
@@ -105,8 +117,9 @@ namespace Sofco.Service.Implementations.Admin
                 response.Data = role;
                 response.AddSuccess(Resources.Admin.Role.Created);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 
@@ -129,8 +142,9 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Role.Updated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
            
@@ -192,8 +206,9 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 
@@ -303,8 +318,9 @@ namespace Sofco.Service.Implementations.Admin
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Admin.Role.ModulesUpdated);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
 

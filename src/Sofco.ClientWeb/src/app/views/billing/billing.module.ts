@@ -7,6 +7,8 @@ import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
+import { PCheckModule } from 'app/components/pcheck/pcheck.module';
+import { DateRangePickerModule } from 'app/components/date-range-picker/date-range.picker.module';
 
 import { CustomerService } from 'app/services/billing/customer.service';
 import { ProjectService } from 'app/services/billing/project.service';
@@ -68,9 +70,9 @@ import { CertificatesService } from 'app/services/billing/certificates.service';
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
-import { PurchaseOrderFormEditComponent } from 'app/views/billing/purchaseOrder/form-edit/purchaseOrder-form-edit.component';
 import { NgxInactivity } from 'ngx-inactivity';
 import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component';
+import { ProjectPurchaseOrdersComponent } from 'app/views/billing/projects/project-detail/purchase-order-detail/purchase-order-detail.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -82,11 +84,11 @@ import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 PurchaseOrderFormEditComponent, NewHitoComponent],
+                 NewHitoComponent, ProjectPurchaseOrdersComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule],
+                 DatePickerModule, PCheckModule, DateRangePickerModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService],

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Model.Models.AllocationManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {

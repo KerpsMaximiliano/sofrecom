@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { HolidayService } from 'app/services/worktime-management/holiday.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { DataTableService } from 'app/services/common/datatable.service';
 
 @Component({
   selector: 'app-holidays',
@@ -48,6 +49,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   constructor(
       private messageService: MessageService,
       private holidayService: HolidayService,
+      private datatableService: DataTableService,
       private errorHandlerService: ErrorHandlerService) {
   }
 
@@ -73,14 +75,11 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   }
 
   getHolidays() {
-    this.messageService.showLoading();
-
     this.subscription = this.holidayService.get(this.selectedYear).subscribe(response => {
-      this.messageService.closeLoading();
       this.holidays = response.data;
+      this.initGrid();
     },
     error => {
-      this.messageService.closeLoading();
       this.errorHandlerService.handleErrors(error);
     });
   }
@@ -142,14 +141,12 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   }
 
   processImport() {
-    this.messageService.showLoading();
+    this.confirmImportModal.hide();
     this.subscription = this.holidayService.importExternalData(this.selectedYear).subscribe(res => {
-      this.messageService.closeLoading();
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getHolidays();
     },
     error => {
-      this.messageService.closeLoading();
       this.errorHandlerService.handleErrors(error);
     });
   }
@@ -158,11 +155,25 @@ export class HolidaysComponent implements OnInit, OnDestroy {
     const id = this.holidayModel.id;
     this.confirmDeleteModal.hide();
     this.subscription = this.holidayService.delete(id).subscribe(response => {
-        if (response.messages) this.messageService.showMessages(response.messages);
-        this.getHolidays();
+      if (response.messages) this.messageService.showMessages(response.messages);
+      this.getHolidays();
     },
     err => {
         this.errorHandlerService.handleErrors(err);
     });
+  }
+
+  initGrid() {
+    const columns = [0, 1, 2];
+
+    const params = {
+        selector: '#holidaysTable',
+        columns: columns,
+        withExport: false
+    };
+
+    this.datatableService.destroy('#holidaysTable');
+
+    this.datatableService.initialize(params);
   }
 }

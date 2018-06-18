@@ -2,10 +2,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.DTO;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -41,7 +41,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var resources = allocationService.GetByService(serviceId);
 
-            return Ok(resources.Select(x => new EmployeeViewModel(x)));
+            return Ok(resources.Select(x => new EmployeeModel(x)));
         }
 
         [HttpGet("analytic/{analyticId}")]
@@ -49,7 +49,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var resources = allocationService.GetByEmployeesByAnalytic(analyticId);
 
-            return Ok(resources.Select(x => new EmployeeViewModel(x)));
+            return Ok(resources.Select(x => new EmployeeModel(x)));
         }
 
         [HttpPost("report")]

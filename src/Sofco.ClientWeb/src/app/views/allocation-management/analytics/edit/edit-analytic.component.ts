@@ -43,6 +43,9 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getAnalytic();
+
+        $('#customer-select select').attr('disabled', 'disabled');
+        $('#service-select select').attr('disabled', 'disabled');
     }
 
     ngOnDestroy(): void {
@@ -59,6 +62,18 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
                 this.messageService.closeLoading();
                 this.form.model = data;
+
+                if(this.form.model.clientExternalId){
+                    
+                    this.form.customerId = this.form.model.clientExternalId;
+                    this.form.serviceId = this.form.model.serviceId;
+
+                    this.form.getServices();
+                }
+
+                setTimeout(() => {
+                    $('#userId').val(this.form.model.usersQv).trigger('change');
+                }, 500);
             },
             error => {
                 this.messageService.closeLoading();
@@ -69,6 +84,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     edit() {
         this.form.model.title = $('#title').val();
+        this.form.model.usersQv = $('#userId').val();
 
         this.messageService.showLoading();
 
@@ -109,10 +125,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err);
             this.isLoading = false;
         });
-    }
-
-    goToPurchaseOrders(){
-        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/purchaseOrders`]);
     }
 
     goToProjects(){

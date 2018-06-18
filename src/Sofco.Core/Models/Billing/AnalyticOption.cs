@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Core.Models.Billing
+﻿namespace Sofco.Core.Models.Billing
 {
     public class AnalyticOption
     {

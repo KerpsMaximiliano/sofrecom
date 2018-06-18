@@ -42,6 +42,8 @@ namespace Sofco.DAL
         public DbSet<SolfacCertificate> SolfacCertificates { get; set; }
         public DbSet<LicenseFile> LicenseFiles { get; set; }
         public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
+        public DbSet<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
+        public DbSet<PurchaseOrderAmmountDetail> PurchaseOrderAmmountDetails { get; set; }
 
         // Billing Mappings
         public DbSet<Hito> Hitos { get; set; }
@@ -51,7 +53,7 @@ namespace Sofco.DAL
         public DbSet<SolfacHistory> SolfacHistories { get; set; }
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
-        public DbSet<Model.Models.Billing.PurchaseOrder> PurchaseOrderFiles { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings
@@ -91,7 +93,7 @@ namespace Sofco.DAL
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<SoftwareLaw> SoftwareLaws { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
-        public DbSet<Model.Utils.PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderOptions> PurchaseOrderOptions { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
 
@@ -135,6 +137,7 @@ namespace Sofco.DAL
             builder.MapTasks();
             builder.MapEmployeeCategory();
             builder.MapWorkTime();
+            builder.MapPurchaseOrderAnalytic();
         }
     }
 }

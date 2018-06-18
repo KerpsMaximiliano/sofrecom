@@ -12,12 +12,10 @@ namespace Sofco.WebApi.Controllers.Billing
     [Authorize]
     public class ProjectController : Controller
     {
-        private readonly ISolfacService solfacService;
         private readonly IProjectService projectService;
 
         public ProjectController(ISolfacService solfacService, IProjectService projectService)
         {
-            this.solfacService = solfacService;
             this.projectService = projectService;
         }
 
@@ -62,6 +60,20 @@ namespace Sofco.WebApi.Controllers.Billing
             try
             {
                 return Ok(projectService.GetHitosByProject(projectId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{projectId}/purchaseOrders")]
+        public IActionResult GetPurchaseOrders(string projectId)
+        {
+            try
+            {
+                return Ok(projectService.GetPurchaseOrders(projectId));
             }
             catch (Exception ex)
             {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
@@ -328,11 +325,19 @@ namespace Sofco.Service.Implementations.Billing
                 File = fileAsArrayBytes
             };
 
-            unitOfWork.SolfacRepository.SaveAttachment(attachment);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.SolfacRepository.SaveAttachment(attachment);
+                unitOfWork.Save();
 
-            response.Data = attachment;
-            response.AddSuccess(Resources.Billing.Solfac.FileAdded);
+                response.Data = attachment;
+                response.AddSuccess(Resources.Billing.Solfac.FileAdded);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
@@ -394,7 +399,7 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateHitos(solfac.Hitos, response);
             SolfacValidationHelper.ValidatePercentage(solfac, response);
             SolfacValidationHelper.ValidateTimeLimit(solfac, response);
-            SolfacValidationHelper.ValidateContractNumber(solfac, response);
+            SolfacValidationHelper.ValidateContractNumber(solfac, response, unitOfWork);
             SolfacValidationHelper.ValidateImputationNumber(solfac, response);
             SolfacValidationHelper.ValidateBusinessName(solfac, response);
 
@@ -595,7 +600,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<List<Invoice>> { Data = new List<Invoice>() };
 
-            var solfac = SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
+            SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
 
             if (response.HasErrors()) return response;
 

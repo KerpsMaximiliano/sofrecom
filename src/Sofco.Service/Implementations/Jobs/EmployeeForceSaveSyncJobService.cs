@@ -34,6 +34,13 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var employees = Translate(tigerEmployeeRepository.GetWithStartDate(startDate).ToList());
 
+            unitOfWork.EmployeeRepository.Update(employees);
+        }
+
+        public void AddEmployee()
+        {
+            var employees = Translate(tigerEmployeeRepository.GetByLegajs(new []{ 1003 }).ToList());
+
             unitOfWork.EmployeeRepository.Save(employees);
         }
 

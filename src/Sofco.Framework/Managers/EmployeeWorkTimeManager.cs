@@ -6,7 +6,8 @@ using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Managers;
-using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 
 namespace Sofco.Framework.Managers
 {
@@ -31,13 +32,13 @@ namespace Sofco.Framework.Managers
             this.analyticData = analyticData;
         }
 
-        public List<EmployeeWorkTimeApproval> GetByCurrentServices(WorkTimeApprovalQuery query)
+        public List<WorkTimeApprovalEmployee> GetByCurrentServices(WorkTimeApprovalQuery query)
         {
             var userMail = sessionManager.GetUserEmail();
 
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
 
-            List<EmployeeWorkTimeApproval> result;
+            List<WorkTimeApprovalEmployee> result;
 
             if (isDirector)
             {
@@ -50,9 +51,9 @@ namespace Sofco.Framework.Managers
 
             var isManager = unitOfWork.UserRepository.HasManagerGroup(userName);
 
-            if (!isManager) return new List<EmployeeWorkTimeApproval>();
+            if (!isManager) return new List<WorkTimeApprovalEmployee>();
 
-            List<EmployeeWorkTimeApproval> analytics;
+            List<WorkTimeApprovalEmployee> analytics;
 
             if (query.AnalyticId > 0)
             {
@@ -73,7 +74,7 @@ namespace Sofco.Framework.Managers
             return ResolveManagers(result);
         }
 
-        private List<EmployeeWorkTimeApproval> ResolveManagers(List<EmployeeWorkTimeApproval> data)
+        private List<WorkTimeApprovalEmployee> ResolveManagers(List<WorkTimeApprovalEmployee> data)
         {
             var managerIds = data.Where(s => s.ManagerId.HasValue).Select(s => s.ManagerId.Value).Distinct().ToList();
 
@@ -89,7 +90,7 @@ namespace Sofco.Framework.Managers
             return data;
         }
 
-        private List<EmployeeWorkTimeApproval> ResolveApprovalUser(List<EmployeeWorkTimeApproval> data)
+        private List<WorkTimeApprovalEmployee> ResolveApprovalUser(List<WorkTimeApprovalEmployee> data)
         {
             var userIds = data.Where(s => s.WorkTimeApproval != null).Select(s => s.WorkTimeApproval.ApprovalUserId).Distinct().ToList();
 
@@ -107,7 +108,7 @@ namespace Sofco.Framework.Managers
             return data;
         }
 
-        private List<EmployeeWorkTimeApproval> ResolveAnalytics(List<EmployeeWorkTimeApproval> data)
+        private List<WorkTimeApprovalEmployee> ResolveAnalytics(List<WorkTimeApprovalEmployee> data)
         {
             var analyticsIds = data.Where(s => s.AnalyticId != null).Select(s => s.AnalyticId.Value).Distinct().ToList();
 

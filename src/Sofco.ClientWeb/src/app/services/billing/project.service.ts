@@ -20,6 +20,10 @@ export class ProjectService {
       return this.http.get<any>(`${this.baseUrl}/projects/${projectId}`);
   }
 
+  getPurchaseOrders(projectId){
+    return this.http.get<any>(`${this.baseUrl}/projects/${projectId}/purchaseOrders`);
+  }
+
   getOptions(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/projects/${serviceId}/options`);
   }

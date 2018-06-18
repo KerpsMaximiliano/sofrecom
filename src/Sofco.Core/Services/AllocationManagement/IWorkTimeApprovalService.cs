@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.AllocationManagement
@@ -8,7 +9,7 @@ namespace Sofco.Core.Services.AllocationManagement
     {
         Response<List<WorkTimeApproval>> GetAll();
 
-        Response<List<WorkTimeApproval>> Save(List<WorkTimeApproval> workTimeApprovals);
+        Response<List<WorkTimeApprovalModel>> Save(List<WorkTimeApprovalModel> workTimeApprovals);
 
         Response Delete(int workTimeApprovalId);
     }

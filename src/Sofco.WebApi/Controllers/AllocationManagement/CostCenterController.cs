@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
-using Sofco.WebApi.Models.AllocationManagement;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
 {
@@ -24,7 +24,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var list = costCenterService.GetAll();
 
-            return Ok(list.Select(x => new CostCenterViewModel(x)));
+            return Ok(list.Select(x => new CostCenterModel(x)));
         }
 
         [HttpGet("{id}")]
@@ -35,7 +35,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             if (response.HasErrors())
                 return BadRequest(response);
 
-            return Ok(new CostCenterViewModel(response.Data));
+            return Ok(new CostCenterModel(response.Data));
         }
 
         [HttpGet("options")]
@@ -47,7 +47,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] AddCostCenterViewModel model)
+        public IActionResult Post([FromBody] AddCostCenterModel model)
         {
             var domain = model.CreateDomain();
 
@@ -57,7 +57,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] EditCostCenterViewModel model)
+        public IActionResult Put([FromBody] EditCostCenterModel model)
         {
             var response = costCenterService.Edit(model.Id, model.Description);
 

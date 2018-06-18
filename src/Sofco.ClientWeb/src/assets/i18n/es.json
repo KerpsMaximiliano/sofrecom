@@ -167,12 +167,14 @@
                 "serviceType": "Tipo de Servicio",
                 "solutionType": "Tipo de Solución",
                 "technology": "Tipo de Tecnología",
+                "balance": "Resumen",
                 "invoices": {
                     "title": "Remitos",
                     "invoiceNumber": "Número remito",
                     "date": "Fecha",
                     "status": "Estado",
-                    "create": "Crear remito"
+                    "create": "Crear remito",
+                    "askAnnulment": "Pedir Anulación"
                 },
                 "milestone": {
                     "title": "Hitos",
@@ -216,7 +218,7 @@
             "add": "Alta",
             "edit": "Editar",
             "search": "Busqueda",
-            "parameters": "Parametros de busqueda",
+            "parameters": "Parámetros de búsqueda",
             "noOrdersFound": "No hay certificados cargados",
             "fields": {
                 "name": "Nombre",
@@ -226,24 +228,40 @@
         },
         "purchaseOrder": {
             "addTitle": "Alta orden de compra",
-            "editTitle": "Editar orden de compra",
+            "editTitle": "Detalle orden de compra",
             "searchTitle": "Busqueda Ordenes de Compra",
             "title": "Ordenes de Compra",
+            "name": "Orden de Compra",
             "add": "Alta",
             "edit": "Editar",
-            "search": "Busqueda",
-            "parameters": "Parametros de busqueda",
+            "search": "Busqueda", 
+            "parameters": "Parámetros de búsqueda",
             "noOrdersFound": "No hay ordenes de compra cargadas",
+            "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
             "fields": {
-                "title": "Titulo",
                 "number": "Numero",
                 "client": "Cliente",
                 "receptionDate": "Fecha Recepcion",
                 "year": "Año",
                 "area": "Area",
                 "status": "Estado",
-                "analytic": "Analítica" 
-            }
+                "startDate": "Fecha Desde",
+                "endDate": "Fecha Hasta",
+                "opportunity": "Oportunidad",
+                "currency": "Moneda",
+                "balance": "Saldo",
+                "ammount": "Monto",
+                "company": "Compañia",
+                "comercial": "Comercial",
+                "project": "Proyecto",
+                "description": "Descripción",
+                "analytic": "Analítica",
+                "billingPendingAmmount": "Pendiente a Facturar", 
+                "cashPendingAmmount": "Pendiente a Cobrar", 
+                "ammountCashed": "Ingresos Cobrados"
+            },
+            "projectManager": "Gerente de Proyecto",
+            "commercialManager": "Gerente de Cuenta"
         },
         "solfac":{
             "title": "Solicitud Facturación",
@@ -337,7 +355,8 @@
                 "createdUser": "Creado por",
                 "createdDate": "Fecha creación",
                 "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?"
-            }
+            },
+            "hitosSelectedDataError": "Ocurrió un error al recuperar el hito seleccionado, por favor vuelva al inicio clickeando en el siguiente bóton."
         },
         "invoice":{
             "title": "Remitos",
@@ -373,7 +392,8 @@
             "includeInvoiceNumber": "Incluya número de remito antes de aprobar",
             "excelUploaded": "Se ha importado el excel exitosamente. Puede dejar el remito en borrador o enviarlo a la DAF para su aprobación",
             "draft": "Dejar en borrador",
-            "createAndExport": "Crear y Exportar",
+            "create": "Crear",
+            "export": "Exportar nuevo",
             "pdfAddedSucces": "PDF importado correctamente",
             "excelAddedSucces": "Excel importado correctamente",
             "invoiceNumberRequired": "El número de remito es requerido",
@@ -446,7 +466,7 @@
         },
         "report": { 
             "title": "Reporte de Recursos",
-            "report": "Reporte",
+            "report": "Reporte Asignaciones",
             "includeStaff": "Incluir Staff",
             "grid": {
                 "analytic": "Analítica",
@@ -502,8 +522,7 @@
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
-                "start": "Ingreso",
-                "examDaysTaken": "Días examen tomados"
+                "start": "Ingreso"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
         },
@@ -547,6 +566,8 @@
                 "amountProject": "Monto del proyecto",
                 "proposal": "Propuesta",
                 "director": "Director",
+                "direction": "Direccíon",
+                "usersqv": "Usuarios QlikView",
                 "manager": "Gerente",
                 "currency":"Moneda",
                 "activity": "Actividad",
@@ -569,7 +590,8 @@
                 "open": "Abierta",
                 "closeForExpenses": "Cerrada para costos",
                 "close": "Cerrada"
-            }
+            },
+            "search": "Búsqueda de Analiticas"
         },
         "confirmBody": "Esta seguro que desea seguir con la acción de ",
         "workTimeApproval": {
@@ -747,7 +769,10 @@
             "invoiceDate": "invoiceDate",
             "amount": "Importe"
         },
-        "dateRange": "Desde - hasta"
+        "dateRange": "Desde - hasta",
+        "dayOfWeek": "Lu Ma Mie Ju Vie Sa Do",
+        "monthNames": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic",
+        "resultNotFound": "No se encontraron datos."
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",

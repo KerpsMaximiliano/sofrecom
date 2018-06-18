@@ -7,6 +7,7 @@ using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Relationships;
 
 namespace Sofco.DAL.Repositories.Billing
 {
@@ -18,27 +19,78 @@ namespace Sofco.DAL.Repositories.Billing
 
         public bool Exist(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Any(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrders.Any(x => x.Id == purchaseOrderId);
         }
 
         public PurchaseOrder GetById(int purchaseOrderId)
         {
-            return context.PurchaseOrderFiles.Include(x => x.File).SingleOrDefault(x => x.Id == purchaseOrderId);
+            return context.PurchaseOrders
+                .Include(x => x.File)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .SingleOrDefault(x => x.Id == purchaseOrderId);
+        }
+
+        public PurchaseOrder GetWithAnalyticsById(int purchaseOrderId)
+        {
+            return context.PurchaseOrders
+                .Include(x => x.File)
+                .Include(x => x.PurchaseOrderAnalytics)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .SingleOrDefault(x => x.Id == purchaseOrderId);
+        }
+
+        public IList<PurchaseOrder> GetByService(string serviceId)
+        {
+            var ocsLite = context.PurchaseOrderAnalytics
+                .Include(x => x.PurchaseOrder)
+                .Include(x => x.Analytic)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Select(x => x.PurchaseOrderId)
+                .Distinct()
+                .ToList();
+
+            return context.PurchaseOrders
+                .Include(x => x.File)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .Where(x => ocsLite.Contains(x.Id))
+                .ToList();
+        }
+
+        public IList<PurchaseOrder> GetByServiceLite(string serviceId)
+        {
+            return context.PurchaseOrderAnalytics
+                .Include(x => x.PurchaseOrder)
+                .Include(x => x.Analytic)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Select(x => x.PurchaseOrder)
+                .Distinct()
+                .ToList();
+        }
+
+        public bool HasAmmountDetails(int solfacCurrencyId, int solfacPurchaseOrderId)
+        {
+            return context.PurchaseOrderAmmountDetails.Any(x => x.PurchaseOrderId == solfacPurchaseOrderId && x.CurrencyId == solfacCurrencyId);
+        }
+
+        public void UpdateBalance(PurchaseOrderAmmountDetail detail)
+        {
+            context.Entry(detail).Property("Balance").IsModified = true;
         }
 
         public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
         {
-            IQueryable<PurchaseOrder> query = context.PurchaseOrderFiles
-                .Include(x => x.File)
-                .Include(x => x.Analytic);
+            IQueryable<PurchaseOrder> query = context.PurchaseOrders
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .Include(x => x.File);
 
             if (parameters != null)
             {
                 if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
                     query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
-
-                if (parameters.Year > 0)
-                    query = query.Where(x => x.Year == parameters.Year);
 
                 if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
                     query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
@@ -47,19 +99,9 @@ namespace Sofco.DAL.Repositories.Billing
             return query.ToList();
         }
 
-        public ICollection<PurchaseOrder> GetByService(string serviceId)
+        public void AddPurchaseOrderAnalytic(PurchaseOrderAnalytic purchaseOrderAnalytic)
         {
-            var analytic =  context.Analytics
-                .Include(x => x.PurchaseOrders)
-                .ThenInclude(x => x.File)
-                .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
-
-            if (analytic != null && analytic.PurchaseOrders.Any())
-            {
-                return analytic.PurchaseOrders;
-            }
-
-            return new List<PurchaseOrder>();
+            context.PurchaseOrderAnalytics.Add(purchaseOrderAnalytic);
         }
     }
 }

@@ -10,29 +10,33 @@ import { CustomerService } from "../../../../services/billing/customer.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
-import { ProjectService } from "app/services/billing/project.service";
+import { UtilsService } from "../../../../services/common/utils.service";
 
 @Component({
     selector: 'purchase-order-form',
-    templateUrl: './purchaseOrder-form.component.html'
+    templateUrl: './purchaseOrder-form.component.html',
+    styleUrls: ['./purchaseOrder-form.component.scss']
 })
 export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     public options: any;
-    public model: any = {};
+    public model: any = { ammountDetails: new Array() };
     public customers: Option[] = new Array<Option>();
     public analytics: any[] = new Array();
     public projects: any[] = new Array();
+    public opportunities: any[] = new Array();
+    public currencies: any[] = new Array();
 
     @Input() mode: string;
 
     getOptionsSubscrip: Subscription;
     getAnalyticSubscrip: Subscription;
+    getCurrenciesSubscrip: Subscription;
 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private analyticService: AnalyticService,
-                private projectService: ProjectService,
+                private utilsService: UtilsService,
                 private menuService: MenuService,
                 private customerService: CustomerService,
                 private messageService: MessageService,
@@ -41,41 +45,28 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCustomers();
 
-        this.getOptionsSubscrip = this.purchaseOrderService.getFormOptions().subscribe(
-            res => {
-                this.options = res;
-
-                this.model.managerId = 0;
-                this.model.commercialManagerId = 0;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+        if(this.mode == 'new'){
+            this.getCurrencies();
+        }
     }
 
     ngOnDestroy(): void {
         if(this.getOptionsSubscrip) this.getOptionsSubscrip.unsubscribe();
         if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
+        if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
     }
 
-    analyticChange(){
-        if(this.model.analyticId == undefined || this.model.analyticId == '') return;
-        if(this.analytics.length == 0) return;
+    getCurrencies(){
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
+            this.currencies = d;
 
-        var item = this.analytics.find(x => x.id == this.model.analyticId);
-        this.model.commercialManagerId = item.commercialManagerId;
-        this.model.managerId = item.managerId;
-
-        if(item.id > 0 && item.serviceId){
-            this.getProjects(item.serviceId);
-        }
-    }
-
-    getProjects(serviceId){
-        this.projectService.getOptions(serviceId).subscribe(d => {
-            this.projects = d.data;
+            this.currencies.forEach((item, index) => {
+                this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
+            });
         },
         err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.model.clientExternalId).subscribe(
             data => {
@@ -87,7 +78,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getCustomers(){
         this.customerService.getOptions().subscribe(res => {
             this.customers = res.data;
-            this.model.clientExternalId = 0;
         },
         err => {
             this.errorHandlerService.handleErrors(err)

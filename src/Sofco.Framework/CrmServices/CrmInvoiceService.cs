@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Domains;
-using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Logger;
@@ -31,8 +29,7 @@ namespace Sofco.Framework.CrmServices
 
         public CrmInvoiceService(ICrmHttpClient client, 
             IOptions<CrmConfig> crmOptions,
-            ILogMailer<CrmInvoiceService> logger
-            )
+            ILogMailer<CrmInvoiceService> logger)
         {
             this.client = client;
             crmConfig = crmOptions.Value;
@@ -89,25 +86,10 @@ namespace Sofco.Framework.CrmServices
 
             foreach (var item in hitos)
             {
-                var sum = item.Details.Sum(x => x.Total);
+                var content = $"Ammount={item.Total}";
 
-                if (sum == item.Total) continue;
+                ProcessUpdateHitos(item.ExternalHitoId, content);
 
-                var total = $"Ammount={sum}";
-
-                var urlPath = $"{crmConfig.Url}/api/InvoiceMilestone/{item.ExternalHitoId}";
-
-                try
-                {
-                    var stringContent = new StringContent(total, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                    client.Put<string>(urlPath, stringContent);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(total+" - "+urlPath, ex);
-                    result.Messages.Add(new Message(Resources.Billing.Solfac.ErrorSaveOnHitos, MessageType.Warning));
-                }
             }
 
             return result;
@@ -115,20 +97,16 @@ namespace Sofco.Framework.CrmServices
 
         public void UpdateHitoStatus(List<Hito> hitos, HitoStatus hitoStatus)
         {
-            var statusCode = (int) hitoStatus;
+            UpdateHitoStatus(hitos.Select(s => s.ExternalHitoId).ToList(), hitoStatus);
+        }
 
-            foreach (var hito in hitos)
+        public void UpdateHitoStatus(List<string> hitoIds, HitoStatus hitoStatus)
+        {
+            var statusCode = (int)hitoStatus;
+
+            foreach (var hitoId in hitoIds)
             {
-                try
-                {
-                    var stringContent = new StringContent($"StatusCode={statusCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex);
-                }
+                ProcessUpdateHitos(hitoId, $"StatusCode={statusCode}");
             }
         }
 
@@ -136,16 +114,64 @@ namespace Sofco.Framework.CrmServices
         {
             foreach (var hito in hitos)
             {
-                try
-                {
-                    var stringContent = new StringContent($"InvoicingDate={parameters.InvoiceDate.GetValueOrDefault():O}&InvoicingNumber={parameters.InvoiceCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                ProcessUpdateHitos(hito.ExternalHitoId, $"InvoicingDate={parameters.InvoiceDate.GetValueOrDefault():O}&InvoicingNumber={parameters.InvoiceCode}");
+            }
+        }
 
-                    client.Put<string>($"{crmConfig.Url}/api/InvoiceMilestone/{hito.ExternalHitoId}", stringContent);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex);
-                }
+        public void UpdateHitosStatus(List<string> hitoIds, HitoStatus hitoStatus)
+        {
+            var statusCode = (int)hitoStatus;
+
+            foreach (var hitoId in hitoIds)
+            {
+                ProcessUpdateHitos(hitoId, $"StatusCode={statusCode}");
+            }
+        }
+
+        public void UpdateHitosStatusAndPurchaseOrder(List<string> hitoIds, HitoStatus hitoStatus, string purchaseOrderNumber)
+        {
+            var statusCode = (int)hitoStatus;
+
+            foreach (var hitoId in hitoIds)
+            {
+                ProcessUpdateHitos(hitoId, $"StatusCode={statusCode}&PurchaseOrder={purchaseOrderNumber}");
+            }
+        }
+
+        public void UpdateHitosStatusAndInvoiceDateAndNumber(List<string> hitoIds, HitoStatus hitoStatus, DateTime invoicingDate,
+            string invoiceCode)
+        {
+            var statusCode = (int)hitoStatus;
+
+            foreach (var hitoId in hitoIds)
+            {
+                ProcessUpdateHitos(hitoId, $"StatusCode={statusCode}&InvoicingDate={invoicingDate:O}&InvoicingNumber={invoiceCode}");
+            }
+        }
+
+        public void UpdateHitosStatusAndBillingDate(List<string> hitoIds, HitoStatus hitoStatus, DateTime billingDate)
+        {
+            var statusCode = (int)hitoStatus;
+
+            foreach (var hitoId in hitoIds)
+            {
+                ProcessUpdateHitos(hitoId, $"StatusCode={statusCode}&BillingDate={billingDate:O}");
+            }
+        }
+
+        private void ProcessUpdateHitos(string hitoId, string content)
+        {
+            var urlPath = $"{crmConfig.Url}/api/InvoiceMilestone/{hitoId}";
+
+            try
+            {
+                var stringContent = new StringContent(content, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                client.Put<string>(urlPath, stringContent);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(urlPath +" - "+ content, ex);
             }
         }
 

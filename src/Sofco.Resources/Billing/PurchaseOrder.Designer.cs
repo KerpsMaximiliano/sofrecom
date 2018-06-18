@@ -62,6 +62,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.ammountRequired.
+        /// </summary>
+        public static string AmmountRequired {
+            get {
+                return ResourceManager.GetString("AmmountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.analyticIsRequired.
         /// </summary>
         public static string AnalyticIsRequired {
@@ -94,6 +103,42 @@ namespace Sofco.Resources.Billing {
         public static string ComercialManagerIsRequired {
             get {
                 return ResourceManager.GetString("ComercialManagerIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.currencyIsRequired.
+        /// </summary>
+        public static string CurrencyIsRequired {
+            get {
+                return ResourceManager.GetString("CurrencyIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.datesRequired.
+        /// </summary>
+        public static string DatesRequired {
+            get {
+                return ResourceManager.GetString("DatesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.endDateLessThanStartDate.
+        /// </summary>
+        public static string EndDateLessThanStartDate {
+            get {
+                return ResourceManager.GetString("EndDateLessThanStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.errorToSaveAnalytics.
+        /// </summary>
+        public static string ErrorToSaveAnalytics {
+            get {
+                return ResourceManager.GetString("ErrorToSaveAnalytics", resourceCulture);
             }
         }
         
@@ -166,6 +211,15 @@ namespace Sofco.Resources.Billing {
         public static string TitleIsRequired {
             get {
                 return ResourceManager.GetString("TitleIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         

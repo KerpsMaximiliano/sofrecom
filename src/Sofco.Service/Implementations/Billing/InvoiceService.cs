@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.DTO;
@@ -11,7 +14,9 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -22,10 +27,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IMailSender mailSender;
         private readonly ISessionManager sessionManager;
         private readonly EmailConfig emailConfig;
+        private readonly ILogMailer<InvoiceService> logger;
+        private readonly IMailBuilder mailBuilder;
 
         public InvoiceService(IUnitOfWork unitOfWork, 
             IInvoiceStatusFactory invoiceStatusFactory,
             IOptions<EmailConfig> emailOptions,
+            IMailBuilder mailBuilder,
+            ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
@@ -33,6 +42,8 @@ namespace Sofco.Service.Implementations.Billing
             this.mailSender = mailSender;
             this.sessionManager = sessionManager;
             this.emailConfig = emailOptions.Value;
+            this.logger = logger;
+            this.mailBuilder = mailBuilder;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -97,9 +108,10 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceCreated, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -131,9 +143,10 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
@@ -181,8 +194,9 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -241,8 +255,9 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -251,8 +266,9 @@ namespace Sofco.Service.Implementations.Billing
                 // Send Mail
                 invoiceStatusHandler.SendMail(mailSender, invoice, emailConfig);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSendMail, MessageType.Error));
             }
 
@@ -289,8 +305,9 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.Billing.Invoice.Deleted, MessageType.Success));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -333,8 +350,9 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.Data = invoiceToClone;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
             }
 
@@ -344,6 +362,45 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<InvoiceHistory> GetHistories(int id)
         {
             return unitOfWork.InvoiceRepository.GetHistories(id);
+        }
+
+        public Response RequestAnnulment(IList<int> invoiceIds)
+        {
+            var response = new Response();
+
+            var invoices = unitOfWork.InvoiceRepository.GetByIds(invoiceIds);
+
+            if (!invoices.Any()) return response;
+
+            try
+            {
+                var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileName}</a>");
+
+                var subject = MailSubjectResource.InvoiceRequestAnnulment;
+                var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString));
+
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+
+                var data = new InvoiceRequestAnnulmentData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = mailDaf
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
+
+                response.AddSuccess(Resources.Billing.Invoice.RequestAnnulmentSent);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(Resources.Common.ErrorSendMail);
+                logger.LogError(ex);
+            }
+
+            return response;
         }
 
         private InvoiceHistory GetHistory(int invoiceId, InvoiceStatus statusFrom, InvoiceStatus statusTo, int userId, string comment)

@@ -264,4 +264,7 @@
   <data name="SolfacDelegateMangerOnlyError" xml:space="preserve">
     <value>billing/solfac.delegateSaveMangerOnlyError</value>
   </data>
+  <data name="PurchaseOrderWithWrongCurrency" xml:space="preserve">
+    <value>billing/solfac.purchaseOrderWithWrongCurrency</value>
+  </data>
 </root>
