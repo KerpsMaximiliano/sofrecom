@@ -5,6 +5,7 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -18,33 +19,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly ICrmInvoiceService crmInvoiceService;
 
-        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService)
+        private readonly IMailBuilder mailBuilder;
+
+        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
+            this.mailBuilder = mailBuilder;
         }
-
-        private const string MailBody = "<font size='3'>" +
-                                        "<span style='font-size:12pt'>" +
-                                        "Estimados, </br></br>" +
-                                        "Se ha cargado una solfac que requiere revisión y aprobación </br>" +
-                                        "Para acceder, por favor ingresar al siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
-                                        "Muchas gracias." +
-                                        "</span>" +
-                                        "</font>";
-
-        private const string MailSubject = "SOLFAC - {0} - {1} - {2} - {3}";
-
-        private const string MailBodyToUser = "<font size='3'>" +
-                                              "<span style='font-size:12pt'>" +
-                                              "Estimado, </br></br>" +
-                                              "Se ha iniciado el proceso de facturación de la solicitud del asunto. Para acceder al misma, " +
-                                              "por favor ingresar al siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
-                                              "Muchas gracias." +
-                                              "</span>" +
-                                              "</font>";
-
-        private const string MailSubjectToUser = "SOLFAC: INICIO PROCESO - {0} - {1} - {2} - {3}";
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
@@ -78,12 +60,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
-            return string.Format(MailBody, link);
+            return string.Format(Resources.Mails.MailMessageResource.SolfacStatusPendingByManagementControlMessage, link);
         }
 
         private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
         {
-            return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
+            return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusPendingByManagementControlTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
         private string GetRecipients(EmailConfig emailConfig)
@@ -128,13 +110,29 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var bodyToCdg = GetBodyMail(solfac, emailConfig.SiteUrl);
             var recipientsToCdg = GetRecipients(emailConfig);
 
-            mailSender.Send(recipientsToCdg, subjectToCdg, bodyToCdg);
+            var data = new SolfacStatusData
+            {
+                Title = subjectToCdg,
+                Message = bodyToCdg,
+                Recipients = recipientsToCdg
+            };
 
-            var subject = string.Format(MailSubjectToUser, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
-            var body = string.Format(MailBodyToUser, $"{emailConfig.SiteUrl}billing/solfac/{solfac.Id}");
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
+
+            var subject = string.Format(Resources.Mails.MailSubjectResource.SolfacStatusPendingByManagementControlTitleToUser, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
+            var body = string.Format(Resources.Mails.MailMessageResource.SolfacStatusPendingByManagementControlMessageToUser, $"{emailConfig.SiteUrl}billing/solfac/{solfac.Id}");
             var recipients = solfac.UserApplicant.Email;
 
-            mailSender.Send(recipients, subject, body);
+            data = new SolfacStatusData
+            {
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
+
+            email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }

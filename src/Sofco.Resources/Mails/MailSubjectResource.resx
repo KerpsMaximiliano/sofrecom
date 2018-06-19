@@ -147,4 +147,37 @@
   <data name="LicenseWorkflowTitle" xml:space="preserve">
     <value>Aprobación de licencia - {0}</value>
   </data>
+  <data name="SolfacStatusAmountCashedTitle" xml:space="preserve">
+    <value>SOLFAC - COBRADA - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusInvoicedTitle" xml:space="preserve">
+    <value>SOLFAC - FACTURADA - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusInvoicePendingTitle" xml:space="preserve">
+    <value>SOLFAC - APROBADA por Control de Gestión - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusManagementControlRejectedTitle" xml:space="preserve">
+    <value>SOLFAC - RECHAZADA por Control de Gestión - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusPendingByManagementControlTitle" xml:space="preserve">
+    <value>SOLFAC - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusPendingByManagementControlTitleToUser" xml:space="preserve">
+    <value>SOLFAC: INICIO PROCESO - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="SolfacStatusRejectedByDafTitle" xml:space="preserve">
+    <value>SOLFAC - RECHAZADA por Dirección de Administración y Finanzas - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="InvoiceStatusApproveTitle" xml:space="preserve">
+    <value>REMITO GENERADO - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="InvoiceStatusRejectTitle" xml:space="preserve">
+    <value>REMITO RECHAZADO por DAF - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="InvoiceStatusSentTitle" xml:space="preserve">
+    <value>REMITO - {0} - {1} - {2} - {3}</value>
+  </data>
+  <data name="InvoiceStatusSentTitleToUser" xml:space="preserve">
+    <value>REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}</value>
+  </data>
 </root>

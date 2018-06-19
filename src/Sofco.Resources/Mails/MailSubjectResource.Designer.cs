@@ -125,6 +125,42 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a REMITO GENERADO - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string InvoiceStatusApproveTitle {
+            get {
+                return ResourceManager.GetString("InvoiceStatusApproveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a REMITO RECHAZADO por DAF - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string InvoiceStatusRejectTitle {
+            get {
+                return ResourceManager.GetString("InvoiceStatusRejectTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a REMITO - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string InvoiceStatusSentTitle {
+            get {
+                return ResourceManager.GetString("InvoiceStatusSentTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string InvoiceStatusSentTitleToUser {
+            get {
+                return ResourceManager.GetString("InvoiceStatusSentTitleToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancelación de licencia - {0}.
         /// </summary>
         public static string LicenseCancelledTitle {
@@ -148,6 +184,69 @@ namespace Sofco.Resources.Mails {
         public static string LicenseWorkflowTitle {
             get {
                 return ResourceManager.GetString("LicenseWorkflowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - COBRADA - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusAmountCashedTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusAmountCashedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - FACTURADA - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusInvoicedTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusInvoicedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - APROBADA por Control de Gestión - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusInvoicePendingTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusInvoicePendingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - RECHAZADA por Control de Gestión - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusManagementControlRejectedTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusManagementControlRejectedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusPendingByManagementControlTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusPendingByManagementControlTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC: INICIO PROCESO - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusPendingByManagementControlTitleToUser {
+            get {
+                return ResourceManager.GetString("SolfacStatusPendingByManagementControlTitleToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SOLFAC - RECHAZADA por Dirección de Administración y Finanzas - {0} - {1} - {2} - {3}.
+        /// </summary>
+        public static string SolfacStatusRejectedByDafTitle {
+            get {
+                return ResourceManager.GetString("SolfacStatusRejectedByDafTitle", resourceCulture);
             }
         }
     }
