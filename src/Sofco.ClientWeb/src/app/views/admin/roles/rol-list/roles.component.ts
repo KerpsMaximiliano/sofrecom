@@ -118,9 +118,17 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 
   getAll(){
+    this.messageService.showLoading();
+
     this.getAllSubscrip = this.service.getAll().subscribe(
-      res => { this.data = res; },
-      err => this.errorHandlerService.handleErrors(err));
+      res => { 
+        this.messageService.closeLoading();
+        this.data = res;
+      },
+      err => { 
+        this.messageService.closeLoading();
+        this.errorHandlerService.handleErrors(err);
+      });
   }
 
   getEntity(id: number, callback = null){

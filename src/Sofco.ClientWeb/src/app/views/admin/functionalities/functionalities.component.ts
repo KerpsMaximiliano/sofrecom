@@ -1,5 +1,4 @@
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
 import { DatatablesColumn } from "app/components/datatables/datatables.columns";
@@ -75,8 +74,6 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
     ];
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private service: FunctionalityService,
         private i18nService: I18nService,
         private messageService: MessageService,
@@ -94,15 +91,21 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
     }
 
     getAll(callback = null){
+      this.messageService.showLoading();
+
       this.getAllSubscrip = this.service.getAll().subscribe(
         d => {
+          this.messageService.closeLoading();
           this.data = d;
           
           if(callback != null){
             callback();
           }
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+          this.messageService.closeLoading();
+          this.errorHandlerService.handleErrors(err);
+        });
     }
 
     getEntity(id: number, callback = null){

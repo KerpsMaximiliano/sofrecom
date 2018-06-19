@@ -122,12 +122,18 @@ export class GroupsComponent implements OnInit, OnDestroy {
   }
 
   getAll(callback = null){
+    this.messageService.showLoading();
+
     this.getAllSubscrip = this.service.getAll().subscribe(
       d => {
+        this.messageService.closeLoading();
         this.data = d;
         if(callback != null){ callback(); }
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => {
+        this.messageService.closeLoading();
+        this.errorHandlerService.handleErrors(err);
+      });
   }
 
   getEntity(id: number, callback = null){

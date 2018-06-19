@@ -1,6 +1,6 @@
 import { MessageService } from 'app/services/common/message.service';
 import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
 import { DatatablesColumn } from "app/components/datatables/datatables.columns";
@@ -11,7 +11,6 @@ import { DatatablesAlignment } from "app/components/datatables/datatables.alignm
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { UserService } from "app/services/admin/user.service";
 import { I18nService } from 'app/services/common/i18n.service';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-users',
@@ -61,7 +60,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     constructor(
       private router: Router,
-      private route: ActivatedRoute,
       private service: UserService,
       private messageService: MessageService,
       private errorHandlerService: ErrorHandlerService,
@@ -82,9 +80,17 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     getAll() {
+        this.messageService.showLoading();
+
         this.getAllSubscrip = this.service.getAll().subscribe(
-            d => { this.data = d; },
-            err => this.errorHandlerService.handleErrors(err));
+            d => { 
+                this.messageService.closeLoading();
+                this.data = d;
+            },
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 
     goToDetail(id: number) {

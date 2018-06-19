@@ -105,14 +105,19 @@ export class ModulesComponent implements OnInit, OnDestroy {
     }
 
     getEntity(id: number, callback = null){
+      this.messageService.showLoading();
+
       this.getSubscrip = this.service.get(id).subscribe(
         data => {
-          
+          this.messageService.closeLoading();
           if(callback != null){
             callback(data);
           }
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+          this.messageService.closeLoading();
+          this.errorHandlerService.handleErrors(err);
+        });
     }
 
     editClick(id: number){
