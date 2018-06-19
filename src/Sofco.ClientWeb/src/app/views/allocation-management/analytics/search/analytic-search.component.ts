@@ -239,4 +239,18 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(err);
         });
     }
+
+    clean() {
+        this.customerId = "0";
+        this.analyticId = "0";
+        this.serviceId = "0";
+        this.analyticStatusId = "0";
+        this.managerId = "0";
+
+        sessionStorage.removeItem('analyticSearchCriteria');
+
+        setTimeout(() => {
+            this.searchCriteriaChange();
+        }, 100);
+    }
 }
