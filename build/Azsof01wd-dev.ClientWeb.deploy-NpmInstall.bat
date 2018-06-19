@@ -11,6 +11,8 @@ IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys.Dev\Sofco.ClientWeb
 
 cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
+cmd /c npm install
+
 cmd /c DEL /F /Q "%PUBLISH_PATH%"
 cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
 
