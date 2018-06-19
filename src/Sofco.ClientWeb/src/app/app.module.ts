@@ -4,9 +4,9 @@ import { ReportModule } from './views/report/report.module';
 import { AuthGuard } from './guards/auth.guard';
 import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { XHRBackend, Http, HttpModule, RequestOptions, ConnectionBackend } from '@angular/http';
+import { Http, HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -105,7 +105,8 @@ export function HttpLoaderFactory(http: Http) {
     },
     CryptographyService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
-    AuthService
+    AuthService,
+    { provide: LOCALE_ID, useValue: "es-Ar" }
   ],
   bootstrap: [AppComponent]
 })
