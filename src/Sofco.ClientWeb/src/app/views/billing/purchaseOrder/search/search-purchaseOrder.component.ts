@@ -13,6 +13,7 @@ import { AnalyticService } from 'app/services/allocation-management/analytic.ser
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
 import { UserService } from 'app/services/admin/user.service';
+import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
 declare var $: any;
 declare var moment: any;
 
@@ -229,7 +230,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 '<td>' + moment(item.updatedDate).format("DD/MM/YYYY") + '</td>' +
                 '<td class="column-lg">' + this.i18nService.translateByKey(item.statusText) + '</td>' +
                 '<td>' + item.currencyText + '</td>' +
-                '<td class="column-xs text-right">' + item.total + '</td>' +
+                '<td class="column-xs text-right">' + new AmountFormatPipe().transform(item.total) + '</td>' +
                 '</tr>';
     }
 

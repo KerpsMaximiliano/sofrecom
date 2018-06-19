@@ -73,6 +73,7 @@ import { DatePickerModule } from 'app/components/date-picker/date-picker.module'
 import { NgxInactivity } from 'ngx-inactivity';
 import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component';
 import { ProjectPurchaseOrdersComponent } from 'app/views/billing/projects/project-detail/purchase-order-detail/purchase-order-detail.component';
+import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -84,7 +85,7 @@ import { ProjectPurchaseOrdersComponent } from 'app/views/billing/projects/proje
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 NewHitoComponent, ProjectPurchaseOrdersComponent],
+                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
