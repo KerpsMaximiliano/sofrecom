@@ -50,7 +50,7 @@
     "contractNumberEmpty": "Número de contrato es requerido",
     "solfacHasNoAttachments": "Se ha enviado una solicitud de facturación sin documentos asociados",
     "solfacHasNoAttachmentsConfirm": "Se esta por enviar una solicitud sin informacion respaldatoria. Esta seguro que desea continuar?",
-    "solfacHasNoInvoices": "No se puede enviar la solicitud. Se necesita adjuntar un remito",
+    "solfacHasNoInvoices": "Se ha enviado una solicitud de facturación sin remitos adjuntos",
     "closeHito": "Hito cerrado correctamente",
     "businessNameRequired": "La razón social es requerida",
     "detailsRequired": "Se debe ingresar al menos un detalle",
