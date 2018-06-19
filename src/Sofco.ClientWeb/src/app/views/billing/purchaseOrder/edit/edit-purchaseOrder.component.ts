@@ -93,7 +93,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.purchaseOrderService.getUrlForImportExcel(this.form.model.id),
                                           authToken: 'Bearer ' + Cookie.get('access_token') ,
-                                          maxFileSize: 10*1024*1024
+                                          maxFileSize: 50*1024*1024
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
