@@ -59,12 +59,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                                            && solfac.DocumentTypeId != SolfacDocumentType.DebitNote
                                            && !unitOfWork.SolfacRepository.HasInvoices(solfac.Id))
                 {
-                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoInvoices, MessageType.Error));
+                    response.AddWarning(Resources.Billing.Solfac.SolfacHasNoInvoices);
                 }
 
                 if (!response.HasErrors() && (!unitOfWork.SolfacRepository.HasAttachments(solfac.Id) && !unitOfWork.SolfacCertificateRepository.HasCertificates(solfac.Id)))
                 {
-                    response.Messages.Add(new Message(Resources.Billing.Solfac.SolfacHasNoAttachments, MessageType.Warning));
+                    response.AddWarning(Resources.Billing.Solfac.SolfacHasNoAttachments);
                 }
 
                 return response;
