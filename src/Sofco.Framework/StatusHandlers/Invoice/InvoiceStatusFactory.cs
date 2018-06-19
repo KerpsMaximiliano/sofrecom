@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.DAL;
+using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Model.Enums;
 
@@ -8,7 +9,9 @@ namespace Sofco.Framework.StatusHandlers.Invoice
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public InvoiceStatusFactory(IUnitOfWork unitOfWork)
+        private readonly IMailBuilder mailBuilder;
+
+        public InvoiceStatusFactory(IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -17,9 +20,9 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         {
             switch (status)
             {
-                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(unitOfWork);
-                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler(unitOfWork);
-                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(unitOfWork);
+                case InvoiceStatus.Sent: return new InvoiceStatusSentHandler(unitOfWork, mailBuilder);
+                case InvoiceStatus.Rejected: return new InvoiceStatusRejectHandler(unitOfWork, mailBuilder);
+                case InvoiceStatus.Approved: return new InvoiceStatusApproveHandler(unitOfWork, mailBuilder);
                 case InvoiceStatus.Cancelled: return new InvoiceStatusAnnulmentHandler(unitOfWork);
                 default: return null;
             }

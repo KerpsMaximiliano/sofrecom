@@ -5,6 +5,7 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -18,22 +19,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly ICrmInvoiceService crmInvoiceService;
 
-        public SolfacStatusAmountCashedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService)
+        private readonly IMailBuilder mailBuilder;
+
+        public SolfacStatusAmountCashedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
+            this.mailBuilder = mailBuilder;
         }
-
-        private const string MailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "La SOLFAC del asunto se encuentra COBRADA. </br>" +
-                                                "Para acceder, por favor ingresar al siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
-                                                "Muchas gracias." +
-                                            "</span>" +
-                                        "</font>";
-
-        private const string MailSubject = "SOLFAC - COBRADA - {0} - {1} - {2} - {3}";
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
@@ -53,12 +46,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
-            return string.Format(MailBody, link);
+            return string.Format(Resources.Mails.MailMessageResource.SolfacStatusAmountCashedMessage, link);
         }
 
         private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
         {
-            return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
+            return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusAmountCashedTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
         private string GetRecipients(Model.Models.Billing.Solfac solfac)
@@ -94,7 +87,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var body = GetBodyMail(solfac, emailConfig.SiteUrl);
             var recipients = GetRecipients(solfac);
 
-            mailSender.Send(recipients, subject, body);
+            var data = new SolfacStatusData
+            {
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
+
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }

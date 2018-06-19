@@ -109,6 +109,56 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
+        ///El REMITO del asunto se encuentra GENERADO. Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias.
+        /// </summary>
+        public static string InvoiceStatusApproveMessage {
+            get {
+                return ResourceManager.GetString("InvoiceStatusApproveMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
+        ///El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: &lt;/br&gt;
+        ///*
+        ///&lt;/br&gt;
+        ///Por favor ingresar en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string InvoiceStatusRejectMessage {
+            get {
+                return ResourceManager.GetString("InvoiceStatusRejectMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///Se ha cargado un REMITO que requiere revisión y generación (pdf). &lt;/br&gt;
+        ///*
+        ///Para imprimirlo, utilice el documento anexado al registro. &lt;/br&gt;
+        ///Una vez generado el pdf, por favor importarlo en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string InvoiceStatusSentMessage {
+            get {
+                return ResourceManager.GetString("InvoiceStatusSentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
+        ///Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string InvoiceStatusSentMessageToUser {
+            get {
+                return ResourceManager.GetString("InvoiceStatusSentMessageToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
         ///RRHH, Autorizador, Recuros: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
@@ -190,6 +240,93 @@ namespace Sofco.Resources.Mails {
         public static string LicenseRejectMessage {
             get {
                 return ResourceManager.GetString("LicenseRejectMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///La SOLFAC del asunto se encuentra COBRADA. &lt;/br&gt;
+        ///Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusAmountCashedMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusAmountCashedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///La SOLFAC del asunto se encuentra FACTURADA. &lt;/br&gt;
+        ///Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusInvoicedMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusInvoicedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///Control de Gestión ha aprobado la SOLFAC del asunto, que requiere su facturación. &lt;/br&gt;
+        ///Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusInvoicePendingMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusInvoicePendingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: &lt;/br&gt;
+        /// *
+        ///&lt;/br&gt;
+        ///Por favor, ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusManagementControlRejectedMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusManagementControlRejectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        ///Se ha cargado una solfac que requiere revisión y aprobación &lt;/br&gt;
+        ///Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusPendingByManagementControlMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusPendingByManagementControlMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
+        ///Se ha iniciado el proceso de facturación de la solicitud del asunto. Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusPendingByManagementControlMessageToUser {
+            get {
+                return ResourceManager.GetString("SolfacStatusPendingByManagementControlMessageToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
+        /// La SOLFAC del asunto ha sido RECHAZADA por Dirección de administración y finanzas, por el siguiente motivo: &lt;/br&gt;
+        ///*
+        ///&lt;/br&gt;
+        ///Por favor, ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente &lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string SolfacStatusRejectedByDafMessage {
+            get {
+                return ResourceManager.GetString("SolfacStatusRejectedByDafMessage", resourceCulture);
             }
         }
     }

@@ -5,6 +5,7 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -18,25 +19,16 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly ICrmInvoiceService crmInvoiceService;
 
-        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService)
+        private readonly IMailBuilder mailBuilder;
+
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
+            this.mailBuilder = mailBuilder;
         }
 
-        private string mailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimados, </br></br>" +
-                                                "La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: </br>" +
-                                                "*" +
-                                                "</br>" +
-                                                "Por favor, ingresar al siguiente <a href='{0}' target='_blank'>link</a> para modificar el formulario " +
-                                                "y enviar nuevamente </br></br>" +
-                                                "Muchas gracias." +
-                                            "</span>" +
-                                        "</font>";
-
-        private const string MailSubject = "SOLFAC - RECHAZADA por Control de Gestión - {0} - {1} - {2} - {3}";
+        private string mailBody = Resources.Mails.MailMessageResource.SolfacStatusManagementControlRejectedMessage;
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
@@ -66,7 +58,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
         {
-            return string.Format(MailSubject, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
+            return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusManagementControlRejectedTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
         private string GetRecipients(Model.Models.Billing.Solfac solfac, string mailCdg)
@@ -111,7 +103,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             var body = GetBodyMail(solfac, emailConfig.SiteUrl);
             var recipients = GetRecipients(solfac, mailCdg);
 
-            mailSender.Send(recipients, subject, body);
+            var data = new SolfacStatusData
+            {
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
+
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }

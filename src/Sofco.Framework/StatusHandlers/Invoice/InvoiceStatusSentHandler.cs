@@ -2,6 +2,7 @@
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
@@ -11,35 +12,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
     public class InvoiceStatusSentHandler : IInvoiceStatusHandler
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMailBuilder mailBuilder;
 
-        public InvoiceStatusSentHandler(IUnitOfWork unitOfWork)
+        public InvoiceStatusSentHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
+            this.mailBuilder = mailBuilder;
         }
 
-        private string mailBody = "<font size='3'>" +
-                                        "<span style='font-size:12pt'>" +
-                                            "Estimados, </br></br>" +
-                                            "Se ha cargado un REMITO que requiere revisión y generación (pdf). </br>" +
-                                            "*" +
-                                            "Para imprimirlo, utilice el documento anexado al registro. </br>" +
-                                            "Una vez generado el pdf, por favor importarlo en el siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
-                                            "Muchas gracias." +
-                                        "</span>" +
-                                    "</font>";
-
-        private const string MailSubject = "REMITO - {0} - {1} - {2} - {3}";
-
-        private const string MailBodyToUser = "<font size='3'>" +
-                                              "<span style='font-size:12pt'>" +
-                                              "Estimado, </br></br>" +
-                                              "Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, " +
-                                              "por favor ingresar al siguiente <a href='{0}' target='_blank'>link</a>. </br></br>" +
-                                              "Muchas gracias." +
-                                              "</span>" +
-                                          "</font>";
-
-        private const string MailSubjectToUser = "REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}";
+        private string mailBody = Resources.Mails.MailMessageResource.InvoiceStatusSentMessage;
 
         public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
@@ -78,7 +59,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         private string GetSubjectMail(Model.Models.Billing.Invoice invoice)
         {
-            return string.Format(MailSubject, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
+            return string.Format(Resources.Mails.MailSubjectResource.InvoiceStatusSentTitle, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
         }
 
         public string GetSuccessMessage()
@@ -103,13 +84,29 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             var bodyToDaf = GetBodyMail(invoice, emailConfig.SiteUrl);
             var recipientsToDaf = GetRecipients(invoice, emailConfig);
 
-            mailSender.Send(recipientsToDaf, subjectToDaf, bodyToDaf);
+            var data = new SolfacStatusData
+            {
+                Title = subjectToDaf,
+                Message = bodyToDaf,
+                Recipients = recipientsToDaf
+            };
 
-            var subject = string.Format(MailSubjectToUser, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
-            var body = string.Format(MailBodyToUser, $"{emailConfig.SiteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}");
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
+
+            var subject = string.Format(Resources.Mails.MailSubjectResource.InvoiceStatusSentTitleToUser, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
+            var body = string.Format(Resources.Mails.MailMessageResource.InvoiceStatusSentMessageToUser, $"{emailConfig.SiteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}");
             var recipients = invoice.User.Email;
 
-            mailSender.Send(recipients, subject, body);
+            data = new SolfacStatusData
+            {
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
+
+            email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }

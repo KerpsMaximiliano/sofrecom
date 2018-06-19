@@ -183,4 +183,75 @@ Recurso: &lt;/br&gt;
 La licencia solicitada ha sido &lt;strong&gt; Rechazada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.
 Motivo: {1}</value>
   </data>
+  <data name="SolfacStatusAmountCashedMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+La SOLFAC del asunto se encuentra COBRADA. &lt;/br&gt;
+Para acceder, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusInvoicedMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+La SOLFAC del asunto se encuentra FACTURADA. &lt;/br&gt;
+Para acceder, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusInvoicePendingMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+Control de Gestión ha aprobado la SOLFAC del asunto, que requiere su facturación. &lt;/br&gt;
+Para acceder, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusManagementControlRejectedMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+La SOLFAC del asunto ha sido RECHAZADA por Control de Gestión, por el siguiente motivo: &lt;/br&gt;
+ *
+&lt;/br&gt;
+Por favor, ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusPendingByManagementControlMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+Se ha cargado una solfac que requiere revisión y aprobación &lt;/br&gt;
+Para acceder, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusPendingByManagementControlMessageToUser" xml:space="preserve">
+    <value>Estimado, &lt;/br&gt;&lt;/br&gt;
+Se ha iniciado el proceso de facturación de la solicitud del asunto. Para acceder al misma, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="SolfacStatusRejectedByDafMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+ La SOLFAC del asunto ha sido RECHAZADA por Dirección de administración y finanzas, por el siguiente motivo: &lt;/br&gt;
+*
+&lt;/br&gt;
+Por favor, ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="InvoiceStatusApproveMessage" xml:space="preserve">
+    <value>Estimado, &lt;/br&gt;&lt;/br&gt;
+El REMITO del asunto se encuentra GENERADO. Para acceder, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias</value>
+  </data>
+  <data name="InvoiceStatusRejectMessage" xml:space="preserve">
+    <value>Estimado, &lt;/br&gt;&lt;/br&gt;
+El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: &lt;/br&gt;
+*
+&lt;/br&gt;
+Por favor ingresar en el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="InvoiceStatusSentMessage" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;
+Se ha cargado un REMITO que requiere revisión y generación (pdf). &lt;/br&gt;
+*
+Para imprimirlo, utilice el documento anexado al registro. &lt;/br&gt;
+Una vez generado el pdf, por favor importarlo en el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="InvoiceStatusSentMessageToUser" xml:space="preserve">
+    <value>Estimado, &lt;/br&gt;&lt;/br&gt;
+Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
 </root>

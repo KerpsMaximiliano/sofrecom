@@ -2,6 +2,7 @@
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
@@ -11,24 +12,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
     public class InvoiceStatusRejectHandler : IInvoiceStatusHandler
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMailBuilder mailBuilder;
 
-        public InvoiceStatusRejectHandler(IUnitOfWork unitOfWork)
+        public InvoiceStatusRejectHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
+            this.mailBuilder = mailBuilder;
         }
 
-        private string mailBody = "<font size='3'>" +
-                                            "<span style='font-size:12pt'>" +
-                                                "Estimado, </br></br>" +
-                                                "El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: </br>" +
-                                                "*" +
-                                                "</br>" +
-                                                "Por favor ingresar en el siguiente <a href='{0}' target='_blank'>link</a> para modificar el formulario y enviar nuevamente. </br></br>" +
-                                                "Muchas gracias." +
-                                            "</span>" +
-                                        "</font>";
-
-        private const string MailSubject = "REMITO RECHAZADO por DAF - {0} - {1} - {2} - {3}";
+        private string mailBody = Resources.Mails.MailMessageResource.InvoiceStatusRejectMessage;
 
         public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
@@ -57,7 +49,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         private string GetSubjectMail(Model.Models.Billing.Invoice invoice)
         {
-            return string.Format(MailSubject, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
+            return string.Format(Resources.Mails.MailSubjectResource.InvoiceStatusRejectTitle, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
         }
 
         public string GetSuccessMessage()
@@ -82,7 +74,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             var bodyToDaf = GetBodyMail(invoice, emailConfig.SiteUrl);
             var recipientsToDaf = GetRecipients(invoice);
 
-            mailSender.Send(recipientsToDaf, subjectToDaf, bodyToDaf);
+            var data = new SolfacStatusData
+            {
+                Title = subjectToDaf,
+                Message = bodyToDaf,
+                Recipients = recipientsToDaf
+            };
+
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }
