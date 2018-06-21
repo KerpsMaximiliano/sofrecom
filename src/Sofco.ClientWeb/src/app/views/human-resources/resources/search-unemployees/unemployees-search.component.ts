@@ -41,7 +41,7 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         endDate: null
     };
 
-    constructor(private router: Router,
+    constructor(
         private messageService: MessageService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService,

@@ -13,7 +13,6 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import { Select2Module } from 'app/components/select2/select2';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { LicenseService } from 'app/services/human-resources/licenses.service';
-import { AddLicenseComponent } from 'app/views/human-resources/licenses/add/add-license.componente';
 import { LicenseListRrhh } from 'app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component';
 import { LicenseListWidget } from 'app/views/human-resources/licenses/license-list-widget/license-list-widget.component';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
@@ -26,15 +25,21 @@ import { LicenseHistoryComponent } from 'app/views/human-resources/licenses/hist
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { LicenseCancelComponent } from 'app/views/human-resources/licenses/workflow/cancelled/cancelled.component';
 import { UnemployeesSearchComponent } from 'app/views/human-resources/resources/search-unemployees/unemployees-search.component';
+import { RrhhRouter } from 'app/views/human-resources/rrhh.router';
+import { EmployeeService } from 'app/services/allocation-management/employee.service';
+import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
+import { NewsComponent } from 'app/views/human-resources/news/news.component';
+import { AddLicenseModule } from 'app/views/human-resources/licenses/add/add-license.module';
 
 @NgModule({
-  declarations: [AddLicenseComponent, LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
-                LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent],
+  declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
+                LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
+                NewsComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule],
+  imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter],
 
-  providers   : [LicenseService],
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService],
   
   exports     : []
 })

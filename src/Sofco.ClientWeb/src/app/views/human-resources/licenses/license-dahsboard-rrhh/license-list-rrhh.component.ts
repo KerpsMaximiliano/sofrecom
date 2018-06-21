@@ -1,8 +1,7 @@
 import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
 import { LicenseService } from "app/services/human-resources/licenses.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { MenuService } from "app/services/admin/menu.service";
+import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
@@ -52,9 +51,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
         private router: Router,
-        private activatedRoute: ActivatedRoute,
         private datatableService: DataTableService,
-        private menuService: MenuService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService){
     }
@@ -164,7 +161,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     goToDetail(item){
-        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+        this.router.navigate([`/rrhh/licenses/${item.id}/detail`])
     }
 
     createReport(){
@@ -194,6 +191,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     goToAdd(){
-        this.router.navigate([`/allocationManagement/licenses/add`])
+        this.router.navigate([`/rrhh/licenses/add`])
     }
 }

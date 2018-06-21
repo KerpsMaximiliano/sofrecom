@@ -1,6 +1,5 @@
 import { FormsModule } from '@angular/forms';
 import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 
 import {PeityModule } from '../../components/charts/peity';
@@ -12,6 +11,8 @@ import { StarterViewComponent } from "app/views/appviews/home/starterview.compon
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { CryptographyService } from 'app/services/common/cryptography.service';
 import { LaddaModule } from 'angular2-ladda';
+import { UserService } from 'app/services/admin/user.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { LaddaModule } from 'angular2-ladda';
     ForbiddenComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     RouterModule,
     PeityModule, 
     SparklineModule,
@@ -34,7 +35,7 @@ import { LaddaModule } from 'angular2-ladda';
     LoginComponent,
     ForbiddenComponent
   ],
-  providers: [ CryptographyService ]
+  providers: [ CryptographyService, UserService ]
 })
 
 export class AppviewsModule {

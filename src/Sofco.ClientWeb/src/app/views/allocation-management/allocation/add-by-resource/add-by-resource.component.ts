@@ -7,7 +7,6 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { AllocationModel, Allocation } from "app/models/allocation-management/allocation";
 import { AppSetting } from 'app/services/common/app-setting'
 
 declare var $:any;

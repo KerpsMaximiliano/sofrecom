@@ -1,17 +1,14 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BillingModule } from './views/billing/billing.module';
-import { ReportModule } from './views/report/report.module';
 import { AuthGuard } from './guards/auth.guard';
 import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Http, HttpModule } from '@angular/http';
-import { RouterModule } from "@angular/router";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ROUTES } from "./app.routes";
+import { appRouter } from "./app.routes";
 import { AppComponent } from './app.component';
 
 // App views
@@ -20,7 +17,6 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 // App modules/components
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
-import { AdminModule } from "app/views/admin/admin.module";
 import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -36,13 +32,11 @@ import { AppSettingService } from 'app/services/common/app-setting.service';
 import { AppSetting } from 'app/services/common/app-setting';
 import { CryptographyService } from 'app/services/common/cryptography.service';
 
-import { AllocationManagementModule } from 'app/views/allocation-management/allocation-management.module';
 import { LaddaModule } from 'angular2-ladda';
-import { HumanResourcesModule } from 'app/views/human-resources/human-resources.module';
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
-import { WorkTimeManagementModule } from 'app/views/worktime-management/worktime-management.module';
 import { NgxInactivity } from 'ngx-inactivity';
+import { SettingsService } from 'app/services/admin/settings.service';
 
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -60,10 +54,7 @@ export function HttpLoaderFactory(http: Http) {
     LayoutsModule,
     AppviewsModule,
     ToastrModule.forRoot(),
-    RouterModule.forRoot(ROUTES),
-    AdminModule,
-    BillingModule,
-    HumanResourcesModule,
+    appRouter,
     ChartsModule,
     NgxInactivity,
     LaddaModule.forRoot({
@@ -79,10 +70,7 @@ export function HttpLoaderFactory(http: Http) {
         deps: [Http]
       }
     }),
-    ReportModule,
-    AllocationManagementModule,
     HttpClientModule,
-    WorkTimeManagementModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
@@ -95,6 +83,7 @@ export function HttpLoaderFactory(http: Http) {
     MessageService,
     AuthGuard,
     AuthenticationService,
+    SettingsService,
     AppSetting,
     AppSettingService,
     {

@@ -7,7 +7,6 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
 import { I18nService } from "app/services/common/i18n.service";
-import { Option } from "app/models/option";
 import { CustomerService } from "app/services/billing/customer.service";
 import { ServiceService } from "app/services/billing/service.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
