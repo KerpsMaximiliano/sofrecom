@@ -74,18 +74,12 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   @ViewChild('editModal') editModal;
   @ViewChild('dateControl') dateControl;
 
-  constructor(private serviceService: ServiceService,
-      private analyticService: AnalyticService,
+  constructor(private analyticService: AnalyticService,
       private employeeService: EmployeeService,
       private taskService: TaskService,
-      private customerService: CustomerService,
-      private usersService: UserService,
       private worktimeService: WorktimeService,
       private errorHandlerService: ErrorHandlerService,
-      private dataTableService: DataTableService,
       private messageService: MessageService,
-      private i18nService: I18nService,
-      private router: Router,
       private appSetting: AppSetting) {
   }
 

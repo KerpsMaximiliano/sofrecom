@@ -70,10 +70,16 @@ import { CertificatesService } from 'app/services/billing/certificates.service';
 import { SolfacDelegateEditComponent } from 'app/views/billing/solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 import { PdfViewerModule } from 'app/components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
-import { NgxInactivity } from 'ngx-inactivity';
 import { NewHitoComponent } from 'app/views/billing/hitos/new/new-hito.component';
 import { ProjectPurchaseOrdersComponent } from 'app/views/billing/projects/project-detail/purchase-order-detail/purchase-order-detail.component';
 import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
+import { BillingRouter } from 'app/views/billing/billing.router';
+import { ResourceByServiceComponent } from 'app/views/allocation-management/resources/by-service/resource-by-service.component';
+import { AnalyticService } from '../../services/allocation-management/analytic.service';
+import { EmployeeService } from '../../services/allocation-management/employee.service';
+import { UtilsService } from '../../services/common/utils.service';
+import { AllocationService } from '../../services/allocation-management/allocation.service';
+import { CategoryService } from 'app/services/admin/category.service';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -85,14 +91,14 @@ import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe],
+                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule, DateRangePickerModule],
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
-                SolfacDelegateService],
+                SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService],
 
   exports     : []
 })

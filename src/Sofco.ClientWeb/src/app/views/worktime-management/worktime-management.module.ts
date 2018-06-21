@@ -13,7 +13,6 @@ import { Select2Module } from 'app/components/select2/select2';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { SpinnerModule } from 'app/components/spinner/spinner.module';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
-import { WorkTimeComponent } from './worktime/worktime.component';
 import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
 import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
@@ -24,15 +23,20 @@ import { WorkTimeReportComponent } from 'app/views/worktime-management/report/wo
 import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { HolidayService } from 'app/services/worktime-management/holiday.service';
+import { WorkTimeRouter } from 'app/views/worktime-management/worktime.router';
+import { EmployeeService } from '../../services/allocation-management/employee.service';
+import { AnalyticService } from '../../services/allocation-management/analytic.service';
+import { CustomerService } from '../../services/billing/customer.service';
 
 @NgModule({
-  declarations: [WorkTimeComponent, WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
+  declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
                  WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-    TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, PCheckModule],
+             TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
+             PCheckModule, WorkTimeRouter],
 
-  providers   : [WorktimeService, UtilsService, HolidayService],
+  providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService],
 
   exports     : []
 })

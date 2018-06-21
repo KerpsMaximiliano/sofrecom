@@ -135,6 +135,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     
     goToResources(){
         sessionStorage.setItem('analyticName', this.form.model.title + ' - ' + this.form.model.name);
-        this.router.navigate([`/contracts/analytics/${this.form.model.id}/resources`]);
+        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/resources`]);
     }
 } 

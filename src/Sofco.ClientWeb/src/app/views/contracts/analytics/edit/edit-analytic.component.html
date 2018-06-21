@@ -24,7 +24,7 @@
             <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
+                <button *ngIf="form.model.clientExternalId && form.model.serviceId" class="btn btn-success btn-outline dim" (click)="goToResources()"> 
                     {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
                 </button>
 

@@ -1,6 +1,5 @@
 import { TranslateModule } from '@ngx-translate/core';
 import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 
 import {BsDropdownModule} from 'ngx-bootstrap';
@@ -13,6 +12,7 @@ import {FooterComponent} from "./../footer/footer.component";
 import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
 import { NgxInactivity } from 'ngx-inactivity';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
     TopNavbarComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     RouterModule,
     NgxInactivity, 
     Ng2ModalModule,

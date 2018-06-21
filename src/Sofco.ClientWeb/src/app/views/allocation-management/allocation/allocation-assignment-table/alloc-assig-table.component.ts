@@ -3,9 +3,7 @@ import { AllocationModel, Allocation } from "app/models/allocation-management/al
 import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MessageService } from "app/services/common/message.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 @Component({
@@ -49,10 +47,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
     public loading: boolean = false;
 
-    constructor(private menuService: MenuService,
-        private allocationsService: AllocationService,
+    constructor(private allocationsService: AllocationService,
         private messageService: MessageService,
-        private employeeService: EmployeeService,
         private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {

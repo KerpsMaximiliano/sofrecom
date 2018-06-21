@@ -56,9 +56,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    constructor(private employeeService: EmployeeService,
-                private router: Router,
-                private employeeNewsService: EmployeeNewsService,
+    constructor(private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
                 private i18nService: I18nService,
                 private messageService: MessageService,
