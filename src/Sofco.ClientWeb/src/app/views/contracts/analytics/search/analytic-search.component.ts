@@ -140,7 +140,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     getCustomers() {
-        this.customerService.getOptions().subscribe(d => {
+        this.customerService.getAllOptions().subscribe(d => {
             this.customers = d.data;
         },
         err => {

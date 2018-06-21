@@ -32,7 +32,7 @@ namespace Sofco.Data.Billing
             crmConfig = crmOptions.Value;
         }
 
-        public IList<CrmCustomer> GetCustomers(string userMail)
+        public IList<CrmCustomer> GetCustomers(string userMail, bool getAll)
         {
             var email = sessionManager.GetUserEmail(userMail);
 
@@ -45,7 +45,7 @@ namespace Sofco.Data.Billing
                     var hasCommercialGroup = userRepository.HasComercialGroup(email);
                     var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
 
-                    var url = hasAllAccess
+                    var url = getAll || hasAllAccess
                         ? $"{crmConfig.Url}/api/account"
                         : $"{crmConfig.Url}/api/account?idManager={email}";
 

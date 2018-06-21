@@ -125,7 +125,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     getCustomers() {
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(d => {
+        this.customerService.getAllOptions().subscribe(d => {
             this.messageService.closeLoading();
             this.customers = d.data;
         },

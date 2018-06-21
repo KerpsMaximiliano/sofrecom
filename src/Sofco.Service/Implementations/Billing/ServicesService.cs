@@ -29,8 +29,12 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<List<CrmService>> GetServices(string customerId)
         {
-            var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
             var result = new List<CrmService>();
+
+            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<CrmService>> { Data = result };
+
+            var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+            
             foreach (var item in userNames)
             {
                 result.AddRange(serviceData.GetServices(customerId, item));
