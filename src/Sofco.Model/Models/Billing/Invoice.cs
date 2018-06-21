@@ -54,11 +54,11 @@ namespace Sofco.Model.Models.Billing
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
 
-        //public int? ExcelFileId { get; set; }
-        //public File ExcelFileData { get; set; }
+        public int? ExcelFileId { get; set; }
+        public File ExcelFileData { get; set; }
 
-        //public int? PdfFileId { get; set; }
-        //public File PDfFileData { get; set; }
+        public int? PdfFileId { get; set; }
+        public File PDfFileData { get; set; }
 
         public ICollection<InvoiceHistory> Histories { get; set; }
 

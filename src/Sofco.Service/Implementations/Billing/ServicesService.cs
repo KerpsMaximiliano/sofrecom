@@ -27,7 +27,7 @@ namespace Sofco.Service.Implementations.Billing
             this.solfacDelegateData = solfacDelegateData;
         }
 
-        public Response<List<CrmService>> GetServices(string customerId)
+        public Response<List<CrmService>> GetServices(string customerId, bool getAll)
         {
             var result = new List<CrmService>();
 
@@ -37,16 +37,16 @@ namespace Sofco.Service.Implementations.Billing
             
             foreach (var item in userNames)
             {
-                result.AddRange(serviceData.GetServices(customerId, item));
+                result.AddRange(serviceData.GetServices(customerId, item, getAll));
             }
             return new Response<List<CrmService>> { Data = result.DistinctBy(x => x.Id) };
         }
 
-        public Response<List<SelectListModel>> GetServicesOptions(string customerId)
+        public Response<List<SelectListModel>> GetServicesOptions(string customerId, bool getAll)
         {
             if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
 
-            var result = GetServices(customerId);
+            var result = GetServices(customerId, getAll);
 
             var response = new Response<List<SelectListModel>>
             {
@@ -61,7 +61,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<CrmService> GetService(string serviceId, string customerId)
         {
-            var result = GetServices(customerId).Data;
+            var result = GetServices(customerId, false).Data;
 
             return new Response<CrmService> { Data = result.FirstOrDefault(x => x.Id.Equals(serviceId)) };
         }
