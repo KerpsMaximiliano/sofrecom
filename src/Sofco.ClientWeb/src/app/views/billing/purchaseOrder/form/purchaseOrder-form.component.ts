@@ -76,7 +76,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
-        this.customerService.getOptions().subscribe(res => {
+        this.customerService.getAllOptions().subscribe(res => {
             this.customers = res.data;
         },
         err => {
