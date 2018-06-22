@@ -11,6 +11,8 @@ namespace Sofco.DAL.Repositories.Reports
 {
     public class PurchaseOrderBalanceViewRepository : IPurchaseOrderBalanceViewRepository
     {
+        private const char Delimiter = ';';
+
         private const int Limit = 1000;
 
         private readonly DbSet<PurchaseOrderBalanceView> purchaseOrderBalanceViews;
@@ -50,7 +52,7 @@ namespace Sofco.DAL.Repositories.Reports
                 {
                     if (s.AnalyticIds == null) return false;
 
-                    var analyticIds = s.AnalyticIds.Split(',').Select(int.Parse).Distinct();
+                    var analyticIds = s.AnalyticIds.Split(Delimiter).Select(int.Parse).Distinct();
 
                     return analyticIds.Contains(parameters.AnalyticId.Value);
                 }).ToList();
@@ -62,7 +64,7 @@ namespace Sofco.DAL.Repositories.Reports
                 {
                     if (s.ManagerIds == null) return false;
 
-                    var managerIds = s.ManagerIds.Split(',').Select(int.Parse).Distinct();
+                    var managerIds = s.ManagerIds.Split(Delimiter).Select(int.Parse).Distinct();
 
                     return managerIds.Contains(parameters.ManagerId.Value);
                 }).ToList();
@@ -74,7 +76,7 @@ namespace Sofco.DAL.Repositories.Reports
                 {
                     if (s.CommercialManagerIds == null) return false;
 
-                    var commercialManagerIds = s.CommercialManagerIds.Split(',').Select(int.Parse).Distinct();
+                    var commercialManagerIds = s.CommercialManagerIds.Split(Delimiter).Select(int.Parse).Distinct();
 
                     return commercialManagerIds.Contains(parameters.CommercialManagerId.Value);
                 }).ToList();
@@ -85,7 +87,7 @@ namespace Sofco.DAL.Repositories.Reports
 
         public List<PurchaseOrderBalanceDetailView> GetByPurchaseOrderIds(List<int> purchaseOrderIds)
         {
-            IQueryable<PurchaseOrderBalanceDetailView> query = purchaseOrderBalanceDetailViews
+            var query = purchaseOrderBalanceDetailViews
                 .Where(s => purchaseOrderIds.Contains(s.PurchaseOrderId));
 
             return query.ToList();

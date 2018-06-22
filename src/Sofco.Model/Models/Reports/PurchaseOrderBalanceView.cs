@@ -32,5 +32,9 @@ namespace Sofco.Model.Models.Reports
         public string ManagerIds { get; set; }
 
         public string CommercialManagerIds { get; set; }
+
+        public string AccountManagerNames { get; set; }
+
+        public string ProjectManagerNames { get; set; }
     }
 }
