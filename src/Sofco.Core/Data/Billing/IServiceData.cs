@@ -6,7 +6,7 @@ namespace Sofco.Core.Data.Billing
 {
     public interface IServiceData
     {
-        IList<CrmService> GetServices(string customerId, string userMail);
+        IList<CrmService> GetServices(string customerId, string userMail, bool getAll);
 
         CrmService GetService(Guid serviceId);
     }

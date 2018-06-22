@@ -20,6 +20,11 @@ export class CustomerService {
     return this.http.get<any>(`${this.apiUrl}/options`);
   }
 
+  getAllOptions() {
+    return this.http.get<any>(`${this.apiUrl}/all/options`);
+  }
+
+
   getOptionsByCurrentManager() {
     return this.http.get<any>(`${this.apiUrl}/options/currentManager`);
   }

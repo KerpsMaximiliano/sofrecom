@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response, Headers } from '@angular/http';
 import { Service } from 'app/services/common/service';
 import { HttpClient } from '@angular/common/http';
 
@@ -18,6 +17,10 @@ export class ServiceService {
 
   getOptions(customerId) {
     return this.http.get<any>(`${this.apiUrl}/${customerId}/options`);
+  }
+
+  getAllOptions(customerId) {
+    return this.http.get<any>(`${this.apiUrl}/${customerId}/options/all`);
   }
 
   getOpportunities(serviceId){

@@ -8,9 +8,9 @@ namespace Sofco.Core.Services.Billing
 {
     public interface IServicesService
     {
-        Response<List<CrmService>> GetServices(string customerId);
+        Response<List<CrmService>> GetServices(string customerId, bool getAll);
 
-        Response<List<SelectListModel>> GetServicesOptions(string customerId);
+        Response<List<SelectListModel>> GetServicesOptions(string customerId, bool getAll);
 
         Response<CrmService> GetService(string serviceId, string customerId);
 

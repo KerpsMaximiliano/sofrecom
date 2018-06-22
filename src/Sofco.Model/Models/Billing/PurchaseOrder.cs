@@ -23,7 +23,7 @@ namespace Sofco.Model.Models.Billing
         public DateTime UpdateDate { get; set; }
 
         public string UpdateByUser { get; set; }
-
+         
         public int? FileId { get; set; }
         public File File { get; set; }
 

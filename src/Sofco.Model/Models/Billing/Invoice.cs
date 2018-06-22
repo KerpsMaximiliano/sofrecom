@@ -3,6 +3,7 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Sofco.Model.Models.Common;
 
 namespace Sofco.Model.Models.Billing
 {
@@ -27,16 +28,23 @@ namespace Sofco.Model.Models.Billing
         public string Analytic { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
         public byte[] ExcelFile { get; set; }
+
         public byte[] PdfFile { get; set; }
+
         public string ExcelFileName { get; set; }
+
         public string PdfFileName { get; set; }
 
         public InvoiceStatus InvoiceStatus { get; set; }
-        public DateTime ExcelFileCreatedDate { get; set; }
-        public DateTime PdfFileCreatedDate { get; set; }
-        public string InvoiceNumber { get; set; }
 
+        public DateTime ExcelFileCreatedDate { get; set; }
+
+        public DateTime PdfFileCreatedDate { get; set; }
+
+        public string InvoiceNumber { get; set; }
+         
         public int UserId { get; set; }
         public User User { get; set; }
 
@@ -45,6 +53,12 @@ namespace Sofco.Model.Models.Billing
 
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
+
+        public int? ExcelFileId { get; set; }
+        public File ExcelFileData { get; set; }
+
+        public int? PdfFileId { get; set; }
+        public File PDfFileData { get; set; }
 
         public ICollection<InvoiceHistory> Histories { get; set; }
 

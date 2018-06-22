@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
         }
 
-        public Response<List<CrmCustomer>> GetCustomers()
+        public Response<List<CrmCustomer>> GetCustomers(bool getAll)
         {
             var response = new Response<List<CrmCustomer>>();
             var result = new List<CrmCustomer>();
@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 try
                 {
-                    result.AddRange(customerData.GetCustomers(item).ToList());
+                    result.AddRange(customerData.GetCustomers(item, getAll).ToList());
                 }
                 catch (Exception e)
                 {
@@ -62,9 +62,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<List<SelectListModel>> GetCustomersOptions()
+        public Response<List<SelectListModel>> GetCustomersOptions(bool getAll)
         {
-            var result = GetCustomers();
+            var result = GetCustomers(getAll);
 
             var response = new Response<List<SelectListModel>>
             {
@@ -94,11 +94,17 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<CrmCustomer> GetCustomerById(string customerId)
         {
+            var response = new Response<CrmCustomer>();
+
+            if (string.IsNullOrWhiteSpace(customerId))
+            {
+                response.AddError(Resources.Billing.Customer.NotFound);
+                return response;
+            }
+
             var url = $"{crmConfig.Url}/api/account/{customerId}";
 
             var customer = client.Get<CrmCustomer>(url).Data;
-
-            var response = new Response<CrmCustomer>();
 
             if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
             {

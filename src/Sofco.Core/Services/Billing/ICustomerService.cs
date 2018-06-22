@@ -7,9 +7,9 @@ namespace Sofco.Core.Services.Billing
 {
     public interface ICustomerService
     {
-        Response<List<CrmCustomer>> GetCustomers();
+        Response<List<CrmCustomer>> GetCustomers(bool getAll);
 
-        Response<List<SelectListModel>> GetCustomersOptions();
+        Response<List<SelectListModel>> GetCustomersOptions(bool getAll);
 
         Response<List<SelectListModel>> GetCustomersOptionsByCurrentManager();
 

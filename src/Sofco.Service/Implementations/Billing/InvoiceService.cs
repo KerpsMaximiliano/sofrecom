@@ -16,6 +16,7 @@ using Sofco.Model.Utils;
 using Sofco.Core.Mail;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
+using Sofco.Model.Models.Common;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Billing
@@ -422,6 +423,30 @@ namespace Sofco.Service.Implementations.Billing
             };
 
             return history;
+        }
+
+        private void Asd()
+        {
+            var invoices = unitOfWork.InvoiceRepository.GetAll();
+
+            foreach (var invoice in invoices)
+            {
+                if (!string.IsNullOrWhiteSpace(invoice.ExcelFileName))
+                {
+                    var excelFile = new File();
+                    var lastDotIndex = invoice.ExcelFileName.LastIndexOf('.');
+
+                    excelFile.FileName = invoice.ExcelFileName;
+                    excelFile.FileType = invoice.ExcelFileName.Substring(lastDotIndex);
+                    excelFile.InternalFileName = Guid.NewGuid();
+                    excelFile.CreationDate = DateTime.UtcNow;
+                    excelFile.CreatedUser = string.Empty;
+
+
+                }
+                
+                var pdfFile = new File();
+            }
         }
     }
 }
