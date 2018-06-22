@@ -155,7 +155,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             "orderable": false,
             "data": null,
             "defaultContent": ''
-        }, 0, 1, 2, 3, 4, 5, 6, 7];
+        }, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
@@ -171,7 +171,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [{
-                "targets": [ 1 ], "visible": false, "searchable": false
+                "targets": [ 1,8,9,10 ], "visible": false, "searchable": false
             }]
         }
 
@@ -198,7 +198,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    format( data ) {
+    formatDetail( data ) {
         const id = $(data[0]).data("id")
         const item = <any>this.data.find(x => x.id == id);
 
@@ -210,7 +210,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             tbody += this.getRowDetailForma(x);
         });
 
-        return '<table class="table table-striped">' +
+        return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
             '<thead>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.analytic') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.hito') + '</th>' +
@@ -220,7 +220,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 '<th class="column-xs text-right">' + this.i18nService.translateByKey('billing.solfac.amount') + '</th>' +
             '</thead>' +
             '<tbody>' + tbody + '</tbody>' +
-        '</table>';
+        '</table></div>';
     }
 
     getRowDetailForma(item) {
@@ -253,7 +253,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                     tdi.first().removeClass('fa-minus-square');
                     tdi.first().addClass('fa-plus-square');
                 } else {
-                    row.child(self.format(row.data())).show();
+                    row.child(self.formatDetail(row.data())).show();
                     tr.addClass('shown');
                     tdi.first().removeClass('fa-plus-square');
                     tdi.first().addClass('fa-minus-square');
@@ -271,6 +271,8 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     customizeExcelExportData(data) {
         const self = this;
         const idPos = 1;
+        const ammountNumberPos1 = 4;
+        const balanceNumberPos2 = 5;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
@@ -278,10 +280,11 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             const dataBodyItem = dataBody[index];
             const itemId = dataBodyItem[idPos];
             dataBodyItem.splice(0, 2);
-            result.push(dataBodyItem);
             const item = self.data.find(x => x.id == itemId);
+            dataBodyItem[ammountNumberPos1] = item.ammount;
+            dataBodyItem[balanceNumberPos2] = item.balance;
+            result.push(dataBodyItem);
             const details = item.details;
-            const rowData = [];
             let rowItem = this.getExportSubHeader();
             result.push(rowItem);
             details.forEach(d => {

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Sofco.Core.Models.Reports;
 using Sofco.Model.Models.Reports;
 
@@ -6,11 +7,15 @@ namespace Sofco.Service.MapProfiles
 {
     public class PurchaseOrderMapProfile : Profile
     {
+        private const char Delimiter = ';';
+
         public PurchaseOrderMapProfile()
         {
             CreateMap<PurchaseOrderBalanceView, PurchaseOrderBalanceViewModel>()
                 .ForMember(s => s.StatusId, x => x.MapFrom(_ => _.Status))
-                .ForMember(s => s.StatusText, x => x.MapFrom(_ => _.Status.ToString()));
+                .ForMember(s => s.StatusText, x => x.MapFrom(_ => _.Status.ToString()))
+                .ForMember(s => s.AccountManagerNames, x => x.MapFrom(_ => DistinctString(_.AccountManagerNames)))
+                .ForMember(s => s.ProjectManagerNames, x => x.MapFrom(_ => DistinctString(_.ProjectManagerNames)));
 
 
             CreateMap<PurchaseOrderBalanceDetailView, PurchaseOrderBalanceDetailViewModel>()
@@ -19,7 +24,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.Analytic, x => x.MapFrom(_ => MapAnalytic(_)));
         }
 
-        private string MapAnalytic(PurchaseOrderBalanceDetailView data)
+        private static string MapAnalytic(PurchaseOrderBalanceDetailView data)
         {
             var analytic = data.Analytic ?? string.Empty;
 
@@ -33,6 +38,12 @@ namespace Sofco.Service.MapProfiles
             }
 
             return result;
+        }
+
+        private static string DistinctString(string txtWithDelimiter)
+        {
+            return string.Join(Delimiter.ToString(), 
+                txtWithDelimiter.Split(Delimiter).Distinct());
         }
     }
 }

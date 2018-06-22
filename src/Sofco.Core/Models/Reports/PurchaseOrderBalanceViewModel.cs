@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.Reports
 {
@@ -23,6 +24,12 @@ namespace Sofco.Core.Models.Reports
         public string StatusText { get; set; }
 
         public decimal Balance { get; set; }
+
+        public DateTime ReceptionDate { get; set; }
+
+        public string AccountManagerNames { get; set; }
+
+        public string ProjectManagerNames { get; set; }
 
         public List<PurchaseOrderBalanceDetailViewModel> Details { get; set; }
     }

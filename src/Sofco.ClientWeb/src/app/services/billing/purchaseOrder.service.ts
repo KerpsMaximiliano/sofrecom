@@ -61,8 +61,8 @@ export class PurchaseOrderService {
    });
  }
 
- getReport(params) {
-  return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);
- }
+  getReport(params) {
+    return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);
+  }
 }
 
