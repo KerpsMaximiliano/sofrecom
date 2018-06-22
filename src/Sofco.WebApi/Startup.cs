@@ -52,6 +52,8 @@ namespace Sofco.WebApi
                 options
                 .SerializerSettings
                 .ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+                options.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ssZ";
             });
 
             services.AddMvc(options =>

@@ -41,7 +41,8 @@ namespace Sofco.Service.Implementations.Reports
                 foreach (var item in result)
                 {
                     item.Details = Translate(details.Where(s =>
-                        s.PurchaseOrderId == item.PurchaseOrderId && s.CurrencyId == item.CurrencyId).ToList());
+                        s.PurchaseOrderId == item.PurchaseOrderId 
+                        && s.CurrencyId == item.CurrencyId).ToList());
                 }
 
                 response.Data = result;

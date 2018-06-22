@@ -13,10 +13,10 @@
         <tr *ngFor="let item of purchaseOrders" class="pointer" >
             <td>{{ item.purchaseOrder }}</td>
             <td>{{ item.currency }}</td>
-            <td>{{ item.balance }}</td>
-            <td>{{ item.billingPendingAmmount }}</td>
-            <td>{{ item.cashPendingAmmount }}</td>
-            <td>{{ item.ammountCashed }}</td>
+            <td class="text-right">{{ item.balance | amountFormat }}</td>
+            <td class="text-right">{{ item.billingPendingAmmount | amountFormat }}</td>
+            <td class="text-right">{{ item.cashPendingAmmount | amountFormat }}</td>
+            <td class="text-right">{{ item.ammountCashed | amountFormat }}</td>
         </tr>
     </tbody>
 </table>
