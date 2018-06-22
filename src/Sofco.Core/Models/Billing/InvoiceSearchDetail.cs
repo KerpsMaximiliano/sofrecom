@@ -11,11 +11,19 @@ namespace Sofco.Core.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             AccountName = invoice.AccountName;
             Service = invoice.Service;
-            ExcelFileName = string.IsNullOrWhiteSpace(invoice.PdfFileName) ? invoice.ExcelFileName : invoice.PdfFileName;
             Project = invoice.Project;
             ProjectId = invoice.ProjectId;
             CreatedDate = invoice.CreatedDate;
             StatusName = invoice.InvoiceStatus.ToString();
+
+            if (invoice.PDfFileData != null)
+            {
+                ExcelFileName = invoice.PDfFileData.FileName;
+            }
+            else if (invoice.ExcelFileData != null)
+            {
+                ExcelFileName = invoice.ExcelFileData.FileName;
+            }
 
             if (invoice.User != null)
                 User = invoice.User.Name;

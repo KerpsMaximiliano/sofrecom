@@ -15,10 +15,10 @@ namespace Sofco.Core.Services.Billing
         IList<Invoice> GetByProject(string projectId);
         Response<Invoice> GetById(int id);
         Response<Invoice> Add(Invoice invoice, string identityName);
-        Response<Invoice> SaveExcel(Invoice responseData, string fileFileName);
-        Response<Invoice> GetExcel(int invoiceId);
-        Response<Invoice> SavePdf(Invoice responseData, string fileFileName);
-        Response<Invoice> GetPdf(int invoiceId);
+        //Response<Invoice> SaveExcel(Invoice responseData, string fileFileName);
+        //Response<Invoice> GetExcel(int invoiceId);
+        //Response<Invoice> SavePdf(Invoice responseData, string fileFileName);
+        //Response<Invoice> GetPdf(int invoiceId);
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
         ICollection<Invoice> Search(InvoiceParams parameters);

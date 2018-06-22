@@ -328,7 +328,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         if(data.data && data.data.length > 0){
 
           data.data.forEach(element => {
-            this.invoicesRelated.push({ id: element.id, invoiceNumber: element.invoiceNumber, pdfFileName: element.pdfFileName });
+            this.invoicesRelated.push({ id: element.id, invoiceNumber: element.invoiceNumber, pdfFileName: element.pdfFileData.fileName });
           });
 
           this.invoices = this.invoices.filter(item => {

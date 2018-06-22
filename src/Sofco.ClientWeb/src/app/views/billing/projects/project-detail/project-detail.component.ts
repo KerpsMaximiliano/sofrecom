@@ -123,15 +123,21 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     getService(){
         var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
-
+ 
         if(service){
           this.service.analytic = service.analytic;
           this.service.manager = service.manager;
+          this.service.serviceType = service.serviceType;
+          this.service.solutionType = service.solutionType;
+          this.service.technologyType = service.technologyType;
         }
         else{
           this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
             this.service.analytic = data.analytic;
             this.service.manager = data.manager;
+            this.service.serviceType = data.serviceType;
+            this.service.solutionType = data.solutionType;
+            this.service.technologyType = data.technologyType;
           },
           err => this.errorHandlerService.handleErrors(err));
         }

@@ -11,7 +11,15 @@ namespace Sofco.Core.Models.Billing
             InvoiceNumber = invoice.InvoiceNumber;
             CreatedDate = invoice.CreatedDate;
             InvoiceStatus = invoice.InvoiceStatus.ToString();
-            ExcelFileName = string.IsNullOrWhiteSpace(invoice.PdfFileName) ? invoice.ExcelFileName : invoice.PdfFileName;
+
+            if (invoice.PDfFileData != null)
+            {
+                ExcelFileName = invoice.PDfFileData.FileName;
+            }
+            else if (invoice.ExcelFileData != null)
+            {
+                ExcelFileName = invoice.ExcelFileData.FileName;
+            }
         }
 
         public string ExcelFileName { get; set; }

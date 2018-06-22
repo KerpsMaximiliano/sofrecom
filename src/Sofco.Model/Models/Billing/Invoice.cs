@@ -85,10 +85,6 @@ namespace Sofco.Model.Models.Billing
             invoice.CreatedDate = DateTime.Now;
             invoice.InvoiceStatus = InvoiceStatus.SendPending;
 
-            invoice.ExcelFile = this.ExcelFile;
-            invoice.ExcelFileName = this.ExcelFileName;
-            invoice.ExcelFileCreatedDate = this.ExcelFileCreatedDate;
-
             return invoice;
         }
     }

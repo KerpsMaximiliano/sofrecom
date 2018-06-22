@@ -17,6 +17,7 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
+using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
 
 namespace Sofco.Service.Implementations.Billing
@@ -609,7 +610,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 foreach (var invoiceToAdd in invoices)
                 {
-                    var invoice = unitOfWork.InvoiceRepository.GetSingle(x => x.Id == invoiceToAdd);
+                    var invoice = unitOfWork.InvoiceRepository.GetById(invoiceToAdd);
 
                     if (invoice != null)
                     {
@@ -618,7 +619,12 @@ namespace Sofco.Service.Implementations.Billing
                         unitOfWork.InvoiceRepository.UpdateStatus(invoice);
                         unitOfWork.InvoiceRepository.UpdateSolfacId(invoice);
 
-                        response.Data.Add(new Invoice { Id = invoice.Id, InvoiceNumber = invoice.InvoiceNumber, PdfFileName = invoice.PdfFileName });
+                        response.Data.Add(new Invoice { Id = invoice.Id,
+                            InvoiceNumber = invoice.InvoiceNumber,
+                            PDfFileData = new File
+                            {
+                                FileName = invoice.PDfFileData?.FileName
+                            }});
                     }
                     else
                     {

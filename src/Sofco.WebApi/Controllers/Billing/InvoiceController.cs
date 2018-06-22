@@ -65,7 +65,7 @@ namespace Sofco.WebApi.Controllers.Billing
         {
             var invoices = invoiceService.GetOptions(projectId);
 
-            var list = invoices.Select(x => new Option { Id = x.Id, Text = x.PdfFileName });
+            var list = invoices.Select(x => new Option { Id = x.Id, Text = x.PDfFileData?.FileName });
 
             return Ok(list);
         }

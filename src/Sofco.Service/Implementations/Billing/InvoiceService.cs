@@ -122,111 +122,111 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        //todo: eliminar
-        public Response<Invoice> SaveExcel(Invoice invoice, string fileFileName)
-        {
-            var response = new Response<Invoice>();
+        ////todo: eliminar
+        //public Response<Invoice> SaveExcel(Invoice invoice, string fileFileName)
+        //{
+        //    var response = new Response<Invoice>();
 
-            try
-            {
-                var datetime = DateTime.UtcNow;
+        //    try
+        //    {
+        //        var datetime = DateTime.UtcNow;
 
-                var invoiceToSave = new Invoice
-                {
-                    Id = invoice.Id,
-                    ExcelFile = invoice.ExcelFile,
-                    ExcelFileName = fileFileName,
-                    ExcelFileCreatedDate = datetime
-                };
+        //        var invoiceToSave = new Invoice
+        //        {
+        //            Id = invoice.Id,
+        //            ExcelFile = invoice.ExcelFile,
+        //            ExcelFileName = fileFileName,
+        //            ExcelFileCreatedDate = datetime
+        //        };
 
-                unitOfWork.InvoiceRepository.UpdateExcel(invoiceToSave);
-                unitOfWork.Save();
+        //        unitOfWork.InvoiceRepository.UpdateExcel(invoiceToSave);
+        //        unitOfWork.Save();
 
-                invoice.ExcelFile = null;
-                invoice.ExcelFileName = fileFileName;
-                invoice.ExcelFileCreatedDate = datetime;
+        //        invoice.ExcelFile = null;
+        //        invoice.ExcelFileName = fileFileName;
+        //        invoice.ExcelFileCreatedDate = datetime;
 
-                response.Data = invoice;
-                response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
+        //        response.Data = invoice;
+        //        response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        logger.LogError(e);
+        //        response.AddError(Resources.Common.ErrorSave);
+        //    }
 
-            return response;
-        }
+        //    return response;
+        //}
 
-        //todo: eliminar
-        public Response<Invoice> GetExcel(int invoiceId)
-        {
-            var response = new Response<Invoice>();
+        ////todo: eliminar
+        //public Response<Invoice> GetExcel(int invoiceId)
+        //{
+        //    var response = new Response<Invoice>();
 
-            var invoce = unitOfWork.InvoiceRepository.GetExcel(invoiceId);
+        //    var invoce = unitOfWork.InvoiceRepository.GetExcel(invoiceId);
 
-            if (invoce == null)
-            {
-                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
-                return response;
-            }
+        //    if (invoce == null)
+        //    {
+        //        response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
+        //        return response;
+        //    }
 
-            response.Data = invoce;
-            return response;
-        }
+        //    response.Data = invoce;
+        //    return response;
+        //}
 
-        //todo: eliminar
-        public Response<Invoice> SavePdf(Invoice invoice, string fileFileName)
-        {
-            var response = new Response<Invoice>();
+        ////todo: eliminar
+        //public Response<Invoice> SavePdf(Invoice invoice, string fileFileName)
+        //{
+        //    var response = new Response<Invoice>();
 
-            try
-            {
-                var datetime = DateTime.UtcNow;
+        //    try
+        //    {
+        //        var datetime = DateTime.UtcNow;
 
-                var invoiceToSave = new Invoice
-                {
-                    Id = invoice.Id,
-                    PdfFile = invoice.PdfFile,
-                    PdfFileName = fileFileName,
-                    PdfFileCreatedDate = datetime
-                };
+        //        var invoiceToSave = new Invoice
+        //        {
+        //            Id = invoice.Id,
+        //            PdfFile = invoice.PdfFile,
+        //            PdfFileName = fileFileName,
+        //            PdfFileCreatedDate = datetime
+        //        };
 
-                unitOfWork.InvoiceRepository.UpdatePdf(invoiceToSave);
-                unitOfWork.Save();
+        //        unitOfWork.InvoiceRepository.UpdatePdf(invoiceToSave);
+        //        unitOfWork.Save();
 
-                invoice.PdfFile = null;
-                invoice.PdfFileName = fileFileName;
-                invoice.PdfFileCreatedDate = datetime;
+        //        invoice.PdfFile = null;
+        //        invoice.PdfFileName = fileFileName;
+        //        invoice.PdfFileCreatedDate = datetime;
 
-                response.Data = invoice;
-                response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
-            }
+        //        response.Data = invoice;
+        //        response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        logger.LogError(e);
+        //        response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
+        //    }
 
-            return response;
-        }
+        //    return response;
+        //}
 
-        //todo: eliminar
-        public Response<Invoice> GetPdf(int invoiceId)
-        {
-            var response = new Response<Invoice>();
+        ////todo: eliminar
+        //public Response<Invoice> GetPdf(int invoiceId)
+        //{
+        //    var response = new Response<Invoice>();
 
-            var invoce = unitOfWork.InvoiceRepository.GetPdf(invoiceId);
+        //    var invoce = unitOfWork.InvoiceRepository.GetPdf(invoiceId);
 
-            if (invoce == null)
-            {
-                response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
-                return response;
-            }
+        //    if (invoce == null)
+        //    {
+        //        response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
+        //        return response;
+        //    }
 
-            response.Data = invoce;
-            return response;
-        }
+        //    response.Data = invoce;
+        //    return response;
+        //}
 
         public Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters)
         {
@@ -383,7 +383,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileName}</a>");
+                var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileData?.FileName}</a>");
 
                 var subject = MailSubjectResource.InvoiceRequestAnnulment;
                 var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString));
