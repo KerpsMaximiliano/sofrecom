@@ -58,8 +58,6 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<Invoice> GetById(int id)
         {
-            this.UpdateInvoicesFilesProcess();
-
             var response = new Response<Invoice>();
 
             var invoce = unitOfWork.InvoiceRepository.GetById(id);
@@ -123,112 +121,6 @@ namespace Sofco.Service.Implementations.Billing
 
             return response;
         }
-
-        ////todo: eliminar
-        //public Response<Invoice> SaveExcel(Invoice invoice, string fileFileName)
-        //{
-        //    var response = new Response<Invoice>();
-
-        //    try
-        //    {
-        //        var datetime = DateTime.UtcNow;
-
-        //        var invoiceToSave = new Invoice
-        //        {
-        //            Id = invoice.Id,
-        //            ExcelFile = invoice.ExcelFile,
-        //            ExcelFileName = fileFileName,
-        //            ExcelFileCreatedDate = datetime
-        //        };
-
-        //        unitOfWork.InvoiceRepository.UpdateExcel(invoiceToSave);
-        //        unitOfWork.Save();
-
-        //        invoice.ExcelFile = null;
-        //        invoice.ExcelFileName = fileFileName;
-        //        invoice.ExcelFileCreatedDate = datetime;
-
-        //        response.Data = invoice;
-        //        response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        logger.LogError(e);
-        //        response.AddError(Resources.Common.ErrorSave);
-        //    }
-
-        //    return response;
-        //}
-
-        ////todo: eliminar
-        //public Response<Invoice> GetExcel(int invoiceId)
-        //{
-        //    var response = new Response<Invoice>();
-
-        //    var invoce = unitOfWork.InvoiceRepository.GetExcel(invoiceId);
-
-        //    if (invoce == null)
-        //    {
-        //        response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
-        //        return response;
-        //    }
-
-        //    response.Data = invoce;
-        //    return response;
-        //}
-
-        ////todo: eliminar
-        //public Response<Invoice> SavePdf(Invoice invoice, string fileFileName)
-        //{
-        //    var response = new Response<Invoice>();
-
-        //    try
-        //    {
-        //        var datetime = DateTime.UtcNow;
-
-        //        var invoiceToSave = new Invoice
-        //        {
-        //            Id = invoice.Id,
-        //            PdfFile = invoice.PdfFile,
-        //            PdfFileName = fileFileName,
-        //            PdfFileCreatedDate = datetime
-        //        };
-
-        //        unitOfWork.InvoiceRepository.UpdatePdf(invoiceToSave);
-        //        unitOfWork.Save();
-
-        //        invoice.PdfFile = null;
-        //        invoice.PdfFileName = fileFileName;
-        //        invoice.PdfFileCreatedDate = datetime;
-
-        //        response.Data = invoice;
-        //        response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        logger.LogError(e);
-        //        response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
-        //    }
-
-        //    return response;
-        //}
-
-        ////todo: eliminar
-        //public Response<Invoice> GetPdf(int invoiceId)
-        //{
-        //    var response = new Response<Invoice>();
-
-        //    var invoce = unitOfWork.InvoiceRepository.GetPdf(invoiceId);
-
-        //    if (invoce == null)
-        //    {
-        //        response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
-        //        return response;
-        //    }
-
-        //    response.Data = invoce;
-        //    return response;
-        //}
 
         public Response ChangeStatus(int invoiceId, InvoiceStatus status, EmailConfig emailConfig, InvoiceStatusParams parameters)
         {
@@ -491,76 +383,6 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
-        }
-
-        private void UpdateInvoicesFilesProcess()
-        {
-            var invoices = unitOfWork.InvoiceRepository.GetAll();
-
-            foreach (var invoice in invoices)
-            {
-                if (!string.IsNullOrWhiteSpace(invoice.ExcelFileName))
-                {
-                    var excelFile = new File();
-                    var lastDotIndex = invoice.ExcelFileName.LastIndexOf('.');
-
-                    excelFile.FileName = invoice.ExcelFileName;
-                    excelFile.FileType = invoice.ExcelFileName.Substring(lastDotIndex);
-                    excelFile.InternalFileName = Guid.NewGuid();
-                    excelFile.CreationDate = DateTime.UtcNow;
-                    excelFile.CreatedUser = string.Empty;
-
-                    try
-                    {
-                        var fileName = $"{excelFile.InternalFileName.ToString()}{excelFile.FileType}";
-
-                        using (FileStream fs = System.IO.File.Create(Path.Combine(fileConfig.InvoicesExcelPath, fileName)))
-                        {
-                            fs.Write(invoice.ExcelFile, 0, invoice.ExcelFile.Length);
-                        }
-
-                        unitOfWork.FileRepository.Insert(excelFile);
-                        invoice.ExcelFileId = excelFile.Id;
-                        unitOfWork.InvoiceRepository.UpdateExcelId(invoice);
-                    }
-                    catch (Exception e)
-                    {
-                        var a = 1;
-                    }
-                }
-
-                if (!string.IsNullOrWhiteSpace(invoice.PdfFileName))
-                {
-                    var pdfFile = new File();
-                    var lastDotIndex = invoice.PdfFileName.LastIndexOf('.');
-
-                    pdfFile.FileName = invoice.PdfFileName;
-                    pdfFile.FileType = invoice.PdfFileName.Substring(lastDotIndex);
-                    pdfFile.InternalFileName = Guid.NewGuid();
-                    pdfFile.CreationDate = DateTime.UtcNow;
-                    pdfFile.CreatedUser = string.Empty;
-
-                    try
-                    {
-                        var fileName = $"{pdfFile.InternalFileName.ToString()}{pdfFile.FileType}";
-
-                        using (FileStream fs = System.IO.File.Create(Path.Combine(fileConfig.InvoicesPdfPath, fileName)))
-                        {
-                            fs.Write(invoice.PdfFile, 0, invoice.PdfFile.Length);
-                        }
-
-                        unitOfWork.FileRepository.Insert(pdfFile);
-                        invoice.PdfFileId = pdfFile.Id;
-                        unitOfWork.InvoiceRepository.UpdatePdfId(invoice);
-                    }
-                    catch (Exception e)
-                    {
-                        var a = 1;
-                    }
-                }
-
-                unitOfWork.Save();
-            }
         }
     }
 }

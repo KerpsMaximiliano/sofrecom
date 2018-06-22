@@ -30,12 +30,6 @@ namespace Sofco.Core.Models.Billing
             ServiceId = invoice.ServiceId;
             CustomerId = invoice.CustomerId;
 
-            ////todo: borrar
-            //ExcelFileName = invoice.ExcelFileName;
-            //PdfFileName = invoice.PdfFileName;
-            //ExcelFileCreatedDate = invoice.ExcelFileCreatedDate.ToString("d");
-            //PdfFileCreatedDate = invoice.PdfFileCreatedDate.ToString("d");
-
             if (invoice.ExcelFileData != null)
             {
                 ExcelFileId = invoice.ExcelFileId;
