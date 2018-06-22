@@ -34,7 +34,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
             if ((invoice.InvoiceStatus == InvoiceStatus.SendPending ||
                  invoice.InvoiceStatus == InvoiceStatus.Rejected) &&
-                string.IsNullOrWhiteSpace(invoice.ExcelFileName))
+                 (!invoice.ExcelFileId.HasValue || invoice.ExcelFileId.GetValueOrDefault() == 0))
             {
                 response.Messages.Add(new Message(Resources.Billing.Invoice.NeedExcelToSend, MessageType.Error));
             }

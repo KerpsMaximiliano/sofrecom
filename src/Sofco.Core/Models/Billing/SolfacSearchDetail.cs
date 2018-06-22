@@ -27,6 +27,10 @@ namespace Sofco.Core.Models.Billing
             InvoiceDate = domain.InvoiceDate;
             InvoiceCode = domain.InvoiceCode;
 
+            CustomerId = domain.CustomerId;
+            ServiceId = domain.ServiceId;
+            ProjectId = domain.ProjectId;
+
             if (domain.PurchaseOrder != null)
                 PurchaseOrder = domain.PurchaseOrder.Number;
 
@@ -40,6 +44,12 @@ namespace Sofco.Core.Models.Billing
                 ProjectQuantity = 1;
             }
         }
+
+        public string ProjectId { get; set; }
+
+        public string ServiceId { get; set; }
+
+        public string CustomerId { get; set; }
 
         public int Id { get; set; }
 

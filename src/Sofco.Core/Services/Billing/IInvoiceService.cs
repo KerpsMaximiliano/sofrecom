@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Config;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -23,5 +26,6 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> Clone(int id);
         ICollection<InvoiceHistory> GetHistories(int id);
         Response RequestAnnulment(IList<int> invoices);
+        Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName);
     }
 }

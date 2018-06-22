@@ -23,15 +23,32 @@ namespace Sofco.Core.Models.Billing
             Project = invoice.Project;
             ProjectId = invoice.ProjectId;
             Analytic = invoice.Analytic;
-            ExcelFileName = invoice.ExcelFileName;
-            PdfFileName = invoice.PdfFileName;
-            ExcelFileCreatedDate = invoice.ExcelFileCreatedDate.ToString("d");
-            PdfFileCreatedDate = invoice.PdfFileCreatedDate.ToString("d");
+       
             CreatedDate = invoice.CreatedDate;
             InvoiceStatus = invoice.InvoiceStatus.ToString();
             InvoiceNumber = invoice.InvoiceNumber;
             ServiceId = invoice.ServiceId;
             CustomerId = invoice.CustomerId;
+
+            ////todo: borrar
+            //ExcelFileName = invoice.ExcelFileName;
+            //PdfFileName = invoice.PdfFileName;
+            //ExcelFileCreatedDate = invoice.ExcelFileCreatedDate.ToString("d");
+            //PdfFileCreatedDate = invoice.PdfFileCreatedDate.ToString("d");
+
+            if (invoice.ExcelFileData != null)
+            {
+                ExcelFileId = invoice.ExcelFileId;
+                ExcelFileName = invoice.ExcelFileData.FileName;
+                ExcelFileCreatedDate = invoice.ExcelFileData.CreationDate.ToString("d");
+            }
+
+            if (invoice.PDfFileData != null)
+            {
+                PdfFileId = invoice.PdfFileId;
+                PdfFileName = invoice.PDfFileData.FileName;
+                PdfFileCreatedDate = invoice.PDfFileData.CreationDate.ToString("d");
+            }
 
             if (invoice.Solfac != null)
             {
@@ -82,6 +99,10 @@ namespace Sofco.Core.Models.Billing
         public DateTime CreatedDate { get; set; }
 
         public int? SolfacId { get; set; }
+
+        public int? ExcelFileId { get; set; }
+
+        public int? PdfFileId { get; set; }
 
         public Invoice CreateDomain()
         {

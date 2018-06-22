@@ -238,7 +238,8 @@
                         <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">
                             <div class="file-box">
                                 <div class="file">
-                                    <a (click)="pdfViewer.getPdf(invoice.id)">
+                                    <a>
+                                    <!-- <a (click)="viewPdf(invoice)"> -->
                                         <div class="icon"><i class="fa fa-file"></i></div>
                                         <div class="file-name text-word-break">
                                             {{ invoice.pdfFileName }}
@@ -260,4 +261,4 @@
     </div>
 </div>
 
-<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>
+<pdf-viewer #pdfViewer></pdf-viewer>

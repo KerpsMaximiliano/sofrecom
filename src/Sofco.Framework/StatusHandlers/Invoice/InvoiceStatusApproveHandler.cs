@@ -32,7 +32,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
                 response.Messages.Add(new Message(Resources.Billing.Invoice.CannotApprove, MessageType.Error));
             }
 
-            if (invoice.InvoiceStatus == InvoiceStatus.Sent && string.IsNullOrWhiteSpace(invoice.PdfFileName))
+            if (invoice.InvoiceStatus == InvoiceStatus.Sent && (!invoice.PdfFileId.HasValue || invoice.PdfFileId.GetValueOrDefault() == 0))
             {
                 response.Messages.Add(new Message(Resources.Billing.Invoice.NeedPdfToApprove, MessageType.Error));
             }

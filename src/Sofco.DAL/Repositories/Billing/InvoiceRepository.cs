@@ -19,16 +19,20 @@ namespace Sofco.DAL.Repositories.Billing
         {
             IQueryable<Invoice> query = context.Invoices;
 
-            query = GetProperties(query);
+            //query = GetProperties(query);
 
             return query.Where(x => x.ProjectId == projectId).ToList();
         }
 
         public Invoice GetById(int id)
         {
-            IQueryable<Invoice> query = context.Invoices.Include(x => x.User).Include(x => x.Solfac);
-                
-            query = GetProperties(query);
+            IQueryable<Invoice> query = context.Invoices
+                .Include(x => x.User)
+                .Include(x => x.PDfFileData)
+                .Include(x => x.ExcelFileData)
+                .Include(x => x.Solfac);
+
+            //query = GetProperties(query);
 
             return query.SingleOrDefault(x => x.Id == id);
         }
@@ -63,6 +67,16 @@ namespace Sofco.DAL.Repositories.Billing
                     PdfFileName = x.PdfFileName
                 })
                 .SingleOrDefault(x => x.Id == invoiceId);
+        }
+
+        public void UpdateExcelId(Invoice invoice)
+        {
+            context.Entry(invoice).Property("ExcelFileId").IsModified = true;
+        }
+
+        public void UpdatePdfId(Invoice invoice)
+        {
+            context.Entry(invoice).Property("PdfFileId").IsModified = true;
         }
 
         public void UpdateExcel(Invoice invoice)
@@ -103,36 +117,36 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Invoices.Any(x => x.InvoiceNumber == invoiceNumber);
         }
 
-        private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)
-        {
-            return dbset.Select(x => new Invoice
-            {
-                Id = x.Id,
-                AccountName = x.AccountName,
-                Project = x.Project,
-                Address = x.Address,
-                City = x.City,
-                Cuit = x.Cuit,
-                Country = x.Country,
-                Province = x.Province,
-                Analytic = x.Analytic,
-                Zipcode = x.Zipcode,
-                CreatedDate = x.CreatedDate,
-                Service = x.Service,
-                ProjectId = x.ProjectId,
-                ExcelFileName = x.ExcelFileName,
-                PdfFileName = x.PdfFileName,
-                ExcelFileCreatedDate = x.ExcelFileCreatedDate,
-                PdfFileCreatedDate = x.PdfFileCreatedDate,
-                InvoiceStatus = x.InvoiceStatus,
-                InvoiceNumber = x.InvoiceNumber,
-                UserId = x.UserId,
-                User = x.User,
-                CustomerId = x.CustomerId,
-                ServiceId = x.ServiceId,
-                Solfac = x.Solfac
-            });
-        }
+        //private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)
+        //{
+        //    return dbset.Select(x => new Invoice
+        //    {
+        //        Id = x.Id,
+        //        AccountName = x.AccountName,
+        //        Project = x.Project,
+        //        Address = x.Address,
+        //        City = x.City,
+        //        Cuit = x.Cuit,
+        //        Country = x.Country,
+        //        Province = x.Province,
+        //        Analytic = x.Analytic,
+        //        Zipcode = x.Zipcode,
+        //        CreatedDate = x.CreatedDate,
+        //        Service = x.Service,
+        //        ProjectId = x.ProjectId,
+        //        ExcelFileName = x.ExcelFileName,
+        //        PdfFileName = x.PdfFileName,
+        //        ExcelFileCreatedDate = x.ExcelFileCreatedDate,
+        //        PdfFileCreatedDate = x.PdfFileCreatedDate,
+        //        InvoiceStatus = x.InvoiceStatus,
+        //        InvoiceNumber = x.InvoiceNumber,
+        //        UserId = x.UserId,
+        //        User = x.User,
+        //        CustomerId = x.CustomerId,
+        //        ServiceId = x.ServiceId,
+        //        Solfac = x.Solfac
+        //    });
+        //}
 
         public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
         {
@@ -224,15 +238,11 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<Invoice> GetBySolfac(int id)
         {
-            return context.Invoices.Where(x => x.SolfacId == id).Select(x => new Invoice
-            {
-                Id = x.Id,
-                InvoiceNumber = x.InvoiceNumber,
-                InvoiceStatus = x.InvoiceStatus,
-                PdfFileName = x.PdfFileName,
-                PdfFileCreatedDate = x.PdfFileCreatedDate,
-                SolfacId = x.SolfacId
-            }).ToList();
+            return context.Invoices
+                .Include(x => x.ExcelFileData)
+                .Include(x => x.PDfFileData)
+                .Where(x => x.SolfacId == id)
+                .ToList();
         }
 
         public void UpdatePdfFileName(Invoice invoiceToModif)

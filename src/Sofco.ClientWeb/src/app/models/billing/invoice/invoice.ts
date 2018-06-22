@@ -21,6 +21,8 @@ export class Invoice {
     public serviceId: string;
     public customerId: string;
     public solfacId: number;
+    public excelFileId: number;
+    public pdfFileId: number;
 
     constructor(){}
 }

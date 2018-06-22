@@ -14,7 +14,7 @@ export class PurchaseOrderService {
 
   getAll() {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders`);
-  }
+  } 
 
   getStatuses() {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/status`);
@@ -56,10 +56,10 @@ export class PurchaseOrderService {
     return this.http.get(`${this.baseUrl}/purchaseOrders/export/${id}`, {
       responseType: 'arraybuffer',
       observe: 'response'
-   }).map((res: any) => {
-     return new Blob([res.body], { type: 'application/octet-stream' });
-   });
- }
+    }).map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    });
+  }
 
  getReport(params) {
   return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);

@@ -153,7 +153,8 @@
                                         <div class="panel-body">
                                             <ul class="todo-list small-list">
                                                 <li *ngFor="let invoice of invoicesRelated; let i = index">
-                                                    <span (click)="pdfViewer.getPdf(invoice.id)" class="m-l-xs pointer">{{invoice.pdfFileName}}</span>
+                                                    <span class="m-l-xs pointer">{{invoice.pdfFileName}}</span>
+                                                    <!-- <span (click)="viewPdf(invoice)" class="m-l-xs pointer">{{invoice.pdfFileName}}</span> -->
                                                     <span (click)="deleteInvoiceOfSolfac(invoice.id, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
                                                 </li>
                                             </ul>
@@ -338,4 +339,4 @@
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
 
-<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>
+<pdf-viewer #pdfViewer></pdf-viewer>

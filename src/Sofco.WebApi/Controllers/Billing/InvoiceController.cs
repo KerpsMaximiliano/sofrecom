@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.FileManager;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
+using File = Sofco.Model.Models.Common.File;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -23,12 +27,24 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly IInvoiceService invoiceService;
         private readonly IInvoiceFileManager invoiceFileManager;
         private readonly EmailConfig emailConfig;
+        private readonly ISessionManager sessionManager;
+        private readonly IFileService fileService;
+        private readonly FileConfig fileConfig;
 
-        public InvoiceController(IInvoiceService invoiceService, IInvoiceFileManager invoiceFileManager, IOptions<EmailConfig> emailConfig)
+        public InvoiceController(
+            IInvoiceService invoiceService,
+            IInvoiceFileManager invoiceFileManager,
+            IOptions<EmailConfig> emailConfig,
+            IOptions<FileConfig> fileOptions,
+            IFileService fileService,
+            ISessionManager sessionManager)
         {
             this.invoiceService = invoiceService;
             this.invoiceFileManager = invoiceFileManager;
             this.emailConfig = emailConfig.Value;
+            this.fileService = fileService;
+            this.sessionManager = sessionManager;
+            fileConfig = fileOptions.Value;
         }
 
         [HttpGet("{id}")]
@@ -74,161 +90,215 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(model);
         }
 
-        [HttpPost]
-        [Route("excel")]
-        public IActionResult Excel([FromBody]InvoiceViewModel model)
+        ////todo: borrar
+        //[HttpPost]
+        //[Route("excel")]
+        //public IActionResult Excel([FromBody] InvoiceViewModel model)
+        //{
+        //    try
+        //    {
+        //        var excel = invoiceFileManager.CreateInvoiceExcel(model.CreateDomain());
+        //        var fileName = string.Concat("remito_", DateTime.Now.ToString("d"));
+
+        //        return File(excel.GetAsByteArray(), "application/octet-stream", fileName);
+        //    }
+        //    catch
+        //    {
+        //        var response = new Response();
+        //        response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //        return BadRequest(response);
+        //    }
+        //}
+
+        ////todo: borrar
+        //[HttpGet("{invoiceId}/excel")]
+        //public IActionResult GetExcel(int invoiceId)
+        //{
+        //    try
+        //    {
+        //        var response = invoiceService.GetExcel(invoiceId);
+
+        //        if (response.HasErrors())
+        //            return BadRequest(response);
+
+        //        return File(response.Data.ExcelFile, "application/octet-stream", response.Data.ExcelFileName);
+        //    }
+        //    catch
+        //    {
+        //        var response = new Response();
+        //        response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //        return BadRequest(response);
+        //    }
+        //}
+
+        ////todo: borrar
+        //[HttpGet("{invoiceId}/pdf")]
+        //public IActionResult GetPdf(int invoiceId)
+        //{
+        //    try
+        //    {
+        //        var response = invoiceService.GetPdf(invoiceId);
+
+        //        if (response.HasErrors())
+        //            return BadRequest(response);
+
+        //        return Ok(response.Data.PdfFile);
+        //    }
+        //    catch
+        //    {
+        //        var response = new Response();
+        //        response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //        return BadRequest(response);
+        //    }
+        //}
+
+        ////todo: borrar
+        //[HttpGet("{invoiceId}/pdf/download")]
+        //public IActionResult DownloadPdf(int invoiceId)
+        //{
+        //    try
+        //    {
+        //        var response = invoiceService.GetPdf(invoiceId);
+
+        //        if (response.HasErrors())
+        //            return BadRequest(response);
+
+        //        return File(response.Data.PdfFile, "application/octet-stream", response.Data.PdfFileName);
+        //    }
+        //    catch
+        //    {
+        //        var response = new Response();
+        //        response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //        return BadRequest(response);
+        //    }
+        //}
+
+        ////todo: borrar
+        //[HttpPost]
+        //[Route("{invoiceId}/excel")]
+        //public IActionResult Excel(int invoiceId)
+        //{
+        //    if (Request.Form.Files.Any())
+        //        try
+        //        {
+        //            var response = invoiceService.GetById(invoiceId);
+
+        //            if (response.HasErrors())
+        //                return BadRequest(response);
+
+        //            var file = Request.Form.Files.First();
+
+        //            using (var memoryStream = new MemoryStream())
+        //            {
+        //                file.CopyTo(memoryStream);
+        //                response.Data.ExcelFile = memoryStream.ToArray();
+        //            }
+
+        //            response = invoiceService.SaveExcel(response.Data, file.FileName);
+
+        //            if (response.HasErrors())
+        //                return BadRequest(response);
+
+        //            return Ok(response);
+        //        }
+        //        catch
+        //        {
+        //            var error = new Response();
+        //            error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //            return BadRequest(error);
+        //        }
+
+        //    return BadRequest();
+        //}
+
+        ////todo: borrar
+        //[HttpPost]
+        //[Route("{invoiceId}/Pdf")]
+        //public IActionResult Pdf(int invoiceId)
+        //{
+        //    if (Request.Form.Files.Any())
+        //        try
+        //        {
+        //            var response = invoiceService.GetById(invoiceId);
+
+        //            if (response.HasErrors())
+        //                return BadRequest(response);
+
+        //            var file = Request.Form.Files.First();
+
+        //            using (var memoryStream = new MemoryStream())
+        //            {
+        //                file.CopyTo(memoryStream);
+        //                response.Data.PdfFile = memoryStream.ToArray();
+        //            }
+
+        //            response = invoiceService.SavePdf(response.Data, file.FileName);
+
+        //            if (response.HasErrors())
+        //                return BadRequest(response);
+
+        //            return Ok(response);
+        //        }
+        //        catch
+        //        {
+        //            var error = new Response();
+        //            error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
+        //            return BadRequest(error);
+        //        }
+
+        //    return BadRequest();
+        //}
+
+        [HttpPost("{invoiceId}/file")]
+        public async Task<IActionResult> File(int invoiceId)
         {
-            try
-            {
-                var excel = invoiceFileManager.CreateInvoiceExcel(model.CreateDomain());
-                var fileName = string.Concat("remito_", DateTime.Now.ToString("d"));
+            var response = new Response<File>();
 
-                return File(excel.GetAsByteArray(), "application/octet-stream", fileName);
-            }
-            catch
-            {
-                var response = new Response();
-                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                return BadRequest(response);
-            }
-        }
-
-        [HttpGet("{invoiceId}/excel")]
-        public IActionResult GetExcel(int invoiceId)
-        {
-            try
-            {
-                var response = invoiceService.GetExcel(invoiceId);
-
-                if (response.HasErrors())
-                    return BadRequest(response);
-
-                return File(response.Data.ExcelFile, "application/octet-stream", response.Data.ExcelFileName);
-            }
-            catch
-            {
-                var response = new Response();
-                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                return BadRequest(response);
-            }
-        }
-
-        [HttpGet("{invoiceId}/pdf")]
-        public IActionResult GetPdf(int invoiceId)
-        {
-            try
-            {
-                var response = invoiceService.GetPdf(invoiceId);
-
-                if (response.HasErrors())
-                    return BadRequest(response);
-
-                return Ok(response.Data.PdfFile);
-            }
-            catch
-            {
-                var response = new Response();
-                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                return BadRequest(response);
-            }
-        }
-
-        [HttpGet("{invoiceId}/pdf/download")]
-        public IActionResult DownloadPdf(int invoiceId)
-        {
-            try
-            {
-                var response = invoiceService.GetPdf(invoiceId);
-
-                if (response.HasErrors())
-                    return BadRequest(response);
-
-                return File(response.Data.PdfFile, "application/octet-stream", response.Data.PdfFileName);
-            }
-            catch
-            {
-                var response = new Response();
-                response.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                return BadRequest(response);
-            }
-        }
-
-        [HttpPost]
-        [Route("{invoiceId}/excel")]
-        public IActionResult Excel(int invoiceId)
-        {
             if (Request.Form.Files.Any())
             {
-                try
-                {
-                    var response = invoiceService.GetById(invoiceId);
+                var file = Request.Form.Files.First();
 
-                    if (response.HasErrors())
-                        return BadRequest(response);
-
-                    var file = Request.Form.Files.First();
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        file.CopyTo(memoryStream);
-                        response.Data.ExcelFile = memoryStream.ToArray();
-                    }
-
-                    response = invoiceService.SaveExcel(response.Data, file.FileName);
-
-                    if (response.HasErrors())
-                        return BadRequest(response);
-
-                    return Ok(response);
-                }
-                catch
-                {
-                    var error = new Response();
-                    error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                    return BadRequest(error);
-                }
+                await invoiceService.AttachFile(invoiceId, response, file, sessionManager.GetUserName());
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
             }
 
-            return BadRequest();
+            return this.CreateResponse(response);
         }
 
-        [HttpPost]
-        [Route("{invoiceId}/Pdf")]
-        public IActionResult Pdf(int invoiceId)
+        [HttpGet("{id}/excel/export")]
+        public IActionResult ExportExcelFile(int id)
         {
-            if (Request.Form.Files.Any())
-            {
-                try
-                {
-                    var response = invoiceService.GetById(invoiceId);
+            var response = fileService.ExportFile(id, fileConfig.InvoicesExcelPath);
 
-                    if (response.HasErrors())
-                        return BadRequest(response);
+            if (response.HasErrors())
+                return BadRequest(response);
 
-                    var file = Request.Form.Files.First();
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
 
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        file.CopyTo(memoryStream);
-                        response.Data.PdfFile = memoryStream.ToArray();
-                    }
+        [HttpGet("{id}/pdf/export")]
+        public IActionResult ExportPdfFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.InvoicesPdfPath);
 
-                    response = invoiceService.SavePdf(response.Data, file.FileName);
+            if (response.HasErrors())
+                return BadRequest(response);
 
-                    if (response.HasErrors())
-                        return BadRequest(response);
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
 
-                    return Ok(response);
-                }
-                catch
-                {
-                    var error = new Response();
-                    error.Messages.Add(new Message("Ocurrio un error al generar el excel", MessageType.Error));
-                    return BadRequest(error);
-                }
-            }
+        [HttpGet("{id}/pdf")]
+        public IActionResult GetPdfFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.InvoicesPdfPath);
+            
+            if (response.HasErrors())
+                return BadRequest(response);
 
-            return BadRequest();
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

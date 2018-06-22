@@ -119,7 +119,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     getCustomers() {
         this.messageService.showLoading();
 
-        this.customerService.getOptions().subscribe(res => {
+        this.customerService.getAllOptions().subscribe(res => {
             this.messageService.closeLoading();
             this.customers = res.data;
         },

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
@@ -16,8 +18,8 @@ using Sofco.Model.Utils;
 using Sofco.Core.Mail;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.Models.Common;
 using Sofco.Resources.Mails;
+using File = Sofco.Model.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -30,13 +32,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly EmailConfig emailConfig;
         private readonly ILogMailer<InvoiceService> logger;
         private readonly IMailBuilder mailBuilder;
+        private readonly FileConfig fileConfig;
 
-        public InvoiceService(IUnitOfWork unitOfWork, 
+        public InvoiceService(IUnitOfWork unitOfWork,
             IInvoiceStatusFactory invoiceStatusFactory,
             IOptions<EmailConfig> emailOptions,
             IMailBuilder mailBuilder,
             ILogMailer<InvoiceService> logger,
-            IMailSender mailSender, ISessionManager sessionManager)
+            IMailSender mailSender, ISessionManager sessionManager, IOptions<FileConfig> fileOptions)
         {
             this.unitOfWork = unitOfWork;
             this.invoiceStatusFactory = invoiceStatusFactory;
@@ -45,6 +48,7 @@ namespace Sofco.Service.Implementations.Billing
             this.emailConfig = emailOptions.Value;
             this.logger = logger;
             this.mailBuilder = mailBuilder;
+            fileConfig = fileOptions.Value;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -109,7 +113,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.InvoiceCreated, MessageType.Success));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
@@ -118,6 +122,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        //todo: eliminar
         public Response<Invoice> SaveExcel(Invoice invoice, string fileFileName)
         {
             var response = new Response<Invoice>();
@@ -144,7 +149,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.ExcelUpload, MessageType.Success));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
@@ -153,6 +158,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        //todo: eliminar
         public Response<Invoice> GetExcel(int invoiceId)
         {
             var response = new Response<Invoice>();
@@ -169,6 +175,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        //todo: eliminar
         public Response<Invoice> SavePdf(Invoice invoice, string fileFileName)
         {
             var response = new Response<Invoice>();
@@ -195,7 +202,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.Data = invoice;
                 response.Messages.Add(new Message(Resources.Billing.Invoice.PdfUpload, MessageType.Success));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
@@ -204,6 +211,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        //todo: eliminar
         public Response<Invoice> GetPdf(int invoiceId)
         {
             var response = new Response<Invoice>();
@@ -256,7 +264,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
@@ -267,7 +275,7 @@ namespace Sofco.Service.Implementations.Billing
                 // Send Mail
                 invoiceStatusHandler.SendMail(mailSender, invoice, emailConfig);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSendMail, MessageType.Error));
@@ -306,7 +314,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Messages.Add(new Message(Resources.Billing.Invoice.Deleted, MessageType.Success));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e);
                 response.Messages.Add(new Message(Resources.Common.ErrorSave, MessageType.Error));
@@ -337,7 +345,7 @@ namespace Sofco.Service.Implementations.Billing
 
             var invoice = unitOfWork.InvoiceRepository.GetSingle(x => x.Id == id);
 
-            if(invoice == null)
+            if (invoice == null)
             {
                 response.Messages.Add(new Message(Resources.Billing.Invoice.NotFound, MessageType.Error));
                 return response;
@@ -425,7 +433,65 @@ namespace Sofco.Service.Implementations.Billing
             return history;
         }
 
-        private void Asd()
+        public async Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName)
+        {
+            var invoice = unitOfWork.InvoiceRepository.GetSingle(x => x.Id == invoiceId);
+
+            if (response.HasErrors()) return response;
+
+            var fileToAdd = new File();
+            var lastDotIndex = file.FileName.LastIndexOf('.');
+
+            fileToAdd.FileName = file.FileName;
+            fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
+            fileToAdd.InternalFileName = Guid.NewGuid();
+            fileToAdd.CreationDate = DateTime.UtcNow;
+            fileToAdd.CreatedUser = userName;
+
+            var path = string.Empty;
+            var successMsg = string.Empty;
+
+            if (fileToAdd.FileType.Equals(".pdf"))
+            {
+                invoice.PDfFileData = fileToAdd;
+                path = fileConfig.InvoicesPdfPath;
+                successMsg = Resources.Billing.Invoice.PdfUpload;
+            }
+            else if (fileToAdd.FileType.Equals(".xlsx") || fileToAdd.FileType.Equals(".xls"))
+            {
+                invoice.ExcelFileData = fileToAdd;
+                path = fileConfig.InvoicesExcelPath;
+                successMsg = Resources.Billing.Invoice.ExcelUpload;
+            }
+
+            if (string.IsNullOrWhiteSpace(path)) return response;
+
+            try
+            {
+                var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
+
+                using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                unitOfWork.FileRepository.Insert(fileToAdd);
+                unitOfWork.InvoiceRepository.Update(invoice);
+                unitOfWork.Save();
+
+                response.Data = fileToAdd;
+                response.AddSuccess(successMsg);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.SaveFileError);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        private void UpdateInvoicesFilesProcess()
         {
             var invoices = unitOfWork.InvoiceRepository.GetAll();
 
@@ -442,10 +508,56 @@ namespace Sofco.Service.Implementations.Billing
                     excelFile.CreationDate = DateTime.UtcNow;
                     excelFile.CreatedUser = string.Empty;
 
+                    try
+                    {
+                        var fileName = $"{excelFile.InternalFileName.ToString()}{excelFile.FileType}";
 
+                        using (FileStream fs = System.IO.File.Create(Path.Combine(fileConfig.InvoicesExcelPath, fileName)))
+                        {
+                            fs.Write(invoice.ExcelFile, 0, invoice.ExcelFile.Length);
+                        }
+
+                        unitOfWork.FileRepository.Insert(excelFile);
+                        invoice.ExcelFileId = excelFile.Id;
+                        unitOfWork.InvoiceRepository.UpdateExcelId(invoice);
+                    }
+                    catch (Exception e)
+                    {
+                        var a = 1;
+                    }
                 }
-                
-                var pdfFile = new File();
+
+                if (!string.IsNullOrWhiteSpace(invoice.PdfFileName))
+                {
+                    var pdfFile = new File();
+                    var lastDotIndex = invoice.PdfFileName.LastIndexOf('.');
+
+                    pdfFile.FileName = invoice.PdfFileName;
+                    pdfFile.FileType = invoice.PdfFileName.Substring(lastDotIndex);
+                    pdfFile.InternalFileName = Guid.NewGuid();
+                    pdfFile.CreationDate = DateTime.UtcNow;
+                    pdfFile.CreatedUser = string.Empty;
+
+                    try
+                    {
+                        var fileName = $"{pdfFile.InternalFileName.ToString()}{pdfFile.FileType}";
+
+                        using (FileStream fs = System.IO.File.Create(Path.Combine(fileConfig.InvoicesPdfPath, fileName)))
+                        {
+                            fs.Write(invoice.PdfFile, 0, invoice.PdfFile.Length);
+                        }
+
+                        unitOfWork.FileRepository.Insert(pdfFile);
+                        invoice.PdfFileId = pdfFile.Id;
+                        unitOfWork.InvoiceRepository.UpdatePdfId(invoice);
+                    }
+                    catch (Exception e)
+                    {
+                        var a = 1;
+                    }
+                }
+
+                unitOfWork.Save();
             }
         }
     }

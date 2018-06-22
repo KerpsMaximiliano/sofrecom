@@ -14,6 +14,7 @@ using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
 using Sofco.Model.Relationships;
@@ -583,15 +584,15 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<ICollection<Invoice>> GetInvoices(int id)
+        public Response<ICollection<InvoiceFileOptions>> GetInvoices(int id)
         {
-            var response = new Response<ICollection<Invoice>>();
+            var response = new Response<ICollection<InvoiceFileOptions>>();
 
             SolfacValidationHelper.ValidateIfExist(id, unitOfWork.SolfacRepository, response);
 
             if (response.HasErrors()) return response;
 
-            response.Data = unitOfWork.InvoiceRepository.GetBySolfac(id);
+            response.Data = unitOfWork.InvoiceRepository.GetBySolfac(id).Select(x => new InvoiceFileOptions(x)).ToList();
 
             return response;
         }

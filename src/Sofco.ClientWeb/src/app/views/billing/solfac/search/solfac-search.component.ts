@@ -97,10 +97,16 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || 
          solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf] ||
          solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
-        {
+        { 
+            sessionStorage.setItem("customerId", solfac.customerId);
+            sessionStorage.setItem("serviceId", solfac.serviceId);
+            sessionStorage.setItem("projectId", solfac.projectId);
             this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
         }
         else{
+            sessionStorage.setItem("customerId", solfac.customerId);
+            sessionStorage.setItem("serviceId", solfac.serviceId);
+            sessionStorage.setItem("projectId", solfac.projectId);
             this.router.navigate(["/billing/solfac/" + solfac.id]);
         }
     }

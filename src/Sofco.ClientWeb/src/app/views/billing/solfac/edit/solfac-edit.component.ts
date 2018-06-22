@@ -14,7 +14,6 @@ import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import * as FileSaver from "file-saver";
-import { CertificatesService } from '../../../../services/billing/certificates.service';
 
 declare var $:any;
 
@@ -304,7 +303,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     exportPdf(invoice){
-      this.invoiceService.downloadPdf(invoice.id).subscribe(file => {
+      this.invoiceService.exportPdfFile(invoice.pdfFileId).subscribe(file => {
           FileSaver.saveAs(file, invoice.pdfFileName);
       },
       err => this.errorHandlerService.handleErrors(err));
@@ -340,5 +339,14 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         }
       },
       err => this.errorHandlerService.handleErrors(err));
+    }
+
+    viewPdf(invoice){
+      if(invoice.pdfFileName.endsWith('.pdf')){
+        this.invoiceService.getPdfFile(invoice.pdfFileId).subscribe(response => {
+            this.pdfViewer.renderFile(response.data);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+      }
     }
 }
