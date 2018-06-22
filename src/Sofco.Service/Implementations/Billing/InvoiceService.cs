@@ -58,6 +58,8 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<Invoice> GetById(int id)
         {
+            this.UpdateInvoicesFilesProcess();
+
             var response = new Response<Invoice>();
 
             var invoce = unitOfWork.InvoiceRepository.GetById(id);
