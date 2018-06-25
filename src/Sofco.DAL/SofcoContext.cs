@@ -95,6 +95,7 @@ namespace Sofco.DAL
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<PurchaseOrderOptions> PurchaseOrderOptions { get; set; }
         public DbSet<Sector> Sectors { get; set; }
+        public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -43,7 +43,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateArea(Response response, PurchaseOrderModel domain)
         {
-            if (string.IsNullOrWhiteSpace(domain.Area))
+            if (domain.AreaId == 0)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AreaIsRequired);
             }

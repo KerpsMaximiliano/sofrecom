@@ -49,22 +49,7 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12">
-        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
-
-        <div class="radio radio-info radio-inline">
-            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
-            <label for="area"> {{'billing.purchaseOrder.fields.comercial' | translate }} </label>
-        </div>
-        <div class="radio radio-inline radio-info">
-            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
-            <label for="area2"> {{'billing.purchaseOrder.fields.company' | translate }} </label>
-        </div>
-    </div>
-</div>
-
-<br>
+<select-two [label]="'billing.purchaseOrder.fields.area'" [(value)]="model.areaId" [options]="areas"></select-two>
 
 <div class="form-group">
     <label class="control-label">{{'billing.purchaseOrder.fields.description' | translate }}</label>

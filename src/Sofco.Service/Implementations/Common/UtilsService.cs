@@ -59,6 +59,11 @@ namespace Sofco.Service.Implementations.Common
             }
         }
 
+        public IList<Area> GetAreas()
+        {
+            return unitOfWork.UtilsRepository.GetAreas();
+        }
+
         public IList<DocumentType> GetDocumentTypes()
         {
             return unitOfWork.UtilsRepository.GetDocumentTypes();

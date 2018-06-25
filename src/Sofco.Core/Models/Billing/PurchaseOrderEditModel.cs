@@ -19,7 +19,7 @@ namespace Sofco.Core.Models.Billing
             ClientExternalId = domain.ClientExternalId;
             ClientExternalName = domain.ClientExternalName;
             ReceptionDate = domain.ReceptionDate;
-            Area = domain.Area;
+            AreaId = domain.AreaId.GetValueOrDefault();
             Status = domain.Status;
             StartDate = domain.StartDate;
             EndDate = domain.EndDate;
@@ -73,7 +73,7 @@ namespace Sofco.Core.Models.Billing
 
         public DateTime ReceptionDate { get; set; }
 
-        public string Area { get; set; }
+        public int AreaId { get; set; }
 
         public string Description { get; set; }
 
