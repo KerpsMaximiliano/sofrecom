@@ -75,6 +75,11 @@ namespace Sofco.DAL.Repositories.Billing
             return context.PurchaseOrderAmmountDetails.Any(x => x.PurchaseOrderId == solfacPurchaseOrderId && x.CurrencyId == solfacCurrencyId);
         }
 
+        public void UpdateInSolfac(int id, int solfacId)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.solfacs SET purchaseOrderId = {id} where id = {solfacId}");
+        }
+
         public void UpdateBalance(PurchaseOrderAmmountDetail detail)
         {
             context.Entry(detail).Property("Balance").IsModified = true;

@@ -83,6 +83,16 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
+        public static void Exist(Response response, int id, IUnitOfWork unitOfWork)
+        {
+            var exist = unitOfWork.PurchaseOrderRepository.Exist(id);
+
+            if (!exist)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NotFound);
+            }
+        }
+
         public static void ValidateDates(Response response, PurchaseOrderModel domain)
         {
             if (domain.StartDate == DateTime.MinValue || domain.EndDate == DateTime.MinValue)

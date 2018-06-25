@@ -6,6 +6,7 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import * as FileSaver from "file-saver";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { MessageService } from "app/services/common/message.service";
+import { Option } from 'app/models/option';
 
 @Component({
   selector: 'app-solfac-detail',
@@ -24,7 +25,10 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    updateOcSubs: Subscription;
+    getOptionsSubs: Subscription;
 
+    public purchaseOrders: Option[] = new Array<Option>();
     public invoicesRelated: any[] = new Array<any>();
 
     constructor(private solfacService: SolfacService,
@@ -46,8 +50,24 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+        if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
+        if(this.updateOcSubs) this.updateOcSubs.unsubscribe();
     }
  
+    getOptions() {
+        this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId).subscribe(data => {
+          this.purchaseOrders = data.purchaseOrders;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    updateOc(){
+        this.updateOcSubs = this.solfacService.updateOc(this.model.id, this.model.purchaseOrderId).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
     getSolfac(){
         this.messageService.showLoading();
 
@@ -56,6 +76,8 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
+
+            this.getOptions();
 
             sessionStorage.setItem('customerName', this.model.businessName);
             sessionStorage.setItem('serviceName', this.model.serviceName);
