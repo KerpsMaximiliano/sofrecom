@@ -217,6 +217,7 @@ namespace Sofco.WebApi.Controllers.Billing
             yield return new Option { Id = (int)InvoiceStatus.Approved, Text = InvoiceStatus.Approved.ToString() };
             yield return new Option { Id = (int)InvoiceStatus.Related, Text = InvoiceStatus.Related.ToString() };
             yield return new Option { Id = (int)InvoiceStatus.Cancelled, Text = InvoiceStatus.Cancelled.ToString() };
+            yield return new Option { Id = (int)InvoiceStatus.RequestAnnulment, Text = InvoiceStatus.Cancelled.ToString() };
         }
     }
 }
