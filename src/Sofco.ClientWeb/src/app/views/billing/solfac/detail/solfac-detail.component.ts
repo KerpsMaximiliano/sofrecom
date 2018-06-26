@@ -1,16 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
-import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { InvoiceService } from "app/services/billing/invoice.service";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MessageService } from "app/services/common/message.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Option } from 'app/models/option';
 
 @Component({
   selector: 'app-solfac-detail',
@@ -29,14 +25,16 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    updateOcSubs: Subscription;
+    getOptionsSubs: Subscription;
 
+    public purchaseOrders: Option[] = new Array<Option>();
     public invoicesRelated: any[] = new Array<any>();
 
     constructor(private solfacService: SolfacService,
                 private activatedRoute: ActivatedRoute,
                 private invoiceService: InvoiceService,
                 private messageService: MessageService,
-                private menuService: MenuService,
                 private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
 
@@ -52,17 +50,42 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+        if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
+        if(this.updateOcSubs) this.updateOcSubs.unsubscribe();
     }
  
+    getOptions() {
+        this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId).subscribe(data => {
+          this.purchaseOrders = data.purchaseOrders;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
+    updateOc(){
+        this.updateOcSubs = this.solfacService.updateOc(this.model.id, this.model.purchaseOrderId).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
+
     getSolfac(){
+        this.messageService.showLoading();
+
         this.getDetailSubscrip = this.solfacService.get(this.solfacId).subscribe(d => {
+            this.messageService.closeLoading();
+
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
+
+            this.getOptions();
 
             sessionStorage.setItem('customerName', this.model.businessName);
             sessionStorage.setItem('serviceName', this.model.serviceName);
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     setCurrencySymbol(currencyId){
@@ -82,7 +105,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
 
     exportPdf(invoice){
-        this.invoiceService.downloadPdf(invoice.id).subscribe(file => {
+        this.invoiceService.exportPdfFile(invoice.pdfFileId).subscribe(file => {
             FileSaver.saveAs(file, invoice.pdfFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -104,5 +127,14 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     printSolfac() {
         window.print();
+    }
+
+    viewPdf(invoice){
+        if(invoice.pdfFileName.endsWith('.pdf')){
+            this.invoiceService.getPdfFile(invoice.pdfFileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 }

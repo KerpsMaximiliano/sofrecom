@@ -23,4 +23,8 @@ export class UtilsService {
   getCurrencies() {
     return this.http.get<any>(`${this.apiUrl}/currencies`);
   }
+
+  getAreas() {
+    return this.http.get<any>(`${this.apiUrl}/areas`);
+  }
 }

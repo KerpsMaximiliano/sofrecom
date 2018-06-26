@@ -29,19 +29,7 @@ namespace Sofco.Model.Models.Billing
 
         public DateTime CreatedDate { get; set; }
 
-        public byte[] ExcelFile { get; set; }
-
-        public byte[] PdfFile { get; set; }
-
-        public string ExcelFileName { get; set; }
-
-        public string PdfFileName { get; set; }
-
         public InvoiceStatus InvoiceStatus { get; set; }
-
-        public DateTime ExcelFileCreatedDate { get; set; }
-
-        public DateTime PdfFileCreatedDate { get; set; }
 
         public string InvoiceNumber { get; set; }
          
@@ -84,10 +72,6 @@ namespace Sofco.Model.Models.Billing
             invoice.InvoiceNumber = "0000-00000000";
             invoice.CreatedDate = DateTime.Now;
             invoice.InvoiceStatus = InvoiceStatus.SendPending;
-
-            invoice.ExcelFile = this.ExcelFile;
-            invoice.ExcelFileName = this.ExcelFileName;
-            invoice.ExcelFileCreatedDate = this.ExcelFileCreatedDate;
 
             return invoice;
         }

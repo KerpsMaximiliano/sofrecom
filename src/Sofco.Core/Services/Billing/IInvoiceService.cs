@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Config;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
+using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -12,10 +15,10 @@ namespace Sofco.Core.Services.Billing
         IList<Invoice> GetByProject(string projectId);
         Response<Invoice> GetById(int id);
         Response<Invoice> Add(Invoice invoice, string identityName);
-        Response<Invoice> SaveExcel(Invoice responseData, string fileFileName);
-        Response<Invoice> GetExcel(int invoiceId);
-        Response<Invoice> SavePdf(Invoice responseData, string fileFileName);
-        Response<Invoice> GetPdf(int invoiceId);
+        //Response<Invoice> SaveExcel(Invoice responseData, string fileFileName);
+        //Response<Invoice> GetExcel(int invoiceId);
+        //Response<Invoice> SavePdf(Invoice responseData, string fileFileName);
+        //Response<Invoice> GetPdf(int invoiceId);
         IList<Invoice> GetOptions(string projectId);
         Response Delete(int id);
         ICollection<Invoice> Search(InvoiceParams parameters);
@@ -23,5 +26,6 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> Clone(int id);
         ICollection<InvoiceHistory> GetHistories(int id);
         Response RequestAnnulment(IList<int> invoices);
+        Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName);
     }
 }

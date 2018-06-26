@@ -17,18 +17,22 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Invoice> GetByProject(string projectId)
         {
-            IQueryable<Invoice> query = context.Invoices;
+            IQueryable<Invoice> query = context.Invoices.Include(x => x.ExcelFileData).Include(x => x.PDfFileData);
 
-            query = GetProperties(query);
+            //query = GetProperties(query);
 
             return query.Where(x => x.ProjectId == projectId).ToList();
         }
 
         public Invoice GetById(int id)
         {
-            IQueryable<Invoice> query = context.Invoices.Include(x => x.User).Include(x => x.Solfac);
-                
-            query = GetProperties(query);
+            IQueryable<Invoice> query = context.Invoices
+                .Include(x => x.User)
+                .Include(x => x.PDfFileData)
+                .Include(x => x.ExcelFileData)
+                .Include(x => x.Solfac);
+
+            //query = GetProperties(query);
 
             return query.SingleOrDefault(x => x.Id == id);
         }
@@ -43,41 +47,51 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(invoice).Property("InvoiceStatus").IsModified = true;
         }
 
-        public Invoice GetExcel(int invoiceId)
+        //public Invoice GetExcel(int invoiceId)
+        //{
+        //    return context.Invoices.Select(x => new Invoice
+        //        {
+        //            Id = x.Id,
+        //            ExcelFile = x.ExcelFile,
+        //            ExcelFileName = x.ExcelFileName
+        //        })
+        //        .SingleOrDefault(x => x.Id == invoiceId);
+        //}
+
+        //public Invoice GetPdf(int invoiceId)
+        //{
+        //    return context.Invoices.Select(x => new Invoice
+        //        {
+        //            Id = x.Id,
+        //            PdfFile = x.PdfFile,
+        //            PdfFileName = x.PdfFileName
+        //        })
+        //        .SingleOrDefault(x => x.Id == invoiceId);
+        //}
+
+        public void UpdateExcelId(Invoice invoice)
         {
-            return context.Invoices.Select(x => new Invoice
-                {
-                    Id = x.Id,
-                    ExcelFile = x.ExcelFile,
-                    ExcelFileName = x.ExcelFileName
-                })
-                .SingleOrDefault(x => x.Id == invoiceId);
+            context.Entry(invoice).Property("ExcelFileId").IsModified = true;
         }
 
-        public Invoice GetPdf(int invoiceId)
+        public void UpdatePdfId(Invoice invoice)
         {
-            return context.Invoices.Select(x => new Invoice
-                {
-                    Id = x.Id,
-                    PdfFile = x.PdfFile,
-                    PdfFileName = x.PdfFileName
-                })
-                .SingleOrDefault(x => x.Id == invoiceId);
+            context.Entry(invoice).Property("PdfFileId").IsModified = true;
         }
 
-        public void UpdateExcel(Invoice invoice)
-        {
-            context.Entry(invoice).Property("ExcelFile").IsModified = true;
-            context.Entry(invoice).Property("ExcelFileName").IsModified = true;
-            context.Entry(invoice).Property("ExcelFileCreatedDate").IsModified = true;
-        }
+        //public void UpdateExcel(Invoice invoice)
+        //{
+        //    context.Entry(invoice).Property("ExcelFile").IsModified = true;
+        //    context.Entry(invoice).Property("ExcelFileName").IsModified = true;
+        //    context.Entry(invoice).Property("ExcelFileCreatedDate").IsModified = true;
+        //}
 
-        public void UpdatePdf(Invoice invoice)
-        {
-            context.Entry(invoice).Property("PdfFile").IsModified = true;
-            context.Entry(invoice).Property("PdfFileName").IsModified = true;
-            context.Entry(invoice).Property("PdfFileCreatedDate").IsModified = true;
-        }
+        //public void UpdatePdf(Invoice invoice)
+        //{
+        //    context.Entry(invoice).Property("PdfFile").IsModified = true;
+        //    context.Entry(invoice).Property("PdfFileName").IsModified = true;
+        //    context.Entry(invoice).Property("PdfFileCreatedDate").IsModified = true;
+        //}
 
         public void UpdateStatusAndApprove(Invoice invoice)
         {
@@ -89,12 +103,8 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Invoices
                 .Include(x => x.Solfac)
+                .Include(x => x.PDfFileData)
                 .Where(x => x.Solfac == null && x.InvoiceStatus == InvoiceStatus.Approved && x.ProjectId == projectId)
-                .Select(x => new Invoice
-                {
-                    PdfFileName = x.PdfFileName,
-                    Id = x.Id
-                })
                 .ToList();
         }
 
@@ -103,58 +113,44 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Invoices.Any(x => x.InvoiceNumber == invoiceNumber);
         }
 
-        private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)
-        {
-            return dbset.Select(x => new Invoice
-            {
-                Id = x.Id,
-                AccountName = x.AccountName,
-                Project = x.Project,
-                Address = x.Address,
-                City = x.City,
-                Cuit = x.Cuit,
-                Country = x.Country,
-                Province = x.Province,
-                Analytic = x.Analytic,
-                Zipcode = x.Zipcode,
-                CreatedDate = x.CreatedDate,
-                Service = x.Service,
-                ProjectId = x.ProjectId,
-                ExcelFileName = x.ExcelFileName,
-                PdfFileName = x.PdfFileName,
-                ExcelFileCreatedDate = x.ExcelFileCreatedDate,
-                PdfFileCreatedDate = x.PdfFileCreatedDate,
-                InvoiceStatus = x.InvoiceStatus,
-                InvoiceNumber = x.InvoiceNumber,
-                UserId = x.UserId,
-                User = x.User,
-                CustomerId = x.CustomerId,
-                ServiceId = x.ServiceId,
-                Solfac = x.Solfac
-            });
-        }
+        //private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)
+        //{
+        //    return dbset.Select(x => new Invoice
+        //    {
+        //        Id = x.Id,
+        //        AccountName = x.AccountName,
+        //        Project = x.Project,
+        //        Address = x.Address,
+        //        City = x.City,
+        //        Cuit = x.Cuit,
+        //        Country = x.Country,
+        //        Province = x.Province,
+        //        Analytic = x.Analytic,
+        //        Zipcode = x.Zipcode,
+        //        CreatedDate = x.CreatedDate,
+        //        Service = x.Service,
+        //        ProjectId = x.ProjectId,
+        //        ExcelFileName = x.ExcelFileName,
+        //        PdfFileName = x.PdfFileName,
+        //        ExcelFileCreatedDate = x.ExcelFileCreatedDate,
+        //        PdfFileCreatedDate = x.PdfFileCreatedDate,
+        //        InvoiceStatus = x.InvoiceStatus,
+        //        InvoiceNumber = x.InvoiceNumber,
+        //        UserId = x.UserId,
+        //        User = x.User,
+        //        CustomerId = x.CustomerId,
+        //        ServiceId = x.ServiceId,
+        //        Solfac = x.Solfac
+        //    });
+        //}
 
         public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
         {
             IQueryable<Invoice> query = context.Invoices;
 
-            query = ApplyFilters(parameters, query).Include(x => x.User);
+            query = ApplyFilters(parameters, query).Include(x => x.User).Include(x => x.ExcelFileData).Include(x => x.PDfFileData);
 
-            return query.Select(x => new Invoice
-                        {
-                            Id = x.Id,
-                            InvoiceNumber = x.InvoiceNumber,
-                            AccountName = x.AccountName,
-                            Service = x.Service,
-                            Project = x.Project,
-                            ExcelFileName = x.ExcelFileName,
-                            PdfFileName = x.PdfFileName,
-                            ProjectId = x.ProjectId,
-                            User = x.User,
-                            CreatedDate = x.CreatedDate,
-                            InvoiceStatus = x.InvoiceStatus
-                        })
-                        .ToList();
+            return query.ToList();
         }
 
         private static IQueryable<Invoice> ApplyFilters(InvoiceParams parameters, IQueryable<Invoice> query)
@@ -185,26 +181,13 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<Invoice> SearchByParamsAndUser(InvoiceParams parameters, string userMail)
         {
-            IQueryable<Invoice> query = context.Invoices.Include(x => x.User);
+            IQueryable<Invoice> query = context.Invoices.Include(x => x.User).Include(x => x.ExcelFileData).Include(x => x.PDfFileData);
 
             query = query.Where(x => x.User.Email == userMail);
 
             query = ApplyFilters(parameters, query);
 
-            return query.Select(x => new Invoice
-                        {
-                            Id = x.Id,
-                            InvoiceNumber = x.InvoiceNumber,
-                            AccountName = x.AccountName,
-                            Service = x.Service,
-                            Project = x.Project,
-                            ExcelFileName = x.ExcelFileName,
-                            ProjectId = x.ProjectId,
-                            User = x.User,
-                            CreatedDate = x.CreatedDate,
-                            InvoiceStatus = x.InvoiceStatus
-                        })
-                        .ToList();
+            return query.ToList();
         }
 
         public void AddHistory(InvoiceHistory history)
@@ -224,15 +207,11 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<Invoice> GetBySolfac(int id)
         {
-            return context.Invoices.Where(x => x.SolfacId == id).Select(x => new Invoice
-            {
-                Id = x.Id,
-                InvoiceNumber = x.InvoiceNumber,
-                InvoiceStatus = x.InvoiceStatus,
-                PdfFileName = x.PdfFileName,
-                PdfFileCreatedDate = x.PdfFileCreatedDate,
-                SolfacId = x.SolfacId
-            }).ToList();
+            return context.Invoices
+                .Include(x => x.ExcelFileData)
+                .Include(x => x.PDfFileData)
+                .Where(x => x.SolfacId == id)
+                .ToList();
         }
 
         public void UpdatePdfFileName(Invoice invoiceToModif)
@@ -242,13 +221,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Invoice> GetByIds(IList<int> invoiceIds)
         {
-            return context.Invoices.Where(x => invoiceIds.Contains(x.Id)).Select(x => new Invoice
-                {
-                    Id = x.Id,
-                    ExcelFileName = x.ExcelFileName,
-                    ProjectId = x.ProjectId
-                })
-                .ToList();
+            return context.Invoices.Where(x => invoiceIds.Contains(x.Id)).Include(x => x.ExcelFileData).ToList();
         }
     }
 }

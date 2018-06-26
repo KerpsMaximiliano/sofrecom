@@ -12,14 +12,10 @@ export class InvoiceService {
     this.baseUrl = this.service.UrlApi;
   }
 
-  getUrlForImportExcel(id){
-    return `${this.baseUrl}/invoices/${id}/excel`;
+  getUrlForImportFile(id){
+    return `${this.baseUrl}/invoices/${id}/file`;
   }
-
-  getUrlForImportPdf(id){
-    return `${this.baseUrl}/invoices/${id}/pdf`;
-  }
-
+  
   add(model) {
      return this.http.post<any>(`${this.baseUrl}/invoices`, model);
   }
@@ -51,17 +47,12 @@ export class InvoiceService {
     return this.http.post<any>(`${this.baseUrl}/invoices/${id}/status`, body);
  }
 
-  getExcel(id) {
-    return this.http.get(`${this.baseUrl}/invoices/${id}/excel`, {
-      responseType: 'arraybuffer',
-      observe: 'response'
-   }).map((res: any) => {
-     return new Blob([res.body], { type: 'application/octet-stream' });
-   });
+  getPdfFile(id){
+    return this.http.get<any>(`${this.baseUrl}/invoices/${id}/pdf`);
   }
 
-  downloadPdf(id) {
-    return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`, {
+  exportPdfFile(id){
+    return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/export`, {
       responseType: 'arraybuffer',
       observe: 'response'
     }).map((res: any) => {
@@ -69,18 +60,44 @@ export class InvoiceService {
     });
   }
 
-  getPdf(id) {
-    return this.http.get<any>(`${this.baseUrl}/invoices/${id}/pdf`);
- }
-
-  export(model) {
-    return this.http.post(`${this.baseUrl}/invoices/excel`, model, {
+  exportExcelFile(id){
+    return this.http.get(`${this.baseUrl}/invoices/${id}/excel/export`, {
       responseType: 'arraybuffer',
       observe: 'response'
-   }).map((res: any) => {
-     return new Blob([res.body], { type: 'application/octet-stream' });
-   });
+    }).map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    });
   }
+
+  //todo: borrar
+//   getExcel(id) {
+//     return this.http.get(`${this.baseUrl}/invoices/${id}/excel`, {
+//       responseType: 'arraybuffer',
+//       observe: 'response'
+//    }).map((res: any) => {
+//      return new Blob([res.body], { type: 'application/octet-stream' });
+//    });
+//   }
+
+//   //todo: borrar
+//   downloadPdf(id) {
+//     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`, {
+//       responseType: 'arraybuffer',
+//       observe: 'response'
+//     }).map((res: any) => {
+//       return new Blob([res.body], { type: 'application/octet-stream' });
+//     });
+//   }
+
+//  //todo: borrar
+//   export(model) {
+//     return this.http.post(`${this.baseUrl}/invoices/excel`, model, {
+//       responseType: 'arraybuffer',
+//       observe: 'response'
+//    }).map((res: any) => {
+//      return new Blob([res.body], { type: 'application/octet-stream' });
+//    });
+//   }
 
   search(parameters) {
     return this.http.post<any>(`${this.baseUrl}/invoices/search`, parameters);

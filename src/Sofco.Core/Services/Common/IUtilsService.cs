@@ -14,5 +14,6 @@ namespace Sofco.Core.Services.Common
         IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
         IEnumerable<Option> GetMonths();
         IEnumerable<Option> GetYears();
+        IList<Area> GetAreas();
     }
 }

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180622204959_RefactorInvoices")]
+    partial class RefactorInvoices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -775,7 +776,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AreaId");
+                    b.Property<string>("Area")
+                        .HasMaxLength(150);
 
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(150);
@@ -805,8 +807,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<DateTime>("UpdateDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
 
                     b.HasIndex("FileId");
 
@@ -1292,19 +1292,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserGroup");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Area", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Areas");
-                });
-
             modelBuilder.Entity("Sofco.Model.Utils.ClientGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -1638,11 +1625,6 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
                 {
-                    b.HasOne("Sofco.Model.Utils.Area", "Area")
-                        .WithMany("PurchaseOrders")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Sofco.Model.Models.Common.File", "File")
                         .WithMany()
                         .HasForeignKey("FileId");

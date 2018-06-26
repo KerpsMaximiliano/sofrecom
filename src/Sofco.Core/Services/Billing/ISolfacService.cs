@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sofco.Core.Config;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -26,7 +27,7 @@ namespace Sofco.Core.Services.Billing
         Response UpdateBill(int id, SolfacStatusParams solfacStatusParams);
         Response UpdateCashedDate(int id, SolfacStatusParams parameters);
         Response DeleteInvoice(int id, int invoiceId);
-        Response<ICollection<Invoice>> GetInvoices(int id);
+        Response<ICollection<InvoiceFileOptions>> GetInvoices(int id);
         Response<List<Invoice>> AddInvoices(int id, IList<int> invoices);
         Response<Solfac> Validate(Solfac solfac);
         Response DeleteDetail(int id);

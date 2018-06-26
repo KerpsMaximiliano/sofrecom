@@ -24,6 +24,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('confirmModal') confirmModal;
     @ViewChild('history') history: any;
+    @ViewChild('pdfViewer') pdfViewer: any;
     
     public model: Invoice = new Invoice();
     paramsSubscrip: Subscription;
@@ -106,20 +107,21 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     pdfConfig(){
-        this.uploader = new FileUploader({url: this.service.getUrlForImportPdf(this.model.id), 
+        this.uploader = new FileUploader({url: this.service.getUrlForImportFile(this.model.id), 
                                           authToken: 'Bearer ' + Cookie.get('access_token'),
                                           maxFileSize: 10*1024*1024,
                                           allowedMimeType: ['application/pdf'],
                                          });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.messageService.succes("billing.invoice.pdfAddedSucces");
-
             var dataJson = JSON.parse(response);
+
+            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
             
             if(dataJson){
-                this.model.pdfFileName = dataJson.data.pdfFileName;
-                this.model.pdfFileCreatedDate = new Date(dataJson.data.pdfFileCreatedDate).toLocaleDateString();
+                this.model.pdfFileName = dataJson.data.fileName;
+                this.model.pdfFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
+                this.model.pdfFileId = dataJson.data.id;
             }
 
             this.configUploader();
@@ -132,20 +134,21 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     excelConfig(){
-        this.uploader = new FileUploader({url: this.service.getUrlForImportExcel(this.model.id),
+        this.uploader = new FileUploader({url: this.service.getUrlForImportFile(this.model.id),
                                           authToken: 'Bearer ' + Cookie.get('access_token') ,
                                           maxFileSize: 10*1024*1024,
                                           allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.messageService.succes("billing.invoice.excelAddedSucces");
-
             var dataJson = JSON.parse(response);
 
+            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+
             if(dataJson){
-                this.model.excelFileName = dataJson.data.excelFileName;
-                this.model.excelFileCreatedDate = new Date(dataJson.data.excelFileCreatedDate).toLocaleDateString();
+                this.model.excelFileName = dataJson.data.fileName;
+                this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
+                this.model.excelFileId = dataJson.data.id;
             }
 
             this.configUploader();
@@ -166,14 +169,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
  
     exportExcel(){
-        this.service.getExcel(this.model.id).subscribe(file => {
+        this.service.exportExcelFile(this.model.excelFileId).subscribe(file => {
             FileSaver.saveAs(file, this.model.excelFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
  
     exportPdf(){
-        this.service.downloadPdf(this.model.id).subscribe(file => {
+        this.service.exportPdfFile(this.model.pdfFileId).subscribe(file => {
             FileSaver.saveAs(file, this.model.pdfFileName);
         },
         err => this.errorHandlerService.handleErrors(err));
@@ -210,19 +213,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         err => this.errorHandlerService.handleErrors(err));
     }
 
-    private getDateForFile(){
-        var date = new Date();
-
-        var yyyy = date.getFullYear().toString();
-        var mm = (date.getMonth()+1).toString();
-        var dd  = date.getDate().toString();
-
-        var mmChars = mm.split('');
-        var ddChars = dd.split('');
-
-        return yyyy + (mmChars[1]?mm:"0"+mmChars[0]) + (ddChars[1]?dd:"0"+ddChars[0]);
-    }
-
     updateStatus(event){
         if(event.invoiceStatus) this.model.invoiceStatus = event.invoiceStatus;
         if(event.invoiceNumber) this.model.invoiceNumber = event.invoiceNumber;
@@ -232,5 +222,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     goToSolfac(){
         this.router.navigate(['/billing/solfac/' + this.model.solfacId])
+    }
+
+    viewPdf(){
+        if(this.model.pdfFileName.endsWith('.pdf')){
+            this.service.getPdfFile(this.model.pdfFileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 } 

@@ -26,7 +26,7 @@ namespace Sofco.Core.Models.Billing
 
         public DateTime ReceptionDate { get; set; }
 
-        public string Area { get; set; }
+        public int AreaId { get; set; }
 
         public string Description { get; set; }
 
@@ -65,6 +65,7 @@ namespace Sofco.Core.Models.Billing
         {
             domain.Description = Description;
             domain.Status = Status;
+            domain.AreaId = AreaId;
 
             if (FileId > 0)
                 domain.FileId = FileId;
@@ -81,7 +82,7 @@ namespace Sofco.Core.Models.Billing
             domain.StartDate = StartDate;
             domain.EndDate = EndDate;
             domain.ReceptionDate = ReceptionDate;
-            domain.Area = Area;
+            domain.AreaId = AreaId;
             domain.Description = Description;
         }
     }

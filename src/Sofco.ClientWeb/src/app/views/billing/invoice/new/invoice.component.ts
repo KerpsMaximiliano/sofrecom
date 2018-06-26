@@ -125,7 +125,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     exportToExcel(){
         this.messageService.showLoading();
 
-        this.service.export(this.model).subscribe(file => {
+        this.service.exportExcelFile(this.model.excelFileId).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },
@@ -144,7 +144,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     private configUploader(id){
         this.uploader = new FileUploader(
             {
-                url: this.service.getUrlForImportExcel(id), 
+                url: this.service.getUrlForImportFile(id), 
                 authToken: 'Bearer ' + Cookie.get('access_token'), 
                 maxFileSize: 10*1024*1024
             }
@@ -152,9 +152,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            var dataJson = JSON.parse(response);
+            
+            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+
             this.excelUploaded = true;
-            this.messageService.succes("billing.invoice.excelAddedSucces");
-            this.model.excelFileName = "uploaded";
+            // this.messageService.succes("billing.invoice.excelAddedSucces");
+            this.model.excelFileName = dataJson.data.fileName;
+            this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
+            this.model.excelFileId = dataJson.data.id;
         };
     }
 

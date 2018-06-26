@@ -109,7 +109,7 @@
                             
                             <div class="file-box" *ngIf="model.pdfFileName">
                                 <div class="file">
-                                    <a (click)="pdfViewer.getPdf(model.id)">
+                                    <a (click)="viewPdf()">
                                         <div class="icon"><i class="fa fa-file"></i></div>
                                         <div class="file-name text-word-break">
                                             {{ model.pdfFileName }}
@@ -163,4 +163,4 @@
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
  
-<solfac-pdf-viewer #pdfViewer></solfac-pdf-viewer>
+<pdf-viewer #pdfViewer></pdf-viewer>

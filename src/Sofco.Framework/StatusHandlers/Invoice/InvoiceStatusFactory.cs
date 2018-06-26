@@ -14,6 +14,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
         public InvoiceStatusFactory(IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
+            this.mailBuilder = mailBuilder;
         }
 
         public IInvoiceStatusHandler GetInstance(InvoiceStatus status)

@@ -43,7 +43,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateArea(Response response, PurchaseOrderModel domain)
         {
-            if (string.IsNullOrWhiteSpace(domain.Area))
+            if (domain.AreaId == 0)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AreaIsRequired);
             }
@@ -76,6 +76,16 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         public static void Exist(Response<PurchaseOrder> response, PurchaseOrderModel model, IUnitOfWork unitOfWork)
         {
             var exist = unitOfWork.PurchaseOrderRepository.Exist(model.Id);
+
+            if (!exist)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NotFound);
+            }
+        }
+
+        public static void Exist(Response response, int id, IUnitOfWork unitOfWork)
+        {
+            var exist = unitOfWork.PurchaseOrderRepository.Exist(id);
 
             if (!exist)
             {

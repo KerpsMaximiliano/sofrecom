@@ -131,6 +131,29 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response UpdateSolfac(int id, int solfacId)
+        {
+            var response = new Response();
+
+            PurchaseOrderValidationHelper.Exist(response, id, unitOfWork);
+            SolfacValidationHelper.ValidateIfExist(solfacId, unitOfWork.SolfacRepository, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.PurchaseOrderRepository.UpdateInSolfac(id, solfacId);
+                response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public async Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName)
         {
             var purchaseOrder = PurchaseOrderValidationHelper.Find(purchaseOrderId, response, unitOfWork);

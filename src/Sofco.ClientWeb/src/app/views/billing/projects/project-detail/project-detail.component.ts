@@ -96,7 +96,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('serviceId', params['serviceId']);
             sessionStorage.setItem('projectId', params['projectId']);
 
-            this.getProject(params['projectId']);
+            this.setProject(params['projectId']);
             this.getService();
             this.getSolfacs(this.projectId);
             this.getHitos();
@@ -123,38 +123,55 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     getService(){
         var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
-
+ 
         if(service){
           this.service.analytic = service.analytic;
           this.service.manager = service.manager;
+          this.service.serviceType = service.serviceType;
+          this.service.solutionType = service.solutionType;
+          this.service.technologyType = service.technologyType;
         }
         else{
           this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
             this.service.analytic = data.analytic;
             this.service.manager = data.manager;
+            this.service.serviceType = data.serviceType;
+            this.service.solutionType = data.solutionType;
+            this.service.technologyType = data.technologyType;
           },
           err => this.errorHandlerService.handleErrors(err));
         }
     }
 
-    getProject(projectId){
-        var project = sessionStorage.getItem("projectDetail");
+    setProject(projectId){
+        var projectData = sessionStorage.getItem("projectDetail");
 
-        if(project){
-            this.project = JSON.parse(project);
-            this.loading = false;
+        if(projectData){
+            var project = JSON.parse(projectData);
+
+            if(projectId != project.id){
+                this.getProject(projectId);
+            }
+            else{
+                this.project = project;
+                this.loading = false;
+            }
         }
         else{
-            this.getProjectSubscrip = this.projectService.getById(projectId).subscribe(data => {
-                this.project = data;
-                sessionStorage.setItem("projectDetail", JSON.stringify(data));
-                this.loading = false;
-            },
-            err => {
-                this.loading = false;
-                this.errorHandlerService.handleErrors(err);
-            });
+            this.getProject(projectId);
         }
+    }
+
+    getProject(projectId){
+        this.getProjectSubscrip = this.projectService.getById(projectId).subscribe(data => {
+            this.project = data;
+            sessionStorage.setItem("projectDetail", JSON.stringify(data));
+            this.loading = false;
+        },
+        err => {
+            this.loading = false;
+            this.errorHandlerService.handleErrors(err);
+        });
     }
  
     resolveHitoLabel(hito){
@@ -224,7 +241,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
 
-    generateSolfac() {
+    generateSolfac() { 
         var hitos = this.getHitosSelected();
         sessionStorage.setItem("hitosSelected", JSON.stringify(hitos));
         sessionStorage.removeItem('multipleProjects');

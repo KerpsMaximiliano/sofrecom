@@ -18,5 +18,6 @@ namespace Sofco.Core.DAL.Billing
 
         IList<PurchaseOrder> GetByServiceLite(string serviceId);
         bool HasAmmountDetails(int solfacCurrencyId, int solfacPurchaseOrderId);
+        void UpdateInSolfac(int id, int solfacId);
     }
 }

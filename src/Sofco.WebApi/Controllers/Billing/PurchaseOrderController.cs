@@ -124,6 +124,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(GetStatuses());
         }
 
+        [HttpPost("{id}/solfac/{solfacId}")]
+        public IActionResult UpdateSolfac(int id, int solfacId)
+        {
+            var response = purchaseOrderService.UpdateSolfac(id, solfacId);
+
+            return this.CreateResponse(response);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };

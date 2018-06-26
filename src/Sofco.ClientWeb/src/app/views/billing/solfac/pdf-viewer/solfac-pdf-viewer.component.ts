@@ -62,7 +62,7 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
     getPdf(invoiceId){
         this.pdfModal.show();
 
-        this.invoiceService.getPdf(invoiceId).subscribe(file => {
+        this.invoiceService.getPdfFile(invoiceId).subscribe(file => {
             var pdfData = atob(file);
             this.render(pdfData);
         },

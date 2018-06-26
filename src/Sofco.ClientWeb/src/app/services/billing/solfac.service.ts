@@ -49,6 +49,10 @@ export class SolfacService {
     return this.http.post<any>(`${this.baseUrl}/solfacs/validate`, model);
   }
 
+  updateOc(id, ocId) {
+    return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${ocId}/solfac/${id}`, {});
+  }
+
   update(model) {
     return this.http.put<any>(`${this.baseUrl}/solfacs`, model);
   }

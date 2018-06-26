@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.Billing
 {
@@ -16,7 +17,8 @@ namespace Sofco.Model.Models.Billing
 
         public DateTime ReceptionDate { get; set; }
 
-        public string Area { get; set; }
+        public int? AreaId { get; set; }
+        public Area Area { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 
