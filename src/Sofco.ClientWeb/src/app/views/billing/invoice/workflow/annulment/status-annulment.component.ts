@@ -74,6 +74,7 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
         return this.invoiceId > 0 && this.menuService.hasFunctionality('REM', 'ANNUL') 
                                     && (this.status == InvoiceStatus[InvoiceStatus.Sent] 
                                     || this.status == InvoiceStatus[InvoiceStatus.Approved]
+                                    || this.status == InvoiceStatus[InvoiceStatus.RequestAnnulment]
                                     || this.status == InvoiceStatus[InvoiceStatus.Rejected])
     }
 }

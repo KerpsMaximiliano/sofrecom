@@ -4,5 +4,6 @@ export enum InvoiceStatus {
     Rejected = 2,
     Approved = 3,
     Related = 4,
-    Cancelled = 5
+    Cancelled = 5,
+    RequestAnnulment = 7
 }

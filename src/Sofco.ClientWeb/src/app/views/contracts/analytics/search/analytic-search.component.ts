@@ -11,6 +11,7 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { ServiceService } from "app/services/billing/service.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import * as FileSaver from "file-saver";
+declare var moment: any;
 
 @Component({
     selector: 'analytic-search',
@@ -208,9 +209,15 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.analyticService.get(searchCriteria).subscribe(res => {
             this.model = res.data;
             this.loading = false;
+ 
+            var columns = [0, 1, 2, 3, 4];
+            var title = `Analiticas-${moment(new Date()).format("YYYYMMDD")}`;
 
             const options = {
-                selector: "#analyticsTable"
+                selector: "#analyticsTable",
+                columns: columns,
+                title: title,
+                withExport: true
             };
 
             this.dataTableService.destroy(options.selector);

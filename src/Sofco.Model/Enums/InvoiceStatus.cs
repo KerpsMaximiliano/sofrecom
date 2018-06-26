@@ -8,6 +8,7 @@
         Approved,
         Related,
         Cancelled,
-        None
+        None,
+        RequestAnnulment
     }
 }

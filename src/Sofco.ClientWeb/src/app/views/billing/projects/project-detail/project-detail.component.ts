@@ -515,6 +515,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         this.invoiceService.askForAnnulment(invoicesIds).subscribe(data => {
             this.messageService.closeLoading();
             if(data.messages) this.messageService.showMessages(data.messages);
+
+            this.invoices.forEach(item => {
+                if(invoicesIds.includes(item.id)){
+                    item.invoiceStatus = InvoiceStatus[InvoiceStatus.RequestAnnulment];
+                }
+            });
         },
         err => {
             this.messageService.closeLoading();

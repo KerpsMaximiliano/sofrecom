@@ -277,6 +277,14 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
+                foreach (var invoice in invoices)
+                {
+                    invoice.InvoiceStatus = InvoiceStatus.RequestAnnulment;
+                    unitOfWork.InvoiceRepository.UpdateStatus(invoice);
+                }
+
+                unitOfWork.Save();
+
                 var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileData?.FileName}</a>");
 
                 var subject = MailSubjectResource.InvoiceRequestAnnulment;
