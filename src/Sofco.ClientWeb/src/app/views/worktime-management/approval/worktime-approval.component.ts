@@ -1,12 +1,9 @@
 import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { Router } from "@angular/router";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
-import { MenuService } from "app/services/admin/menu.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { AnalyticService } from "../../../services/allocation-management/analytic.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { WorktimeService } from "app/services/worktime-management/worktime.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
@@ -28,13 +25,13 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     getAnalyticsSubscrip: Subscription;
     searchSubscrip: Subscription;
 
-    public analyticId: number = 0;
-    public employeeId: number = 0;
+    public analyticId = 0;
+    public employeeId = 0;
     public comments: string;
 
     indexToRemove: number;
 
-    public isMultipleSelection: boolean = false;
+    public isMultipleSelection = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -50,20 +47,17 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         "ACTIONS.close"
     );
 
-    constructor(private employeeService: EmployeeService,
-        private analyticService: AnalyticService,
+    constructor(private analyticService: AnalyticService,
         private worktimeService: WorktimeService,
-        private router: Router,
         private datatableService: DataTableService,
-        private menuService: MenuService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService){
     }
 
     ngOnInit(): void {
         this.getAnalytics();
- 
-        var data = JSON.parse(sessionStorage.getItem('lastWorktimeQuery'));
+
+        const data = JSON.parse(sessionStorage.getItem('lastWorktimeQuery'));
 
         if(data){
             this.analyticId = data.analyticId;

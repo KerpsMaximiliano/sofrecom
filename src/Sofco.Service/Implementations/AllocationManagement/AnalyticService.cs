@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
@@ -36,10 +37,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
         private readonly IAnalyticFileManager analyticFileManager;
+        private readonly IUserData userData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
-            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager)
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -50,6 +52,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.crmService = crmService;
             this.employeeData = employeeData;
             this.analyticFileManager = analyticFileManager;
+            this.userData = userData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -82,6 +85,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employeeId = employeeData.GetCurrentEmployee().Id;
 
             var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
+        public Response<List<Option>> GetByCurrentManager()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id);
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
         }
@@ -304,7 +318,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             return response;
         }
-         
+
         private void SendMail(Analytic analytic, Response response)
         {
             try

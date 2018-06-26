@@ -6,7 +6,7 @@
 
         private const int Minor = 36;
 
-        private const int Revision = 164;
+        private const int Revision = 165;
 
         private const string AppVersionFormat = "{0}.{1}.{2}";
 

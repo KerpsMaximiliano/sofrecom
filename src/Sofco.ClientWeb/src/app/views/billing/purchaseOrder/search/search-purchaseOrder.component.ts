@@ -361,16 +361,11 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics() {
-        this.suscription = this.analyticService.getAll().subscribe(data => {
-            this.analytics = this.mapAnalyticToSelect(data);
+        this.suscription = this.analyticService.getByCurrentManager().subscribe(res => {
+            this.analytics = res.data;
             this.searchCriteriaChange();
         },
         error => this.errorHandlerService.handleErrors(error));
-    }
-
-    mapAnalyticToSelect(data: Array<any>): Array<any> {
-        data.forEach(x => x.text = x.title + ' - ' + x.name);
-        return data;
     }
 
     getManagers() {
