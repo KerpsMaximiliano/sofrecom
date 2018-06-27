@@ -64,5 +64,9 @@ export class PurchaseOrderService {
   getReport(params) {
     return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);
   }
+
+  getAnalyticsByCurrentUser() {
+    return this.http.get<any>(`${this.baseUrl}/reports/purchaseOrders/analytics/options`);
+  }
 }
 

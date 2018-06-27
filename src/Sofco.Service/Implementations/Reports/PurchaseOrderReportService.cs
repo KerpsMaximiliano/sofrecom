@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Views;
@@ -9,6 +10,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Reports;
 using Sofco.Core.Services.Reports;
 using Sofco.Model.DTO;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Reports;
 using Sofco.Model.Utils;
 
@@ -26,15 +28,18 @@ namespace Sofco.Service.Implementations.Reports
 
         private readonly IMapper mapper;
 
+        private readonly ISessionManager sessionManager;
+
         private readonly ILogMailer<PurchaseOrderReportService> logger;
 
-        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository, IMapper mapper, ILogMailer<PurchaseOrderReportService> logger, IUnitOfWork unitOfWork, IUserData userData)
+        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository, IMapper mapper, ILogMailer<PurchaseOrderReportService> logger, IUnitOfWork unitOfWork, IUserData userData, ISessionManager sessionManager)
         {
             this.purchaseOrderRepository = purchaseOrderRepository;
             this.mapper = mapper;
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.sessionManager = sessionManager;
         }
 
         public Response<List<PurchaseOrderBalanceViewModel>> Get(SearchPurchaseOrderParams parameters)
@@ -45,7 +50,7 @@ namespace Sofco.Service.Implementations.Reports
             {
                 var data = purchaseOrderRepository.Search(parameters);
 
-                data = ApplyCurrentManagerIdFilter(data);
+                data = ApplyCurrentUserFilter(data);
 
                 var result = Translate(data);
 
@@ -70,8 +75,40 @@ namespace Sofco.Service.Implementations.Reports
             return response;
         }
 
-        private List<PurchaseOrderBalanceView> ApplyCurrentManagerIdFilter(List<PurchaseOrderBalanceView> data)
+        public Response<List<Option>> GetAnalyticsByCurrentUser()
         {
+            var userMail = sessionManager.GetUserEmail();
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+
+            List<Analytic> analytics;
+
+            if (isDirector || isDaf || isCdg)
+            {
+                analytics = unitOfWork.AnalyticRepository.GetAllReadOnly().ToList();
+            }
+            else
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                analytics = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id).ToList();
+            }
+
+            var result = analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
+        private List<PurchaseOrderBalanceView> ApplyCurrentUserFilter(List<PurchaseOrderBalanceView> data)
+        {
+            var userMail = sessionManager.GetUserEmail();
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+
+            if (isDirector || isDaf || isCdg) return data;
+
             var currentUser = userData.GetCurrentUser();
 
             var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id);
