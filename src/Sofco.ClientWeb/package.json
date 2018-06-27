@@ -1,6 +1,6 @@
 {
   "name": "sofcoar",
-  "version": "1.30.84",
+  "version": "1.30.85",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

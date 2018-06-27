@@ -24,5 +24,13 @@ namespace Sofco.WebApi.Controllers.Reports
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("analytics/options")]
+        public IActionResult GetByCurrentManager()
+        {
+            var response = purchaseOrderReportService.GetAnalyticsByCurrentUser();
+
+            return this.CreateResponse(response);
+        }
     }
 }

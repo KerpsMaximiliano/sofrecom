@@ -105,7 +105,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let purchaseOrder of data">
-                                <td [ngClass]="purchaseOrder.details.length > 0 ? 'details-control' : ''">
+                                <td [ngClass]="purchaseOrder.details.length > 0 ? 'details-control' : ''" style="width:20px">
                                     <i [ngClass]="purchaseOrder.details.length > 0 ? 'fa fa-plus-square' : ''" [attr.data-id]="purchaseOrder.id"></i>
                                 </td>
                                 <td>{{ purchaseOrder.id }}</td>
