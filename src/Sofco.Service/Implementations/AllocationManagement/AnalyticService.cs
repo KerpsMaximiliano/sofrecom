@@ -329,10 +329,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+                var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
