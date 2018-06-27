@@ -46,7 +46,7 @@ namespace Sofco.DAL.Repositories.Billing
             var ocsLite = context.PurchaseOrderAnalytics
                 .Include(x => x.PurchaseOrder)
                 .Include(x => x.Analytic)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId))
                 .Select(x => x.PurchaseOrderId)
                 .Distinct()
                 .ToList();
@@ -64,7 +64,7 @@ namespace Sofco.DAL.Repositories.Billing
             return context.PurchaseOrderAnalytics
                 .Include(x => x.PurchaseOrder)
                 .Include(x => x.Analytic)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.PurchaseOrder.Status == PurchaseOrderStatus.Valid)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && (x.PurchaseOrder.Status == PurchaseOrderStatus.Valid || x.PurchaseOrder.Status == PurchaseOrderStatus.Consumed))
                 .Select(x => x.PurchaseOrder)
                 .Distinct()
                 .ToList();
