@@ -770,7 +770,7 @@
             "invoiceDate": "invoiceDate",
             "amount": "Importe"
         },
-        "dateRange": "Desde - hasta",
+        "dateRange": "Fecha de recepción Desde-Hasta",
         "dayOfWeek": "Lu Ma Mie Ju Vie Sa Do",
         "monthNames": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic",
         "resultNotFound": "No se encontraron datos."
