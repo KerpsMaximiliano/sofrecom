@@ -133,17 +133,15 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.suscription = this.purchaseOrderService.getReport(parameters).subscribe(response => {
-            setTimeout(() => {
-                this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
+            this.messageService.closeLoading();
+            if(response.messages) this.messageService.showMessages(response.messages);
 
-                this.data = response.data;
-                sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
-                this.initGrid();
-                if(this.data.length == 0) {
-                    this.showEmptyData();
-                }
-            }, 500);
+            this.data = response.data;
+            sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
+            this.initGrid();
+            if(this.data.length == 0) {
+                this.showEmptyData();
+            }
             this.storeSearchCriteria(parameters);
         },
         err => this.errorHandlerService.handleErrors(err));
