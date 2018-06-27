@@ -23,6 +23,10 @@
         <div class="col-sm-7">
             <div class="ibox">
                 <div class="ibox-content">
+                    <div class="m-b-md">
+                        <label class="label label-oc-{{form.model.status}} ocStatus">{{'billing.solfac.status' | translate }}: {{ getStatus() | translate }}</label>
+                    </div>
+                    
                     <purchase-order-form #form [mode]="'edit'"></purchase-order-form>
                 </div>
                 <div class="ibox-footer">
@@ -32,6 +36,12 @@
             </div>
         </div>
         <div class="col-sm-5">
+            <div class="m-b-lg" *ngIf="form.model.status != 3">
+                <button class="btn btn-success btn-outline dim" (click)="openAdjustment()"> 
+                    Crear Ajuste OC
+                </button>
+            </div>
+
             <div class="m-t-lg">
                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
     
@@ -82,3 +92,5 @@
 </ng2-modal>
 
 <pdf-viewer #pdfViewer></pdf-viewer>
+
+<purchase-order-adjustment #ocAdjustment></purchase-order-adjustment>

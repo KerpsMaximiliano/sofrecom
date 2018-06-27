@@ -28,5 +28,7 @@ namespace Sofco.Core.Services.Billing
         Response Update(PurchaseOrderModel model);
 
         Response UpdateSolfac(int id, int solfacId);
+
+        Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details);
     }
 }

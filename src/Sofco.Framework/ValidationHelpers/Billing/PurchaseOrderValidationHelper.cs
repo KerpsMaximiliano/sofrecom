@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing;
@@ -109,9 +110,17 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateAmmount(Response response, PurchaseOrderModel model)
+        public static void ValidateAmmount(Response response, IList<PurchaseOrderAmmountDetailModel> model)
         {
-            if (model.AmmountDetails.Any(x => x.Enable && (x.Ammount < 0 || x.Ammount > 99999999)))
+            if (model.Any(x => x.Enable && (x.Ammount < 0 || x.Ammount > 99999999)))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
+            }
+        }
+
+        public static void ValidateAdjustmentAmmount(Response response, IList<PurchaseOrderAmmountDetailModel> details)
+        {
+            if (details.Any(x => x.Adjustment < -99999999 || x.Adjustment == 0 || x.Adjustment > 99999999))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
             }

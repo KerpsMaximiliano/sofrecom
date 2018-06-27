@@ -10,6 +10,8 @@
 
         public decimal Ammount { get; set; }
 
+        public decimal Adjustment { get; set; }
+
         public bool Enable { get; set; }
     }
 }

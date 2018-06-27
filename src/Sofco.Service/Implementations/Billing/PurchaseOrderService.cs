@@ -13,6 +13,7 @@ using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
+using Sofco.Model.Enums;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using File = Sofco.Model.Models.Common.File;
@@ -154,6 +155,44 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.Find(id, response, unitOfWork);
+            PurchaseOrderValidationHelper.ValidateAdjustmentAmmount(response, details);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                purchaseOrder.Status = PurchaseOrderStatus.Closed;
+                purchaseOrder.Adjustment = true;
+                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
+                unitOfWork.PurchaseOrderRepository.UpdateAdjustment(purchaseOrder);
+
+                foreach (var detail in purchaseOrder.AmmountDetails)
+                {
+                    var modelDetail = details.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
+
+                    if (modelDetail == null) continue;
+
+                    detail.Adjustment = modelDetail.Adjustment;
+                    unitOfWork.PurchaseOrderRepository.UpdateDetail(detail);
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public async Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName)
         {
             var purchaseOrder = PurchaseOrderValidationHelper.Find(purchaseOrderId, response, unitOfWork);
@@ -279,7 +318,7 @@ namespace Sofco.Service.Implementations.Billing
             PurchaseOrderValidationHelper.ValidateArea(response, model);
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);
             PurchaseOrderValidationHelper.ValidateDates(response, model);
-            PurchaseOrderValidationHelper.ValidateAmmount(response, model);
+            PurchaseOrderValidationHelper.ValidateAmmount(response, model.AmmountDetails);
         }
     }
 }
