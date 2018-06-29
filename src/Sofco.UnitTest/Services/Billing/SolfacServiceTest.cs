@@ -44,7 +44,6 @@ namespace Sofco.UnitTest.Services.Billing
             solfacStatusFactoryMock = new Mock<ISolfacStatusFactory>();
             userRepositoryMock = new Mock<IUserRepository>();
             crmConfigMock = new Mock<CrmConfig>();
-            mailSenderMock = new Mock<IMailSender>();
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             sessionManagerMock = new Mock<ISessionManager>();
@@ -71,7 +70,6 @@ namespace Sofco.UnitTest.Services.Billing
             sut = new SolfacService(solfacStatusFactoryMock.Object,
                 unitOfWork.Object,
                 optionsMock.Object,
-                mailSenderMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object,
                 sessionManagerMock.Object);
