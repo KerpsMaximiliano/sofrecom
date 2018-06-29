@@ -112,6 +112,8 @@ namespace Sofco.WebApi
                 .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName));
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             ConfigureLogger();
         }
