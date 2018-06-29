@@ -18,4 +18,4 @@ cmd /c ng build --prod --env=azsof01wd-dev --extract-css=false -op "%PUBLISH_PAT
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
-cmd /c XCOPY /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
+cmd /c XCOPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
