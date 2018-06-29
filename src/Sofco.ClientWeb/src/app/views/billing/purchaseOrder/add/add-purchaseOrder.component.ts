@@ -54,8 +54,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.form.model.analyticIds = $('#analytics').val();
 
-        this.form.model.receptionDate = new Date();
-
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {
                 this.messageService.closeLoading();

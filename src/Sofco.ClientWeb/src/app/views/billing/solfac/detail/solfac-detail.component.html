@@ -255,7 +255,7 @@
                                         <div class="file-name text-word-break">
                                             {{ invoice.pdfFileName }}
                                             <br>
-                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy' }}</small>
                                         </div>
                                     </a>
                                     <div class="file-name export-file text-center pointer" (click)="exportPdf(invoice)">

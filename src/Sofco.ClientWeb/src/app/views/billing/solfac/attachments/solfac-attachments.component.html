@@ -57,7 +57,7 @@
                             <div class="file-name text-word-break">
                                 {{ file.name }}
                                 <br>
-                                <small>{{'billing.invoice.createdAt' | translate }}: {{ file.creationDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                                <small>{{'billing.invoice.createdAt' | translate }}: {{ file.creationDate | date: 'dd/MM/yyyy' }}</small>
                             </div>
                         </div>
                         <div class="file-buttons">
@@ -99,7 +99,7 @@
                         <div class="file-name text-word-break">
                             {{ certificate.name }}
                             <br>
-                            <small>{{'billing.invoice.createdAt' | translate }}: {{ certificate.creationDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                            <small>{{'billing.invoice.createdAt' | translate }}: {{ certificate.creationDate | date: 'dd/MM/yyyy' }}</small>
                         </div>
                         <div class="file-buttons">
                             <div class="file-name export-file text-center pointer" (click)="exportCertificate(certificate)" *ngIf="certificate.fileId > 0">
