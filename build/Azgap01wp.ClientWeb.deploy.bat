@@ -23,4 +23,4 @@ cmd /c ng build --prod --env=azgap01wp --extract-css=false -op "%PUBLISH_PATH%"
 cmd /c DEL /F /Q "%DEPLOY_PATH%"
 cmd /c FOR /D %%d IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%d" /s /q
 
-cmd /c XCOPY /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
+cmd /c XCOPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
