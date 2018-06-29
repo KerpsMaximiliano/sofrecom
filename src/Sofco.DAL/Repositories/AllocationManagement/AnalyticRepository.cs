@@ -187,5 +187,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(x => analytics.Contains(x.Id))
                 .ToList();
         }
+
+        public IList<Analytic> GetByPurchaseOrder(int purchaseOrderId)
+        {
+            return context.PurchaseOrderAnalytics
+                .Where(x => x.PurchaseOrderId == purchaseOrderId)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Select(x => x.Analytic)
+                .ToList();
+
+        }
     }
 }

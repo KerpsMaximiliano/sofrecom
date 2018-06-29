@@ -188,6 +188,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Orden de Compra CONSUMIDA - {0}.
+        /// </summary>
+        public static string PurchaseOrderConsumed {
+            get {
+                return ResourceManager.GetString("PurchaseOrderConsumed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SOLFAC - COBRADA - {0} - {1} - {2} - {3}.
         /// </summary>
         public static string SolfacStatusAmountCashedTitle {

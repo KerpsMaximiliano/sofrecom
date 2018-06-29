@@ -21,11 +21,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailBuilder mailBuilder;
 
-        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
+        private readonly IMailSender mailSender;
+
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
+            this.mailSender = mailSender;
         }
 
         private string mailBody = Resources.Mails.MailMessageResource.SolfacStatusManagementControlRejectedMessage;
@@ -85,9 +88,18 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
 
-            if (detail != null) detail.Balance = detail.Balance + solfac.TotalAmount;
+            if (detail != null)
+            {
+                var oldBalance = detail.Balance;
+                detail.Balance = detail.Balance + solfac.TotalAmount;
+                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
 
-            unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
+                if (oldBalance <= 0 && detail.Balance > 0)
+                {
+                    detail.PurchaseOrder.Status = PurchaseOrderStatus.Valid;
+                    unitOfWork.PurchaseOrderRepository.UpdateStatus(detail.PurchaseOrder);
+                }
+            }
         }
 
         public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
@@ -95,7 +107,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
-        public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        public void SendMail(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
 
