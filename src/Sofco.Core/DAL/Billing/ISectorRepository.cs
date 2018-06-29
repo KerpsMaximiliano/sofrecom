@@ -4,8 +4,8 @@ using Sofco.Model.Utils;
 
 namespace Sofco.Core.DAL.Billing
 {
-    public interface IAreaRepository : IBaseRepository<Area>
+    public interface ISectorRepository : IBaseRepository<Sector>
     {
-        new List<Area> GetAll();
+        new List<Sector> GetAll();
     }
 }
