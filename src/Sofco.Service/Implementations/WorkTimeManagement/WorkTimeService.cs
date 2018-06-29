@@ -343,12 +343,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var model = new WorkTimeReportModel();
 
                 if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
-                {
-                    if (response.Messages.All(x => x.Type != MessageType.Warning))
-                        response.AddWarning(Resources.WorkTimeManagement.WorkTime.ReportWarning);
-
                     continue;
-                }
 
                 if(allocation.Percentage == 0) continue;
 

@@ -132,10 +132,19 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpPut("{id}/adjustment")]
+        public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
+        {
+            var response = purchaseOrderService.MakeAdjustment(id, details);
+
+            return this.CreateResponse(response);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };
             yield return new Option { Id = (int)PurchaseOrderStatus.Consumed, Text = PurchaseOrderStatus.Consumed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Closed, Text = PurchaseOrderStatus.Closed.ToString() };
         }
     }
 }

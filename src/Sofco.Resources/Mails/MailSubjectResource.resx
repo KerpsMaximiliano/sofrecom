@@ -180,4 +180,7 @@
   <data name="InvoiceStatusSentTitleToUser" xml:space="preserve">
     <value>REMITO: INICIO PROCESO - {0} - {1} - {2} - {3}</value>
   </data>
+  <data name="PurchaseOrderConsumed" xml:space="preserve">
+    <value>Orden de Compra CONSUMIDA - {0}</value>
+  </data>
 </root>

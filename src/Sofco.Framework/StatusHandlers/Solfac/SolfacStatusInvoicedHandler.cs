@@ -21,11 +21,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailBuilder mailBuilder;
 
-        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
+        private readonly IMailSender mailSender;
+
+        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
+            this.mailSender = mailSender;
         }
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
@@ -83,7 +86,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateHitosStatusAndInvoiceDateAndNumber(hitos.ToList(), GetHitoStatus(), solfac.InvoiceDate.GetValueOrDefault(), solfac.InvoiceCode);
         }
 
-        public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        public void SendMail(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subject = GetSubjectMail(solfac);
             var body = GetBodyMail(solfac, emailConfig.SiteUrl);

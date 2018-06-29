@@ -80,6 +80,21 @@ namespace Sofco.DAL.Repositories.Billing
             context.Database.ExecuteSqlCommand($"UPDATE app.solfacs SET purchaseOrderId = {id} where id = {solfacId}");
         }
 
+        public void UpdateStatus(PurchaseOrder purchaseOrder)
+        {
+            context.Entry(purchaseOrder).Property("Status").IsModified = true;
+        }
+
+        public void UpdateDetail(PurchaseOrderAmmountDetail detail)
+        {
+            context.Entry(detail).Property("Adjustment").IsModified = true;
+        }
+
+        public void UpdateAdjustment(PurchaseOrder purchaseOrder)
+        {
+            context.Entry(purchaseOrder).Property("Adjustment").IsModified = true;
+        }
+
         public void UpdateBalance(PurchaseOrderAmmountDetail detail)
         {
             context.Entry(detail).Property("Balance").IsModified = true;

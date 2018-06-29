@@ -8,6 +8,7 @@ import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "../../../../services/common/i18n.service";
 
 declare var $: any;
 
@@ -21,6 +22,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;
     @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('ocAdjustment') ocAdjustment: any;
 
     updateSubscrip: Subscription;
     getSubscrip: Subscription;
@@ -45,7 +47,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     );
 
     constructor(private purchaseOrderService: PurchaseOrderService,
-                private router: Router,
+                private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
@@ -169,5 +171,26 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
+    }
+
+    openAdjustment(){
+        var details = this.form.model.ammountDetails.map(item => {
+            return { currencyId: item.currencyId, currencyDescription: item.currencyDescription, adjustment: 0, enable: true }
+        })
+        
+        var settings = {
+            id: this.form.model.id,
+            details: details
+        };
+
+        this.ocAdjustment.show(settings);
+    }
+
+    getStatus(){
+        switch(this.form.model.status){
+            case 1: return this.i18nService.translateByKey("Valid");
+            case 2: return this.i18nService.translateByKey("Consumed");
+            case 3: return this.i18nService.translateByKey("Closed");
+        }
     }
 }  

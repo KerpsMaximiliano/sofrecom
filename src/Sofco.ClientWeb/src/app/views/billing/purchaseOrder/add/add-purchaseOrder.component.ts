@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
@@ -33,7 +32,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     public alertDisable: boolean = true;
  
     constructor(private purchaseOrderService: PurchaseOrderService,
-                private router: Router,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
     }
@@ -55,8 +53,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         this.form.model.clientExternalName = client ? client.text : '';
 
         this.form.model.analyticIds = $('#analytics').val();
-
-        this.form.model.receptionDate = new Date();
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {

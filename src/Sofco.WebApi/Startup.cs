@@ -53,7 +53,7 @@ namespace Sofco.WebApi
                 .SerializerSettings
                 .ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-                options.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ssZ";
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
 
             services.AddMvc(options =>
@@ -112,6 +112,8 @@ namespace Sofco.WebApi
                 .WithExposedHeaders(VersionHeaderFilter.HeaderAppVersionName));
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             ConfigureLogger();
         }

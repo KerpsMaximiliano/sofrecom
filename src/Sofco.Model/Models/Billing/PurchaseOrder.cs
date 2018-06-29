@@ -35,6 +35,8 @@ namespace Sofco.Model.Models.Billing
 
         public string Description { get; set; }
 
+        public bool Adjustment { get; set; }
+
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<Solfac> Solfacs { get; set; }

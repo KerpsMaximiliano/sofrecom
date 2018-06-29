@@ -45,5 +45,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria);
 
         List<Analytic> GetForReport(List<int> analytics);
+
+        IList<Analytic> GetByPurchaseOrder(int purchaseOrderId);
     }
 }

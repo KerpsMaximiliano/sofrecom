@@ -254,4 +254,10 @@ Muchas gracias.</value>
 Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
 Muchas gracias.</value>
   </data>
+  <data name="PurchaseOrderConsumed" xml:space="preserve">
+    <value>ORDEN DE COMPRA: {0}  &lt;/br&gt;&lt;/br&gt;
+Estimado,  &lt;/br&gt;
+La orden de compra de referencia se ha consumido. &lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
 </root>

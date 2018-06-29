@@ -14,13 +14,11 @@ import { UtilsService } from "../../../../services/common/utils.service";
 })
 export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
-    public options: any;
     public model: any = { ammountDetails: new Array() };
     public customers: Option[] = new Array<Option>();
     public analytics: any[] = new Array();
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
-    public currencies: any[] = new Array();
     public areas: any[] = new Array();
 
     @Input() mode: string;
@@ -57,10 +55,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCurrencies(){
-        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
-            this.currencies = d;
-
-            this.currencies.forEach((item) => {
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(currencies => {
+            currencies.forEach((item) => {
                 this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
             });
         },

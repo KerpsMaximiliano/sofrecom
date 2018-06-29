@@ -1,0 +1,11 @@
+<ng2-modal [config]="adjustmentConfig" #adjustmentModal (accept)="create()" [isLoading]="isLoading">
+    <label class="control-label">{{'billing.purchaseOrder.fields.currency' | translate }} - {{'billing.purchaseOrder.fields.ammount' | translate }}</label>
+    <div class="row" *ngFor="let item of details">
+        <div class="col-sm-12">
+            <div class="input-group m-b">
+                <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
+                <input type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.adjustment">
+            </div>
+        </div>
+    </div>
+</ng2-modal>  

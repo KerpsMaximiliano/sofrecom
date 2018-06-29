@@ -13,7 +13,6 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
@@ -27,21 +26,18 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacStatusFactory solfacStatusFactory;
         private readonly IUnitOfWork unitOfWork;
         private readonly CrmConfig crmConfig;
-        private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
         private readonly ISessionManager sessionManager;
-
+         
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IOptions<CrmConfig> crmOptions,
-            IMailSender mailSender,
             ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger, ISessionManager sessionManager)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
             this.unitOfWork = unitOfWork;
-            this.mailSender = mailSender;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;
             this.sessionManager = sessionManager;
@@ -223,7 +219,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 // Send Mail
-                solfacStatusHandler.SendMail(mailSender, solfac, emailConfig);
+                solfacStatusHandler.SendMail(solfac, emailConfig);
             }
             catch
             {

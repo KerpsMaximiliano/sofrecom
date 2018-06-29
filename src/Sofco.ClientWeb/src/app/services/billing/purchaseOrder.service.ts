@@ -40,6 +40,10 @@ export class PurchaseOrderService {
     return this.http.put<any>(`${this.baseUrl}/purchaseOrders`, model);
   }
 
+  makeAdjustment(id, model) {
+    return this.http.put<any>(`${this.baseUrl}/purchaseOrders/${id}/adjustment`, model);
+  }
+
   getUrlForImportExcel(id){
     return `${this.baseUrl}/purchaseOrders/${id}/file`;
   }
