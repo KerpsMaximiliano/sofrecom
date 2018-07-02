@@ -240,6 +240,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
+                if (response.HasErrors()) return response;
                 statusHandler.SendMail(purchaseOrder);
             }
             catch (Exception e)

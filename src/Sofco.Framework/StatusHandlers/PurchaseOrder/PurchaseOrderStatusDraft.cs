@@ -16,6 +16,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
 
+        private const string StatusDescription = "Pendiente Aprobación Compliance";
+
         public PurchaseOrderStatusDraft(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig)
         {
             this.unitOfWork = unitOfWork;
@@ -44,7 +46,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, "Pendiente Aprobación Compliance");
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcStatusDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
             var recipientsToDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
 

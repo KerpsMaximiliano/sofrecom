@@ -4,19 +4,19 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
+import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 
 @Component({
-  selector: 'oc-status-draft',
-  templateUrl: './oc-draft.component.html'
+  selector: 'oc-status-compliance',
+  templateUrl: './oc-compliance.component.html'
 })
-export class OcStatusDraftComponent implements OnDestroy  {
+export class OcStatusComplianceComponent implements OnDestroy  {
 
-  @ViewChild('draftModal') draftModal;
-  public draftModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+  @ViewChild('complianceModal') modal;
+  public complianceModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "ACTIONS.confirmTitle",
-      "draftModal",
+      "complianceModal",
       true,
       true,
       "ACTIONS.ACCEPT",
@@ -35,13 +35,12 @@ export class OcStatusDraftComponent implements OnDestroy  {
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
-
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.Draft){
+    if(this.ocId > 0 && this.status == PurchaseOrderStatus.CompliancePending){
         return true;
     }
 
@@ -49,7 +48,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
   }
 
   showModal(){
-    this.draftModal.show();
+    this.modal.show();
   }
 
   send(){
@@ -57,7 +56,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
 
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
         data => {
-            this.draftModal.hide();
+            this.modal.hide();
             this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
@@ -66,7 +65,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
             }, 1000);
         },
         error => {
-            this.draftModal.hide();
+            this.modal.hide();
             this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });

@@ -3,6 +3,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.StatusHandlers;
+using Sofco.Framework.MailData;
+using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.PurchaseOrder
@@ -17,6 +19,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private readonly EmailConfig emailConfig;
 
+        private const string StatusDescription = "Pendiente Aprobación Comercial";
+
         public PurchaseOrderStatusCompliancePending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig)
         {
             this.unitOfWork = unitOfWork;
@@ -27,22 +31,35 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Save(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
-            throw new System.NotImplementedException();
+            purchaseOrder.Status = PurchaseOrderStatus.ComercialPending;
+            unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
         }
 
         public string GetSuccessMessage()
         {
-            throw new System.NotImplementedException();
+            return Resources.Billing.PurchaseOrder.ComplianceSuccess;
         }
 
         public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            throw new System.NotImplementedException();
+            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcComplianceMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+
+            var recipientsToDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
+
+            var data = new MailDefaultData
+            {
+                Title = subjectToDaf,
+                Message = bodyToDaf,
+                Recipients = recipientsToDaf
+            };
+
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
     }
 }

@@ -27,6 +27,7 @@
 
             <div class="btn-right">
                 <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
+                <oc-status-compliance [ocId]="form.model.id" [status]="form.model.status"></oc-status-compliance>
             </div>
         </div>
     </div>
@@ -44,7 +45,7 @@
             </div>
         </div>
         <div class="col-sm-5">
-            <div class="m-t-lg">
+            <div class="m-t-lg m-b-lg" *ngIf="form.model.status == 4">
                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
     
                 <div class="uploader-margin-top">
@@ -62,7 +63,7 @@
                 </div>
             </div>
 
-            <div class="m-t-lg" *ngIf="form.model.fileId > 0"> 
+            <div *ngIf="form.model.fileId > 0"> 
                 <div class="file-box">
                     <div class="file">
                         <div class="icon"><i class="fa fa-file"></i></div>
@@ -72,12 +73,12 @@
                             <small>{{'billing.invoice.createdAt' | translate }}: {{ form?.model.creationDate }}</small>
                         </div>
                         <div class="file-buttons"> 
-                            <div class="file-name export-file text-center pointer" (click)="exportExcel()">
+                            <div class="file-name export-file text-center pointer" [ngClass]="form?.model.status != 4 ? 'full' : 'half'" (click)="exportExcel()">
                                 <i class="fa fa-download"></i>
                                 {{ 'ACTIONS.export' | translate }}
                             </div>
 
-                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()">
+                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()" *ngIf="form.model.status == 4">
                                 <i class="fa fa-trash"></i>
                                 {{ 'ACTIONS.DELETE' | translate }}
                             </div>

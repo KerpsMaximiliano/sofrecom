@@ -132,6 +132,9 @@
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
   </data>
+  <data name="ComplianceSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.complianceSuccess</value>
+  </data>
   <data name="CurrencyIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.currencyIsRequired</value>
   </data>

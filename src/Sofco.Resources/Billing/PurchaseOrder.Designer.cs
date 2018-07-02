@@ -107,6 +107,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.complianceSuccess.
+        /// </summary>
+        public static string ComplianceSuccess {
+            get {
+                return ResourceManager.GetString("ComplianceSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.currencyIsRequired.
         /// </summary>
         public static string CurrencyIsRequired {

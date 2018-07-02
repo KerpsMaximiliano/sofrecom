@@ -15,5 +15,6 @@
     "endDateLessThanStartDate": "La fechca hasta no puede ser menor a fecha desde",
     "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
     "ammountRequired": "Los montos no pueden ser menor a 0 ni mayor a 99.999.999",
-    "draftSuccess": "La orden de compra ha sido enviada correctamente a Compliance"
-}
+    "draftSuccess": "La orden de compra ha sido enviada correctamente al area Compliance",
+    "complianceSuccess": "La orden de compra ha sido enviada correctamente al area Comercial"
+} 

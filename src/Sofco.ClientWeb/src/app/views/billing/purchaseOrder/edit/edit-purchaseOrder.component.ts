@@ -9,6 +9,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "../../../../services/common/i18n.service";
+import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 
 declare var $: any;
 
@@ -78,6 +79,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 $('input').attr('disabled', 'disabled');
                 $('#customer-select select').attr('disabled', 'disabled');
                 $('input[type=file]').removeAttr('disabled');
+
+                if(this.form.model.status != PurchaseOrderStatus.Draft){
+                    $('#area-select select').attr('disabled', 'disabled');
+                }
             },
             error => {
                 this.messageService.closeLoading();

@@ -5,8 +5,15 @@
 .export-file {
     background-color: #1872ab;
     color: #FFFFFF;
-    width: 50%;
 } 
+
+.export-file.half {
+    width: 50%;
+}
+
+.export-file.full {
+    width: 100%;
+}
 
 .file-buttons{
     display: -webkit-box;

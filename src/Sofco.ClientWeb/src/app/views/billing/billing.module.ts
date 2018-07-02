@@ -82,6 +82,7 @@ import { AllocationService } from '../../services/allocation-management/allocati
 import { CategoryService } from 'app/services/admin/category.service';
 import { PurchaseOrderAdjustmentComponent } from 'app/views/billing/purchaseOrder/adjustment/oc-adjustment.component';
 import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow/draft/oc-draft.componet';
+import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/workflow/compliance/oc-compliance.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -94,7 +95,7 @@ import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
-                 OcStatusDraftComponent],
+                 OcStatusDraftComponent, OcStatusComplianceComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
