@@ -8,6 +8,6 @@ namespace Sofco.Core.Data.Billing
     {
         IList<CrmService> GetServices(string customerId, string userMail, bool getAll);
 
-        CrmService GetService(Guid serviceId);
+        CrmService GetService(Guid? serviceId);
     }
 }

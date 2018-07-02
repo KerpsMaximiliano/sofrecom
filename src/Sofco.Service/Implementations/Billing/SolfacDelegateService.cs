@@ -39,6 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             this.mapper = mapper;
             this.userData = userData;
             this.customerData = customerData;
+            this.logger = logger;
         }
 
         private IEnumerable<UserDelegate> GetUserDelegatesByUser()
