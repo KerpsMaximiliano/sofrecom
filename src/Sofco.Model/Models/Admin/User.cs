@@ -41,5 +41,7 @@ namespace Sofco.Model.Models.Admin
         public ICollection<WorkTime> WorkTimes1 { get; set; }
 
         public ICollection<Area> Areas { get; set; }
+
+        public ICollection<Sector> Sectors { get; set; }
     }
 }
