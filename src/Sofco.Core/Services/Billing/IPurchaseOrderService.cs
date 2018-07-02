@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
@@ -30,5 +31,7 @@ namespace Sofco.Core.Services.Billing
         Response UpdateSolfac(int id, int solfacId);
 
         Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details);
+
+        Response ChangeStatus(int id, PurchaseOrderStatusParams model);
     }
 }

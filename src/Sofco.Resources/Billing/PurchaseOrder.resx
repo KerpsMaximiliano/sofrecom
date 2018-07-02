@@ -138,6 +138,9 @@
   <data name="DatesRequired" xml:space="preserve">
     <value>billing/purchaseOrder.datesRequired</value>
   </data>
+  <data name="DraftSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.draftSuccess</value>
+  </data>
   <data name="EndDateLessThanStartDate" xml:space="preserve">
     <value>billing/purchaseOrder.endDateLessThanStartDate</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="FileAdded" xml:space="preserve">
     <value>billing/purchaseOrder.fileAdded</value>
+  </data>
+  <data name="FileRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.fileRequired</value>
   </data>
   <data name="ManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.managerIsRequired</value>

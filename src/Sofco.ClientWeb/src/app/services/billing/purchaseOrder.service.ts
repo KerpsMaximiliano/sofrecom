@@ -72,5 +72,9 @@ export class PurchaseOrderService {
   getAnalyticsByCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/reports/purchaseOrders/analytics/options`);
   }
+
+  changeStatus(id, json) {
+    return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/status`, json);
+  }
 }
 

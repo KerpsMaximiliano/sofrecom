@@ -1,4 +1,4 @@
-﻿namespace Sofco.Core.Models.Billing
+﻿namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderWidgetModel
     {

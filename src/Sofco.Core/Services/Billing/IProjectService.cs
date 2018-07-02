@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Model.Utils;

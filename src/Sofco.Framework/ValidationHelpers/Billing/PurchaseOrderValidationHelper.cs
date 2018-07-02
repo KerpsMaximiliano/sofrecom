@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
@@ -53,6 +54,18 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         public static PurchaseOrder Find(int purchaseOrderId, Response response, IUnitOfWork unitOfWork)
         {
             var purchaseOrder = unitOfWork.PurchaseOrderRepository.GetById(purchaseOrderId);
+
+            if (purchaseOrder == null)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NotFound);
+            }
+
+            return purchaseOrder;
+        }
+
+        public static PurchaseOrder FindLite(int purchaseOrderId, Response response, IUnitOfWork unitOfWork)
+        {
+            var purchaseOrder = unitOfWork.PurchaseOrderRepository.Get(purchaseOrderId);
 
             if (purchaseOrder == null)
             {

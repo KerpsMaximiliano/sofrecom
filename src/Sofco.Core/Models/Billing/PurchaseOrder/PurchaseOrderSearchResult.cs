@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.Billing;
 using System.Linq;
 
-namespace Sofco.Core.Models.Billing
+namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderSearchResult
     {
-        public PurchaseOrderSearchResult(PurchaseOrder purchaseOrder)
+        public PurchaseOrderSearchResult(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
             Number = purchaseOrder.Number;

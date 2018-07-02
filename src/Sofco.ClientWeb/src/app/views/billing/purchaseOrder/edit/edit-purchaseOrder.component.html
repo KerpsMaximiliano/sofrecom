@@ -20,6 +20,18 @@
     
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+            <button class="btn btn-success btn-outline dim" (click)="openAdjustment()" *ngIf="form.model.status != 3"> Crear Ajuste OC </button>
+            <button class="btn btn-primary btn-outline dim" (click)="update()" *ngIf="form.model.status == 4">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
+
+            <div class="btn-right">
+                <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="row">
         <div class="col-sm-7">
             <div class="ibox">
                 <div class="ibox-content">
@@ -29,19 +41,9 @@
                     
                     <purchase-order-form #form [mode]="'edit'"></purchase-order-form>
                 </div>
-                <div class="ibox-footer">
-                    <button (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
-                    <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/purchaseOrders']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
-                </div>
             </div>
         </div>
         <div class="col-sm-5">
-            <div class="m-b-lg" *ngIf="form.model.status != 3">
-                <button class="btn btn-success btn-outline dim" (click)="openAdjustment()"> 
-                    Crear Ajuste OC
-                </button>
-            </div>
-
             <div class="m-t-lg">
                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
     

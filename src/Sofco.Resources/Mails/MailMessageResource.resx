@@ -260,4 +260,11 @@ Estimado,  &lt;/br&gt;
 La orden de compra de referencia se ha consumido. &lt;/br&gt;&lt;/br&gt;
 Muchas gracias.</value>
   </data>
+  <data name="OcStatusDraftMessage" xml:space="preserve">
+    <value>La orden de compra {0} se ha pasado al estado Pendiente Aprobación Compliance. 
+&lt;/br&gt;&lt;/br&gt; 
+Para acceder al misma, por favor ingresar al siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. 
+&lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
 </root>

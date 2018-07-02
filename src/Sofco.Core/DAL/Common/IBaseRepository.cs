@@ -16,6 +16,8 @@ namespace Sofco.Core.DAL.Common
         void Delete(T entity);
         void Delete(IList<T> entities);
 
+        T Get(int id);
+
         IList<T> Where(Expression<Func<T, bool>> predicate);
 
         void BeginTransaction();

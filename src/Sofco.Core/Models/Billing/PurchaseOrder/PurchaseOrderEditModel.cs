@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
 
-namespace Sofco.Core.Models.Billing
+namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderEditModel
     {
@@ -12,7 +11,7 @@ namespace Sofco.Core.Models.Billing
         {
         }
 
-        public PurchaseOrderEditModel(PurchaseOrder domain)
+        public PurchaseOrderEditModel(Model.Models.Billing.PurchaseOrder domain)
         {
             Id = domain.Id;
             Number = domain.Number;

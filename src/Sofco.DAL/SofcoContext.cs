@@ -54,6 +54,7 @@ namespace Sofco.DAL
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings

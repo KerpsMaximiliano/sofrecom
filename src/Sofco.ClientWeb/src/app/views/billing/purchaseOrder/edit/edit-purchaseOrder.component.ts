@@ -50,6 +50,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
+                private router: Router,
                 private errorHandlerService: ErrorHandlerService){
     }
 
@@ -186,11 +187,21 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
         this.ocAdjustment.show(settings);
     }
 
+    back(){
+        this.router.navigate(['/billing/purchaseOrders']);
+    }
+
     getStatus(){
         switch(this.form.model.status){
             case 1: return this.i18nService.translateByKey("Valid");
             case 2: return this.i18nService.translateByKey("Consumed");
             case 3: return this.i18nService.translateByKey("Closed");
+            case 4: return this.i18nService.translateByKey("Draft");
+            case 5: return this.i18nService.translateByKey("ComercialPending");
+            case 6: return this.i18nService.translateByKey("OperativePending");
+            case 7: return this.i18nService.translateByKey("DafPending");
+            case 8: return this.i18nService.translateByKey("Reject");
+            case 9: return this.i18nService.translateByKey("CompliancePending");
         }
     }
 }  

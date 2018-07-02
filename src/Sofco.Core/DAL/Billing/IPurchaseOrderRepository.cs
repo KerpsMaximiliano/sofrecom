@@ -22,5 +22,6 @@ namespace Sofco.Core.DAL.Billing
         void UpdateStatus(PurchaseOrder purchaseOrder);
         void UpdateDetail(PurchaseOrderAmmountDetail detail);
         void UpdateAdjustment(PurchaseOrder purchaseOrder);
+        void AddHistory(PurchaseOrderHistory history);
     }
 }

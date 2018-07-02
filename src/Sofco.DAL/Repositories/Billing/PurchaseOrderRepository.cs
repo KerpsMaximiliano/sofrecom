@@ -95,6 +95,11 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(purchaseOrder).Property("Adjustment").IsModified = true;
         }
 
+        public void AddHistory(PurchaseOrderHistory history)
+        {
+            context.PurchaseOrderHistories.Add(history);
+        }
+
         public void UpdateBalance(PurchaseOrderAmmountDetail detail)
         {
             context.Entry(detail).Property("Balance").IsModified = true;
