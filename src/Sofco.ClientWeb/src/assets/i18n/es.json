@@ -262,7 +262,11 @@
                 "ammountCashed": "Ingresos Cobrados"
             },
             "projectManager": "Gerente de Proyecto",
-            "commercialManager": "Gerente de Cuenta"
+            "commercialManager": "Gerente de Cuenta",
+            "delegate": {
+                "title": "Delegar Aprobación Orden de Compra",
+                "delegateAction": "Delegar"
+            }
         },
         "solfac":{
             "title": "Solicitud Facturación",
