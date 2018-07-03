@@ -16,5 +16,12 @@
     "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
     "ammountRequired": "Los montos no pueden ser menor a 0 ni mayor a 99.999.999",
     "draftSuccess": "La orden de compra ha sido enviada correctamente al area Compliance",
-    "complianceSuccess": "La orden de compra ha sido enviada correctamente al area Comercial"
+    "complianceSuccess": "La orden de compra ha sido enviada correctamente al area Comercial",
+    "comercialSuccess": "La orden de compra ha sido enviada correctamente al area Operativa",
+    "operativeSuccess": "La orden de compra ha sido enviada correctamente a la DAF",
+    "commentsRequired": "Los comentarios son requeridos",
+    "fileRequired": "El archivo es requerido antes del envio",
+    "rejectSuccess": "La orden de compra fue rechazada correctamente",
+    "cannotChangeStatus": "Ocurrio un error al cambiar de estado",
+    "dafSuccess": "El proceso de aprobación ha terminado. La orden de compra se encuentra en estado vigente"
 } 

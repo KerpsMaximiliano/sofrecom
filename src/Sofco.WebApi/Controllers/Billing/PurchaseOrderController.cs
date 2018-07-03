@@ -151,6 +151,16 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = purchaseOrderService.GetHistories(id);
+
+            var list = histories.Select(x => new PurchaseOrderHistoryModel(x));
+
+            return Ok(list);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };

@@ -230,18 +230,18 @@ namespace Sofco.Service.Implementations.Billing
 
                 // Save
                 unitOfWork.Save();
-                response.AddSuccess(statusHandler.GetSuccessMessage());
+                response.AddSuccess(statusHandler.GetSuccessMessage(model));
             }
             catch (Exception e)
             {
                 logger.LogError(e);
-                response.AddError(Resources.Rrhh.License.ChangeStatusError);
+                response.AddError(Resources.Billing.PurchaseOrder.CannotChangeStatus);
             }
 
             try
             {
                 if (response.HasErrors()) return response;
-                statusHandler.SendMail(purchaseOrder);
+                statusHandler.SendMail(purchaseOrder, model);
             }
             catch (Exception e)
             {
@@ -250,6 +250,11 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        public ICollection<PurchaseOrderHistory> GetHistories(int id)
+        {
+            return unitOfWork.PurchaseOrderRepository.GetHistories(id);
         }
 
         private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)

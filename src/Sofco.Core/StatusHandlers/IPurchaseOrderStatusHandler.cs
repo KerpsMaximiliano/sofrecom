@@ -8,7 +8,7 @@ namespace Sofco.Core.StatusHandlers
     {
         void Validate(Response response, PurchaseOrderStatusParams model, PurchaseOrder purchaseOrder);
         void Save(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model);
-        string GetSuccessMessage();
-        void SendMail(PurchaseOrder purchaseOrder);
+        string GetSuccessMessage(PurchaseOrderStatusParams model);
+        void SendMail(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model);
     }
 }

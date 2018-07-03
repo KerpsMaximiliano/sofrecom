@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.DTO;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
@@ -33,5 +34,6 @@ namespace Sofco.Core.Services.Billing
         Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details);
 
         Response ChangeStatus(int id, PurchaseOrderStatusParams model);
+        ICollection<PurchaseOrderHistory> GetHistories(int id);
     }
 }

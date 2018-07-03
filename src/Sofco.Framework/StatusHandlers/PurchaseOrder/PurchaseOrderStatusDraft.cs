@@ -38,23 +38,23 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
         }
 
-        public string GetSuccessMessage()
+        public string GetSuccessMessage(PurchaseOrderStatusParams model)
         {
-            return Resources.Billing.PurchaseOrder.DraftSuccess;
+            return model.MustReject ? Resources.Billing.PurchaseOrder.RejectSuccess : Resources.Billing.PurchaseOrder.DraftSuccess;
         }
 
-        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, "Pendiente Aprobación Compliance");
+            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
             var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var recipientsToDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
+            var recipientsToCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
 
             var data = new MailDefaultData
             {
                 Title = subjectToDaf,
                 Message = bodyToDaf,
-                Recipients = recipientsToDaf
+                Recipients = recipientsToCompliance
             };
 
             var email = mailBuilder.GetEmail(data);

@@ -48,6 +48,7 @@ namespace Sofco.DAL
         private IPurchaseOrderRepository purchaseOrderRepository;
         private ICertificateRepository certificateRepository;
         private ISolfacCertificateRepository solfacCertificateRepository;
+        private IAreaRepository areaRepository;
 
         #endregion
 
@@ -118,6 +119,7 @@ namespace Sofco.DAL
         public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
         public ICertificateRepository CertificateRepository => certificateRepository ?? (certificateRepository = new CertificateRepository(context));
         public ISolfacCertificateRepository SolfacCertificateRepository => solfacCertificateRepository ?? (solfacCertificateRepository = new SolfacCertificateRepository(context));
+        public IAreaRepository AreaRepository => areaRepository ?? (areaRepository = new AreaRepository(context));
 
         #endregion
 

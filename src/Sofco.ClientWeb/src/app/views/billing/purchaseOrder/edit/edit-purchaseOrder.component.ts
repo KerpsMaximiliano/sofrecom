@@ -24,6 +24,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('ocAdjustment') ocAdjustment: any;
+    @ViewChild('history') history: any;
 
     updateSubscrip: Subscription;
     getSubscrip: Subscription;
@@ -67,6 +68,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.form.model = data;
 
                 this.uploaderConfig();
+
+                this.history.getHistories(params['id']);
 
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();

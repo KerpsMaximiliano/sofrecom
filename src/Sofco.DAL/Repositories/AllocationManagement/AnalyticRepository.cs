@@ -197,6 +197,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Select(x => x.Analytic)
                 .ToList();
 
-        }
+        } 
     }
 }
