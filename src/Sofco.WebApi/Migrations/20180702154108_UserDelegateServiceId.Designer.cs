@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180702154108_UserDelegateServiceId")]
+    partial class UserDelegateServiceId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -832,32 +833,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.ToTable("PurchaseOrderAmmountDetails");
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrderHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Comment");
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<int>("From");
-
-                    b.Property<int>("PurchaseOrderId");
-
-                    b.Property<int>("To");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PurchaseOrderHistories");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
@@ -1696,19 +1671,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
                         .WithMany("AmmountDetails")
                         .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrderHistory", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
-                        .WithMany()
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -67,7 +67,14 @@ namespace Sofco.DAL.Repositories.Common
                 && s.Type == type);
         }
 
-        private UserDelegate GetByServiceIdAndUserId(Guid serviceId, int userId, UserDelegateType type)
+        public List<UserDelegate> GetByTypes(List<UserDelegateType> types)
+        {
+            return UserDelegateSet
+                .Where(s => types.Contains(s.Type))
+                .ToList();
+        }
+
+        private UserDelegate GetByServiceIdAndUserId(Guid? serviceId, int userId, UserDelegateType type)
         {
             return UserDelegateSet
                 .SingleOrDefault(s => s.ServiceId == serviceId 

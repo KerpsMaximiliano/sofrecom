@@ -12,6 +12,8 @@ namespace Sofco.Service.MapProfiles
             CreateMap<UserDelegate, SolfacDelegateModel>();
 
             CreateMap<UserDelegate, UserDelegateModel>();
+
+            CreateMap<UserDelegate, PurchaseOrderDelegateModel>();
         }
     }
 }

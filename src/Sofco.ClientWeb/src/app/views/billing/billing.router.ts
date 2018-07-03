@@ -22,6 +22,7 @@ import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.componen
 import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
 import { InvoiceSearchComponent } from "app/views/billing/invoice/search/invoice-search.component";
 import { ServicesComponent } from "app/views/billing/services/services.component";
+import { PurchaseOrderDelegateComponent } from "./purchaseOrder/purchase-order-delegate/purchase-order-delegate.component";
 
 const BILLING_ROUTER: Routes = [
     { path: 'customers', children:[
@@ -52,6 +53,7 @@ const BILLING_ROUTER: Routes = [
           children: [
           { path: "", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
           { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+          { path: "delegate", component: PurchaseOrderDelegateComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
           { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
       ]},
 

@@ -15,5 +15,7 @@ namespace Sofco.Core.DAL.Common
         void Delete(int userDelegateId);
 
         bool HasUserDelegate(string userName, UserDelegateType type);
+
+        List<UserDelegate> GetByTypes(List<UserDelegateType> types);
     }
 }
