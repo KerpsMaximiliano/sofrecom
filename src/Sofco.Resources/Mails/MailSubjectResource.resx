@@ -183,4 +183,7 @@
   <data name="PurchaseOrderConsumed" xml:space="preserve">
     <value>Orden de Compra CONSUMIDA - {0}</value>
   </data>
+  <data name="OcProcessTitle" xml:space="preserve">
+    <value>Proceso Aprobación Orden de Compra - {0} - {1}</value>
+  </data>
 </root>

@@ -10,9 +10,10 @@ using Sofco.Model.Enums.TimeManagement;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20180702134349_PurchaseOrderHistories")]
+    partial class PurchaseOrderHistories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -1054,8 +1055,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("Modified");
 
-                    b.Property<Guid?>("ServiceId")
-                        .IsRequired();
+                    b.Property<Guid>("ServiceId");
 
                     b.Property<int>("Type");
 
@@ -1467,14 +1467,10 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ResponsableUserId");
-
                     b.Property<string>("Text")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ResponsableUserId");
 
                     b.ToTable("Sectors");
                 });
@@ -1911,14 +1907,6 @@ namespace Sofco.WebApi.Migrations
                 {
                     b.HasOne("Sofco.Model.Models.Admin.User", "ResponsableUser")
                         .WithMany("Areas")
-                        .HasForeignKey("ResponsableUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Model.Utils.Sector", b =>
-                {
-                    b.HasOne("Sofco.Model.Models.Admin.User", "ResponsableUser")
-                        .WithMany("Sectors")
                         .HasForeignKey("ResponsableUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

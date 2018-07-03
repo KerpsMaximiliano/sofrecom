@@ -244,6 +244,32 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Comercial
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcComplianceMessage {
+            get {
+                return ResourceManager.GetString("OcComplianceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de Compliance. 
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcDraftMessage {
+            get {
+                return ResourceManager.GetString("OcDraftMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a ORDEN DE COMPRA: {0}  &lt;/br&gt;&lt;/br&gt;
         ///Estimado,  &lt;/br&gt;
         ///La orden de compra de referencia se ha consumido. &lt;/br&gt;&lt;/br&gt;

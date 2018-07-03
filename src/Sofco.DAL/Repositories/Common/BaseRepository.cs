@@ -54,6 +54,11 @@ namespace Sofco.DAL.Repositories.Common
             return context.Set<T>().SingleOrDefault(predicate);
         }
 
+        public T Get(int id)
+        {
+            return context.Set<T>().Find(id);
+        }
+
         /// <summary>
         /// Inserta una entidad.
         /// </summary>

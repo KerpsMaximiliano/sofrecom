@@ -260,4 +260,18 @@ Estimado,  &lt;/br&gt;
 La orden de compra de referencia se ha consumido. &lt;/br&gt;&lt;/br&gt;
 Muchas gracias.</value>
   </data>
+  <data name="OcComplianceMessage" xml:space="preserve">
+    <value>Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Comercial
+&lt;/br&gt;&lt;/br&gt; 
+Para acceder al misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
+&lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
+  <data name="OcDraftMessage" xml:space="preserve">
+    <value>Se informa que la orden de compra {0} ha sido enviada al area de Compliance. 
+&lt;/br&gt;&lt;/br&gt; 
+Para acceder al misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
+&lt;/br&gt;&lt;/br&gt;
+Muchas gracias.</value>
+  </data>
 </root>

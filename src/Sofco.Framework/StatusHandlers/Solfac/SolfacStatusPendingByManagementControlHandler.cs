@@ -119,7 +119,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
-        private void SendMailForOcConsumed(PurchaseOrder purchaseOrder)
+        private void SendMailForOcConsumed(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 

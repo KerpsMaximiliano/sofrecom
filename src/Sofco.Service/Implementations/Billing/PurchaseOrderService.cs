@@ -10,10 +10,13 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 using Sofco.Model.Utils;
 using File = Sofco.Model.Models.Common.File;
@@ -27,13 +30,19 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<PurchaseOrderService> logger;
         private readonly FileConfig fileConfig;
         private readonly IUserData userData;
+        private readonly IPurchaseOrderStatusFactory purchaseOrderStatusFactory;
 
-        public PurchaseOrderService(IUnitOfWork unitOfWork, ILogMailer<PurchaseOrderService> logger, IOptions<FileConfig> fileOptions, IUserData userData)
+        public PurchaseOrderService(IUnitOfWork unitOfWork, 
+            ILogMailer<PurchaseOrderService> logger, 
+            IOptions<FileConfig> fileOptions,
+            IPurchaseOrderStatusFactory purchaseOrderStatusFactory,
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             fileConfig = fileOptions.Value;
             this.userData = userData;
+            this.purchaseOrderStatusFactory = purchaseOrderStatusFactory;
         }
 
         public Response<PurchaseOrder> Add(PurchaseOrderModel model)
@@ -191,6 +200,70 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        public Response ChangeStatus(int id, PurchaseOrderStatusParams model)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            var statusHandler = purchaseOrderStatusFactory.GetInstance(purchaseOrder.Status);
+
+            try
+            {
+                // Validate Status
+                statusHandler.Validate(response, model, purchaseOrder);
+
+                if (response.HasErrors()) return response;
+
+                var history = GetHistory(purchaseOrder, model);
+
+                // Update Status
+                statusHandler.Save(purchaseOrder, model);
+
+                // Add History
+                history.To = purchaseOrder.Status;
+                unitOfWork.PurchaseOrderRepository.AddHistory(history);
+
+                // Save
+                unitOfWork.Save();
+                response.AddSuccess(statusHandler.GetSuccessMessage());
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Rrhh.License.ChangeStatusError);
+            }
+
+            try
+            {
+                if (response.HasErrors()) return response;
+                statusHandler.SendMail(purchaseOrder);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.ErrorSendMail);
+            }
+
+            return response;
+        }
+
+        private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        {
+            var history = new PurchaseOrderHistory
+            {
+                From = purchaseOrder.Status,
+                PurchaseOrderId = purchaseOrder.Id,
+                UserId = userData.GetCurrentUser().Id,
+                CreatedDate = DateTime.UtcNow,
+                Comment = model.Comments
+            };
+
+            return history;
         }
 
         public async Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName)

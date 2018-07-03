@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
@@ -140,11 +142,26 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpPost]
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody]PurchaseOrderStatusParams model)
+        {
+            var response = purchaseOrderService.ChangeStatus(id, model);
+
+            return this.CreateResponse(response);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };
             yield return new Option { Id = (int)PurchaseOrderStatus.Consumed, Text = PurchaseOrderStatus.Consumed.ToString() };
             yield return new Option { Id = (int)PurchaseOrderStatus.Closed, Text = PurchaseOrderStatus.Closed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Draft, Text = PurchaseOrderStatus.Draft.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.ComercialPending, Text = PurchaseOrderStatus.ComercialPending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.DafPending, Text = PurchaseOrderStatus.DafPending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.OperativePending, Text = PurchaseOrderStatus.OperativePending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Reject, Text = PurchaseOrderStatus.Reject.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.CompliancePending, Text = PurchaseOrderStatus.CompliancePending.ToString() };
         }
     }
 }

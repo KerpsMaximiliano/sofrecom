@@ -107,6 +107,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.complianceSuccess.
+        /// </summary>
+        public static string ComplianceSuccess {
+            get {
+                return ResourceManager.GetString("ComplianceSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.currencyIsRequired.
         /// </summary>
         public static string CurrencyIsRequired {
@@ -121,6 +130,15 @@ namespace Sofco.Resources.Billing {
         public static string DatesRequired {
             get {
                 return ResourceManager.GetString("DatesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.draftSuccess.
+        /// </summary>
+        public static string DraftSuccess {
+            get {
+                return ResourceManager.GetString("DraftSuccess", resourceCulture);
             }
         }
         
@@ -148,6 +166,15 @@ namespace Sofco.Resources.Billing {
         public static string FileAdded {
             get {
                 return ResourceManager.GetString("FileAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.fileRequired.
+        /// </summary>
+        public static string FileRequired {
+            get {
+                return ResourceManager.GetString("FileRequired", resourceCulture);
             }
         }
         

@@ -4,7 +4,7 @@ using System.Linq;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 
-namespace Sofco.Core.Models.Billing
+namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderModel
     {
@@ -40,13 +40,13 @@ namespace Sofco.Core.Models.Billing
 
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 
-        public PurchaseOrder CreateDomain(string userName)
+        public Model.Models.Billing.PurchaseOrder CreateDomain(string userName)
         {
-            var domain = new PurchaseOrder();
+            var domain = new Model.Models.Billing.PurchaseOrder();
 
             FillData(domain);
 
-            domain.Status = PurchaseOrderStatus.Valid;
+            domain.Status = PurchaseOrderStatus.Draft;
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
 
@@ -61,7 +61,7 @@ namespace Sofco.Core.Models.Billing
             return domain;
         }
 
-        public void UpdateDomain(PurchaseOrder domain, string userName)
+        public void UpdateDomain(Model.Models.Billing.PurchaseOrder domain, string userName)
         {
             domain.Description = Description;
             domain.Status = Status;
@@ -74,7 +74,7 @@ namespace Sofco.Core.Models.Billing
             domain.UpdateByUser = userName;
         }
 
-        private void FillData(PurchaseOrder domain)
+        private void FillData(Model.Models.Billing.PurchaseOrder domain)
         {
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;

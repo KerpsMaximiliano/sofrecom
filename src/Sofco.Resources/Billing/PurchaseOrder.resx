@@ -132,11 +132,17 @@
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
   </data>
+  <data name="ComplianceSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.complianceSuccess</value>
+  </data>
   <data name="CurrencyIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.currencyIsRequired</value>
   </data>
   <data name="DatesRequired" xml:space="preserve">
     <value>billing/purchaseOrder.datesRequired</value>
+  </data>
+  <data name="DraftSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.draftSuccess</value>
   </data>
   <data name="EndDateLessThanStartDate" xml:space="preserve">
     <value>billing/purchaseOrder.endDateLessThanStartDate</value>
@@ -146,6 +152,9 @@
   </data>
   <data name="FileAdded" xml:space="preserve">
     <value>billing/purchaseOrder.fileAdded</value>
+  </data>
+  <data name="FileRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.fileRequired</value>
   </data>
   <data name="ManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.managerIsRequired</value>
