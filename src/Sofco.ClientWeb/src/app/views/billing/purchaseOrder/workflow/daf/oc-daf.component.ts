@@ -6,6 +6,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'oc-status-daf',
@@ -33,6 +34,7 @@ export class OcStatusDafComponent implements OnDestroy  {
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
     private errorHandlerService: ErrorHandlerService,
+    private menuService: MenuService,
     private router: Router) { }
 
   ngOnDestroy(): void {
@@ -40,7 +42,7 @@ export class OcStatusDafComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.DafPending){
+    if(this.ocId > 0 && this.status == PurchaseOrderStatus.DafPending && this.menuService.hasFunctionality('PUROR', 'APDAF')){
         return true;
     }
 

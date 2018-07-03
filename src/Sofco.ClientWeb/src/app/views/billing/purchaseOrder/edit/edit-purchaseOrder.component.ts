@@ -10,6 +10,7 @@ import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
 
@@ -51,6 +52,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private router: Router,
                 private errorHandlerService: ErrorHandlerService){

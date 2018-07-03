@@ -57,10 +57,15 @@ namespace Sofco.Service.Implementations.Billing
             {
                 var domain = model.CreateDomain(userData.GetCurrentUser().UserName);
 
+                var history = GetHistory(domain, new PurchaseOrderStatusParams());
+                history.To = PurchaseOrderStatus.Draft;
+
+                domain.Histories.Add(history);
+
                 unitOfWork.PurchaseOrderRepository.Insert(domain);
                 unitOfWork.Save();
 
-                response.AddSuccess(Resources.Billing.PurchaseOrder.SaveSuccess);
+                response.AddSuccess(Resources.Billing.PurchaseOrder.SaveSuccess); 
                 
                 response.Data = domain;
             }
@@ -68,6 +73,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(e);
+                return response;
             }
 
             try

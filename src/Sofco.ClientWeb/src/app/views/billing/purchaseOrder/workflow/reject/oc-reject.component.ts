@@ -6,6 +6,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
   selector: 'oc-status-reject',
@@ -33,6 +34,7 @@ export class OcStatusRejectComponent implements OnDestroy  {
 
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
+    private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -41,7 +43,7 @@ export class OcStatusRejectComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && (this.status == PurchaseOrderStatus.CompliancePending || 
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && (this.status == PurchaseOrderStatus.CompliancePending || 
                          this.status == PurchaseOrderStatus.ComercialPending || 
                          this.status == PurchaseOrderStatus.OperativePending || 
                          this.status == PurchaseOrderStatus.DafPending)){

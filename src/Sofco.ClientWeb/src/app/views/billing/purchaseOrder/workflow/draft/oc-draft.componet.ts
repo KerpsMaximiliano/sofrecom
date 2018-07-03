@@ -6,6 +6,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
 import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
+import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
   selector: 'oc-status-draft',
@@ -32,6 +33,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
 
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
+    private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -41,7 +43,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && (this.status == PurchaseOrderStatus.Draft || this.status == PurchaseOrderStatus.Reject)){
+    if(this.ocId > 0 && (this.status == PurchaseOrderStatus.Draft || this.status == PurchaseOrderStatus.Reject) && this.menuService.hasFunctionality('PUROR', 'DRAFT')){
         return true;
     }
 

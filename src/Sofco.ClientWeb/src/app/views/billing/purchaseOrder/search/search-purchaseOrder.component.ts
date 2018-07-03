@@ -9,11 +9,11 @@ import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
-import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
 import { UserService } from 'app/services/admin/user.service';
 import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
+import { MenuService } from '../../../../services/admin/menu.service';
 declare var $: any;
 declare var moment: any;
 
@@ -59,9 +59,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         private customerService: CustomerService,
         private messageService: MessageService,
         private purchaseOrderService: PurchaseOrderService,
-        private analyticService: AnalyticService,
         private employeeService: EmployeeService,
         private userService: UserService,
+        public menuService: MenuService,
         private datatableService: DataTableService,
         private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService) {}
