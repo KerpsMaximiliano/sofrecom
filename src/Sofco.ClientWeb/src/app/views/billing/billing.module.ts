@@ -81,6 +81,7 @@ import { UtilsService } from '../../services/common/utils.service';
 import { AllocationService } from '../../services/allocation-management/allocation.service';
 import { CategoryService } from 'app/services/admin/category.service';
 import { PurchaseOrderAdjustmentComponent } from 'app/views/billing/purchaseOrder/adjustment/oc-adjustment.component';
+import { PurchaseOrderDelegateComponent } from './purchaseOrder/purchase-order-delegate/purchase-order-delegate.component';
 import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow/draft/oc-draft.componet';
 import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/workflow/compliance/oc-compliance.component';
 import { OcStatusComercialComponent } from 'app/views/billing/purchaseOrder/workflow/comercial/oc-comercial.component';
@@ -95,13 +96,13 @@ import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/h
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent, 
+                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent,
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
-                 OcStatusDafComponent, PurchaseOrderHistoryComponent],
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
