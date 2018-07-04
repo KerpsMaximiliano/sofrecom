@@ -54,7 +54,7 @@ const BILLING_ROUTER: Routes = [
           { path: "", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
           { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
           { path: "delegate", component: PurchaseOrderDelegateComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
-          { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
+          { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "VIEW" } },
       ]},
 
       { path: "certificates",

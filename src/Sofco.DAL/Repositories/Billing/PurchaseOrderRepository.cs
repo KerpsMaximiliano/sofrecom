@@ -6,6 +6,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
 
@@ -127,6 +128,39 @@ namespace Sofco.DAL.Repositories.Billing
         public void AddPurchaseOrderAnalytic(PurchaseOrderAnalytic purchaseOrderAnalytic)
         {
             context.PurchaseOrderAnalytics.Add(purchaseOrderAnalytic);
+        }
+
+        public IList<Analytic> GetByAnalyticsWithSectors(int purchaseOrderId)
+        {
+            var analyticIds = context.PurchaseOrderAnalytics
+                .Where(x => x.PurchaseOrderId == purchaseOrderId)
+                .Select(x => x.AnalyticId)
+                .ToList();
+
+            return context.Analytics
+                .Where(x => analyticIds.Contains(x.Id))
+                .Include(x => x.Sector)
+                    .ThenInclude(x => x.ResponsableUser)
+                .ToList();
+        }
+
+        public IList<Analytic> GetByAnalyticsWithManagers(int purchaseOrderId)
+        {
+            var analyticIds = context.PurchaseOrderAnalytics
+                .Where(x => x.PurchaseOrderId == purchaseOrderId)
+                .Select(x => x.AnalyticId)
+                .ToList();
+
+            return context.Analytics
+                .Where(x => analyticIds.Contains(x.Id))
+                .Include(x => x.CommercialManager)
+                .Include(x => x.Manager)
+                .ToList();
+        }
+
+        public ICollection<PurchaseOrderHistory> GetHistories(int id)
+        {
+            return context.PurchaseOrderHistories.Where(x => x.PurchaseOrderId == id).Include(x => x.User).ToList().AsReadOnly();
         }
     }
 }

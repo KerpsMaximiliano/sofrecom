@@ -43,5 +43,9 @@
         public string SupportMailResendRecipients { get; set; }
 
         public string SupportMailResendTitle { get; set; }
+
+        public int MonicaBiman { get; set; }
+
+        public int DiegoCegna { get; set; }
     }
 }

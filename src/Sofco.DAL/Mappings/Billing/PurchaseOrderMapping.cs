@@ -18,6 +18,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<PurchaseOrder>().HasOne(x => x.Area).WithMany(x => x.PurchaseOrders).HasForeignKey(x => x.AreaId);
 
             builder.Entity<PurchaseOrder>().HasMany(x => x.Solfacs).WithOne(x => x.PurchaseOrder).HasForeignKey(x => x.PurchaseOrderId);
+            builder.Entity<PurchaseOrder>().HasMany(x => x.Histories).WithOne(x => x.PurchaseOrder).HasForeignKey(x => x.PurchaseOrderId);
 
             builder.Entity<PurchaseOrder>().HasMany(x => x.AmmountDetails).WithOne(x => x.PurchaseOrder).HasForeignKey(x => x.PurchaseOrderId);
 

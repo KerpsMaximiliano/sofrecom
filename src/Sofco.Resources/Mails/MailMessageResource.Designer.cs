@@ -244,6 +244,19 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Operativa
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcComercialMessage {
+            get {
+                return ResourceManager.GetString("OcComercialMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Comercial
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
@@ -257,6 +270,19 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado Vigente para su uso.
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcDafMessage {
+            get {
+                return ResourceManager.GetString("OcDafMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de Compliance. 
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
@@ -266,6 +292,34 @@ namespace Sofco.Resources.Mails {
         public static string OcDraftMessage {
             get {
                 return ResourceManager.GetString("OcDraftMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area Operativa y su nuevo estado es Pendiente Aprobación DAF
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcOperativeMessage {
+            get {
+                return ResourceManager.GetString("OcOperativeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido RECHAZADA por el area de {1} por el motivo: 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///{2}
+        ///&lt;/br&gt;&lt;/br&gt; 
+        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{3}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Muchas gracias..
+        /// </summary>
+        public static string OcRejectMessage {
+            get {
+                return ResourceManager.GetString("OcRejectMessage", resourceCulture);
             }
         }
         

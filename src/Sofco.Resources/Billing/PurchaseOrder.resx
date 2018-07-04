@@ -126,17 +126,29 @@
   <data name="AreaIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.areaIsRequired</value>
   </data>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>billing/purchaseOrder.cannotChangeStatus</value>
+  </data>
   <data name="ClientIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.clientIsRequired</value>
   </data>
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
   </data>
+  <data name="ComercialSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.comercialSuccess</value>
+  </data>
+  <data name="CommentsRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.commentsRequired</value>
+  </data>
   <data name="ComplianceSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.complianceSuccess</value>
   </data>
   <data name="CurrencyIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.currencyIsRequired</value>
+  </data>
+  <data name="DafSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.dafSuccess</value>
   </data>
   <data name="DatesRequired" xml:space="preserve">
     <value>billing/purchaseOrder.datesRequired</value>
@@ -165,8 +177,14 @@
   <data name="NumberIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.numberIsRequired</value>
   </data>
+  <data name="OperativeSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.operativeSuccess</value>
+  </data>
   <data name="ProjectIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.projectIsRequired</value>
+  </data>
+  <data name="RejectSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.rejectSuccess</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.saveSuccess</value>

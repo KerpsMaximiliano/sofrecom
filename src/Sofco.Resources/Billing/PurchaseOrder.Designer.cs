@@ -89,6 +89,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.cannotChangeStatus.
+        /// </summary>
+        public static string CannotChangeStatus {
+            get {
+                return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.clientIsRequired.
         /// </summary>
         public static string ClientIsRequired {
@@ -107,6 +116,24 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.comercialSuccess.
+        /// </summary>
+        public static string ComercialSuccess {
+            get {
+                return ResourceManager.GetString("ComercialSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.commentsRequired.
+        /// </summary>
+        public static string CommentsRequired {
+            get {
+                return ResourceManager.GetString("CommentsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.complianceSuccess.
         /// </summary>
         public static string ComplianceSuccess {
@@ -121,6 +148,15 @@ namespace Sofco.Resources.Billing {
         public static string CurrencyIsRequired {
             get {
                 return ResourceManager.GetString("CurrencyIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.dafSuccess.
+        /// </summary>
+        public static string DafSuccess {
+            get {
+                return ResourceManager.GetString("DafSuccess", resourceCulture);
             }
         }
         
@@ -206,11 +242,29 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.operativeSuccess.
+        /// </summary>
+        public static string OperativeSuccess {
+            get {
+                return ResourceManager.GetString("OperativeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.projectIsRequired.
         /// </summary>
         public static string ProjectIsRequired {
             get {
                 return ResourceManager.GetString("ProjectIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.rejectSuccess.
+        /// </summary>
+        public static string RejectSuccess {
+            get {
+                return ResourceManager.GetString("RejectSuccess", resourceCulture);
             }
         }
         

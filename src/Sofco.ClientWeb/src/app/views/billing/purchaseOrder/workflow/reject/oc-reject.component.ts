@@ -4,20 +4,20 @@ import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
+import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
-  selector: 'oc-status-draft',
-  templateUrl: './oc-draft.component.html'
+  selector: 'oc-status-reject',
+  templateUrl: './oc-reject.component.html'
 })
-export class OcStatusDraftComponent implements OnDestroy  {
+export class OcStatusRejectComponent implements OnDestroy  {
 
-  @ViewChild('draftModal') draftModal;
-  public draftModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+  @ViewChild('rejectModal') modal;
+  public rejectModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "ACTIONS.confirmTitle",
-      "draftModal",
+      "rejectModal",
       true,
       true,
       "ACTIONS.ACCEPT",
@@ -29,6 +29,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
+  public rejectComments: string;
   public isLoading: boolean = false;
 
   constructor(private purchaseOrderService: PurchaseOrderService,
@@ -37,13 +38,15 @@ export class OcStatusDraftComponent implements OnDestroy  {
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
-
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
   }
 
   canSend(){
-    if(this.ocId > 0 && (this.status == PurchaseOrderStatus.Draft || this.status == PurchaseOrderStatus.Reject) && this.menuService.hasFunctionality('PUROR', 'DRAFT')){
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && (this.status == PurchaseOrderStatus.CompliancePending || 
+                         this.status == PurchaseOrderStatus.ComercialPending || 
+                         this.status == PurchaseOrderStatus.OperativePending || 
+                         this.status == PurchaseOrderStatus.DafPending)){
         return true;
     }
 
@@ -51,15 +54,15 @@ export class OcStatusDraftComponent implements OnDestroy  {
   }
 
   showModal(){
-    this.draftModal.show();
+    this.modal.show();
   }
 
   send(){
     this.isLoading = true;
 
-    this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
+    this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, { comments: this.rejectComments, mustReject: true}).subscribe(
         data => {
-            this.draftModal.hide();
+            this.modal.hide();
             this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
@@ -68,7 +71,7 @@ export class OcStatusDraftComponent implements OnDestroy  {
             }, 1000);
         },
         error => {
-            this.draftModal.hide();
+            this.modal.hide();
             this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });

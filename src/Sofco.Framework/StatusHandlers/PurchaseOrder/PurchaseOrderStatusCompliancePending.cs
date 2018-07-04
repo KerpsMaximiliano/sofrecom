@@ -20,6 +20,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         private readonly EmailConfig emailConfig;
 
         private const string StatusDescription = "Pendiente Aprobación Comercial";
+        private const string RejectStatusDescription = "Rechazada";
+        private const string AreaDescription = "Compliance";
 
         public PurchaseOrderStatusCompliancePending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig)
         {
@@ -31,35 +33,70 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
+            if (model.MustReject && string.IsNullOrWhiteSpace(model.Comments))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CommentsRequired);
+            }
         }
 
         public void Save(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
-            purchaseOrder.Status = PurchaseOrderStatus.ComercialPending;
+            purchaseOrder.Status = model.MustReject ? PurchaseOrderStatus.Reject : PurchaseOrderStatus.ComercialPending;
             unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
         }
 
-        public string GetSuccessMessage()
+        public string GetSuccessMessage(PurchaseOrderStatusParams model)
         {
-            return Resources.Billing.PurchaseOrder.ComplianceSuccess;
+            return model.MustReject ? Resources.Billing.PurchaseOrder.RejectSuccess : Resources.Billing.PurchaseOrder.ComplianceSuccess;
         }
 
-        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        {
+            var data = !model.MustReject ? CreateMailSuccess(purchaseOrder) : CreateMailReject(purchaseOrder, model.Comments);
+
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
+        }
+
+        private MailDefaultData CreateMailSuccess(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
             var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcComplianceMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var recipientsToDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
+            var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
+
+            if (area?.ResponsableUser == null) return null;
 
             var data = new MailDefaultData
             {
                 Title = subjectToDaf,
                 Message = bodyToDaf,
-                Recipients = recipientsToDaf
+                Recipients = area.ResponsableUser.Email
             };
 
-            var email = mailBuilder.GetEmail(data);
-            mailSender.Send(email);
+            return data;
+        }
+
+        private MailDefaultData CreateMailReject(Model.Models.Billing.PurchaseOrder purchaseOrder, string comments)
+        {
+            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+
+            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage, 
+                purchaseOrder.Number, 
+                AreaDescription, 
+                comments, 
+                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+
+            var mail = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
+
+            var data = new MailDefaultData
+            {
+                Title = subjectToDaf,
+                Message = bodyToDaf,
+                Recipients = mail
+            };
+
+            return data;
         }
     }
 }

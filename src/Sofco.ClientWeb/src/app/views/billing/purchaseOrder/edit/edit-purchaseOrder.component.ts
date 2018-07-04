@@ -10,6 +10,7 @@ import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
 
@@ -24,6 +25,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('ocAdjustment') ocAdjustment: any;
+    @ViewChild('history') history: any;
 
     updateSubscrip: Subscription;
     getSubscrip: Subscription;
@@ -50,6 +52,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
+                public menuService: MenuService,
                 private messageService: MessageService,
                 private router: Router,
                 private errorHandlerService: ErrorHandlerService){
@@ -68,6 +71,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 this.uploaderConfig();
 
+                this.history.getHistories(params['id']);
+
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();
                 }
@@ -76,11 +81,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
                 }, 1000);
 
-                $('input').attr('disabled', 'disabled');
-                $('#customer-select select').attr('disabled', 'disabled');
-                $('input[type=file]').removeAttr('disabled');
-
                 if(this.form.model.status != PurchaseOrderStatus.Draft){
+                    $('input').attr('disabled', 'disabled');
+                    $('#customer-select select').attr('disabled', 'disabled');
+                    $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
                 }
             },

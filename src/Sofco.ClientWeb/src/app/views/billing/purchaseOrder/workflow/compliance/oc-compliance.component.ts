@@ -6,6 +6,7 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
   selector: 'oc-status-compliance',
@@ -32,6 +33,7 @@ export class OcStatusComplianceComponent implements OnDestroy  {
 
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
+    private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -40,7 +42,7 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.CompliancePending){
+    if(this.ocId > 0 && this.status == PurchaseOrderStatus.CompliancePending && this.menuService.hasFunctionality('PUROR', 'COMPL')){
         return true;
     }
 

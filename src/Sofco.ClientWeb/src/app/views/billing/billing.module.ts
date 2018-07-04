@@ -85,6 +85,11 @@ import { PurchaseOrderAdjustmentComponent } from 'app/views/billing/purchaseOrde
 import { PurchaseOrderDelegateComponent } from './purchaseOrder/purchase-order-delegate/purchase-order-delegate.component';
 import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow/draft/oc-draft.componet';
 import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/workflow/compliance/oc-compliance.component';
+import { OcStatusComercialComponent } from 'app/views/billing/purchaseOrder/workflow/comercial/oc-comercial.component';
+import { OcStatusOperativeComponent } from 'app/views/billing/purchaseOrder/workflow/operative/oc-operative.component';
+import { OcStatusRejectComponent } from 'app/views/billing/purchaseOrder/workflow/reject/oc-reject.component';
+import { OcStatusDafComponent } from 'app/views/billing/purchaseOrder/workflow/daf/oc-daf.component';
+import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/history/oc-history.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -97,7 +102,8 @@ import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/wor
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
-                 PurchaseOrderDelegateComponent, OcStatusDraftComponent, OcStatusComplianceComponent],
+                 OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 

@@ -1,0 +1,7 @@
+<button class="btn btn-primary btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
+    {{ 'billing.purchaseOrder.sendToOperative' | translate }} <i class="fa fa-envelope"></i>
+</button>
+
+<ng2-modal [config]="comercialModalConfig" #comercialModal (accept)="send()" [isLoading]="isLoading">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>

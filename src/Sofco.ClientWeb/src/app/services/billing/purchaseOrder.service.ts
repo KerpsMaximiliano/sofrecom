@@ -76,5 +76,9 @@ export class PurchaseOrderService {
   changeStatus(id, json) {
     return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/status`, json);
   }
+
+  getHistories(id){
+    return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}/histories`);
+  }
 }
 

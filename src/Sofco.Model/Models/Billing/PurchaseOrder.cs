@@ -42,5 +42,7 @@ namespace Sofco.Model.Models.Billing
         public ICollection<Solfac> Solfacs { get; set; }
 
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
+
+        public ICollection<PurchaseOrderHistory> Histories { get; set; }
     }
 }

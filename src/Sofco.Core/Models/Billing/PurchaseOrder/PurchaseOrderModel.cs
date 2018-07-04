@@ -49,6 +49,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.Status = PurchaseOrderStatus.Draft;
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
+            domain.Histories = new List<PurchaseOrderHistory>();
 
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
             {

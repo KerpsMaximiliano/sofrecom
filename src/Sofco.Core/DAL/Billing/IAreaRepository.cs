@@ -7,5 +7,6 @@ namespace Sofco.Core.DAL.Billing
     public interface IAreaRepository : IBaseRepository<Area>
     {
         new List<Area> GetAll();
+        Area GetWithResponsable(int id);
     }
 }

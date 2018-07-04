@@ -19,5 +19,10 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(s => s.ResponsableUser)
                 .ToList();
         }
+
+        public Area GetWithResponsable(int id)
+        {
+            return context.Areas.Include(x => x.ResponsableUser).SingleOrDefault(x => x.Id == id);
+        }
     }
 }
