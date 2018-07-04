@@ -10,6 +10,8 @@ namespace Sofco.Model.Models.Common
     {
         public Guid? ServiceId { get; set; }
 
+        public int? SourceId { get; set; }
+
         public int UserId { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

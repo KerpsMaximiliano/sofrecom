@@ -270,7 +270,18 @@
             "commercialManager": "Gerente de Cuenta",
             "delegate": {
                 "title": "Delegar Aprobación Orden de Compra",
-                "delegateAction": "Delegar"
+                "delegateAction": "Delegar",
+                "type": "Tipo",
+                "source": "Origen",
+                "users": "Usuarios",
+                "saveSuccess": "Usuario agregado correctamente.",
+                "responsable": "Responsable",
+                "user": "Usuario",
+                "createdUser": "Creado por",
+                "createdDate": "Fecha creación",
+                "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?",
+                "PurchaseOrderCommercial": "Area",
+                "PurchaseOrderOperation": "Operación"
             }
         },
         "solfac":{
