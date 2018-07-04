@@ -77,6 +77,10 @@ export class PurchaseOrderService {
     return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/status`, json);
   }
 
+  close(id, json) {
+    return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/close`, json);
+  }
+
   getHistories(id){
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}/histories`);
   }

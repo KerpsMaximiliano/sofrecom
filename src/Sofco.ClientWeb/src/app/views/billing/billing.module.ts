@@ -90,6 +90,7 @@ import { OcStatusOperativeComponent } from 'app/views/billing/purchaseOrder/work
 import { OcStatusRejectComponent } from 'app/views/billing/purchaseOrder/workflow/reject/oc-reject.component';
 import { OcStatusDafComponent } from 'app/views/billing/purchaseOrder/workflow/daf/oc-daf.component';
 import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/history/oc-history.component';
+import { OcStatusCloseComponent } from 'app/views/billing/purchaseOrder/workflow/close/oc-close.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -103,7 +104,7 @@ import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/h
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
-                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent],
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent, OcStatusCloseComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
