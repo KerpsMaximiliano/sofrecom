@@ -161,7 +161,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     foreach (var allocation in allocationResponse.Allocations)
                     {
 
-                        if (parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
+                        if (parameters.AnalyticIds.Any() && parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
                         //if (parameters.Percentage.HasValue && parameters.Percentage != (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
                         //if (parameters.Percentage.HasValue && parameters.Percentage == (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage == 100)) continue;
 
