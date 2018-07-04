@@ -1,5 +1,5 @@
 <button class="btn btn-primary btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
-    Enviar a Operativa <i class="fa fa-envelope"></i>
+    {{ 'billing.purchaseOrder.sendToOperative' | translate }} <i class="fa fa-envelope"></i>
 </button>
 
 <ng2-modal [config]="comercialModalConfig" #comercialModal (accept)="send()" [isLoading]="isLoading">

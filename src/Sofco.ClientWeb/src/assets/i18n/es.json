@@ -238,6 +238,11 @@
             "parameters": "Parámetros de búsqueda",
             "noOrdersFound": "No hay ordenes de compra cargadas",
             "adjustmentModelTitle": "Incluya los montos a ajustar",
+            "createAdjustment": "Crear Ajuste OC",
+            "sendToOperative": "Enviar a Operativa",
+            "sendToComercial": "Enviar a Comercial",
+            "sendToCompliance": "Enviar a Compliance",
+            "sendToDaf": "Enviar a DAF",
             "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
             "fields": {
                 "number": "Numero",

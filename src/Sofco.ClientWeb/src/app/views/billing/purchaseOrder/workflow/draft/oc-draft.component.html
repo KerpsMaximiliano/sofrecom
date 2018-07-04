@@ -1,5 +1,5 @@
 <button class="btn btn-primary btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
-    Enviar a Compliance <i class="fa fa-envelope"></i>
+    {{ 'billing.purchaseOrder.sendToCompliance' | translate }} <i class="fa fa-envelope"></i>
 </button>
 
 <ng2-modal [config]="draftModalConfig" #draftModal (accept)="send()" [isLoading]="isLoading">

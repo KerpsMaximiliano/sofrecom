@@ -1,5 +1,5 @@
 <button class="btn btn-danger btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
-    Rechazar <i class="fa fa-times"></i>
+    {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i>
 </button>
 
 <ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="send()" [isLoading]="isLoading">

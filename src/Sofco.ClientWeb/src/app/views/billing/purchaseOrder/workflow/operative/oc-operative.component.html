@@ -1,5 +1,5 @@
 <button class="btn btn-primary btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
-    Enviar a DAF <i class="fa fa-envelope"></i>
+    {{ 'billing.purchaseOrder.sendToDaf' | translate }} <i class="fa fa-envelope"></i>
 </button>
 
 <ng2-modal [config]="operativeModalConfig" #operativeModal (accept)="send()" [isLoading]="isLoading">
