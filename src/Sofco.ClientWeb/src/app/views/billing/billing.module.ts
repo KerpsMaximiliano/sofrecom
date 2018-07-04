@@ -15,6 +15,7 @@ import { ProjectService } from 'app/services/billing/project.service';
 import { ServiceService } from 'app/services/billing/service.service';
 import { SolfacService } from 'app/services/billing/solfac.service';
 import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
+import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
 
 import { CustomersComponent } from './customers/customers.component';
 import { ServicesComponent } from './services/services.component';
@@ -109,7 +110,7 @@ import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/h
                  DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
-                SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService],
+                SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderDelegateService],
 
   exports     : []
 })
