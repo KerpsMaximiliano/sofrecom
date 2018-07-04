@@ -81,11 +81,12 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
                 }, 1000);
 
-                if(this.form.model.status != PurchaseOrderStatus.Draft){
+                if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input').attr('disabled', 'disabled');
                     $('#customer-select select').attr('disabled', 'disabled');
                     $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
+                    this.form.currencyDisabled = true;
                 }
             },
             error => {

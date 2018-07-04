@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
             <button class="btn btn-success btn-outline dim" (click)="openAdjustment()" *ngIf="form.model.status == 1 || form.model.status == 2"> {{ 'billing.purchaseOrder.createAdjustment' | translate }} </button>
-            <button class="btn btn-primary btn-outline dim" (click)="update()" *ngIf="form.model.status == 4 && menuService.hasFunctionality('PUROR', 'ALTA')">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
+            <button class="btn btn-primary btn-outline dim" (click)="update()" *ngIf="(form.model.status == 4 || form.model.status == 8) && menuService.hasFunctionality('PUROR', 'ALTA')">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
 
             <div class="btn-right">
                 <oc-status-reject [ocId]="form.model.id" [status]="form.model.status"></oc-status-reject>
