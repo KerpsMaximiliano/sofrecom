@@ -59,7 +59,7 @@ namespace Sofco.Framework.StatusHandlers.License
         public IMailData GetEmailData(Model.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseCancelledTitle, license.Employee.Name);
-            var body = string.Format(MailMessageResource.LicenseCancelledMessage, $"{emailConfig.SiteUrl}allocationManagement/licenses/{license.Id}/detail", parameters.Comment, license.Type.Description);
+            var body = string.Format(MailMessageResource.LicenseCancelledMessage, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", parameters.Comment, license.Type.Description);
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 

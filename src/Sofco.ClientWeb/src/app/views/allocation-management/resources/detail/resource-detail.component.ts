@@ -133,7 +133,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     goToDetail(item){
-        this.router.navigate([`/allocationManagement/licenses/${item.id}/detail`])
+        this.router.navigate([`/rrhh/licenses/${item.id}/detail`])
     }
 
     finalizeExtraHolidays(){
