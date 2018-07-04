@@ -52,13 +52,19 @@
                         <dt>{{'rrhh.license.endDate' | translate }}: </dt>
                         <dd><i class="fa fa-calendar"></i> {{ model.endDate | date: 'dd/MM/yyyy' }}</dd>
 
+                        <dt>{{'rrhh.license.withPayment' | translate }}: </dt>
+                        <dd>
+                            <span *ngIf="model.withPayment" class="label label-primary">{{ 'ACTIONS.yes' | translate }}</span>
+                            <span *ngIf="!model.withPayment" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
+                        </dd> 
+                        
                         <dt>{{'rrhh.license.days' | translate }}: </dt>
                         <dd>{{ model.daysQuantity }}</dd>
 
                         <dt>{{'rrhh.license.reason' | translate }}: </dt>
                         <dd><i class="fa fa-file"></i> {{ model.typeName }}</dd>
 
-                        <div [hidden]="model.typeId != 13">
+                        <div *ngIf="model.typeId == 13 || model.typeId == 14">
                             <dt>{{'rrhh.license.comments' | translate }}: </dt>
                             <dd>{{ model.comments }}</dd>
                         </div>

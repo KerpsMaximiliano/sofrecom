@@ -43,7 +43,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     {
                         CurrencyId = x.CurrencyId,
                         Ammount = x.Ammount,
-                        Enable = false,
+                        Enable = true,
                         CurrencyDescription = x.Currency.Text
                     })
                     .ToList();

@@ -44,11 +44,10 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             var domain = new Model.Models.Billing.PurchaseOrder();
 
-            FillData(domain);
+            FillData(domain, userName);
 
             domain.Status = PurchaseOrderStatus.Draft;
-            domain.UpdateDate = DateTime.UtcNow;
-            domain.UpdateByUser = userName;
+       
             domain.Histories = new List<PurchaseOrderHistory>();
 
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
@@ -64,18 +63,26 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public void UpdateDomain(Model.Models.Billing.PurchaseOrder domain, string userName)
         {
-            domain.Description = Description;
+            FillData(domain, userName);
+
             domain.Status = Status;
-            domain.AreaId = AreaId;
 
             if (FileId > 0)
                 domain.FileId = FileId;
 
-            domain.UpdateDate = DateTime.UtcNow;
-            domain.UpdateByUser = userName;
+            foreach (var detail in AmmountDetails)
+            {
+                var domainDetail = domain.AmmountDetails.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
+
+                if (domainDetail != null)
+                {
+                    domainDetail.Balance = detail.Balance;
+                    domainDetail.Ammount = detail.Ammount;
+                }
+            }
         }
 
-        private void FillData(Model.Models.Billing.PurchaseOrder domain)
+        private void FillData(Model.Models.Billing.PurchaseOrder domain, string userName)
         {
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;
@@ -85,6 +92,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.ReceptionDate = ReceptionDate;
             domain.AreaId = AreaId;
             domain.Description = Description;
+
+            domain.UpdateDate = DateTime.UtcNow;
+            domain.UpdateByUser = userName;
         }
     }
 }

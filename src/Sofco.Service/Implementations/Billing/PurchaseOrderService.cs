@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            PurchaseOrderValidationHelper.ValidateAnalytic(response, model);
+            Validate(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -112,6 +112,13 @@ namespace Sofco.Service.Implementations.Billing
                 var domain = PurchaseOrderValidationHelper.FindWithAnalytic(model.Id, response, unitOfWork);
 
                 model.UpdateDomain(domain, userData.GetCurrentUser().UserName);
+
+                var history = GetHistory(domain, new PurchaseOrderStatusParams());
+                history.To = PurchaseOrderStatus.Draft;
+
+                unitOfWork.PurchaseOrderRepository.AddHistory(history);
+
+                domain.Status = PurchaseOrderStatus.Draft;
 
                 var aux = domain.PurchaseOrderAnalytics.ToList();
 
