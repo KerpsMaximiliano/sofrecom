@@ -7,6 +7,8 @@ import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
+import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
+import { UtilsService } from '../../../../services/common/utils.service';
 declare var $: any;
 
 @Component({
@@ -22,6 +24,8 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
 
     public delegates: any[] = new Array<any>();
 
+    public areas: any[] = new Array<any>();
+
     private delegeteSelected: any;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -34,7 +38,8 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
 
-    constructor(private solfacDelegateService: SolfacDelegateService,
+    constructor(private purchaseOrderDelegateService: PurchaseOrderDelegateService,
+        private utilService: UtilsService,
         private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private messageService: MessageService,
@@ -42,6 +47,7 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.getAreas();
         this.getDelegates();
         this.initTable();
     }
@@ -60,17 +66,23 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
         });
     }
 
+    getAreas() {
+        this.subscription = this.utilService.getAreas().subscribe(response => {
+            this.areas = response;
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
+    }
+
     getDelegates() {
-        // this.messageService.showLoading();
-        // this.subscription = this.solfacDelegateService.getAll().subscribe(response => {
-        //     this.messageService.closeLoading();
-        //     this.delegates = response.data;
-        //     this.initTable();
-        // },
-        // err => {
-        //     this.messageService.closeLoading();
-        //     this.errorHandlerService.handleErrors(err);
-        // });
+        this.subscription = this.purchaseOrderDelegateService.getAll().subscribe(response => {
+            this.delegates = response.data;
+            this.initTable();
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     goToAdd() {
