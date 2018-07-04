@@ -132,24 +132,29 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Analytic> GetByAnalyticsWithSectors(int purchaseOrderId)
         {
-            return context.PurchaseOrderAnalytics
+            var analyticIds = context.PurchaseOrderAnalytics
                 .Where(x => x.PurchaseOrderId == purchaseOrderId)
-                .Include(x => x.Analytic)
-                    .ThenInclude(x => x.Sector)
-                        .ThenInclude(x => x.ResponsableUser)
-                .Select(x => x.Analytic)
+                .Select(x => x.AnalyticId)
+                .ToList();
+
+            return context.Analytics
+                .Where(x => analyticIds.Contains(x.Id))
+                .Include(x => x.Sector)
+                    .ThenInclude(x => x.ResponsableUser)
                 .ToList();
         }
 
         public IList<Analytic> GetByAnalyticsWithManagers(int purchaseOrderId)
         {
-            return context.PurchaseOrderAnalytics
+            var analyticIds = context.PurchaseOrderAnalytics
                 .Where(x => x.PurchaseOrderId == purchaseOrderId)
-                .Include(x => x.Analytic)
-                    .ThenInclude(x => x.CommercialManager)
-                .Include(x => x.Analytic)
-                    .ThenInclude(x => x.Manager)
-                .Select(x => x.Analytic)
+                .Select(x => x.AnalyticId)
+                .ToList();
+
+            return context.Analytics
+                .Where(x => analyticIds.Contains(x.Id))
+                .Include(x => x.CommercialManager)
+                .Include(x => x.Manager)
                 .ToList();
         }
 
