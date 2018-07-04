@@ -34,6 +34,9 @@ namespace Sofco.Core.Services.Billing
         Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details);
 
         Response ChangeStatus(int id, PurchaseOrderStatusParams model);
+
         ICollection<PurchaseOrderHistory> GetHistories(int id);
+
+        Response Close(int id, PurchaseOrderStatusParams model);
     }
 }

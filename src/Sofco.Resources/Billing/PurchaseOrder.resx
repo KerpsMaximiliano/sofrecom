@@ -132,6 +132,9 @@
   <data name="ClientIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.clientIsRequired</value>
   </data>
+  <data name="CloseSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.closeSuccess</value>
+  </data>
   <data name="ComercialManagerIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.comercialManagerIsRequired</value>
   </data>

@@ -107,6 +107,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.closeSuccess.
+        /// </summary>
+        public static string CloseSuccess {
+            get {
+                return ResourceManager.GetString("CloseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.comercialManagerIsRequired.
         /// </summary>
         public static string ComercialManagerIsRequired {

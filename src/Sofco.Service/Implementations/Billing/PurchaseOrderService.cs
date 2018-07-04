@@ -116,7 +116,7 @@ namespace Sofco.Service.Implementations.Billing
                 var history = GetHistory(domain, new PurchaseOrderStatusParams());
                 history.To = PurchaseOrderStatus.Draft;
 
-                unitOfWork.PurchaseOrderRepository.AddHistory(history);
+                domain.Histories.Add(history);
 
                 domain.Status = PurchaseOrderStatus.Draft;
 
@@ -268,6 +268,36 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<PurchaseOrderHistory> GetHistories(int id)
         {
             return unitOfWork.PurchaseOrderRepository.GetHistories(id);
+        }
+
+        public Response Close(int id, PurchaseOrderStatusParams model)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            PurchaseOrderValidationHelper.Close(response, purchaseOrder);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                purchaseOrder.Status = PurchaseOrderStatus.Closed;
+                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.PurchaseOrder.CloseSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
