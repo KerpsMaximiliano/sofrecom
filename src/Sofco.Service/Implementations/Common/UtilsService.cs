@@ -43,15 +43,17 @@ namespace Sofco.Service.Implementations.Common
             return Translate(data).OrderBy(x => x.Text).ToList();
         }
 
-        public IList<SectorModel> GetSectorsByCurrentUser()
+        public Response<List<SectorModel>> GetSectorsByCurrentUser()
         {
             var currentuser = userData.GetCurrentUser();
 
             var data = unitOfWork.UtilsRepository.GetSectors()
                 .Where(s => s.ResponsableUserId == currentuser.Id)
                 .ToList();
-
-            return Translate(data).OrderBy(x => x.Text).ToList();
+            return new Response<List<SectorModel>>
+            {
+                Data = Translate(data).OrderBy(x => x.Text).ToList()
+            };
         }
 
         public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
@@ -90,7 +92,7 @@ namespace Sofco.Service.Implementations.Common
             return Translate(data).OrderBy(x => x.Text).ToList();
         }
 
-        public IList<AreaModel> GetAreasByCurrentUser()
+        public Response<List<AreaModel>> GetAreasByCurrentUser()
         {
             var currentuser = userData.GetCurrentUser();
 
@@ -98,7 +100,10 @@ namespace Sofco.Service.Implementations.Common
                 .Where(s => s.ResponsableUserId == currentuser.Id)
                 .ToList();
 
-            return Translate(areas).OrderBy(x => x.Text).ToList();
+            return new Response<List<AreaModel>>
+            {
+                Data = Translate(areas).OrderBy(x => x.Text).ToList()
+            };
         }
 
         public List<object> GetUserDelegateType()

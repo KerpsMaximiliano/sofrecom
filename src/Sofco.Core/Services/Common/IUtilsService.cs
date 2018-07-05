@@ -18,7 +18,7 @@ namespace Sofco.Core.Services.Common
 
         IList<SectorModel> GetSectors();
 
-        IList<SectorModel> GetSectorsByCurrentUser();
+        Response<List<SectorModel>> GetSectorsByCurrentUser();
 
         IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
 
@@ -28,7 +28,7 @@ namespace Sofco.Core.Services.Common
 
         IList<AreaModel> GetAreas();
 
-        IList<AreaModel> GetAreasByCurrentUser();
+        Response<List<AreaModel>> GetAreasByCurrentUser();
 
         List<object> GetUserDelegateType();
     }

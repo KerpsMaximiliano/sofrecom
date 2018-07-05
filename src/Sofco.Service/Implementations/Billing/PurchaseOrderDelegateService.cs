@@ -104,7 +104,9 @@ namespace Sofco.Service.Implementations.Billing
             resolverSourceDicts = new Dictionary<UserDelegateType, Action<PurchaseOrderDelegateModel>>
             {
                 {UserDelegateType.PurchaseOrderCommercial, ResolveSourceCommercial},
-                {UserDelegateType.PurchaseOrderOperation, ResolveSourceOperation}
+                {UserDelegateType.PurchaseOrderOperation, ResolveSourceOperation},
+                {UserDelegateType.PurchaseOrderDaf, ResolveSourceUser},
+                {UserDelegateType.PurchaseOrderCompliance, ResolveSourceUser}
             };
         }
 
@@ -139,26 +141,37 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
+        private void ResolveSourceUser(PurchaseOrderDelegateModel purchaseOrderDelegate)
+        {
+            var data = userData.GetUserLiteById(purchaseOrderDelegate.SourceId);
+
+            if(data == null) return;
+
+            purchaseOrderDelegate.SourceName = data.Name;
+
+            purchaseOrderDelegate.ResponsableId = data.Id;
+        }
+
         private void ResolveSourceCommercial(PurchaseOrderDelegateModel purchaseOrderDelegate)
         {
-            var area = areaData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
+            var data = areaData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
 
-            if(area == null) return;
+            if(data == null) return;
 
-            purchaseOrderDelegate.SourceName = area.Text;
+            purchaseOrderDelegate.SourceName = data.Text;
 
-            purchaseOrderDelegate.ResponsableId = area.ResponsableUserId;
+            purchaseOrderDelegate.ResponsableId = data.ResponsableUserId;
         }
 
         private void ResolveSourceOperation(PurchaseOrderDelegateModel purchaseOrderDelegate)
         {
-            var area = sectorData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
+            var data = sectorData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
 
-            if(area == null) return;
+            if(data == null) return;
 
-            purchaseOrderDelegate.SourceName = area.Text;
+            purchaseOrderDelegate.SourceName = data.Text;
 
-            purchaseOrderDelegate.ResponsableId = area.ResponsableUserId;
+            purchaseOrderDelegate.ResponsableId = data.ResponsableUserId;
         }
 
         private void ResolveUsers(List<PurchaseOrderDelegateModel> userDelegates)
@@ -181,7 +194,15 @@ namespace Sofco.Service.Implementations.Billing
         {
             var respone = new Response<PurchaseOrderDelegateModel>();
 
-            var validResponse = ValidateSameUser(model);
+            var validResponse = ValidateData(model);
+            if (validResponse.HasErrors())
+            {
+                respone.AddMessages(validResponse.Messages);
+
+                return respone;
+            }
+
+            validResponse = ValidateSameUser(model);
             if (validResponse.HasErrors())
             {
                 respone.AddMessages(validResponse.Messages);
@@ -190,11 +211,33 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
+        private Response ValidateData(PurchaseOrderDelegateModel model)
+        {
+            var response = new Response();
+
+            var isValid = !(model.ResponsableId == 0 || model.UserId == 0 || model.SourceId == 0);
+
+            if (!isValid)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.DelegateWrongDataError);
+            }
+
+            return response;
+        }
+
         private Response ValidateSameUser(PurchaseOrderDelegateModel model)
         {
             var response = new Response();
 
             var isValid = true;
+
+            if (model.Type == UserDelegateType.PurchaseOrderDaf || model.Type == UserDelegateType.PurchaseOrderCompliance)
+            {
+                if (model.ResponsableId == model.UserId)
+                {
+                    isValid = false;
+                }
+            }
 
             if (model.Type == UserDelegateType.PurchaseOrderCommercial)
             {

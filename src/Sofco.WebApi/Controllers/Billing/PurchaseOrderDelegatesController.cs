@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.WebApi.Extensions;
@@ -15,10 +16,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
         private readonly IUtilsService utilsService;
 
-        public PurchaseOrderDelegatesController(IPurchaseOrderDelegateService purchaseOrderDelegateService, IUtilsService utilsService)
+        private readonly IUserService userService;
+
+        public PurchaseOrderDelegatesController(IPurchaseOrderDelegateService purchaseOrderDelegateService, IUtilsService utilsService, IUserService userService)
         {
             this.purchaseOrderDelegateService = purchaseOrderDelegateService;
             this.utilsService = utilsService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -54,7 +58,25 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("sectors")]
         public IActionResult GetSectors()
         {
-            return Ok(utilsService.GetSectorsByCurrentUser());
+            var response = utilsService.GetSectorsByCurrentUser();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("compliances")]
+        public IActionResult GetComplianceUsers()
+        {
+            var response = userService.GetComplianceUsers();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("dafs")]
+        public IActionResult GetDafUsers()
+        {
+            var response = userService.GetDafUsers();
+
+            return this.CreateResponse(response);
         }
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
@@ -22,14 +24,17 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly ISessionManager sessionManager;
 
+        private readonly EmailConfig emailConfig;
+
         private readonly IMapper mapper;
 
-        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager, IMapper mapper, IOptions<EmailConfig> emailOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.sessionManager = sessionManager;
             this.mapper = mapper;
+            emailConfig = emailOptions.Value;
         }
 
         public Response<User> Active(int id, bool active)
@@ -318,9 +323,34 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.GetAuthorizers();
         }
 
+        public Response<List<UserSelectListItem>> GetComplianceUsers()
+        {
+            var result = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode).ToList();
+
+            return new Response<List<UserSelectListItem>>
+            {
+                Data = Translate(result)
+            };
+        }
+
+        public Response<List<UserSelectListItem>> GetDafUsers()
+        {
+            var result = unitOfWork.UserRepository.GetByGroup(emailConfig.DafCode).ToList();
+
+            return new Response<List<UserSelectListItem>>
+            {
+                Data = Translate(result)
+            };
+        }
+
         private UserModel Translate(User user)
         {
             return mapper.Map<User, UserModel>(user);
+        }
+
+        private List<UserSelectListItem> Translate(List<User> users)
+        {
+            return mapper.Map<List<User>, List<UserSelectListItem>>(users);
         }
     }
 }
