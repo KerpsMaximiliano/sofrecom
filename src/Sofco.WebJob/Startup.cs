@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Framework.Logger.Extensions;
@@ -56,6 +57,7 @@ namespace Sofco.WebJob
             services.Configure<RhSetting>(Configuration.GetSection("RhSetting"));
             services.Configure<JobSetting>(Configuration.GetSection("JobSetting"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
+            services.Configure<AppSetting>(Configuration.GetSection("App"));
 
             var containerBuilder = new ContainerBuilder();
 
