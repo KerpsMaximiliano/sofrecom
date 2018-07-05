@@ -231,6 +231,14 @@ namespace Sofco.Service.Implementations.Billing
 
             var isValid = true;
 
+            if (model.Type == UserDelegateType.PurchaseOrderDaf || model.Type == UserDelegateType.PurchaseOrderCompliance)
+            {
+                if (model.ResponsableId == model.UserId)
+                {
+                    isValid = false;
+                }
+            }
+
             if (model.Type == UserDelegateType.PurchaseOrderCommercial)
             {
                 var item = areaData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
