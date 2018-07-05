@@ -159,6 +159,9 @@
   <data name="DelegateSameUserError" xml:space="preserve">
     <value>billing/purchaseOrder.delegateSaveSameUserError</value>
   </data>
+  <data name="DelegateWrongDataError" xml:space="preserve">
+    <value>billing/purchaseOrder.delegateWrongDataError</value>
+  </data>
   <data name="DraftSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.draftSuccess</value>
   </data>

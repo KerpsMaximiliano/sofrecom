@@ -17,8 +17,6 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
 
     public delegates: any[] = new Array<any>();
 
-    public areas: any[] = new Array<any>();
-
     private delegeteSelected: any;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
