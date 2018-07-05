@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
-using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
