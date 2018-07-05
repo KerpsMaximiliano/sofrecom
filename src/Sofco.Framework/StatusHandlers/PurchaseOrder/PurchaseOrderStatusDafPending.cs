@@ -75,11 +75,11 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
                 if (analytic.Manager != null) mails.Add(analytic.Manager.Email);
             }
 
-            var monica = unitOfWork.UserRepository.Get(emailConfig.MonicaBiman);
-            var diego = unitOfWork.UserRepository.Get(emailConfig.DiegoCegna);
+            var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId);
+            var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId);
 
-            if(monica != null) mails.Add(monica.Email);
-            if(diego != null) mails.Add(diego.Email);
+            if(humanResourceManager != null) mails.Add(humanResourceManager.Email);
+            if(humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
 
             var data = new MailDefaultData
             {
