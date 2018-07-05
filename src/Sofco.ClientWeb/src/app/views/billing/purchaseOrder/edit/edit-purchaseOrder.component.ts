@@ -71,6 +71,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 this.uploaderConfig();
 
+                this.form.getCurrencies();
+
                 this.history.getHistories(params['id']);
 
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
@@ -178,6 +180,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             response => {
                 this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             },
             err => {
                 this.messageService.closeLoading();
@@ -218,5 +224,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             case 8: return this.i18nService.translateByKey("Reject");
             case 9: return this.i18nService.translateByKey("CompliancePending");
         }
+    }
+
+    canDelete(){
+        return this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject;
     }
 }  

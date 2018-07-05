@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
@@ -21,6 +22,8 @@ namespace Sofco.DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SofcoContext context;
+
+        private IDbContextTransaction contextTransaction;
 
         private readonly IOptions<EmailConfig> emailConfig;
 
@@ -170,10 +173,25 @@ namespace Sofco.DAL
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
-
+         
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public void BeginTransaction()
+        {
+            contextTransaction = context.Database.BeginTransaction();
+        }
+
+        public void Rollback()
+        {
+            contextTransaction?.Rollback();
+        }
+
+        public void Commit()
+        {
+            contextTransaction?.Commit();
         }
     }
 }

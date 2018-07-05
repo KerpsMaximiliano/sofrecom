@@ -76,8 +76,26 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
                 if (domainDetail != null)
                 {
-                    domainDetail.Balance = detail.Balance;
-                    domainDetail.Ammount = detail.Ammount;
+                    if (detail.Enable)
+                    {
+                        domainDetail.Balance = detail.Balance;
+                        domainDetail.Ammount = detail.Ammount;
+                    }
+                    else
+                    {
+                        domain.AmmountDetails.Remove(domainDetail);
+                    }
+                }
+                else
+                {
+                    if(!detail.Enable) continue;
+
+                    domain.AmmountDetails.Add(new PurchaseOrderAmmountDetail
+                    {
+                        CurrencyId = detail.CurrencyId,
+                        Balance = detail.Ammount,
+                        Ammount = detail.Ammount
+                    });
                 }
             }
         }
