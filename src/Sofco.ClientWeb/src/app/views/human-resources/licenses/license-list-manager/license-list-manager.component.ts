@@ -64,6 +64,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
             selector: "#allLicenses", 
             columns: columns,
             title: title,
+            order: [[ 3, "desc" ]],
             withExport: true,
             columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };

@@ -146,7 +146,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     initGrid(){
         var params = {
-            selector: "#licenseStatusApproved",
+            selector: "#licenseStatusApproved", 
+            order: [[ 3, "desc" ]],
             columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
         };
 

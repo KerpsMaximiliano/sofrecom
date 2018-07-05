@@ -124,6 +124,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
             var params = {
                 selector: "#licenses",
+                order: [[ 2, "desc" ]],
                 columnDefs: [ {'aTargets': [2, 4, 5], "sType": "date-uk"} ]
             };
     
