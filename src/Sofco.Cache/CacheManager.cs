@@ -21,7 +21,8 @@ namespace Sofco.Cache
             serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
 
             serializerSettings.Converters.Add(new StringEnumConverter(true));
