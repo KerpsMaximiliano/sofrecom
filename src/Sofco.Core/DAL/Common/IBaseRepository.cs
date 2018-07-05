@@ -19,10 +19,5 @@ namespace Sofco.Core.DAL.Common
         T Get(int id);
 
         IList<T> Where(Expression<Func<T, bool>> predicate);
-
-        void BeginTransaction();
-        void Rollback();
-        void Commit(string nombreUsuario);
-        void Save();
     }
 }

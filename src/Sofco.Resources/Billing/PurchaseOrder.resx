@@ -129,6 +129,12 @@
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>billing/purchaseOrder.cannotChangeStatus</value>
   </data>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>billing/purchaseOrder.cannotDelete</value>
+  </data>
+  <data name="CannotDeleteWithWfStarted" xml:space="preserve">
+    <value>billing/purchaseOrder.cannotDeleteWithWfStarted</value>
+  </data>
   <data name="ClientIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.clientIsRequired</value>
   </data>
@@ -158,6 +164,9 @@
   </data>
   <data name="DelegateSameUserError" xml:space="preserve">
     <value>billing/purchaseOrder.delegateSaveSameUserError</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>billing/purchaseOrder.deleteSuccess</value>
   </data>
   <data name="DelegateWrongDataError" xml:space="preserve">
     <value>billing/purchaseOrder.delegateWrongDataError</value>

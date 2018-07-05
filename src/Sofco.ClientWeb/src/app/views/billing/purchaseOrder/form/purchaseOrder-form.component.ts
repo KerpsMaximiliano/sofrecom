@@ -6,6 +6,7 @@ import { CustomerService } from "../../../../services/billing/customer.service";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { UtilsService } from "../../../../services/common/utils.service";
+import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 
 @Component({
     selector: 'purchase-order-form',
@@ -57,9 +58,25 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     getCurrencies(){
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(currencies => {
-            currencies.forEach((item) => {
-                this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
-            });
+
+            if(this.mode == 'new'){
+                currencies.forEach((item) => {
+                    this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
+                });
+            }
+            else{
+                if(this.model.status == PurchaseOrderStatus.Draft || this.model.status == PurchaseOrderStatus.Reject){
+                    currencies.forEach((item) => {
+                        var exist = this.model.ammountDetails.filter(modelItem => {
+                            return modelItem.currencyId == item.id;
+                        });
+    
+                        if(!exist || (exist && exist.length == 0)){
+                            this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
+                        }
+                    });
+                }
+            }
         },
         err => this.errorHandlerService.handleErrors(err));
     }

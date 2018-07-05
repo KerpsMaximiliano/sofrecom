@@ -142,31 +142,6 @@ namespace Sofco.DAL.Repositories.Common
             return context.Set<T>().Where(predicate).ToList();
         }
 
-        /// <summary>
-        /// Graba todos los cambios realizados en el contexto.
-        /// </summary>
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
-        public void BeginTransaction()
-        {
-            contextTransaction = context.Database.BeginTransaction();
-        }
-
-        public void Rollback()
-        {
-            contextTransaction?.Rollback();
-        }
-
-        public void Commit(string nombreUsuario)
-        {
-            Save();
-
-            contextTransaction?.Commit();
-        }
-
         #endregion
     }
 }

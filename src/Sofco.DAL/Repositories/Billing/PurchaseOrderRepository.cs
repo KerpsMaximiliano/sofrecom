@@ -163,5 +163,14 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.PurchaseOrders.Any(x => x.Id != id && x.Number.ToLowerInvariant().Equals(number.ToLowerInvariant()));
         }
+
+        public bool HasWorkflowStarted(int purchaseOrderId)
+        {
+            var histories = context.PurchaseOrderHistories
+                .Where(x => x.PurchaseOrderId == purchaseOrderId)
+                .ToList();
+
+            return histories.Any(x => x.To != PurchaseOrderStatus.Draft);
+        }
     }
 }

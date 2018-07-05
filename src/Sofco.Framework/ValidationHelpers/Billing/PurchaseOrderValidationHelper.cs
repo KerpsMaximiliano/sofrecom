@@ -151,5 +151,20 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.PurchaseOrder.CannotChangeStatus);
             }
         }
+
+        public static void Delete(Response response, PurchaseOrder purchaseOrder, IUnitOfWork unitOfWork)
+        {
+            if (purchaseOrder.Status == PurchaseOrderStatus.Draft)
+            {
+                if (unitOfWork.PurchaseOrderRepository.HasWorkflowStarted(purchaseOrder.Id))
+                {
+                    response.AddError(Resources.Billing.PurchaseOrder.CannotDeleteWithWfStarted);
+                }
+            }
+            else
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CannotDelete);
+            }
+        }
     }
 }
