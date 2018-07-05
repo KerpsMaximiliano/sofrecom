@@ -67,7 +67,7 @@ export class OcStatusRejectComponent implements OnDestroy  {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
-                this.router.navigate(['/billing/purchaseOrders/pendings']);
+              this.router.navigate(['/billing/purchaseOrders/pendings']);
             }, 1000);
         },
         error => {
