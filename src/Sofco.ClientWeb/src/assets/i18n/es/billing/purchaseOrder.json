@@ -23,5 +23,6 @@
     "fileRequired": "El archivo es requerido antes del envio",
     "rejectSuccess": "La orden de compra fue rechazada correctamente",
     "cannotChangeStatus": "Ocurrio un error al cambiar de estado",
-    "dafSuccess": "El proceso de aprobación ha terminado. La orden de compra se encuentra en estado vigente"
+    "dafSuccess": "El proceso de aprobación ha terminado. La orden de compra se encuentra en estado vigente",
+    "delegateSaveSameUserError": "No se puede delegar al mismo usuario responsable."
 } 

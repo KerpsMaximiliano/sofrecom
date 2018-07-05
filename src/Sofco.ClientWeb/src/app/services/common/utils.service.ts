@@ -27,4 +27,12 @@ export class UtilsService {
   getAreas() {
     return this.http.get<any>(`${this.apiUrl}/areas`);
   }
+
+  getSectors() {
+    return this.http.get<any>(`${this.apiUrl}/sectors`);
+  }
+
+  getUserDelegateTypes() {
+    return this.http.get<any>(`${this.apiUrl}/userDelegateTypes`);
+  }
 }

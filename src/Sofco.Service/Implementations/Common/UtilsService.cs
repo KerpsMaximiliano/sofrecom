@@ -1,6 +1,11 @@
-﻿using Sofco.Core.Services.Common;
+﻿using System;
+using Sofco.Core.Services.Common;
 using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 
@@ -8,11 +13,17 @@ namespace Sofco.Service.Implementations.Common
 {
     public class UtilsService : IUtilsService
     {
+        private readonly IUserData userData;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public UtilsService(IUnitOfWork unitOfWork)
+        private readonly IMapper mapper;
+
+        public UtilsService(IUnitOfWork unitOfWork, IUserData userData, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.userData = userData;
+            this.mapper = mapper;
         }
 
         public IList<Currency> GetCurrencies()
@@ -25,9 +36,22 @@ namespace Sofco.Service.Implementations.Common
             return unitOfWork.UtilsRepository.GetPaymentTerms();
         }
 
-        public IList<Sector> GetSectors()
+        public IList<SectorModel> GetSectors()
         {
-            return unitOfWork.UtilsRepository.GetSectors();
+            var data = unitOfWork.UtilsRepository.GetSectors().ToList();
+
+            return Translate(data).OrderBy(x => x.Text).ToList();
+        }
+
+        public IList<SectorModel> GetSectorsByCurrentUser()
+        {
+            var currentuser = userData.GetCurrentUser();
+
+            var data = unitOfWork.UtilsRepository.GetSectors()
+                .Where(s => s.ResponsableUserId == currentuser.Id)
+                .ToList();
+
+            return Translate(data).OrderBy(x => x.Text).ToList();
         }
 
         public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
@@ -59,9 +83,34 @@ namespace Sofco.Service.Implementations.Common
             }
         }
 
-        public IList<Area> GetAreas()
+        public IList<AreaModel> GetAreas()
         {
-            return unitOfWork.UtilsRepository.GetAreas();
+            var data = unitOfWork.UtilsRepository.GetAreas().ToList();
+
+            return Translate(data).OrderBy(x => x.Text).ToList();
+        }
+
+        public IList<AreaModel> GetAreasByCurrentUser()
+        {
+            var currentuser = userData.GetCurrentUser();
+
+            var areas = unitOfWork.UtilsRepository.GetAreas()
+                .Where(s => s.ResponsableUserId == currentuser.Id)
+                .ToList();
+
+            return Translate(areas).OrderBy(x => x.Text).ToList();
+        }
+
+        public List<object> GetUserDelegateType()
+        {
+            var enumVals = new List<object>();
+
+            foreach (var item in Enum.GetValues(typeof(UserDelegateType)))
+            {
+                enumVals.Add(new { Id = (int)item, Text = item.ToString()});
+            }
+
+            return enumVals;
         }
 
         public IList<DocumentType> GetDocumentTypes()
@@ -77,6 +126,16 @@ namespace Sofco.Service.Implementations.Common
         public IList<Province> GetProvinces()
         {
             return unitOfWork.UtilsRepository.GetProvinces();
+        }
+
+        private List<SectorModel> Translate(List<Sector> data)
+        {
+            return mapper.Map<List<Sector>, List<SectorModel>>(data);
+        }
+
+        private List<AreaModel> Translate(List<Area> data)
+        {
+            return mapper.Map<List<Area>, List<AreaModel>>(data);
         }
     }
 }
