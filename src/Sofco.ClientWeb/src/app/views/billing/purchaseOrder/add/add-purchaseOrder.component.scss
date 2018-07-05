@@ -11,3 +11,21 @@
     cursor: pointer;
     color: #337ab7;
 }
+
+.export-file.half {
+    width: 50%;
+}
+
+.export-file.full {
+    width: 100%;
+}
+
+.file-buttons{
+    display: -webkit-box;
+}
+
+.remove-file {
+    background-color: #ea394c;
+    color: #FFFFFF;
+    width: 50%;
+}

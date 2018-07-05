@@ -19,8 +19,18 @@
 </div>
     
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="alert alert-info" *ngIf="!alertDisable">
-        {{'billing.purchaseOrder.fileMissing' | translate }}
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="alert alert-info" *ngIf="!alertDisable">
+                {{'billing.purchaseOrder.fileMissing' | translate }}
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="btn-right">
+                <oc-status-delete [ocId]="form.model.id" [status]="form.model.status"></oc-status-delete>
+                <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -36,7 +46,7 @@
             </div>
         </div>
         <div class="col-lg-5">
-            <div class="m-t-lg" *ngIf="showUploader">
+            <div class="m-t-lg m-b-lg" *ngIf="showUploader && (!fileId || fileId <= 0)">
                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
 
                 <div class="uploader-margin-top">
@@ -54,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="m-t-lg" *ngIf="fileName && fileName !=''">
+            <div *ngIf="fileName && fileName !=''">
                 <div class="file-box">
                     <div class="file">
                         <div class="icon"><i class="fa fa-file"></i></div>
@@ -63,9 +73,16 @@
                             <br>
                             <small>{{'billing.invoice.createdAt' | translate }}: {{ creationDate }}</small>
                         </div>
-                        <div class="file-name export-file text-center pointer" (click)="exportExcel()">
-                            <i class="fa fa-download"></i>
-                            {{ 'ACTIONS.export' | translate }}
+                        <div class="file-buttons">  
+                            <div class="file-name export-file text-center pointer half" (click)="exportExcel()">
+                                <i class="fa fa-download"></i>
+                                {{ 'ACTIONS.export' | translate }}
+                            </div>
+                            
+                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()" *ngIf="canDelete()">
+                                <i class="fa fa-trash"></i>
+                                {{ 'ACTIONS.DELETE' | translate }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,4 +92,8 @@
 </div>
 
 <pdf-viewer #pdfViewer></pdf-viewer>
-     
+
+<ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>
+    

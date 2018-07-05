@@ -6,6 +6,8 @@ import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { PurchaseOrderStatus } from "app/models/enums/purchaseOrderStatus";
 
 declare var $: any;
 
@@ -19,6 +21,16 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('pdfViewer') pdfViewer;
+
+    @ViewChild('confirmDeleteFileModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmDeleteFileModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     addSubscrip: Subscription;
 
@@ -59,7 +71,8 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
 
-                this.form.model.id = response.data.id
+                this.form.model.id = response.data.id;
+                this.form.model.status = response.data.status;
                 this.uploaderConfig();
 
                 this.alertDisable = false;
@@ -117,5 +130,27 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             },
             err => this.errorHandlerService.handleErrors(err));
         }
+    }
+
+    deleteFile(){
+        this.confirmModal.hide();
+        this.messageService.showLoading();
+
+        this.purchaseOrderService.deleteFile(this.form.model.id).subscribe(response => {
+            if(response.messages) this.messageService.showMessages(response.messages);
+
+            this.fileId = null;
+            this.fileName = null;
+
+            this.messageService.closeLoading();
+        },
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err)
+        });
+    }
+
+    canDelete(){
+        return this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject;
     }
 } 
