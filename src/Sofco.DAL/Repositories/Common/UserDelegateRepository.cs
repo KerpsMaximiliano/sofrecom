@@ -34,7 +34,7 @@ namespace Sofco.DAL.Repositories.Common
 
         public UserDelegate Save(UserDelegate userDelegate)
         {
-            var storedItem = GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            var storedItem = GetStored(userDelegate);
 
             if (storedItem != null)
             {
@@ -74,12 +74,27 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        private UserDelegate GetStored(UserDelegate userDelegate)
+        {
+            return userDelegate.Type != UserDelegateType.Solfac 
+                ? GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type) 
+                : GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+        }
+
         private UserDelegate GetByServiceIdAndUserId(Guid? serviceId, int userId, UserDelegateType type)
         {
             return UserDelegateSet
                 .SingleOrDefault(s => s.ServiceId == serviceId 
                 && s.UserId == userId
                 && s.Type == type);
+        }
+
+        private UserDelegate GetBySourceIdAndUserId(int? sourceId, int userId, UserDelegateType type)
+        {
+            return UserDelegateSet
+                .SingleOrDefault(s => s.SourceId == sourceId
+                                      && s.UserId == userId
+                                      && s.Type == type);
         }
     }
 }

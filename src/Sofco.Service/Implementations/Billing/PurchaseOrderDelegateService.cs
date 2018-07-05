@@ -6,6 +6,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
@@ -20,38 +21,71 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUserData userData;
         private readonly IAreaData areaData;
         private readonly ISectorData sectorData;
+        private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
+        private readonly ILogMailer<PurchaseOrderDelegateService> logger;
         private List<UserDelegateType> types;
         private Dictionary<UserDelegateType, Action<PurchaseOrderDelegateModel>> resolverSourceDicts;
 
-        public PurchaseOrderDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData)
+        public PurchaseOrderDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData, ILogMailer<PurchaseOrderDelegateService> logger, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.userData = userData;
             this.areaData = areaData;
             this.sectorData = sectorData;
+            this.logger = logger;
+            this.sessionManager = sessionManager;
             SetTypes();
             SetResolverSourceDicts();
         }
 
         public Response<List<PurchaseOrderDelegateModel>> GetAll()
         {
-            var data = unitOfWork.UserDelegateRepository.GetByTypes(types);
+            var response = new Response<List<PurchaseOrderDelegateModel>>();
+            try
+            {
+                var data = unitOfWork.UserDelegateRepository.GetByTypes(types);
 
-            var result = ResolveData(Translate(data));
+                response.Data = ResolveData(Translate(data));
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.GeneralError);
+                logger.LogError(e);
+            }
 
-            return new Response<List<PurchaseOrderDelegateModel>>{Data = result};
+            return response;
         }
 
-        public Response<UserDelegate> Save(UserDelegate userDelegate)
+        public Response<PurchaseOrderDelegateModel> Save(PurchaseOrderDelegateModel userDelegate)
         {
-            throw new NotImplementedException();
+            var response = ValidateSave(userDelegate);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                userDelegate.CreatedUser = sessionManager.GetUserName();
+
+                unitOfWork.UserDelegateRepository.Save(Translate(userDelegate));
+
+                response.Data = userDelegate;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         public Response Delete(int userDeletegateId)
         {
-            throw new NotImplementedException();
+            unitOfWork.UserDelegateRepository.Delete(userDeletegateId);
+
+            return new Response();
         }
 
         private void SetTypes()
@@ -74,9 +108,14 @@ namespace Sofco.Service.Implementations.Billing
             };
         }
 
-        private List<PurchaseOrderDelegateModel> Translate(List<UserDelegate> userDelegates)
+        private List<PurchaseOrderDelegateModel> Translate(List<UserDelegate> data)
         {
-            return mapper.Map<List<UserDelegate>, List<PurchaseOrderDelegateModel>>(userDelegates);
+            return mapper.Map<List<UserDelegate>, List<PurchaseOrderDelegateModel>>(data);
+        }
+
+        private UserDelegate Translate(PurchaseOrderDelegateModel model)
+        {
+            return mapper.Map<PurchaseOrderDelegateModel, UserDelegate>(model);
         }
 
         private List<PurchaseOrderDelegateModel> ResolveData(List<PurchaseOrderDelegateModel> userDelegates)
@@ -136,6 +175,57 @@ namespace Sofco.Service.Implementations.Billing
 
                 userDelegate.ResponsableName = responsable?.Name;
             }
+        }
+
+        private Response<PurchaseOrderDelegateModel> ValidateSave(PurchaseOrderDelegateModel model)
+        {
+            var respone = new Response<PurchaseOrderDelegateModel>();
+
+            var validResponse = ValidateSameUser(model);
+            if (validResponse.HasErrors())
+            {
+                respone.AddMessages(validResponse.Messages);
+            }
+
+            return respone;
+        }
+
+        private Response ValidateSameUser(PurchaseOrderDelegateModel model)
+        {
+            var response = new Response();
+
+            var isValid = true;
+
+            if (model.Type == UserDelegateType.PurchaseOrderCommercial)
+            {
+                var item = areaData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
+
+                if (item == null) return response;
+
+                if (item.ResponsableUserId == model.UserId)
+                {
+                    isValid = false;
+                }
+            }
+
+            if (model.Type == UserDelegateType.PurchaseOrderOperation)
+            {
+                var item = sectorData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
+
+                if (item == null) return response;
+
+                if (item.ResponsableUserId == model.UserId)
+                {
+                    isValid = false;
+                }
+            }
+
+            if (!isValid)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.DelegateSameUserError);
+            }
+
+            return response;
         }
     }
 }

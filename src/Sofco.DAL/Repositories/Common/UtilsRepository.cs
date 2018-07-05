@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Utils;
@@ -58,7 +59,10 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<Sector> GetSectors()
         {
-            return _context.Sectors.ToList().AsReadOnly();
+            return _context.Sectors
+                .Include(x => x.ResponsableUser)
+                .ToList()
+                .AsReadOnly();
         }
 
         public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
@@ -68,7 +72,10 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<Area> GetAreas()
         {
-            return _context.Areas.ToList().AsReadOnly();
+            return _context.Areas
+                .Include(x => x.ResponsableUser)
+                .ToList()
+                .AsReadOnly();
         }
 
         public IList<SoftwareLaw> GetSoftwareLaws()

@@ -156,6 +156,9 @@
   <data name="DatesRequired" xml:space="preserve">
     <value>billing/purchaseOrder.datesRequired</value>
   </data>
+  <data name="DelegateSameUserError" xml:space="preserve">
+    <value>billing/purchaseOrder.delegateSaveSameUserError</value>
+  </data>
   <data name="DraftSuccess" xml:space="preserve">
     <value>billing/purchaseOrder.draftSuccess</value>
   </data>

@@ -1,15 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { I18nService } from 'app/services/common/i18n.service';
 import { DataTableService } from 'app/services/common/datatable.service';
-import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
-import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
 import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
-import { UtilsService } from '../../../../services/common/utils.service';
-declare var $: any;
 
 @Component({
     selector: 'app-purchase-order-delegate',
@@ -17,8 +12,6 @@ declare var $: any;
   })
 
 export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
-
-    private nullId = '';
 
     private subscription: Subscription;
 
@@ -39,15 +32,12 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     constructor(private purchaseOrderDelegateService: PurchaseOrderDelegateService,
-        private utilService: UtilsService,
         private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
-        private messageService: MessageService,
         private router: Router) {
     }
 
     ngOnInit() {
-        this.getAreas();
         this.getDelegates();
         this.initTable();
     }
@@ -66,15 +56,6 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
         });
     }
 
-    getAreas() {
-        this.subscription = this.utilService.getAreas().subscribe(response => {
-            this.areas = response;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
-        });
-    }
-
     getDelegates() {
         this.subscription = this.purchaseOrderDelegateService.getAll().subscribe(response => {
             this.delegates = response.data;
@@ -86,7 +67,7 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
     }
 
     goToAdd() {
-        // this.router.navigate(['/billing/solfac/delegate/edit']);
+        this.router.navigate(['/billing/purchaseOrders/delegate/edit']);
     }
 
     showConfirmDelete(item: any) {
@@ -96,11 +77,11 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
 
     processDelete() {
         this.confirmModal.hide();
-        // this.subscription = this.solfacDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
-        //     this.getDelegates();
-        // },
-        // err => {
-        //     this.errorHandlerService.handleErrors(err);
-        // });
+        this.subscription = this.purchaseOrderDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
+            this.getDelegates();
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 }

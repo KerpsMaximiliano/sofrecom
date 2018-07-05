@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.Billing;
-using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -9,7 +8,7 @@ namespace Sofco.Core.Services.Billing
     {
         Response<List<PurchaseOrderDelegateModel>> GetAll();
 
-        Response<UserDelegate> Save(UserDelegate userDelegate);
+        Response<PurchaseOrderDelegateModel> Save(PurchaseOrderDelegateModel userDelegate);
 
         Response Delete(int userDeletegateId);
     }
