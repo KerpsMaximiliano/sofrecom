@@ -337,6 +337,34 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            PurchaseOrderValidationHelper.Delete(response, purchaseOrder, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.PurchaseOrderRepository.Delete(purchaseOrder);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.PurchaseOrder.DeleteSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             var history = new PurchaseOrderHistory

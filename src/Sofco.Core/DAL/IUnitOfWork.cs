@@ -77,6 +77,9 @@ namespace Sofco.Core.DAL
         IHolidayRepository HolidayRepository { get; }
         #endregion
 
+        void BeginTransaction();
+        void Rollback();
+        void Commit();
         void Save();
     }
 }

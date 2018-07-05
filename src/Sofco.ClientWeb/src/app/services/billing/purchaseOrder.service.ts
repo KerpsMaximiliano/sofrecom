@@ -31,6 +31,10 @@ export class PurchaseOrderService {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}`);
   }
 
+  delete(id) {
+    return this.http.delete<any>(`${this.baseUrl}/purchaseOrders/${id}`);
+  }
+
   add(model) {
     return this.http.post<any>(`${this.baseUrl}/purchaseOrders`, model);
   }

@@ -27,5 +27,7 @@
     "delegateSaveSameUserError": "No se puede delegar al mismo usuario responsable.",
     "closeSuccess": "La orden de compra fue cerrada exitosamente",
     "numberAlreadyExist": "EL numbero ya existe",
-    "dafSuccess": "El proceso de aprobación ha terminado. La orden de compra se encuentra en estado vigente"
+    "deleteSuccess": "La orden de compra fue eliminada exitosamente",
+    "cannotDeleteWithWfStarted": "No se puede eliminar porque ya se ha iniciado el flujo de aprobacion",
+    "cannotDelete": "No se puede eliminar en el estado actual"
 } 

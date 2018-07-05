@@ -17,7 +17,7 @@
         </ol>
     </div>
 </div>
-    
+     
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -28,6 +28,7 @@
 
             <div class="btn-right">
                 <oc-status-reject [ocId]="form.model.id" [status]="form.model.status"></oc-status-reject>
+                <oc-status-delete [ocId]="form.model.id" [status]="form.model.status"></oc-status-delete>
                 <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
                 <oc-status-compliance [ocId]="form.model.id" [status]="form.model.status"></oc-status-compliance>
                 <oc-status-comercial [ocId]="form.model.id" [status]="form.model.status"></oc-status-comercial>
@@ -57,7 +58,7 @@
                         </div>
 
                         <div class="col-sm-5">
-                            <div class="m-t-lg m-b-lg" *ngIf="form.model.status == 4 && (!form.model.fileId || form.model.fileId <= 0)">
+                            <div class="m-t-lg m-b-lg" *ngIf="canDelete() && (!form.model.fileId || form.model.fileId <= 0)">
                                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
                     
                                 <div class="uploader-margin-top">
@@ -85,12 +86,12 @@
                                             <small>{{'billing.invoice.createdAt' | translate }}: {{ form?.model.creationDate }}</small>
                                         </div>
                                         <div class="file-buttons"> 
-                                            <div class="file-name export-file text-center pointer" [ngClass]="form?.model.status != 4 ? 'full' : 'half'" (click)="exportExcel()">
+                                            <div class="file-name export-file text-center pointer" [ngClass]="canDelete() ? 'half' : 'full'" (click)="exportExcel()">
                                                 <i class="fa fa-download"></i>
                                                 {{ 'ACTIONS.export' | translate }}
                                             </div>
                 
-                                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()" *ngIf="form.model.status == 4">
+                                            <div class="file-name remove-file text-center pointer" (click)="confirmDeleteFileModal.show()" *ngIf="canDelete()">
                                                 <i class="fa fa-trash"></i>
                                                 {{ 'ACTIONS.DELETE' | translate }}
                                             </div>

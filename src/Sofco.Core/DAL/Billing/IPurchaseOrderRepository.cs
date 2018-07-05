@@ -26,5 +26,6 @@ namespace Sofco.Core.DAL.Billing
         ICollection<PurchaseOrderHistory> GetHistories(int id);
         IList<PurchaseOrder> GetPendings();
         bool ExistNumber(string number, int domainId);
+        bool HasWorkflowStarted(int purchaseOrderId);
     }
 }

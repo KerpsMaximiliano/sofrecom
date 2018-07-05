@@ -61,6 +61,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = purchaseOrderService.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpDelete("{id}/file")]
         public IActionResult DeleteFile(int id)
         {
