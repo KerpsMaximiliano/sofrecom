@@ -4,6 +4,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
+using Sofco.Model.Enums;
 using Sofco.Model.Utils;
 using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
 
@@ -11,11 +12,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 {
     public static class PurchaseOrderValidationHelper
     {
-        public static void ValidateNumber(Response response, PurchaseOrderModel domain)
+        public static void ValidateNumber(Response response, PurchaseOrderModel domain, IUnitOfWork unitOfWork)
         {
             if (string.IsNullOrWhiteSpace(domain.Number))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.NumberIsRequired);
+            }
+            else if(unitOfWork.PurchaseOrderRepository.ExistNumber(domain.Number, domain.Id))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NumberAlreadyExist);
             }
         }
 
@@ -136,6 +141,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (details.Any(x => x.Adjustment < -99999999 || x.Adjustment == 0 || x.Adjustment > 99999999))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
+            }
+        }
+
+        public static void Close(Response response, PurchaseOrder purchaseOrder)
+        {
+            if (purchaseOrder.Status != PurchaseOrderStatus.Valid &&
+                purchaseOrder.Status != PurchaseOrderStatus.Consumed)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CannotChangeStatus);
             }
         }
     }

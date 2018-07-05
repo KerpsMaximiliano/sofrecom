@@ -1,0 +1,48 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.purchaseOrder.ocPendings' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                {{'billing.purchaseOrder.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'billing.purchaseOrder.pendings' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <table class="table table-striped" id="purchaseOrderTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
+                        <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
+                        <th>{{'billing.purchaseOrder.fields.area' | translate }}</th>
+                        <th>{{'billing.purchaseOrder.fields.receptionDate' | translate }}</th>
+                        <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let purchaseOrder of model" (click)="goToDetail(purchaseOrder)" class="pointer">
+                        <td>{{ purchaseOrder.number }}</td>
+                        <td>{{ purchaseOrder.client }}</td>
+                        <td>{{ purchaseOrder.area }}</td>
+                        <td>{{ purchaseOrder.receptionDate | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center"> 
+                            <label class="label label-oc-{{purchaseOrder.status}}">{{ getStatus(purchaseOrder) }}</label> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>       
+        </div>
+    </div>
+</div>

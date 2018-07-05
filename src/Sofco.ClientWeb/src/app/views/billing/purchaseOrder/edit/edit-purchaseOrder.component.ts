@@ -84,6 +84,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input').attr('disabled', 'disabled');
                     $('#customer-select select').attr('disabled', 'disabled');
+                    $('#analytics').attr('disabled', 'disabled');
                     $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
                     this.form.currencyDisabled = true;
@@ -198,7 +199,11 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/billing/purchaseOrders']);
+        this.router.navigate(['/billing/purchaseOrders/pendings']);
+    }
+
+    goToQuery(){
+        this.router.navigate(['/billing/purchaseOrders/query']);
     }
 
     getStatus(){

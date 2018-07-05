@@ -1,0 +1,10 @@
+<button class="btn btn-success btn-outline dim" (click)="showModal()" *ngIf="canSend()"> 
+    {{ 'ACTIONS.close' | translate }} <i class="fa fa-times-circle"></i>
+</button>
+
+<ng2-modal [config]="closeModalConfig" #closeModal (accept)="send()" [isLoading]="isLoading">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="closeComments" rows="10" [(ngModel)]="closeComments"></textarea>
+    </div>
+</ng2-modal> 

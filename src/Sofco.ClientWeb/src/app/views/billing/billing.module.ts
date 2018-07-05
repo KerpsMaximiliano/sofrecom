@@ -91,6 +91,8 @@ import { OcStatusRejectComponent } from 'app/views/billing/purchaseOrder/workflo
 import { OcStatusDafComponent } from 'app/views/billing/purchaseOrder/workflow/daf/oc-daf.component';
 import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/history/oc-history.component';
 import { PurchaseOrderDelegateEditComponent } from './purchaseOrder/purchase-order-delegate/edit/purchase-order-delegate-edit.component';
+import { OcStatusCloseComponent } from 'app/views/billing/purchaseOrder/workflow/close/oc-close.component';
+import { PurchaseOrderPendingsComponent } from 'app/views/billing/purchaseOrder/pendings/oc-pendings.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -104,7 +106,8 @@ import { PurchaseOrderDelegateEditComponent } from './purchaseOrder/purchase-ord
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
-                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent, PurchaseOrderDelegateEditComponent],
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent, PurchaseOrderDelegateEditComponent,
+                 OcStatusCloseComponent, PurchaseOrderPendingsComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 

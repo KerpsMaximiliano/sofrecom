@@ -37,7 +37,5 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public string CreationDate { get; set; }
 
         public IList<AmmountDetailModel> Details { get; set; }
-
-        public decimal Balance { get; set; }
     }
 }

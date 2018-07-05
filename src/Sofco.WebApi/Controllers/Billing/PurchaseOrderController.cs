@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
-using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
 using Sofco.Model.DTO;
@@ -112,14 +110,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(response);
         }
 
-        [HttpPost("search")]
-        public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
-        {
-            var response = purchaseOrderService.Search(parameters);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("status")]
         public IActionResult GetStatus()
         {
@@ -147,6 +137,24 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult ChangeStatus(int id, [FromBody]PurchaseOrderStatusParams model)
         {
             var response = purchaseOrderService.ChangeStatus(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/close")]
+        public IActionResult Close(int id, [FromBody]PurchaseOrderStatusParams model)
+        {
+            var response = purchaseOrderService.Close(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet]
+        [Route("pendings")]
+        public IActionResult Pendings()
+        {
+            var response = purchaseOrderService.GetPendings();
 
             return this.CreateResponse(response);
         }

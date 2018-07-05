@@ -107,7 +107,16 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billing/purchaseOrder.comercialManagerIsRequired.
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.closeSuccess.
+        /// </summary>
+        public static string CloseSuccess {
+            get {
+                return ResourceManager.GetString("CloseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.comercialManagerIsRequired.
         /// </summary>
         public static string ComercialManagerIsRequired {
             get {
@@ -238,6 +247,15 @@ namespace Sofco.Resources.Billing {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.numberAlreadyExist.
+        /// </summary>
+        public static string NumberAlreadyExist {
+            get {
+                return ResourceManager.GetString("NumberAlreadyExist", resourceCulture);
             }
         }
         

@@ -9,12 +9,10 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
-using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Relationships;
@@ -116,7 +114,7 @@ namespace Sofco.Service.Implementations.Billing
                 var history = GetHistory(domain, new PurchaseOrderStatusParams());
                 history.To = PurchaseOrderStatus.Draft;
 
-                unitOfWork.PurchaseOrderRepository.AddHistory(history);
+                domain.Histories.Add(history);
 
                 domain.Status = PurchaseOrderStatus.Draft;
 
@@ -270,6 +268,75 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.PurchaseOrderRepository.GetHistories(id);
         }
 
+        public Response Close(int id, PurchaseOrderStatusParams model)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            PurchaseOrderValidationHelper.Close(response, purchaseOrder);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                purchaseOrder.Status = PurchaseOrderStatus.Closed;
+                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.PurchaseOrder.CloseSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<PurchaseOrderPendingModel>> GetPendings()
+        {
+            var response = new Response<IList<PurchaseOrderPendingModel>>
+            {
+                Data = new List<PurchaseOrderPendingModel>()
+            };
+
+            var user = userData.GetCurrentUser();
+
+            var purchaseOrders = unitOfWork.PurchaseOrderRepository.GetPendings();
+
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(user.Email);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(user.Email);
+            var isCompliance = unitOfWork.UserRepository.HasComplianceGroup(user.Email);
+
+            foreach (var purchaseOrder in purchaseOrders)
+            {
+                if (isCdg)
+                {
+                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+                    continue;
+                }
+
+                if (purchaseOrder.Status == PurchaseOrderStatus.CompliancePending && isCompliance)
+                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+
+                if (purchaseOrder.Status == PurchaseOrderStatus.ComercialPending && purchaseOrder.Area?.ResponsableUserId == user.Id)
+                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+
+                if (purchaseOrder.Status == PurchaseOrderStatus.OperativePending && purchaseOrder.PurchaseOrderAnalytics.Any(s => s.Analytic?.Sector?.ResponsableUserId == user.Id))
+                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+
+                if (purchaseOrder.Status == PurchaseOrderStatus.DafPending && isDaf)
+                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+            }
+
+            return response;
+        }
+
         private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             var history = new PurchaseOrderHistory
@@ -335,21 +402,6 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<List<PurchaseOrderSearchResult>> Search(SearchPurchaseOrderParams parameters)
-        {
-            var result = unitOfWork.PurchaseOrderRepository.Search(parameters);
-
-            var response = new Response<List<PurchaseOrderSearchResult>>
-            {
-                Data = result.Select(x => new PurchaseOrderSearchResult(x)).ToList()
-            };
-
-            if (!result.Any())
-                response.AddWarning(Resources.Billing.PurchaseOrder.SearchEmpty);
-
-            return response;
-        }
-
         public Response DeleteFile(int id)
         {
             var response = new Response();
@@ -401,9 +453,9 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
         }
 
-        private static void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
+        private void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
         {
-            PurchaseOrderValidationHelper.ValidateNumber(response, model);
+            PurchaseOrderValidationHelper.ValidateNumber(response, model, unitOfWork);
             PurchaseOrderValidationHelper.ValidateAnalytic(response, model);
             PurchaseOrderValidationHelper.ValidateClient(response, model);
             PurchaseOrderValidationHelper.ValidateArea(response, model);

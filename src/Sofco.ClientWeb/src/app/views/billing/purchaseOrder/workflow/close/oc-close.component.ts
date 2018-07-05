@@ -9,15 +9,15 @@ import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service
 import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
-  selector: 'oc-status-compliance',
-  templateUrl: './oc-compliance.component.html'
+  selector: 'oc-status-close',
+  templateUrl: './oc-close.component.html'
 })
-export class OcStatusComplianceComponent implements OnDestroy  {
+export class OcStatusCloseComponent implements OnDestroy  {
 
-  @ViewChild('complianceModal') modal;
-  public complianceModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+  @ViewChild('closeModal') modal;
+  public closeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "ACTIONS.confirmTitle",
-      "complianceModal",
+      "closeModal",
       true,
       true,
       "ACTIONS.ACCEPT",
@@ -29,6 +29,7 @@ export class OcStatusComplianceComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
+  public closeComments: string;
   public isLoading: boolean = false;
 
   constructor(private purchaseOrderService: PurchaseOrderService,
@@ -42,7 +43,8 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.CompliancePending && this.menuService.hasFunctionality('PUROR', 'COMPL')){
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'CLOSE') && 
+                        (this.status == PurchaseOrderStatus.Valid || this.status == PurchaseOrderStatus.Consumed)){
         return true;
     }
 
@@ -56,14 +58,14 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   send(){
     this.isLoading = true;
 
-    this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
+    this.subscrip = this.purchaseOrderService.close(this.ocId, { comments: this.closeComments, mustReject: false}).subscribe(
         data => {
             this.modal.hide();
             this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
-                this.router.navigate(['/billing/purchaseOrders/pendings']);
+              this.router.navigate(['/billing/purchaseOrders/pendings']);
             }, 1000);
         },
         error => {
