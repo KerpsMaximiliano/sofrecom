@@ -12,11 +12,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 {
     public static class PurchaseOrderValidationHelper
     {
-        public static void ValidateNumber(Response response, PurchaseOrderModel domain)
+        public static void ValidateNumber(Response response, PurchaseOrderModel domain, IUnitOfWork unitOfWork)
         {
             if (string.IsNullOrWhiteSpace(domain.Number))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.NumberIsRequired);
+            }
+            else if(unitOfWork.PurchaseOrderRepository.ExistNumber(domain.Number, domain.Id))
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.NumberAlreadyExist);
             }
         }
 

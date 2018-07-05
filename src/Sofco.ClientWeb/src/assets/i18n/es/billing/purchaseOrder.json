@@ -24,5 +24,6 @@
     "rejectSuccess": "La orden de compra fue rechazada correctamente",
     "cannotChangeStatus": "Ocurrio un error al cambiar de estado",
     "closeSuccess": "La orden de compra fue cerrada exitosamente",
+    "numberAlreadyExist": "EL numbero ya existe",
     "dafSuccess": "El proceso de aprobación ha terminado. La orden de compra se encuentra en estado vigente"
 } 

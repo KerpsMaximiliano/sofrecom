@@ -177,6 +177,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>billing/purchaseOrder.notFound</value>
   </data>
+  <data name="NumberAlreadyExist" xml:space="preserve">
+    <value>billing/purchaseOrder.numberAlreadyExist</value>
+  </data>
   <data name="NumberIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.numberIsRequired</value>
   </data>

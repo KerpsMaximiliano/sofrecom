@@ -243,6 +243,10 @@
             "sendToComercial": "Enviar a Comercial",
             "sendToCompliance": "Enviar a Compliance",
             "sendToDaf": "Enviar a DAF",
+            "goToPendings": "Ir a pendientes",
+            "ocPendings": "Ordenes de compra pendientes",
+            "ocPendingsShortTitle": "Ordenes Pendientes",
+            "pendings": "Pendientes",
             "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
             "fields": {
                 "number": "Numero",

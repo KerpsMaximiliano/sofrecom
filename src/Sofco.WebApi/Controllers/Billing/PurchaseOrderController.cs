@@ -110,14 +110,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(response);
         }
 
-        [HttpPost("search")]
-        public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
-        {
-            var response = purchaseOrderService.Search(parameters);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("status")]
         public IActionResult GetStatus()
         {
@@ -154,6 +146,15 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult Close(int id, [FromBody]PurchaseOrderStatusParams model)
         {
             var response = purchaseOrderService.Close(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet]
+        [Route("pendings")]
+        public IActionResult Pendings()
+        {
+            var response = purchaseOrderService.GetPendings();
 
             return this.CreateResponse(response);
         }

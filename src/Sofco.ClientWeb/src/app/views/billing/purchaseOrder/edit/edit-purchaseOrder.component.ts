@@ -199,7 +199,11 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/billing/purchaseOrders']);
+        this.router.navigate(['/billing/purchaseOrders/pendings']);
+    }
+
+    goToQuery(){
+        this.router.navigate(['/billing/purchaseOrders/query']);
     }
 
     getStatus(){

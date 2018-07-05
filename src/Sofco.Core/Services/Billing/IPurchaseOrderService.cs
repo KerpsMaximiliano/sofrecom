@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
@@ -18,8 +17,6 @@ namespace Sofco.Core.Services.Billing
         Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName);
 
         Response<PurchaseOrder> GetById(int id);
-
-        Response<List<PurchaseOrderSearchResult>> Search(SearchPurchaseOrderParams parameters);
 
         Response DeleteFile(int id);
 
@@ -38,5 +35,7 @@ namespace Sofco.Core.Services.Billing
         ICollection<PurchaseOrderHistory> GetHistories(int id);
 
         Response Close(int id, PurchaseOrderStatusParams model);
+        
+        Response<IList<PurchaseOrderPendingModel>> GetPendings();
     }
 }

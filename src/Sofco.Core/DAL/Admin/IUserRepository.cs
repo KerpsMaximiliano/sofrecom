@@ -41,5 +41,6 @@ namespace Sofco.Core.DAL.Admin
         User GetByEmail(string email);
 
         IList<User> GetAuthorizers();
+        bool HasComplianceGroup(string userEmail);
     }
 }

@@ -242,6 +242,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.numberAlreadyExist.
+        /// </summary>
+        public static string NumberAlreadyExist {
+            get {
+                return ResourceManager.GetString("NumberAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.numberIsRequired.
         /// </summary>
         public static string NumberIsRequired {

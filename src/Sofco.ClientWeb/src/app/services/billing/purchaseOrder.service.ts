@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
 
@@ -14,6 +13,10 @@ export class PurchaseOrderService {
 
   getAll() {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders`);
+  } 
+
+  getPendings() {
+    return this.http.get<any>(`${this.baseUrl}/purchaseOrders/pendings`);
   } 
 
   getStatuses() {

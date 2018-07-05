@@ -107,25 +107,6 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(detail).Property("Balance").IsModified = true;
         }
 
-        public ICollection<PurchaseOrder> Search(SearchPurchaseOrderParams parameters)
-        {
-            IQueryable<PurchaseOrder> query = context.PurchaseOrders
-                .Include(x => x.AmmountDetails)
-                    .ThenInclude(x => x.Currency)
-                .Include(x => x.File);
-
-            if (parameters != null)
-            {
-                if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                    query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
-
-                if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
-                    query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
-            }
-
-            return query.ToList();
-        }
-
         public void AddPurchaseOrderAnalytic(PurchaseOrderAnalytic purchaseOrderAnalytic)
         {
             context.PurchaseOrderAnalytics.Add(purchaseOrderAnalytic);
@@ -162,6 +143,25 @@ namespace Sofco.DAL.Repositories.Billing
         public ICollection<PurchaseOrderHistory> GetHistories(int id)
         {
             return context.PurchaseOrderHistories.Where(x => x.PurchaseOrderId == id).Include(x => x.User).ToList().AsReadOnly();
+        }
+
+        public IList<PurchaseOrder> GetPendings()
+        {
+            return context.PurchaseOrders.Where(x => x.Status == PurchaseOrderStatus.CompliancePending ||
+                                                     x.Status == PurchaseOrderStatus.ComercialPending ||
+                                                     x.Status == PurchaseOrderStatus.OperativePending ||
+                                                     x.Status == PurchaseOrderStatus.Reject ||
+                                                     x.Status == PurchaseOrderStatus.DafPending)
+                                                .Include(x => x.Area)
+                                                .Include(x => x.PurchaseOrderAnalytics)
+                                                    .ThenInclude(x => x.Analytic)
+                                                        .ThenInclude(x => x.Sector)
+                                                .ToList();
+        }
+
+        public bool ExistNumber(string number, int id)
+        {
+            return context.PurchaseOrders.Any(x => x.Id != id && x.Number.ToLowerInvariant().Equals(number.ToLowerInvariant()));
         }
     }
 }
