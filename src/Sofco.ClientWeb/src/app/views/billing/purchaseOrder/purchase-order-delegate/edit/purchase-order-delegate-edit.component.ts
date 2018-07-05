@@ -32,15 +32,22 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
     private PurchaseOrderOperationId = "3";
     private PurchaseOrderDaf = "4";
 
-    private typeData: any[] = new Array<any>();
     private types: any[] = new Array<any>();
     public typeId: string = null;
+
+    public sourceId: string = null;
 
     private areas: any[] = new Array<any>();
     public areaId: string = null;
 
     private sectors: any[] = new Array<any>();
     public sectorId: string = null;
+
+    private compliances: any[] = new Array<any>();
+    public complianceId: string = null;
+
+    private dafs: any[] = new Array<any>();
+    public dafId: string = null;
 
     public users: any[] = new Array<any>();
     public userId: string = null;
@@ -57,9 +64,12 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.initSourceControl();
         this.getTypes();
         this.getAreas();
         this.getSectors();
+        this.getCompliances();
+        this.getDafs();
         this.getUsers();
     }
 
@@ -71,14 +81,23 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
 
     getTypes() {
         this.subscription = this.utilsService.getUserDelegateTypes().subscribe(data => {
-            this.typeData = data;
             this.types = this.cleanTypeDelgate(data);
             const self = this;
-            this.initSelect2Control(this.types, '#typeControl', 'typeId', function() { self.clearControls(); }, function() { self.clearControls(); });
+            this.initSelect2Control(this.types, '#typeControl', 'typeId', function() {
+                self.clearControls();
+                self.updateSourceControl();
+            }, function() { self.clearControls(); });
         },
         err => {
             this.errorHandlerService.handleErrors(err);
         });
+    }
+
+    initSourceControl() {
+        const self = this;
+        this.initSelect2Control([], '#sourceControl', 'sourceId', function(){
+            self.selectControlCallback();
+        }, function() { self.responsable = null; });
     }
 
     clearControls() {
@@ -90,14 +109,11 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
     }
 
     getAreas() {
-        this.subscription = this.purchaseOrderDelegateService.getAreas().subscribe(data => {
-            this.areas = data;
+        this.subscription = this.purchaseOrderDelegateService.getAreas().subscribe(res => {
+            this.areas = res.data;
             const self = this;
-            this.initSelect2Control(this.areas, '#areaControl', 'areaId', function(){
-                self.responsable = null;
-                const item = self.areas.find(x => x.id == self.areaId);
-                if(item.responsableUser == null) return;
-                self.responsable = item.responsableUser;
+            this.initSelect2Control(res.data, '#areaControl', 'areaId', function(){
+                self.selectControlCallback();
             }, function() { self.responsable = null; });
         },
         err => {
@@ -106,19 +122,63 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
     }
 
     getSectors() {
-        this.subscription = this.purchaseOrderDelegateService.getSectors().subscribe(data => {
-            this.sectors = data;
+        this.subscription = this.purchaseOrderDelegateService.getSectors().subscribe(res => {
+            this.sectors = res.data;
             const self = this;
-            this.initSelect2Control(this.sectors, '#sectorControl', 'sectorId', function(){
-                self.responsable = null;
-                const item = self.sectors.find(x => x.id == self.sectorId);
-                if(item.responsableUser == null) return;
-                self.responsable = item.responsableUser;
+            this.initSelect2Control(res.data, '#sectorControl', 'sectorId', function(){
+                self.selectControlCallback();
             }, function() { self.responsable = null; });
         },
         err => {
             this.errorHandlerService.handleErrors(err);
         });
+    }
+
+    getCompliances() {
+        this.subscription = this.purchaseOrderDelegateService.getCompliances().subscribe(res => {
+            this.compliances = res.data;
+            const self = this;
+            this.initSelect2Control(res.data, '#complianceControl', 'complianceId', function(){
+                self.selectControlCallback();
+            }, function() { self.responsable = null; });
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
+    }
+
+    getDafs() {
+        this.subscription = this.purchaseOrderDelegateService.getDafs().subscribe(res => {
+            this.dafs = res.data;
+            const self = this;
+            this.initSelect2Control(res.data, '#dafControl', 'dafId', function(){
+                self.selectControlCallback();
+            }, function() { self.responsable = null; });
+        },
+        err => {
+            this.errorHandlerService.handleErrors(err);
+        });
+    }
+
+    selectControlCallback() {
+        let data: any[];
+        if(this.typeId == this.PurchaseOrderCompliance){
+            data = this.compliances;
+        }
+        if(this.typeId == this.PurchaseOrderCommercialId){
+            data = this.areas;
+        }
+        if(this.typeId == this.PurchaseOrderOperationId){
+            data = this.sectors;
+        }
+        if(this.typeId == this.PurchaseOrderDaf){
+            data = this.dafs;
+        }
+        const item = data.find(x => x.id == this.sourceId);
+
+        this.responsable = null;
+        if(item.responsableUser == null) return;
+        this.responsable = item.responsableUser;
     }
 
     cleanTypeDelgate(data: any[]) {
@@ -174,16 +234,12 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    showArea(): boolean {
-        return this.typeId === this.PurchaseOrderCommercialId;
-    }
-
-    showSector(): boolean {
-        return this.typeId === this.PurchaseOrderOperationId;
+    showSource(): boolean {
+        return this.typeId != null;
     }
 
     showUser(): boolean {
-        return this.areaId !== null || this.sectorId !== null;
+        return this.sourceId != null;
     }
 
     showSave(): boolean {
@@ -196,8 +252,8 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
 
     save(): void {
         const model = new PurchaseOrderDelegateModel();
-        model.responsableId = this.responsable.id;
-        model.sourceId = this.getSourceId();
+        model.responsableId = this.getResponsableId();
+        model.sourceId = parseInt(this.sourceId);
         model.userId = parseInt(this.userId);
         model.type = this.typeId;
 
@@ -210,11 +266,38 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    getSourceId(): number {
-        if(this.areaId != null) return parseInt(this.areaId);
+    getSourceTitle(): string {
+        const item = this.types.find(x => x.id == this.typeId);
 
-        if(this.sectorId != null) return parseInt(this.sectorId);
+        if(item == null) return "";
 
-        return 0;
+        return item.text;
+    }
+
+    updateSourceControl() {
+        let data: any[];
+        if(this.typeId == this.PurchaseOrderCompliance){
+            data = this.compliances;
+        }
+        if(this.typeId == this.PurchaseOrderCommercialId){
+            data = this.areas;
+        }
+        if(this.typeId == this.PurchaseOrderOperationId){
+            data = this.sectors;
+        }
+        if(this.typeId == this.PurchaseOrderDaf){
+            data = this.dafs;
+        }
+        const options = $('#sourceControl').data('select2').options.options;
+        options.data = this.mapToSelect(data);
+        $('#sourceControl').empty().select2(options);
+    }
+
+    getResponsableId(): number {
+        if(this.typeId == this.PurchaseOrderCompliance || this.typeId == this.PurchaseOrderDaf){
+            return parseInt(this.sourceId);
+        }
+
+        return parseInt(this.responsable.id);
     }
 }

@@ -30,5 +30,13 @@ export class PurchaseOrderDelegateService {
   getSectors() {
     return this.http.get<any>(this.apiUrl + '/sectors');
   }
+
+  getCompliances() {
+    return this.http.get<any>(this.apiUrl + '/compliances');
+  }
+
+  getDafs() {
+    return this.http.get<any>(this.apiUrl + '/dafs');
+  }
 }
 

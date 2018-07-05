@@ -185,6 +185,15 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userEmail) && x.UserGroups.Any(s => s.Group.Code == emailConfig.ComplianceCode));
         }
 
+        public IList<User> GetByGroup(string groupCode)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Where(x => x.UserGroups.Any(s => s.Group.Code == groupCode))
+                .ToList();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;
