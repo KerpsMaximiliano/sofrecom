@@ -23,6 +23,7 @@ namespace Sofco.Core.DAL
         IRoleFunctionalityRepository RoleFunctionalityRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         ITaskRepository TaskRepository { get; }
+        ISectorRepository SectorRepository { get; }
 
         #endregion
 

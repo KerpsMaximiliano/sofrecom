@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Models.Admin;
+﻿using System;
+using Sofco.Core.Models.Admin;
 
 namespace Sofco.Core.Models.Billing
 {
@@ -7,6 +8,12 @@ namespace Sofco.Core.Models.Billing
         public int Id { get; set; }
 
         public string Text { get; set; }
+
+        public bool Active { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
 
         public UserLiteModel ResponsableUser { get; set; }
     }

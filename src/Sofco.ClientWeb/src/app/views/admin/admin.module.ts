@@ -41,17 +41,27 @@ import { TaskListComponent } from 'app/views/admin/tasks/list/task-list.componen
 import { TaskEditComponent } from 'app/views/admin/tasks/edit/task-edit.component';
 import { Select2Module } from 'app/components/select2/select2';
 import { AdminRouter } from 'app/views/admin/admin.router';
+import { AreaListComponent } from 'app/views/admin/areas/list/area-list.component';
+import { AreaEditComponent } from 'app/views/admin/areas/edit/area-edit.component';
+import { AreaAddComponent } from 'app/views/admin/areas/add/area-add.component';
+import { AreaService } from 'app/services/admin/area.service';
+import { SectorService } from 'app/services/admin/sector.service';
+import { SectorAddComponent } from 'app/views/admin/sectors/add/sector-add.component';
+import { SectorEditComponent } from 'app/views/admin/sectors/edit/sector-edit.component';
+import { SectorListComponent } from 'app/views/admin/sectors/list/sector-list.components';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
-                 TaskEditComponent],
+                 TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent,
+                 SectorListComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter],
 
-  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService, TaskService],
+  providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
+                 TaskService, AreaService, SectorService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

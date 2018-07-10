@@ -44,17 +44,14 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private activatedRoute: ActivatedRoute,
         private service: InvoiceService,
         private customerService: CustomerService,
         private messageService: MessageService,
         private menuService: MenuService,
         private serviceService: ServiceService,
-        private i18nService: I18nService,
         private projectService: ProjectService,
         private employeeService: EmployeeService,
         private datatableService: DataTableService,
-        private userService: UserService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {

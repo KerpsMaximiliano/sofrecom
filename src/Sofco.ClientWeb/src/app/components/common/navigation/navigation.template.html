@@ -19,6 +19,8 @@
           <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasFunctionality('FUNC', 'QUERY')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('categories')}" *ngIf="menuService.hasFunctionality('CATEG', 'QUERY')"><a [routerLink]="['/admin/categories']">{{ 'ADMIN.category.task' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('tasks')}" *ngIf="menuService.hasFunctionality('TASKS', 'QUERY')"><a [routerLink]="['/admin/tasks']">{{ 'ADMIN.task.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('areas')}" *ngIf="menuService.hasFunctionality('AREAS', 'QUERY')"><a [routerLink]="['/admin/areas']">{{ 'ADMIN.area.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('sectors')}" *ngIf="menuService.hasFunctionality('SECTO', 'QUERY')"><a [routerLink]="['/admin/sectors']">{{ 'ADMIN.sector.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
         </ul>
       </li>
