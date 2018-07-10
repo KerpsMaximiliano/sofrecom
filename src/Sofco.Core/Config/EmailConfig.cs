@@ -44,8 +44,8 @@
 
         public string SupportMailResendTitle { get; set; }
 
-        public int MonicaBiman { get; set; }
+        public int HumanResourceMangerId { get; set; }
 
-        public int DiegoCegna { get; set; }
+        public int HumanResourceProjectLeaderId { get; set; }
     }
 }
