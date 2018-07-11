@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
@@ -26,6 +27,8 @@ namespace Sofco.DAL
         private IDbContextTransaction contextTransaction;
 
         private readonly IOptions<EmailConfig> emailConfig;
+
+        private readonly IOptions<AppSetting> appSettingOptions;
 
         #region Admin
 
@@ -92,15 +95,16 @@ namespace Sofco.DAL
 
         #endregion
 
-        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig)
+        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
         {
             this.context = context;
             this.emailConfig = emailConfig;
+            this.appSettingOptions = appSettingOptions;
         }
 
         #region Admin
 
-        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig));
+        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig, appSettingOptions));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
         public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));

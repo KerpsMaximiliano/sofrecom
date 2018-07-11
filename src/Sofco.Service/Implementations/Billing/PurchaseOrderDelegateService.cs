@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
@@ -26,8 +31,10 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<PurchaseOrderDelegateService> logger;
         private List<UserDelegateType> types;
         private Dictionary<UserDelegateType, Action<PurchaseOrderDelegateModel>> resolverSourceDicts;
+        private readonly EmailConfig emailConfig;
+        private readonly AppSetting appSetting;
 
-        public PurchaseOrderDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData, ILogMailer<PurchaseOrderDelegateService> logger, ISessionManager sessionManager)
+        public PurchaseOrderDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData, ILogMailer<PurchaseOrderDelegateService> logger, ISessionManager sessionManager, IOptions<EmailConfig> emailOptions, IOptions<AppSetting> appSettingOption)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -38,6 +45,8 @@ namespace Sofco.Service.Implementations.Billing
             this.sessionManager = sessionManager;
             SetTypes();
             SetResolverSourceDicts();
+            emailConfig = emailOptions.Value;
+            appSetting = appSettingOption.Value;
         }
 
         public Response<List<PurchaseOrderDelegateModel>> GetAll()
@@ -45,7 +54,9 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<PurchaseOrderDelegateModel>>();
             try
             {
-                var data = unitOfWork.UserDelegateRepository.GetByTypes(types);
+                var currentUser = userData.GetCurrentUser();
+
+                var data = unitOfWork.UserDelegateRepository.GetByTypesAndSourceId(types, currentUser.Id);
 
                 response.Data = ResolveData(Translate(data));
             }
@@ -86,6 +97,30 @@ namespace Sofco.Service.Implementations.Billing
             unitOfWork.UserDelegateRepository.Delete(userDeletegateId);
 
             return new Response();
+        }
+
+        public Response<List<UserSelectListItem>> GetComplianceUsers()
+        {
+            var result = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode)
+                .Where(s => s.Email == sessionManager.GetUserEmail())
+                .ToList();
+
+            return new Response<List<UserSelectListItem>>
+            {
+                Data = Translate(result)
+            };
+        }
+
+        public Response<List<UserSelectListItem>> GetDafUsers()
+        {
+            var result = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode)
+                .Where(s => s.Email == sessionManager.GetUserEmail())
+                .ToList();
+
+            return new Response<List<UserSelectListItem>>
+            {
+                Data = Translate(result)
+            };
         }
 
         private void SetTypes()
@@ -154,7 +189,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private void ResolveSourceCommercial(PurchaseOrderDelegateModel purchaseOrderDelegate)
         {
-            var data = areaData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
+            var data = areaData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderDelegate.SourceId);
 
             if(data == null) return;
 
@@ -269,6 +304,11 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        private List<UserSelectListItem> Translate(List<User> users)
+        {
+            return mapper.Map<List<User>, List<UserSelectListItem>>(users);
         }
     }
 }
