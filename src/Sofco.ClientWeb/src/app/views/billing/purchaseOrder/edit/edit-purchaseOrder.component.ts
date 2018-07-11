@@ -139,10 +139,17 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     exportExcel(){
+        this.messageService.showLoading();
+
         this.purchaseOrderService.exportFile(this.form.model.fileId).subscribe(file => {
+            this.messageService.closeLoading();
+
             FileSaver.saveAs(file, this.form.model.fileName);
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     deleteFile(){
@@ -165,10 +172,17 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
  
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
+            this.messageService.showLoading();
+
             this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {
+                this.messageService.closeLoading();
+
                 this.pdfViewer.renderFile(response.data);
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
         }
     }
 
