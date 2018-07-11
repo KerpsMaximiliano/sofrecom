@@ -40,9 +40,5 @@ namespace Sofco.Core.Services.Admin
         bool HasManagerGroup();
 
         IList<User> GetAuthorizers();
-
-        Response<List<UserSelectListItem>> GetComplianceUsers();
-
-        Response<List<UserSelectListItem>> GetDafUsers();
     }
 }

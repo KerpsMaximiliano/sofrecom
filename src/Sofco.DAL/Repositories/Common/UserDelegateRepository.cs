@@ -32,6 +32,13 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public List<UserDelegate> GetByUserId(int userId, List<UserDelegateType> types)
+        {
+            return UserDelegateSet
+                .Where(s => s.UserId == userId && types.Contains(s.Type))
+                .ToList();
+        }
+
         public UserDelegate Save(UserDelegate userDelegate)
         {
             var storedItem = GetStored(userDelegate);
@@ -62,15 +69,21 @@ namespace Sofco.DAL.Repositories.Common
         public bool HasUserDelegate(string userName, UserDelegateType type)
         {
             return UserDelegateSet
-                .Any(s => 
-                s.UserId == context.Users.Single(x => x.UserName == userName).Id
+                .Any(s => s.UserId == context.Users.Single(x => x.UserName == userName).Id
                 && s.Type == type);
         }
 
-        public List<UserDelegate> GetByTypes(List<UserDelegateType> types)
+        public bool HasUserDelegate(string userName, List<UserDelegateType> types)
         {
             return UserDelegateSet
-                .Where(s => types.Contains(s.Type))
+                .Any(s => s.UserId == context.Users.Single(x => x.UserName == userName).Id
+                && types.Contains(s.Type));
+        }
+
+        public List<UserDelegate> GetByTypesAndSourceId(List<UserDelegateType> types, int sourceId)
+        {
+            return UserDelegateSet
+                .Where(s => types.Contains(s.Type) && s.SourceId == sourceId)
                 .ToList();
         }
 
