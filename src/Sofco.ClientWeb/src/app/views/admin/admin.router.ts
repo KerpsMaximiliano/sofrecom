@@ -19,6 +19,12 @@ import { GroupsComponent } from "app/views/admin/groups/group-list/groups.compon
 import { RolEditComponent } from "app/views/admin/roles/rol-edit/rol-edit.component";
 import { RolAddComponent } from "app/views/admin/roles/rol-add/rol-add.component";
 import { RolesComponent } from "app/views/admin/roles/rol-list/roles.component";
+import { AreaListComponent } from "app/views/admin/areas/list/area-list.component";
+import { AreaAddComponent } from "app/views/admin/areas/add/area-add.component";
+import { AreaEditComponent } from "app/views/admin/areas/edit/area-edit.component";
+import { SectorListComponent } from "app/views/admin/sectors/list/sector-list.components";
+import { SectorAddComponent } from "app/views/admin/sectors/add/sector-add.component";
+import { SectorEditComponent } from "app/views/admin/sectors/edit/sector-edit.component";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -56,6 +62,18 @@ const ADMIN_ROUTER: Routes = [
         { path: '', component: TaskListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
         { path: 'add', component: TaskAddComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "ADD" } },
         { path: ':id/edit', component: TaskEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
+      ]},
+
+      { path: "areas", children: [
+        { path: '', component: AreaListComponent, canActivate: [AuthGuard], data: { module: "AREAS", functionality: "QUERY" } },
+        { path: 'add', component: AreaAddComponent, canActivate: [AuthGuard], data: { module: "AREAS", functionality: "ALTA" } },
+        { path: ':id/edit', component: AreaEditComponent, canActivate: [AuthGuard], data: { module: "AREAS", functionality: "EDIT" } }
+      ]},
+
+      { path: "sectors", children: [
+        { path: '', component: SectorListComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "QUERY" } },
+        { path: 'add', component: SectorAddComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "ALTA" } },
+        { path: ':id/edit', component: SectorEditComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "EDIT" } }
       ]},
 
       { path: 'settings', children: [

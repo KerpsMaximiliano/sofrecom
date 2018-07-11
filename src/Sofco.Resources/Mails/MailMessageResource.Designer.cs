@@ -160,7 +160,7 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH, Autorizador, Recuros: &lt;/br&gt;
+        ///RRHH, Autorizador, Recurso: &lt;/br&gt;
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///.
         /// </summary>
@@ -244,7 +244,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Operativa
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Operativa&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
@@ -257,7 +257,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de Compliance y su nuevo estado es Pendiente Aprobación Comercial
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Comercial&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
@@ -270,7 +270,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado Vigente para su uso.
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado &lt;strong&gt;Vigente&lt;/strong&gt; para su uso.
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
@@ -283,7 +283,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de Compliance. 
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de &lt;strong&gt;Compliance&lt;/strong&gt;. 
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
@@ -296,7 +296,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area Operativa y su nuevo estado es Pendiente Aprobación DAF
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area &lt;strong&gt;Operativa&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación DAF&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
         ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
@@ -309,7 +309,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido RECHAZADA por el area de {1} por el motivo: 
+        ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido &lt;strong&gt;RECHAZADA&lt;/strong&gt; por el area de {1} por el motivo: 
         ///&lt;/br&gt;&lt;/br&gt;
         ///{2}
         ///&lt;/br&gt;&lt;/br&gt; 

@@ -55,6 +55,7 @@ namespace Sofco.DAL
         private ICertificateRepository certificateRepository;
         private ISolfacCertificateRepository solfacCertificateRepository;
         private IAreaRepository areaRepository;
+        private ISectorRepository sectorRepository;
 
         #endregion
 
@@ -115,6 +116,7 @@ namespace Sofco.DAL
         public IRoleFunctionalityRepository RoleFunctionalityRepository => roleFunctionalityRepository ?? (roleFunctionalityRepository = new RoleFunctionalityRepository(context));
         public ICategoryRepository CategoryRepository => categoryRepository ?? (categoryRepository = new CategoryRepository(context));
         public ITaskRepository TaskRepository => taskRepository ?? (taskRepository = new TaskRepository(context));
+        public ISectorRepository SectorRepository => sectorRepository ?? (sectorRepository = new SectorRepository(context));
 
         #endregion
 

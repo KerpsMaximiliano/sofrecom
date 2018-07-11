@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Utils;
 
 namespace Sofco.DAL.Repositories.Common
@@ -61,6 +59,7 @@ namespace Sofco.DAL.Repositories.Common
         {
             return _context.Sectors
                 .Include(x => x.ResponsableUser)
+                .Where(x => x.Active)
                 .ToList()
                 .AsReadOnly();
         }
@@ -74,6 +73,7 @@ namespace Sofco.DAL.Repositories.Common
         {
             return _context.Areas
                 .Include(x => x.ResponsableUser)
+                .Where(x => x.Active)
                 .ToList()
                 .AsReadOnly();
         }

@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Admin\Area.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Area.resx</DependentUpon>
+    </Compile>
     <Compile Update="Admin\Category.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -31,6 +36,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Role.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Admin\Sector.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sector.resx</DependentUpon>
     </Compile>
     <Compile Update="Admin\Setting.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -160,6 +170,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Admin\Area.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Area.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Admin\Group.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Group.Designer.cs</LastGenOutput>
@@ -171,6 +185,10 @@
     <EmbeddedResource Update="Admin\Role.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Role.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Sector.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sector.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Admin\Setting.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

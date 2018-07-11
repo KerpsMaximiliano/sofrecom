@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin

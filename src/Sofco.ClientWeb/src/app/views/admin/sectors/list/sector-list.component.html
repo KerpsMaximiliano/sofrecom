@@ -1,0 +1,59 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{ 'ADMIN.sector.admin' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ 'ADMIN.sector.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h4 class="pull-left">{{ 'ADMIN.sector.list' | translate }}</h4>
+            
+            <div class="ibox-tools" >
+                <a [routerLink]="['/admin/sectors/add']" class="btn btn-primary btn-sm btn-link" *ngIf="menuService.hasFunctionality('SECTO', 'ALTA')"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-striped" id="sectorTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{{ 'ADMIN.sector.description' | translate }}</th>
+                        <th>{{ 'ADMIN.sector.responsable' | translate }}</th>
+                        <th>{{ 'ADMIN.sector.startDate' | translate }}</th>
+                        <th>{{ 'ADMIN.sector.endDate' | translate }}</th>
+                        <th class="text-center ">{{ 'ADMIN.sector.active' | translate }}</th>
+                        <th class="text-center">{{ 'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sector of sectors">
+                        <td>{{ sector.text }}</td>
+                        <td>{{ sector.responsableUser.name }}</td>
+                        <td>{{ sector.startDate | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ sector.endDate | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center"><span class="fa" [ngClass]="sector.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-xs" (click)="goToDetail(sector)" *ngIf="menuService.hasFunctionality('SECTO', 'EDIT')"><i class="fa fa-edit"></i></button>
+
+                            <button class="btn btn-xs" [ngClass]="(sector.active)?'btn-danger':'btn-success'" (click)="habInhabClick(sector)" *ngIf="menuService.hasFunctionality('SECTO', 'HABIN')">
+                                <span [ngClass]="(sector.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</div>
+    

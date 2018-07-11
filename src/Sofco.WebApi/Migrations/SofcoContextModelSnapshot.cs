@@ -1330,10 +1330,16 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime?>("EndDate");
+
                     b.Property<int>("ResponsableUserId");
 
+                    b.Property<DateTime>("StartDate");
+
                     b.Property<string>("Text")
-                        .HasMaxLength(100);
+                        .HasMaxLength(500);
 
                     b.HasKey("Id");
 
@@ -1469,10 +1475,16 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime?>("EndDate");
+
                     b.Property<int>("ResponsableUserId");
 
+                    b.Property<DateTime>("StartDate");
+
                     b.Property<string>("Text")
-                        .HasMaxLength(100);
+                        .HasMaxLength(500);
 
                     b.HasKey("Id");
 
@@ -1704,7 +1716,7 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrderHistory", b =>
                 {
                     b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("PurchaseOrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 

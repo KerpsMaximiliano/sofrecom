@@ -91,6 +91,32 @@
             "category": "Categoria",
             "task": "Tarea"
         },
+        "area": {
+            "admin": "Administracion de areas",
+            "title": "Areas",
+            "list": "Listado de Areas",
+            "description":"Descripción",
+            "edit": "Editar Area",
+            "add": "Agregar Area",
+            "responsable": "Responsable",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "area": "Area"
+        },
+        "sector": {
+            "admin": "Administracion de sectores",
+            "title": "Sectores",
+            "list": "Listado de Sectores",
+            "edit": "Editar Sector",
+            "description":"Descripción",
+            "add": "Agregar Sector",
+            "startDate": "Fecha Alta",
+            "endDate": "Fecha Baja",
+            "active": "Activo",
+            "responsable": "Responsable",
+            "area": "Sector"
+        },
         "settings": {
             "title": "Configuración",
             "licenseTitle": "Configuración de licencias",
@@ -709,6 +735,7 @@
         "sendToDaf": "Enviar a DAF",
         "annulment": "Anular",
         "save": "Guardar",
+        "information": "Información",
         "saveAndSend": "Guardar y Enviar",
         "sendToCDG": "Enviar a CDG",
         "bill": "Facturada",
