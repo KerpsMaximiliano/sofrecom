@@ -245,7 +245,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             catch (Exception e)
             {
                 logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSendMail);
+                response.AddWarning(Resources.Common.ErrorSendMail);
             }
         }
 
