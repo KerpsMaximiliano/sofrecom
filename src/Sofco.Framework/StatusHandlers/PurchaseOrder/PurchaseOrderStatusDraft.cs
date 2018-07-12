@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -49,27 +50,31 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+
+            var body = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
             var recipients = GetRecipients();
 
             var data = new MailDefaultData
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
+                Title = subject,
+                Message = body,
                 Recipients = recipients
             };
 
             var email = mailBuilder.GetEmail(data);
+
             mailSender.Send(email);
         }
 
         private string GetRecipients()
         {
+            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode) };
+
             var users = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode);
 
-            var mails = users.Select(s => s.Email).ToList();
+            mails.AddRange(users.Select(s => s.Email).ToList());
 
             foreach (var user in users)
             {
