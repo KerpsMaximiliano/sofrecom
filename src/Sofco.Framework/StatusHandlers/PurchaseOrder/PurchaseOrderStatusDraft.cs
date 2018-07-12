@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Sofco.Core.Config;
-using Sofco.Core.Data.Admin;
+﻿using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
@@ -18,17 +16,17 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         private readonly IMailBuilder mailBuilder;
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
-        private readonly IUserData userData;
+        private readonly IPurchaseOrderStatusRecipientManager recipientManager;
 
         private const string StatusDescription = "Pendiente Aprobación Compliance";
 
-        public PurchaseOrderStatusDraft(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig, IUserData userData)
+        public PurchaseOrderStatusDraft(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig, IPurchaseOrderStatusRecipientManager recipientManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.emailConfig = emailConfig;
-            this.userData = userData;
+            this.recipientManager = recipientManager;
         }
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
@@ -54,7 +52,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var recipients = GetRecipients();
+            var recipients = recipientManager.GetRecipientsCompliance();
 
             var data = new MailDefaultData
             {
@@ -66,27 +64,6 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             var email = mailBuilder.GetEmail(data);
 
             mailSender.Send(email);
-        }
-
-        private string GetRecipients()
-        {
-            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode) };
-
-            var users = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode);
-
-            mails.AddRange(users.Select(s => s.Email).ToList());
-
-            foreach (var user in users)
-            {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCompliance,
-                        user.Id)
-                    .Select(s => s.UserId);
-
-                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
-                    .Select(delegated => delegated.Email));
-            }
-
-            return string.Join(";", mails.Distinct());
         }
     }
 }
