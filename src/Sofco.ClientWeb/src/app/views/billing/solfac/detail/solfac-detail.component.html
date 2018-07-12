@@ -53,17 +53,6 @@
             <!-- Datos generales -->
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body"> 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders"></select-two>
-                        </div>
-                        <div class="col-sm-6">
-                            <button class="btn btn-success m-t-md" (click)="updateOc()"> {{ 'ACTIONS.update' | translate }}</button>
-                        </div>
-                    </div>
-
-                    <hr class="hr-line-dashed">
-
                     <!-- Datos CRM -->
                     <div class="row">
                         <div class="col-md-6 col-print-1">
