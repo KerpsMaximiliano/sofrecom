@@ -161,7 +161,8 @@ namespace Sofco.DAL.Repositories.Admin
                 Id = s.Id,
                 Name = s.Name,
                 Email = s.Email,
-                UserName = userName
+                UserName = userName,
+                ManagerId = s.ExternalManagerId
             }).FirstOrDefault();
         }
 
