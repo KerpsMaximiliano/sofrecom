@@ -121,8 +121,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             mails.Add(responsableUser.Email);
 
-            var areaUserIds = unitOfWork.UserDelegateRepository.GetByUserId(responsableUser.Id,
-                    UserDelegateType.PurchaseOrderCommercial)
+            var areaUserIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCommercial,
+                    responsableUser.Id)
                 .Select(s => s.UserId);
 
             mails.AddRange(areaUserIds.Select(userId => userData.GetById(userId))
@@ -136,8 +136,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var user in sectorUsers)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
-                        UserDelegateType.PurchaseOrderOperation)
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderOperation,
+                        user.Id)
                     .Select(s => s.UserId);
 
                 mails.AddRange(userIds.Select(userId => userData.GetById(userId))
@@ -157,8 +157,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
-                        UserDelegateType.PurchaseOrderDaf)
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderDaf,
+                        user.Id)
                     .Select(s => s.UserId);
 
                 mails.AddRange(userIds.Select(userId => userData.GetById(userId))
