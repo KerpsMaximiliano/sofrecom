@@ -21,5 +21,7 @@ namespace Sofco.Core.DAL.Common
         bool HasUserDelegate(string userName, List<UserDelegateType> types);
 
         List<UserDelegate> GetByTypesAndSourceId(List<UserDelegateType> types, int sourceId);
+
+        List<UserDelegate> GetByTypeAndSourceId(UserDelegateType type, int sourceId);
     }
 }
