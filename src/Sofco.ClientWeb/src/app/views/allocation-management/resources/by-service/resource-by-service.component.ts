@@ -128,11 +128,6 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('PROFI', 'VWPRO');
     }
 
-    goToAssignAnalytics(resource){
-        sessionStorage.setItem("resource", JSON.stringify(resource));
-        this.router.navigate([`/allocationManagement/resources/${resource.id}/allocations`]);
-    }
-
     canSendUnsubscribeNotification(){
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
