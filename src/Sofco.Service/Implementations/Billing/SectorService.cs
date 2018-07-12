@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
@@ -18,11 +19,14 @@ namespace Sofco.Service.Implementations.Billing
 
         private readonly ILogMailer<SectorService> logger;
 
-        public SectorService(IUnitOfWork unitOfWork, IMapper mapper, ILogMailer<SectorService> logger)
+        private readonly ISectorData sectorData;
+
+        public SectorService(IUnitOfWork unitOfWork, IMapper mapper, ILogMailer<SectorService> logger, ISectorData sectorData)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.logger = logger;
+            this.sectorData = sectorData;
         }
 
         public Response<List<SectorModel>> GetAll()
@@ -68,6 +72,8 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.SectorRepository.Insert(sector);
                 unitOfWork.Save();
 
+                sectorData.ClearKeys();
+
                 response.AddSuccess(Resources.Admin.Sector.Created);
             }
             catch (Exception e)
@@ -101,6 +107,8 @@ namespace Sofco.Service.Implementations.Billing
 
                 unitOfWork.SectorRepository.Update(entity);
                 unitOfWork.Save();
+
+                sectorData.ClearKeys();
 
                 response.AddSuccess(Resources.Admin.Sector.Updated);
             }
