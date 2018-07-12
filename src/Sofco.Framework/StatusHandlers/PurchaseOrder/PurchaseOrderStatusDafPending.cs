@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Billing.PurchaseOrder;
@@ -21,16 +23,22 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private readonly EmailConfig emailConfig;
 
+        private readonly AppSetting appSetting;
+
+        private readonly IUserData userData;
+
         private const string StatusDescription = "Vigente";
         private const string RejectStatusDescription = "Rechazada";
         private const string AreaDescription = "DAF";
 
-        public PurchaseOrderStatusDafPending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig)
+        public PurchaseOrderStatusDafPending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig, AppSetting appSetting, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.emailConfig = emailConfig;
+            this.userData = userData;
+            this.appSetting = appSetting;
         }
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
@@ -62,30 +70,17 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailSuccess(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDafMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
 
-            var mails = new List<string>();
+            var body = string.Format(Resources.Mails.MailMessageResource.OcDafMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
-
-            foreach (var analytic in analytics)
-            {
-                if(analytic.CommercialManager != null) mails.Add(analytic.CommercialManager.Email);
-                if (analytic.Manager != null) mails.Add(analytic.Manager.Email);
-            }
-
-            var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId);
-            var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId);
-
-            if(humanResourceManager != null) mails.Add(humanResourceManager.Email);
-            if(humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
+            var recipients = GetSuccessRecipients(purchaseOrder);
 
             var data = new MailDefaultData
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
-                Recipients = string.Join(";", mails.Distinct())
+                Title = subject,
+                Message = body,
+                Recipients = recipients
             };
 
             return data;
@@ -93,17 +88,33 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Model.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
 
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
+            var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
                 purchaseOrder.Number,
                 AreaDescription,
                 comments,
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var mails = new List<string>();
+            var recipients = GetRejectRecipients(purchaseOrder);
 
-            mails.Add(unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode));
+            var data = new MailDefaultData
+            {
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
+
+            return data;
+        }
+
+        private string GetRejectRecipients(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var mails = new List<string>{ unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode) };
+
+            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
+
+            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
 
             var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
 
@@ -112,21 +123,52 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithSectors(purchaseOrder.Id);
 
-            foreach (var analytic in analytics)
+            mails.AddRange(analytics.Select(analytic => analytic.Sector?.ResponsableUser?.Email));
+
+            mails.Add(unitOfWork.GroupRepository.GetEmail(appSetting.DafPurchaseOrderGroupCode));
+
+            var users = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode);
+
+            mails.AddRange(users.Select(s => s.Email).ToList());
+
+            foreach (var user in users)
             {
-                mails.Add(analytic.Sector?.ResponsableUser?.Email);
+                var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
+                        UserDelegateType.PurchaseOrderDaf)
+                    .Select(s => s.UserId);
+
+                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
+                    .Select(delegated => delegated.Email));
             }
 
-            mails.Add(unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode));
+            return string.Join(";", mails.Distinct());
+        }
 
-            var data = new MailDefaultData
+        private string GetSuccessRecipients(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var mails = new List<string>();
+
+            var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
+
+            foreach (var analytic in analytics)
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
-                Recipients = string.Join(";", mails.Distinct())
-            };
+                if (analytic.CommercialManager != null) mails.Add(analytic.CommercialManager.Email);
+                if (analytic.Manager != null) mails.Add(analytic.Manager.Email);
+            }
 
-            return data;
+            var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId);
+            var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId);
+
+            if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
+            if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
+
+            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
+
+            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
+
+            mails.Add(unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode));
+
+            return string.Join(";", mails.Distinct());
         }
     }
 }

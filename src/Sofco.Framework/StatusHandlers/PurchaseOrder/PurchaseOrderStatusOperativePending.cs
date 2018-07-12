@@ -87,45 +87,73 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Model.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
 
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
+            var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
                 purchaseOrder.Number,
                 AreaDescription,
                 comments,
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var mails = new List<string>();
-
-            mails.Add(unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode));
-
-            var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
-
-            if (area?.ResponsableUser != null)
-                mails.Add(area.ResponsableUser.Email);
-
-            var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithSectors(purchaseOrder.Id);
-
-            foreach (var analytic in analytics)
-            {
-                mails.Add(analytic.Sector?.ResponsableUser?.Email);
-            }
+            var recipients = GetRejectRecipients(purchaseOrder);
 
             var data = new MailDefaultData
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
-                Recipients = string.Join(";", mails.Distinct())
+                Title = subject,
+                Message = body,
+                Recipients = recipients
             };
 
             return data;
         }
 
+        private string GetRejectRecipients(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode) };
+
+            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
+
+            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
+
+            var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
+
+            var responsableUser = area.ResponsableUser;
+
+            mails.Add(responsableUser.Email);
+
+            var areaUserIds = unitOfWork.UserDelegateRepository.GetByUserId(responsableUser.Id,
+                    UserDelegateType.PurchaseOrderCommercial)
+                .Select(s => s.UserId);
+
+            mails.AddRange(areaUserIds.Select(userId => userData.GetById(userId))
+                .Select(delegated => delegated.Email));
+
+            var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithSectors(purchaseOrder.Id);
+
+            var sectorUsers = analytics.Select(analytic => analytic.Sector?.ResponsableUser).ToList();
+
+            mails.AddRange(sectorUsers.Select(s => s.Email).ToList());
+
+            foreach (var user in sectorUsers)
+            {
+                var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
+                        UserDelegateType.PurchaseOrderOperation)
+                    .Select(s => s.UserId);
+
+                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
+                    .Select(delegated => delegated.Email));
+            }
+
+            return string.Join(";", mails.Distinct());
+        }
+
         private string GetSuccessRecipients()
         {
+            var mails = new List<string>{ unitOfWork.GroupRepository.GetEmail(appSetting.DafPurchaseOrderGroupCode) };
+
             var users = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode);
 
-            var mails = users.Select(s => s.Email).ToList();
+            mails.AddRange(users.Select(s => s.Email).ToList());
 
             foreach (var user in users)
             {
@@ -138,7 +166,6 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             }
 
             return string.Join(";", mails.Distinct());
-
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
@@ -9,7 +8,6 @@ using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.PurchaseOrder
@@ -68,15 +66,16 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailSuccess(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcComercialMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+
+            var body = string.Format(Resources.Mails.MailMessageResource.OcComercialMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
             var recipients = GetSuccessRecipients(purchaseOrder);
 
             var data = new MailDefaultData
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
+                Title = subject,
+                Message = body,
                 Recipients = recipients
             };
 
@@ -85,47 +84,62 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Model.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
 
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
+            var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
                 purchaseOrder.Number,
                 AreaDescription,
                 comments,
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
-            var mail = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
-
-            var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
-
-            if (area?.ResponsableUser != null)
-            {
-                mail = $"{mail};{area.ResponsableUser.Email}";
-            }
+            var recipients = GetRejectRecipients(purchaseOrder);
 
             var data = new MailDefaultData
             {
-                Title = subjectToDaf,
-                Message = bodyToDaf,
-                Recipients = mail
+                Title = subject,
+                Message = body,
+                Recipients = recipients
             };
 
             return data;
         }
 
+        private string GetRejectRecipients(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var mails = new List<string>{ unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode) };
+
+            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
+
+            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
+
+            var area = unitOfWork.AreaRepository.GetWithResponsable(purchaseOrder.AreaId.GetValueOrDefault());
+
+            var responsableUser = area.ResponsableUser;
+
+            mails.Add(responsableUser.Email);
+
+            var areaUserIds = unitOfWork.UserDelegateRepository.GetByUserId(responsableUser.Id,
+                    UserDelegateType.PurchaseOrderCommercial)
+                .Select(s => s.UserId);
+
+            mails.AddRange(areaUserIds.Select(userId => userData.GetById(userId))
+                .Select(delegated => delegated.Email));
+
+            return string.Join(";", mails.Distinct());
+        }
+
         private string GetSuccessRecipients(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
+            var mails = new List<string>();
+
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithSectors(purchaseOrder.Id);
 
             var users = analytics.Select(analytic => analytic.Sector?.ResponsableUser).ToList();
 
-            if (!users.Any()) return string.Empty;
-
-            var mails = new List<string>();
+            mails.AddRange(users.Select(s => s.Email).ToList());
 
             foreach (var user in users)
             {
-                mails.Add(user.Email);
-
                 var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
                     UserDelegateType.PurchaseOrderOperation)
                     .Select(s => s.UserId);
