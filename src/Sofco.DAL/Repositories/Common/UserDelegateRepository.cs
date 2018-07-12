@@ -87,6 +87,13 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public List<UserDelegate> GetByTypeAndSourceId(UserDelegateType type, int sourceId)
+        {
+            return UserDelegateSet
+                .Where(s => s.Type == type && s.SourceId == sourceId)
+                .ToList();
+        }
+
         private UserDelegate GetStored(UserDelegate userDelegate)
         {
             return userDelegate.Type != UserDelegateType.Solfac 

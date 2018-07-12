@@ -78,8 +78,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByUserId(user.Id,
-                        UserDelegateType.PurchaseOrderCompliance)
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCompliance,
+                        user.Id)
                     .Select(s => s.UserId);
 
                 mails.AddRange(userIds.Select(userId => userData.GetById(userId))

@@ -123,8 +123,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             var mails = new List<string> { responsableUser.Email };
 
-            var userIds = unitOfWork.UserDelegateRepository.GetByUserId(responsableUser.Id,
-                    UserDelegateType.PurchaseOrderCommercial)
+            var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCommercial,
+                    responsableUser.Id)
                 .Select(s => s.UserId);
 
             mails.AddRange(userIds.Select(userId => userData.GetById(userId))
