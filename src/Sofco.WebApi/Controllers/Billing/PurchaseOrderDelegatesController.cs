@@ -66,7 +66,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("compliances")]
         public IActionResult GetComplianceUsers()
         {
-            var response = userService.GetComplianceUsers();
+            var response = purchaseOrderDelegateService.GetComplianceUsers();
 
             return this.CreateResponse(response);
         }
@@ -74,7 +74,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("dafs")]
         public IActionResult GetDafUsers()
         {
-            var response = userService.GetDafUsers();
+            var response = purchaseOrderDelegateService.GetDafUsers();
 
             return this.CreateResponse(response);
         }

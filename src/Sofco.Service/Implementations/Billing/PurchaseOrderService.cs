@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
@@ -29,17 +31,19 @@ namespace Sofco.Service.Implementations.Billing
         private readonly FileConfig fileConfig;
         private readonly IUserData userData;
         private readonly IPurchaseOrderStatusFactory purchaseOrderStatusFactory;
+        private readonly IMapper mapper;
 
         public PurchaseOrderService(IUnitOfWork unitOfWork, 
             ILogMailer<PurchaseOrderService> logger, 
             IOptions<FileConfig> fileOptions,
             IPurchaseOrderStatusFactory purchaseOrderStatusFactory,
-            IUserData userData)
+            IUserData userData, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             fileConfig = fileOptions.Value;
             this.userData = userData;
+            this.mapper = mapper;
             this.purchaseOrderStatusFactory = purchaseOrderStatusFactory;
         }
 
@@ -300,41 +304,50 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<IList<PurchaseOrderPendingModel>> GetPendings()
         {
-            var response = new Response<IList<PurchaseOrderPendingModel>>
-            {
-                Data = new List<PurchaseOrderPendingModel>()
-            };
-
-            var user = userData.GetCurrentUser();
+            var currentUser = userData.GetCurrentUser();
 
             var purchaseOrders = unitOfWork.PurchaseOrderRepository.GetPendings();
 
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(user.Email);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(user.Email);
-            var isCompliance = unitOfWork.UserRepository.HasComplianceGroup(user.Email);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(currentUser.Email);
+            if (isCdg)
+            {
+                return new Response<IList<PurchaseOrderPendingModel>>
+                {
+                    Data = Translate(purchaseOrders.ToList())
+                };
+            }
+
+            var isDaf = IsDaf(currentUser);
+            var isCompliance = IsCompliance(currentUser);
+            var commUserIds = GetCommercialUsers(currentUser);
+            var operUserIds = GetOperationUsers(currentUser);
+
+            var result = new List<PurchaseOrder>();
 
             foreach (var purchaseOrder in purchaseOrders)
             {
-                if (isCdg)
-                {
-                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
-                    continue;
-                }
+                if (purchaseOrder.Status == PurchaseOrderStatus.CompliancePending 
+                    && isCompliance)
+                    result.Add(purchaseOrder);
 
-                if (purchaseOrder.Status == PurchaseOrderStatus.CompliancePending && isCompliance)
-                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+                if (purchaseOrder.Status == PurchaseOrderStatus.ComercialPending
+                    && purchaseOrder.Area != null
+                    && commUserIds.Contains(purchaseOrder.Area.ResponsableUserId))
+                    result.Add(purchaseOrder);
 
-                if (purchaseOrder.Status == PurchaseOrderStatus.ComercialPending && purchaseOrder.Area?.ResponsableUserId == user.Id)
-                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+                if (purchaseOrder.Status == PurchaseOrderStatus.OperativePending 
+                    && CanAddOperationPurchaseOrder(purchaseOrder, operUserIds))
+                    result.Add(purchaseOrder);
 
-                if (purchaseOrder.Status == PurchaseOrderStatus.OperativePending && purchaseOrder.PurchaseOrderAnalytics.Any(s => s.Analytic?.Sector?.ResponsableUserId == user.Id))
-                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
-
-                if (purchaseOrder.Status == PurchaseOrderStatus.DafPending && isDaf)
-                    response.Data.Add(new PurchaseOrderPendingModel(purchaseOrder));
+                if (purchaseOrder.Status == PurchaseOrderStatus.DafPending 
+                    && isDaf)
+                    result.Add(purchaseOrder);
             }
 
-            return response;
+            return new Response<IList<PurchaseOrderPendingModel>>
+            {
+                Data = Translate(result)
+            };
         }
 
         public Response Delete(int id)
@@ -490,6 +503,75 @@ namespace Sofco.Service.Implementations.Billing
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);
             PurchaseOrderValidationHelper.ValidateDates(response, model);
             PurchaseOrderValidationHelper.ValidateAmmount(response, model.AmmountDetails);
+        }
+
+        private List<PurchaseOrderPendingModel> Translate(List<PurchaseOrder> purchaseOrders)
+        {
+            return mapper.Map<List<PurchaseOrder>, List<PurchaseOrderPendingModel>>(purchaseOrders);
+        }
+
+        private bool IsCompliance(UserLiteModel currentUser)
+        {
+            var isCompliance = unitOfWork.UserRepository.HasComplianceGroup(currentUser.Email);
+
+            if (!isCompliance)
+            {
+                isCompliance =
+                    unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
+                        UserDelegateType.PurchaseOrderCompliance).Any();
+            }
+
+            return isCompliance;
+        }
+
+        private bool IsDaf(UserLiteModel currentUser)
+        {
+            var isDaf = unitOfWork.UserRepository.HasDafPurchaseOrderGroup(currentUser.Email);
+
+            if (!isDaf)
+            {
+                isDaf =
+                    unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
+                        UserDelegateType.PurchaseOrderDaf).Any();
+            }
+
+            return isDaf;
+        }
+
+        private List<int> GetCommercialUsers(UserLiteModel currentUser)
+        {
+            var result = new List<int> {currentUser.Id};
+
+            var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
+                UserDelegateType.PurchaseOrderCommercial);
+            if (userDelegates.Any(s => s.SourceId != null))
+            {
+                result.AddRange(userDelegates.Select(s => s.SourceId.Value));
+            }
+
+            return result;
+        }
+
+        private List<int> GetOperationUsers(UserLiteModel currentUser)
+        {
+            var result = new List<int> {currentUser.Id};
+
+            var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
+                UserDelegateType.PurchaseOrderOperation);
+            if (userDelegates.Any(s => s.SourceId != null))
+            {
+                result.AddRange(userDelegates.Select(s => s.SourceId.Value));
+            }
+
+            return result;
+        }
+
+        private bool CanAddOperationPurchaseOrder(PurchaseOrder purchaseOrder, List<int> userIds)
+        {
+            return purchaseOrder.PurchaseOrderAnalytics
+                    .Where(s => s.Analytic != null)
+                    .Where(s => s.Analytic.Sector != null)
+                    .Any(s => userIds.Contains(s.Analytic.Sector.ResponsableUserId));
         }
     }
 }

@@ -253,7 +253,7 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
     save(): void {
         const model = new PurchaseOrderDelegateModel();
         model.responsableId = this.getResponsableId();
-        model.sourceId = parseInt(this.sourceId);
+        model.sourceId = this.getResponsableId();
         model.userId = parseInt(this.userId);
         model.type = this.typeId;
 

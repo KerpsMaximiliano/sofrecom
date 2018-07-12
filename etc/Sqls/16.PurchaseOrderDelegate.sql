@@ -24,9 +24,17 @@ BEGIN
 END
 
 DECLARE @RoleHapDelegateCode NVARCHAR(100) = 'PURCHASEORDERAPPROVAL'
+
 IF (NOT EXISTS (SELECT 1 FROM app.Roles WHERE Code = @RoleHapDelegateCode))
 BEGIN
 	INSERT INTO app.Roles  (Active, Description, Code, StartDate) 
 	VALUES (1, 'Aprobador de Orden de Compra', @RoleHapDelegateCode, GetUtcDate());
 END
 
+DECLARE @DelegateRoleId Int = (SELECT Id FROM app.Roles WHERE Code = @RoleHapDelegateCode)
+
+IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @DelegateRoleId AND FunctionalityId = @FuncId))
+BEGIN
+	INSERT INTO app.RoleFunctionality  (RoleId, FunctionalityId) 
+	VALUES (@DelegateRoleId, @FuncId);
+END

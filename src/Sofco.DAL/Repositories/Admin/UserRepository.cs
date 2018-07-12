@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Extensions;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Models.Admin;
@@ -17,9 +18,12 @@ namespace Sofco.DAL.Repositories.Admin
     {
         private readonly EmailConfig emailConfig;
 
-        public UserRepository(SofcoContext context, IOptions<EmailConfig> emailConfig) : base(context)
+        private readonly AppSetting appSetting;
+
+        public UserRepository(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions) : base(context)
         {
             this.emailConfig = emailConfig.Value;
+            this.appSetting = appSettingOptions.Value;
         }
 
         public bool ExistById(int id)
@@ -192,6 +196,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Where(x => x.UserGroups.Any(s => s.Group.Code == groupCode))
                 .ToList();
+        }
+
+        public bool HasDafPurchaseOrderGroup(string userMail)
+        {
+            var dafCode = appSetting.DafPurchaseOrderGroupCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == dafCode));
         }
 
         public bool HasCdgGroup(string userMail)

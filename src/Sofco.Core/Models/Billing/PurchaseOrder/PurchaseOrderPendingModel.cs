@@ -5,6 +5,11 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderPendingModel
     {
+        public PurchaseOrderPendingModel()
+        {
+            
+        }
+
         public PurchaseOrderPendingModel(Model.Models.Billing.PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
