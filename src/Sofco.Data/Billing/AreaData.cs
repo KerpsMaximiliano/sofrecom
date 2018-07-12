@@ -28,5 +28,10 @@ namespace Sofco.Data.Billing
                 x => x.Id.ToString(),
                 cacheExpire);
         }
+
+        public void ClearKeys()
+        {
+            cacheManager.DeletePatternKey(string.Format(CacheKey, '*'));
+        }
     }
 }

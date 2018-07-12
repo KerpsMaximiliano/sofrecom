@@ -6,5 +6,7 @@ namespace Sofco.Core.Data.Billing
     public interface ISectorData
     {
         IList<Sector> GetAll();
+
+        void ClearKeys();
     }
 }
