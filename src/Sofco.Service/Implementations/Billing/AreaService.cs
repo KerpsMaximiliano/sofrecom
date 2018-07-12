@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
@@ -18,11 +19,14 @@ namespace Sofco.Service.Implementations.Billing
 
         private readonly ILogMailer<AreaService> logger;
 
-        public AreaService(IUnitOfWork unitOfWork, IMapper mapper, ILogMailer<AreaService> logger)
+        private readonly IAreaData areaData;
+
+        public AreaService(IUnitOfWork unitOfWork, IMapper mapper, ILogMailer<AreaService> logger, IAreaData areaData)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.logger = logger;
+            this.areaData = areaData;
         }
 
         public Response<List<AreaModel>> GetAll()
@@ -67,6 +71,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 unitOfWork.AreaRepository.Insert(area);
                 unitOfWork.Save();
+                areaData.ClearKeys();
 
                 response.AddSuccess(Resources.Admin.Area.Created);
             }
@@ -101,6 +106,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 unitOfWork.AreaRepository.Update(entity);
                 unitOfWork.Save();
+                areaData.ClearKeys();
 
                 response.AddSuccess(Resources.Admin.Area.Updated);
             }

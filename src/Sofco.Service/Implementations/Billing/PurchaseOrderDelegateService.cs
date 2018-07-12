@@ -200,7 +200,7 @@ namespace Sofco.Service.Implementations.Billing
 
         private void ResolveSourceOperation(PurchaseOrderDelegateModel purchaseOrderDelegate)
         {
-            var data = sectorData.GetAll().FirstOrDefault(s => s.Id == purchaseOrderDelegate.SourceId);
+            var data = sectorData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderDelegate.SourceId);
 
             if(data == null) return;
 
