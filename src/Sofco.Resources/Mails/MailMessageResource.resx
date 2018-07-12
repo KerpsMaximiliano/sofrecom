@@ -255,53 +255,53 @@ Se ha iniciado el proceso de generación del remito del asunto. Para acceder al 
 Muchas gracias.</value>
   </data>
   <data name="PurchaseOrderConsumed" xml:space="preserve">
-    <value>ORDEN DE COMPRA: {0}  &lt;/br&gt;&lt;/br&gt;
-Estimado,  &lt;/br&gt;
-La orden de compra de referencia se ha consumido. &lt;/br&gt;&lt;/br&gt;
+    <value>ORDEN DE COMPRA: {0}  &lt;br/&gt;&lt;br/&gt;
+Estimado,  &lt;br/&gt;
+La orden de compra de referencia se ha consumido. &lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcComercialMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Operativa&lt;/strong&gt;
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcComplianceMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Comercial&lt;/strong&gt;
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcDraftMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha sido enviada al area de &lt;strong&gt;Compliance&lt;/strong&gt;. 
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcOperativeMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha sido aprobada por el area &lt;strong&gt;Operativa&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación DAF&lt;/strong&gt;
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcRejectMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha sido &lt;strong&gt;RECHAZADA&lt;/strong&gt; por el area de {1} por el motivo: 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 {2}
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{3}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
   <data name="OcDafMessage" xml:space="preserve">
     <value>Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado &lt;strong&gt;Vigente&lt;/strong&gt; para su uso.
-&lt;/br&gt;&lt;/br&gt; 
+&lt;br/&gt;&lt;br/&gt; 
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
-&lt;/br&gt;&lt;/br&gt;
+&lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
   </data>
 </root>
