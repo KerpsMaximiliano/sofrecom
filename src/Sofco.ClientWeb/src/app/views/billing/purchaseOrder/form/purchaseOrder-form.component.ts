@@ -7,6 +7,7 @@ import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { UtilsService } from "../../../../services/common/utils.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MessageService } from "../../../../services/common/message.service";
 
 @Component({
     selector: 'purchase-order-form',
@@ -31,6 +32,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     constructor(private analyticService: AnalyticService,
                 private utilsService: UtilsService,
+                private messageService: MessageService,
                 private customerService: CustomerService,
                 private errorHandlerService: ErrorHandlerService){}
 
@@ -90,10 +92,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
+        this.messageService.showLoading();
+
         this.customerService.getAllOptions().subscribe(res => {
+            this.messageService.closeLoading();         
             this.customers = res.data;
         },
         err => {
+            this.messageService.closeLoading();    
             this.errorHandlerService.handleErrors(err)
         });
     }

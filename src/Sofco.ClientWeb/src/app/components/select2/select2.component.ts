@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 
 declare var $: any;
 
@@ -12,15 +12,19 @@ export class Select2Component implements OnInit{
 
     @Input() label: string;
     @Input() value: any;
+    @Input() disabled: boolean = false;
     @Input() options: any[] = new Array();
     @Output() valueChange = new EventEmitter<any>();
-
-    private callChange: boolean = false;
 
     constructor() {}
 
     ngOnInit(): void {
         const self = this;
+
+        if(this.disabled){
+            $(this.element.nativeElement).attr('disabled', 'disabled');
+        }
+
         $(this.element.nativeElement).on('change', function() { 
             if(self.element.nativeElement.value && self.element.nativeElement.value != undefined){
 
@@ -33,7 +37,7 @@ export class Select2Component implements OnInit{
     }
 
     ngOnChanges(changes: any) {
-        if(changes.value && changes.value.currentValue != undefined && this.options.length > 0){
+        if(changes.value && changes.value.currentValue != undefined && this.options && this.options.length > 0){
             $(this.element.nativeElement).val(changes.value.currentValue).trigger('change');
         }
 

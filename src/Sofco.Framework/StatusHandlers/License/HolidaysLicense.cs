@@ -1,5 +1,4 @@
-﻿using System;
-using Sofco.Core.DAL;
+﻿using Sofco.Core.DAL;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License

@@ -246,7 +246,7 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Operativa&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
@@ -259,7 +259,7 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Comercial&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
@@ -272,7 +272,7 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado &lt;strong&gt;Vigente&lt;/strong&gt; para su uso.
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
@@ -285,7 +285,7 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de &lt;strong&gt;Compliance&lt;/strong&gt;. 
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
@@ -298,7 +298,7 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area &lt;strong&gt;Operativa&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación DAF&lt;/strong&gt;
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
@@ -313,7 +313,7 @@ namespace Sofco.Resources.Mails {
         ///&lt;/br&gt;&lt;/br&gt;
         ///{2}
         ///&lt;/br&gt;&lt;/br&gt; 
-        ///Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{3}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
+        ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{3}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;/br&gt;&lt;/br&gt;
         ///Muchas gracias..
         /// </summary>
