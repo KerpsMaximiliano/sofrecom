@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Utils;
 using Sofco.WebApi.Extensions;
 
@@ -115,7 +116,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut("{id}/close")]
         public IActionResult Close(int id)
         {
-            var response = analyticService.Close(id);
+            var response = analyticService.Close(id, AnalyticStatus.Close);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/closeForExpenses")]
+        public IActionResult CloseForExpenses(int id)
+        {
+            var response = analyticService.Close(id, AnalyticStatus.CloseToExpenses);
 
             return this.CreateResponse(response);
         }

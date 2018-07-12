@@ -11,7 +11,8 @@ declare var $: any;
 
 @Component({
     selector: 'edit-analytic',
-    templateUrl: './edit-analytic.component.html'
+    templateUrl: './edit-analytic.component.html',
+    styleUrls: ['./edit-analytic.component.scss']
 })
 export class EditAnalyticComponent implements OnInit, OnDestroy {
 
@@ -32,6 +33,8 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     );
 
     public isLoading: boolean = false;
+
+    private statusClose: boolean = true;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -112,19 +115,45 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         }
     }
 
+    openForClose(){
+        this.statusClose = true;
+        this.confirmModal.show();
+    }
+
+    openForCloseForExpenses(){
+        this.statusClose = false;
+        this.confirmModal.show();
+    }
+
     close(){
         this.isLoading = true;
 
-        this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-            this.isLoading = false;
-            this.confirmModal.hide();
-            if(response.messages) this.messageService.showMessages(response.messages);
-            this.form.model.status = 2;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
-            this.isLoading = false;
-        });
+        if(this.statusClose){
+            this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+                this.closeSuccess(response);
+                this.form.model.status = 2;
+            },
+            err => {
+                this.errorHandlerService.handleErrors(err);
+                this.isLoading = false;
+            });
+        }
+        else {
+            this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
+                this.closeSuccess(response);
+                this.form.model.status = 3;
+            },
+            err => {
+                this.errorHandlerService.handleErrors(err);
+                this.isLoading = false;
+            });
+        }
+    }
+
+    closeSuccess(response){
+        this.isLoading = false;
+        this.confirmModal.hide();
+        if(response.messages) this.messageService.showMessages(response.messages);
     }
 
     goToProjects(){

@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> {{ form.model.title }} - {{ form.model.name }} <label class="label label-primary">{{ getStatus() }}</label> </h2>
+        <h2> {{ form.model.title }} - {{ form.model.name }} </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -32,8 +32,12 @@
                     {{'billing.project.title' | translate }} <i class="fa fa-building"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2"> 
+                <button class="btn btn-warning btn-outline dim" (click)="openForClose()" *ngIf="form.model.status != 2"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
+                </button>
+
+                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="form.model.status == 1"> 
+                    {{ 'allocationManagement.analytics.closeForExpenses' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>
  
                 <button (click)="edit()" class="btn btn-primary btn-outline dim" *ngIf="form.model.status != 2">
@@ -45,6 +49,10 @@
 
     <div class="ibox float-e-margins">
         <div class="ibox-content">
+            <div class="m-b-md">
+                <label class="label label-primary analitycStatus">{{'billing.solfac.status' | translate }}: {{ getStatus() }}</label> 
+            </div>
+
             <analytic-form #form [mode]="'edit'"></analytic-form>
         </div>
     </div>

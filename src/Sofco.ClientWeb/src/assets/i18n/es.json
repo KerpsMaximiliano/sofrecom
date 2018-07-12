@@ -602,6 +602,7 @@
             "viewTitle": "Ver Analitica",
             "assigned": "Analíticas Asignadas",
             "close": "Cerrar Analitica",
+            "closeForExpenses": "Cerrar para costos",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",

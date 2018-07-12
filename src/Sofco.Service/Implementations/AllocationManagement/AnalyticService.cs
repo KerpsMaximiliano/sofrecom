@@ -21,6 +21,7 @@ using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
@@ -274,7 +275,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response Close(int analyticId)
+        public Response Close(int analyticId, AnalyticStatus status)
         {
             var response = new Response();
             var analytic = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, analyticId);
@@ -290,7 +291,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                AnalyticStatusClose.Save(analytic, unitOfWork, response);
+                AnalyticStatusClose.Save(analytic, unitOfWork, response, status);
             }
             catch (Exception ex)
             {

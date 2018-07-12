@@ -56,6 +56,10 @@ export class AnalyticService {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
   }
 
+  closeForExpenses(id) {
+    return this.http.put<any>(`${this.baseUrl}/analytics/${id}/closeForExpenses`, {});
+  }
+
   getByCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
   }

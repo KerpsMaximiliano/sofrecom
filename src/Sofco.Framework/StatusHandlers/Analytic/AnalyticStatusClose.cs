@@ -13,11 +13,11 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 {
     public static class AnalyticStatusClose
     {
-        public static void Save(Model.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response)
+        public static void Save(Model.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response, AnalyticStatus status)
         {
             unitOfWork.AllocationRepository.RemoveAllocationByAnalytic(analytic.Id, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
 
-            analytic.Status = AnalyticStatus.Close;
+            analytic.Status = status;
             unitOfWork.AnalyticRepository.Close(analytic);
 
             unitOfWork.Save();
