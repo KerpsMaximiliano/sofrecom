@@ -96,6 +96,16 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string>();
 
+            mails.AddRange(GetCdgMails());
+
+            mails.AddRange(GetComplianceMails());
+
+            mails.AddRange(GetCommercialMails(purchaseOrder));
+
+            mails.AddRange(GetOperationMails(purchaseOrder));
+
+            mails.AddRange(GetDafMails());
+
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 
             foreach (var analytic in analytics)
@@ -109,12 +119,6 @@ namespace Sofco.Framework.Managers
 
             if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
             if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
-
-            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
-
-            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
-
-            mails.Add(unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode));
 
             return string.Join(MailDelimiter, mails.Distinct());
         }
@@ -154,7 +158,7 @@ namespace Sofco.Framework.Managers
 
         private List<string> GetCdgMails()
         {
-            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode) };
+            var mails = new List<string>();
 
             var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
 
@@ -188,7 +192,7 @@ namespace Sofco.Framework.Managers
 
         private List<string> GetDafMails()
         {
-            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(appSetting.DafPurchaseOrderGroupCode) };
+            var mails = new List<string>();
 
             var users = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode);
 
@@ -209,7 +213,7 @@ namespace Sofco.Framework.Managers
 
         private List<string> GetComplianceMails()
         {
-            var mails = new List<string> { unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode) };
+            var mails = new List<string>();
 
             var users = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode);
 
