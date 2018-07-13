@@ -96,6 +96,16 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string>();
 
+            mails.AddRange(GetCdgMails());
+
+            mails.AddRange(GetComplianceMails());
+
+            mails.AddRange(GetCommercialMails(purchaseOrder));
+
+            mails.AddRange(GetOperationMails(purchaseOrder));
+
+            mails.AddRange(GetDafMails());
+
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 
             foreach (var analytic in analytics)
@@ -109,10 +119,6 @@ namespace Sofco.Framework.Managers
 
             if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
             if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
-
-            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
-
-            mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
 
             return string.Join(MailDelimiter, mails.Distinct());
         }
