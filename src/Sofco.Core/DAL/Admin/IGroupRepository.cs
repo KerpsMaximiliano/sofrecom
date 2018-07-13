@@ -23,5 +23,7 @@ namespace Sofco.Core.DAL.Admin
         bool DescriptionExist(string description, int id);
 
         string GetEmail(string code);
+
+        Group GetByCode(string guestCode);
     }
 }

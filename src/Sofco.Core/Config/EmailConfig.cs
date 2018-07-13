@@ -20,6 +20,8 @@
 
         public string DirectorsCode { get; set; }
 
+        public string GuestCode { get; set; }
+
         public string CdgCode { get; set; }
 
         public string PmoCode { get; set; }
