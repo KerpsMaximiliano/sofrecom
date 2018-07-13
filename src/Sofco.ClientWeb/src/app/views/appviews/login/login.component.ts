@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
 
                 this.menuService.menu = menu.menus;
                 this.menuService.userIsDirector = menu.isDirector;
+                this.menuService.userIsManager = menu.isManager;
                 this.menuService.userIsDaf = menu.isDaf;
                 this.menuService.userIsCdg = menu.isCdg;
                 this.menuService.userIsRrhh = menu.isRrhh;
