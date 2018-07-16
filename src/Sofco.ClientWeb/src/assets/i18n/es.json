@@ -318,7 +318,8 @@
                 "PurchaseOrderOperation": "Operación",
                 "PurchaseOrderCompliance": "Compliance",
                 "PurchaseOrderDaf": "DAF"
-            }
+            },
+            "adjustment": "Ajuste"
         },
         "solfac":{
             "title": "Solicitud Facturación",

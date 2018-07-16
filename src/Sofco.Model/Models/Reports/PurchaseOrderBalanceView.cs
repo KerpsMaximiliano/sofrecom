@@ -21,6 +21,8 @@ namespace Sofco.Model.Models.Reports
 
         public decimal? Ammount { get; set; }
 
+        public decimal? Adjustment { get; set; }
+
         public PurchaseOrderStatus Status { get; set; }
 
         public decimal? Balance { get; set; }
