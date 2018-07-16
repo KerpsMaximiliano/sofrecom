@@ -45,7 +45,7 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
     annulment(){
         this.isLoading = true;
 
-        this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Cancelled, "", "").subscribe(data => {
+        this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Cancelled, this.comments, "").subscribe(data => {
             this.isLoading = false;
             this.annulmentModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);

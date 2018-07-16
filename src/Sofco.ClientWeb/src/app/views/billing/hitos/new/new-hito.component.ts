@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } 
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
-import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
 import { ProjectService } from 'app/services/billing/project.service';
 import { NewHito } from 'app/models/billing/solfac/newHito';
 import { UtilsService } from '../../../../services/common/utils.service';
@@ -37,11 +35,9 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
   public currencies: Option[] = new Array();
 
     constructor(private messageService: MessageService,
-    private menuService: MenuService,
     private utilsService: UtilsService,
     private projectService: ProjectService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) {}
+    private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit(): void {
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {

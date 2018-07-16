@@ -20,12 +20,12 @@
     
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-lg-8">
             <div class="alert alert-info" *ngIf="!alertDisable">
                 {{'billing.purchaseOrder.fileMissing' | translate }}
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-lg-4">
             <div class="btn-right">
                 <oc-status-delete [ocId]="form.model.id" [status]="form.model.status"></oc-status-delete>
                 <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="ibox">
                 <div class="ibox-content">
                     <purchase-order-form #form [mode]="'new'"></purchase-order-form>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="m-t-lg m-b-lg" *ngIf="showUploader && (!fileId || fileId <= 0)">
                 <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
 

@@ -38,6 +38,14 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public string FileName { get; set; }
 
+        public string FicheDeSignature { get; set; }
+
+        public string PaymentForm { get; set; }
+
+        public decimal Margin { get; set; }
+
+        public string Comments { get; set; }
+
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 
         public Model.Models.Billing.PurchaseOrder CreateDomain(string userName)
@@ -110,6 +118,10 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.ReceptionDate = ReceptionDate;
             domain.AreaId = AreaId;
             domain.Description = Description;
+            domain.FicheDeSignature = FicheDeSignature;
+            domain.PaymentForm = PaymentForm;
+            domain.Margin = Margin;
+            domain.Comments = Comments;
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
