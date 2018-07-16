@@ -24,6 +24,10 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             EndDate = domain.EndDate;
             ReceptionDate = domain.ReceptionDate;
             Description = domain.Description;
+            FicheDeSignature = domain.FicheDeSignature;
+            PaymentForm = domain.PaymentForm;
+            Margin = domain.Margin;
+            Comments = domain.Comments;
 
             if (domain.PurchaseOrderAnalytics.Any())
             {
@@ -83,6 +87,14 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public string FileName { get; set; }
 
         public string CreationDate { get; set; }
+
+        public string FicheDeSignature { get; set; }
+
+        public string PaymentForm { get; set; }
+
+        public decimal Margin { get; set; }
+
+        public string Comments { get; set; }
 
         public int[] AnalyticIds { get; set; }
 

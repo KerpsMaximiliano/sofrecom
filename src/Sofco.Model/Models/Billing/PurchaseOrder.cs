@@ -37,6 +37,14 @@ namespace Sofco.Model.Models.Billing
 
         public bool Adjustment { get; set; }
 
+        public string FicheDeSignature { get; set; }
+
+        public string PaymentForm { get; set; }
+
+        public decimal Margin { get; set; }
+
+        public string Comments { get; set; }
+
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<Solfac> Solfacs { get; set; }
