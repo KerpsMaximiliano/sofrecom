@@ -10,6 +10,7 @@ import { LicenseService } from "../../../../services/human-resources/licenses.se
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
+import { UserService } from "../../../../services/admin/user.service";
 
 @Component({
     selector: 'resource-detail',
@@ -20,7 +21,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('businessHoursModal') businessHoursModal;
     public businessHoursModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "allocationManagement.resources.businessHoursModal",
+        "allocationManagement.resources.hoursByContract",
         "businessHoursModal",
         true,
         true,
@@ -33,22 +34,31 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     public isRrhh: boolean = false;
     public isLoading: boolean = false;
-    public businessHours: number;
-    public businessHoursDescription: string;
+
+    public editModel = {
+        businessHours: 0,
+        businessHoursDescription: "",
+        office: "",
+        managerId: 0,
+        holidaysPending: null
+    }
 
     public licenses: any[] = new Array();
     public tasks: any[] = new Array();
+    public managers: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
     finalizeExtraHolidaysSubscrip: Subscription;
     getDataSubscrip: Subscription;
     getTasksSubscrip: Subscription;
+    getManagersSubscript: Subscription;
 
     constructor(private router: Router,
                 private menuService: MenuService,
                 private messageService: MessageService,
                 private licenseService: LicenseService,
+                private userService: UserService,
                 private dataTableService: DataTableService,
                 private activatedRoute: ActivatedRoute,
                 private employeeService: EmployeeService,
@@ -73,6 +83,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 }
             }
 
+            this.getUsers();
             this.getProfile();
             this.getLicenses();
             this.getTasks();
@@ -93,8 +104,11 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.employeeService.getProfile(this.resourceId).subscribe(response => {
             this.model = response.data;
 
-            this.businessHours = response.data.businessHours;
-            this.businessHoursDescription = response.data.businessHoursDescription;
+            this.editModel.businessHours = response.data.businessHours;
+            this.editModel.businessHoursDescription = response.data.businessHoursDescription;
+            this.editModel.office = response.data.officeAddress;
+            this.editModel.holidaysPending = response.data.holidaysPendingByLaw;
+            this.editModel.managerId = response.data.managerId;
 
             this.messageService.closeLoading();
             this.initGrid();
@@ -160,8 +174,11 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     updateBusinessHours(){
         var json = {
-            businessHours: this.businessHours,
-            businessHoursDescription: this.businessHoursDescription
+            businessHours: this.editModel.businessHours,
+            businessHoursDescription: this.editModel.businessHoursDescription,
+            holidaysPending: this.editModel.holidaysPending,
+            office: this.editModel.office,
+            managerId: this.editModel.managerId
         };
 
         this.isLoading = true;
@@ -171,21 +188,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             if(data.messages) this.messageService.showMessages(data.messages);
             this.businessHoursModal.hide();
 
-            this.model.businessHours = this.businessHours;
-            this.model.businessHoursDescription = this.businessHoursDescription;
+            setTimeout(() => {
+                window.location.reload();
+            }, 750);
         },
         error => { 
             this.isLoading = false;
             this.errorHandlerService.handleErrors(error)
         });
-    }
-
-    canUpdateBusinessHours(){
-        if(this.businessHours > 0 && this.businessHoursDescription && this.businessHoursDescription != ''){
-            return true;
-        }
-
-        return false;
     }
 
     canAddLicense(){
@@ -198,5 +208,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
 
         return false;
+    }
+
+    getUsers(){
+        this.getManagersSubscript = this.userService.getOptions().subscribe(response => {
+            this.managers = response;
+        }, 
+        error => {
+            this.errorHandlerService.handleErrors(error);
+        });
     }
 } 

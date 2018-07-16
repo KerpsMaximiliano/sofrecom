@@ -43,5 +43,7 @@ namespace Sofco.Model.Models.Admin
         public ICollection<Area> Areas { get; set; }
 
         public ICollection<Sector> Sectors { get; set; }
+
+        public ICollection<Employee> Employees { get; set; }
     }
 }
