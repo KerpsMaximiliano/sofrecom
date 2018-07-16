@@ -119,7 +119,7 @@
                                 <td>{{ purchaseOrder.projectManagerNames }}</td>
                                 <td>{{ purchaseOrder.accountManagerNames }}</td>
                                 <td class="text-center column-xs">
-                                    <button *ngIf="menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-eye"></i></button>
+                                    <button *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-eye"></i></button>
         
                                     <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
                                         <i class="fa fa-download"></i>

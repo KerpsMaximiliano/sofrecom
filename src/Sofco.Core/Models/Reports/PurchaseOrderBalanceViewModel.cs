@@ -19,6 +19,8 @@ namespace Sofco.Core.Models.Reports
 
         public decimal Ammount { get; set; }
 
+        public decimal Adjustment { get; set; }
+
         public int StatusId { get; set; }
 
         public string StatusText { get; set; }
