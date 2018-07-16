@@ -5,5 +5,11 @@
         public int BusinessHours { get; set; }
 
         public string BusinessHoursDescription { get; set; }
+
+        public string Office { get; set; }
+
+        public int HolidaysPending { get; set; }
+
+        public int ManagerId { get; set; }
     }
 }

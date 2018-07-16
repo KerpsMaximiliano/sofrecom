@@ -27,7 +27,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string OfficeAddress { get; set; }
 
-        public string Manager { get; set; } 
+        public int ManagerId { get; set; } 
 
         public IList<EmployeeAllocationModel> Allocations { get; set; }
 
@@ -65,5 +65,6 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string BusinessHoursDescription { get; set; }
 
+        public string Manager { get; set; }
     }
 }

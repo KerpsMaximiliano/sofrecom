@@ -108,6 +108,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             context.Entry(employee).Property("BusinessHours").IsModified = true;
             context.Entry(employee).Property("BusinessHoursDescription").IsModified = true;
+            context.Entry(employee).Property("OfficeAddress").IsModified = true;
+            context.Entry(employee).Property("HolidaysPendingByLaw").IsModified = true;
+            context.Entry(employee).Property("ManagerId").IsModified = true;
+            context.Entry(employee).Property("HolidaysPending").IsModified = true;
         }
 
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
@@ -207,7 +211,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetById(int id)
         {
-            return context.Employees.SingleOrDefault(x => x.Id == id);
+            return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Id == id);
         }
 
         public Employee GetByEmail(string email)

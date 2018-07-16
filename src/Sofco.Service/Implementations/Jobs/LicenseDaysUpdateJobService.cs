@@ -143,7 +143,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private void CalculateDaysPending(Employee employee, string key)
+        private void CalculateDaysPending(Employee employee, string key) 
         {
             employee.HolidaysPending += GetBusinessHolidyas(holidaysValues[key]);
             employee.HolidaysByLaw = holidaysValues[key];
@@ -152,6 +152,7 @@ namespace Sofco.Service.Implementations.Jobs
             if (employee.HasExtraHolidays)
             {
                 employee.HolidaysPending += employee.ExtraHolidaysQuantity;
+                employee.HolidaysPendingByLaw += employee.ExtraHolidaysQuantityByLaw;
             }
         }
 

@@ -7,6 +7,7 @@ import { ResourceDetailComponent } from "app/views/allocation-management/resourc
 import { LicenseService } from "app/services/human-resources/licenses.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { RouterModule } from "@angular/router";
+import { Select2Module } from "../../../../components/select2/select2";
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { RouterModule } from "@angular/router";
       FormsModule,
       TranslateModule,
       Ng2ModalModule,
+      Select2Module
     ],
     declarations: [ 
         ResourceDetailComponent

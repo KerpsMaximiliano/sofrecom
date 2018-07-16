@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
+using Sofco.Model.Models.Admin;
 using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
@@ -81,5 +82,8 @@ namespace Sofco.Model.Models.AllocationManagement
         public int? TypeEndReasonId { get; set; }
 
         public EmployeeEndReason TypeEndReason { get; set; }
+
+        public int? ManagerId { get; set; }
+        public User Manager { get; set; }
     }
 }

@@ -79,7 +79,7 @@
                         <div class="widget-custom lazur-bg" (click)="businessHoursModal.show()">
                             <div class="row vertical-align">
                                 <div class="col-xs-2">
-                                    <i class="fa fa-hourglass-start fa-2x"></i>
+                                    <i class="fa fa-edit fa-2x"></i>
                                 </div>
                                 <div class="col-xs-10 text-right">
                                     <h4 class="font-bold">{{'allocationManagement.resources.hoursByContract' | translate }}</h4>
@@ -97,24 +97,27 @@
             <table class="table table-font-md">
                 <tbody>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.start' | translate }}:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</td>
-                        <td><strong>{{'allocationManagement.resources.grid.senority' | translate }}: </strong> {{ model?.seniority }} </td>
-                        <td><strong>{{'rrhh.license.holidaysByLaw' | translate }}: </strong> {{ model?.holidaysByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong><i class="fa fa-user"></i> {{'allocationManagement.resources.manager' | translate }}: </strong> {{ model?.manager }} </td>
                     </tr>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
-                        <td><strong>{{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong><i class="fa fa-calendar"></i> {{'allocationManagement.resources.grid.start' | translate }}:</strong> {{ model?.startDate | date:'dd/MM/yyyy' }}</td>
+                        <td><strong><i class="fa fa-star"></i> {{'allocationManagement.resources.grid.senority' | translate }}: </strong> {{ model?.seniority }} </td>
+                        <td><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.holidaysByLaw' | translate }}: </strong> {{ model?.holidaysByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
-                        <td><strong>{{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
-                        <td *ngIf="isRrhh"><strong>{{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong><i class="fa fa-address-card"></i> {{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
+                        <td><strong><i class="fa fa-cog"></i> {{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
+                        <td *ngIf="isRrhh"><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.holidaysPendingByLaw' | translate }}: </strong> {{ model?.holidaysPendingByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                     <tr>
-                        <td><strong>{{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong><i class="fa fa-building"></i> {{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
+                        <td><strong><i class="fa fa-percent"></i> {{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
+                        <td *ngIf="isRrhh"><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fa fa-paper-plane"></i> {{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.days' | translate }}</td>
                         <td></td>
-                        <td *ngIf="model?.hasExtraHolidays && isRrhh"><strong>{{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
+                        <td *ngIf="model?.hasExtraHolidays && isRrhh"><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -267,14 +270,31 @@
     </div>
 </div> 
 
-<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()" [isLoading]="isLoading" [isSaveEnabled]="canUpdateBusinessHours()">
-    <div class="form-group">
-        <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }}: </label>
-        <input class="form-control" type="number" min="1" max="8" [(ngModel)]="businessHours" />
+<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()" [isLoading]="isLoading">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }} </label>
+                <input class="form-control" type="number" min="1" max="8" [(ngModel)]="editModel.businessHours" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">{{'rrhh.license.holidaysPendingByLaw' | translate }} </label>
+                <input class="form-control" type="number" min="1" max="1000" [(ngModel)]="editModel.holidaysPending" />
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label">{{'allocationManagement.resources.businessHoursDescription' | translate }}: </label>
-        <input class="form-control" type="text" [(ngModel)]="businessHoursDescription" placeholder="09.00 hs a 18.00 hs" />
+        <label class="control-label">{{'allocationManagement.resources.businessHoursDescription' | translate }} </label>
+        <input class="form-control" type="text" [(ngModel)]="editModel.businessHoursDescription" placeholder="09.00 hs a 18.00 hs" />
     </div>
-</ng2-modal> 
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.grid.office' | translate }}: </label>
+        <input class="form-control" type="text" [(ngModel)]="editModel.office" />
+    </div>
+
+    <select-two [label]="'allocationManagement.resources.manager'" [(value)]="editModel.managerId" [options]="managers"></select-two>
+</ng2-modal>  
