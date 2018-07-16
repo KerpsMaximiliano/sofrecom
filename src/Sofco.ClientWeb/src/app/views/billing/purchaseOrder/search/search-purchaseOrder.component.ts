@@ -13,7 +13,8 @@ import { EmployeeService } from 'app/services/allocation-management/employee.ser
 import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
 import { UserService } from 'app/services/admin/user.service';
 import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
-import { MenuService } from '../../../../services/admin/menu.service';
+import { MenuService } from 'app/services/admin/menu.service';
+import { PurchaseOrderBalanceModel } from 'app/models/billing/purchase-order/purchase-order-balance-model';
 declare var $: any;
 declare var moment: any;
 
@@ -48,6 +49,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     public statusId = "1";
     public year;
     private storeSessionName = "purchaseOrderSearchCriteria";
+    private adjustmentSuffix = "";
 
     suscription: Subscription;
 
@@ -83,6 +85,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             this.endDate = data.endDate;
             this.filterByDates = data.filterByDates;
         }
+        this.adjustmentSuffix = " - " + this.i18nService.translateByKey('billing.purchaseOrder.adjustment');
     }
 
     ngAfterViewInit() {
@@ -117,34 +120,30 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     getCustomers() {
-        this.messageService.showLoading();
-
         this.customerService.getAllOptions().subscribe(res => {
-            this.messageService.closeLoading();
             this.customers = res.data;
         },
         err => {
-            this.messageService.closeLoading();
             this.errorHandlerService.handleErrors(err);
         });
     }
 
     getReport(parameters) {
-        this.messageService.showLoading();
-
         this.suscription = this.purchaseOrderService.getReport(parameters).subscribe(response => {
-            this.messageService.closeLoading();
-            if(response.messages) this.messageService.showMessages(response.messages);
-
-            this.data = response.data;
-            sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
-            this.initGrid();
-            if(this.data.length == 0) {
-                this.showEmptyData();
-            }
-            this.storeSearchCriteria(parameters);
+            this.getReportResponseHandler(response, parameters);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    getReportResponseHandler(response, parameters) {
+        if(response.messages) this.messageService.showMessages(response.messages);
+        this.data = this.addPurchaseOrderAdjust(response.data);
+        sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
+        this.initGrid();
+        if(this.data.length == 0) {
+            this.showEmptyData();
+        }
+        this.storeSearchCriteria(parameters);
     }
 
     initGrid(){
@@ -397,5 +396,28 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     showEmptyData() {
         this.messageService.showWarning("report.resultNotFound");
+    }
+
+    addPurchaseOrderAdjust(data): any[] {
+        data.forEach(item => {
+            if(item.adjustment > 0){
+                const newItem = this.createPurchaseOrderAdjustment(item);
+                data.push(newItem);
+            }
+        });
+        return data.sort(function (a, b) {
+            return a.number.localeCompare(b.number);
+        });
+    }
+
+    createPurchaseOrderAdjustment(data): PurchaseOrderBalanceModel {
+        const item = new PurchaseOrderBalanceModel();
+        item.number = data.number + this.adjustmentSuffix;
+        item.clientExternalName = data.clientExternalName;
+        item.currencyText = data.currencyText;
+        item.ammount = data.adjustment;
+        item.statusId = data.statusId;
+        item.statusText = this.i18nService.translateByKey(data.statusText) + this.adjustmentSuffix;
+        return item;
     }
 }
