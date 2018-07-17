@@ -2,7 +2,7 @@
     {{ 'ACTIONS.updateCash' | translate }} <i class="fa fa-money"></i> 
 </button>
 
-<ng2-modal [config]="updateCashModalConfig" #updateCashModal (accept)="updateCash()" [isLoading]="isLoading">
+<ng2-modal [config]="updateCashModalConfig" #updateCashModal (accept)="updateCash()">
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.cashedDate' | translate }}</label>
         <date-picker [(date)]="cashedDate"></date-picker>

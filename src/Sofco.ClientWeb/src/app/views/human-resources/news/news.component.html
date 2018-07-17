@@ -49,12 +49,12 @@
     </div>
 </div>
  
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()" [isLoading]="isLoading">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="confirm()">
     <h4>{{'allocationManagement.confirmBody' | translate }} <b>{{ confirmBodyAction }}</b> ?</h4>
 </ng2-modal>
 
 
-<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="confirm()" [isLoading]="isLoading">
+<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="confirm()">
     <h4>{{'allocationManagement.confirmBody' | translate }} <b>{{ confirmBodyAction }}</b> ?</h4>
 
     <select-two [label]="'allocationManagement.news.endReasonTypes'" [(value)]="endReasonType" [options]="endReasonTypes"></select-two>

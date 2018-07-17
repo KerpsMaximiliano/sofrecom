@@ -32,8 +32,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    public isLoading: boolean = false;
-
     private statusClose: boolean = true;
 
     constructor(private analyticService: AnalyticService,
@@ -126,8 +124,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     }
 
     close(){
-        this.isLoading = true;
-
         if(this.statusClose){
             this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
                 this.closeSuccess(response);
@@ -135,7 +131,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.errorHandlerService.handleErrors(err);
-                this.isLoading = false;
             });
         }
         else {
@@ -145,13 +140,11 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.errorHandlerService.handleErrors(err);
-                this.isLoading = false;
             });
         }
     }
 
     closeSuccess(response){
-        this.isLoading = false;
         this.confirmModal.hide();
         if(response.messages) this.messageService.showMessages(response.messages);
     }

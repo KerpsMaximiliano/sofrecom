@@ -115,7 +115,7 @@
     </div> 
 </section>
 
-<ng2-modal [config]="functModalConfig" #functModal (accept)="assignFunctionalities()" [isLoading]="isLoading">
+<ng2-modal [config]="functModalConfig" #functModal (accept)="assignFunctionalities()">
     <h4 class="margin-bottom-m">{{ 'ADMIN.FUNCTIONALITIES.select' | translate }}</h4>
     
     <!--COMBO DE MODULOS-->
@@ -141,10 +141,10 @@
     </div>
 </ng2-modal>
 
-<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unAssignModule(moduleId)" [isLoading]="isLoading">
+<ng2-modal [config]="confirmModalConfig"  #confirmModal (accept)="unAssignModule(moduleId)">
     {{ 'ADMIN.module.deleteConfirm' | translate }}
 </ng2-modal>
 
-<ng2-modal [config]="confirmFunctModalConfig"  #functConfirmModal (accept)="unAssignFunct()" [isLoading]="isLoading">
+<ng2-modal [config]="confirmFunctModalConfig"  #functConfirmModal (accept)="unAssignFunct()">
     {{ 'ADMIN.FUNCTIONALITIES.deleteConfirm' | translate }}
 </ng2-modal>

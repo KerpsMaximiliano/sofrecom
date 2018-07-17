@@ -116,5 +116,17 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.WrongStatus);
             }
         }
+
+        public static void ValidateDelete(WorkTime worktime, Response response)
+        {
+            if (worktime == null)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WorkTimeNotFound);
+            }
+            else if(worktime.Status != WorkTimeStatus.Rejected && worktime.Status != WorkTimeStatus.Draft)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
+            }
+        }
     }
 }

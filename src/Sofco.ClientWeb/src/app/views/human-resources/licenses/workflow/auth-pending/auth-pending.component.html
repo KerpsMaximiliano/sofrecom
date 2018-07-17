@@ -2,6 +2,6 @@
     {{ 'ACTIONS.authorize' | translate }} <i class="fa fa-check"></i>
 </button>
 
-<ng2-modal [config]="authPendingModalConfig" #authPendingModal (accept)="authorize()" [isLoading]="isLoading">
+<ng2-modal [config]="authPendingModalConfig" #authPendingModal (accept)="authorize()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal> 

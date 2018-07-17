@@ -30,7 +30,6 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
   @Output() hitosReload: EventEmitter<any> = new EventEmitter();
 
   public hito: NewHito = new NewHito();
-  public btnDisabled: boolean = false;
 
   public currencies: Option[] = new Array();
 
@@ -65,11 +64,7 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
     }
 
     save(){
-        this.btnDisabled = true;
-
         this.subscrip = this.projectService.createNewHito(this.hito).subscribe(data => {
-            this.btnDisabled = false;
-
             if(data.messages) this.messageService.showMessages(data.messages);
             this.newHitoModal.hide();
 
@@ -78,7 +73,6 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
             }
         },
         err =>  {
-            this.btnDisabled = false;
             this.errorHandlerService.handleErrors(err)
         });
     }

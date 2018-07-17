@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
@@ -26,7 +26,6 @@ export class CloneInvoiceComponent implements OnDestroy  {
   @Input() invoiceId: number;
 
   subscrip: Subscription;
-  public isLoading: boolean = false;
 
   constructor(private invoiceService: InvoiceService,
     private messageService: MessageService,
@@ -44,11 +43,8 @@ export class CloneInvoiceComponent implements OnDestroy  {
   }
 
   clone(){
-    this.isLoading = true;
-
     this.subscrip = this.invoiceService.clone(this.invoiceId).subscribe(data => {
         this.cloneModal.hide();
-        this.isLoading = false;
         if(data.messages) this.messageService.showMessages(data.messages);
 
         setTimeout(() => { 
@@ -56,7 +52,6 @@ export class CloneInvoiceComponent implements OnDestroy  {
         }, 500)
     },
     err => {
-      this.isLoading = false;
       this.cloneModal.hide();
       
       setTimeout(() => { 

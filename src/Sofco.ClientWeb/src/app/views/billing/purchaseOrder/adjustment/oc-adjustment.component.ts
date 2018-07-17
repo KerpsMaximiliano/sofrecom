@@ -24,7 +24,6 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
 
     public details: any[] = new Array();
     public id: number;
-    public isLoading: boolean = false;
 
     addSubscrip: Subscription;
 
@@ -44,11 +43,8 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
     }
 
     create(){
-        this.isLoading = true;
-
         this.addSubscrip = this.purchaseOrderService.makeAdjustment(this.id, this.details).subscribe(
             response => {
-                this.isLoading = false;
                 this.adjustmentModal.hide();
                 if(response.messages) this.messageService.showMessages(response.messages);
 
@@ -57,7 +53,6 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
                 }, 1000);
             },
             err => {
-                this.isLoading = false;
                 this.errorHandlerService.handleErrors(err);
             });
     }

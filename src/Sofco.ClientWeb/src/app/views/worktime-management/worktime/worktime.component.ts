@@ -1,18 +1,10 @@
 import * as moment from 'moment';
 import 'jqueryui';
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Router } from '@angular/router';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CustomerService } from 'app/services/billing/customer.service';
-import { UserService } from 'app/services/admin/user.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { DataTableService } from 'app/services/common/datatable.service';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
 import { OptionsInput } from 'fullcalendar';
 import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
@@ -61,8 +53,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
-  public loading = false;
-
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
@@ -81,6 +71,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private errorHandlerService: ErrorHandlerService,
       private messageService: MessageService,
       private appSetting: AppSetting) {
+
+        this.editModalConfig.deleteButton = true;
   }
 
   ngOnInit() {
@@ -100,6 +92,22 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.taskColors[this.approvedStatus] = this.approvedTaskColor;
     this.taskColors[this.rejectedStatus] = this.rejectedTaskColor;
     this.taskColors[this.licenseStatus] = this.licenseTaskColor;
+  }
+
+  deleteTask(){
+    this.subscription = this.worktimeService.delete(this.taskModel.id).subscribe(response => {
+      if (response.messages) this.messageService.showMessages(response.messages);
+
+      var taskToRemove = this.model.calendar.findIndex(item => item.id == this.taskModel.id);
+      this.model.calendar.splice(taskToRemove, 1);
+      this.updateCalendarEvents();
+    },
+    error => {
+      this.errorHandlerService.handleErrors(error);
+    },
+    () => {
+      this.editModal.hide();
+    });
   }
 
   calendarInit() {
@@ -278,6 +286,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       }
     }
     this.showSaveTask();
+
+    if(this.taskModel.status != 1 && this.taskModel.status != 4){
+      this.editModalConfig.deleteButton = false;
+    }
+    else{
+      this.editModalConfig.deleteButton = true;
+    }
+
     this.editModal.show();
   }
 
@@ -337,9 +353,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   saveTask() {
     if (!this.validateHoursPerDay(this.taskModel)) { return; }
 
-    this.editModal.isLoading = true;
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
-      this.editModal.isLoading = false;
       this.editModal.hide();
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
@@ -347,7 +361,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     },
     error => {
       this.errorHandlerService.handleErrors(error);
-      this.editModal.isLoading = false;
     });
   }
 

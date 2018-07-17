@@ -138,6 +138,9 @@
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>workTimeManagement/workTime.cannotChangeStatus</value>
   </data>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>workTimeManagement/workTime.cannotDelete</value>
+  </data>
   <data name="DateOutOfRangeError" xml:space="preserve">
     <value>workTimeManagement/workTime.dateOutOfRange</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="DeleteError" xml:space="preserve">
     <value>workTimeManagement/workTime.deleteError</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>workTimeManagement/workTime.deleteSuccess</value>
   </data>
   <data name="EmployeeRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.employeeRequired</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="RejectedSuccess" xml:space="preserve">
     <value>workTimeManagement/workTime.rejectedSuccess</value>
+  </data>
+  <data name="RejectedWithSomeErrors" xml:space="preserve">
+    <value>workTimeManagement/workTime.rejectedWithSomeErrors</value>
   </data>
   <data name="ReportWarning" xml:space="preserve">
     <value>workTimeManagement/workTime.reportWarning</value>

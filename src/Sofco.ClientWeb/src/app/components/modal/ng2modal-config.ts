@@ -1,4 +1,6 @@
 export class Ng2ModalConfig{
+    public deleteButton: boolean = false;
+
     constructor(
         public title: string = "Modal Title",
         public id: string = "MyModal",
@@ -8,5 +10,4 @@ export class Ng2ModalConfig{
         public cancelButtonText: string = "Cancel",
         public closeIcon: boolean = true
     ){}
-    
 }

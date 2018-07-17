@@ -1,0 +1,2 @@
+<button type="button" class="btn {{class}}" (click)="showConfirm()" *ngIf="!btnConfirmVisible" [disabled]="isDisabled">{{ text | translate }}</button>
+<button type="button" class="btn {{class}} ladda-button" (click)="confirm()" *ngIf="btnConfirmVisible" [ladda]="isLoading">{{ 'ACTIONS.confirmTitle' | translate }}</button>

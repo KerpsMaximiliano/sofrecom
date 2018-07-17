@@ -43,8 +43,16 @@ export class WorktimeService {
     return this.http.put<any>(`${this.apiUrl}/${id}/approve`, {});
   }
 
+  delete(id) {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
   approveAll(hourIds){
     return this.http.put<any>(`${this.apiUrl}/approve`, hourIds);
+  }
+
+  rejectAll(model){
+    return this.http.put<any>(`${this.apiUrl}/reject`, model);
   }
 
   reject(id, comments) {

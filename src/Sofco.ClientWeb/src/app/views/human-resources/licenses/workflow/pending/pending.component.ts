@@ -36,16 +36,12 @@ export class LicensePendingComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-
   public statusToSend: any;
 
   constructor(private licenseService: LicenseService,
     private messageService: MessageService,
     private menuService: MenuService,
-    private i18nService: I18nService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) { }
+    private errorHandlerService: ErrorHandlerService) { }
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -90,12 +86,9 @@ export class LicensePendingComponent implements OnDestroy  {
         status: this.statusToSend
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.licenseService.changeStatus(this.licenseId, json).subscribe(
         data => {
             this.pendingModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.history.observers.length > 0){
@@ -113,7 +106,6 @@ export class LicensePendingComponent implements OnDestroy  {
         },
         error => {
             this.pendingModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }

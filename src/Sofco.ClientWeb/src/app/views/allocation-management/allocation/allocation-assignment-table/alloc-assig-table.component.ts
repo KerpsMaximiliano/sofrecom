@@ -45,8 +45,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     dateSince: Date = new Date();
     monthLastAllocation: number;
 
-    public loading: boolean = false;
-
     constructor(private allocationsService: AllocationService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService){}
@@ -206,10 +204,8 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         }   
 
         this.allocationSelected.releaseDate = this.releaseDate;
-        this.loading = true;
 
         this.addSubscrip = this.allocationsService.add(this.allocationSelected).subscribe(data => {
-            this.loading = false;
             this.confirmModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
 
@@ -226,7 +222,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             }
         },
         error => {
-            this.loading = false;
             this.allocationSelected.releaseDate = null;
             this.confirmModal.hide();
             this.errorHandlerService.handleErrors(error);

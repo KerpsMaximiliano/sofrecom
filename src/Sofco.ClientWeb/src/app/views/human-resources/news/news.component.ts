@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Router } from "@angular/router";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { EmployeeNewsService } from "app/services/allocation-management/employee-news.service";
 import { I18nService } from 'app/services/common/i18n.service';
@@ -30,8 +28,6 @@ export class NewsComponent implements OnInit, OnDestroy {
     confirmBodyAction: string;
 
     public endReasonType: number = 0;
-
-    public isLoading: boolean = false;
 
     public rejectComments: string;
  
@@ -131,42 +127,32 @@ export class NewsComponent implements OnInit, OnDestroy {
     confirm(){ }
 
     add(){
-        this.isLoading = true;
-
         this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     cancel(){
-        this.isLoading = true;
-
         this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.isLoading = false;
             this.confirmModal.hide();
         },
         error => {
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }
 
     delete(){
-        this.isLoading = true;
-
         var json = {
             comments: this.rejectComments,
             type: this.endReasonType
@@ -177,11 +163,9 @@ export class NewsComponent implements OnInit, OnDestroy {
 
             this.model.splice(this.indexToConfirm, 1);
 
-            this.isLoading = false;
             this.deleteModal.hide();
         },
         error => {
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

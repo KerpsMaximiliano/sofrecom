@@ -1,4 +1,3 @@
-import { Ng2ModalConfig } from './ng2modal-config';
 import { Ng2ModalComponent } from './ng2modal.component';
 
 import { NgModule } from '@angular/core';
@@ -7,13 +6,15 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
 import { LaddaModule } from 'angular2-ladda';
 import { FormsModule } from '@angular/forms';
+import { ButtonsModule } from 'app/components/buttons/btn-confirm-inline.module';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
     FormsModule,
-    LaddaModule
+    LaddaModule,
+    ButtonsModule
   ],
   declarations: [ 
       Ng2ModalComponent

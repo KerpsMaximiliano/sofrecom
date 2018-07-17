@@ -28,6 +28,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     public analyticId = 0;
     public employeeId = 0;
     public comments: string;
+    public rejectComments: string;
 
     indexToRemove: number;
 
@@ -45,6 +46,16 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.close"
+    );
+
+    @ViewChild('rejectAllModal') rejectAllModal;
+    public rejectAllModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "rejectAllModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
     );
 
     constructor(private analyticService: AnalyticService,
@@ -119,7 +130,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             if(response.messages) this.messageService.showMessages(response.messages);
 
-            this.hoursPending = response.data;
+            this.hoursPending = response.data.map(item => {
+                item.selected = false;
+                return item;
+            });
 
             var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
             this.initGrid(options);
@@ -197,6 +211,30 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         return this.hoursPending.filter(x => x.selected == true).length == 0;
     }
 
+    areAllSelected(){
+        return this.hoursPending.every(item => {
+            return item.selected == true;
+        });
+    }
+
+    areAllUnselected(){
+        return this.hoursPending.every(item => {
+            return item.selected == false;
+        });
+    }
+
+    selectAll(){
+        this.hoursPending.forEach((item, index) => {
+            item.selected = true;
+        });
+    }
+
+    unselectAll(){
+        this.hoursPending.forEach((item, index) => {
+            item.selected = false;
+        });
+    }
+
     approveAll(){
         var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
 
@@ -211,6 +249,27 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    rejectAll(){
+        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
+
+        if(hoursSelected.length == 0) return;
+
+        var json = {
+            hourIds: hoursSelected,
+            comments: this.rejectComments
+        }
+
+        this.searchSubscrip = this.worktimeService.rejectAll(json).subscribe(response => {
+            this.rejectAllModal.hide();
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.searchPending();
+        },
+        error => {
+            this.rejectAllModal.hide();
             this.errorHandlerService.handleErrors(error);
         });
     }

@@ -6,7 +6,6 @@ import { Subscription } from "rxjs/Subscription";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -36,13 +35,10 @@ export class StatusBillComponent implements OnDestroy  {
     invoiceDate: Date = new Date();
     invoiceCode: string;
 
-    public isLoading: boolean = false;
-
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) {}
+        private errorHandlerService: ErrorHandlerService) {}
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -68,11 +64,8 @@ export class StatusBillComponent implements OnDestroy  {
                 invoiceDate: this.invoiceDate
               }
 
-            this.isLoading = true;
-            
             this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
                 data => {
-                    this.isLoading = false;
                     this.billModal.hide();
                     
                     if(data.messages) this.messageService.showMessages(data.messages);
@@ -90,7 +83,6 @@ export class StatusBillComponent implements OnDestroy  {
                     this.updateStatus.emit(toModif);
                 },
                 error => {
-                    this.isLoading = false;
                     this.errorHandlerService.handleErrors(error);
                 });
         }else{

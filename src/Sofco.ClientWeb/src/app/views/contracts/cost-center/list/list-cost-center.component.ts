@@ -19,7 +19,6 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
 
     public model: any[] = new Array<any>();
     public costCentersFiltered: any[] = new Array<any>();
-    public loading: boolean = false;
     public actives: boolean = true;
 
     getAllSubscrip: Subscription;
@@ -84,18 +83,14 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
     }
 
     confirm(){
-        this.loading = true;
-
         this.costCenterService.changeStatus(this.costCenterSelected.id, !this.costCenterSelected.active).subscribe(data => {
             this.confirmModal.hide();
-            this.loading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
             this.costCenterSelected.active = !this.costCenterSelected.active;
             this.filterActives(this.actives);
         },
         error => {
             this.confirmModal.hide();
-            this.loading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

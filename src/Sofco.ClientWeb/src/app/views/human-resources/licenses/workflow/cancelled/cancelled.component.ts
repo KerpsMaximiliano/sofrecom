@@ -34,16 +34,12 @@ export class LicenseCancelComponent implements OnDestroy  {
 
     subscrip: Subscription;
 
-    public isLoading: boolean = false;
-
     public rejectComments: string;
 
     constructor(private licenseService: LicenseService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private i18nService: I18nService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
 
   ngOnDestroy(): void {
@@ -75,12 +71,9 @@ export class LicenseCancelComponent implements OnDestroy  {
         comment: this.rejectComments
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.licenseService.changeStatus(this.licenseId, json).subscribe(
         data => {
             this.cancelModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.history.observers.length > 0){
@@ -98,7 +91,6 @@ export class LicenseCancelComponent implements OnDestroy  {
         },
         error => {
             this.cancelModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }
