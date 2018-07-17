@@ -165,6 +165,9 @@
   <data name="RejectedSuccess" xml:space="preserve">
     <value>workTimeManagement/workTime.rejectedSuccess</value>
   </data>
+  <data name="RejectedWithSomeErrors" xml:space="preserve">
+    <value>workTimeManagement/workTime.rejectedWithSomeErrors</value>
+  </data>
   <data name="ReportWarning" xml:space="preserve">
     <value>workTimeManagement/workTime.reportWarning</value>
   </data>
