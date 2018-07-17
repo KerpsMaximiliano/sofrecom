@@ -8,7 +8,7 @@ export class PurchaseOrderDelegateService {
   private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {
-    this.apiUrl = `${this.service.UrlApi}/purchaseOrders/delegates`;
+    this.apiUrl = `${this.service.UrlApi}/purchaseOrders/approvals/delegates`;
   }
 
   save(model) {

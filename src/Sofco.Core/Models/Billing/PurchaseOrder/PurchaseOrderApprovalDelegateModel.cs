@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Sofco.Model.Enums;
 
-namespace Sofco.Core.Models.Billing
+namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
-    public class PurchaseOrderDelegateModel
+    public class PurchaseOrderApprovalDelegateModel
     {
         public int Id { get; set; }
 

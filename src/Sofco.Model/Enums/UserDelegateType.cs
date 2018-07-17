@@ -4,12 +4,12 @@
     {
         Solfac,
 
-        PurchaseOrderCompliance,
+        PurchaseOrderApprovalCompliance,
 
-        PurchaseOrderCommercial,
+        PurchaseOrderApprovalCommercial,
 
-        PurchaseOrderOperation,
+        PurchaseOrderApprovalOperation,
 
-        PurchaseOrderDaf
+        PurchaseOrderApprovalDaf
     }
 }
