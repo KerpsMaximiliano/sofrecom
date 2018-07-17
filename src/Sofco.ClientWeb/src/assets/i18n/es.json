@@ -314,10 +314,10 @@
                 "createdUser": "Creado por",
                 "createdDate": "Fecha creación",
                 "deleteConfirm": "¿Esta seguro que desea eliminar al delegado seleccionado?",
-                "PurchaseOrderCommercial": "Area",
-                "PurchaseOrderOperation": "Operación",
-                "PurchaseOrderCompliance": "Compliance",
-                "PurchaseOrderDaf": "DAF"
+                "PurchaseOrderApprovalCommercial": "Area",
+                "PurchaseOrderApprovalOperation": "Operación",
+                "PurchaseOrderApprovalCompliance": "Compliance",
+                "PurchaseOrderApprovalDaf": "DAF"
             },
             "adjustment": "Ajuste"
         },

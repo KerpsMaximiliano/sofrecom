@@ -518,7 +518,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 isCompliance =
                     unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                        UserDelegateType.PurchaseOrderCompliance).Any();
+                        UserDelegateType.PurchaseOrderApprovalCompliance).Any();
             }
 
             return isCompliance;
@@ -532,7 +532,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 isDaf =
                     unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                        UserDelegateType.PurchaseOrderDaf).Any();
+                        UserDelegateType.PurchaseOrderApprovalDaf).Any();
             }
 
             return isDaf;
@@ -543,7 +543,7 @@ namespace Sofco.Service.Implementations.Billing
             var result = new List<int> {currentUser.Id};
 
             var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                UserDelegateType.PurchaseOrderCommercial);
+                UserDelegateType.PurchaseOrderApprovalCommercial);
             if (userDelegates.Any(s => s.SourceId != null))
             {
                 result.AddRange(userDelegates.Select(s => s.SourceId.Value));
@@ -557,7 +557,7 @@ namespace Sofco.Service.Implementations.Billing
             var result = new List<int> {currentUser.Id};
 
             var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                UserDelegateType.PurchaseOrderOperation);
+                UserDelegateType.PurchaseOrderApprovalOperation);
             if (userDelegates.Any(s => s.SourceId != null))
             {
                 result.AddRange(userDelegates.Select(s => s.SourceId.Value));

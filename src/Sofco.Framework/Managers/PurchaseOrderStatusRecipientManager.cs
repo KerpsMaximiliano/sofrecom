@@ -146,7 +146,7 @@ namespace Sofco.Framework.Managers
 
             var mails = new List<string> { responsableUser.Email };
 
-            var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCommercial,
+            var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalCommercial,
                     responsableUser.Id)
                 .Select(s => s.UserId);
 
@@ -179,7 +179,7 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderOperation,
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalOperation,
                         user.Id)
                     .Select(s => s.UserId);
 
@@ -200,7 +200,7 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderDaf,
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalDaf,
                         user.Id)
                     .Select(s => s.UserId);
 
@@ -221,7 +221,7 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderCompliance,
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalCompliance,
                         user.Id)
                     .Select(s => s.UserId);
 

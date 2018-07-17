@@ -11,7 +11,7 @@ using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Admin;
@@ -20,7 +20,7 @@ using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
-    public class PurchaseOrderDelegateService : IPurchaseOrderDelegateService
+    public class PurchaseOrderApprovalDelegateService : IPurchaseOrderApprovalDelegateService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserData userData;
@@ -28,13 +28,13 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISectorData sectorData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
-        private readonly ILogMailer<PurchaseOrderDelegateService> logger;
+        private readonly ILogMailer<PurchaseOrderApprovalDelegateService> logger;
         private List<UserDelegateType> types;
-        private Dictionary<UserDelegateType, Action<PurchaseOrderDelegateModel>> resolverSourceDicts;
+        private Dictionary<UserDelegateType, Action<PurchaseOrderApprovalDelegateModel>> resolverSourceDicts;
         private readonly EmailConfig emailConfig;
         private readonly AppSetting appSetting;
 
-        public PurchaseOrderDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData, ILogMailer<PurchaseOrderDelegateService> logger, ISessionManager sessionManager, IOptions<EmailConfig> emailOptions, IOptions<AppSetting> appSettingOption)
+        public PurchaseOrderApprovalDelegateService(IUnitOfWork unitOfWork, IUserData userData, IAreaData areaData, IMapper mapper, ISectorData sectorData, ILogMailer<PurchaseOrderApprovalDelegateService> logger, ISessionManager sessionManager, IOptions<EmailConfig> emailOptions, IOptions<AppSetting> appSettingOption)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -49,9 +49,9 @@ namespace Sofco.Service.Implementations.Billing
             appSetting = appSettingOption.Value;
         }
 
-        public Response<List<PurchaseOrderDelegateModel>> GetAll()
+        public Response<List<PurchaseOrderApprovalDelegateModel>> GetAll()
         {
-            var response = new Response<List<PurchaseOrderDelegateModel>>();
+            var response = new Response<List<PurchaseOrderApprovalDelegateModel>>();
             try
             {
                 var currentUser = userData.GetCurrentUser();
@@ -69,19 +69,19 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<PurchaseOrderDelegateModel> Save(PurchaseOrderDelegateModel userDelegate)
+        public Response<PurchaseOrderApprovalDelegateModel> Save(PurchaseOrderApprovalDelegateModel userApprovalDelegate)
         {
-            var response = ValidateSave(userDelegate);
+            var response = ValidateSave(userApprovalDelegate);
 
             if (response.HasErrors()) return response;
 
             try
             {
-                userDelegate.CreatedUser = sessionManager.GetUserName();
+                userApprovalDelegate.CreatedUser = sessionManager.GetUserName();
 
-                unitOfWork.UserDelegateRepository.Save(Translate(userDelegate));
+                unitOfWork.UserDelegateRepository.Save(Translate(userApprovalDelegate));
 
-                response.Data = userDelegate;
+                response.Data = userApprovalDelegate;
             }
             catch (Exception e)
             {
@@ -127,35 +127,35 @@ namespace Sofco.Service.Implementations.Billing
         {
             types = new List<UserDelegateType>
             {
-                UserDelegateType.PurchaseOrderCommercial,
-                UserDelegateType.PurchaseOrderCompliance,
-                UserDelegateType.PurchaseOrderDaf,
-                UserDelegateType.PurchaseOrderOperation
+                UserDelegateType.PurchaseOrderApprovalCommercial,
+                UserDelegateType.PurchaseOrderApprovalCompliance,
+                UserDelegateType.PurchaseOrderApprovalDaf,
+                UserDelegateType.PurchaseOrderApprovalOperation
             };
         }
 
         private void SetResolverSourceDicts()
         {
-            resolverSourceDicts = new Dictionary<UserDelegateType, Action<PurchaseOrderDelegateModel>>
+            resolverSourceDicts = new Dictionary<UserDelegateType, Action<PurchaseOrderApprovalDelegateModel>>
             {
-                {UserDelegateType.PurchaseOrderCommercial, ResolveSourceCommercial},
-                {UserDelegateType.PurchaseOrderOperation, ResolveSourceOperation},
-                {UserDelegateType.PurchaseOrderDaf, ResolveSourceUser},
-                {UserDelegateType.PurchaseOrderCompliance, ResolveSourceUser}
+                {UserDelegateType.PurchaseOrderApprovalCommercial, ResolveSourceCommercial},
+                {UserDelegateType.PurchaseOrderApprovalOperation, ResolveSourceOperation},
+                {UserDelegateType.PurchaseOrderApprovalDaf, ResolveSourceUser},
+                {UserDelegateType.PurchaseOrderApprovalCompliance, ResolveSourceUser}
             };
         }
 
-        private List<PurchaseOrderDelegateModel> Translate(List<UserDelegate> data)
+        private List<PurchaseOrderApprovalDelegateModel> Translate(List<UserDelegate> data)
         {
-            return mapper.Map<List<UserDelegate>, List<PurchaseOrderDelegateModel>>(data);
+            return mapper.Map<List<UserDelegate>, List<PurchaseOrderApprovalDelegateModel>>(data);
         }
 
-        private UserDelegate Translate(PurchaseOrderDelegateModel model)
+        private UserDelegate Translate(PurchaseOrderApprovalDelegateModel model)
         {
-            return mapper.Map<PurchaseOrderDelegateModel, UserDelegate>(model);
+            return mapper.Map<PurchaseOrderApprovalDelegateModel, UserDelegate>(model);
         }
 
-        private List<PurchaseOrderDelegateModel> ResolveData(List<PurchaseOrderDelegateModel> userDelegates)
+        private List<PurchaseOrderApprovalDelegateModel> ResolveData(List<PurchaseOrderApprovalDelegateModel> userDelegates)
         {
             ResolveSource(userDelegates);
 
@@ -164,7 +164,7 @@ namespace Sofco.Service.Implementations.Billing
             return userDelegates;
         }
 
-        private void ResolveSource(List<PurchaseOrderDelegateModel> userDelegates)
+        private void ResolveSource(List<PurchaseOrderApprovalDelegateModel> userDelegates)
         {
             foreach (var userDelegate in userDelegates)
             {
@@ -176,40 +176,40 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        private void ResolveSourceUser(PurchaseOrderDelegateModel purchaseOrderDelegate)
+        private void ResolveSourceUser(PurchaseOrderApprovalDelegateModel purchaseOrderApprovalDelegate)
         {
-            var data = userData.GetUserLiteById(purchaseOrderDelegate.SourceId);
+            var data = userData.GetUserLiteById(purchaseOrderApprovalDelegate.SourceId);
 
             if(data == null) return;
 
-            purchaseOrderDelegate.SourceName = data.Name;
+            purchaseOrderApprovalDelegate.SourceName = data.Name;
 
-            purchaseOrderDelegate.ResponsableId = data.Id;
+            purchaseOrderApprovalDelegate.ResponsableId = data.Id;
         }
 
-        private void ResolveSourceCommercial(PurchaseOrderDelegateModel purchaseOrderDelegate)
+        private void ResolveSourceCommercial(PurchaseOrderApprovalDelegateModel purchaseOrderApprovalDelegate)
         {
-            var data = areaData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderDelegate.SourceId);
+            var data = areaData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderApprovalDelegate.SourceId);
 
             if(data == null) return;
 
-            purchaseOrderDelegate.SourceName = data.Text;
+            purchaseOrderApprovalDelegate.SourceName = data.Text;
 
-            purchaseOrderDelegate.ResponsableId = data.ResponsableUserId;
+            purchaseOrderApprovalDelegate.ResponsableId = data.ResponsableUserId;
         }
 
-        private void ResolveSourceOperation(PurchaseOrderDelegateModel purchaseOrderDelegate)
+        private void ResolveSourceOperation(PurchaseOrderApprovalDelegateModel purchaseOrderApprovalDelegate)
         {
-            var data = sectorData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderDelegate.SourceId);
+            var data = sectorData.GetAll().FirstOrDefault(s => s.ResponsableUserId == purchaseOrderApprovalDelegate.SourceId);
 
             if(data == null) return;
 
-            purchaseOrderDelegate.SourceName = data.Text;
+            purchaseOrderApprovalDelegate.SourceName = data.Text;
 
-            purchaseOrderDelegate.ResponsableId = data.ResponsableUserId;
+            purchaseOrderApprovalDelegate.ResponsableId = data.ResponsableUserId;
         }
 
-        private void ResolveUsers(List<PurchaseOrderDelegateModel> userDelegates)
+        private void ResolveUsers(List<PurchaseOrderApprovalDelegateModel> userDelegates)
         {
             foreach (var userDelegate in userDelegates)
             {
@@ -225,9 +225,9 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        private Response<PurchaseOrderDelegateModel> ValidateSave(PurchaseOrderDelegateModel model)
+        private Response<PurchaseOrderApprovalDelegateModel> ValidateSave(PurchaseOrderApprovalDelegateModel model)
         {
-            var respone = new Response<PurchaseOrderDelegateModel>();
+            var respone = new Response<PurchaseOrderApprovalDelegateModel>();
 
             var validResponse = ValidateData(model);
             if (validResponse.HasErrors())
@@ -246,7 +246,7 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
-        private Response ValidateData(PurchaseOrderDelegateModel model)
+        private Response ValidateData(PurchaseOrderApprovalDelegateModel model)
         {
             var response = new Response();
 
@@ -260,13 +260,13 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private Response ValidateSameUser(PurchaseOrderDelegateModel model)
+        private Response ValidateSameUser(PurchaseOrderApprovalDelegateModel model)
         {
             var response = new Response();
 
             var isValid = true;
 
-            if (model.Type == UserDelegateType.PurchaseOrderDaf || model.Type == UserDelegateType.PurchaseOrderCompliance)
+            if (model.Type == UserDelegateType.PurchaseOrderApprovalDaf || model.Type == UserDelegateType.PurchaseOrderApprovalCompliance)
             {
                 if (model.ResponsableId == model.UserId)
                 {
@@ -274,7 +274,7 @@ namespace Sofco.Service.Implementations.Billing
                 }
             }
 
-            if (model.Type == UserDelegateType.PurchaseOrderCommercial)
+            if (model.Type == UserDelegateType.PurchaseOrderApprovalCommercial)
             {
                 var item = areaData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
 
@@ -286,7 +286,7 @@ namespace Sofco.Service.Implementations.Billing
                 }
             }
 
-            if (model.Type == UserDelegateType.PurchaseOrderOperation)
+            if (model.Type == UserDelegateType.PurchaseOrderApprovalOperation)
             {
                 var item = sectorData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
 
