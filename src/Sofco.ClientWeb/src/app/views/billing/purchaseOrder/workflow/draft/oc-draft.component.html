@@ -2,6 +2,6 @@
     {{ 'billing.purchaseOrder.sendToCompliance' | translate }} <i class="fa fa-envelope"></i>
 </button>
 
-<ng2-modal [config]="draftModalConfig" #draftModal (accept)="send()" [isLoading]="isLoading">
+<ng2-modal [config]="draftModalConfig" #draftModal (accept)="send()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

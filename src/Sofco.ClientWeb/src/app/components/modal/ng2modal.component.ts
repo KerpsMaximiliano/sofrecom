@@ -23,12 +23,13 @@ export class Ng2ModalComponent implements OnInit {
 
   @Input() size;
 
-  @Input() isLoading: boolean = false;
+  // @Input() isLoading: boolean = false;
   @Input() isSaveEnabled: boolean = true;
 
   isProcessing: boolean = false;
 
   @ViewChild('btnDelete') btnDelete;
+  @ViewChild('btnSuccess') btnSuccess;
 
   constructor() { }
 
@@ -45,14 +46,18 @@ export class Ng2ModalComponent implements OnInit {
   }
 
   hide(){
-    this.resetDeleteButton();
+    this.resetButtons();
     this.isProcessing = false;
     $('#' + this.config.id).modal('toggle');
   }
 
-  resetDeleteButton(){
+  resetButtons(){
     if(this.btnDelete){
       this.btnDelete.reset();
+    }
+
+    if(this.btnSuccess){
+      this.btnSuccess.reset();
     }
   }
 

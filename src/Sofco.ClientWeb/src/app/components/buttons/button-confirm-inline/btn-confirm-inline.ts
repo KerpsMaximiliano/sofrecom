@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 
     @Input() class: string;
     @Input() text: string;
+    @Input() isDisabled: boolean = false;
 
     @Output() onConfirm = new EventEmitter<any>();
 

@@ -33,7 +33,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     indexToRemove: number;
 
     public isMultipleSelection = false;
-    public isLoading = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -264,16 +263,12 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             comments: this.rejectComments
         }
 
-        this.isLoading = true;
-
         this.searchSubscrip = this.worktimeService.rejectAll(json).subscribe(response => {
-            this.isLoading = false;
             this.rejectAllModal.hide();
             if(response.messages) this.messageService.showMessages(response.messages);
             this.searchPending();
         },
         error => {
-            this.isLoading = false;
             this.rejectAllModal.hide();
             this.errorHandlerService.handleErrors(error);
         });

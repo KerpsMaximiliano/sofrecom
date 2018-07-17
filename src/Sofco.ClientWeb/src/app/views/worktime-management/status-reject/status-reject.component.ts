@@ -2,7 +2,6 @@ import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
-import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { WorktimeService } from '../../../services/worktime-management/worktime.service';
 
@@ -23,8 +22,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
   );
 
   subscrip: Subscription;
-
-  public isLoading: boolean = false;
 
   public rejectComments: string;
   workTime: any;
@@ -50,12 +47,9 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
         return;
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.worktimeService.reject(this.workTime.id, this.rejectComments).subscribe(
         data => {
             this.rejectModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.onSuccess.observers.length > 0){
@@ -64,7 +58,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
         },
         error => {
             this.rejectModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }

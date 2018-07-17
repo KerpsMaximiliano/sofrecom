@@ -2,6 +2,6 @@
     {{ 'ACTIONS.approve' | translate }} <i class="fa fa-check"></i>
 </button>
 
-<ng2-modal [config]="dafModalConfig" #dafModal (accept)="send()" [isLoading]="isLoading">
+<ng2-modal [config]="dafModalConfig" #dafModal (accept)="send()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

@@ -53,8 +53,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
-  public loading = false;
-
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
@@ -355,9 +353,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   saveTask() {
     if (!this.validateHoursPerDay(this.taskModel)) { return; }
 
-    this.editModal.isLoading = true;
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
-      this.editModal.isLoading = false;
       this.editModal.hide();
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
@@ -365,7 +361,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     },
     error => {
       this.errorHandlerService.handleErrors(error);
-      this.editModal.isLoading = false;
     });
   }
 

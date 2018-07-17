@@ -29,8 +29,6 @@ export class OcStatusOperativeComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
     private menuService: MenuService,
@@ -54,12 +52,9 @@ export class OcStatusOperativeComponent implements OnDestroy  {
   }
 
   send(){
-    this.isLoading = true;
-
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
         data => {
             this.modal.hide();
-            this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
@@ -68,7 +63,6 @@ export class OcStatusOperativeComponent implements OnDestroy  {
         },
         error => {
             this.modal.hide();
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

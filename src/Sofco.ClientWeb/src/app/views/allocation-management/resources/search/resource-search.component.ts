@@ -61,7 +61,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     };
 
     public endDate: Date = new Date();
-    public isLoading = false;
     public pendingWorkingHours = false;
 
     getAllSubscrip: Subscription;
@@ -295,16 +294,12 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             employees: usersSelected
         }
 
-        this.isLoading = true;
-
         this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
-            this.isLoading = false;
             this.categoriesModal.hide();
 
             this.messageService.showMessages(response.messages);
         },
         error => {
-            this.isLoading = false;
             this.categoriesModal.hide();
             this.errorHandlerService.handleErrors(error)
         });

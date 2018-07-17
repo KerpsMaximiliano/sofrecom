@@ -33,13 +33,11 @@ export class StatusRejectDafComponent implements OnDestroy  {
     subscrip: Subscription;
 
     public rejectComments: string;
-    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -65,12 +63,9 @@ export class StatusRejectDafComponent implements OnDestroy  {
             comment: this.rejectComments
         }
 
-        this.isLoading = true;
-
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.rejectByDafModal.hide();
-                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
                 
                 if(this.history.observers.length > 0){
@@ -87,7 +82,6 @@ export class StatusRejectDafComponent implements OnDestroy  {
             },
             error => {
                 this.rejectByDafModal.hide();
-                this.isLoading = false;
                 this.errorHandlerService.handleErrors(error);
             });
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
@@ -6,7 +6,6 @@ import { Subscription } from "rxjs/Subscription";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'status-reject',
@@ -33,13 +32,11 @@ export class StatusRejectComponent implements OnDestroy  {
     subscrip: Subscription;
 
     public rejectComments: string;
-    public isLoading: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -65,12 +62,9 @@ export class StatusRejectComponent implements OnDestroy  {
             comment: this.rejectComments
         }
 
-        this.isLoading = true;
-
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.rejectModal.hide();
-                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
                 
                 if(this.history.observers.length > 0){
@@ -87,7 +81,6 @@ export class StatusRejectComponent implements OnDestroy  {
             },
             error => {
                 this.rejectModal.hide();
-                this.isLoading = false;
                 this.errorHandlerService.handleErrors(error);
             });
     }

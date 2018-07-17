@@ -36,14 +36,12 @@ export class StatusSendToCdgComponent implements OnDestroy  {
   subscrip: Subscription;
 
   message: string;
-  public isLoading: boolean = false;
 
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
     private i18nService: I18nService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) { }
+    private errorHandlerService: ErrorHandlerService) { }
 
 
   ngOnDestroy(): void {
@@ -79,12 +77,9 @@ export class StatusSendToCdgComponent implements OnDestroy  {
         status: SolfacStatus.PendingByManagementControl
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
         data => {
             this.sendToCdgModal.hide();
-            this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.history.observers.length > 0){
@@ -109,7 +104,6 @@ export class StatusSendToCdgComponent implements OnDestroy  {
         },
         error => {
             this.sendToCdgModal.hide();
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

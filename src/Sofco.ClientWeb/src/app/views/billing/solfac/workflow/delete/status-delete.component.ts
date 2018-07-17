@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 
@@ -33,11 +32,8 @@ export class StatusDeleteComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
-    private menuService: MenuService,
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
@@ -57,11 +53,8 @@ export class StatusDeleteComponent implements OnDestroy  {
   }
 
   delete(){
-    this.isLoading = true;
-
     this.solfacService.delete(this.solfacId).subscribe(data => {
         this.deleteModal.hide();
-        this.isLoading = false;
         if(data.messages) this.messageService.showMessages(data.messages);
 
         setTimeout(() => { 
@@ -70,7 +63,6 @@ export class StatusDeleteComponent implements OnDestroy  {
     },
     err => {
         this.deleteModal.hide();
-        this.isLoading = false;
         this.errorHandlerService.handleErrors(err);
     });
   }

@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()" [isLoading]="loading">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()">
     <div class="form-group">
         <label class="control-label"> {{ 'allocationManagement.allocation.releaseDate' | translate  }} </label>
         <date-picker [(date)]="releaseDate"></date-picker>

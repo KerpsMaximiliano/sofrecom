@@ -30,13 +30,10 @@ export class SplitHitoComponent implements OnDestroy  {
 
   public hito: NewHito = new NewHito();
   public hitoSelected: any;
-  public btnDisabled: boolean = false;
 
   constructor(private messageService: MessageService,
-    private menuService: MenuService,
     private projectService: ProjectService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) {}
+    private errorHandlerService: ErrorHandlerService) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -69,11 +66,7 @@ export class SplitHitoComponent implements OnDestroy  {
     this.hito.moneyId = this.hitoSelected.moneyId;
     this.hito.ammountFirstHito = this.hitoSelected.ammount;
 
-    this.btnDisabled = true;
-
     this.subscrip = this.projectService.spltHito(this.hito).subscribe(data => {
-        this.btnDisabled = false;
-
         if(data.messages) this.messageService.showMessages(data.messages);
         this.spliHitoModal.hide();
 
@@ -82,7 +75,6 @@ export class SplitHitoComponent implements OnDestroy  {
         }
     },
     err =>  {
-        this.btnDisabled = false;
         this.errorHandlerService.handleErrors(err)
     });
   }

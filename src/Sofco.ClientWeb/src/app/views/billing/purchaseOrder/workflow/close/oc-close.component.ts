@@ -30,7 +30,6 @@ export class OcStatusCloseComponent implements OnDestroy  {
   subscrip: Subscription;
 
   public closeComments: string;
-  public isLoading: boolean = false;
 
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
@@ -56,12 +55,9 @@ export class OcStatusCloseComponent implements OnDestroy  {
   }
 
   send(){
-    this.isLoading = true;
-
     this.subscrip = this.purchaseOrderService.close(this.ocId, { comments: this.closeComments, mustReject: false}).subscribe(
         data => {
             this.modal.hide();
-            this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
@@ -70,7 +66,6 @@ export class OcStatusCloseComponent implements OnDestroy  {
         },
         error => {
             this.modal.hide();
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error);
         });
     }

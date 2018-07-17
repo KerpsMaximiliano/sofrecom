@@ -2,6 +2,6 @@
     {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i>
 </button>
 
-<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="send()" [isLoading]="isLoading">
+<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="send()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

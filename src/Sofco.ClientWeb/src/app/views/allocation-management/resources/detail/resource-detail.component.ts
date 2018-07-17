@@ -7,7 +7,6 @@ import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 import { UserService } from "../../../../services/admin/user.service";
@@ -33,7 +32,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public model: any;
 
     public isRrhh: boolean = false;
-    public isLoading: boolean = false;
 
     public editModel = {
         businessHours: 0,
@@ -181,10 +179,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             managerId: this.editModel.managerId
         };
 
-        this.isLoading = true;
-
         this.finalizeExtraHolidaysSubscrip = this.employeeService.updateBusinessHours(this.resourceId, json).subscribe(data => {
-            this.isLoading = false
             if(data.messages) this.messageService.showMessages(data.messages);
             this.businessHoursModal.hide();
 
@@ -193,7 +188,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             }, 750);
         },
         error => { 
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(error)
         });
     }

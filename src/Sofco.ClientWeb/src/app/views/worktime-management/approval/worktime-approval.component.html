@@ -150,7 +150,7 @@
 <worktime-status-approve #statusApprove (onSuccess)="removeItem()"></worktime-status-approve>
 <worktime-status-reject #statusReject (onSuccess)="removeItem()"></worktime-status-reject>
 
-<ng2-modal [config]="rejectAllModalConfig" #rejectAllModal (accept)="rejectAll()" [isLoading]="isLoading">
+<ng2-modal [config]="rejectAllModalConfig" #rejectAllModal (accept)="rejectAll()">
     <div class="form-group">
         <label class="control-label">{{'comments' | translate }}</label>
         <textarea class="form-control" name="rejectComments" rows="6" [(ngModel)]="rejectComments"></textarea>
