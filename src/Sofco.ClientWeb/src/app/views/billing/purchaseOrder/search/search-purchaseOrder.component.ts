@@ -168,7 +168,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [{
-                "targets": [ 1,8,9,10 ], "visible": false, "searchable": false
+                "targets": [ 1,9,10 ], "visible": false, "searchable": false
             }]
         }
 
@@ -196,7 +196,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     formatDetail( data ) {
-        const id = $(data[0]).data("id")
+        const id = $(data[0]).data("id");
         const item = <any>this.data.find(x => x.id == id);
 
         const details = item != null ? item.details : [];
@@ -268,8 +268,9 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     customizeExcelExportData(data) {
         const self = this;
         const idPos = 1;
-        const ammountNumberPos1 = 4;
-        const balanceNumberPos2 = 5;
+        const receptionDatePos = 2;
+        const ammountNumberPos1 = 5;
+        const balanceNumberPos2 = 6;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
@@ -278,10 +279,12 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             const itemId = dataBodyItem[idPos];
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
+            dataBodyItem[receptionDatePos] = item.receptionDate;
             dataBodyItem[ammountNumberPos1] = item.ammount;
             dataBodyItem[balanceNumberPos2] = item.balance;
             result.push(dataBodyItem);
             const details = item.details;
+            if(details.length == 0) continue;
             let rowItem = this.getExportSubHeader();
             result.push(rowItem);
             details.forEach(d => {
