@@ -132,9 +132,9 @@
                     <label>{{'workTimeManagement.date' | translate }}</label>
                     <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input id="hoursControl" type="text" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
                 </div>
             </div>
         </div>
