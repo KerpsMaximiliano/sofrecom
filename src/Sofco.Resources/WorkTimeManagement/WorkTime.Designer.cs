@@ -206,6 +206,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.rejectedWithSomeErrors.
+        /// </summary>
+        public static string RejectedWithSomeErrors {
+            get {
+                return ResourceManager.GetString("RejectedWithSomeErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.reportWarning.
         /// </summary>
         public static string ReportWarning {

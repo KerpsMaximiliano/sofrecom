@@ -35,10 +35,18 @@
                         </div>
                     </div>
 
-                    <hr class="hr-line-dashed">
+                    <hr class="hr-line-dashed" *ngIf="hoursPending.length > 0">
 
-                    <div class="text-right m-b-md" *ngIf="hoursPending.length > 0">
-                        <button class="btn btn-primary btn-sm" (click)="approveAll()" [disabled]="approveAllDisabled()"> {{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-check"></i></button>
+                    <div class="row m-b-md" *ngIf="hoursPending.length > 0">
+                        <div class="col-lg-12">
+                            <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                            <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                            <div class="btn-right">
+                                <button class="btn btn-danger btn-sm" (click)="rejectAllModal.show()" [disabled]="approveAllDisabled()"> {{ 'ACTIONS.rejectSelected' | translate }} <i class="fa fa-times"></i></button>
+                                <button class="btn btn-primary btn-sm" (click)="approveAll()" [disabled]="approveAllDisabled()"> {{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-check"></i></button>
+                            </div>
+                        </div>
                     </div>
 
                     <table class="table table-striped" id="hoursPending" width="100%" *ngIf="hoursPending.length > 0">
@@ -141,3 +149,10 @@
 
 <worktime-status-approve #statusApprove (onSuccess)="removeItem()"></worktime-status-approve>
 <worktime-status-reject #statusReject (onSuccess)="removeItem()"></worktime-status-reject>
+
+<ng2-modal [config]="rejectAllModalConfig" #rejectAllModal (accept)="rejectAll()" [isLoading]="isLoading">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="rejectComments" rows="6" [(ngModel)]="rejectComments"></textarea>
+    </div>
+</ng2-modal> 

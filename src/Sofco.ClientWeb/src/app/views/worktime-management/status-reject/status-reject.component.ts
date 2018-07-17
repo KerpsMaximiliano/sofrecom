@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { WorktimeService } from '../../../services/worktime-management/worktime.service';
-import { WorkTimeStatus } from '../../../models/enums/worktimestatus';
 
 @Component({
   selector: 'worktime-status-reject',
@@ -33,7 +32,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
 
   constructor(private messageService: MessageService,
-    private menuService: MenuService,
     private worktimeService: WorktimeService,
     private errorHandlerService: ErrorHandlerService) { }
 

@@ -427,6 +427,39 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return response;
         }
 
+        public Response RejectAll(WorkTimeRejectParams parameters)
+        {
+            var response = new Response();
+            var anyError = false;
+            var anySuccess = false;
+
+            foreach (var hourId in parameters.HourIds)
+            {
+                var hourResponse = Reject(hourId, parameters.Comments);
+
+                if (hourResponse.HasErrors())
+                    anyError = true;
+                else
+                    anySuccess = true;
+            }
+
+            if (anySuccess)
+            {
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
+
+                if (anyError)
+                {
+                    response.AddWarning(Resources.WorkTimeManagement.WorkTime.RejectedWithSomeErrors);
+                }
+            }
+            else
+            {
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public IEnumerable<Option> GetStatus()
         {
             yield return new Option { Id = (int)WorkTimeStatus.Draft, Text = WorkTimeStatus.Draft.ToString() };

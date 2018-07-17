@@ -31,5 +31,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response<IList<WorkTimeSearchItemResult>> Search(SearchParams parameters);
 
         IEnumerable<Option> GetStatus();
+
+        Response RejectAll(WorkTimeRejectParams parameters);
     }
 }
