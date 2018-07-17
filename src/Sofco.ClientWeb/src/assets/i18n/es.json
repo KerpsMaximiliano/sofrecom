@@ -749,7 +749,7 @@
         "cash": "Cobrada",
         "goToProject": "Ir al Proyecto",
         "goToSearch": "Ir a Consultas",
-        "confirmTitle": "Confirmar acción",
+        "confirmTitle": "¿Confirmar acción?",
         "confirmBody": "¿Esta seguro que desea confirmar la acción?",
         "confirmDelete": "Confirmación de baja",
         "confirmAdd": "Confirmación de alta",

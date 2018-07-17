@@ -37,7 +37,7 @@
                     <button class="btn btn-success" style="width:100%" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
 
                     <div class="row">
-                        <div class="ibox ibox-task">
+                        <div class="ibox ibox-task ibox-no-shadow">
                             <div class="ibox-title ibox-task-title">
                                 <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
                                 <iboxtools #boxtools></iboxtools>
@@ -110,7 +110,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()">
+<ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()" (delete)="deleteTask()" [isLoading]="loading">
 
     <form role="form">
         <div class="form-group">
@@ -143,5 +143,4 @@
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
         </div>
     </form>
-
 </ng2-modal>

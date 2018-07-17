@@ -52,7 +52,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         }
 
         [HttpPut("{id}/approve")]
-        public IActionResult Approve(int id)
+        public IActionResult Approve(int id) 
         {
             var response = workTimeService.Approve(id);
 
@@ -119,6 +119,14 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         public IActionResult Search([FromBody] SearchParams parameters)
         {
             var response = workTimeService.Search(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Search(int id)
+        {
+            var response = workTimeService.Delete(id);
 
             return this.CreateResponse(response);
         }

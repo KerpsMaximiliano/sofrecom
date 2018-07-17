@@ -125,6 +125,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.cannotDelete.
+        /// </summary>
+        public static string CannotDelete {
+            get {
+                return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateOutOfRange.
         /// </summary>
         public static string DateOutOfRangeError {
@@ -157,6 +166,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string DeleteError {
             get {
                 return ResourceManager.GetString("DeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.deleteSuccess.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
             }
         }
         

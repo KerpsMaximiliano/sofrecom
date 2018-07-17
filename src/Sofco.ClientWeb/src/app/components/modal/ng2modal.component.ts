@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Ng2ModalConfig } from "./ng2modal-config";
 declare var $: any;
 
@@ -19,11 +19,16 @@ export class Ng2ModalComponent implements OnInit {
   );
   @Output() close = new EventEmitter<any>();
   @Output() accept = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<any>();
 
   @Input() size;
 
   @Input() isLoading: boolean = false;
   @Input() isSaveEnabled: boolean = true;
+
+  isProcessing: boolean = false;
+
+  @ViewChild('btnDelete') btnDelete;
 
   constructor() { }
 
@@ -36,25 +41,33 @@ export class Ng2ModalComponent implements OnInit {
         backdrop: 'static',
         keyboard: false
       });
-    });
+    }, 0);
   }
 
   hide(){
-    setTimeout(() => {
-      $('#' + this.config.id).modal('toggle');
-    });
+    this.resetDeleteButton();
+    this.isProcessing = false;
+    $('#' + this.config.id).modal('toggle');
   }
 
-  closeEvent($event){
-    $event.stopPropagation();
-    setTimeout(() => {
-      $('#' + this.config.id).modal('toggle');
-    });
+  resetDeleteButton(){
+    if(this.btnDelete){
+      this.btnDelete.reset();
+    }
+  }
+
+  closeEvent(){
+    this.hide();
     this.close.emit();
   }
 
-  acceptEvent($event){
-    $event.stopPropagation();
+  acceptEvent(){
+    this.isProcessing = true;
     this.accept.emit();
+  }
+
+  deleteEvent(){
+    this.isProcessing = true;
+    this.delete.emit();
   }
 }

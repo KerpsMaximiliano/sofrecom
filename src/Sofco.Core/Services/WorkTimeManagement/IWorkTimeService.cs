@@ -33,5 +33,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
         IEnumerable<Option> GetStatus();
 
         Response RejectAll(WorkTimeRejectParams parameters);
+
+        Response Delete(int id);
     }
 }

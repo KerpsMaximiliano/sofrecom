@@ -28,7 +28,7 @@
         <div class="col-lg-4">
             <div class="btn-right">
                 <oc-status-delete [ocId]="form.model.id" [status]="form.model.status"></oc-status-delete>
-                <oc-status-draft [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
+                <oc-status-draft *ngIf="fileName && fileName !=''" [ocId]="form.model.id" [status]="form.model.status"></oc-status-draft>
             </div>
         </div>
     </div>
