@@ -94,6 +94,7 @@ import { PurchaseOrderApprovalDelegateEditComponent } from './purchaseOrder/appr
 import { OcStatusCloseComponent } from 'app/views/billing/purchaseOrder/workflow/close/oc-close.component';
 import { PurchaseOrderPendingsComponent } from 'app/views/billing/purchaseOrder/pendings/oc-pendings.component';
 import { OcStatusDeleteComponent } from 'app/views/billing/purchaseOrder/workflow/delete/oc-delete.component';
+import { PurchaseOrderActiveDelegateComponent } from './purchaseOrder/active-view/active-delegate/purchase-order-active-delegate.component';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -108,7 +109,7 @@ import { OcStatusDeleteComponent } from 'app/views/billing/purchaseOrder/workflo
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
-                 OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent],
+                 OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
