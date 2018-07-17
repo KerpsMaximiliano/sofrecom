@@ -15,7 +15,7 @@ declare var $: any;
     templateUrl: './purchase-order-approval-delegate-edit.component.html'
   })
 
-export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
+export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDestroy {
 
     private nullId = '';
 
@@ -259,7 +259,7 @@ export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
 
         this.subscription = this.purchaseOrderDelegateService.save(model).subscribe(users => {
             this.messageService.succes('billing.solfac.delegate.saveSuccess');
-            this.router.navigate(['/billing/purchaseOrders/delegate']);
+            this.router.navigate(['/billing/purchaseOrders/approval/delegate']);
         },
         err => {
             this.errorHandlerService.handleErrors(err);

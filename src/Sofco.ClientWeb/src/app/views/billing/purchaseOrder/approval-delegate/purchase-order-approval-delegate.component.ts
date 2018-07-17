@@ -65,7 +65,7 @@ export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy
     }
 
     goToAdd() {
-        this.router.navigate(['/billing/purchaseOrders/delegate/edit']);
+        this.router.navigate(['/billing/purchaseOrders/approval/delegate/edit']);
     }
 
     showConfirmDelete(item: any) {
