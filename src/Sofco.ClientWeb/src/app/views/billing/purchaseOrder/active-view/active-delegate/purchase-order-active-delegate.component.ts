@@ -4,7 +4,7 @@ import { DataTableService } from 'app/services/common/datatable.service';
 import { Router } from '@angular/router';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
+import { PurchaseOrderActiveDelegateService } from 'app/services/billing/purchase-order-active-delegate.service';
 
 @Component({
     selector: 'app-purchase-order-active-delegate',
@@ -29,7 +29,7 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
 
-    constructor(private purchaseOrderDelegateService: PurchaseOrderDelegateService,
+    constructor(private purchaseOrderDelegateService: PurchaseOrderActiveDelegateService,
         private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private router: Router) {
@@ -65,7 +65,7 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
     }
 
     goToAdd() {
-        this.router.navigate(['/billing/purchaseOrders/approval/delegate/edit']);
+        this.router.navigate(['/billing/purchaseOrders/active/delegate/edit']);
     }
 
     showConfirmDelete(item: any) {

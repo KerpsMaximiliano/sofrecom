@@ -3,12 +3,12 @@ import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class PurchaseOrderDelegateService {
+export class PurchaseOrderActiveDelegateService {
 
   private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {
-    this.apiUrl = `${this.service.UrlApi}/purchaseOrders/approvals/delegates`;
+    this.apiUrl = `${this.service.UrlApi}/purchaseOrders/actives/delegates`;
   }
 
   save(model) {
@@ -21,22 +21,6 @@ export class PurchaseOrderDelegateService {
 
   delete(id: number) {
     return this.http.delete<any>(this.apiUrl + '/' + id);
-  }
-
-  getAreas() {
-    return this.http.get<any>(this.apiUrl + '/areas');
-  }
-
-  getSectors() {
-    return this.http.get<any>(this.apiUrl + '/sectors');
-  }
-
-  getCompliances() {
-    return this.http.get<any>(this.apiUrl + '/compliances');
-  }
-
-  getDafs() {
-    return this.http.get<any>(this.apiUrl + '/dafs');
   }
 }
 

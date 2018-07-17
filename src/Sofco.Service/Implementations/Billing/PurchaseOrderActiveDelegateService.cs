@@ -4,34 +4,37 @@ using System.Linq;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
+using Sofco.Data.AllocationManagement;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
-    public class SolfacDelegateService : ISolfacDelegateService
+    public class PurchaseOrderActiveDelegateService : IPurchaseOrderActiveDelegateService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserData userData;
+        private readonly IAnalyticData analyticData;
         private readonly IServiceData serviceData;
         private readonly ICustomerData customerData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
-        private readonly ILogMailer<SolfacDelegateService> logger;
+        private readonly ILogMailer<PurchaseOrderActiveDelegateService> logger;
 
-        public SolfacDelegateService(IUnitOfWork unitOfWork, 
-            ISessionManager sessionManager, 
+        public PurchaseOrderActiveDelegateService(IUnitOfWork unitOfWork,
+            ISessionManager sessionManager,
             IServiceData serviceData,
-            ILogMailer<SolfacDelegateService> logger,
-            IMapper mapper, 
-            IUserData userData, 
-            ICustomerData customerData)
+            ILogMailer<PurchaseOrderActiveDelegateService> logger,
+            IMapper mapper,
+            IUserData userData,
+            ICustomerData customerData, IAnalyticData analyticData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
@@ -39,28 +42,40 @@ namespace Sofco.Service.Implementations.Billing
             this.mapper = mapper;
             this.userData = userData;
             this.customerData = customerData;
+            this.analyticData = analyticData;
             this.logger = logger;
         }
 
-        public Response<List<SolfacDelegateModel>> GetAll()
+        public Response<List<PurchaseOrderActiveDelegateModel>> GetAll()
         {
-            var data = GetUserDelegatesByUser();
+            var currentUser = userData.GetCurrentUser();
 
-            var items = new List<SolfacDelegateModel>();
+            var analytics = analyticData.GetByManagerId(currentUser.Id);
+
+            var serviceIds = analytics.Select(item => item.ServiceId).ToList();
+
+            var data = unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
+
+            var items = new List<PurchaseOrderActiveDelegateModel>();
             foreach (var userDelegate in data)
             {
                 var model = Translate(userDelegate);
-                var service = serviceData.GetService(userDelegate.ServiceId);
-                var user = userData.GetById(userDelegate.UserId);
+                var analytic = analytics.FirstOrDefault(s => s.ServiceId == userDelegate.ServiceId.ToString());
+                if(analytic == null) continue;
+                model.ServiceName = analytic.Service;
+                if (analytic.ManagerId.HasValue)
+                {
+                    var managerUser = userData.GetUserLiteById(analytic.ManagerId.Value);
+                    model.ManagerName = managerUser.Name;
+                }
 
-                model.ManagerName = service.Manager;
-                model.ServiceName = service.Nombre;
+                var user = userData.GetUserLiteById(userDelegate.UserId);
                 model.UserName = user.Name;
 
                 items.Add(model);
             }
 
-            var response = new Response<List<SolfacDelegateModel>>
+            var response = new Response<List<PurchaseOrderActiveDelegateModel>>
             {
                 Data = items
             };
@@ -98,23 +113,6 @@ namespace Sofco.Service.Implementations.Billing
             return new Response();
         }
 
-        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
-        {
-            var userMail = sessionManager.GetUserEmail();
-
-            var customers = customerData.GetCustomers(userMail, false);
-
-            var serviceIds = new List<string>();
-            foreach (var crmCustomer in customers)
-            {
-                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
-
-                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
-            }
-
-            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
-        }
-
         private Response<UserDelegate> ValidateSave()
         {
             var respone = new Response<UserDelegate>();
@@ -131,9 +129,9 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
-        private SolfacDelegateModel Translate(UserDelegate solfacDelegate)
+        private PurchaseOrderActiveDelegateModel Translate(UserDelegate solfacDelegate)
         {
-            return mapper.Map<UserDelegate, SolfacDelegateModel>(solfacDelegate);
+            return mapper.Map<UserDelegate, PurchaseOrderActiveDelegateModel>(solfacDelegate);
         }
     }
 }
