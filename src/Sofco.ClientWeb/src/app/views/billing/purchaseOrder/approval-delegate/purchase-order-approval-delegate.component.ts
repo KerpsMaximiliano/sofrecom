@@ -7,11 +7,11 @@ import { Subscription } from 'rxjs';
 import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
 
 @Component({
-    selector: 'app-purchase-order-delegate',
-    templateUrl: './purchase-order-delegate.component.html'
+    selector: 'app-purchase-order-approval-delegate',
+    templateUrl: './purchase-order-approval-delegate.component.html'
   })
 
-export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
+export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
@@ -65,7 +65,7 @@ export class PurchaseOrderDelegateComponent implements OnInit, OnDestroy {
     }
 
     goToAdd() {
-        this.router.navigate(['/billing/purchaseOrders/delegate/edit']);
+        this.router.navigate(['/billing/purchaseOrders/approval/delegate/edit']);
     }
 
     showConfirmDelete(item: any) {

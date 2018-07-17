@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.Admin;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Model.Utils;
 
 namespace Sofco.Core.Services.Billing
 {
-    public interface IPurchaseOrderDelegateService
+    public interface IPurchaseOrderApprovalDelegateService
     {
-        Response<List<PurchaseOrderDelegateModel>> GetAll();
+        Response<List<PurchaseOrderApprovalDelegateModel>> GetAll();
 
-        Response<PurchaseOrderDelegateModel> Save(PurchaseOrderDelegateModel userDelegate);
+        Response<PurchaseOrderApprovalDelegateModel> Save(PurchaseOrderApprovalDelegateModel userApprovalDelegate);
 
         Response Delete(int userDeletegateId);
 

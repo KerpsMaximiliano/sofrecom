@@ -82,7 +82,7 @@ import { UtilsService } from '../../services/common/utils.service';
 import { AllocationService } from '../../services/allocation-management/allocation.service';
 import { CategoryService } from 'app/services/admin/category.service';
 import { PurchaseOrderAdjustmentComponent } from 'app/views/billing/purchaseOrder/adjustment/oc-adjustment.component';
-import { PurchaseOrderDelegateComponent } from './purchaseOrder/purchase-order-delegate/purchase-order-delegate.component';
+import { PurchaseOrderApprovalDelegateComponent } from './purchaseOrder/approval-delegate/purchase-order-approval-delegate.component';
 import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow/draft/oc-draft.componet';
 import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/workflow/compliance/oc-compliance.component';
 import { OcStatusComercialComponent } from 'app/views/billing/purchaseOrder/workflow/comercial/oc-comercial.component';
@@ -90,7 +90,7 @@ import { OcStatusOperativeComponent } from 'app/views/billing/purchaseOrder/work
 import { OcStatusRejectComponent } from 'app/views/billing/purchaseOrder/workflow/reject/oc-reject.component';
 import { OcStatusDafComponent } from 'app/views/billing/purchaseOrder/workflow/daf/oc-daf.component';
 import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/history/oc-history.component';
-import { PurchaseOrderDelegateEditComponent } from './purchaseOrder/purchase-order-delegate/edit/purchase-order-delegate-edit.component';
+import { PurchaseOrderApprovalDelegateEditComponent } from './purchaseOrder/approval-delegate/edit/purchase-order-approval-delegate-edit.component';
 import { OcStatusCloseComponent } from 'app/views/billing/purchaseOrder/workflow/close/oc-close.component';
 import { PurchaseOrderPendingsComponent } from 'app/views/billing/purchaseOrder/pendings/oc-pendings.component';
 import { OcStatusDeleteComponent } from 'app/views/billing/purchaseOrder/workflow/delete/oc-delete.component';
@@ -107,7 +107,7 @@ import { OcStatusDeleteComponent } from 'app/views/billing/purchaseOrder/workflo
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
                  NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
-                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderDelegateComponent, PurchaseOrderDelegateEditComponent,
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,

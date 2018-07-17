@@ -69,10 +69,10 @@ namespace Sofco.Framework.Managers
         {
             types = new List<UserDelegateType>
             {
-                UserDelegateType.PurchaseOrderCommercial,
-                UserDelegateType.PurchaseOrderCompliance,
-                UserDelegateType.PurchaseOrderDaf,
-                UserDelegateType.PurchaseOrderOperation
+                UserDelegateType.PurchaseOrderApprovalCommercial,
+                UserDelegateType.PurchaseOrderApprovalCompliance,
+                UserDelegateType.PurchaseOrderApprovalDaf,
+                UserDelegateType.PurchaseOrderApprovalOperation
             };
         }
 
@@ -127,16 +127,16 @@ namespace Sofco.Framework.Managers
 
                 switch (userDelegate.Type)
                 {
-                    case UserDelegateType.PurchaseOrderCompliance:
+                    case UserDelegateType.PurchaseOrderApprovalCompliance:
                         roleCode = appSetting.PurchaseOrderComplianceApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderCommercial:
+                    case UserDelegateType.PurchaseOrderApprovalCommercial:
                         roleCode = appSetting.PurchaseOrderCommercialApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderOperation:
+                    case UserDelegateType.PurchaseOrderApprovalOperation:
                         roleCode = appSetting.PurchaseOrderOperationApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderDaf:
+                    case UserDelegateType.PurchaseOrderApprovalDaf:
                         roleCode = appSetting.PurchaseOrderDafApprovalCode;
                         break;
                 }

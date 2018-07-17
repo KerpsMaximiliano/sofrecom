@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
@@ -9,34 +9,31 @@ using Sofco.WebApi.Extensions;
 namespace Sofco.WebApi.Controllers.Billing
 {
     [Authorize]
-    [Route("api/purchaseOrders/delegates")]
-    public class PurchaseOrderDelegatesController : Controller
+    [Route("api/purchaseOrders/approvals/delegates")]
+    public class PurchaseOrderApprovalDelegatesController : Controller
     {
-        private readonly IPurchaseOrderDelegateService purchaseOrderDelegateService;
+        private readonly IPurchaseOrderApprovalDelegateService purchaseOrderApprovalDelegateService;
 
         private readonly IUtilsService utilsService;
 
-        private readonly IUserService userService;
-
-        public PurchaseOrderDelegatesController(IPurchaseOrderDelegateService purchaseOrderDelegateService, IUtilsService utilsService, IUserService userService)
+        public PurchaseOrderApprovalDelegatesController(IPurchaseOrderApprovalDelegateService purchaseOrderApprovalDelegateService, IUtilsService utilsService, IUserService userService)
         {
-            this.purchaseOrderDelegateService = purchaseOrderDelegateService;
+            this.purchaseOrderApprovalDelegateService = purchaseOrderApprovalDelegateService;
             this.utilsService = utilsService;
-            this.userService = userService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var response = purchaseOrderDelegateService.GetAll();
+            var response = purchaseOrderApprovalDelegateService.GetAll();
 
             return this.CreateResponse(response);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]PurchaseOrderDelegateModel userDelegate)
+        public IActionResult Post([FromBody]PurchaseOrderApprovalDelegateModel userApprovalDelegate)
         {
-            var response = purchaseOrderDelegateService.Save(userDelegate);
+            var response = purchaseOrderApprovalDelegateService.Save(userApprovalDelegate);
 
             return this.CreateResponse(response);
         }
@@ -44,7 +41,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var response = purchaseOrderDelegateService.Delete(id);
+            var response = purchaseOrderApprovalDelegateService.Delete(id);
 
             return this.CreateResponse(response);
         }
@@ -66,7 +63,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("compliances")]
         public IActionResult GetComplianceUsers()
         {
-            var response = purchaseOrderDelegateService.GetComplianceUsers();
+            var response = purchaseOrderApprovalDelegateService.GetComplianceUsers();
 
             return this.CreateResponse(response);
         }
@@ -74,7 +71,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("dafs")]
         public IActionResult GetDafUsers()
         {
-            var response = purchaseOrderDelegateService.GetDafUsers();
+            var response = purchaseOrderApprovalDelegateService.GetDafUsers();
 
             return this.CreateResponse(response);
         }

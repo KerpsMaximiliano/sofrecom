@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Models.Common;
 using Sofco.Model.Models.Common;
 
@@ -13,9 +14,9 @@ namespace Sofco.Service.MapProfiles
 
             CreateMap<UserDelegate, UserDelegateModel>();
 
-            CreateMap<UserDelegate, PurchaseOrderDelegateModel>();
+            CreateMap<UserDelegate, PurchaseOrderApprovalDelegateModel>();
 
-            CreateMap<PurchaseOrderDelegateModel, UserDelegate>();
+            CreateMap<PurchaseOrderApprovalDelegateModel, UserDelegate>();
         }
     }
 }

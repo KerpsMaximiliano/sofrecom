@@ -22,8 +22,8 @@ import { InvoiceComponent } from "app/views/billing/invoice/new/invoice.componen
 import { InvoiceDetailComponent } from "app/views/billing/invoice/detail/invoice-detail.component";
 import { InvoiceSearchComponent } from "app/views/billing/invoice/search/invoice-search.component";
 import { ServicesComponent } from "app/views/billing/services/services.component";
-import { PurchaseOrderDelegateComponent } from "./purchaseOrder/purchase-order-delegate/purchase-order-delegate.component";
-import { PurchaseOrderDelegateEditComponent } from "./purchaseOrder/purchase-order-delegate/edit/purchase-order-delegate-edit.component";
+import { PurchaseOrderApprovalDelegateComponent } from "./purchaseOrder/approval-delegate/purchase-order-approval-delegate.component";
+import { PurchaseOrderApprovalDelegateEditComponent } from "./purchaseOrder/approval-delegate/edit/purchase-order-approval-delegate-edit.component";
 import { PurchaseOrderPendingsComponent } from "app/views/billing/purchaseOrder/pendings/oc-pendings.component";
 
 const BILLING_ROUTER: Routes = [
@@ -55,8 +55,8 @@ const BILLING_ROUTER: Routes = [
           children: [
           { path: "query", component: PurchaseOrderSearchComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "QUERY" } },
           { path: "new", component: NewPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "ALTA" } },
-          { path: "delegate", component: PurchaseOrderDelegateComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
-          { path: "delegate/edit", component: PurchaseOrderDelegateEditComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
+          { path: "approval/delegate", component: PurchaseOrderApprovalDelegateComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
+          { path: "approval/delegate/edit", component: PurchaseOrderApprovalDelegateEditComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
           { path: "pendings", component: PurchaseOrderPendingsComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PEND" } },
           { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "VIEW" } },
       ]},
