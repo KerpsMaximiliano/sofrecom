@@ -11,8 +11,8 @@ import { PurchaseOrderDelegateModel } from 'app/models/billing/purchase-order/pu
 declare var $: any;
 
 @Component({
-    selector: 'app-purchase-delegate-edit',
-    templateUrl: './purchase-order-delegate-edit.component.html'
+    selector: 'app-purchase-approval-delegate-edit',
+    templateUrl: './purchase-order-approval-delegate-edit.component.html'
   })
 
 export class PurchaseOrderDelegateEditComponent implements OnInit, OnDestroy {
