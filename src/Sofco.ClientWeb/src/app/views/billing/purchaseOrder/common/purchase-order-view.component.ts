@@ -13,7 +13,8 @@ declare var moment: any;
 
 @Component({
   selector: 'purchase-order-view',
-  templateUrl: './purchase-order-view.component.html'
+  templateUrl: './purchase-order-view.component.html',
+  styleUrls: ['./purchase-order-view.component.css']
 })
 export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
