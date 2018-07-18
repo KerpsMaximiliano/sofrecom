@@ -42,23 +42,6 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
         }
 
-        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
-        {
-            var userMail = sessionManager.GetUserEmail();
-
-            var customers = customerData.GetCustomers(userMail, false);
-
-            var serviceIds = new List<string>();
-            foreach (var crmCustomer in customers)
-            {
-                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
-
-                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
-            }
-
-            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
-        }
-
         public Response<List<SolfacDelegateModel>> GetAll()
         {
             var data = GetUserDelegatesByUser();
@@ -113,6 +96,23 @@ namespace Sofco.Service.Implementations.Billing
             unitOfWork.UserDelegateRepository.Delete(userDeletegateId);
 
             return new Response();
+        }
+
+        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
+        {
+            var userMail = sessionManager.GetUserEmail();
+
+            var customers = customerData.GetCustomers(userMail, false);
+
+            var serviceIds = new List<string>();
+            foreach (var crmCustomer in customers)
+            {
+                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
+
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+            }
+
+            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
         }
 
         private Response<UserDelegate> ValidateSave()

@@ -4,14 +4,14 @@ import { DataTableService } from 'app/services/common/datatable.service';
 import { Router } from '@angular/router';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { PurchaseOrderApprovalDelegateService } from 'app/services/billing/purchase-order-approval-delegate.service';
+import { PurchaseOrderActiveDelegateService } from 'app/services/billing/purchase-order-active-delegate.service';
 
 @Component({
-    selector: 'app-purchase-order-approval-delegate',
-    templateUrl: './purchase-order-approval-delegate.component.html'
+    selector: 'app-purchase-order-active-delegate',
+    templateUrl: './purchase-order-active-delegate.component.html'
   })
 
-export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy {
+export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
@@ -29,7 +29,7 @@ export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy
 
     @ViewChild('confirmModal') confirmModal;
 
-    constructor(private purchaseOrderDelegateService: PurchaseOrderApprovalDelegateService,
+    constructor(private purchaseOrderDelegateService: PurchaseOrderActiveDelegateService,
         private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private router: Router) {
@@ -65,7 +65,7 @@ export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy
     }
 
     goToAdd() {
-        this.router.navigate(['/billing/purchaseOrders/approval/delegate/edit']);
+        this.router.navigate(['/billing/purchaseOrders/active/delegate/edit']);
     }
 
     showConfirmDelete(item: any) {

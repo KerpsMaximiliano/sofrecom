@@ -5,7 +5,7 @@ import { I18nService } from 'app/services/common/i18n.service';
 import { UserService } from 'app/services/admin/user.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PurchaseOrderDelegateService } from 'app/services/billing/purchase-order-delegate.service';
+import { PurchaseOrderApprovalDelegateService } from 'app/services/billing/purchase-order-approval-delegate.service';
 import { UtilsService } from 'app/services/common/utils.service';
 import { PurchaseOrderDelegateModel } from 'app/models/billing/purchase-order/purchase-order-delegate-model';
 declare var $: any;
@@ -56,7 +56,7 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
 
     constructor(private utilsService: UtilsService,
         private usersService: UserService,
-        private purchaseOrderDelegateService: PurchaseOrderDelegateService,
+        private purchaseOrderDelegateService: PurchaseOrderApprovalDelegateService,
         private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService,
         private i18nService: I18nService,

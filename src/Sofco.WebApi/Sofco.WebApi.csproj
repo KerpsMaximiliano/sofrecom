@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20180516145429_Holiday.Designer.cs" />
     <Compile Remove="Migrations\20180702153817_UserDelegateServiceId.cs" />
     <Compile Remove="Migrations\20180702153817_UserDelegateServiceId.Designer.cs" />
+    <Compile Remove="Migrations\20180717183228_Functionality.cs" />
+    <Compile Remove="Migrations\20180717183228_Functionality.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
