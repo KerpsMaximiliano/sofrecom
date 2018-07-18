@@ -5,13 +5,12 @@ using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
-using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
-using Sofco.Data.AllocationManagement;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
@@ -22,63 +21,48 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserData userData;
         private readonly IAnalyticData analyticData;
-        private readonly IServiceData serviceData;
-        private readonly ICustomerData customerData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
         private readonly ILogMailer<PurchaseOrderActiveDelegateService> logger;
 
-        public PurchaseOrderActiveDelegateService(IUnitOfWork unitOfWork,
-            ISessionManager sessionManager,
-            IServiceData serviceData,
+        public PurchaseOrderActiveDelegateService(IUnitOfWork unitOfWork, 
+            ISessionManager sessionManager, 
             ILogMailer<PurchaseOrderActiveDelegateService> logger,
             IMapper mapper,
-            IUserData userData,
-            ICustomerData customerData, IAnalyticData analyticData)
+            IUserData userData, 
+            IAnalyticData analyticData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
-            this.serviceData = serviceData;
             this.mapper = mapper;
             this.userData = userData;
-            this.customerData = customerData;
             this.analyticData = analyticData;
             this.logger = logger;
         }
 
         public Response<List<PurchaseOrderActiveDelegateModel>> GetAll()
         {
-            var currentUser = userData.GetCurrentUser();
+            var response = new Response<List<PurchaseOrderActiveDelegateModel>>();
 
-            var analytics = analyticData.GetByManagerId(currentUser.Id);
-
-            var serviceIds = analytics.Select(item => item.ServiceId).ToList();
-
-            var data = unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
-
-            var items = new List<PurchaseOrderActiveDelegateModel>();
-            foreach (var userDelegate in data)
+            try
             {
-                var model = Translate(userDelegate);
-                var analytic = analytics.FirstOrDefault(s => s.ServiceId == userDelegate.ServiceId.ToString());
-                if(analytic == null) continue;
-                model.ServiceName = analytic.Service;
-                if (analytic.ManagerId.HasValue)
-                {
-                    var managerUser = userData.GetUserLiteById(analytic.ManagerId.Value);
-                    model.ManagerName = managerUser.Name;
-                }
+                var currentUser = userData.GetCurrentUser();
 
-                var user = userData.GetUserLiteById(userDelegate.UserId);
-                model.UserName = user.Name;
+                var analytics = analyticData.GetByManagerId(currentUser.Id);
 
-                items.Add(model);
+                var serviceIds = analytics.Select(item => item.ServiceId).ToList();
+
+                var data = unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
+
+                var items = data.Select(userDelegate => Translate(userDelegate, analytics)).ToList();
+
+                response.Data = items;
             }
-
-            var response = new Response<List<PurchaseOrderActiveDelegateModel>>
+            catch (Exception e)
             {
-                Data = items
-            };
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
@@ -93,7 +77,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 userDelegate.CreatedUser = sessionManager.GetUserName();
 
-                userDelegate.Type = UserDelegateType.Solfac;
+                userDelegate.Type = UserDelegateType.PurchaseOrderActive;
 
                 response.Data = unitOfWork.UserDelegateRepository.Save(userDelegate);
             }
@@ -129,9 +113,20 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
-        private PurchaseOrderActiveDelegateModel Translate(UserDelegate solfacDelegate)
+        private PurchaseOrderActiveDelegateModel Translate(UserDelegate userDelegate, List<Analytic> analytics)
         {
-            return mapper.Map<UserDelegate, PurchaseOrderActiveDelegateModel>(solfacDelegate);
+            var model = mapper.Map<UserDelegate, PurchaseOrderActiveDelegateModel>(userDelegate);
+            var analytic = analytics.FirstOrDefault(s => s.ServiceId == userDelegate.ServiceId.ToString());
+            if (analytic == null) return model;
+            model.ServiceName = analytic.Service;
+            if (analytic.ManagerId.HasValue)
+            {
+                var managerUser = userData.GetUserLiteById(analytic.ManagerId.Value);
+                model.ManagerName = managerUser.Name;
+            }
+            var user = userData.GetUserLiteById(userDelegate.UserId);
+            model.UserName = user.Name;
+            return model;
         }
     }
 }

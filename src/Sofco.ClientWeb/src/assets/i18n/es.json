@@ -303,7 +303,7 @@
             "projectManager": "Gerente de Proyecto",
             "commercialManager": "Gerente de Cuenta",
             "delegate": {
-                "approvalTitle": "Delegar Aprobación",
+                "approvalTitle": "Delegar Aprobación Orden de Compra",
                 "activeTitle": "Delegar Orden de Compra Activas",
                 "delegateAction": "Delegar",
                 "type": "Tipo",
