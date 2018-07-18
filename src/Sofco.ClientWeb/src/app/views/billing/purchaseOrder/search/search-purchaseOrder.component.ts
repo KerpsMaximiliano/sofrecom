@@ -7,14 +7,12 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
-import * as FileSaver from "file-saver";
 import { I18nService } from 'app/services/common/i18n.service';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
 import { UserService } from 'app/services/admin/user.service';
-import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
 import { MenuService } from 'app/services/admin/menu.service';
-import { PurchaseOrderBalanceModel } from 'app/models/billing/purchase-order/purchase-order-balance-model';
+import { PurchaseOrderViewComponent } from '../common/purchase-order-view.component';
 declare var $: any;
 declare var moment: any;
 
@@ -24,8 +22,6 @@ declare var moment: any;
   styleUrls: ['./search-purchaseOrder.component.css']
 })
 export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
-
-    public data: any[] = new Array();
 
     public analytics: any[] = new Array();
     public purchaseOrders: any[] = new Array();
@@ -49,12 +45,11 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     public statusId = "1";
     public year;
     private storeSessionName = "purchaseOrderSearchCriteria";
-    private adjustmentSuffix = "";
 
     suscription: Subscription;
 
-    @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
+    @ViewChild('purchaseOrderView') purchaseOrderView:PurchaseOrderViewComponent;
 
     constructor(
         private router: Router,
@@ -64,8 +59,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
         private employeeService: EmployeeService,
         private userService: UserService,
         public menuService: MenuService,
-        private datatableService: DataTableService,
-        private i18nService: I18nService,
         private errorHandlerService: ErrorHandlerService) {}
 
     ngOnInit() {
@@ -85,7 +78,6 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
             this.endDate = data.endDate;
             this.filterByDates = data.filterByDates;
         }
-        this.adjustmentSuffix = " - " + this.i18nService.translateByKey('billing.purchaseOrder.adjustment');
     }
 
     ngAfterViewInit() {
@@ -104,7 +96,7 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
       if(this.suscription) this.suscription.unsubscribe();
     }
 
-    gotToEdit(data) {
+    goToEdit(data) {
         this.router.navigate([`/billing/purchaseOrders/${data.purchaseOrderId}`]);
     }
 
@@ -136,181 +128,15 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
     }
 
     getReportResponseHandler(response, parameters) {
+        const data = response.data;
         if(response.messages) this.messageService.showMessages(response.messages);
-        this.data = this.addPurchaseOrderAdjust(response.data);
         sessionStorage.setItem(this.storeSessionName, JSON.stringify(parameters));
-        this.initGrid();
-        if(this.data.length == 0) {
+        if(data.length == 0) {
             this.showEmptyData();
         }
         this.storeSearchCriteria(parameters);
-    }
 
-    initGrid(){
-        const columns = [{
-            "className": 'details-control',
-            "orderable": false,
-            "data": null,
-            "defaultContent": ''
-        }, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-        const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
-
-        const self = this;
-
-        const params = {
-            selector: '#purchaseOrderTable',
-            columns: columns,
-            title: title,
-            withExport: true,
-            customizeExcelExport: this.customizeExcelExport,
-            customizeExcelExportData: function(data) {
-                self.customizeExcelExportData(data);
-            },
-            columnDefs: [{
-                "targets": [ 1,9,10 ], "visible": false, "searchable": false
-            }]
-        }
-
-        this.datatableService.destroy('#purchaseOrderTable');
-
-        this.datatableService.initialize(params);
-
-        this.updateTableDetail();
-    }
-
-    export(purchaseOrder){
-        this.purchaseOrderService.exportFile(purchaseOrder.fileId).subscribe(file => {
-            FileSaver.saveAs(file, purchaseOrder.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    viewFile(purchaseOrder){
-        if(purchaseOrder.fileName.endsWith('.pdf')){
-            this.purchaseOrderService.getFile(purchaseOrder.fileId).subscribe(response => {
-                this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
-        }
-    }
-
-    formatDetail( data ) {
-        const id = $(data[0]).data("id");
-        const item = <any>this.data.find(x => x.id == id);
-
-        const details = item != null ? item.details : [];
-
-        let tbody = "";
-
-        details.forEach(x => {
-            tbody += this.getRowDetailForma(x);
-        });
-
-        return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
-            '<thead>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.analytic') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.hito') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.date') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.status') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.currency') + '</th>' +
-                '<th class="column-xs text-right">' + this.i18nService.translateByKey('billing.solfac.amount') + '</th>' +
-            '</thead>' +
-            '<tbody>' + tbody + '</tbody>' +
-        '</table></div>';
-    }
-
-    getRowDetailForma(item) {
-        return '<tr>' +
-                '<td>' + item.analytic + '</td>' +
-                '<td>' + item.description + '</td>' +
-                '<td>' + moment(item.updatedDate).format("DD/MM/YYYY") + '</td>' +
-                '<td class="column-lg">' + this.i18nService.translateByKey(item.statusText) + '</td>' +
-                '<td>' + item.currencyText + '</td>' +
-                '<td class="column-xs text-right">' + new AmountFormatPipe().transform(item.total) + '</td>' +
-                '</tr>';
-    }
-
-    updateTableDetail() {
-        const self = this;
-
-        $(document).ready(function() {
-            const dataTableSelector = '#purchaseOrderTable tbody';
-
-            $(dataTableSelector).unbind('click');
-            $(dataTableSelector).on('click', 'td.details-control', function () {
-                const datatable = $('#purchaseOrderTable').DataTable();
-                const tr = $(this).closest('tr');
-                const tdi = tr.find("i.fa");
-                const row = datatable.row(tr);
-
-                if (row.child.isShown()) {
-                    row.child.hide();
-                    tr.removeClass('shown');
-                    tdi.first().removeClass('fa-minus-square');
-                    tdi.first().addClass('fa-plus-square');
-                } else {
-                    row.child(self.formatDetail(row.data())).show();
-                    tr.addClass('shown');
-                    tdi.first().removeClass('fa-plus-square');
-                    tdi.first().addClass('fa-minus-square');
-                }
-            });
-        });
-    }
-
-    customizeExcelExport(xlsx) {
-        const sheet = xlsx.xl.worksheets['sheet1.xml'];
-        $('row:first c', sheet).attr( 's', '7' );
-        $('row:nth-child(2) c', sheet).attr( 's', '22' );
-    }
-
-    customizeExcelExportData(data) {
-        const self = this;
-        const idPos = 1;
-        const receptionDatePos = 2;
-        const ammountNumberPos1 = 5;
-        const balanceNumberPos2 = 6;
-        data.header.splice(0, 2);
-        const dataBody = data.body;
-        const result = [];
-        for(let index = 0; index < dataBody.length; index++) {
-            const dataBodyItem = dataBody[index];
-            const itemId = dataBodyItem[idPos];
-            dataBodyItem.splice(0, 2);
-            const item = self.data.find(x => x.id == itemId);
-            dataBodyItem[receptionDatePos] = item.receptionDate;
-            dataBodyItem[ammountNumberPos1] = item.ammount;
-            dataBodyItem[balanceNumberPos2] = item.balance;
-            result.push(dataBodyItem);
-            const details = item.details;
-            if(details.length == 0) continue;
-            let rowItem = this.getExportSubHeader();
-            result.push(rowItem);
-            details.forEach(d => {
-                rowItem = this.getExportSubBody(d);
-                result.push(rowItem);
-            });
-        };
-        data.body = result;
-    }
-
-    getExportSubHeader() {
-        return ['',
-            this.i18nService.translateByKey('billing.solfac.analytic'),
-            this.i18nService.translateByKey('billing.solfac.hito'),
-            this.i18nService.translateByKey('billing.solfac.date'),
-            this.i18nService.translateByKey('billing.solfac.status'),
-            this.i18nService.translateByKey('billing.solfac.amount')];
-    }
-
-    getExportSubBody(d) {
-        return ['',
-            d.analytic,
-            d.description,
-            moment(d.updatedDate).format("DD/MM/YYYY"),
-            this.i18nService.translateByKey(d.statusText),
-            d.total];
+        this.purchaseOrderView.setData(data);
     }
 
     collapse() {
@@ -399,28 +225,5 @@ export class PurchaseOrderSearchComponent implements OnInit, OnDestroy {
 
     showEmptyData() {
         this.messageService.showWarning("report.resultNotFound");
-    }
-
-    addPurchaseOrderAdjust(data): any[] {
-        data.forEach(item => {
-            if(item.adjustment > 0){
-                const newItem = this.createPurchaseOrderAdjustment(item);
-                data.push(newItem);
-            }
-        });
-        return data.sort(function (a, b) {
-            return a.number.localeCompare(b.number);
-        });
-    }
-
-    createPurchaseOrderAdjustment(data): PurchaseOrderBalanceModel {
-        const item = new PurchaseOrderBalanceModel();
-        item.number = data.number + this.adjustmentSuffix;
-        item.clientExternalName = data.clientExternalName;
-        item.currencyText = data.currencyText;
-        item.ammount = data.adjustment;
-        item.statusId = data.statusId;
-        item.statusText = this.i18nService.translateByKey(data.statusText) + this.adjustmentSuffix;
-        return item;
     }
 }
