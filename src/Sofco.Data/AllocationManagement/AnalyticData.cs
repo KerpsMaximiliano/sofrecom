@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Data.AllocationManagement
 {
     public class AnalyticData : IAnalyticData
     {
         private const string AnalyticByIdCacheKey = "urn:analyticLites:id:{0}";
+
+        private const string AnalyticByManagerIdCacheKey = "urn:analyticLites:managerId:{0}";
 
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
@@ -26,6 +31,13 @@ namespace Sofco.Data.AllocationManagement
         {
             return cacheManager.Get(string.Format(AnalyticByIdCacheKey, analyticId),
                 () => unitOfWork.AnalyticRepository.GetAnalyticLiteById(analyticId),
+                cacheExpire);
+        }
+
+        public List<Analytic> GetByManagerId(int managerId)
+        {
+            return cacheManager.Get(string.Format(AnalyticByManagerIdCacheKey, managerId),
+                () => unitOfWork.AnalyticRepository.GetAnalyticsByManagers(managerId).ToList(),
                 cacheExpire);
         }
     }
