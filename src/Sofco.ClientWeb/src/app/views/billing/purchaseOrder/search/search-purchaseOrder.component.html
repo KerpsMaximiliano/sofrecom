@@ -27,56 +27,7 @@
         </div>
     </div>
 
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-success">
-            <div class="panel-heading pointer" (click)="collapse()">
-                <h2 class="panel-title">
-                    {{'billing.purchaseOrder.parameters' | translate }} 
-                    <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
-                </h2>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers" (valueChange)="searchCriteriaChange()"></select-two>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="searchCriteriaChange()"></select-two>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.purchaseOrder.projectManager'" [(value)]="projectManagerId" [options]="projectManagers" (valueChange)="searchCriteriaChange()"></select-two>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.purchaseOrder.commercialManager'" [(value)]="commercialManagerId" [options]="commercialManagers" (valueChange)="searchCriteriaChange()"></select-two>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses" (valueChange)="searchCriteriaChange()"></select-two>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <br>
-                            <icheck [(checked)]="filterByDates" (click)="searchCriteriaChange()">
-                                <label class="control-label">{{'filterByDates' | translate }}</label> 
-                            </icheck>
-                        </div>
-                        <div class="col-sm-4" *ngIf="filterByDates">
-                            <label class="control-label">{{'report.dateRange' | translate }}</label>
-                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="searchCriteriaChange(data)"></date-range-picker>
-                        </div>
-                    </div>
-                </div>
-                <div class="ibox-footer">
-                    <div class="text-right">
-                        <button class="btn btn-warning btn-sm" (click)="clean()">{{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <purchase-order-view-filter #purchaseOrderViewFilter storeSessionName="yoga" (change)="viewFilterChange($event)"></purchase-order-view-filter>
 
     <div class="row">
         <div class="col-lg-12">
