@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-sm-4" *ngIf="filterByDates">
                             <label class="control-label">{{'report.dateRange' | translate }}</label>
-                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="searchCriteriaChange()"></date-range-picker>
+                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="searchCriteriaChange(data)"></date-range-picker>
                         </div>
                     </div>
                 </div>
@@ -78,64 +78,13 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="data.length == 0">
-        <div class="col-lg-12">{{'report.resultNotFound' | translate }}</div>
-    </div>
-
-    <div class="row" *ngIf="data.length > 0">
+    <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <table class="table table-striped" id="purchaseOrderTable" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
-                                <th class="text-right">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</th>
-                                <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
-                                <th class="text-right">{{'billing.purchaseOrder.fields.ammount' | translate }}</th>
-                                <th class="text-right">{{'billing.purchaseOrder.fields.balance' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.projectManager' | translate }}</th>
-                                <th>{{'billing.purchaseOrder.commercialManager' | translate }}</th>
-                                <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let purchaseOrder of data">
-                                <td [ngClass]="purchaseOrder.details.length > 0 ? 'details-control' : ''" style="width:20px">
-                                    <i [ngClass]="purchaseOrder.details.length > 0 ? 'fa fa-plus-square' : ''" [attr.data-id]="purchaseOrder.id"></i>
-                                </td>
-                                <td>{{ purchaseOrder.id }}</td>
-                                <td>{{ purchaseOrder.number }}</td>
-                                <td>{{ purchaseOrder.clientExternalName }}</td>
-                                <td class="text-right">{{ purchaseOrder.receptionDate | date: "dd/MM/yyyy" }}</td>
-                                <td class="text-center"> <label class="label label-oc-{{purchaseOrder.statusId}}">{{ purchaseOrder.statusText | translate }}</label> </td>
-                                <td>{{ purchaseOrder.currencyText }}</td>
-                                <td class="text-right">{{ purchaseOrder.ammount | amountFormat }}</td>
-                                <td class="text-right">{{ purchaseOrder.balance | amountFormat }}</td>
-                                <td>{{ purchaseOrder.projectManagerNames }}</td>
-                                <td>{{ purchaseOrder.accountManagerNames }}</td>
-                                <td class="text-center column-xs">
-                                    <button *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="gotToEdit(purchaseOrder)"><i class="fa fa-eye"></i></button>
-        
-                                    <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
-                                        <i class="fa fa-download"></i>
-                                    </button>
-
-                                    <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>       
+                    <purchase-order-view #purchaseOrderView (clickView)="goToEdit($event)"></purchase-order-view>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<pdf-viewer #pdfViewer></pdf-viewer>
