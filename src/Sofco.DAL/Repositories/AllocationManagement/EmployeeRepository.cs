@@ -47,10 +47,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToChange).Property("EndReason").IsModified = true;
             context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
         }
-
+         
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees;
+
+            if (parameters.Unassigned)
+            {
+                var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
+
+                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id)).ToList();
+            }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));

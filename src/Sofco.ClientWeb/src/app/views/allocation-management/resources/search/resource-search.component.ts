@@ -8,7 +8,6 @@ import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserService } from "app/services/admin/user.service";
-import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { CategoryService } from "../../../../services/admin/category.service";
 
 declare var moment: any;
@@ -57,7 +56,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         technology: "",
         percentage: null,
         analyticId: 0,
-        employeeNumber: ""
+        employeeNumber: "",
+        unassigned: false
     };
 
     public endDate: Date = new Date();
@@ -78,7 +78,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 private employeeService: EmployeeService,
                 private usersService: UserService,
                 private categoryService: CategoryService,
-                private analyticService: AnalyticService,
                 private dataTableService: DataTableService,
                 private errorHandlerService: ErrorHandlerService) {
     }
@@ -179,6 +178,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.employeeNumber = "";
         this.searchModel.percentage = null;
         this.searchModel.analyticId = 0;
+        this.searchModel.unassigned = false;
         this.resources = [];
         sessionStorage.removeItem('lastResourceQuery');
     }
@@ -190,7 +190,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            !this.searchModel.technology && this.searchModel.technology == "" && 
            !this.searchModel.employeeNumber && this.searchModel.employeeNumber == "" && 
            !this.searchModel.analyticId && this.searchModel.analyticId == 0 && 
-           !this.searchModel.percentage && this.searchModel.percentage == null){
+           !this.searchModel.percentage && this.searchModel.percentage == null && 
+           !this.searchModel.unassigned){
                return true;
            }
 

@@ -9,5 +9,6 @@
         public string EmployeeNumber { get; set; }
         public int? Percentage { get; set; }
         public int? AnalyticId { get; set; }
+        public bool Unassigned { get; set; }
     }
 }
