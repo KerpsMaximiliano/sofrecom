@@ -23,7 +23,9 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly ISessionManager sessionManager;
 
-        private readonly IPurchaseOrderDelegateManager purchaseOrderDelegateManager;
+        private readonly IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager;
+
+        private readonly IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager;
 
         private readonly EmailConfig emailConfig;
 
@@ -31,13 +33,14 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly IUserDelegateRepository userDelegateRepository;
 
-        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, IUserDelegateRepository userDelegateRepository, IOptions<AppSetting> appSetting, IPurchaseOrderDelegateManager purchaseOrderDelegateManager)
+        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, IUserDelegateRepository userDelegateRepository, IOptions<AppSetting> appSetting, IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.userService = userService;
             this.userDelegateRepository = userDelegateRepository;
-            this.purchaseOrderDelegateManager = purchaseOrderDelegateManager;
+            this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
+            this.purchaseOrderActiveDelegateManager = purchaseOrderActiveDelegateManager;
             this.emailConfig = emailConfig.Value;
             this.appSetting = appSetting.Value;
         }
@@ -93,7 +96,9 @@ namespace Sofco.Service.Implementations.Admin
 
             var roles = unitOfWork.RoleRepository.GetRolesByGroup(groupsId).ToList();
 
-            roles.AddRange(GetPurchaseOrderRoles());
+            roles.AddRange(purchaseOrderApprovalDelegateManager.GetDelegatedRoles());
+
+            roles.AddRange(purchaseOrderActiveDelegateManager.GetDelegatedRoles());
 
             if (userDelegateRepository.HasUserDelegate(userName, UserDelegateType.Solfac))
             {
@@ -103,11 +108,6 @@ namespace Sofco.Service.Implementations.Admin
             }
 
             return roles;
-        }
-
-        private List<Role> GetPurchaseOrderRoles()
-        {
-            return purchaseOrderDelegateManager.GetPurchaseOrderRoles();
         }
     }
 }

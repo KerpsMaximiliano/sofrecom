@@ -13,7 +13,7 @@ using Sofco.Model.Models.Admin;
 
 namespace Sofco.Framework.Managers
 {
-    public class PurchaseOrderDelegateManager : IPurchaseOrderDelegateManager
+    public class PurchaseOrderApprovalDelegateManager : IPurchaseOrderApprovalDelegateManager
     {
         private readonly IUserDelegateRepository userDelegateRepository;
 
@@ -31,7 +31,7 @@ namespace Sofco.Framework.Managers
 
         private List<UserDelegateType> types;
 
-        public PurchaseOrderDelegateManager(IOptions<AppSetting> appSetting, ISessionManager sessionManager, IUnitOfWork unitOfWork, IUserDelegateRepository userDelegateRepository, IAreaData areaData, ISectorData sectorData, IUserData userData)
+        public PurchaseOrderApprovalDelegateManager(IOptions<AppSetting> appSetting, ISessionManager sessionManager, IUnitOfWork unitOfWork, IUserDelegateRepository userDelegateRepository, IAreaData areaData, ISectorData sectorData, IUserData userData)
         {
             this.sessionManager = sessionManager;
             this.unitOfWork = unitOfWork;
@@ -43,7 +43,7 @@ namespace Sofco.Framework.Managers
             SetTypes();
         }
 
-        public List<Role> GetPurchaseOrderRoles()
+        public List<Role> GetDelegatedRoles()
         {
             var roles = new List<Role>();
 

@@ -47,5 +47,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<Analytic> GetForReport(List<int> analytics);
 
         IList<Analytic> GetByPurchaseOrder(int purchaseOrderId);
+
+        bool ExistManagerId(int managerId);
     }
 }
