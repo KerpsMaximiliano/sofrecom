@@ -3,8 +3,8 @@ using Sofco.Model.Models.Admin;
 
 namespace Sofco.Core.Managers
 {
-    public interface IPurchaseOrderDelegateManager
+    public interface IPurchaseOrderActiveDelegateManager
     {
-        List<Role> GetPurchaseOrderRoles();
+        List<Role> GetDelegatedRoles();
     }
 }

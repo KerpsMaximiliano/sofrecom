@@ -19,5 +19,9 @@
         public string PurchaseOrderDafApprovalCode { get; set; }
 
         public string DafPurchaseOrderGroupCode { get; set; }
+
+        public string PurchaseOrderActiveViewCode { get; set; }
+
+        public string PurchaseOrderActiveDelegateCode { get; set; }
     }
 }
