@@ -37,7 +37,7 @@ namespace Sofco.Data.AllocationManagement
         public List<Analytic> GetByManagerId(int managerId)
         {
             return cacheManager.Get(string.Format(AnalyticByManagerIdCacheKey, managerId),
-                () => unitOfWork.AnalyticRepository.GetAnalyticsByManagers(managerId).ToList(),
+                () => unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(managerId).ToList(),
                 cacheExpire);
         }
     }

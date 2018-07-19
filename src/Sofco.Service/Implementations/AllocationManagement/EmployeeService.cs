@@ -192,7 +192,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public ICollection<Option> GetAnalytics(int id)
         {
-            return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            return unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
         }
 
         public Response<IList<EmployeeCategoryOption>> GetCategories(int employeeId)

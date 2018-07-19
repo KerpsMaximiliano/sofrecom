@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Sofco.Model.Enums;
 
 namespace Sofco.Model.DTO
 {
@@ -7,6 +9,8 @@ namespace Sofco.Model.DTO
         public string ClientId { get; set; }
 
         public string StatusId { get; set; }
+
+        public List<PurchaseOrderStatus> StatusIds { get; set; }
 
         public int? AnalyticId { get; set; }
 

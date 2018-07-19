@@ -40,7 +40,7 @@ export class PurchaseOrderActiveViewComponent implements OnDestroy {
 
     getReport(parameters) {
         this.messageService.showLoading();
-        this.suscription = this.purchaseOrderService.getReport(parameters).subscribe(response => {
+        this.suscription = this.purchaseOrderService.getActiveReport(parameters).subscribe(response => {
             this.messageService.closeLoading();
             this.getReportResponseHandler(response);
         },

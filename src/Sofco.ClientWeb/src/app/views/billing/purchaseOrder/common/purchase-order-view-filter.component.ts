@@ -20,7 +20,7 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
 
     @Output() change:EventEmitter<any> = new EventEmitter();
     @Input() storeSessionName = "purchaseOrderViewFilter";
-    @Input() useStatus = false;
+    @Input() useStatus = true;
 
     public analytics: any[] = new Array();
     public purchaseOrders: any[] = new Array();
