@@ -5,6 +5,7 @@ using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing.PurchaseOrder;
@@ -20,6 +21,8 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserData userData;
+        private readonly IServiceData serviceData;
+        private readonly ICustomerData customerData;
         private readonly IAnalyticData analyticData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
@@ -30,13 +33,15 @@ namespace Sofco.Service.Implementations.Billing
             ILogMailer<PurchaseOrderActiveDelegateService> logger,
             IMapper mapper,
             IUserData userData, 
-            IAnalyticData analyticData)
+            IAnalyticData analyticData, ICustomerData customerData, IServiceData serviceData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.mapper = mapper;
             this.userData = userData;
             this.analyticData = analyticData;
+            this.customerData = customerData;
+            this.serviceData = serviceData;
             this.logger = logger;
         }
 
@@ -46,17 +51,9 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                var currentUser = userData.GetCurrentUser();
+                var data = GetUserDelegatesByUser();
 
-                var analytics = analyticData.GetByManagerId(currentUser.Id);
-
-                var serviceIds = analytics.Select(item => item.ServiceId).ToList();
-
-                var data = unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
-
-                var items = data.Select(userDelegate => Translate(userDelegate, analytics)).ToList();
-
-                response.Data = items;
+                response.Data = data.Select(Translate).ToList();
             }
             catch (Exception e)
             {
@@ -97,6 +94,23 @@ namespace Sofco.Service.Implementations.Billing
             return new Response();
         }
 
+        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
+        {
+            var userMail = sessionManager.GetUserEmail();
+
+            var customers = customerData.GetCustomers(userMail, false);
+
+            var serviceIds = new List<string>();
+            foreach (var crmCustomer in customers)
+            {
+                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
+
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+            }
+
+            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
+        }
+
         private Response<UserDelegate> ValidateSave()
         {
             var respone = new Response<UserDelegate>();
@@ -113,18 +127,14 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
-        private PurchaseOrderActiveDelegateModel Translate(UserDelegate userDelegate, List<Analytic> analytics)
+        private PurchaseOrderActiveDelegateModel Translate(UserDelegate userDelegate)
         {
             var model = mapper.Map<UserDelegate, PurchaseOrderActiveDelegateModel>(userDelegate);
-            var analytic = analytics.FirstOrDefault(s => s.ServiceId == userDelegate.ServiceId.ToString());
-            if (analytic == null) return model;
-            model.ServiceName = analytic.Service;
-            if (analytic.ManagerId.HasValue)
-            {
-                var managerUser = userData.GetUserLiteById(analytic.ManagerId.Value);
-                model.ManagerName = managerUser.Name;
-            }
-            var user = userData.GetUserLiteById(userDelegate.UserId);
+            var service = serviceData.GetService(userDelegate.ServiceId);
+            var user = userData.GetById(userDelegate.UserId);
+
+            model.ManagerName = service.Manager;
+            model.ServiceName = service.Nombre;
             model.UserName = user.Name;
             return model;
         }
