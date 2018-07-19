@@ -62,7 +62,7 @@ const BILLING_ROUTER: Routes = [
           { path: "approval/delegate/edit", component: PurchaseOrderApprovalDelegateEditComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PODE" } },
           { path: "active/delegate", component: PurchaseOrderActiveDelegateComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "POACTIVEDELEGATE" } },
           { path: "active/delegate/edit", component: PurchaseOrderActiveDelegateEditComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "POACTIVEDELEGATE" } },
-          { path: "active", component: PurchaseOrderActiveViewComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "POACTIVEDELEGATE" } },
+          { path: "active", component: PurchaseOrderActiveViewComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "POACTIVEVIEW" } },
           { path: "pendings", component: PurchaseOrderPendingsComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "PEND" } },
           { path: ":id", component: EditPurchaseOrderComponent, canActivate: [AuthGuard], data: { module: "PUROR", functionality: "VIEW" } },
       ]},

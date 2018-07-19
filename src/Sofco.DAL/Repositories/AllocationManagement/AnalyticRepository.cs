@@ -203,6 +203,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Select(x => x.Analytic)
                 .ToList();
 
-        } 
+        }
+
+        public bool ExistManagerId(int managerId)
+        {
+            return context.Analytics.Any(x => x.ManagerId == managerId && x.Status == AnalyticStatus.Open);
+        }
     }
 }

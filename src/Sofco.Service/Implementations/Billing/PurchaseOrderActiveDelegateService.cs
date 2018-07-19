@@ -4,14 +4,12 @@ using System.Linq;
 using AutoMapper;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
-using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
 
@@ -23,7 +21,6 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
         private readonly ICustomerData customerData;
-        private readonly IAnalyticData analyticData;
         private readonly ISessionManager sessionManager;
         private readonly IMapper mapper;
         private readonly ILogMailer<PurchaseOrderActiveDelegateService> logger;
@@ -32,14 +29,12 @@ namespace Sofco.Service.Implementations.Billing
             ISessionManager sessionManager, 
             ILogMailer<PurchaseOrderActiveDelegateService> logger,
             IMapper mapper,
-            IUserData userData, 
-            IAnalyticData analyticData, ICustomerData customerData, IServiceData serviceData)
+            IUserData userData, ICustomerData customerData, IServiceData serviceData)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.mapper = mapper;
             this.userData = userData;
-            this.analyticData = analyticData;
             this.customerData = customerData;
             this.serviceData = serviceData;
             this.logger = logger;
@@ -108,7 +103,7 @@ namespace Sofco.Service.Implementations.Billing
                 serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
             }
 
-            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
+            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
         }
 
         private Response<UserDelegate> ValidateSave()

@@ -23,11 +23,25 @@ BEGIN
 	VALUES (@DirectorRoleId, @FuncId);
 END
 
-DECLARE @RoleHapDelegateCode NVARCHAR(100) = 'PURCHASEORDERACTIVE'
-DECLARE @DelegateRoleId Int = (SELECT Id FROM app.Roles WHERE Code = @RoleHapDelegateCode)
+DECLARE @ViewRoleCode NVARCHAR(100) = 'PO_VIEW_ACTIVE'
 
-IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @DelegateRoleId AND FunctionalityId = @FuncId))
+IF (NOT EXISTS (SELECT 1 FROM app.Roles WHERE Code = @ViewRoleCode))
+BEGIN
+	INSERT INTO app.Roles  (Active, Description, Code, StartDate) 
+	VALUES (1, 'Acceso Ver Orden de Compra Activas', @ViewRoleCode, GetUtcDate());
+END
+
+DECLARE @ViewRoleId Int = (SELECT Id FROM app.Roles WHERE Code = @ViewRoleCode)
+
+IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @ViewRoleId AND FunctionalityId = @FuncId))
 BEGIN
 	INSERT INTO app.RoleFunctionality  (RoleId, FunctionalityId) 
-	VALUES (@DelegateRoleId, @FuncId);
+	VALUES (@ViewRoleId, @FuncId);
+END
+
+DECLARE @ViewIconFuncId Int = (SELECT Id FROM app.Functionalities WHERE Code = 'VIEW' AND ModuleId = @ModuleId)
+
+IF (NOT EXISTS (SELECT 1 FROM app.RoleFunctionality WHERE RoleId = @ViewRoleId AND FunctionalityId = @ViewIconFuncId))
+BEGIN
+	INSERT INTO app.RoleFunctionality  (RoleId, FunctionalityId) VALUES (@ViewRoleId, @ViewIconFuncId);
 END

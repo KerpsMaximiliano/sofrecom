@@ -23,12 +23,12 @@ BEGIN
 	VALUES (@DirectorRoleId, @FuncId);
 END
 
-DECLARE @RoleHapDelegateCode NVARCHAR(100) = 'PURCHASEORDERACTIVE'
+DECLARE @RoleHapDelegateCode NVARCHAR(100) = 'PO_DELEGATE_ACTIVE'
 
 IF (NOT EXISTS (SELECT 1 FROM app.Roles WHERE Code = @RoleHapDelegateCode))
 BEGIN
 	INSERT INTO app.Roles  (Active, Description, Code, StartDate) 
-	VALUES (1, 'Acceso Orden de Compra Activas', @RoleHapDelegateCode, GetUtcDate());
+	VALUES (1, 'Acceso Delegar Orden de Compra Activas', @RoleHapDelegateCode, GetUtcDate());
 END
 
 DECLARE @DelegateRoleId Int = (SELECT Id FROM app.Roles WHERE Code = @RoleHapDelegateCode)
