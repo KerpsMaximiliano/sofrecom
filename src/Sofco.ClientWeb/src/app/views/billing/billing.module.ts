@@ -100,6 +100,7 @@ import { PurchaseOrderActiveDelegateEditComponent } from './purchaseOrder/active
 import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
 import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
+import { ButtonsModule } from 'app/components/buttons/btn-confirm-inline.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -119,7 +120,7 @@ import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/pu
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter],
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderApprovalDelegateService, 

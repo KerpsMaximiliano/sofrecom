@@ -4,18 +4,22 @@ import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
 import { ButtonConfirmInlineComponent } from "app/components/buttons/button-confirm-inline/btn-confirm-inline";
 import { LaddaModule } from "angular2-ladda";
+import { I18nService } from "app/services/common/i18n.service";
+import { ButtonConfirmComponent } from "app/components/buttons/button-confirm/btn-confirm";
+import { MessageService } from "app/services/common/message.service";
 
 @NgModule({
     imports: [
       CommonModule, FormsModule, TranslateModule, LaddaModule
     ],
     declarations: [ 
-      ButtonConfirmInlineComponent
+      ButtonConfirmInlineComponent, ButtonConfirmComponent
     ],
     providers: [
+      I18nService, MessageService
     ],
     exports: [
-      ButtonConfirmInlineComponent
+      ButtonConfirmInlineComponent, ButtonConfirmComponent
     ]
   })
   export class ButtonsModule { }

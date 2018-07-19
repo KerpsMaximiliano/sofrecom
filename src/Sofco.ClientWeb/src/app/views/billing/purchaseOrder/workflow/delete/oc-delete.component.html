@@ -1,7 +1,6 @@
-<button class="btn btn-danger btn-outline dim btn-sm" (click)="showModal()" *ngIf="canSend()"> 
-    {{ 'ACTIONS.DELETE' | translate }} <i class="fa fa-times"></i>
-</button>
-
-<ng2-modal [config]="deleteModalConfig" #deleteModal (accept)="send()">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
-</ng2-modal>
+<btn-confirm 
+    *ngIf="canSend()" 
+    [class]="'btn-danger btn-outline dim btn-sm'" 
+    [text]="'ACTIONS.DELETE'" 
+    (onConfirm)="send()">
+</btn-confirm> 

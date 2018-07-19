@@ -23,9 +23,9 @@
         <btn-confirm-inline class="pull-left" #btnDelete *ngIf="config.deleteButton" [class]="'btn btn-danger'" [text]="'ACTIONS.DELETE'" (onConfirm)="deleteEvent()"></btn-confirm-inline>
 
         <button type="button" class="btn btn-default" (click)="closeEvent()" *ngIf="config.cancelButton" [disabled]="isProcessing">{{config.cancelButtonText | translate}}</button>
-        <!-- <button type="button" class="btn-success" (click)="acceptEvent()" *ngIf="config.acceptButton"  [disabled]="!isSaveEnabled || isProcessing" [ladda]="isLoading" >{{config.acceptButtonText | translate}}</button> -->
+        <button type="button" class="btn btn-success" (click)="acceptEvent()" *ngIf="config.acceptButton"  [disabled]="!isSaveEnabled" [ladda]="isProcessing" >{{config.acceptButtonText | translate}}</button>
 
-        <btn-confirm-inline #btnSuccess *ngIf="config.acceptButton" [class]="'btn btn-success'" [text]="config.acceptButtonText" (onConfirm)="acceptEvent()" [isDisabled]="!isSaveEnabled"></btn-confirm-inline>
+        <btn-confirm-inline #btnSuccess *ngIf="config.acceptInlineButton" [class]="'btn btn-success'" [text]="config.acceptButtonText" (onConfirm)="acceptEvent()" [isDisabled]="!isSaveEnabled"></btn-confirm-inline>
       </div>
     </div>
 

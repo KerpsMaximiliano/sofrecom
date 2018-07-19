@@ -14,16 +14,6 @@ import { MenuService } from 'app/services/admin/menu.service';
 })
 export class OcStatusDafComponent implements OnDestroy  {
 
-  @ViewChild('dafModal') modal;
-  public dafModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "ACTIONS.confirmTitle",
-      "dafModal",
-      true,
-      true,
-      "ACTIONS.ACCEPT",
-      "ACTIONS.cancel"
-  );
-
   @Input() ocId: number;
   @Input() status: number;
 
@@ -47,14 +37,10 @@ export class OcStatusDafComponent implements OnDestroy  {
     return false;
   }
 
-  showModal(){
-    this.modal.show();
-  }
 
   send(){
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
         data => {
-            this.modal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
@@ -62,8 +48,10 @@ export class OcStatusDafComponent implements OnDestroy  {
             }, 1000);
         },
         error => {
-            this.modal.hide();
             this.errorHandlerService.handleErrors(error);
+        }, 
+        () => {
+            this.messageService.closeLoading();
         });
     }
 }

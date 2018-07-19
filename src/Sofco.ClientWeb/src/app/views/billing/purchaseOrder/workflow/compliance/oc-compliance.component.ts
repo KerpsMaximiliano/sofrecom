@@ -1,5 +1,4 @@
-import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MessageService } from 'app/services/common/message.service';
@@ -13,16 +12,6 @@ import { MenuService } from '../../../../../services/admin/menu.service';
   templateUrl: './oc-compliance.component.html'
 })
 export class OcStatusComplianceComponent implements OnDestroy  {
-
-  @ViewChild('complianceModal') modal;
-  public complianceModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "ACTIONS.confirmTitle",
-      "complianceModal",
-      true,
-      true,
-      "ACTIONS.ACCEPT",
-      "ACTIONS.cancel"
-  );
 
   @Input() ocId: number;
   @Input() status: number;
@@ -47,14 +36,10 @@ export class OcStatusComplianceComponent implements OnDestroy  {
     return false;
   }
 
-  showModal(){
-    this.modal.show();
-  }
 
   send(){
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
         data => {
-            this.modal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
@@ -62,8 +47,10 @@ export class OcStatusComplianceComponent implements OnDestroy  {
             }, 1000);
         },
         error => {
-            this.modal.hide();
             this.errorHandlerService.handleErrors(error);
+        },
+        () => {
+            this.messageService.closeLoading();
         });
     }
 }

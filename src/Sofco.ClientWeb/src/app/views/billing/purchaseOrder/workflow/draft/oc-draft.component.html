@@ -1,7 +1,6 @@
-<button class="btn btn-primary btn-outline dim btn-sm" (click)="showModal()" *ngIf="canSend()"> 
-    {{ 'billing.purchaseOrder.sendToCompliance' | translate }} <i class="fa fa-envelope"></i>
-</button>
-
-<ng2-modal [config]="draftModalConfig" #draftModal (accept)="send()">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
-</ng2-modal>
+<btn-confirm 
+    *ngIf="canSend()" 
+    [class]="'btn-primary btn-outline dim btn-sm'" 
+    [text]="'billing.purchaseOrder.sendToCompliance'" 
+    (onConfirm)="send()">
+</btn-confirm> 
