@@ -6,8 +6,7 @@ import { Subscription } from "rxjs/Subscription";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
-import { DatepickerOptions } from 'ng2-datepicker';
+
 declare var $: any;
 
 @Component({
