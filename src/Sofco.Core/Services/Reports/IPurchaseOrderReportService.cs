@@ -10,5 +10,7 @@ namespace Sofco.Core.Services.Reports
         Response<List<PurchaseOrderBalanceViewModel>> Get(SearchPurchaseOrderParams parameters);
 
         Response<List<Option>> GetAnalyticsByCurrentUser();
+
+        Response<List<PurchaseOrderBalanceViewModel>> GetActives(SearchPurchaseOrderParams parameters);
     }
 }
