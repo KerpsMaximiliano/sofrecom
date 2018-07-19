@@ -320,7 +320,8 @@
                 "PurchaseOrderApprovalCompliance": "Compliance",
                 "PurchaseOrderApprovalDaf": "DAF"
             },
-            "adjustment": "Ajuste"
+            "adjustment": "Ajuste",
+            "activeViewTitle": "Orden de Compras Activas"
         },
         "solfac":{
             "title": "Solicitud Facturación",

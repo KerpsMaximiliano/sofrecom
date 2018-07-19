@@ -9,10 +9,10 @@ import { PurchaseOrderViewComponent } from '../common/purchase-order-view.compon
 import { PurchaseOrderViewFilterComponent } from '../common/purchase-order-view-filter.component';
 
 @Component({
-  selector: 'purchase-order-search',
-  templateUrl: './search-purchaseOrder.component.html'
+  selector: 'purchase-order-active',
+  templateUrl: './purchase-order-active-view.component.html'
 })
-export class PurchaseOrderSearchComponent implements OnDestroy {
+export class PurchaseOrderActiveViewComponent implements OnDestroy {
 
     suscription: Subscription;
 
