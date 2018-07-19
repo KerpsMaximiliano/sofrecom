@@ -63,7 +63,7 @@ namespace Sofco.Framework.Managers
             {
                 var currentUser = userData.GetCurrentUser();
 
-                var currentAnalyticIds = unitOfWork.AnalyticRepository.GetByManagerId(currentUser.Id).Select(x => x.Id)
+                var currentAnalyticIds = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id).Select(x => x.Id)
                     .ToList();
 
                 analytics = repository.GetByAnalytics(currentAnalyticIds, query.ApprovalId);

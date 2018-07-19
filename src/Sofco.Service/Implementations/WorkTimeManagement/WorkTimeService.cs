@@ -226,7 +226,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         public IEnumerable<Option> GetAnalytics()
         {
             var currentUser = userData.GetCurrentUser();
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id);
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
             var analyticsByDelegates = unitOfWork.WorkTimeApprovalRepository.GetByAnalyticApproval(currentUser.Id);
 
             var list = analyticsByManagers.Select(x => new Option {Id = x.Id, Text = $"{x.Title} - {x.Name}"}).ToList();

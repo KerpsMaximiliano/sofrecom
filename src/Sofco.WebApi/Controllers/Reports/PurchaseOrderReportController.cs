@@ -32,5 +32,13 @@ namespace Sofco.WebApi.Controllers.Reports
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("actives")]
+        public IActionResult GetActive([FromBody] SearchPurchaseOrderParams parameters)
+        {
+            var response = purchaseOrderReportService.GetActives(parameters);
+
+            return this.CreateResponse(response);
+        }
     }
 }
