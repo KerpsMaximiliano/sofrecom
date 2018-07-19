@@ -170,7 +170,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   editTask(task) {
     this.taskModel = task;
     $("#hoursControl").val(this.taskModel.hours);
-    this.taskModel.date = new Date(task.date);
+    // this.taskModel.date = task.date;
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
     if (storedTask == null) {
       return;
@@ -397,8 +397,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.editModal.isSaveEnabled = true;
   }
 
-  validateDate(date: Date) {
+  validateDate(date) {
     const today = new Date();
+
+    date = moment(date).toDate();
 
     return date.getMonth() === today.getMonth();
   }
