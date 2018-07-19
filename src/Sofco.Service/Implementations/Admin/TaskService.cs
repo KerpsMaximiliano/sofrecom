@@ -144,8 +144,8 @@ namespace Sofco.Service.Implementations.Admin
             if (string.IsNullOrWhiteSpace(model.Description))
                 response.AddError(Resources.Admin.Task.DescriptionRequired);
 
-            if (unitOfWork.TaskRepository.DescriptionExist(model.Description))
-                response.AddError(Resources.Admin.Task.DescriptionAlreadyExist);
+            //if (unitOfWork.TaskRepository.DescriptionExist(model.Description))
+            //    response.AddError(Resources.Admin.Task.DescriptionAlreadyExist);
 
             if (model.CategoryId <= 0)
                 response.AddError(Resources.Admin.Task.CategoryRequired);

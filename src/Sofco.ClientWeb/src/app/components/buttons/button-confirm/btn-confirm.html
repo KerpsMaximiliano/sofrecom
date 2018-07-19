@@ -1,1 +1,4 @@
-<button type="button" class="btn {{class}}" (click)="showConfirm()">{{ text | translate }}</button>
+<button type="button" class="btn {{class}}" (click)="showConfirm()">
+    {{ text | translate }} 
+    <i *ngIf="icon" class="fa {{icon}}"></i>
+</button>

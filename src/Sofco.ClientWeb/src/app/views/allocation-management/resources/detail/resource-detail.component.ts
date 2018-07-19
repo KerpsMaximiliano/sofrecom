@@ -22,7 +22,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public businessHoursModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "allocationManagement.resources.hoursByContract",
         "businessHoursModal",
-        true,
+        false,
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
@@ -61,6 +61,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private employeeService: EmployeeService,
                 private errorHandlerService: ErrorHandlerService){
+
+        this.businessHoursModalConfig.acceptInlineButton = true;
     }
 
     ngOnInit(): void {
@@ -188,7 +190,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             }, 750);
         },
         error => { 
-            this.errorHandlerService.handleErrors(error)
+            this.businessHoursModal.resetButtons();
+            this.errorHandlerService.handleErrors(error);
         });
     }
 

@@ -100,7 +100,7 @@ import { PurchaseOrderActiveDelegateEditComponent } from './purchaseOrder/active
 import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
 import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
-import { ButtonsModule } from 'app/components/buttons/btn-confirm-inline.module';
+import { ButtonsModule } from 'app/components/buttons/buttons.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,

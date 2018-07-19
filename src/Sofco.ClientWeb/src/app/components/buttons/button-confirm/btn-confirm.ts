@@ -11,6 +11,7 @@ declare var swal: any;
 
     @Input() class: string;
     @Input() text: string;
+    @Input() icon: string;
 
     @Output() onConfirm = new EventEmitter<any>();
 

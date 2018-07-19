@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
 import { LaddaModule } from 'angular2-ladda';
 import { FormsModule } from '@angular/forms';
-import { ButtonsModule } from 'app/components/buttons/btn-confirm-inline.module';
+import { ButtonsModule } from 'app/components/buttons/buttons.module';
 
 @NgModule({
   imports: [
