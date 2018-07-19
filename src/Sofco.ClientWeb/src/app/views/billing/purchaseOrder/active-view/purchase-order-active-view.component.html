@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <purchase-order-view-filter #purchaseOrderViewFilter storeSessionName="purchaseOrderActive" (change)="viewFilterChange($event)"></purchase-order-view-filter>
+    <purchase-order-view-filter #purchaseOrderViewFilter storeSessionName="purchaseOrderActiveView" [useStatus]="false" (change)="viewFilterChange($event)"></purchase-order-view-filter>
 
     <div class="row">
         <div class="col-lg-12">
