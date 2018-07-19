@@ -128,4 +128,13 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
             err => this.errorHandlerService.handleErrors(err));
         }
     }
+
+    showPdfAttachments(file){
+        if(file.name.endsWith('.pdf')){
+            this.solfacService.getFile(file.id).subscribe(response => {
+                this.pdfViewer.renderFile(response);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
+    }
 }
