@@ -38,7 +38,7 @@ namespace Sofco.DAL.Repositories.Reports
             if (!string.IsNullOrWhiteSpace(parameters.StatusId) && !parameters.StatusId.Equals("0"))
                 query = query.Where(x => x.Status == (PurchaseOrderStatus)Convert.ToInt32(parameters.StatusId));
 
-            if (parameters.StatusIds.Count > 0)
+            if (parameters.StatusIds != null && parameters.StatusIds.Count > 0)
             {
                 query = query.Where(x => parameters.StatusIds.Contains(x.Status));
             }
