@@ -166,6 +166,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public void Save(Employee employee)
+        {
+            var storedItem = GetByEmployeeNumber(employee.EmployeeNumber);
+            if (storedItem == null)
+            {
+                Insert(employee);
+                return;
+            }
+
+            Update(storedItem, employee);
+        }
+
         public void Update(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());

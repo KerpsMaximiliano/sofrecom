@@ -109,8 +109,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 SetEmployeeHistory(employee);
 
-                // Add new employee
-                unitOfWork.EmployeeRepository.Insert(employee);
+                // Add new/existing employee
+                unitOfWork.EmployeeRepository.Save(employee);
 
                 // Delete news
                 unitOfWork.EmployeeSyncActionRepository.Delete(response.Data);
@@ -139,8 +139,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employeeHistory = Translate(storedEmployee);
 
             unitOfWork.EmployeeHistoryRepository.Save(employeeHistory);
-
-            unitOfWork.EmployeeRepository.Delete(storedEmployee);
         }
 
         public Response<EmployeeSyncAction> Delete(int newsId, NewsDeleteModel model)
