@@ -54,6 +54,11 @@ namespace Sofco.DAL.Repositories.Common
             return context.Set<T>().SingleOrDefault(predicate);
         }
 
+        public T Get(int id)
+        {
+            return context.Set<T>().Find(id);
+        }
+
         /// <summary>
         /// Inserta una entidad.
         /// </summary>
@@ -135,31 +140,6 @@ namespace Sofco.DAL.Repositories.Common
         public IList<T> Where(Expression<Func<T, bool>> predicate)
         {
             return context.Set<T>().Where(predicate).ToList();
-        }
-
-        /// <summary>
-        /// Graba todos los cambios realizados en el contexto.
-        /// </summary>
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
-        public void BeginTransaction()
-        {
-            contextTransaction = context.Database.BeginTransaction();
-        }
-
-        public void Rollback()
-        {
-            contextTransaction?.Rollback();
-        }
-
-        public void Commit(string nombreUsuario)
-        {
-            Save();
-
-            contextTransaction?.Commit();
         }
 
         #endregion

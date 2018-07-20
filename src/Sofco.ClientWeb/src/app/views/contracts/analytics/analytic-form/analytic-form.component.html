@@ -2,12 +2,7 @@
     <div class="col-sm-7">
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'contracts.costCenter.title' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.costCenterId" (ngModelChange)="costCenterChange()" [disabled]="mode == 'edit'">
-                        <option *ngFor="let costCenter of costCenters" [value]="costCenter?.id">{{costCenter?.text}}</option>
-                    </select>
-                </div>
+                <select-two [label]="'contracts.costCenter.title'" [(value)]="model.costCenterId" [options]="costCenters" (valueChange)="costCenterChange()" [disabled]="mode == 'edit'"></select-two>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
@@ -52,12 +47,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.commercialManager' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.commercialManagerId">
-                        <option *ngFor="let seller of options?.sellers" [value]="seller?.id">{{seller?.text}}</option>
-                    </select>
-                </div>
+                <select-two [label]="'allocationManagement.analytics.add.commercialManager'" [(value)]="model.commercialManagerId" [options]="options?.sellers"></select-two>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
@@ -69,12 +59,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.group' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.clientGroupId">
-                        <option *ngFor="let clientGroup of options?.clientGroups" [value]="clientGroup?.id">{{clientGroup?.text}}</option>
-                    </select>
-                </div>
+                <select-two [label]="'allocationManagement.analytics.add.group'" [(value)]="model.clientGroupId" [options]="options?.clientGroups"></select-two>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
@@ -88,57 +73,22 @@
     </div>
 
     <div class="col-sm-5">
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.direction' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.sectorId">
-                <option *ngFor="let sector of options?.sectors" [value]="sector?.id">{{sector?.text}}</option>
-            </select>
-        </div>
+        <select-two [label]="'allocationManagement.analytics.add.direction'" [(value)]="model.sectorId" [options]="options?.sectors"></select-two>
 
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.managerId">
-                <option *ngFor="let manager of options?.managers" [value]="manager?.id">{{manager?.text}}</option>
-            </select>
-        </div>
+        <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="model.managerId" [options]="options?.managers"></select-two>
 
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.solution' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.solutionId">
-                <option *ngFor="let solution of options?.solutions" [value]="solution?.id">{{solution?.text}}</option>
-            </select>
-        </div>
+        <select-two [label]="'allocationManagement.analytics.add.solution'" [(value)]="model.solutionId" [options]="options?.solutions"></select-two>
 
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.technology' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.technologyId">
-                <option *ngFor="let technology of options?.technologies" [value]="technology?.id">{{technology?.text}}</option>
-            </select>
-        </div>
+        <select-two [label]="'allocationManagement.analytics.add.technology'" [(value)]="model.technologyId" [options]="options?.technologies"></select-two>
 
-        <div class="form-group">
-            <label class="control-label">{{ 'allocationManagement.analytics.add.serviceType' | translate }}</label>
-            <select class="form-control m-b" [(ngModel)]="model.serviceTypeId">
-                <option *ngFor="let serviceType of options?.serviceTypes" [value]="serviceType?.id">{{serviceType?.text}}</option>
-            </select>
-        </div>
+        <select-two [label]="'allocationManagement.analytics.add.serviceType'" [(value)]="model.serviceTypeId" [options]="options?.serviceTypes"></select-two>
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.softwareLaw' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.softwareLawId">
-                        <option *ngFor="let softwareLaw of options?.softwareLaws" [value]="softwareLaw?.id">{{softwareLaw?.text}}</option>
-                    </select>
-                </div>
+                <select-two [label]="'allocationManagement.analytics.add.softwareLaw'" [(value)]="model.softwareLawId" [options]="options?.softwareLaws"></select-two>
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label">{{ 'allocationManagement.analytics.add.activity' | translate }}</label>
-                    <select class="form-control m-b" [(ngModel)]="model.activityId">
-                        <option *ngFor="let activity of options?.activities" [value]="activity?.id">{{activity?.text}}</option>
-                    </select>
-                </div>
+                <select-two [label]="'allocationManagement.analytics.add.activity'" [(value)]="model.activityId" [options]="options?.activities"></select-two>
             </div>
         </div>
     </div>

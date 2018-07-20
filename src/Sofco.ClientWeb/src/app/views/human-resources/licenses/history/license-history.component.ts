@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';

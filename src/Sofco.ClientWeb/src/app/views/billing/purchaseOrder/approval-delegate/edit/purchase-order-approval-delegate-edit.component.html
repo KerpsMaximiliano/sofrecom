@@ -1,0 +1,62 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2>{{'billing.purchaseOrder.delegate.approvalTitle' | translate }}</h2>
+            <ol class="breadcrumb no-print">
+                <li>
+                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+                </li>
+                <li>{{'billing.title' | translate }}</li>
+                <li>{{'billing.purchaseOrder.title' | translate }}</li>
+                <li class="active">
+                    <strong>{{'billing.purchaseOrder.delegate.approvalTitle' | translate }}</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+     
+    <div class="wrapper wrapper-content animated fadeInUp">
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'billing.purchaseOrder.delegate.type' | translate }}</label>
+                            <select id="typeControl" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group" [hidden]="!showSource()">
+                            <label class="control-label">{{ getSourceTitle() }}</label>
+                            <select id="sourceControl" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" [hidden]="!showResponsable()">
+                            <div class="form-group">
+                                <label class="control-label">{{'billing.purchaseOrder.delegate.responsable' | translate }}</label><br>
+                                <span>{{ responsable != null ? responsable.name : '' }}</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                <div class="row" [hidden]="!showUser()">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label">{{'billing.solfac.delegate.users' | translate }}</label>
+                            <select id="userControl" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="ibox-footer">
+                    <div style="float:left;margin-right:10px" [hidden]="!showSave()">
+                        <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                    </div>
+                    <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/purchaseOrders/approval/delegate']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    

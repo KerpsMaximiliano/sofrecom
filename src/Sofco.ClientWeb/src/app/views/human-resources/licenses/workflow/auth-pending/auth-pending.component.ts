@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
-import { I18nService } from 'app/services/common/i18n.service';
 import { LicenseService } from 'app/services/human-resources/licenses.service';
 import { LicenseStatus } from '../../../../../models/enums/licenseStatus';
 
@@ -34,14 +32,10 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-
   constructor(private licenseService: LicenseService,
     private messageService: MessageService,
     private menuService: MenuService,
-    private i18nService: I18nService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) { }
+    private errorHandlerService: ErrorHandlerService) { }
 
 
   ngOnDestroy(): void {
@@ -67,12 +61,9 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
         status: LicenseStatus.Pending
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.licenseService.changeStatus(this.licenseId, json).subscribe(
         data => {
             this.authPendingModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.history.observers.length > 0){
@@ -90,7 +81,6 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
         },
         error => {
             this.authPendingModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }

@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
-using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
-using Sofco.Model.DTO;
 using Sofco.Model.Enums;
 using Sofco.Model.Models.Common;
 using Sofco.Model.Utils;
@@ -57,6 +56,14 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult Put([FromBody] PurchaseOrderModel model)
         {
             var response = purchaseOrderService.Update(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = purchaseOrderService.Delete(id);
 
             return this.CreateResponse(response);
         }
@@ -110,14 +117,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(response);
         }
 
-        [HttpPost("search")]
-        public IActionResult Search([FromBody] SearchPurchaseOrderParams parameters)
-        {
-            var response = purchaseOrderService.Search(parameters);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("status")]
         public IActionResult GetStatus()
         {
@@ -132,10 +131,62 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpPut("{id}/adjustment")]
+        public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
+        {
+            var response = purchaseOrderService.MakeAdjustment(id, details);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody]PurchaseOrderStatusParams model)
+        {
+            var response = purchaseOrderService.ChangeStatus(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("{id}/close")]
+        public IActionResult Close(int id, [FromBody]PurchaseOrderStatusParams model)
+        {
+            var response = purchaseOrderService.Close(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet]
+        [Route("pendings")]
+        public IActionResult Pendings()
+        {
+            var response = purchaseOrderService.GetPendings();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var histories = purchaseOrderService.GetHistories(id);
+
+            var list = histories.Select(x => new PurchaseOrderHistoryModel(x));
+
+            return Ok(list);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)PurchaseOrderStatus.Valid, Text = PurchaseOrderStatus.Valid.ToString() };
             yield return new Option { Id = (int)PurchaseOrderStatus.Consumed, Text = PurchaseOrderStatus.Consumed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Closed, Text = PurchaseOrderStatus.Closed.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Draft, Text = PurchaseOrderStatus.Draft.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.ComercialPending, Text = PurchaseOrderStatus.ComercialPending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.DafPending, Text = PurchaseOrderStatus.DafPending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.OperativePending, Text = PurchaseOrderStatus.OperativePending.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.Reject, Text = PurchaseOrderStatus.Reject.ToString() };
+            yield return new Option { Id = (int)PurchaseOrderStatus.CompliancePending, Text = PurchaseOrderStatus.CompliancePending.ToString() };
         }
     }
 }

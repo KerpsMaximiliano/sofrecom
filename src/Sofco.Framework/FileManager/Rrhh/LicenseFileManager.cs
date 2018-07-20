@@ -41,12 +41,13 @@ namespace Sofco.Framework.FileManager.Rrhh
                 sheet.Cells[$"A{index}"].Value = licenses[i].Employee.EmployeeNumber;
                 sheet.Cells[$"B{index}"].Value = licenses[i].Employee.Name;
                 sheet.Cells[$"C{index}"].Value = licenses[i].Type.Description;
-                sheet.Cells[$"D{index}"].Value = licenses[i].StartDate.ToString("dd/MM/yyyy");
-                sheet.Cells[$"E{index}"].Value = licenses[i].EndDate.ToString("dd/MM/yyyy");
-                sheet.Cells[$"F{index}"].Value = licenses[i].DaysQuantityByLaw;
-                sheet.Cells[$"G{index}"].Value = GetStatusDescription(licenses[i].Status);
-                sheet.Cells[$"H{index}"].Value = licenses[i].Employee.HolidaysPending;
-                sheet.Cells[$"I{index}"].Value = licenses[i].Employee.HolidaysByLaw;
+                sheet.Cells[$"D{index}"].Value = licenses[i].CreationDate.ToString("dd/MM/yyyy");
+                sheet.Cells[$"E{index}"].Value = licenses[i].StartDate.ToString("dd/MM/yyyy");
+                sheet.Cells[$"F{index}"].Value = licenses[i].EndDate.ToString("dd/MM/yyyy");
+                sheet.Cells[$"G{index}"].Value = licenses[i].DaysQuantityByLaw;
+                sheet.Cells[$"H{index}"].Value = GetStatusDescription(licenses[i].Status);
+                sheet.Cells[$"I{index}"].Value = licenses[i].Employee.HolidaysPending;
+                sheet.Cells[$"J{index}"].Value = licenses[i].Employee.HolidaysByLaw;
 
                 SetBorders(sheet, index);
 

@@ -10,7 +10,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public WorkTimeCalendarModel(WorkTime domain)
         {
             Id = domain.Id;
-            Date = domain.Date;
+            Date = domain.Date.Date;
             Hours = domain.Hours;
             Source = domain.Source;
             UserComment = domain.UserComment;

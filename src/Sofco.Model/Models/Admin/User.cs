@@ -7,6 +7,7 @@ using Sofco.Model.Models.Billing;
 using Sofco.Model.Models.Rrhh;
 using Sofco.Model.Models.WorkTimeManagement;
 using Sofco.Model.Relationships;
+using Sofco.Model.Utils;
 
 namespace Sofco.Model.Models.Admin
 {
@@ -38,5 +39,11 @@ namespace Sofco.Model.Models.Admin
         public ICollection<License> Licenses { get; set; }
 
         public ICollection<WorkTime> WorkTimes1 { get; set; }
+
+        public ICollection<Area> Areas { get; set; }
+
+        public ICollection<Sector> Sectors { get; set; }
+
+        public ICollection<Employee> Employees { get; set; }
     }
 }

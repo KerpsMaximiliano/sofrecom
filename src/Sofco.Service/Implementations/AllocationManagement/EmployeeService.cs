@@ -192,7 +192,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public ICollection<Option> GetAnalytics(int id)
         {
-            return unitOfWork.AnalyticRepository.GetAnalyticsByManagers(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            return unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(id).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
         }
 
         public Response<IList<EmployeeCategoryOption>> GetCategories(int employeeId)
@@ -239,6 +239,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.Id = id;
                 employee.BusinessHours = model.BusinessHours;
                 employee.BusinessHoursDescription = model.BusinessHoursDescription;
+                employee.OfficeAddress = model.Office;
+                employee.HolidaysPendingByLaw = model.HolidaysPending;
+                employee.ManagerId = model.ManagerId;
+                employee.HolidaysPending = CalculateHolidaysPending(model);
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
                 unitOfWork.Save();
@@ -252,6 +256,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             
             return response;
+        }
+
+        private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)
+        {
+            var daysPending = (model.HolidaysPending / 7) * 5;
+            var resto = model.HolidaysPending % 7;
+
+            if (resto < 6) daysPending += resto;
+            if (resto == 6 || resto == 7) daysPending += 5;
+            return daysPending;
         }
 
         public Response<IList<EmployeeCategoryOption>> GetCurrentCategories()
@@ -316,6 +330,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 model.Allocations.Add(item);
             }
+
+            model.ManagerId = employee.ManagerId.GetValueOrDefault();
+
+            if (employee.Manager != null) model.Manager = employee.Manager.Name;
 
             model.History = Translate(unitOfWork.EmployeeHistoryRepository.GetByEmployeeNumber(employee.EmployeeNumber));
 

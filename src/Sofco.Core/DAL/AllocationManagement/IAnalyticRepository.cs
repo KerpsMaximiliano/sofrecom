@@ -26,13 +26,13 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Analytic GetByService(string serviceId);
 
+        List<Analytic> GetByServiceIds(List<string> serviceIds);
+
         ICollection<Analytic> GetByClient(string clientId);
 
         Analytic GetById(int allocationAnalyticId);
 
-        ICollection<Analytic> GetAnalyticsByManagers(int id);
-
-        List<Analytic> GetByManagerId(int managerId);
+        ICollection<Analytic> GetAnalyticsByManagerId(int managerId);
 
         List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId);
 
@@ -45,5 +45,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria);
 
         List<Analytic> GetForReport(List<int> analytics);
+
+        IList<Analytic> GetByPurchaseOrder(int purchaseOrderId);
+
+        bool ExistManagerId(int managerId);
     }
 }

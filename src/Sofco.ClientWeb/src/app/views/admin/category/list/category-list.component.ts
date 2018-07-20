@@ -33,8 +33,6 @@ declare var moment: any;
 
     private categorySelected;
 
-    public isLoading: boolean = false;
-
     constructor(private messageService: MessageService,
                 private router: Router,
                 public menuService: MenuService,
@@ -85,11 +83,8 @@ declare var moment: any;
     confirm(){}
     
     deactivate(){
-        this.isLoading = true;
-
         this.deactivateSubscrip = this.categoryService.active(this.categorySelected.id, false).subscribe(
             data => {
-                this.isLoading = false;
                 this.confirmModal.hide();
 
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -99,18 +94,14 @@ declare var moment: any;
                 this.categorySelected = null;
             },
             err => { 
-                this.isLoading = false;
                 this.confirmModal.hide();
                 this.errorHandlerService.handleErrors(err);
             });
     }
   
     activate(){
-        this.isLoading = true;
-        
         this.activateSubscrip = this.categoryService.active(this.categorySelected.id, true).subscribe(
             data => {
-                this.isLoading = false;
                 this.confirmModal.hide();
 
                 if(data.messages) this.messageService.showMessages(data.messages);
@@ -120,7 +111,6 @@ declare var moment: any;
                 this.categorySelected = null;
             },
             err => { 
-                this.isLoading = false;
                 this.confirmModal.hide();
                 this.errorHandlerService.handleErrors(err);
             });

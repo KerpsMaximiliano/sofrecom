@@ -1,8 +1,7 @@
 import { MessageService } from 'app/services/common/message.service';
-import { Option } from 'app/models/option';
 import { Subscription } from 'rxjs/Subscription';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
@@ -19,7 +18,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private id;
     public user = <UserDetail>{};
     private groupId: any;
-    public isLoading: boolean = false;
 
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ADMIN.USERS.addGroup", //title
@@ -51,7 +49,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     constructor(
         private service: UserService, 
         private activatedRoute: ActivatedRoute, 
-        private router: Router,
         private menuService: MenuService,
         private groupService: GroupService,
         private messageService: MessageService,
@@ -129,18 +126,14 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             groupsToRemove: []
         };
 
-        this.isLoading = true;
-
         this.service.assignGroups(this.id, objToSend).subscribe(
             data => {
                 this.modalGroups.hide();
                 if(data.messages) this.messageService.showMessages(data.messages);
-                this.isLoading = false;
                 this.getDetails();
             },
             err => { 
                 this.errorHandlerService.handleErrors(err);
-                this.isLoading = false;
             });
     }
 

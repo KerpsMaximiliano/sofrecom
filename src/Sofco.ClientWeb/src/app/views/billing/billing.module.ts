@@ -15,6 +15,8 @@ import { ProjectService } from 'app/services/billing/project.service';
 import { ServiceService } from 'app/services/billing/service.service';
 import { SolfacService } from 'app/services/billing/solfac.service';
 import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
+import { PurchaseOrderApprovalDelegateService } from 'app/services/billing/purchase-order-approval-delegate.service';
+import { PurchaseOrderActiveDelegateService } from 'app/services/billing/purchase-order-active-delegate.service';
 
 import { CustomersComponent } from './customers/customers.component';
 import { ServicesComponent } from './services/services.component';
@@ -80,6 +82,25 @@ import { EmployeeService } from '../../services/allocation-management/employee.s
 import { UtilsService } from '../../services/common/utils.service';
 import { AllocationService } from '../../services/allocation-management/allocation.service';
 import { CategoryService } from 'app/services/admin/category.service';
+import { PurchaseOrderAdjustmentComponent } from 'app/views/billing/purchaseOrder/adjustment/oc-adjustment.component';
+import { PurchaseOrderApprovalDelegateComponent } from './purchaseOrder/approval-delegate/purchase-order-approval-delegate.component';
+import { OcStatusDraftComponent } from 'app/views/billing/purchaseOrder/workflow/draft/oc-draft.componet';
+import { OcStatusComplianceComponent } from 'app/views/billing/purchaseOrder/workflow/compliance/oc-compliance.component';
+import { OcStatusComercialComponent } from 'app/views/billing/purchaseOrder/workflow/comercial/oc-comercial.component';
+import { OcStatusOperativeComponent } from 'app/views/billing/purchaseOrder/workflow/operative/oc-operative.component';
+import { OcStatusRejectComponent } from 'app/views/billing/purchaseOrder/workflow/reject/oc-reject.component';
+import { OcStatusDafComponent } from 'app/views/billing/purchaseOrder/workflow/daf/oc-daf.component';
+import { PurchaseOrderHistoryComponent } from 'app/views/billing/purchaseOrder/history/oc-history.component';
+import { PurchaseOrderApprovalDelegateEditComponent } from './purchaseOrder/approval-delegate/edit/purchase-order-approval-delegate-edit.component';
+import { OcStatusCloseComponent } from 'app/views/billing/purchaseOrder/workflow/close/oc-close.component';
+import { PurchaseOrderPendingsComponent } from 'app/views/billing/purchaseOrder/pendings/oc-pendings.component';
+import { OcStatusDeleteComponent } from 'app/views/billing/purchaseOrder/workflow/delete/oc-delete.component';
+import { PurchaseOrderActiveDelegateComponent } from './purchaseOrder/active-view/active-delegate/purchase-order-active-delegate.component';
+import { PurchaseOrderActiveDelegateEditComponent } from './purchaseOrder/active-view/active-delegate/edit/purchase-order-active-delegate-edit.component';
+import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-order-view.component';
+import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
+import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
+import { ButtonsModule } from 'app/components/buttons/buttons.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -87,18 +108,23 @@ import { CategoryService } from 'app/services/admin/category.service';
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent, 
+                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent,
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent, 
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent],
+                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
+                 OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
+                 OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
+                 PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent, PurchaseOrderActiveViewComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter],
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
-                SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService],
+                SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderApprovalDelegateService, 
+                PurchaseOrderActiveDelegateService],
 
   exports     : []
 })

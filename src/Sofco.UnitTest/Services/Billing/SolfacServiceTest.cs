@@ -6,6 +6,7 @@ using Sofco.Common.Domains;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
@@ -31,7 +32,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IMailSender> mailSenderMock;
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
-        private Mock<ISessionManager> sessionManagerMock;
+        private Mock<IUserData> userDataMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
 
         private Mock<IUnitOfWork> unitOfWork;
@@ -44,10 +45,9 @@ namespace Sofco.UnitTest.Services.Billing
             solfacStatusFactoryMock = new Mock<ISolfacStatusFactory>();
             userRepositoryMock = new Mock<IUserRepository>();
             crmConfigMock = new Mock<CrmConfig>();
-            mailSenderMock = new Mock<IMailSender>();
             crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
-            sessionManagerMock = new Mock<ISessionManager>();
+            userDataMock = new Mock<IUserData>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
 
             var optionsMock = new Mock<IOptions<CrmConfig>>();
@@ -70,11 +70,10 @@ namespace Sofco.UnitTest.Services.Billing
 
             sut = new SolfacService(solfacStatusFactoryMock.Object,
                 unitOfWork.Object,
+                userDataMock.Object,
                 optionsMock.Object,
-                mailSenderMock.Object,
                 crmInvoiceServiceMock.Object,
-                loggerMock.Object,
-                sessionManagerMock.Object);
+                loggerMock.Object);
         }
 
         [Test]

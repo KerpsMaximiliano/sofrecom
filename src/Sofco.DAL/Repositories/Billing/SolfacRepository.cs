@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
+using Sofco.Core.Models.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
@@ -122,11 +123,14 @@ namespace Sofco.DAL.Repositories.Billing
             UpdateStatus(solfac);
         }
 
-        public IList<Solfac> SearchByParamsAndUser(SolfacParams parameters, string userMail)
+        public IList<Solfac> SearchByParamsAndUser(SolfacParams parameters, UserLiteModel user)
         {
             IQueryable<Solfac> query = context.Solfacs.Include(x => x.DocumentType).Include(x => x.UserApplicant);
 
-            query = query.Where(x => x.UserApplicant.Email == userMail);
+            if(string.IsNullOrWhiteSpace(user.ManagerId))
+                query = query.Where(x => x.UserApplicant.Email == user.Email);
+            else
+                query = query.Where(x => x.ManagerId == user.ManagerId);
 
             query = ApplyFilters(parameters, query);
 

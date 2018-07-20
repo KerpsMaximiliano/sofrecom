@@ -1,16 +1,13 @@
-import { Component, OnDestroy, Input, ViewChild } from "@angular/core";
+import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
-import { MenuService } from "app/services/admin/menu.service";
-import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
 import { CustomerService } from "../../../../services/billing/customer.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { UtilsService } from "../../../../services/common/utils.service";
+import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MessageService } from "../../../../services/common/message.service";
 
 @Component({
     selector: 'purchase-order-form',
@@ -19,13 +16,13 @@ import { UtilsService } from "../../../../services/common/utils.service";
 })
 export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
-    public options: any;
     public model: any = { ammountDetails: new Array() };
     public customers: Option[] = new Array<Option>();
     public analytics: any[] = new Array();
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
-    public currencies: any[] = new Array();
+    public areas: any[] = new Array();
+    public currencyDisabled: boolean = false;
 
     @Input() mode: string;
 
@@ -33,17 +30,15 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getAnalyticSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
 
-    constructor(private purchaseOrderService: PurchaseOrderService,
-                private router: Router,
-                private analyticService: AnalyticService,
+    constructor(private analyticService: AnalyticService,
                 private utilsService: UtilsService,
-                private menuService: MenuService,
-                private customerService: CustomerService,
                 private messageService: MessageService,
+                private customerService: CustomerService,
                 private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
         this.getCustomers();
+        this.getAreas();
 
         if(this.mode == 'new'){
             this.getCurrencies();
@@ -56,13 +51,34 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
     }
 
-    getCurrencies(){
-        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
-            this.currencies = d;
+    getAreas(){
+        this.getCurrenciesSubscrip = this.utilsService.getAreas().subscribe(d => {
+            this.areas = d;
+        },
+        err => this.errorHandlerService.handleErrors(err));
+    }
 
-            this.currencies.forEach((item, index) => {
-                this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
-            });
+    getCurrencies(){
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(currencies => {
+
+            if(this.mode == 'new'){
+                currencies.forEach((item) => {
+                    this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
+                });
+            }
+            else{
+                if(this.model.status == PurchaseOrderStatus.Draft || this.model.status == PurchaseOrderStatus.Reject){
+                    currencies.forEach((item) => {
+                        var exist = this.model.ammountDetails.filter(modelItem => {
+                            return modelItem.currencyId == item.id;
+                        });
+    
+                        if(!exist || (exist && exist.length == 0)){
+                            this.model.ammountDetails.push({ currencyId: item.id, currencyDescription: item.text, ammount: 0, balance: 0, enable: false });
+                        }
+                    });
+                }
+            }
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -76,10 +92,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(){
+        this.messageService.showLoading();
+
         this.customerService.getAllOptions().subscribe(res => {
+            this.messageService.closeLoading();         
             this.customers = res.data;
         },
         err => {
+            this.messageService.closeLoading();    
             this.errorHandlerService.handleErrors(err)
         });
     }

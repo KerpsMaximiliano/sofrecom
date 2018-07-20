@@ -12,7 +12,7 @@
     <tbody>
         <tr *ngFor="let history of histories; let i = index" class="pointer">
             <td class="text-center col-lg-1">{{i+1}}</td>
-            <td class="text-center col-lg-2">{{ history.createdDate | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td class="text-center col-lg-2">{{ history.createdDate | date: "dd/MM/yyyy" }}</td>
             <td class="text-center col-lg-2">{{ history.userName }}</td>
             <td class="text-center"><span class="label label-{{history.statusFrom}}">{{ history.statusFrom | translate}}</span></td>
             <td class="text-center"><span class="label label-{{history.statusTo}}">{{ history.statusTo | translate}}</span></td>

@@ -112,7 +112,7 @@ namespace Sofco.Service.Implementations.Admin
                 role.StartDate = DateTime.Now;
 
                 unitOfWork.RoleRepository.Insert(role);
-                unitOfWork.RoleRepository.Save();
+                unitOfWork.Save();
 
                 response.Data = role;
                 response.AddSuccess(Resources.Admin.Role.Created);

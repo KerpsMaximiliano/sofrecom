@@ -23,7 +23,9 @@
                         <div class="col-md-6">
                             <h3>{{ 'workTimeManagement.workTime.calendar' | translate }}</h3>
                         </div>
-                        <div class="col-md-6 text-right"><button class="btn btn-primary" (click)="sendHours()"> {{ 'workTimeManagement.workTime.sendHours' | translate }} <i class="fa fa-arrow-circle-right"></i></button></div>
+                        <div class="col-md-6 text-right">
+                            <btn-confirm [class]="'btn-primary'" [text]="'workTimeManagement.workTime.sendHours'" [icon]="'fa-arrow-circle-right'" (onConfirm)="sendHours()"></btn-confirm> 
+                        </div>
                     </div>
                     <hr>
                     <div id="calendar"></div>
@@ -37,7 +39,7 @@
                     <button class="btn btn-success" style="width:100%" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
 
                     <div class="row">
-                        <div class="ibox ibox-task">
+                        <div class="ibox ibox-task ibox-no-shadow">
                             <div class="ibox-title ibox-task-title">
                                 <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
                                 <iboxtools #boxtools></iboxtools>
@@ -110,7 +112,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()">
+<ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()" (delete)="deleteTask()">
 
     <form role="form">
         <div class="form-group">
@@ -132,9 +134,9 @@
                     <label>{{'workTimeManagement.date' | translate }}</label>
                     <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input id="hoursControl" type="text" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
                 </div>
             </div>
         </div>
@@ -143,5 +145,4 @@
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
         </div>
     </form>
-
 </ng2-modal>

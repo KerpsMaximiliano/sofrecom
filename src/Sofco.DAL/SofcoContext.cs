@@ -54,6 +54,7 @@ namespace Sofco.DAL
         public DbSet<SolfacAttachment> SolfacAttachments { get; set; }
         public DbSet<InvoiceHistory> InvoiceHistories { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
 
         // Allocation Management Mappings
@@ -95,6 +96,7 @@ namespace Sofco.DAL
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<PurchaseOrderOptions> PurchaseOrderOptions { get; set; }
         public DbSet<Sector> Sectors { get; set; }
+        public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

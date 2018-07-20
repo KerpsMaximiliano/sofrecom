@@ -39,47 +39,24 @@ namespace Sofco.Service.Implementations.Billing
             this.mapper = mapper;
             this.userData = userData;
             this.customerData = customerData;
-        }
-
-        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
-        {
-            var userMail = sessionManager.GetUserEmail();
-
-            var customers = customerData.GetCustomers(userMail, false);
-
-            var serviceIds = new List<string>();
-            foreach (var crmCustomer in customers)
-            {
-                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
-
-                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
-            }
-
-            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
+            this.logger = logger;
         }
 
         public Response<List<SolfacDelegateModel>> GetAll()
         {
-            var data = GetUserDelegatesByUser();
+            var response = new Response<List<SolfacDelegateModel>>();
 
-            var items = new List<SolfacDelegateModel>();
-            foreach (var userDelegate in data)
+            try
             {
-                var model = Translate(userDelegate);
-                var service = serviceData.GetService(userDelegate.ServiceId);
-                var user = userData.GetById(userDelegate.UserId);
+                var data = GetUserDelegatesByUser();
 
-                model.ManagerName = service.Manager;
-                model.ServiceName = service.Nombre;
-                model.UserName = user.Name;
-
-                items.Add(model);
+                response.Data = data.Select(Translate).ToList();
             }
-
-            var response = new Response<List<SolfacDelegateModel>>
+            catch (Exception e)
             {
-                Data = items
-            };
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }
@@ -114,6 +91,23 @@ namespace Sofco.Service.Implementations.Billing
             return new Response();
         }
 
+        private IEnumerable<UserDelegate> GetUserDelegatesByUser()
+        {
+            var userMail = sessionManager.GetUserEmail();
+
+            var customers = customerData.GetCustomers(userMail, false);
+
+            var serviceIds = new List<string>();
+            foreach (var crmCustomer in customers)
+            {
+                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
+
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+            }
+
+            return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.Solfac);
+        }
+
         private Response<UserDelegate> ValidateSave()
         {
             var respone = new Response<UserDelegate>();
@@ -130,9 +124,16 @@ namespace Sofco.Service.Implementations.Billing
             return respone;
         }
 
-        private SolfacDelegateModel Translate(UserDelegate solfacDelegate)
+        private SolfacDelegateModel Translate(UserDelegate userDelegate)
         {
-            return mapper.Map<UserDelegate, SolfacDelegateModel>(solfacDelegate);
+            var model = mapper.Map<UserDelegate, SolfacDelegateModel>(userDelegate);
+            var service = serviceData.GetService(userDelegate.ServiceId);
+            var user = userData.GetById(userDelegate.UserId);
+
+            model.ManagerName = service.Manager;
+            model.ServiceName = service.Nombre;
+            model.UserName = user.Name;
+            return model;
         }
     }
 }

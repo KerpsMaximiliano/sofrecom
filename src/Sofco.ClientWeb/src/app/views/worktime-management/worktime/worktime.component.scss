@@ -77,3 +77,8 @@ dd {
     background-color: #AFAFAF;
     color: white;
 }
+
+.ibox-no-shadow {
+    box-shadow: none;
+    transition: unset;
+}

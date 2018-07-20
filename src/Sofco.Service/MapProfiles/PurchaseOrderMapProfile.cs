@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using AutoMapper;
+using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Models.Reports;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Models.Reports;
 
 namespace Sofco.Service.MapProfiles
@@ -22,6 +24,10 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.StatusId, x => x.MapFrom(_ => _.Status))
                 .ForMember(s => s.StatusText, x => x.MapFrom(_ => _.Status.ToString()))
                 .ForMember(s => s.Analytic, x => x.MapFrom(_ => MapAnalytic(_)));
+
+            CreateMap<PurchaseOrder, PurchaseOrderPendingModel>()
+                .ForMember(s => s.Client, x => x.MapFrom(_ => _.ClientExternalName))
+                .ForMember(s => s.Area, x => x.MapFrom(_ => MapArea(_)));
         }
 
         private static string MapAnalytic(PurchaseOrderBalanceDetailView data)
@@ -44,6 +50,11 @@ namespace Sofco.Service.MapProfiles
         {
             return string.Join(Delimiter.ToString(), 
                 txtWithDelimiter.Split(Delimiter).Distinct());
+        }
+
+        private static string MapArea(PurchaseOrder purchaseOrder)
+        {
+            return purchaseOrder.Area != null ? purchaseOrder.Area.Text : string.Empty;
         }
     }
 }

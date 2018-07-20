@@ -1,0 +1,3 @@
+:host ::ng-deep td.details-control {
+    cursor: pointer;
+}

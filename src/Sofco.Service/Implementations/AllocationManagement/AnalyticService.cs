@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
@@ -20,6 +21,7 @@ using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Model.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Model.Enums;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
@@ -36,10 +38,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
         private readonly IAnalyticFileManager analyticFileManager;
+        private readonly IUserData userData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
-            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager)
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -50,6 +53,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.crmService = crmService;
             this.employeeData = employeeData;
             this.analyticFileManager = analyticFileManager;
+            this.userData = userData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -82,6 +86,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employeeId = employeeData.GetCurrentEmployee().Id;
 
             var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
+        public Response<List<Option>> GetByCurrentManager()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
         }
@@ -260,7 +275,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response Close(int analyticId)
+        public Response Close(int analyticId, AnalyticStatus status)
         {
             var response = new Response();
             var analytic = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, analyticId);
@@ -276,7 +291,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                AnalyticStatusClose.Save(analytic, unitOfWork, response);
+                AnalyticStatusClose.Save(analytic, unitOfWork, response, status);
             }
             catch (Exception ex)
             {
@@ -304,7 +319,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             return response;
         }
-         
+
         private void SendMail(Analytic analytic, Response response)
         {
             try
@@ -315,10 +330,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+                var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);

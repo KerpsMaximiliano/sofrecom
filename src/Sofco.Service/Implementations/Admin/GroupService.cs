@@ -180,7 +180,7 @@ namespace Sofco.Service.Implementations.Admin
             {
                 response.Data.Role = role;
                 unitOfWork.GroupRepository.Update(response.Data);
-                unitOfWork.GroupRepository.Save();
+                unitOfWork.Save();
 
                 response.AddSuccess(Resources.Admin.Group.RoleAssigned);
             }

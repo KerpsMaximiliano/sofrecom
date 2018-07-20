@@ -6,6 +6,6 @@
     {{ 'ACTIONS.approve' | translate }} <i class="fa fa-check"></i>
 </button>
 
-<ng2-modal [config]="pendingModalConfig" #pendingModal (accept)="confirm()" [isLoading]="isLoading">
+<ng2-modal [config]="pendingModalConfig" #pendingModal (accept)="confirm()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal> 

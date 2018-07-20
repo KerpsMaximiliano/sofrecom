@@ -1,8 +1,7 @@
-import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
-import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { WorktimeService } from '../../../services/worktime-management/worktime.service';
 
@@ -24,14 +23,11 @@ export class WorkTimeStatusApproveComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-  
   workTime: any;
 
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
 
   constructor(private messageService: MessageService,
-    private menuService: MenuService,
     private worktimeService: WorktimeService,
     private errorHandlerService: ErrorHandlerService) { }
 
@@ -45,12 +41,9 @@ export class WorkTimeStatusApproveComponent implements OnDestroy  {
   }
 
   confirm(){
-    this.isLoading = true;
-
     this.subscrip = this.worktimeService.approve(this.workTime.id).subscribe(
         data => {
             this.approveModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.onSuccess.observers.length > 0){
@@ -59,7 +52,6 @@ export class WorkTimeStatusApproveComponent implements OnDestroy  {
         },
         error => {
             this.approveModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }

@@ -58,7 +58,7 @@ namespace Sofco.Data.Billing
                 cacheExpire);
         }
 
-        public CrmService GetService(Guid serviceId)
+        public CrmService GetService(Guid? serviceId)
         {
             var cacheKey = string.Format(ServiceByIdCacheKey, serviceId);
 

@@ -8,7 +8,9 @@ namespace Sofco.Model.Models.Common
 {
     public class UserDelegate : BaseEntity, IEntityDate
     {
-        public Guid ServiceId { get; set; }
+        public Guid? ServiceId { get; set; }
+
+        public int? SourceId { get; set; }
 
         public int UserId { get; set; }
 

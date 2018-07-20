@@ -53,17 +53,6 @@
             <!-- Datos generales -->
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body"> 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders"></select-two>
-                        </div>
-                        <div class="col-sm-6">
-                            <button class="btn btn-success m-t-md" (click)="updateOc()"> {{ 'ACTIONS.update' | translate }}</button>
-                        </div>
-                    </div>
-
-                    <hr class="hr-line-dashed">
-
                     <!-- Datos CRM -->
                     <div class="row">
                         <div class="col-md-6 col-print-1">
@@ -104,12 +93,6 @@
                         </div>
                         <div class="col-md-6 col-print-2">
                             <dl class="dl-horizontal">
-                                <!-- <dt>{{'billing.solfac.milestone.withTax' | translate }}</dt>
-                                <dd>
-                                    <span *ngIf="model.withTax" class="label label-primary">{{ 'ACTIONS.yes' | translate }}</span>
-                                    <span *ngIf="!model.withTax" class="label label-danger">{{ 'ACTIONS.no' | translate }}</span>
-                                </dd> -->
-
                                 <dt>{{'billing.solfac.impositiveInfo.capital' | translate }}: </dt><dd>{{model.capitalPercentage}} %</dd>
                                 <dt>{{'billing.solfac.impositiveInfo.bsas' | translate }}: </dt><dd>{{model.buenosAiresPercentage}} %</dd>
                                 <dt *ngIf="model.otherProvince1Percentage > 0">{{model.provinceName1}}: </dt><dd *ngIf="model.otherProvince1Percentage > 0">{{model.otherProvince1Percentage}} %</dd>
@@ -238,7 +221,7 @@
             <!-- Attachments -->
             <div id="tab-3" class="tab-pane">
                 <div class="panel-body">
-                    <solfac-attachments #attachments [solfacId]="solfacId" [status]="model.statusName"></solfac-attachments>
+                    <solfac-attachments #attachments [solfacId]="solfacId" [status]="model.statusName" (onViewPdf)="showPdfAttachments($event)"></solfac-attachments>
                 </div>
             </div>
 
@@ -249,13 +232,13 @@
                         <div class="col-sm-3 col" *ngFor="let invoice of invoicesRelated">
                             <div class="file-box">
                                 <div class="file">
-                                    <a>
-                                    <!-- <a (click)="viewPdf(invoice)"> -->
+                                    <!-- <a> -->
+                                    <a (click)="viewPdf(invoice)">
                                         <div class="icon"><i class="fa fa-file"></i></div>
                                         <div class="file-name text-word-break">
                                             {{ invoice.pdfFileName }}
                                             <br>
-                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy HH:mm' }}</small>
+                                            <small>{{'billing.invoice.createdAt' | translate }}: {{ invoice.pdfFileCreatedDate | date: 'dd/MM/yyyy' }}</small>
                                         </div>
                                     </a>
                                     <div class="file-name export-file text-center pointer" (click)="exportPdf(invoice)">

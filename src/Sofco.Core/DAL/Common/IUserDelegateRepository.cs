@@ -10,10 +10,18 @@ namespace Sofco.Core.DAL.Common
 
         List<UserDelegate> GetByUserId(int userId, UserDelegateType type);
 
+        List<UserDelegate> GetByUserId(int userId, List<UserDelegateType> types);
+
         UserDelegate Save(UserDelegate userDelegate);
 
         void Delete(int userDelegateId);
 
         bool HasUserDelegate(string userName, UserDelegateType type);
+
+        bool HasUserDelegate(string userName, List<UserDelegateType> types);
+
+        List<UserDelegate> GetByTypesAndSourceId(List<UserDelegateType> types, int sourceId);
+
+        List<UserDelegate> GetByTypeAndSourceId(UserDelegateType type, int sourceId);
     }
 }

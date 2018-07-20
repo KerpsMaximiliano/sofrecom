@@ -19,5 +19,6 @@ namespace Sofco.Core.DAL.Common
         IList<ServiceType> GetServiceTypes();
         IList<Sector> GetSectors();
         IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
+        IList<Area> GetAreas();
     }
 }

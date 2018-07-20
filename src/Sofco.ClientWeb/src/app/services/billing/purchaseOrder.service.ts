@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
 
@@ -16,6 +15,10 @@ export class PurchaseOrderService {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders`);
   } 
 
+  getPendings() {
+    return this.http.get<any>(`${this.baseUrl}/purchaseOrders/pendings`);
+  } 
+
   getStatuses() {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/status`);
   }
@@ -28,6 +31,10 @@ export class PurchaseOrderService {
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}`);
   }
 
+  delete(id) {
+    return this.http.delete<any>(`${this.baseUrl}/purchaseOrders/${id}`);
+  }
+
   add(model) {
     return this.http.post<any>(`${this.baseUrl}/purchaseOrders`, model);
   }
@@ -38,6 +45,10 @@ export class PurchaseOrderService {
 
   update(model) {
     return this.http.put<any>(`${this.baseUrl}/purchaseOrders`, model);
+  }
+
+  makeAdjustment(id, model) {
+    return this.http.put<any>(`${this.baseUrl}/purchaseOrders/${id}/adjustment`, model);
   }
 
   getUrlForImportExcel(id){
@@ -63,6 +74,26 @@ export class PurchaseOrderService {
 
   getReport(params) {
     return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders`, params);
+  }
+
+  getActiveReport(params) {
+    return this.http.post<any>(`${this.baseUrl}/reports/purchaseOrders/actives`, params);
+  }
+
+  getAnalyticsByCurrentUser() {
+    return this.http.get<any>(`${this.baseUrl}/reports/purchaseOrders/analytics/options`);
+  }
+
+  changeStatus(id, json) {
+    return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/status`, json);
+  }
+
+  close(id, json) {
+    return this.http.post<any>(`${this.baseUrl}/purchaseOrders/${id}/close`, json);
+  }
+
+  getHistories(id){
+    return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}/histories`);
   }
 }
 

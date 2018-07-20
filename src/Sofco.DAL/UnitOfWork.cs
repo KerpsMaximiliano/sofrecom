@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
@@ -22,7 +24,11 @@ namespace Sofco.DAL
     {
         private readonly SofcoContext context;
 
+        private IDbContextTransaction contextTransaction;
+
         private readonly IOptions<EmailConfig> emailConfig;
+
+        private readonly IOptions<AppSetting> appSettingOptions;
 
         #region Admin
 
@@ -48,6 +54,8 @@ namespace Sofco.DAL
         private IPurchaseOrderRepository purchaseOrderRepository;
         private ICertificateRepository certificateRepository;
         private ISolfacCertificateRepository solfacCertificateRepository;
+        private IAreaRepository areaRepository;
+        private ISectorRepository sectorRepository;
 
         #endregion
 
@@ -88,15 +96,16 @@ namespace Sofco.DAL
 
         #endregion
 
-        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig)
+        public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
         {
             this.context = context;
             this.emailConfig = emailConfig;
+            this.appSettingOptions = appSettingOptions;
         }
 
         #region Admin
 
-        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig));
+        public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig, appSettingOptions));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
         public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));
@@ -107,6 +116,7 @@ namespace Sofco.DAL
         public IRoleFunctionalityRepository RoleFunctionalityRepository => roleFunctionalityRepository ?? (roleFunctionalityRepository = new RoleFunctionalityRepository(context));
         public ICategoryRepository CategoryRepository => categoryRepository ?? (categoryRepository = new CategoryRepository(context));
         public ITaskRepository TaskRepository => taskRepository ?? (taskRepository = new TaskRepository(context));
+        public ISectorRepository SectorRepository => sectorRepository ?? (sectorRepository = new SectorRepository(context));
 
         #endregion
 
@@ -118,6 +128,7 @@ namespace Sofco.DAL
         public IPurchaseOrderRepository PurchaseOrderRepository => purchaseOrderRepository ?? (purchaseOrderRepository = new PurchaseOrderRepository(context));
         public ICertificateRepository CertificateRepository => certificateRepository ?? (certificateRepository = new CertificateRepository(context));
         public ISolfacCertificateRepository SolfacCertificateRepository => solfacCertificateRepository ?? (solfacCertificateRepository = new SolfacCertificateRepository(context));
+        public IAreaRepository AreaRepository => areaRepository ?? (areaRepository = new AreaRepository(context));
 
         #endregion
 
@@ -168,10 +179,25 @@ namespace Sofco.DAL
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
-
+         
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public void BeginTransaction()
+        {
+            contextTransaction = context.Database.BeginTransaction();
+        }
+
+        public void Rollback()
+        {
+            contextTransaction?.Rollback();
+        }
+
+        public void Commit()
+        {
+            contextTransaction?.Commit();
         }
     }
 }

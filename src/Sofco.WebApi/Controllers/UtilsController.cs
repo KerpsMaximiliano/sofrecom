@@ -20,9 +20,13 @@ namespace Sofco.WebApi.Controllers
         [HttpGet("sectors")]
         public IActionResult GetSectors()
         {
-            var sectors = utilsService.GetSectors();
+            return Ok(utilsService.GetSectors());
+        }
 
-            return Ok(sectors.Select(x => new Option { Id = x.Id, Text = x.Text }).OrderBy(x => x.Text));
+        [HttpGet("areas")]
+        public IActionResult GetAreas()
+        {
+            return Ok(utilsService.GetAreas());
         }
 
         [HttpGet("employeeTypeEndReasons")]
@@ -55,6 +59,12 @@ namespace Sofco.WebApi.Controllers
             var currencies = utilsService.GetCurrencies();
 
             return Ok(currencies);
+        }
+
+        [HttpGet("userDelegateTypes")]
+        public IActionResult GetUserDelegateTypes()
+        {
+            return Ok(utilsService.GetUserDelegateType());
         }
     }
 }

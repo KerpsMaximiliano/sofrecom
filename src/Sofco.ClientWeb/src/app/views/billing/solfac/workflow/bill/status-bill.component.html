@@ -2,7 +2,7 @@
     {{ 'ACTIONS.bill' | translate }}  <i class="fa fa-money"></i>
 </button>
 
-<ng2-modal [config]="billModalConfig" #billModal (accept)="sendToBill()" [isLoading]="isLoading">
+<ng2-modal [config]="billModalConfig" #billModal (accept)="sendToBill()">
     <div class="form-group">
         <label class="control-label">{{'billing.solfac.invoiceCode' | translate }}</label>
         <input type="text" class="form-control" id="invoiceCode" data-mask="9999-99999999">

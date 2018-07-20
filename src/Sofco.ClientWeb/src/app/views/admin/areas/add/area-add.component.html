@@ -1,0 +1,42 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{ 'ADMIN.area.add' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ 'ADMIN.area.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">{{ 'ADMIN.area.description' | translate }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="text" maxlength="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"> 
+                <div class="col-sm-6">
+                    <select-two [label]="'ADMIN.area.responsable'" [(value)]="responsableId" [options]="responsables"></select-two>
+                </div>
+            </div>
+
+            <hr class="hr-line-dashed">
+
+            <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>
+            <button (click)="goBack()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+        </div>
+    </div>
+</div>

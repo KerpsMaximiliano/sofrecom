@@ -1,0 +1,7 @@
+<btn-confirm 
+    *ngIf="canSend()" 
+    [class]="'btn-primary btn-outline dim btn-sm'" 
+    [text]="'billing.purchaseOrder.sendToCompliance'" 
+    [icon]="'fa-arrow-circle-right'" 
+    (onConfirm)="send()">
+</btn-confirm> 

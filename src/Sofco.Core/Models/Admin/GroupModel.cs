@@ -27,7 +27,7 @@ namespace Sofco.Core.Models.Admin
         }
 
         [Required(ErrorMessage = "admin/group.descriptionRequired")]
-        [MaxLength(50, ErrorMessage = "admin/group.wrongDescriptionLength")]
+        [MaxLength(500, ErrorMessage = "admin/group.wrongDescriptionLength")]
         public string Description { get; set; }
 
         [EmailAddress(ErrorMessage = "admin/group.wrongEmail")]

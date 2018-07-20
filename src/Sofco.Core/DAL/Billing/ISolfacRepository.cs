@@ -3,6 +3,7 @@ using Sofco.Core.DAL.Common;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 using System;
+using Sofco.Core.Models.Admin;
 
 namespace Sofco.Core.DAL.Billing
 {
@@ -24,7 +25,7 @@ namespace Sofco.Core.DAL.Billing
         void UpdateStatusAndInvoice(Solfac solfacToModif);
         ICollection<string> GetHitosIdsBySolfacId(int solfacId);
         void UpdateStatusAndCashed(Solfac solfacToModif);
-        IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, string userMail);
+        IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, UserLiteModel userMail);
         void UpdateInvoice(Solfac solfacToModif);
         void UpdateCash(Solfac solfacToModif);
         bool InvoiceCodeExist(string invoiceCode);

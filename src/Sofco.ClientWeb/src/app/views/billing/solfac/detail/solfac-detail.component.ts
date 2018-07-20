@@ -25,7 +25,6 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
-    updateOcSubs: Subscription;
     getOptionsSubs: Subscription;
 
     public purchaseOrders: Option[] = new Array<Option>();
@@ -51,19 +50,11 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
         if(this.getOptionsSubs) this.getOptionsSubs.unsubscribe();
-        if(this.updateOcSubs) this.updateOcSubs.unsubscribe();
     }
  
     getOptions() {
         this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId).subscribe(data => {
           this.purchaseOrders = data.purchaseOrders;
-        },
-        err => this.errorHandlerService.handleErrors(err));
-    }
-
-    updateOc(){
-        this.updateOcSubs = this.solfacService.updateOc(this.model.id, this.model.purchaseOrderId).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
         },
         err => this.errorHandlerService.handleErrors(err));
     }
@@ -133,6 +124,15 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(invoice.pdfFileName.endsWith('.pdf')){
             this.invoiceService.getPdfFile(invoice.pdfFileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
+    }
+
+    showPdfAttachments(file){
+        if(file.name.endsWith('.pdf')){
+            this.solfacService.getFile(file.id).subscribe(response => {
+                this.pdfViewer.renderFile(response);
             },
             err => this.errorHandlerService.handleErrors(err));
         }

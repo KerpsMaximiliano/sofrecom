@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
+using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
@@ -24,7 +25,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<Analytic> Update(Analytic domain);
 
-        Response Close(int analyticId);
+        Response Close(int analyticId, AnalyticStatus status);
 
         ICollection<Analytic> GetAllActives();
 

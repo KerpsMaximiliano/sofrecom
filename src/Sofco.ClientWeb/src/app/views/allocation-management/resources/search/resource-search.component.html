@@ -73,6 +73,13 @@
                                 <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                         <div class="form-group checkbox-center">
+                                <icheck [(checked)]="searchModel.unassigned">
+                                    <label class="control-label">{{ 'allocationManagement.report.grid.unassigned' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -152,7 +159,7 @@
     </div>
 </ng2-modal> 
 
-<ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()" [isLoading]="isLoading">
+<ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
     <div class="alert alert-warning">
         {{'ADMIN.category.areYouSureAdd' | translate }}
     </div>

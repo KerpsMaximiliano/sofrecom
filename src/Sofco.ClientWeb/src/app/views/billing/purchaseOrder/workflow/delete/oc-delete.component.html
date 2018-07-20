@@ -1,0 +1,7 @@
+<btn-confirm 
+    *ngIf="canSend()" 
+    [class]="'btn-danger btn-outline dim btn-sm'" 
+    [text]="'ACTIONS.DELETE'" 
+    [icon]="'fa-trash'" 
+    (onConfirm)="send()">
+</btn-confirm> 

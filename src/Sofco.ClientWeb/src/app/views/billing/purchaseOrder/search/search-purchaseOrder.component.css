@@ -1,5 +1,0 @@
-:host ::ng-deep td.details-control {
-    cursor: pointer;
-}
-:host ::ng-deep tr.shown td.details-control {
-}

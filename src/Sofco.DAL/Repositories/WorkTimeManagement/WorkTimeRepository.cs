@@ -189,6 +189,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         {
             return context.WorkTimes
                 .Where(x => x.UserId == currentUserId 
+                        && x.Date.Year == date.Year 
                         && x.Date.Month == date.Month 
                         && x.Date.Day == date.Day
                         && x.Id != id)

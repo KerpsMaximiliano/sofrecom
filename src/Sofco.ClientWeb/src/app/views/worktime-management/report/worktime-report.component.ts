@@ -136,14 +136,20 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     search(){
         this.messageService.showLoading();
+        this.gridIsVisible = false;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data;
-            if(response.messages) this.messageService.showMessages(response.messages);
+            if(response.messages){
+                this.messageService.showMessages(response.messages);
+            } 
 
-            this.initGrid();
+            if(this.data.length > 0){
+                this.initGrid();
+                this.collapse();
+            }
+
             this.messageService.closeLoading();
-            this.collapse();
 
             sessionStorage.setItem('lastWorktimeReportQuery', JSON.stringify(this.searchModel));
         },

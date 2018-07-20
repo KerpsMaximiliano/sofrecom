@@ -21,6 +21,8 @@ namespace Sofco.Service.MapProfiles
             CreateMap<User, UserSelectListItem>()
                 .ForMember(d => d.Text, s => s.MapFrom(x => x.Name))
                 .ForMember(d => d.ExternalId, s => s.MapFrom(x => x.ExternalManagerId));
+
+            CreateMap<User, UserLiteModel>();
         }
     }
 }

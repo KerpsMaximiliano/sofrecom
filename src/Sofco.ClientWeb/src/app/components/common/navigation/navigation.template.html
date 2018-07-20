@@ -19,6 +19,8 @@
           <li [ngClass]="{active: activeRoute('functionalities')}"  *ngIf="menuService.hasFunctionality('FUNC', 'QUERY')"><a [routerLink]="['/admin/functionalities']">{{'ADMIN.FUNCTIONALITIES.TITLE' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('categories')}" *ngIf="menuService.hasFunctionality('CATEG', 'QUERY')"><a [routerLink]="['/admin/categories']">{{ 'ADMIN.category.task' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('tasks')}" *ngIf="menuService.hasFunctionality('TASKS', 'QUERY')"><a [routerLink]="['/admin/tasks']">{{ 'ADMIN.task.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('areas')}" *ngIf="menuService.hasFunctionality('AREAS', 'QUERY')"><a [routerLink]="['/admin/areas']">{{ 'ADMIN.area.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('sectors')}" *ngIf="menuService.hasFunctionality('SECTO', 'QUERY')"><a [routerLink]="['/admin/sectors']">{{ 'ADMIN.sector.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
         </ul>
       </li>
@@ -30,9 +32,13 @@
             <li [ngClass]="{active: activeRoute('customers')}" *ngIf="menuService.hasFunctionality('SOLFA', 'ALTA')"><a [routerLink]="['/billing/customers']">{{'billing.customer.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('searchSolfac')}" *ngIf="menuService.hasFunctionality('SOLFA', 'QUERY')"><a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.searchTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('searchInvoice')}" *ngIf="menuService.hasFunctionality('REM', 'QUERY')"><a [routerLink]="['/billing/invoice/search']">{{'billing.invoice.searchTitle' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('purchaseOrders')}" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"><a [routerLink]="['/billing/purchaseOrders']">{{'billing.purchaseOrder.title' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('solfacDelegate')}" *ngIf="menuService.hasFunctionality('SOLFA', 'SOLDE')"><a [routerLink]="['/billing/solfac/delegate']">{{'billing.solfac.delegate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('solfac/delegate')}" *ngIf="menuService.hasFunctionality('SOLFA', 'SOLDE')"><a [routerLink]="['/billing/solfac/delegate']">{{'billing.solfac.delegate.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('certificates')}" *ngIf="menuService.hasFunctionality('CERT', 'QUERY')"><a [routerLink]="['/billing/certificates']">{{'billing.certificate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('approval/delegate')}" *ngIf="menuService.hasFunctionality('PUROR', 'PODE')"><a [routerLink]="['/billing/purchaseOrders/approval/delegate']">{{'billing.purchaseOrder.delegate.approvalTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('active/delegate')}" *ngIf="menuService.hasFunctionality('PUROR', 'POACTIVEDELEGATE')"><a [routerLink]="['/billing/purchaseOrders/active/delegate']">{{'billing.purchaseOrder.delegate.activeTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('active')}" *ngIf="menuService.hasFunctionality('PUROR', 'POACTIVEVIEW')"><a [routerLink]="['/billing/purchaseOrders/active']">{{'billing.purchaseOrder.activeViewTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('query')}" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"><a [routerLink]="['/billing/purchaseOrders/query']">{{'billing.purchaseOrder.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('pendings')}" *ngIf="menuService.hasFunctionality('PUROR', 'PEND')"><a [routerLink]="['/billing/purchaseOrders/pendings']">{{'billing.purchaseOrder.ocPendingsShortTitle' | translate }}</a></li>
         </ul>
       </li> 
 

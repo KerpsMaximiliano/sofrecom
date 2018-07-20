@@ -48,8 +48,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         employeeId: 0
     };
 
-    constructor(private router: Router,
-        private messageService: MessageService,
+    constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
         private analyticService: AnalyticService,
         private customerService: CustomerService,
@@ -188,9 +187,11 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
     
     clean(){
+        $('.datepicker').val('');
+        
         this.searchModel = {
-            startDate: null,
-            endDate: null,
+            startDate: '',
+            endDate: '',
             status: 0,
             clientId: 0,
             managerId: 0,

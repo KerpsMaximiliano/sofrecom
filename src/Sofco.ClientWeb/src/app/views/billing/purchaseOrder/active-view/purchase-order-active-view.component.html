@@ -1,0 +1,41 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'billing.purchaseOrder.activeViewTitle' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'billing.title' | translate }}</a>
+            </li>
+            <li>
+                {{'billing.purchaseOrder.title' | translate }}
+            </li>
+            <li class="active">
+                <strong>{{'billing.purchaseOrder.activeViewTitle' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+        
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-right">
+                <button *ngIf="menuService.hasFunctionality('PUROR', 'ALTA')" class="btn btn-primary btn-outline dim btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <purchase-order-view-filter #purchaseOrderViewFilter storeSessionName="purchaseOrderActiveView" [useStatus]="false" (change)="viewFilterChange($event)"></purchase-order-view-filter>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <purchase-order-view #purchaseOrderView (clickView)="goToEdit($event)"></purchase-order-view>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

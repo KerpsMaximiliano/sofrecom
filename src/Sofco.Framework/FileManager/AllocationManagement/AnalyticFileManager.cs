@@ -55,11 +55,11 @@ namespace Sofco.Framework.FileManager.AllocationManagement
                 if (item.Sector != null)
                     sheet.Cells[$"J{i}"].Value = item.Sector.Text;
 
-                if (item.CommercialManager != null)
-                    sheet.Cells[$"K{i}"].Value = item.CommercialManager.Name;
-
                 if (item.Manager != null)
-                    sheet.Cells[$"L{i}"].Value = item.Manager.Name;
+                    sheet.Cells[$"K{i}"].Value = item.Manager.Name;
+
+                if (item.CommercialManager != null)
+                    sheet.Cells[$"L{i}"].Value = item.CommercialManager.Name;
 
                 if (item.Solution != null)
                     sheet.Cells[$"M{i}"].Value = item.Solution.Text;

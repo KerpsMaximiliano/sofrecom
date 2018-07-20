@@ -1,12 +1,10 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
 import { CostCenterService } from "app/services/allocation-management/cost-center.service";
-import { MenuService } from "app/services/admin/menu.service";
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { ServiceService } from "../../../../services/billing/service.service";
 import { UserService } from "../../../../services/admin/user.service";
@@ -36,11 +34,9 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     constructor(private analyticService: AnalyticService,
                 private costCenter: CostCenterService,
-                private router: Router,
                 private customerService: CustomerService,
                 private userService: UserService,
                 private serviceService: ServiceService,
-                private menuService: MenuService,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){}
 

@@ -32,9 +32,16 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public List<UserDelegate> GetByUserId(int userId, List<UserDelegateType> types)
+        {
+            return UserDelegateSet
+                .Where(s => s.UserId == userId && types.Contains(s.Type))
+                .ToList();
+        }
+
         public UserDelegate Save(UserDelegate userDelegate)
         {
-            var storedItem = GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            var storedItem = GetStored(userDelegate);
 
             if (storedItem != null)
             {
@@ -62,17 +69,52 @@ namespace Sofco.DAL.Repositories.Common
         public bool HasUserDelegate(string userName, UserDelegateType type)
         {
             return UserDelegateSet
-                .Any(s => 
-                s.UserId == context.Users.Single(x => x.UserName == userName).Id
+                .Any(s => s.UserId == context.Users.Single(x => x.UserName == userName).Id
                 && s.Type == type);
         }
 
-        private UserDelegate GetByServiceIdAndUserId(Guid serviceId, int userId, UserDelegateType type)
+        public bool HasUserDelegate(string userName, List<UserDelegateType> types)
+        {
+            return UserDelegateSet
+                .Any(s => s.UserId == context.Users.Single(x => x.UserName == userName).Id
+                && types.Contains(s.Type));
+        }
+
+        public List<UserDelegate> GetByTypesAndSourceId(List<UserDelegateType> types, int sourceId)
+        {
+            return UserDelegateSet
+                .Where(s => types.Contains(s.Type) && s.SourceId == sourceId)
+                .ToList();
+        }
+
+        public List<UserDelegate> GetByTypeAndSourceId(UserDelegateType type, int sourceId)
+        {
+            return UserDelegateSet
+                .Where(s => s.Type == type && s.SourceId == sourceId)
+                .ToList();
+        }
+
+        private UserDelegate GetStored(UserDelegate userDelegate)
+        {
+            return userDelegate.Type != UserDelegateType.Solfac 
+                ? GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type) 
+                : GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+        }
+
+        private UserDelegate GetByServiceIdAndUserId(Guid? serviceId, int userId, UserDelegateType type)
         {
             return UserDelegateSet
                 .SingleOrDefault(s => s.ServiceId == serviceId 
                 && s.UserId == userId
                 && s.Type == type);
+        }
+
+        private UserDelegate GetBySourceIdAndUserId(int? sourceId, int userId, UserDelegateType type)
+        {
+            return UserDelegateSet
+                .SingleOrDefault(s => s.SourceId == sourceId
+                                      && s.UserId == userId
+                                      && s.Type == type);
         }
     }
 }

@@ -3,7 +3,7 @@
     <i class="fa fa-save"></i>
 </button>
 
-<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()" [isLoading]="isLoading">
+<ng2-modal [config]="sendToDafModalConfig" #sendToDafModal (accept)="sendToDAF()">
     <div class="form-group">
         <label class="control-label">{{'comments' | translate }}</label>
         <textarea class="form-control" name="comments" rows="10" [(ngModel)]="comments"></textarea>

@@ -6,8 +6,7 @@ import { Subscription } from "rxjs/Subscription";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
-import { DatepickerOptions } from 'ng2-datepicker';
+
 declare var $: any;
 
 @Component({
@@ -36,13 +35,10 @@ export class StatusCashComponent implements OnDestroy  {
 
   cashedDate: Date = new Date();
 
-  public isLoading: boolean = false;
-
   constructor(private solfacService: SolfacService,
     private messageService: MessageService,
     private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService,
-    private router: Router) {}
+    private errorHandlerService: ErrorHandlerService) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -63,12 +59,9 @@ export class StatusCashComponent implements OnDestroy  {
             cashedDate: this.cashedDate
         }
 
-        this.isLoading = true;
-
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.cashModal.hide();
-                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
 
                 if(this.history.observers.length > 0){
@@ -85,7 +78,6 @@ export class StatusCashComponent implements OnDestroy  {
                 }
             },
             error => {
-                this.isLoading = false;
                 this.errorHandlerService.handleErrors(error);
             });
     }

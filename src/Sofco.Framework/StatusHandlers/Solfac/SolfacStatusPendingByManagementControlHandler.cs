@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
@@ -9,6 +10,7 @@ using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.DTO;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
@@ -21,11 +23,15 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailBuilder mailBuilder;
 
-        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder)
+        private readonly IMailSender mailSender;
+
+        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, 
+                                                             IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
+            this.mailSender = mailSender;
         }
 
         public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
@@ -94,8 +100,17 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (detail != null)
             {
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
+                var oldBalance = detail.Balance;
+
                 detail.Balance = detail.Balance - solfac.TotalAmount;
+                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
+
+                if (oldBalance > 0 && detail.Balance <= 0)
+                {
+                    solfac.PurchaseOrder.Status = PurchaseOrderStatus.Consumed;
+                    unitOfWork.PurchaseOrderRepository.UpdateStatus(solfac.PurchaseOrder);
+                    SendMailForOcConsumed(solfac.PurchaseOrder);
+                }
             }
         }
 
@@ -104,7 +119,39 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
-        public void SendMail(IMailSender mailSender, Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        private void SendMailForOcConsumed(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
+
+            var recipientsArray = new List<string>();
+
+            foreach (var analytic in analytics)
+            {
+                if (analytic.Manager != null)
+                {
+                    recipientsArray.Add(analytic.Manager.Email);
+                }
+            }
+
+            if (recipientsArray.Any())
+            {
+                var subject = string.Format(Resources.Mails.MailSubjectResource.PurchaseOrderConsumed, purchaseOrder.Number);
+                var body = string.Format(Resources.Mails.MailMessageResource.PurchaseOrderConsumed, purchaseOrder.Number);
+                var recipients = string.Join(";", recipientsArray.Distinct());
+
+                var data = new SolfacStatusData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipients
+                };
+
+                var email = mailBuilder.GetEmail(data);
+                mailSender.Send(email);
+            }
+        }
+
+        public void SendMail(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subjectToCdg = GetSubjectMail(solfac);
             var bodyToCdg = GetBodyMail(solfac, emailConfig.SiteUrl);

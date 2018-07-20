@@ -48,7 +48,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(5);
+                        .HasMaxLength(20);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -75,7 +75,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(200);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -403,6 +403,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Location")
                         .HasMaxLength(200);
 
+                    b.Property<int?>("ManagerId");
+
                     b.Property<DateTime?>("Modified");
 
                     b.Property<string>("Name")
@@ -433,6 +435,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("EmployeeNumber")
                         .IsUnique();
+
+                    b.HasIndex("ManagerId");
 
                     b.HasIndex("TypeEndReasonId");
 
@@ -775,8 +779,9 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Area")
-                        .HasMaxLength(150);
+                    b.Property<bool>("Adjustment");
+
+                    b.Property<int?>("AreaId");
 
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(150);
@@ -784,15 +789,26 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ClientExternalName")
                         .HasMaxLength(150);
 
+                    b.Property<string>("Comments")
+                        .HasMaxLength(2000);
+
                     b.Property<string>("Description")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(2000);
 
                     b.Property<DateTime>("EndDate");
 
+                    b.Property<string>("FicheDeSignature")
+                        .HasMaxLength(200);
+
                     b.Property<int?>("FileId");
+
+                    b.Property<decimal>("Margin");
 
                     b.Property<string>("Number")
                         .HasMaxLength(150);
+
+                    b.Property<string>("PaymentForm")
+                        .HasMaxLength(200);
 
                     b.Property<DateTime>("ReceptionDate");
 
@@ -807,6 +823,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
                     b.HasIndex("FileId");
 
                     b.ToTable("PurchaseOrders");
@@ -818,6 +836,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("CurrencyId");
 
+                    b.Property<decimal>("Adjustment");
+
                     b.Property<decimal>("Ammount");
 
                     b.Property<decimal>("Balance");
@@ -827,6 +847,32 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.ToTable("PurchaseOrderAmmountDetails");
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrderHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("From");
+
+                    b.Property<int>("PurchaseOrderId");
+
+                    b.Property<int>("To");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PurchaseOrderHistories");
                 });
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
@@ -1023,7 +1069,10 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("Modified");
 
-                    b.Property<Guid>("ServiceId");
+                    b.Property<Guid?>("ServiceId")
+                        .IsRequired();
+
+                    b.Property<int?>("SourceId");
 
                     b.Property<int>("Type");
 
@@ -1291,6 +1340,29 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserGroup");
                 });
 
+            modelBuilder.Entity("Sofco.Model.Utils.Area", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<int>("ResponsableUserId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(500);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResponsableUserId");
+
+                    b.ToTable("Areas");
+                });
+
             modelBuilder.Entity("Sofco.Model.Utils.ClientGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -1418,10 +1490,20 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<int>("ResponsableUserId");
+
+                    b.Property<DateTime>("StartDate");
+
                     b.Property<string>("Text")
-                        .HasMaxLength(100);
+                        .HasMaxLength(500);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ResponsableUserId");
 
                     b.ToTable("Sectors");
                 });
@@ -1562,6 +1644,11 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Employee", b =>
                 {
+                    b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
+                        .WithMany("Employees")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Sofco.Model.Utils.EmployeeEndReason", "TypeEndReason")
                         .WithMany("Employees")
                         .HasForeignKey("TypeEndReasonId");
@@ -1624,6 +1711,10 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
                 {
+                    b.HasOne("Sofco.Model.Utils.Area", "Area")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("AreaId");
+
                     b.HasOne("Sofco.Model.Models.Common.File", "File")
                         .WithMany()
                         .HasForeignKey("FileId");
@@ -1639,6 +1730,19 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
                         .WithMany("AmmountDetails")
                         .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrderHistory", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Billing.PurchaseOrder", "PurchaseOrder")
+                        .WithMany("Histories")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1834,6 +1938,22 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Model.Models.Admin.User", "User")
                         .WithMany("UserGroups")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.Area", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ResponsableUser")
+                        .WithMany("Areas")
+                        .HasForeignKey("ResponsableUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Model.Utils.Sector", b =>
+                {
+                    b.HasOne("Sofco.Model.Models.Admin.User", "ResponsableUser")
+                        .WithMany("Sectors")
+                        .HasForeignKey("ResponsableUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

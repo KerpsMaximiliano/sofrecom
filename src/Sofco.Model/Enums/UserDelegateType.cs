@@ -2,6 +2,16 @@
 {
     public enum UserDelegateType
     {
-        Solfac
+        Solfac,
+
+        PurchaseOrderApprovalCompliance,
+
+        PurchaseOrderApprovalCommercial,
+
+        PurchaseOrderApprovalOperation,
+
+        PurchaseOrderApprovalDaf,
+
+        PurchaseOrderActive
     }
 }

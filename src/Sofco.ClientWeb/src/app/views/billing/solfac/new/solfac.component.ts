@@ -102,7 +102,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.details = new Array<HitoDetail>();
 
       multipleProjects.hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.money, hito.opportunityId, hito.managerId);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
@@ -140,7 +140,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       if(!this.validateHitos(hitos)) return;
 
       hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.money, hito.opportunityId, hito.managerId);
+        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
         var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);

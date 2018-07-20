@@ -31,7 +31,6 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
 
     subscrip: Subscription;
     public comments: string;
-    public isLoading: boolean = false;
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
@@ -43,11 +42,8 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
     }
 
     reject(){
-        this.isLoading = true;
-
         this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Rejected, this.comments, "").subscribe(data => {
             this.rejectModal.hide();
-            this.isLoading = false;
             if(data.messages) this.messageService.showMessages(data.messages);
             
             if(this.history.observers.length > 0){
@@ -64,7 +60,6 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
             }
         },
         err => {
-            this.isLoading = false;
             this.errorHandlerService.handleErrors(err);
         });
     }

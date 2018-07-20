@@ -73,5 +73,10 @@ namespace Sofco.DAL.Repositories.Admin
                 .Select(s => s.Email)
                 .FirstOrDefault();
         }
+
+        public Group GetByCode(string guestCode)
+        {
+            return context.Groups.SingleOrDefault(x => x.Code.Equals(guestCode));
+        }
     }
 }

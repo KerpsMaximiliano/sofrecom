@@ -1,12 +1,9 @@
 import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { Router } from "@angular/router";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
-import { MenuService } from "app/services/admin/menu.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { AnalyticService } from "../../../services/allocation-management/analytic.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { WorktimeService } from "app/services/worktime-management/worktime.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
@@ -28,13 +25,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     getAnalyticsSubscrip: Subscription;
     searchSubscrip: Subscription;
 
-    public analyticId: number = 0;
-    public employeeId: number = 0;
+    public analyticId = 0;
+    public employeeId = 0;
     public comments: string;
+    public rejectComments: string;
 
     indexToRemove: number;
 
-    public isMultipleSelection: boolean = false;
+    public isMultipleSelection = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -50,20 +48,27 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         "ACTIONS.close"
     );
 
-    constructor(private employeeService: EmployeeService,
-        private analyticService: AnalyticService,
+    @ViewChild('rejectAllModal') rejectAllModal;
+    public rejectAllModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "rejectAllModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    constructor(private analyticService: AnalyticService,
         private worktimeService: WorktimeService,
-        private router: Router,
         private datatableService: DataTableService,
-        private menuService: MenuService,
         private messageService: MessageService,
         private errorHandlerService: ErrorHandlerService){
     }
 
     ngOnInit(): void {
         this.getAnalytics();
- 
-        var data = JSON.parse(sessionStorage.getItem('lastWorktimeQuery'));
+
+        const data = JSON.parse(sessionStorage.getItem('lastWorktimeQuery'));
 
         if(data){
             this.analyticId = data.analyticId;
@@ -125,7 +130,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             if(response.messages) this.messageService.showMessages(response.messages);
 
-            this.hoursPending = response.data;
+            this.hoursPending = response.data.map(item => {
+                item.selected = false;
+                return item;
+            });
 
             var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
             this.initGrid(options);
@@ -203,6 +211,30 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         return this.hoursPending.filter(x => x.selected == true).length == 0;
     }
 
+    areAllSelected(){
+        return this.hoursPending.every(item => {
+            return item.selected == true;
+        });
+    }
+
+    areAllUnselected(){
+        return this.hoursPending.every(item => {
+            return item.selected == false;
+        });
+    }
+
+    selectAll(){
+        this.hoursPending.forEach((item, index) => {
+            item.selected = true;
+        });
+    }
+
+    unselectAll(){
+        this.hoursPending.forEach((item, index) => {
+            item.selected = false;
+        });
+    }
+
     approveAll(){
         var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
 
@@ -217,6 +249,27 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    rejectAll(){
+        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
+
+        if(hoursSelected.length == 0) return;
+
+        var json = {
+            hourIds: hoursSelected,
+            comments: this.rejectComments
+        }
+
+        this.searchSubscrip = this.worktimeService.rejectAll(json).subscribe(response => {
+            this.rejectAllModal.hide();
+            if(response.messages) this.messageService.showMessages(response.messages);
+            this.searchPending();
+        },
+        error => {
+            this.rejectAllModal.hide();
             this.errorHandlerService.handleErrors(error);
         });
     }

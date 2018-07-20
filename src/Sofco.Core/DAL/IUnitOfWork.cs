@@ -23,6 +23,7 @@ namespace Sofco.Core.DAL
         IRoleFunctionalityRepository RoleFunctionalityRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         ITaskRepository TaskRepository { get; }
+        ISectorRepository SectorRepository { get; }
 
         #endregion
 
@@ -34,6 +35,7 @@ namespace Sofco.Core.DAL
         IPurchaseOrderRepository PurchaseOrderRepository { get; }
         ICertificateRepository CertificateRepository { get; }
         ISolfacCertificateRepository SolfacCertificateRepository { get; }
+        IAreaRepository AreaRepository { get; }
 
         #endregion
 
@@ -76,6 +78,9 @@ namespace Sofco.Core.DAL
         IHolidayRepository HolidayRepository { get; }
         #endregion
 
+        void BeginTransaction();
+        void Rollback();
+        void Commit();
         void Save();
     }
 }

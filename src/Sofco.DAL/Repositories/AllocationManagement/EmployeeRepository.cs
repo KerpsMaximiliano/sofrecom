@@ -47,10 +47,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToChange).Property("EndReason").IsModified = true;
             context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
         }
-
+         
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees;
+
+            if (parameters.Unassigned)
+            {
+                var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
+
+                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id)).ToList();
+            }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
@@ -108,6 +115,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             context.Entry(employee).Property("BusinessHours").IsModified = true;
             context.Entry(employee).Property("BusinessHoursDescription").IsModified = true;
+            context.Entry(employee).Property("OfficeAddress").IsModified = true;
+            context.Entry(employee).Property("HolidaysPendingByLaw").IsModified = true;
+            context.Entry(employee).Property("ManagerId").IsModified = true;
+            context.Entry(employee).Property("HolidaysPending").IsModified = true;
         }
 
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
@@ -153,6 +164,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
 
             context.SaveChanges();
+        }
+
+        public void Save(Employee employee)
+        {
+            var storedItem = GetByEmployeeNumber(employee.EmployeeNumber);
+            if (storedItem == null)
+            {
+                Insert(employee);
+                return;
+            }
+
+            Update(storedItem, employee);
         }
 
         public void Update(List<Employee> employees)
@@ -207,7 +230,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetById(int id)
         {
-            return context.Employees.SingleOrDefault(x => x.Id == id);
+            return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Id == id);
         }
 
         public Employee GetByEmail(string email)

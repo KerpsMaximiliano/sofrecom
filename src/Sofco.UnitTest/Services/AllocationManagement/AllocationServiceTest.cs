@@ -217,7 +217,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             Assert.True(response.Messages.Any(x => $"{x.Folder}.{x.Code}" == Resources.AllocationManagement.Allocation.CannotBeAssign));
 
             allocationRepositoryMock.Verify(x => x.Insert(It.IsAny<Allocation>()), Times.Never);
-            allocationRepositoryMock.Verify(s => s.Save(), Times.Never);
+            unitOfWork.Verify(s => s.Save(), Times.Never);
         }
 
         [TestCase]

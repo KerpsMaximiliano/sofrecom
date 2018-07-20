@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
-import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
 import { WorktimeService } from '../../../services/worktime-management/worktime.service';
-import { WorkTimeStatus } from '../../../models/enums/worktimestatus';
 
 @Component({
   selector: 'worktime-status-reject',
@@ -25,15 +23,12 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
 
   subscrip: Subscription;
 
-  public isLoading: boolean = false;
-
   public rejectComments: string;
   workTime: any;
 
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
 
   constructor(private messageService: MessageService,
-    private menuService: MenuService,
     private worktimeService: WorktimeService,
     private errorHandlerService: ErrorHandlerService) { }
 
@@ -52,12 +47,9 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
         return;
     }
 
-    this.isLoading = true;
-
     this.subscrip = this.worktimeService.reject(this.workTime.id, this.rejectComments).subscribe(
         data => {
             this.rejectModal.hide();
-            this.isLoading = false 
             if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.onSuccess.observers.length > 0){
@@ -66,7 +58,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
         },
         error => {
             this.rejectModal.hide();
-            this.isLoading = false 
             this.errorHandlerService.handleErrors(error);
         });
     }

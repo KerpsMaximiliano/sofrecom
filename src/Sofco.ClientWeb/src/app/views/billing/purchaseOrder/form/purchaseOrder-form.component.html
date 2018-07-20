@@ -42,31 +42,46 @@
     <div class="col-sm-12">
         <div class="input-group m-b">
             <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
-            <input [disabled]="!item.enable" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
-            <span *ngIf="mode == 'new' && !item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable">Habilitar</span> 
-            <span *ngIf="mode == 'new' && item.enable" class="input-group-addon pointer bg-muted" (click)="item.enable = !item.enable">Deshabilitar</span> 
+            <input [disabled]="!item.enable || currencyDisabled" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+            <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && !item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
+            <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && item.enable" class="input-group-addon pointer bg-danger" (click)="item.enable = !item.enable"><i class="fa fa-times"></i></span> 
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <p><strong>{{'billing.purchaseOrder.fields.area' | translate }}</strong></p>
-
-        <div class="radio radio-info radio-inline">
-            <input type="radio" id="area" value="Comercial" name="area" checked="" [(ngModel)]="model.area">
-            <label for="area"> {{'billing.purchaseOrder.fields.comercial' | translate }} </label>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.margin' | translate }}</label>
+            <input type="number" myNumberOnly min="1" max="99999999" step=".01" class="form-control" [(ngModel)]="model.margin">
         </div>
-        <div class="radio radio-inline radio-info">
-            <input type="radio" id="area2" value="Compañia" name="area" [(ngModel)]="model.area">
-            <label for="area2"> {{'billing.purchaseOrder.fields.company' | translate }} </label>
+    </div>
+    <div class="col-md-6">
+        <select-two id="area-select" [label]="'billing.purchaseOrder.fields.area'" [(value)]="model.areaId" [options]="areas"></select-two>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.ficheDeSignature' | translate }}</label>
+            <input type="text" maxlength="200" class="form-control" [(ngModel)]="model.ficheDeSignature">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.paymentForm' | translate }}</label>
+            <input type="text" maxlength="200" class="form-control" [(ngModel)]="model.paymentForm">
         </div>
     </div>
 </div>
 
-<br>
-
 <div class="form-group">
     <label class="control-label">{{'billing.purchaseOrder.fields.description' | translate }}</label>
-    <textarea class="form-control" maxlength="1000" name="description" rows="10" [(ngModel)]="model.description"></textarea>
+    <textarea class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.description"></textarea>
+</div>
+
+<div class="form-group">
+    <label class="control-label">{{'billing.purchaseOrder.fields.comments' | translate }}</label>
+    <textarea class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.comments"></textarea>
 </div>

@@ -8,6 +8,9 @@ import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "../../../../services/common/i18n.service";
+import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
 
@@ -21,6 +24,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;
     @ViewChild('pdfViewer') pdfViewer;
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('ocAdjustment') ocAdjustment: any;
+    @ViewChild('history') history: any;
 
     updateSubscrip: Subscription;
     getSubscrip: Subscription;
@@ -45,9 +50,11 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     );
 
     constructor(private purchaseOrderService: PurchaseOrderService,
-                private router: Router,
+                private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
+                public menuService: MenuService,
                 private messageService: MessageService,
+                private router: Router,
                 private errorHandlerService: ErrorHandlerService){
     }
 
@@ -64,6 +71,10 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 this.uploaderConfig();
 
+                this.form.getCurrencies();
+
+                this.history.getHistories(params['id']);
+
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();
                 }
@@ -72,9 +83,14 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
                 }, 1000);
 
-                $('input').attr('disabled', 'disabled');
-                $('#customer-select select').attr('disabled', 'disabled');
-                $('input[type=file]').removeAttr('disabled');
+                if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
+                    $('input').attr('disabled', 'disabled');
+                    $('#customer-select select').attr('disabled', 'disabled');
+                    $('#analytics').attr('disabled', 'disabled');
+                    $('input[type=file]').removeAttr('disabled');
+                    $('#area-select select').attr('disabled', 'disabled');
+                    this.form.currencyDisabled = true;
+                }
             },
             error => {
                 this.messageService.closeLoading();
@@ -123,10 +139,17 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     exportExcel(){
+        this.messageService.showLoading();
+
         this.purchaseOrderService.exportFile(this.form.model.fileId).subscribe(file => {
+            this.messageService.closeLoading();
+
             FileSaver.saveAs(file, this.form.model.fileName);
         },
-        err => this.errorHandlerService.handleErrors(err));
+        err => {
+            this.messageService.closeLoading();
+            this.errorHandlerService.handleErrors(err);
+        });
     }
 
     deleteFile(){
@@ -149,10 +172,17 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
  
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
+            this.messageService.showLoading();
+
             this.purchaseOrderService.getFile(this.form.model.fileId).subscribe(response => {
+                this.messageService.closeLoading();
+
                 this.pdfViewer.renderFile(response.data);
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
         }
     }
 
@@ -164,10 +194,53 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             response => {
                 this.messageService.closeLoading();
                 if(response.messages) this.messageService.showMessages(response.messages);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             },
             err => {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
+    }
+
+    openAdjustment(){
+        var details = this.form.model.ammountDetails.map(item => {
+            return { currencyId: item.currencyId, currencyDescription: item.currencyDescription, adjustment: 0, enable: true }
+        })
+        
+        var settings = {
+            id: this.form.model.id,
+            details: details
+        };
+
+        this.ocAdjustment.show(settings);
+    }
+
+    back(){
+        this.router.navigate(['/billing/purchaseOrders/pendings']);
+    }
+
+    goToQuery(){
+        this.router.navigate(['/billing/purchaseOrders/query']);
+    }
+
+    getStatus(){
+        switch(this.form.model.status){
+            case 1: return this.i18nService.translateByKey("Valid");
+            case 2: return this.i18nService.translateByKey("Consumed");
+            case 3: return this.i18nService.translateByKey("Closed");
+            case 4: return this.i18nService.translateByKey("Draft");
+            case 5: return this.i18nService.translateByKey("ComercialPending");
+            case 6: return this.i18nService.translateByKey("OperativePending");
+            case 7: return this.i18nService.translateByKey("DafPending");
+            case 8: return this.i18nService.translateByKey("Reject");
+            case 9: return this.i18nService.translateByKey("CompliancePending");
+        }
+    }
+
+    canDelete(){
+        return this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject;
     }
 }  

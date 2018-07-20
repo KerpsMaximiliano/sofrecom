@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
@@ -13,7 +13,6 @@ using Sofco.Model.Enums;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Model.Helpers;
@@ -27,24 +26,22 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacStatusFactory solfacStatusFactory;
         private readonly IUnitOfWork unitOfWork;
         private readonly CrmConfig crmConfig;
-        private readonly IMailSender mailSender;
         private readonly ICrmInvoiceService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
-        private readonly ISessionManager sessionManager;
-
+        private readonly IUserData userData;
+         
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
+            IUserData userData,
             IOptions<CrmConfig> crmOptions,
-            IMailSender mailSender,
-            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger, ISessionManager sessionManager)
+            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
             this.unitOfWork = unitOfWork;
-            this.mailSender = mailSender;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;
-            this.sessionManager = sessionManager;
+            this.userData = userData;
         }
 
         public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
@@ -132,18 +129,18 @@ namespace Sofco.Service.Implementations.Billing
 
         public IList<Solfac> Search(SolfacParams parameter)
         {
-            var userMail = sessionManager.GetUserEmail();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
-            var isComercial = unitOfWork.UserRepository.HasCdgGroup(userMail);
+            var user = userData.GetCurrentUser();
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(user.Email);
+            var isDaf = unitOfWork.UserRepository.HasDafGroup(user.Email);
+            var isCdg = unitOfWork.UserRepository.HasCdgGroup(user.Email);
+            var isComercial = unitOfWork.UserRepository.HasCdgGroup(user.Email);
 
             if (isDirector || isDaf || isCdg || isComercial)
             {
                 return unitOfWork.SolfacRepository.SearchByParams(parameter);
             }
 
-            return unitOfWork.SolfacRepository.SearchByParamsAndUser(parameter, userMail);
+            return unitOfWork.SolfacRepository.SearchByParamsAndUser(parameter, user);
         }
 
         public IList<Hito> GetHitosByProject(string projectId)
@@ -223,7 +220,7 @@ namespace Sofco.Service.Implementations.Billing
             try
             {
                 // Send Mail
-                solfacStatusHandler.SendMail(mailSender, solfac, emailConfig);
+                solfacStatusHandler.SendMail(solfac, emailConfig);
             }
             catch
             {

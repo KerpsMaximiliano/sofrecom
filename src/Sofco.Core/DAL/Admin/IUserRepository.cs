@@ -27,7 +27,9 @@ namespace Sofco.Core.DAL.Admin
 
         IList<User> GetSellers();
         bool HasComercialGroup(string comercialCode, string email);
+
         bool HasComercialGroup(string email);
+
         bool HasManagerGroup(string userName);
 
         bool HasRrhhGroup(string userMail);
@@ -41,5 +43,11 @@ namespace Sofco.Core.DAL.Admin
         User GetByEmail(string email);
 
         IList<User> GetAuthorizers();
+
+        bool HasComplianceGroup(string userEmail);
+
+        IList<User> GetByGroup(string groupCode);
+
+        bool HasDafPurchaseOrderGroup(string userMail);
     }
 }

@@ -36,7 +36,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public loaded: boolean = false;
 
     constructor(private allocationService: AllocationService,
-                private router: Router,
                 private employeeService: EmployeeService,
                 private analyticService: AnalyticService,
                 public menuService: MenuService,

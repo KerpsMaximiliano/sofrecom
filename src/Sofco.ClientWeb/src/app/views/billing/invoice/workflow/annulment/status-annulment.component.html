@@ -3,6 +3,9 @@
     <i class="fa fa-times"></i>
 </button>
 
-<ng2-modal [config]="annulmentModalConfig" #annulmentModal (accept)="annulment()" [isLoading]="isLoading">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+<ng2-modal [config]="annulmentModalConfig" #annulmentModal (accept)="annulment()">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="comments" rows="10" [(ngModel)]="comments"></textarea>
+    </div>
 </ng2-modal>

@@ -15,6 +15,7 @@ using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.License;
+using Sofco.Framework.StatusHandlers.PurchaseOrder;
 using Sofco.Framework.StatusHandlers.Solfac;
 using StackExchange.Redis;
 
@@ -73,6 +74,7 @@ namespace Sofco.WebApi.Infrastructures
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
             builder.RegisterType<InvoiceStatusFactory>().As<IInvoiceStatusFactory>();
             builder.RegisterType<LicenseStatusFactory>().As<ILicenseStatusFactory>();
+            builder.RegisterType<PurchaseOrderStatusFactory>().As<IPurchaseOrderStatusFactory>();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             RegisterRedisDependencies(builder);

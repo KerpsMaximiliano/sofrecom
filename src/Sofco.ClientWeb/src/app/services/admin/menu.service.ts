@@ -79,7 +79,7 @@ export class MenuService {
     }
 
     hasBillingMenu() {
-        if (this.hasModule("SOLFA")) {
+        if (this.hasModule("SOLFA") || this.hasModule("PUROR")) {
             return true;
        }
        return false;

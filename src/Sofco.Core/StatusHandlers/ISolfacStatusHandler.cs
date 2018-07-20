@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Config;
-using Sofco.Core.Mail;
 using Sofco.Model.DTO;
 using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
@@ -17,6 +16,6 @@ namespace Sofco.Core.StatusHandlers
 
         void UpdateHitos(ICollection<string> getHitosIdsBySolfacId, Solfac solfac, string url);
 
-        void SendMail(IMailSender mailSender, Solfac solfac, EmailConfig emailConfig);
+        void SendMail(Solfac solfac, EmailConfig emailConfig);
     }
 }

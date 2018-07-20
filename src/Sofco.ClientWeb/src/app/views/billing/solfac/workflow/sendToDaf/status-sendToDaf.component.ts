@@ -32,13 +32,11 @@ export class StatusSendToDafComponent implements OnDestroy  {
 
   subscrip: Subscription;
   public comments: string;
-  public isLoading: boolean = false;
 
   constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -59,12 +57,9 @@ export class StatusSendToDafComponent implements OnDestroy  {
             comment: this.comments
         }
 
-        this.isLoading = true;
-
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
             data => {
                 this.sendToDafModal.hide();
-                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
                 
                 if(this.history.observers.length > 0){
@@ -80,7 +75,6 @@ export class StatusSendToDafComponent implements OnDestroy  {
                 }
             },
             error => {
-                this.isLoading = false;
                 this.sendToDafModal.hide();
                 this.errorHandlerService.handleErrors(error);
             });

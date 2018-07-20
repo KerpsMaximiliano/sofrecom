@@ -1,0 +1,10 @@
+<button class="btn btn-danger btn-outline dim btn-sm" (click)="showModal()" *ngIf="canSend()"> 
+    {{ 'ACTIONS.reject' | translate }} <i class="fa fa-times"></i>
+</button>
+
+<ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="send()">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" name="rejectComments" rows="10" [(ngModel)]="rejectComments"></textarea>
+    </div>
+</ng2-modal> 

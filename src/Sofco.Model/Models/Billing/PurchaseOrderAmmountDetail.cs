@@ -13,5 +13,7 @@ namespace Sofco.Model.Models.Billing
         public decimal Balance { get; set; }
 
         public decimal Ammount { get; set; }
+
+        public decimal Adjustment { get; set; }
     }
 }

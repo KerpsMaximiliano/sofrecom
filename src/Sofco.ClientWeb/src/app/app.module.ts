@@ -73,7 +73,7 @@ export function HttpLoaderFactory(http: Http) {
     HttpClientModule,
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     Configuration,
     Service,
     MenuService,

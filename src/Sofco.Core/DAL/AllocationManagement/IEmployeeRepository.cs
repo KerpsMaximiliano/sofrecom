@@ -45,5 +45,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters);
 
         void Save(List<Employee> employees);
+
+        void Save(Employee employee);
     }
 }

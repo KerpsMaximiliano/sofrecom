@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs/Subscription";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
 import { InvoiceService } from 'app/services/billing/invoice.service';
 import { InvoiceStatus } from 'app/models/enums/invoiceStatus';
 declare var $: any;
@@ -34,13 +33,11 @@ export class StatusApproveComponent implements OnDestroy  {
 
     subscrip: Subscription;
     invoiceNumber;
-    public isLoading: boolean = false;
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
         private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService,
-        private router: Router) { }
+        private errorHandlerService: ErrorHandlerService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -59,11 +56,8 @@ export class StatusApproveComponent implements OnDestroy  {
 
         if(this.invoiceNumber && this.invoiceNumber != "" && this.invoiceNumber.length == 13){
 
-            this.isLoading = true;
-
             this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
                 this.approveConfirmModal.hide();
-                this.isLoading = false;
                 if(data.messages) this.messageService.showMessages(data.messages);
 
                 if(this.history.observers.length > 0){
@@ -81,7 +75,6 @@ export class StatusApproveComponent implements OnDestroy  {
                 }
             },
             err => {
-                this.isLoading = false;
                 this.errorHandlerService.handleErrors(err);
             });
         }

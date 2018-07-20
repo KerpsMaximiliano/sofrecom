@@ -31,7 +31,6 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
 
     subscrip: Subscription;
     public comments: string;
-    public isLoading: boolean = false;
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
@@ -43,10 +42,7 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
     }
 
     annulment(){
-        this.isLoading = true;
-
-        this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Cancelled, "", "").subscribe(data => {
-            this.isLoading = false;
+        this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Cancelled, this.comments, "").subscribe(data => {
             this.annulmentModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
             
@@ -64,7 +60,6 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
             }
         },
         err => {
-            this.isLoading = false;
             this.annulmentModal.hide();
             this.errorHandlerService.handleErrors(err)
         });
@@ -74,6 +69,7 @@ export class InvoiceStatusAnnulmentComponent implements OnDestroy  {
         return this.invoiceId > 0 && this.menuService.hasFunctionality('REM', 'ANNUL') 
                                     && (this.status == InvoiceStatus[InvoiceStatus.Sent] 
                                     || this.status == InvoiceStatus[InvoiceStatus.Approved]
+                                    || this.status == InvoiceStatus[InvoiceStatus.RequestAnnulment]
                                     || this.status == InvoiceStatus[InvoiceStatus.Rejected])
     }
 }

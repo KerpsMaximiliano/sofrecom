@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SolfacService } from 'app/services/billing/solfac.service';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
@@ -8,7 +8,6 @@ import { MessageService } from 'app/services/common/message.service';
 import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { MenuService } from 'app/services/admin/menu.service';
-import { Option } from 'app/models/option';
 import { CertificatesService } from 'app/services/billing/certificates.service';
 
 declare var $: any;
@@ -39,6 +38,8 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     getCertificatesRelatedSubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
+
+    @Output() onViewPdf: EventEmitter<any> = new EventEmitter();
 
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -108,11 +109,9 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         },
         err => this.errorHandlerService.handleErrors(err));
     }
-
+ 
     showPdf(file){
-        if(file.name.endsWith('.pdf')){
-            this.pdfViewer.getAttachment(file.id);
-        }
+        this.onViewPdf.emit(file);
     }
 
     canUploadFiles(){

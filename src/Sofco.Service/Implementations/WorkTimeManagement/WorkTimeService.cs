@@ -226,7 +226,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         public IEnumerable<Option> GetAnalytics()
         {
             var currentUser = userData.GetCurrentUser();
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagers(currentUser.Id);
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
             var analyticsByDelegates = unitOfWork.WorkTimeApprovalRepository.GetByAnalyticApproval(currentUser.Id);
 
             var list = analyticsByManagers.Select(x => new Option {Id = x.Id, Text = $"{x.Title} - {x.Name}"}).ToList();
@@ -343,12 +343,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var model = new WorkTimeReportModel();
 
                 if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
-                {
-                    if (response.Messages.All(x => x.Type != MessageType.Warning))
-                        response.AddWarning(Resources.WorkTimeManagement.WorkTime.ReportWarning);
-
                     continue;
-                }
 
                 if(allocation.Percentage == 0) continue;
 
@@ -427,6 +422,65 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             if (!response.Data.Any())
             {
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+
+            return response;
+        }
+
+        public Response RejectAll(WorkTimeRejectParams parameters)
+        {
+            var response = new Response();
+            var anyError = false;
+            var anySuccess = false;
+
+            foreach (var hourId in parameters.HourIds)
+            {
+                var hourResponse = Reject(hourId, parameters.Comments);
+
+                if (hourResponse.HasErrors())
+                    anyError = true;
+                else
+                    anySuccess = true;
+            }
+
+            if (anySuccess)
+            {
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
+
+                if (anyError)
+                {
+                    response.AddWarning(Resources.WorkTimeManagement.WorkTime.RejectedWithSomeErrors);
+                }
+            }
+            else
+            {
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
+
+            WorkTimeValidationHandler.ValidateDelete(worktime, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.WorkTimeRepository.Delete(worktime);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.DeleteSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DeleteError);
             }
 
             return response;

@@ -20,11 +20,15 @@
 
         public string DirectorsCode { get; set; }
 
+        public string GuestCode { get; set; }
+
         public string CdgCode { get; set; }
 
         public string PmoCode { get; set; }
 
         public string RrhhCode { get; set; }
+
+        public string ComplianceCode { get; set; }
 
         public string SellerCode { get; set; }
 
@@ -41,5 +45,9 @@
         public string SupportMailResendRecipients { get; set; }
 
         public string SupportMailResendTitle { get; set; }
+
+        public int HumanResourceMangerId { get; set; }
+
+        public int HumanResourceProjectLeaderId { get; set; }
     }
 }

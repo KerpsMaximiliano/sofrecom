@@ -32,8 +32,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    public isLoading = false;
-
     constructor(private analyticService: AnalyticService,
                 private router: Router,
                 private i18nService: I18nService,
@@ -87,17 +85,13 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     close() {
-        this.isLoading = true;
-
         this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-            this.isLoading = false;
             this.confirmModal.hide();
             if(response.messages) this.messageService.showMessages(response.messages);
             this.form.model.status = 2;
         },
         err => {
             this.errorHandlerService.handleErrors(err);
-            this.isLoading = false;
         });
     }
 
