@@ -5,6 +5,7 @@ SELECT
 	po.ClientExternalId,
 	po.ClientExternalName,
 	po.FileId,
+	fil.FileName,
 	po.Id as PurchaseOrderId,
 	poad.CurrencyId,
 	cur.Text as CurrencyText,
@@ -30,5 +31,6 @@ LEFT JOIN app.Hitos hit ON hit.SolfacId = sf.Id
 LEFT JOIN app.Currencies cur ON cur.Id = poad.CurrencyId
 LEFT JOIN app.[Users] accu ON accu.Id = an.ManagerId
 LEFT JOIN app.[Users] proju ON proju.Id = an.CommercialManagerId
+LEFT JOIN app.Files fil ON fil.Id = po.FileId
 GROUP BY 
-	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, po.Status, poad.Adjustment
+	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, po.Status, poad.Adjustment
