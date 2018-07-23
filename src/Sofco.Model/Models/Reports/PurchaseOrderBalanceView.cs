@@ -38,5 +38,7 @@ namespace Sofco.Model.Models.Reports
         public string AccountManagerNames { get; set; }
 
         public string ProjectManagerNames { get; set; }
+
+        public int? FileId { get; set; }
     }
 }

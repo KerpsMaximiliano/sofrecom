@@ -19,7 +19,6 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.AccountManagerNames, x => x.MapFrom(_ => DistinctString(_.AccountManagerNames)))
                 .ForMember(s => s.ProjectManagerNames, x => x.MapFrom(_ => DistinctString(_.ProjectManagerNames)));
 
-
             CreateMap<PurchaseOrderBalanceDetailView, PurchaseOrderBalanceDetailViewModel>()
                 .ForMember(s => s.StatusId, x => x.MapFrom(_ => _.Status))
                 .ForMember(s => s.StatusText, x => x.MapFrom(_ => _.Status.ToString()))
