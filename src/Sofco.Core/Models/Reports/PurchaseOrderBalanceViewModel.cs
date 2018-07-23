@@ -35,6 +35,8 @@ namespace Sofco.Core.Models.Reports
 
         public int? FileId { get; set; }
 
+        public string FileName { get; set; }
+
         public string PdfUrl { get; set; }
 
         public List<PurchaseOrderBalanceDetailViewModel> Details { get; set; }
