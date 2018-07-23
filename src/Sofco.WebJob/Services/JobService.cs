@@ -45,7 +45,7 @@ namespace Sofco.WebJob.Services
 
             RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(JobNames.TigerHealthInsurance, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
 
-            //RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(JobNames.LicenseDaysUpdate, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
+            RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(JobNames.LicenseDaysUpdate, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(JobNames.EmployeeResetExamDays, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
 

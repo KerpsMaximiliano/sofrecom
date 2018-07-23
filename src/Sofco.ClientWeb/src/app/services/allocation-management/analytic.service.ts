@@ -52,6 +52,10 @@ export class AnalyticService {
     return this.http.put<any>(`${this.baseUrl}/analytics`, model);
   }
 
+  updateDaf(model) {
+    return this.http.put<any>(`${this.baseUrl}/analytics/daf`, model);
+  }
+
   close(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
   }

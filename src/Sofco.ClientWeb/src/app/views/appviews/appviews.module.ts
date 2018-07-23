@@ -13,12 +13,15 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 import { LaddaModule } from 'angular2-ladda';
 import { UserService } from 'app/services/admin/user.service';
 import { CommonModule } from '@angular/common';
+import { FileService } from 'app/services/common/file.service';
+import { PdfComponent } from 'app/views/appviews/pdf/pdf.component';
 
 @NgModule({
   declarations: [
     StarterViewComponent,
     LoginComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    PdfComponent
   ],
   imports: [
     CommonModule,
@@ -33,9 +36,10 @@ import { CommonModule } from '@angular/common';
   exports: [
     StarterViewComponent,
     LoginComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    PdfComponent
   ],
-  providers: [ CryptographyService, UserService ]
+  providers: [ CryptographyService, UserService, FileService ]
 })
 
 export class AppviewsModule {

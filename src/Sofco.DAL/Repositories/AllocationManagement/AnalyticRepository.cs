@@ -209,5 +209,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Analytics.Any(x => x.ManagerId == managerId && x.Status == AnalyticStatus.Open);
         }
+
+        public void UpdateDaf(Analytic analytic)
+        {
+            context.Entry(analytic).Property("SoftwareLawId").IsModified = true;
+            context.Entry(analytic).Property("ActivityId").IsModified = true;
+        }
     }
 }

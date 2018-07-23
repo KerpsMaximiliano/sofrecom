@@ -105,6 +105,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpPut("daf")]
+        public IActionResult PutDaf([FromBody] AnalyticModel model)
+        {
+            var response = analyticService.UpdateDaf(model.CreateDomainDaf());
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("title/costcenter/{costCenterId}")]
         public IActionResult GetNewTitle(int costCenterId)
         {

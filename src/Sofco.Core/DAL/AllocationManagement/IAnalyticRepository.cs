@@ -49,5 +49,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Analytic> GetByPurchaseOrder(int purchaseOrderId);
 
         bool ExistManagerId(int managerId);
+
+        void UpdateDaf(Analytic analytic);
     }
 }
