@@ -44,6 +44,10 @@ namespace Sofco.Service.Implementations
 
             var uri = $"https://login.windows.net/{azureAdOptions.Tenant}/oauth2/token?api-version=1.1";
 
+            CleanUsername(userLogin);
+
+            var userName = userLogin.UserName;
+
             var password = CryptographyHelper.Decrypt(userLogin.Password);
 
             var pairs = new List<KeyValuePair<string, string>>
@@ -51,7 +55,7 @@ namespace Sofco.Service.Implementations
                 new KeyValuePair<string, string>("grant_type", azureAdOptions.GrantType),
                 new KeyValuePair<string, string>("client_id", azureAdOptions.ClientId),
                 new KeyValuePair<string, string>("resource", azureAdOptions.Audience),
-                new KeyValuePair<string, string>("username", $"{userLogin.UserName}{azureAdOptions.Domain}"),
+                new KeyValuePair<string, string>("username", $"{userName}{azureAdOptions.Domain}"),
                 new KeyValuePair<string, string>("password", password)
              };
 
@@ -64,7 +68,7 @@ namespace Sofco.Service.Implementations
                 return response;
             }
 
-            if (unitOfWork.UserRepository.IsActive($"{userLogin.UserName}@{appSetting.Domain}"))
+            if (unitOfWork.UserRepository.IsActive($"{userName}@{appSetting.Domain}"))
             {
                 response.Data = Translate(result.Data);
 
@@ -74,6 +78,14 @@ namespace Sofco.Service.Implementations
             response.Messages.Add(new Message(Resources.Admin.User.UserInactive, MessageType.Error));
 
             return response;
+        }
+
+        private void CleanUsername(UserLogin userLogin)
+        {
+            if (userLogin.UserName.IndexOf('@') > -1)
+            {
+                userLogin.UserName = userLogin.UserName.Split('@')[0];
+            }
         }
 
         public Response<UserTokenModel> Refresh(UserLoginRefresh userLoginRefresh)
