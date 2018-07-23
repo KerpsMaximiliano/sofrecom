@@ -3,11 +3,11 @@ using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Jobs
 {
-    public class EmployeeSyncJob : IEmployeeSyncJob
+    public class EmployeeSyncActionJob : IEmployeeSyncActionJob
     {
-        private readonly IEmployeeSyncJobService jobService;
+        private readonly IEmployeeSyncActionJobService jobService;
 
-        public EmployeeSyncJob(IEmployeeSyncJobService jobService)
+        public EmployeeSyncActionJob(IEmployeeSyncActionJobService jobService)
         {
             this.jobService = jobService;
         }
