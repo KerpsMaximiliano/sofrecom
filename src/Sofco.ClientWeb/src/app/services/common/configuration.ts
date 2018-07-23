@@ -11,10 +11,12 @@ export class  Configuration {
     crmCloseStatusCode: string;
 
     public spanishLang = 'es';
+    public frenchLang = 'fr';
+    public englishLang = 'en';
     public currLang = 'es';
 
     constructor(public tr: TranslateService){
-        tr.addLangs([this.spanishLang]);
+        tr.addLangs([this.spanishLang, this.englishLang, this.frenchLang]);
         tr.setDefaultLang(this.spanishLang);
         tr.use(this.spanishLang);
 
@@ -23,9 +25,9 @@ export class  Configuration {
     }
 
     setCurrLang(currLang: string){
-        return;
-        // this.currLang = currLang;
-        // this.tr.use(this.currLang);
+        this.currLang = currLang;
+        this.tr.use(this.currLang);
+        localStorage.setItem('lang', this.currLang);
     }
 
     getHeaders(){

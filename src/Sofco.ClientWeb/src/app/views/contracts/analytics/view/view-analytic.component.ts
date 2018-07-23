@@ -20,6 +20,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
+    editSubscrip: Subscription;
     public showClientButton = true;
 
     @ViewChild('confirmModal') confirmModal;
@@ -47,12 +48,18 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         $('input').attr('disabled', 'disabled');
         $('textarea').attr('disabled', 'disabled');
         $('select').attr('disabled', 'disabled');
+
+        if(this.menuService.hasFunctionality('ALLOC', 'DAF-EDIT-ANA')){
+            $('#softwareLaw select').removeAttr('disabled');
+            $('#activity select').removeAttr('disabled');
+        }
     }
 
     ngOnDestroy(): void {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
+        if (this.editSubscrip) this.editSubscrip.unsubscribe();
     }
 
     getAnalytic() {
@@ -112,5 +119,20 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     goToResources(){
         sessionStorage.setItem('analyticName', this.form.model.title + ' - ' + this.form.model.name);
         this.router.navigate([`/contracts/analytics/${this.form.model.id}/resources`]);
+    }
+
+    edit() {
+        this.messageService.showLoading();
+
+        this.editSubscrip = this.analyticService.updateDaf(this.form.model).subscribe(
+            data => {
+                this.messageService.closeLoading();
+                if(data.messages) this.messageService.showMessages(data.messages);
+                this.router.navigate(['contracts/analytics']);
+            },
+            err => {
+                this.messageService.closeLoading();
+                this.errorHandlerService.handleErrors(err);
+            });
     }
 }

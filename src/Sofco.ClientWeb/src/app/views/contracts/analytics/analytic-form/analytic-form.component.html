@@ -85,10 +85,10 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two [label]="'allocationManagement.analytics.add.softwareLaw'" [(value)]="model.softwareLawId" [options]="options?.softwareLaws"></select-two>
+                <select-two id="softwareLaw" [label]="'allocationManagement.analytics.add.softwareLaw'" [(value)]="model.softwareLawId" [options]="options?.softwareLaws"></select-two>
             </div>
             <div class="col-sm-6">
-                <select-two [label]="'allocationManagement.analytics.add.activity'" [(value)]="model.activityId" [options]="options?.activities"></select-two>
+                <select-two id="activity" [label]="'allocationManagement.analytics.add.activity'" [(value)]="model.activityId" [options]="options?.activities"></select-two>
             </div>
         </div>
     </div>

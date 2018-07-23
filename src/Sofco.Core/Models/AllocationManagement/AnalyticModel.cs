@@ -125,5 +125,17 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.UsersQv = string.Join(";", UsersQv);
             domain.CostCenterId = CostCenterId;
         }
+
+        public Analytic CreateDomainDaf()
+        {
+            var domain = new Analytic
+            {
+                Id = Id,
+                SoftwareLawId = SoftwareLawId,
+                ActivityId = ActivityId
+            };
+
+            return domain;
+        }
     }
 }

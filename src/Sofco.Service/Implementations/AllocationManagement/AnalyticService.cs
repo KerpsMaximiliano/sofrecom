@@ -132,6 +132,30 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response UpdateDaf(Analytic analytic)
+        {
+            var response = new Response<Analytic>();
+
+            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                unitOfWork.AnalyticRepository.UpdateDaf(analytic);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Analytic.UpdateSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public ICollection<Analytic> GetAll()
         {
             return unitOfWork.AnalyticRepository.GetAllReadOnly();

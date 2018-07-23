@@ -21,20 +21,20 @@ export class TopNavbarComponent {
 
   constructor(
         public configService: Configuration, 
-        private translateService: TranslateService,
         private authService: AuthenticationService,
         private router: Router,
         public menuService: MenuService){
 
-        var lang = 'es';
+        configService.setCurrLang('es');
 
-        if(lang){
-          configService.setCurrLang(lang);
-        }
-        else{
-          lang = translateService.getBrowserLang();
-          configService.setCurrLang(lang);
-        }
+        // var lang =  Cookie.get("lang");
+
+        // if(lang){
+        //   configService.setCurrLang(lang);
+        // }
+        // else{
+        //   configService.setCurrLang('es');
+        // }
 
       this.userName = this.menuService.currentUser;
 

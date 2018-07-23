@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<List<SelectListModel>> GetServicesOptions(string customerId, bool getAll)
         {
-            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
+            if (string.IsNullOrWhiteSpace(customerId) || customerId == "null") return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
 
             var result = GetServices(customerId, getAll);
 

@@ -38,5 +38,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters);
 
         Response<byte[]> CreateReport(List<int> analytics);
+
+        Response UpdateDaf(Analytic analytic);
     }
 }

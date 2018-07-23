@@ -32,6 +32,10 @@
                 <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('ALLOC', 'CLOSE')"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>   
+
+                <button (click)="edit()" class="btn btn-primary btn-outline dim" *ngIf="form.model.status != 2 && menuService.hasFunctionality('ALLOC', 'DAF-EDIT-ANA')">
+                    {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> 
+                </button>
             </div>
         </div>
     </div>
