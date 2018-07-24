@@ -19,7 +19,7 @@ using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Jobs
 {
-    public class EmployeeSyncJobService : IEmployeeSyncJobService
+    public class EmployeeSyncActionJobService : IEmployeeSyncActionJobService
     {
         private const int FromLastMonth = -1;
 
@@ -35,14 +35,14 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        private readonly ILogMailer<EmployeeSyncJobService> logger;
+        private readonly ILogMailer<EmployeeSyncActionJobService> logger;
 
         private readonly IMailBuilder mailBuilder;
 
-        public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
+        public EmployeeSyncActionJobService(ITigerEmployeeRepository tigerEmployeeRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILogMailer<EmployeeSyncJobService> logger,
+            ILogMailer<EmployeeSyncActionJobService> logger,
             IMailSender mailSender,
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
         {
