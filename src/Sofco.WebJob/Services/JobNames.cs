@@ -15,5 +15,7 @@
          public const string EmployeeResetExamDays = "EmployeeResetExamDays";
 
         public const string LicenseCertificatePending = "LicenseCertificatePending";
+
+        public const string EmployeeProfileHistory = "EmployeeProfileHistory";
     }
 }

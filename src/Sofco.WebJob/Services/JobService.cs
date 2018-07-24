@@ -4,6 +4,7 @@ using System.Linq;
 using Hangfire;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Services.Admin;
+using Sofco.Core.Services.Jobs;
 using Sofco.Model.Models.Admin;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Helpers;
@@ -54,6 +55,8 @@ namespace Sofco.WebJob.Services
             var licenseCertificatePending = licenseCertificatePendingDayOfMonth != null ? Cron.Monthly(int.Parse(licenseCertificatePendingDayOfMonth.Value)) : Cron.Monthly(25);
 
             RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(JobNames.LicenseCertificatePending, j => j.Execute(), licenseCertificatePending, localTimeZone);
+
+            RecurringJob.AddOrUpdate<IEmployeeSyncProfileJobService>(JobNames.EmployeeProfileHistory, j => j.Sync(), Cron.Weekly(DayOfWeek.Monday, 11), localTimeZone);
         }
 
         private void ClearJobs()
