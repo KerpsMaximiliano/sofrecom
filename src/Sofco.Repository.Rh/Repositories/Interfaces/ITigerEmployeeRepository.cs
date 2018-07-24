@@ -11,5 +11,7 @@ namespace Sofco.Repository.Rh.Repositories.Interfaces
         IList<TigerEmployee> GetWithEndDate(DateTime endDate);
 
         List<TigerEmployee> GetByLegajs(int[] legajs);
+
+        List<TigerEmployee> GetActive();
     }
 }

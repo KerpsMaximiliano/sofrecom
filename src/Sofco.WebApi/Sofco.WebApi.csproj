@@ -31,6 +31,8 @@
     <Compile Remove="Migrations\20180702153817_UserDelegateServiceId.Designer.cs" />
     <Compile Remove="Migrations\20180717183228_Functionality.cs" />
     <Compile Remove="Migrations\20180717183228_Functionality.Designer.cs" />
+    <Compile Remove="Migrations\20180723204800_EmployeeProfileHistory.cs" />
+    <Compile Remove="Migrations\20180723204800_EmployeeProfileHistory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

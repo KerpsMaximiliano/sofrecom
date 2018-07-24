@@ -81,5 +81,12 @@ FROM
                 .FromSql(sql, sqlParameter)
                 .ToList();
         }
+
+        public List<TigerEmployee> GetActive()
+        {
+            var sql = string.Format("{0} WHERE {1}", TigerEmployeeSql, " febaj IS NOT NULL");
+
+            return TigerEmployeeSet.FromSql(sql).ToList();
+        }
     }
 }
