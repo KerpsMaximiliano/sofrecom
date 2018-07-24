@@ -3,7 +3,7 @@ import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 
 declare var $: any;
 

@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { Service } from 'app/services/common/service';
@@ -20,7 +22,7 @@ export class UserService {
     }
 
     getByEmail() {
-       return this.http.get<any>(`${this.baseUrl}/users/email/`).map((res: Response) => res['data']);
+       return this.http.get<any>(`${this.baseUrl}/users/email/`).pipe(map((res: Response) => res['data']));
     }
 
     searchByEmail(mail: string) {

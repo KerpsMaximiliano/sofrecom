@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
@@ -67,9 +69,9 @@ export class PurchaseOrderService {
     return this.http.get(`${this.baseUrl}/purchaseOrders/export/${id}`, {
       responseType: 'arraybuffer',
       observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
 
   getReport(params) {

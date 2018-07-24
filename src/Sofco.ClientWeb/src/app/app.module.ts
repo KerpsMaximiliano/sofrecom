@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
 import { Service } from 'app/services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,7 +17,6 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 // App modules/components
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
-import { ToastrModule } from 'toastr-ng2';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -35,10 +34,11 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 import { LaddaModule } from 'angular2-ladda';
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
-import { NgxInactivity } from 'ngx-inactivity';
+// import { NgxInactivity } from 'ngx-inactivity';
 import { SettingsService } from 'app/services/admin/settings.service';
+import { ToastrModule } from 'ngx-toastr';
 
-export function HttpLoaderFactory(http: Http) {
+export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
 }
 
@@ -56,7 +56,7 @@ export function HttpLoaderFactory(http: Http) {
     ToastrModule.forRoot(),
     appRouter,
     ChartsModule,
-    NgxInactivity,
+    // NgxInactivity,
     LaddaModule.forRoot({
       style: "zoom-in",
       spinnerSize: 30,
@@ -67,7 +67,7 @@ export function HttpLoaderFactory(http: Http) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [Http]
+        deps: [HttpClient]
       }
     }),
     HttpClientModule,
@@ -95,7 +95,7 @@ export function HttpLoaderFactory(http: Http) {
     CryptographyService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     AuthService,
-    { provide: LOCALE_ID, useValue: "es-Ar" }
+    // { provide: LOCALE_ID, useValue: "es-Ar" }
   ],
   bootstrap: [AppComponent]
 })

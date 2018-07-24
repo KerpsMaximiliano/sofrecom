@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router, ActivatedRouteSnapshot, ActivatedRoute } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
 import { LicenseService } from "app/services/human-resources/licenses.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";

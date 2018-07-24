@@ -1,5 +1,6 @@
 <!-- Wrapper-->
-<div id="wrapper" [ngxInactivity]="30" (ngxInactivityCallback)="handleInactivityCallback()">
+<!-- <div id="wrapper" [ngxInactivity]="30" (ngxInactivityCallback)="handleInactivityCallback()"> -->
+<div id="wrapper">
 
   <!-- Left navigation bar -->
   <navigation></navigation>
@@ -19,9 +20,9 @@
   </div>
   <!-- End page wrapper-->
 
-  <ng2-modal [config]="inactivityModalConfig" #inactivityModal (accept)="accept()">
+  <!-- <ng2-modal [config]="inactivityModalConfig" #inactivityModal (accept)="accept()">
     <h4>{{ 'ACTIONS.sessionExpiredMessage' | translate }}</h4>
-  </ng2-modal>
+  </ng2-modal> -->
   
 </div>
 <!-- End wrapper-->

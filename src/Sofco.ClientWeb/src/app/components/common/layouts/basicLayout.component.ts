@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { detectBody } from '../../../app.helpers';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+// import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { AuthenticationService } from 'app/services/common/authentication.service';
 import { Router } from '@angular/router';
 
@@ -16,16 +15,16 @@ declare var jQuery:any;
 })
 export class BasicLayoutComponent {
 
-  @ViewChild('inactivityModal') inactivityModal;
-  public inactivityModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-      "ACTIONS.sessionExpiredTitle",
-      "inactivityModal",
-      true,
-      false,
-      "HOME.logout",
-      "ACTIONS.cancel",
-      false
-  );
+  // @ViewChild('inactivityModal') inactivityModal;
+  // public inactivityModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+  //     "ACTIONS.sessionExpiredTitle",
+  //     "inactivityModal",
+  //     true,
+  //     false,
+  //     "HOME.logout",
+  //     "ACTIONS.cancel",
+  //     false
+  // );
 
   constructor(private authService: AuthenticationService,
               private router: Router){
@@ -72,19 +71,19 @@ export class BasicLayoutComponent {
     detectBody();
   }
 
-  handleInactivityCallback(){
-    localStorage.setItem('mustLogout', "true");
-    this.inactivityModal.show();
-  }
+  // handleInactivityCallback(){
+  //   localStorage.setItem('mustLogout', "true");
+  //   this.inactivityModal.show();
+  // }
 
-  accept(){
-    this.inactivityModal.hide();
+  // accept(){
+  //   this.inactivityModal.hide();
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 500);
 
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+  //   this.authService.logout();
+  //   this.router.navigate(['/login']);
+  // }
 }

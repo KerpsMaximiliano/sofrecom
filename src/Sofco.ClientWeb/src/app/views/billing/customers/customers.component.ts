@@ -1,6 +1,6 @@
 import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { CustomerService } from "app/services/billing/customer.service";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";

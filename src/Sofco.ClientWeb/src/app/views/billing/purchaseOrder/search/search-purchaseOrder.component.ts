@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';

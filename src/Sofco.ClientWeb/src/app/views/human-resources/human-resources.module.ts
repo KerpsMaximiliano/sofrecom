@@ -7,9 +7,6 @@ import { ICheckModule } from "app/components/icheck/icheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUploadModule } from 'ng2-file-upload';
-
-import { NgDatepickerModule } from 'ng2-datepicker';
-
 import { Select2Module } from 'app/components/select2/select2';
 import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
 import { LicenseService } from 'app/services/human-resources/licenses.service';

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } 
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { MessageService } from 'app/services/common/message.service';
 import { InvoiceService } from 'app/services/billing/invoice.service';
 declare var PDFJS: any;

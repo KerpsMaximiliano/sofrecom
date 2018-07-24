@@ -1,7 +1,7 @@
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { InvoiceService } from 'app/services/billing/invoice.service';

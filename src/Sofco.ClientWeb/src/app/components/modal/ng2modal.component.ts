@@ -47,11 +47,12 @@ export class Ng2ModalComponent implements OnInit {
 
   hide(){
     this.resetButtons();
-    this.isProcessing = false;
     $('#' + this.config.id).modal('toggle');
   }
 
   resetButtons(){
+    this.isProcessing = false;
+
     if(this.btnDelete){
       this.btnDelete.reset();
     }

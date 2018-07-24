@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Solfac } from 'app/models/billing/solfac/solfac';
 import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
@@ -328,7 +328,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         if(data.data && data.data.length > 0){
 
           data.data.forEach(element => {
-            this.invoicesRelated.push({ id: element.id, invoiceNumber: element.invoiceNumber, pdfFileName: element.pdfFileData.fileName });
+            this.invoicesRelated.push({ id: element.id, invoiceNumber: element.invoiceNumber, pdfFileName: element.pDfFileData.fileName });
           });
 
           this.invoices = this.invoices.filter(item => {

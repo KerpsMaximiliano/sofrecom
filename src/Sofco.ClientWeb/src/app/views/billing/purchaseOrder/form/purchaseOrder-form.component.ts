@@ -1,7 +1,7 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";

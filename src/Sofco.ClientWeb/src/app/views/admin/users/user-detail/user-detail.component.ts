@@ -1,5 +1,5 @@
 import { MessageService } from 'app/services/common/message.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';

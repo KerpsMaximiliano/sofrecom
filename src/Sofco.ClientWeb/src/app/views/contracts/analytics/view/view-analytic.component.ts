@@ -3,7 +3,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";

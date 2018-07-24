@@ -1,9 +1,11 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { MenuService } from 'app/services/admin/menu.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class SolfacService {
@@ -119,9 +121,9 @@ export class SolfacService {
     return this.http.get(`${this.baseUrl}/solfacs/file/${id}/download`, {
        responseType: 'arraybuffer',
        observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
 
   getFile(id) {

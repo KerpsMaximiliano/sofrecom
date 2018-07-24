@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "app/services/common/service";
@@ -76,8 +78,8 @@ export class AnalyticService {
     return this.http.post(`${this.baseUrl}/analytics/report`, ids, {
       responseType: 'arraybuffer',
       observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
 }

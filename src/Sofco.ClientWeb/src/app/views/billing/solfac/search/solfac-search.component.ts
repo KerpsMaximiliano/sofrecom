@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Option } from "app/models/option";

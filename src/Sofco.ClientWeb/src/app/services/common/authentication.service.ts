@@ -1,6 +1,8 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
+
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from "app/services/common/service";
 import { CryptographyService } from "app/services/common/cryptography.service";
@@ -18,7 +20,7 @@ export class AuthenticationService {
             password: this.cryptoService.encrypt(password)
         };
 
-        return this.http.post(`${this.service.UrlApi}/login`, json, { headers: this.service.getLoginHeaders()}).map(this.loginResponseHanlder);
+        return this.http.post(`${this.service.UrlApi}/login`, json, { headers: this.service.getLoginHeaders()}).pipe(map(this.loginResponseHanlder));
     }
 
     loginResponseHanlder(response: Response)

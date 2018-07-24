@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
@@ -85,17 +87,17 @@ export class LicenseService {
     return this.http.get(`${this.baseUrl}/licenses/file/${id}`, {
       responseType: 'arraybuffer',
       observe: 'response'
-   }).map((res: any) => {
+   }).pipe(map((res: any) => {
      return new Blob([res.body], { type: 'application/octet-stream' });
-   });
+   }));
   }
 
   createReport(json) {
     return this.http.post(`${this.baseUrl}/licenses/report`, json, {
       responseType: 'arraybuffer',
       observe: 'response'
-   }).map((res: any) => {
+   }).pipe(map((res: any) => {
      return new Blob([res.body], { type: 'application/octet-stream' });
-   });
+   }));
   }
 }

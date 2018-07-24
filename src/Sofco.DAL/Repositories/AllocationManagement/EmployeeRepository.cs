@@ -56,7 +56,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             {
                 var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
 
-                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id)).ToList();
+                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
             }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))

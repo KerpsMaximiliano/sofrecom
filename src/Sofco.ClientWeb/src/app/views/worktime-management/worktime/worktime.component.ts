@@ -359,6 +359,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.addRecentTask(res.data);
     },
     error => {
+      this.editModal.resetButtons();
       this.errorHandlerService.handleErrors(error);
     });
   }
@@ -542,6 +543,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     if (totalHours > this.appSetting.WorkingHoursPerDaysMax) {
       this.messageService.showErrorByFolder("workTimeManagement/workTime", "hoursMaxError?" + this.appSetting.WorkingHoursPerDaysMax);
       (<any>$('#calendar')).fullCalendar('removeEvents', function(evt) { return evt.id === 0; });
+
+      this.editModal.resetButtons();
       return false;
     }
 

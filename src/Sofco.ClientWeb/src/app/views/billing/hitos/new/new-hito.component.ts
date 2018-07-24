@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { MessageService } from 'app/services/common/message.service';
 import { ProjectService } from 'app/services/billing/project.service';
 import { NewHito } from 'app/models/billing/solfac/newHito';

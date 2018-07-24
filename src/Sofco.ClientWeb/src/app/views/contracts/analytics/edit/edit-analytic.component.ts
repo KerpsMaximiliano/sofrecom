@@ -3,9 +3,10 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { I18nService } from "app/services/common/i18n.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
 
@@ -37,6 +38,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
                 private router: Router,
                 private messageService: MessageService,
+                public menuService: MenuService,
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 private errorHandlerService: ErrorHandlerService){
@@ -153,10 +155,5 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         sessionStorage.setItem('customerName', this.form.model.clientExternalName);
         sessionStorage.setItem('serviceName', this.form.model.service);
         this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/projects`]);
-    }
-    
-    goToResources(){
-        sessionStorage.setItem('analyticName', this.form.model.title + ' - ' + this.form.model.name);
-        this.router.navigate([`/billing/customers/${this.form.model.clientExternalId}/services/${this.form.model.serviceId}/resources`]);
     }
 } 

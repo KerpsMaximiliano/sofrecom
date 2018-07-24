@@ -2,7 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Invoice } from "app/models/billing/invoice/invoice";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { MessageService } from "app/services/common/message.service";

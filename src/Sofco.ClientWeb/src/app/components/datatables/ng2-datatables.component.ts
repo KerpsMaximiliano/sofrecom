@@ -9,7 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter, Directive, ElementRef, 
 import { DatatablesEditionType } from "./datatables.edition-type";
 import { DatatablesAlignment } from "./datatables.alignment";
 import { Subject } from 'rxjs/Rx';
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from "rxjs";
 import { MenuService } from 'app/services/admin/menu.service';
 import { Configuration } from 'app/services/common/configuration';
 declare var $: any;
