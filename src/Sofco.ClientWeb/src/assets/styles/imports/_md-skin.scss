@@ -10,9 +10,12 @@ body.md-skin {
 
 .md-skin {
 
-  .nav-header {
-    background: url("#{$asset-path}/4.png") no-repeat;
-
+  // .nav-header {
+  //   background: url("#{$asset-path}/4.png") no-repeat;
+  // }
+  .navbar-default {
+    background-color: #2F4050;
+    border-color: $nav-bg;
   }
 
   .label, .badge {
@@ -28,7 +31,7 @@ body.md-skin {
   }
 
   .wrapper-content {
-    padding: 30px 20px 40px;
+    padding: 10px 0px 25px;
   }
 
   @media (max-width: 768px) {
@@ -107,7 +110,8 @@ body.md-skin {
   }
 
   .nav > li > a {
-    color: $text-color;
+    // color: $text-color;
+    color: white;
     padding: 14px 20px 14px 25px;
   }
 
@@ -116,13 +120,15 @@ body.md-skin {
   }
 
   .nav > li.active > a {
-    color: darken($text-color, 5%);
+    // color: darken($text-color, 5%);
+    color: white;
     font-weight: 700;
   }
 
   .navbar-default .nav > li > a:hover, .navbar-default .nav > li > a:focus {
     font-weight: 700;
-    color: darken($text-color, 5%);
+    // color: darken($text-color, 5%);
+    color: white;
   }
 
   .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
@@ -142,7 +148,8 @@ body.md-skin {
   }
 
   .nav > li.active {
-    background: lighten($gray, 2%);
+    // background: lighten($gray, 2%);
+    background: #2F4050;
   }
 
   .nav-second-level li a {
@@ -210,7 +217,7 @@ body.md-skin {
   }
 
   .navbar-fixed-top, .navbar-static-top {
-    background-color: $md-color-primary !important;
+    background-color: #2F4050;
     box-shadow: $md-shadow-main;
   }
 

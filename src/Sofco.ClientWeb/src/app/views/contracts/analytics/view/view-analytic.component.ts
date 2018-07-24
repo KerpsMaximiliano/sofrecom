@@ -49,7 +49,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         $('textarea').attr('disabled', 'disabled');
         $('select').attr('disabled', 'disabled');
 
-        if(this.menuService.hasFunctionality('ALLOC', 'DAF-EDIT-ANA')){
+        if(this.menuService.hasFunctionality('CONTR', 'DAF-EDIT-ANA')){
             $('#softwareLaw select').removeAttr('disabled');
             $('#activity select').removeAttr('disabled');
         }

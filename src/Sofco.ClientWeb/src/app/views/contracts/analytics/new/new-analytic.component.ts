@@ -1,7 +1,6 @@
 import { Component, OnDestroy, ViewChild } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs/Subscription";
@@ -18,7 +17,6 @@ export class NewAnalyticComponent implements OnInit, OnDestroy {
     addSubscrip: Subscription;
 
     constructor(private analyticService: AnalyticService,
-                private router: Router,
                 private messageService: MessageService,
                 private errorHandlerService: ErrorHandlerService){
     }
