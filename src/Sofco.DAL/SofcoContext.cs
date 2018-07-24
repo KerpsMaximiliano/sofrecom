@@ -140,6 +140,7 @@ namespace Sofco.DAL
             builder.MapEmployeeCategory();
             builder.MapWorkTime();
             builder.MapPurchaseOrderAnalytic();
+            builder.MapEmployeeProfileHistory();
         }
     }
 }
