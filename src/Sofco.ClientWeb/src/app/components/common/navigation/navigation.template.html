@@ -60,8 +60,9 @@
             <li [ngClass]="{active: activeRoute('news')}" *ngIf="menuService.hasFunctionality('ALLOC', 'NEWSQ')"><a [routerLink]="['/rrhh/news']">{{'allocationManagement.news.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('allocationsReport')}" *ngIf="menuService.hasFunctionality('ALLOC', 'PMORP')"><a [routerLink]="['/allocationManagement/allocationsReport']">{{'allocationManagement.report.report' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a [routerLink]="['/rrhh/licenses']">{{'rrhh.licenses' | translate }} (RRHH)</a></li>
-            <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a [routerLink]="['/rrhh/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('licenses/managers')}" *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a [routerLink]="['/rrhh/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('licenses/views')}" *ngIf="menuService.hasFunctionality('CTRLI', 'LIC_VIEW_DELEGATE')"><a [routerLink]="['/rrhh/licenses/views/delegates']">{{'rrhh.license.delegate.viewTitle' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('workTimeApproval/delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
         </ul>
       </li> 
 
