@@ -721,7 +721,11 @@
             "holidaysByLaw": "Vacaciones por ley",
             "finalizeExtraHolidays": "Finalizar Acuerdo",
             "cancelComments": "Se debe agregar un motivo para cancelar",
-            "addCancelComments": "Ingrese los motivos para cancelar"
+            "addCancelComments": "Ingrese los motivos para cancelar",
+            "delegate": {
+                "viewTitle": "Delegar Vista Licencia",
+                "delegateAction": "Delegar"
+            }
         }
     },
     "ACTIONS":{
