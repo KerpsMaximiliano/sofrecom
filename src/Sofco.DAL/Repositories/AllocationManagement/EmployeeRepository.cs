@@ -176,6 +176,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
 
             Update(storedItem, employee);
+
+            context.SaveChanges();
         }
 
         public void Update(List<Employee> employees)
@@ -186,13 +188,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             foreach(var item in employees)
             {
-                if(storedNumbers.Contains(item.EmployeeNumber))
-                {
-                    var updateItem = storedItems
-                        .First(s => s.EmployeeNumber == item.EmployeeNumber);
+                if (!storedNumbers.Contains(item.EmployeeNumber)) continue;
 
-                    Update(updateItem, item);
-                }
+                var updateItem = storedItems.First(s => s.EmployeeNumber == item.EmployeeNumber);
+
+                Update(updateItem, item);
             }
 
             context.SaveChanges();
