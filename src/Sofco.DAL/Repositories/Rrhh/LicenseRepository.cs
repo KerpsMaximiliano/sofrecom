@@ -80,6 +80,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Where(x => x.ManagerId == managerId).ToList();
         }
 
+        public ICollection<License> GetByManagerIds(List<int> managerIds)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => managerIds.Contains(x.ManagerId)).ToList();
+        }
+
         public ICollection<License> GetByManagerAndStatus(LicenseStatus statusId, int managerId)
         {
             return context.Licenses
