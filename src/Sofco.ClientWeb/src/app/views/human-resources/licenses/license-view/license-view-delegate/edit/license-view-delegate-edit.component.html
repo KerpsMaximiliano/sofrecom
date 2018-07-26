@@ -1,14 +1,14 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>{{'billing.purchaseOrder.delegate.activeTitle' | translate }}</h2>
+        <h2>{{'rrhh.license.delegate.viewTitle' | translate }}</h2>
         <ol class="breadcrumb no-print">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
-            <li>{{'billing.title' | translate }}</li>
-            <li>{{'billing.purchaseOrder.title' | translate }}</li>
+            <li>{{'rrhh.title' | translate }}</li>
+            <li>{{'rrhh.licenses' | translate }}</li>
             <li class="active">
-                <strong>{{'billing.purchaseOrder.delegate.activeTitle' | translate }}</strong>
+                <strong>{{'rrhh.license.delegate.viewTitle' | translate }}</strong>
             </li>
         </ol>
     </div>
@@ -46,7 +46,7 @@
                 <div style="float:left;margin-right:10px" [hidden]="!showSave()">
                     <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
                 </div>
-                <a class="btn btn-link btn-success text-white" [routerLink]="['/billing/purchaseOrders/active/delegate']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
+                <a class="btn btn-link btn-success text-white" [routerLink]="['/rrhh/licenses/views/delegates']"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
             </div>
 
         </div>
