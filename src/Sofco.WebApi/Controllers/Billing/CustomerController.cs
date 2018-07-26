@@ -19,7 +19,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
-            var response = customerService.GetCustomersOptions(false);
+            var response = customerService.GetCustomersOptions();
 
             return this.CreateResponse(response);
         }
@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("all/options")]
         public IActionResult GetAllOptions()
         {
-            var response = customerService.GetCustomersOptions(true);
+            var response = customerService.GetCustomersOptions();
 
             return this.CreateResponse(response);
         }
@@ -43,7 +43,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet]
         public IActionResult Get()
         {
-            var response = customerService.GetCustomers(false);
+            var response = customerService.GetCustomers();
 
             return this.CreateResponse(response);
         }

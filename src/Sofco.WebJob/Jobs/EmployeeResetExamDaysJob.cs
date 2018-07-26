@@ -11,7 +11,7 @@ namespace Sofco.WebJob.Jobs
         {
             this.service = service;
         }
-
+         
         public void Execute()
         {
             service.ResetExamDays();

@@ -1,10 +1,12 @@
-﻿namespace Sofco.Domain.Crm.Billing
+﻿namespace Sofco.Model.Models.Billing
 {
-    public class CrmCustomer
+    public class Customer
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string CrmId { get; set; }
+
+        public string Name { get; set; }
 
         public string Telephone { get; set; }
 
@@ -18,7 +20,7 @@
 
         public string Country { get; set; }
 
-        public string CUIT { get; set; }
+        public string Cuit { get; set; }
 
         public string CurrencyId { get; set; }
 
@@ -31,5 +33,7 @@
         public string PaymentTermDescription { get; set; }
 
         public string OwnerId { get; set; }
+
+        public bool Active { get; set; }
     }
 }
