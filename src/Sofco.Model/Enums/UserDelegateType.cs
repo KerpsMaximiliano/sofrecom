@@ -12,6 +12,8 @@
 
         PurchaseOrderApprovalDaf,
 
-        PurchaseOrderActive
+        PurchaseOrderActive,
+
+        LicenseView
     }
 }

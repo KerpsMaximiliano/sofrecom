@@ -34,21 +34,23 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var procesedEmployees = Translate(tigerEmployeeRepository.GetActive());
 
+            TrimStringFields(procesedEmployees);
+
             var employees = unitOfWork.EmployeeRepository.GetAll();
 
-            foreach (var employee in employees)
+            foreach (var stored in employees)
             {
-                var current = procesedEmployees.FirstOrDefault(s => s.EmployeeNumber == employee.EmployeeNumber);
-                if(current == null) continue;
+                var newEmployee = procesedEmployees.FirstOrDefault(s => s.EmployeeNumber == stored.EmployeeNumber);
+                if(newEmployee == null) continue;
 
-                var modifiedFields = ElementComparerHelper.CompareModification(current, employee, GetFieldToCompare());
+                var modifiedFields = ElementComparerHelper.CompareModification(newEmployee, stored, GetFieldToCompare());
                 if (!modifiedFields.Any()) continue;
 
-                employeeProfileHistoryRepository.Save(CreateProfileHistory(employee, current, modifiedFields));
+                employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
 
-                ElementComparerHelper.ApplyModifications(current, employee, modifiedFields);
+                ElementComparerHelper.ApplyModifications(stored, newEmployee, modifiedFields);
 
-                unitOfWork.EmployeeRepository.Save(current);
+                unitOfWork.EmployeeRepository.Save(stored);
             }
         }
 
@@ -69,6 +71,16 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.PrepaidHealthCode),
                 nameof(Employee.OfficeAddress)
             };
+        }
+
+        private void TrimStringFields(List<Employee> employees)
+        {
+            foreach (var employee in employees)
+            {
+                employee.Name = employee.Name?.Trim();
+                employee.Technology = employee.Technology?.Trim();
+                employee.Seniority = employee.Seniority?.Trim();
+            }
         }
 
         private EmployeeProfileHistory CreateProfileHistory(Employee current, Employee previous, string[] modifiedFields)

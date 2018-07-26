@@ -10,7 +10,7 @@ import { WorktimeService } from 'app/services/worktime-management/worktime.servi
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { TaskService } from 'app/services/admin/task.service';
-import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
+import { WorkTimeTaskModel } from 'app/models/worktime-management/workTimeTask.model';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
 import { AppSetting } from 'app/services/common/app-setting';

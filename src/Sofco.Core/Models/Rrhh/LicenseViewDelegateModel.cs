@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Sofco.Core.Models.Billing.PurchaseOrder
+namespace Sofco.Core.Models.Rrhh
 {
-    public class PurchaseOrderActiveDelegateModel
+    public class LicenseViewDelegateModel
     {
         public int Id { get; set; }
 

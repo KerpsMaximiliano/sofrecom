@@ -27,17 +27,22 @@ import { EmployeeService } from 'app/services/allocation-management/employee.ser
 import { EmployeeNewsService } from 'app/services/allocation-management/employee-news.service';
 import { NewsComponent } from 'app/views/human-resources/news/news.component';
 import { AddLicenseModule } from 'app/views/human-resources/licenses/add/add-license.module';
+import { LicenseViewDelegateComponent } from './licenses/license-view/license-view-delegate/license-view-delegate.component';
+import { LicenseViewDelegateService } from '../../services/human-resources/license-view-delegate.service';
+import { LicenseViewDelegateEditComponent } from './licenses/license-view/license-view-delegate/edit/license-view-delegate-edit.component';
+import { ServiceService } from '../../services/billing/service.service';
+import { CustomerService } from '../../services/billing/customer.service';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
-                NewsComponent],
+                NewsComponent, LicenseViewDelegateComponent, LicenseViewDelegateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter],
 
-  providers   : [LicenseService, EmployeeService, EmployeeNewsService],
-  
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService, LicenseViewDelegateService, ServiceService, CustomerService],
+
   exports     : []
 })
  
