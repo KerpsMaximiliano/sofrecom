@@ -1,9 +1,7 @@
-﻿namespace Sofco.Domain.Crm.Billing
+﻿namespace Sofco.Core.Models.Billing
 {
-    public class CrmCustomer
+    public class CustomerGeneralData
     {
-        public string Id { get; set; }
-
         public string Nombre { get; set; }
 
         public string Telephone { get; set; }
@@ -29,7 +27,5 @@
         public int? PaymentTermCode { get; set; }
 
         public string PaymentTermDescription { get; set; }
-
-        public string OwnerId { get; set; }
     }
 }

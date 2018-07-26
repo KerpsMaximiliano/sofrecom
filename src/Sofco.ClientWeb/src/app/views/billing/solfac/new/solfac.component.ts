@@ -186,7 +186,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
 
       if(customer){
-        this.model.businessName = customer.nombre;
+        this.model.businessName = customer.name;
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
 

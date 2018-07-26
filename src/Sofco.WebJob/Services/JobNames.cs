@@ -17,5 +17,7 @@
         public const string LicenseCertificatePending = "LicenseCertificatePending";
 
         public const string EmployeeProfileHistory = "EmployeeProfileHistory";
+
+        public const string CustomerUpdate = "CustomerUpdate";
     }
 }

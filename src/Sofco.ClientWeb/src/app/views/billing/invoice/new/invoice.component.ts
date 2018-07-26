@@ -62,8 +62,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.customer = JSON.parse(sessionStorage.getItem("customer"));
 
         if(this.customer){
-            this.model.customerId = this.customer.id;
-            this.model.accountName = this.customer.nombre;
+            this.model.customerId = this.customer.crmId;
+            this.model.accountName = this.customer.name;
             this.model.address = this.customer.address;
             this.model.zipcode = this.customer.postalCode;
             this.model.city = this.customer.city;
@@ -73,8 +73,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
         else{
             this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
-                this.model.customerId = data.id;
-                this.model.accountName = data.nombre;
+                this.model.customerId = data.crmId;
+                this.model.accountName = data.name;
                 this.model.address = data.address;
                 this.model.zipcode = data.postalCode;
                 this.model.city = data.city;

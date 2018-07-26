@@ -95,12 +95,12 @@ namespace Sofco.Service.Implementations.Billing
         {
             var userMail = sessionManager.GetUserEmail();
 
-            var customers = customerData.GetCustomers(userMail, false);
+            var customers = customerData.GetCustomers(userMail);
 
             var serviceIds = new List<string>();
             foreach (var crmCustomer in customers)
             {
-                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
+                var crmServices = serviceData.GetServices(crmCustomer.CrmId, userMail, false);
 
                 serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
             }
