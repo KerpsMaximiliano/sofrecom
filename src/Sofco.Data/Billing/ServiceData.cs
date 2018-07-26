@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL.Admin;
-using Sofco.Domain.Crm.Billing;
-using Sofco.Service.Http.Interfaces;
+using Sofco.Core.DAL;
 
 namespace Sofco.Data.Billing
 {
@@ -19,59 +15,52 @@ namespace Sofco.Data.Billing
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
-        private readonly ICrmHttpClient client;
-        private readonly CrmConfig crmConfig;
         private readonly ISessionManager sessionManager;
-        private readonly IUserRepository userRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ServiceData(ICacheManager cacheManager, ICrmHttpClient client, IOptions<CrmConfig> crmOptions, ISessionManager sessionManager, IUserRepository userRepository)
+        public ServiceData(ICacheManager cacheManager, ISessionManager sessionManager, IUnitOfWork unitOfWork)
         {
             this.cacheManager = cacheManager;
-            this.client = client;
             this.sessionManager = sessionManager;
-            this.userRepository = userRepository;
-            crmConfig = crmOptions.Value;
+            this.unitOfWork = unitOfWork;
         }
 
-        public IList<CrmService> GetServices(string customerId, string userMail, bool getAll)
+        public IList<Model.Models.Billing.Service> GetServices(string customerId, string username)
         {
-            var email = sessionManager.GetUserEmail(userMail);
+            var email = sessionManager.GetUserEmail(username);
 
-            var identityName = email.Split('@')[0];
-
-            return cacheManager.GetHashList(string.Format(ServicesCacheKey, identityName, customerId),
+            return cacheManager.GetHashList(string.Format(ServicesCacheKey, username, customerId),
                 () =>
                 {
-                    var hasDirectorGroup = userRepository.HasDirectorGroup(email);
-                    var hasCommercialGroup = userRepository.HasComercialGroup(email);
+                    var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(email);
+                    var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(email);
                     var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
 
-                    var url = hasAllAccess || getAll
-                        ? $"{crmConfig.Url}/api/service?idAccount={customerId}"
-                        : $"{crmConfig.Url}/api/service?idAccount={customerId}&idManager={email}";
-
-                    var result = client.GetMany<CrmService>(url);
-
-                    return result.Data;
+                    if (hasAllAccess)
+                        return unitOfWork.ServiceRepository.GetAllActives(customerId);
+                    else
+                    {
+                        var user = unitOfWork.UserRepository.GetByEmail(email);
+                        return unitOfWork.ServiceRepository.GetAllByManager(customerId, user.ExternalManagerId);
+                    }
                 },
-                x => x.Id,
+                x => x.CrmId,
                 cacheExpire);
         }
 
-        public CrmService GetService(Guid? serviceId)
+        public Model.Models.Billing.Service GetService(Guid? serviceId)
         {
             var cacheKey = string.Format(ServiceByIdCacheKey, serviceId);
 
             return cacheManager.Get(cacheKey,
-                () =>
-                {
-                    var url = $"{crmConfig.Url}/api/service?id={serviceId}";
-
-                    var result = client.Get<CrmService>(url);
-
-                    return result.Data;
-                },
+                () => unitOfWork.ServiceRepository.GetByIdCrm(serviceId.GetValueOrDefault().ToString()),
                 cacheExpire);
+        }
+
+        public void ClearKeys()
+        {
+            cacheManager.DeletePatternKey(string.Format(ServicesCacheKey, '*'));
+            cacheManager.DeletePatternKey(string.Format(ServiceByIdCacheKey, '*'));
         }
     }
 }

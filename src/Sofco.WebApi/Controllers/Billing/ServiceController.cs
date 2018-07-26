@@ -26,7 +26,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}/options")]
         public IActionResult GetOptions(string customerId)
         {
-            var response = servicesService.GetServicesOptions(customerId, false);
+            var response = servicesService.GetServicesOptions(customerId);
 
             return this.CreateResponse(response);
         }
@@ -34,7 +34,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}/options/all")]
         public IActionResult GetAllOptions(string customerId)
         {
-            var response = servicesService.GetServicesOptions(customerId, true);
+            var response = servicesService.GetServicesOptions(customerId);
 
             return this.CreateResponse(response);
         }
@@ -42,7 +42,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}")]
         public IActionResult Get(string customerId)
         {
-            var response = servicesService.GetServices(customerId, false);
+            var response = servicesService.GetServices(customerId);
 
             return this.CreateResponse(response);
         }

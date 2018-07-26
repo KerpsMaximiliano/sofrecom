@@ -98,9 +98,9 @@ namespace Sofco.Service.Implementations.Billing
             var serviceIds = new List<string>();
             foreach (var crmCustomer in customers)
             {
-                var crmServices = serviceData.GetServices(crmCustomer.CrmId, userMail, false);
+                var crmServices = serviceData.GetServices(crmCustomer.CrmId, userMail);
 
-                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.CrmId));
             }
 
             return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
@@ -129,7 +129,7 @@ namespace Sofco.Service.Implementations.Billing
             var user = userData.GetById(userDelegate.UserId);
 
             model.ManagerName = service.Manager;
-            model.ServiceName = service.Nombre;
+            model.ServiceName = service.Name;
             model.UserName = user.Name;
             return model;
         }

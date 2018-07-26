@@ -18,7 +18,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly CrmConfig crmConfig;
         private readonly ILogMailer<CustomerUpdateJobService> logger;
         private readonly ICustomerData customerData;
-
+         
         public CustomerUpdateJobService(IUnitOfWork unitOfWork, 
             ICrmHttpClient client, 
             ICustomerData customerData,

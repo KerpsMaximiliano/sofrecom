@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Customer> GetAllByManager(string externalManagerId)
         {
-            return context.Customers.Where(x => x.OwnerId.Equals(externalManagerId)).ToList();
+            return context.Customers.Where(x => x.OwnerId.Equals(externalManagerId) && x.Active).ToList();
         }
     }
 }

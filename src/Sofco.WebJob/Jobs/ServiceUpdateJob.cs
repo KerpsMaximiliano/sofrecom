@@ -3,15 +3,15 @@ using Sofco.WebJob.Jobs.Interfaces;
 
 namespace Sofco.WebJob.Jobs
 {
-    public class CustomerUpdateJob : ICustomerUpdateJob
+    public class ServiceUpdateJob : IServiceUpdateJob
     {
-        private readonly ICustomerUpdateJobService service;
+        private readonly IServiceUpdateJobService service;
 
-        public CustomerUpdateJob(ICustomerUpdateJobService service)
+        public ServiceUpdateJob(IServiceUpdateJobService service)
         {
             this.service = service;
         }
-         
+
         public void Execute()
         {
             service.Execute();

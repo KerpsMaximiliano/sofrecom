@@ -57,6 +57,7 @@ namespace Sofco.DAL
         public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Service> Services { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -143,6 +144,7 @@ namespace Sofco.DAL
             builder.MapPurchaseOrderAnalytic();
             builder.MapEmployeeProfileHistory();
             builder.MapCustomer();
+            builder.MapService();
         }
     }
 }

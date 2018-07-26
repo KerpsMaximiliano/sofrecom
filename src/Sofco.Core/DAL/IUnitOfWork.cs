@@ -36,6 +36,7 @@ namespace Sofco.Core.DAL
         ICertificateRepository CertificateRepository { get; }
         ISolfacCertificateRepository SolfacCertificateRepository { get; }
         ICustomerRepository CustomerRepository { get; }
+        IServiceRepository ServiceRepository { get; }
 
         #endregion
 

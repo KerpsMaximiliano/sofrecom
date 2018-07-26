@@ -1,12 +1,14 @@
 ﻿using System;
 
-namespace Sofco.Domain.Crm.Billing
+namespace Sofco.Model.Models.Billing
 {
-    public class CrmService
-    { 
-        public string Id { get; set; }
+    public class Service
+    {
+        public int Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string CrmId { get; set; }
+
+        public string Name { get; set; }
 
         public string AccountId { get; set; }
 
@@ -35,5 +37,7 @@ namespace Sofco.Domain.Crm.Billing
         public int TechnologyTypeId { get; set; }
 
         public string Analytic { get; set; }
+
+        public bool Active { get; set; }
     }
 }

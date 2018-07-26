@@ -19,5 +19,7 @@
         public const string EmployeeProfileHistory = "EmployeeProfileHistory";
 
         public const string CustomerUpdate = "CustomerUpdate";
+
+        public const string ServiceUpdate = "ServiceUpdate";
     }
 }

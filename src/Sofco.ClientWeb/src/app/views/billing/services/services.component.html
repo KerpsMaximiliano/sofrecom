@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let service of services" class="pointer" (click)="goToProjects(service)">
-                                <td>{{service.nombre}}</td>
+                                <td>{{service.name}}</td>
                                 <td>{{service.manager}}</td>
                                 <td>{{service.analytic}}</td>
                                 <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
