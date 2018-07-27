@@ -125,6 +125,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(service){
           this.service.analytic = service.analytic;
           this.service.manager = service.manager;
+          this.service.managerId = service.managerId;
           this.service.serviceType = service.serviceType;
           this.service.solutionType = service.solutionType;
           this.service.technologyType = service.technologyType;
@@ -478,7 +479,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
  
     translateHito(hito:any) {
         hito.projectId = this.projectId;
-        hito.managerId = this.project.ownerId;
+        hito.managerId = this.service.managerId;
         hito.opportunityId = this.project.opportunityId;
         return hito;
     }

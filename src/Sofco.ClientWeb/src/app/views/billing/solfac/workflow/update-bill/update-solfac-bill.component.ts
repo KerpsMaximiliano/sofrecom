@@ -92,9 +92,12 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     }
                 },
                 error => {
+                    this.updateBillModal.hide();
                     this.errorHandlerService.handleErrors(error);
                 });
-        }else{
+        }
+        else{
+            this.updateBillModal.hide();
             this.messageService.showError("billing.solfac.includeInvoiceCode");
         }
     }

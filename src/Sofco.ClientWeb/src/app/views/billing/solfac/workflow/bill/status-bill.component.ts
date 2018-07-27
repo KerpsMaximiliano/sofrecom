@@ -83,9 +83,12 @@ export class StatusBillComponent implements OnDestroy  {
                     this.updateStatus.emit(toModif);
                 },
                 error => {
+                    this.billModal.hide();
                     this.errorHandlerService.handleErrors(error);
                 });
-        }else{
+        }
+        else {
+            this.billModal.hide();
             this.messageService.showError("billing.solfac.includeInvoiceCode");
         }
     }
