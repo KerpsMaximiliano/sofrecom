@@ -68,8 +68,7 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Province),
                 nameof(Employee.Country),
                 nameof(Employee.HealthInsuranceCode),
-                nameof(Employee.PrepaidHealthCode),
-                nameof(Employee.OfficeAddress)
+                nameof(Employee.PrepaidHealthCode)
             };
         }
 
