@@ -118,11 +118,13 @@ namespace Sofco.WebApi
             ConfigureLogger();
         }
 
-        private static void ConfigureLogger()
+        private void ConfigureLogger()
         {
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
 
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            var log4NetConfig = Configuration.GetSection("log4NetConfig").Value;
+
+            XmlConfigurator.Configure(logRepository, new FileInfo(log4NetConfig));
         }
     }
 }

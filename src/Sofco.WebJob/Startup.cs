@@ -100,7 +100,9 @@ namespace Sofco.WebJob
         {
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
 
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            var log4NetConfig = Configuration.GetSection("log4NetConfig").Value;
+
+            XmlConfigurator.Configure(logRepository, new FileInfo(log4NetConfig));
 
             loggerFactory.AddLog4Net(
                 container.Resolve<IMailSender>(),
