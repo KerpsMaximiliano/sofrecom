@@ -58,6 +58,7 @@ namespace Sofco.DAL
         private ISolfacCertificateRepository solfacCertificateRepository;
         private ICustomerRepository customerRepository;
         private IServiceRepository serviceRepository;
+        private IProjectRepository projectRepository;
 
         #endregion
 
@@ -133,6 +134,7 @@ namespace Sofco.DAL
         public IAreaRepository AreaRepository => areaRepository ?? (areaRepository = new AreaRepository(context));
         public ICustomerRepository CustomerRepository => customerRepository ?? (customerRepository = new CustomerRepository(context));
         public IServiceRepository ServiceRepository => serviceRepository ?? (serviceRepository = new ServiceRepository(context));
+        public IProjectRepository ProjectRepository => projectRepository ?? (projectRepository = new ProjectRepository(context));
 
         #endregion
 

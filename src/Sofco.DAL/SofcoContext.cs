@@ -58,6 +58,7 @@ namespace Sofco.DAL
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }

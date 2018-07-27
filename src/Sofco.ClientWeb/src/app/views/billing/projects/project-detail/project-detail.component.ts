@@ -113,7 +113,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(this.getProjectSubscrip) this.getProjectSubscrip.unsubscribe();
     }
 
-    goToProject(){
+    goToProjects(){
         this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects`]);
       }
 
