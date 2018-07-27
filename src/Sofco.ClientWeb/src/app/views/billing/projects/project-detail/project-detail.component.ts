@@ -6,8 +6,6 @@ import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DocumentTypes } from 'app/models/enums/documentTypes';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';

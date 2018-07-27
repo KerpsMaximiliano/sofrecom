@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
             catch (Exception e)
             {
-                logger.LogError($"Error modificacion cliente: {crmService.Nombre}", e);
+                logger.LogError($"Error modificacion servicio: {crmService.Nombre}", e);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
             catch (Exception e)
             {
-                logger.LogError($"Error alta cliente: {crmService.Nombre}", e);
+                logger.LogError($"Error alta servicio: {crmService.Nombre}", e);
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿namespace Sofco.WebJob.Jobs.Interfaces
 {
-    public interface IServiceUpdateJob : IJob
+    public interface IProjectUpdateJob : IJob
     {
     }
 }
- 

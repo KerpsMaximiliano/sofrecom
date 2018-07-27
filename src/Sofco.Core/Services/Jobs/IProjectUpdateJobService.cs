@@ -1,8 +1,7 @@
 ﻿namespace Sofco.Core.Services.Jobs
 {
-    public interface IServiceUpdateJobService
+    public interface IProjectUpdateJobService
     {
         void Execute();
     }
 }
- 

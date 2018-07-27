@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -11,29 +9,26 @@ using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
-using Sofco.Domain.Crm.Billing;
 using Sofco.Model.Enums;
+using Sofco.Model.Models.Billing;
 using Sofco.Model.Utils;
-using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Implementations.Billing
 {
     public class ProjectService : IProjectService
     {
         private readonly ISolfacService solfacService;
-        private readonly CrmConfig crmConfig;
-        private readonly ICrmHttpClient client;
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
         private readonly IUnitOfWork unitOfWork;
 
-        public ProjectService(ISolfacService solfacService, IOptions<CrmConfig> crmOptions,
-            IProjectData projectData, ICrmHttpClient client, ILogMailer<ProjectService> logger, IUnitOfWork unitOfWork)
+        public ProjectService(ISolfacService solfacService,
+            IProjectData projectData, 
+            ILogMailer<ProjectService> logger,
+            IUnitOfWork unitOfWork)
         {
             this.solfacService = solfacService;
-            crmConfig = crmOptions.Value;
             this.projectData = projectData;
-            this.client = client;
             this.unitOfWork = unitOfWork;
             this.logger = logger;
         }
@@ -68,9 +63,9 @@ namespace Sofco.Service.Implementations.Billing
             return crmProjectHitos;
         }
 
-        public Response<IList<CrmProject>> GetProjects(string serviceId)
+        public Response<IList<Project>> GetProjects(string serviceId)
         {
-            var response = new Response<IList<CrmProject>>();
+            var response = new Response<IList<Project>>();
 
             if (string.IsNullOrWhiteSpace(serviceId)) return response;
 
@@ -94,23 +89,21 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<SelectListModel>>
             {
                 Data = result
-                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
         }
 
-        public Response<CrmProject> GetProjectById(string projectId)
+        public Response<Project> GetProjectById(string projectId)
         {
-            var url = $"{crmConfig.Url}/api/project/{projectId}";
+            var response = new Response<Project>();
 
-            var project = client.Get<CrmProject>(url).Data;
+            var project = unitOfWork.ProjectRepository.GetByIdCrm(projectId);
 
-            var response = new Response<CrmProject>();
-
-            if (project.Id.Equals("00000000-0000-0000-0000-000000000000"))
+            if (project == null)
             {
-                response.Messages.Add(new Message(Resources.Billing.Project.NotFound, MessageType.Error));
+                response.AddError(Resources.Billing.Project.NotFound);
                 return response;
             }
 
@@ -125,7 +118,7 @@ namespace Sofco.Service.Implementations.Billing
             return new Response<IList<OpportunityOption>>
             {
                 Data = result
-                    .Select(x => new OpportunityOption { Id = x.OpportunityId, Text = $"{x.OpportunityNumber} - {x.OpportunityName}", ProjectId = x.Id })
+                    .Select(x => new OpportunityOption { Id = x.OpportunityId, Text = $"{x.OpportunityNumber} - {x.OpportunityName}", ProjectId = x.CrmId })
                     .OrderBy(x => x.Text)
                     .ToList()
             };

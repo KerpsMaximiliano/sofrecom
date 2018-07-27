@@ -146,6 +146,7 @@ namespace Sofco.DAL
             builder.MapEmployeeProfileHistory();
             builder.MapCustomer();
             builder.MapService();
+            builder.MapProject();
         }
     }
 }

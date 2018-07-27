@@ -21,5 +21,7 @@
         public const string CustomerUpdate = "CustomerUpdate";
 
         public const string ServiceUpdate = "ServiceUpdate";
+
+        public const string ProjectUpdate = "ProjectUpdate";
     }
 }

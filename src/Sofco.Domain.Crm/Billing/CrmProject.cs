@@ -56,5 +56,7 @@ namespace Sofco.Domain.Crm.Billing
         public string Integrator { get; set; }
 
         public string IntegratorId { get; set; }
+
+        public string ServiceId { get; set; }
     }
 }

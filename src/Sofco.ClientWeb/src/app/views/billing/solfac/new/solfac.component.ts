@@ -93,9 +93,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.projectId = multipleProjects.ids;
       this.model.project = multipleProjects.names;
       this.model.projectId = multipleProjects.ids;
-      this.model.imputationNumber1 = multipleProjects.analytics; 
       this.model.currencyId = this.getCurrencyId(multipleProjects.currency);
-      this.model.analytic = multipleProjects.analytics;
       this.model.remito = multipleProjects.remito;
 
       this.model.hitos = new Array<Hito>();
@@ -121,16 +119,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.integratorProject = project;
 
-      this.getInvoicesOptions(project.id);
-      this.projectId = project.id;
+      this.getInvoicesOptions(project.crmId);
+      this.projectId = project.crmId;
       this.model.project = project.nombre;
-      this.model.projectId = project.id;
+      this.model.projectId = project.crmId;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-
       this.model.remito = project.remito;
-      this.model.analytic = project.analytic;
-      this.model.imputationNumber1 = project.analytic;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
