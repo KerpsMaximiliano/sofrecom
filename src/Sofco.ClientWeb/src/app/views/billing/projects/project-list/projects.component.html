@@ -39,11 +39,11 @@
             {{'billing.purchaseOrder.title' | translate }} <i class="fa fa-file"></i> 
         </button>
 
-        <button class="btn btn-primary btn-outline dim" (click)="goToEditAnalytic()" *ngIf="menuService.hasFunctionality('ALLOC', 'ANEDT') && analytic?.id > 0"> 
+        <button class="btn btn-primary btn-outline dim" (click)="goToEditAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANEDT') && analytic?.id > 0"> 
             {{'allocationManagement.analytics.editTitle' | translate }} <i class="fa fa-save"></i> 
         </button>
 
-        <button class="btn btn-primary btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD') && analytic?.id == 0"> 
+        <button class="btn btn-primary btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD') && analytic?.id == 0"> 
             {{'allocationManagement.analytics.new' | translate }} <i class="fa fa-plus"></i> 
         </button>
     </div>

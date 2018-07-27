@@ -78,6 +78,7 @@ export class StatusCashComponent implements OnDestroy  {
                 }
             },
             error => {
+                this.cashModal.hide();
                 this.errorHandlerService.handleErrors(error);
             });
     }

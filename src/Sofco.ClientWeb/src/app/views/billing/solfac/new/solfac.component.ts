@@ -121,7 +121,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.getInvoicesOptions(project.crmId);
       this.projectId = project.crmId;
-      this.model.project = project.nombre;
+      this.model.project = project.name;
       this.model.projectId = project.crmId;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;

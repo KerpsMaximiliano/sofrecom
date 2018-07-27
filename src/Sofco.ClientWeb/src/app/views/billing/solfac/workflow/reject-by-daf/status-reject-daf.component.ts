@@ -55,6 +55,7 @@ export class StatusRejectDafComponent implements OnDestroy  {
     rejectByCDG(){
         if(!this.rejectComments || this.rejectComments == ""){
             this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.rejectByDafModal.hide();
             return;
         }
 
@@ -81,7 +82,7 @@ export class StatusRejectDafComponent implements OnDestroy  {
                 }
             },
             error => {
-                this.rejectByDafModal.hide();
+                this.rejectByDafModal.resetButtons();
                 this.errorHandlerService.handleErrors(error);
             });
     }

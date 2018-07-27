@@ -54,6 +54,7 @@ export class StatusRejectComponent implements OnDestroy  {
     rejectByCDG(){
         if(!this.rejectComments || this.rejectComments == ""){
             this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.rejectModal.resetButtons();
             return;
         }
 
