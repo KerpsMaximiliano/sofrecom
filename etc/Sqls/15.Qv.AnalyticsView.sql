@@ -1,4 +1,5 @@
 CREATE OR ALTER VIEW qv.AnalyticsView AS
+SELECT 
 	[Id]
 	,[ActivityId]
 	,[ClientExternalId]
