@@ -25,9 +25,7 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly EmailConfig emailConfig;
         private readonly IPurchaseOrderService purchaseOrderService;
 
-        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, 
-                                IOptions<EmailConfig> emailConfig, ICertificateService certificateService,
-                                IPurchaseOrderService purchaseOrderService)
+        public SolfacController(IUtilsService utilsService, ISolfacService solfacService, IOptions<EmailConfig> emailConfig, ICertificateService certificateService, IPurchaseOrderService purchaseOrderService)
         {
             this.utilsService = utilsService;
             this.solfacService = solfacService;
