@@ -203,5 +203,5 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             return Ok(users.Select(x => new Option() { Id = x.Id, Text = x.Name }));
         }
-    } 
+    }
 }
