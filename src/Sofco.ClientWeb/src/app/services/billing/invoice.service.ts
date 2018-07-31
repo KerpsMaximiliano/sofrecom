@@ -70,36 +70,6 @@ export class InvoiceService {
     }));
   }
 
-  //todo: borrar
-//   getExcel(id) {
-//     return this.http.get(`${this.baseUrl}/invoices/${id}/excel`, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//    }).map((res: any) => {
-//      return new Blob([res.body], { type: 'application/octet-stream' });
-//    });
-//   }
-
-//   //todo: borrar
-//   downloadPdf(id) {
-//     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//     }).map((res: any) => {
-//       return new Blob([res.body], { type: 'application/octet-stream' });
-//     });
-//   }
-
-//  //todo: borrar
-//   export(model) {
-//     return this.http.post(`${this.baseUrl}/invoices/excel`, model, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//    }).map((res: any) => {
-//      return new Blob([res.body], { type: 'application/octet-stream' });
-//    });
-//   }
-
   search(parameters) {
     return this.http.post<any>(`${this.baseUrl}/invoices/search`, parameters);
   }

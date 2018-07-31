@@ -15,5 +15,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<AllocationReportModel> CreateReport(AllocationReportParams parameters);
         IEnumerable<OptionPercentage> GetAllPercentages();
         ICollection<Employee> GetByEmployeesByAnalytic(int analyticId);
+        Response<byte[]> AddMassive(AllocationMassiveAddModel model);
     }
 }

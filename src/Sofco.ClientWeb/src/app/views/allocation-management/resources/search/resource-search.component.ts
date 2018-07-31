@@ -9,6 +9,8 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserService } from "app/services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
+import { AllocationService } from "../../../../services/allocation-management/allocation.service";
+import * as FileSaver from "file-saver";
 
 declare var moment: any;
 declare var $: any;
@@ -41,6 +43,16 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     ); 
 
+    @ViewChild('allocationsModal') allocationsModal;
+    public allocationsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.reassingAllocation",
+        "allocationsModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    ); 
+
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
     public users: any[] = new Array<any>();
@@ -60,6 +72,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         unassigned: false
     };
 
+    public allocationModel = {
+        analyticId: 0,
+        percentage: 100,
+        startDate: new Date(),
+        endDate: new Date()
+    }
+
     public endDate: Date = new Date();
     public pendingWorkingHours = false;
 
@@ -71,11 +90,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     getCategorySubscrip: Subscription;
     addCategoriesSubscrip: Subscription;
     subscrip: Subscription;
+    allocationsSubscrip: Subscription;
 
     constructor(private router: Router,
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
+                private allocationService: AllocationService,
                 private usersService: UserService,
                 private categoryService: CategoryService,
                 private dataTableService: DataTableService,
@@ -93,11 +114,15 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        if(this.subscrip) this.subscrip.unsubscribe();
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
         if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
+        if(this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
         if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
         if(this.getCategorySubscrip) this.getCategorySubscrip.unsubscribe();
         if(this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
+        if(this.allocationsSubscrip) this.addCategoriesSubscrip.unsubscribe();
+        if(this.getAllEmployeesSubscrip) this.getAllEmployeesSubscrip.unsubscribe();
     }
 
     goToAssignAnalytics(resource){
@@ -224,7 +249,11 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.getAllEmployeesSubscrip = this.employeeService.getAll().subscribe(data => {
-            this.resources = data;
+            this.resources = data.map(item => {
+                item.selected = false;
+                return item;
+            });
+
             this.initGrid();
             this.messageService.closeLoading();
 
@@ -280,7 +309,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    addCategoryDisabled(){
+    noneResourseSelected(){
         return this.resources.filter(x => x.selected == true).length == 0;
     }
 
@@ -309,4 +338,64 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     canAddCategories(){
         return this.menuService.userIsDirector || this.menuService.userIsManager;
     }
-}
+
+    areAllSelected(){
+        return this.resources.every(item => {
+            return item.selected == true;
+        });
+    }
+
+    areAllUnselected(){
+        return this.resources.every(item => {
+            return item.selected == false;
+        });
+    }
+
+    selectAll(){
+        this.resources.forEach((item, index) => {
+            item.selected = true;
+        });
+    }
+
+    unselectAll(){
+        this.resources.forEach((item, index) => {
+            item.selected = false;
+        });
+    }
+
+    sendNewAllocations(){
+        var json = {
+            employeeIds: this.resources.filter(x => x.selected == true).map(item => item.id),
+            analyticId: this.allocationModel.analyticId,
+            startDate: this.allocationModel.startDate,
+            endDate: this.allocationModel.endDate,
+            percentage: this.allocationModel.percentage
+        }
+
+        this.allocationsSubscrip = this.allocationService.addMassive(json).subscribe(file => {
+            this.allocationsModal.hide();
+            
+            if(file.size > 0){
+                this.messageService.showWarningByFolder('allocationManagement/allocation', 'employeeWithErrors');
+                FileSaver.saveAs(file, 'asignaciones con error.xlsx');
+            }
+            else{
+                this.messageService.showSuccessByFolder('allocationManagement/allocation', 'massiveSuccess');
+            }
+        },
+        error => {
+            this.allocationsModal.hide();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    onKeydown(event) {
+        if(this.searchDisable()) return;
+
+        if (event.key === "Enter") {
+            setTimeout(() => {
+                this.search();
+            }, 100);
+        }
+      }
+} 

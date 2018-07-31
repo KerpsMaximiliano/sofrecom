@@ -785,7 +785,8 @@
         "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema",
         "viewProfile": "Ver Perfil",
         "selectAll": "Seleccionar todo",
-        "removeAll": "Quitar todo"
+        "removeAll": "Quitar todo",
+        "reassingAllocation": "Asignación masiva de recursos"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

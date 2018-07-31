@@ -28,6 +28,20 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpPost("massive")]
+        public IActionResult Post([FromBody] AllocationMassiveAddModel model)
+        {
+            var response = allocationService.AddMassive(model);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            if (response.Data == null)
+                return Ok();
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
         [HttpGet("analytics/{employeeId}/{startDate}/{endDate}")]
         public IActionResult GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {

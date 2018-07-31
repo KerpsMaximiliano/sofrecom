@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using Sofco.Core.FileManager;
-using Sofco.Model.Enums;
 using Sofco.Model.Enums.TimeManagement;
 using Sofco.Model.Models.AllocationManagement;
 

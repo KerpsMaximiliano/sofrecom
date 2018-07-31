@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { HttpClient } from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class AllocationService {
@@ -26,6 +27,15 @@ export class AllocationService {
 
   add(model) {
     return this.http.post<any>(`${this.baseUrl}/allocations`, model);
+  }
+
+  addMassive(model){
+    return this.http.post(`${this.baseUrl}/allocations/massive`, model, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
   }
 
   getAllocationsByService(serviceId) {

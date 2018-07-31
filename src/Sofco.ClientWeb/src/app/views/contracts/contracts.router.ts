@@ -17,7 +17,7 @@ const CONTRACTS_ROUTER: Routes = [
         { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ANADD" } },
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ANEDT" } },
         { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "QUERY" } },
-        { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ADRES" } },
+        { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
     ]},
     {
