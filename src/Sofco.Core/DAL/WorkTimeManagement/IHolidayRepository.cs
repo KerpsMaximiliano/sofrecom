@@ -6,7 +6,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 {
     public interface IHolidayRepository : IBaseRepository<Holiday>
     {
-        List<Holiday> Get(int year);
+        new List<Holiday> Get(int year);
 
         List<Holiday> Get(int year, int month);
 

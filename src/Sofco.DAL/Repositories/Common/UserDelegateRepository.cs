@@ -96,9 +96,13 @@ namespace Sofco.DAL.Repositories.Common
 
         private UserDelegate GetStored(UserDelegate userDelegate)
         {
-            return userDelegate.Type != UserDelegateType.Solfac 
-                ? GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type) 
-                : GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            if (userDelegate.Type == UserDelegateType.Solfac
+                || userDelegate.Type == UserDelegateType.LicenseView)
+            {
+                return GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            }
+
+            return GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type);
         }
 
         private UserDelegate GetByServiceIdAndUserId(Guid? serviceId, int userId, UserDelegateType type)
