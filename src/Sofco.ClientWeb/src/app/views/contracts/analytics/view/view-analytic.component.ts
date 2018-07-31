@@ -22,6 +22,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     closeSubscrip: Subscription;
     editSubscrip: Subscription;
     public showClientButton = true;
+    private statusClose: boolean = true;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -92,14 +93,29 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     close() {
-        this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-            this.confirmModal.hide();
-            if(response.messages) this.messageService.showMessages(response.messages);
-            this.form.model.status = 2;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
-        });
+        if(this.statusClose){
+            this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+                this.closeSuccess(response, 2);
+            },
+            err => {
+                this.errorHandlerService.handleErrors(err);
+            });
+        }
+        else {
+            this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
+                this.closeSuccess(response, 3);
+            },
+            err => {
+                this.errorHandlerService.handleErrors(err);
+                this.confirmModal.hide();
+            });
+        }
+    }
+
+    closeSuccess(response, status){
+        this.form.model.status = status;
+        this.confirmModal.hide();
+        if(response.messages) this.messageService.showMessages(response.messages);
     }
 
     getStatus() {
@@ -134,5 +150,15 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.errorHandlerService.handleErrors(err);
             });
+    }
+
+    openForClose(){
+        this.statusClose = true;
+        this.confirmModal.show();
+    }
+
+    openForCloseForExpenses(){
+        this.statusClose = false;
+        this.confirmModal.show();
     }
 }

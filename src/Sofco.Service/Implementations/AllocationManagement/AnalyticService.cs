@@ -306,11 +306,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
-            var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
-            if (result.HasErrors)
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
             {
-                response.AddError(Resources.Common.CrmGeneralError);
-                return response;
+                var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
+                if (result.HasErrors)
+                {
+                    response.AddError(Resources.Common.CrmGeneralError);
+                    return response;
+                }
             }
 
             try
@@ -322,10 +325,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
 
-                result = crmService.ActivateService(new Guid(analytic.ServiceId));
-                if (result.HasErrors)
+                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
-                    response.AddError(Resources.Common.CrmGeneralError);
+                    var result = crmService.ActivateService(new Guid(analytic.ServiceId));
+                    if (result.HasErrors)
+                    {
+                        response.AddError(Resources.Common.CrmGeneralError);
+                    }
                 }
 
                 return response;
@@ -349,7 +355,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             try
             {
                 var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
-                var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}allocationManagement/analytics/{analytic.Id}");
+                var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);

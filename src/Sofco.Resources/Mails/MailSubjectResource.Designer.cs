@@ -80,6 +80,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cierre para Costos analítica: {0}.
+        /// </summary>
+        public static string CloseForExpensesAnalytic {
+            get {
+                return ResourceManager.GetString("CloseForExpensesAnalytic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Baja de recurso.
         /// </summary>
         public static string EmployeeEndConfirmation {

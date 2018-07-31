@@ -41,10 +41,13 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
             var recipients = string.Join(";", recipientsList.Distinct());
 
+            var title = analytic.Status == AnalyticStatus.Close ? MailSubjectResource.CloseAnalytic : MailSubjectResource.CloseForExpensesAnalytic;
+            var message = analytic.Status == AnalyticStatus.Close ? MailMessageResource.CloseAnalytic : MailMessageResource.CloseForExpensesAnalytic;
+
             var data = new CloseAnalyticData
             {
-                Title = string.Format(MailSubjectResource.CloseAnalytic, analytic.ClientExternalName),
-                Message = string.Format(MailMessageResource.CloseAnalytic, $"{analytic.Title} - {analytic.Name}", analytic.Service),
+                Title = string.Format(title, analytic.ClientExternalName),
+                Message = string.Format(message, $"{analytic.Title} - {analytic.Name}", analytic.Service, $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view"),
                 Recipients = recipients
             };
 

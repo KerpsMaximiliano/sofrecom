@@ -121,7 +121,7 @@
     <value>Estimados, &lt;/br&gt;&lt;/br&gt; Se dio de alta la analítica &lt;strong&gt;{0}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;&lt;/br&gt;&lt;/br&gt; Saludos</value>
   </data>
   <data name="CloseAnalytic" xml:space="preserve">
-    <value>Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt; &lt;/br&gt;&lt;/br&gt;
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href='{2}' target='_blank'&gt;link&lt;/a&gt; &lt;/br&gt;&lt;/br&gt;
 Saludos</value>
   </data>
   <data name="EmployeeEndNotification" xml:space="preserve">
@@ -303,5 +303,9 @@ Muchas gracias.</value>
 Para acceder a la misma, por favor ingresar al siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;. 
 &lt;br/&gt;&lt;br/&gt;
 Muchas gracias.</value>
+  </data>
+  <data name="CloseForExpensesAnalytic" xml:space="preserve">
+    <value>Estimados, &lt;/br&gt;&lt;/br&gt; Se procedió al Cierre para Costos de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href='{2}' target='_blank'&gt;link&lt;/a&gt; &lt;/br&gt;&lt;/br&gt;
+Saludos</value>
   </data>
 </root>
