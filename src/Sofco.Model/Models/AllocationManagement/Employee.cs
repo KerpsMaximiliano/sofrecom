@@ -97,6 +97,6 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public int PhoneAreaCode { get; set; }
 
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

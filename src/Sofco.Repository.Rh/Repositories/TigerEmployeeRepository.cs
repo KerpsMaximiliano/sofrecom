@@ -31,7 +31,13 @@ SELECT
 	ospla,
 	dospl,
     domif as officeaddress,
-    LOWER(demai) as email
+    LOWER(demai) as email,
+    tidoc as documentNumberType,
+    nudoc as documentNumber,
+    nusin as cuil,
+    CAST(teddi as INTEGER) as phoneCountryCode,
+    CAST(teddn as INTEGER) as phoneAreaCode,
+    telef as phoneNumber
 FROM
 	View_A001
 ";

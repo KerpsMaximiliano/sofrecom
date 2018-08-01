@@ -39,5 +39,17 @@ namespace Sofco.Domain.Rh.Tiger
         public string OfficeAddress { get; set; }
 
         public string Email { get; set; }
+
+        public string DocumentNumberType { get; set; }
+
+        public int DocumentNumber { get; set; }
+
+        public decimal Cuil { get; set; }
+
+        public int PhoneCountryCode { get; set; }
+
+        public int PhoneAreaCode { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }
