@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {

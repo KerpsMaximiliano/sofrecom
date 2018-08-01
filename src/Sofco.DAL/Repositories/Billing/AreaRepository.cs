@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.Billing
 {

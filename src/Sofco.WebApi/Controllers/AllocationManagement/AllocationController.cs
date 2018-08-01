@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.DTO;
+using Sofco.Domain.DTO;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement

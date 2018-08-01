@@ -3,7 +3,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using Sofco.Model.Users;
+using Sofco.Domain.Users;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 using Sofco.Common.Domains;
@@ -11,7 +11,7 @@ using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Models.Admin;
-using Sofco.Model.AzureAd;
+using Sofco.Domain.AzureAd;
 using Sofco.Service.Implementations;
 
 namespace Sofco.UnitTest.Services

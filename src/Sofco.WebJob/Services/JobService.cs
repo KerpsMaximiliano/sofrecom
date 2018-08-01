@@ -5,7 +5,7 @@ using Hangfire;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Jobs;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Helpers;
 using Sofco.WebJob.Jobs.Interfaces;

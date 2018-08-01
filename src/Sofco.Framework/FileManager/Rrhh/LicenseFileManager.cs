@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Sofco.Core.FileManager;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Framework.FileManager.Rrhh
 {

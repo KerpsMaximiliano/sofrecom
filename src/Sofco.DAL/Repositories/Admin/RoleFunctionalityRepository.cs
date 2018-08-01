@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Models;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Admin
 {

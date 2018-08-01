@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Mappings.AllocationManagement
 {

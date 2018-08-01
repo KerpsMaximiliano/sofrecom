@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin

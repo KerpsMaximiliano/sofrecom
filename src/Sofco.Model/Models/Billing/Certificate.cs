@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Relationships;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class Certificate : BaseEntity
     {

@@ -1,4 +1,4 @@
-﻿using Sofco.Model.Utils;
+﻿using Sofco.Domain.Utils;
 using System.Collections.Generic;
 using Sofco.Core.Models.Billing;
 

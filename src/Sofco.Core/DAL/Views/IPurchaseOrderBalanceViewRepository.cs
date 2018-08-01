@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.Core.DAL.Views
 {

@@ -8,16 +8,16 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.Helpers;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Helpers;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Service.Implementations.Billing
 {

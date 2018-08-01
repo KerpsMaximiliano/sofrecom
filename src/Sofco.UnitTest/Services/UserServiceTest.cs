@@ -8,8 +8,8 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Logger;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 
 namespace Sofco.UnitTest.Services

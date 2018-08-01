@@ -1,11 +1,11 @@
 ﻿using Sofco.Core.DAL;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
     public class HolidaysLicense : LicenseValidator, ILicenseValidator
     {
-        public void Validate(Response response, Model.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
+        public void Validate(Response response, Domain.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
         {
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
 

@@ -6,7 +6,7 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Domain.Crm;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Data.Billing

@@ -1,9 +1,7 @@
-﻿
-using Sofco.Model.Models;
-using Sofco.Model.Utils;
-using System.Collections.Generic;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+﻿using System.Collections.Generic;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.Services.Admin
 {

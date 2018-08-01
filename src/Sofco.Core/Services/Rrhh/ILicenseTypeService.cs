@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Rrhh
 {

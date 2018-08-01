@@ -1,7 +1,7 @@
-﻿using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
+﻿using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Relationships
+namespace Sofco.Domain.Relationships
 {
     public class PurchaseOrderAnalytic
     {

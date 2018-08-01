@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.WebApi.Controllers
 {

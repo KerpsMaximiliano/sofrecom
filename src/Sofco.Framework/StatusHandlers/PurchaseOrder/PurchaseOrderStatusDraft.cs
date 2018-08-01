@@ -5,8 +5,8 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 {
@@ -29,13 +29,13 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             this.recipientManager = recipientManager;
         }
 
-        public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public void Validate(Response response, PurchaseOrderStatusParams model, Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             if (!purchaseOrder.FileId.HasValue)
                 response.AddError(Resources.Billing.PurchaseOrder.FileRequired);
         }
 
-        public void Save(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        public void Save(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             purchaseOrder.Status = PurchaseOrderStatus.CompliancePending;
             unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
@@ -46,7 +46,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             return model.MustReject ? Resources.Billing.PurchaseOrder.RejectSuccess : Resources.Billing.PurchaseOrder.DraftSuccess;
         }
 
-        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        public void SendMail(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
 

@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement

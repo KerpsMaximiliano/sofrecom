@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Mappings.AllocationManagement
 {

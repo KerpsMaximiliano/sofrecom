@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing
 {

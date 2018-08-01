@@ -6,11 +6,11 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Service.Implementations.Admin
 {

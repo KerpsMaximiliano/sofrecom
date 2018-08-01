@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Config;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.StatusHandlers
 {

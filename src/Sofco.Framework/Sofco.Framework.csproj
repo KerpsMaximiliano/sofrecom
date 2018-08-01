@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sofco.DAL\Sofco.DAL.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Resources\Sofco.Resources.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
     <ProjectReference Include="..\Sofco.Service.Http\Sofco.Service.Http.csproj" />

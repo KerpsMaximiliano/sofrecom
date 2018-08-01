@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.Billing.PurchaseOrder
 {

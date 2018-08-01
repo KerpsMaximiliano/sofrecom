@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Utils
+﻿namespace Sofco.Domain.Utils
 {
     public class Product : Option
     {

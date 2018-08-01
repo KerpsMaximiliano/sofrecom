@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class Area : Option, ILogicalDelete
     {

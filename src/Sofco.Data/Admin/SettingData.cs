@@ -2,7 +2,7 @@
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Data.Admin
 {

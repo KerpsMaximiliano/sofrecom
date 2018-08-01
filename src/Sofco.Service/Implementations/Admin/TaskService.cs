@@ -5,8 +5,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Admin
 {

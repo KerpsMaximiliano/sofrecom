@@ -8,10 +8,10 @@ using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -34,7 +34,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             this.mailSender = mailSender;
         }
 
-        public Response Validate(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
+        public Response Validate(Domain.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
             var response = new Response();
 
@@ -62,14 +62,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return response;
         }
 
-        private string GetBodyMail(Model.Models.Billing.Solfac solfac, string siteUrl)
+        private string GetBodyMail(Domain.Models.Billing.Solfac solfac, string siteUrl)
         {
             var link = $"{siteUrl}billing/solfac/{solfac.Id}";
 
             return string.Format(Resources.Mails.MailMessageResource.SolfacStatusPendingByManagementControlMessage, link);
         }
 
-        private string GetSubjectMail(Model.Models.Billing.Solfac solfac)
+        private string GetSubjectMail(Domain.Models.Billing.Solfac solfac)
         {
             return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusPendingByManagementControlTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
@@ -89,9 +89,9 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return HitoStatus.Pending;
         }
 
-        public void SaveStatus(Model.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
+        public void SaveStatus(Domain.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
         {
-            var solfacToModif = new Model.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
+            var solfacToModif = new Domain.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
 
             if (solfac.PurchaseOrder == null) return;
@@ -114,12 +114,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             }
         }
 
-        public void UpdateHitos(ICollection<string> hitos, Model.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
         {
             crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
-        private void SendMailForOcConsumed(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        private void SendMailForOcConsumed(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 
@@ -151,7 +151,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             }
         }
 
-        public void SendMail(Model.Models.Billing.Solfac solfac, EmailConfig emailConfig)
+        public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subjectToCdg = GetSubjectMail(solfac);
             var bodyToCdg = GetBodyMail(solfac, emailConfig.SiteUrl);

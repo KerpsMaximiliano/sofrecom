@@ -1,5 +1,5 @@
-﻿using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+﻿using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {

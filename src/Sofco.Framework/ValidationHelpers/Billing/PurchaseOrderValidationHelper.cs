@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
+using PurchaseOrder = Sofco.Domain.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {

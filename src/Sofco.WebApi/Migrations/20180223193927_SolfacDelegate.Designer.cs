@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Sofco.DAL;
-using Sofco.Model.Enums;
-using Sofco.Model.Enums.TimeManagement;
+using Sofco.Domain.Enums;
+
 
 namespace Sofco.WebApi.Migrations
 {
@@ -20,7 +20,7 @@ namespace Sofco.WebApi.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Functionality", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -44,7 +44,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Functionalities");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.GlobalSetting", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.GlobalSetting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -68,7 +68,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("GlobalSettings");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Group", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -99,7 +99,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Module", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Module", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -119,7 +119,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Modules");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Role", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -139,7 +139,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.User", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -170,7 +170,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Allocation", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -194,7 +194,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Allocations");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Analytic", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Analytic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -308,7 +308,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Analytics");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.CostCenter", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.CostCenter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -329,7 +329,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("CostCenters");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Employee", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -390,7 +390,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.EmployeeHistory", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -416,7 +416,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("EmployeeHistory");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.EmployeeLicense", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeLicense", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -439,7 +439,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("EmployeeLicenses");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.EmployeeSyncAction", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeSyncAction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -465,7 +465,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("EmployeeSyncActions");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.HealthInsurance", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.HealthInsurance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -487,7 +487,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("HealthInsurances");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.LicenseType", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.LicenseType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -506,7 +506,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("LicenseTypes");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.PrepaidHealth", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.PrepaidHealth", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -529,7 +529,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("PrepaidHealths");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Certificate", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Certificate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -559,7 +559,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Certificates");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Hito", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Hito", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -596,7 +596,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Hitos");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.HitoDetail", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.HitoDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -624,7 +624,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("HitoDetails");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Invoice", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -699,7 +699,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceHistory", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.InvoiceHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -725,7 +725,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("InvoiceHistories");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.PurchaseOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -777,7 +777,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("PurchaseOrderFiles");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Solfac", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -887,7 +887,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Solfacs");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacAttachment", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacAttachment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -908,7 +908,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SolfacAttachments");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacDelegate", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacDelegate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -932,7 +932,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SolfacDelegate");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacHistory", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -958,7 +958,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SolfacHistories");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Common.File", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Common.File", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -982,7 +982,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.RoleFunctionality", b =>
                 {
                     b.Property<int>("RoleId");
 
@@ -995,7 +995,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("RoleFunctionality");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.UserGroup", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.UserGroup", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -1008,7 +1008,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserGroup");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.ClientGroup", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.ClientGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1021,7 +1021,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ClientGroups");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Currency", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.Currency", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1034,7 +1034,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Currencies");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.DocumentType", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.DocumentType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1047,7 +1047,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("DocumentTypes");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.ImputationNumber", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.ImputationNumber", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1060,7 +1060,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ImputationNumbers");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.PaymentTerm", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.PaymentTerm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1073,7 +1073,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("PaymentTerms");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Product", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1086,7 +1086,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Province", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.Province", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1099,7 +1099,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Provinces");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.PurchaseOrder", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.PurchaseOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1112,7 +1112,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("PurchaseOrders");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.ServiceType", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.ServiceType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1125,7 +1125,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ServiceTypes");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.SoftwareLaw", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.SoftwareLaw", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1138,7 +1138,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SoftwareLaws");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Solution", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.Solution", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1151,7 +1151,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Solutions");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Utils.Technology", b =>
+            modelBuilder.Entity("Sofco.Domain.Utils.Technology", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1164,231 +1164,231 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Technologies");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Functionality", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Functionality", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Admin.Module", "Module")
+                    b.HasOne("Sofco.Domain.Models.Admin.Module", "Module")
                         .WithMany("Functionalities")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Admin.Group", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Admin.Group", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
+                    b.HasOne("Sofco.Domain.Models.Admin.Role", "Role")
                         .WithMany("Groups")
                         .HasForeignKey("RoleId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Allocation", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("Allocations")
                         .HasForeignKey("AnalyticId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Employee", "Employee")
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("Allocations")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.AllocationManagement.Analytic", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Analytic", b =>
                 {
-                    b.HasOne("Sofco.Model.Utils.ImputationNumber", "Activity")
+                    b.HasOne("Sofco.Domain.Utils.ImputationNumber", "Activity")
                         .WithMany("Analytics")
                         .HasForeignKey("ActivityId");
 
-                    b.HasOne("Sofco.Model.Utils.ClientGroup", "ClientGroup")
+                    b.HasOne("Sofco.Domain.Utils.ClientGroup", "ClientGroup")
                         .WithMany("Analytics")
                         .HasForeignKey("ClientGroupId");
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "CommercialManager")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CommercialManager")
                         .WithMany("Analytics3")
                         .HasForeignKey("CommercialManagerId");
 
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.CostCenter", "CostCenter")
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.CostCenter", "CostCenter")
                         .WithMany("Analytics")
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.Currency", "Currency")
+                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
                         .WithMany("Analytics")
                         .HasForeignKey("CurrencyId");
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "Director")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Director")
                         .WithMany("Analytics1")
                         .HasForeignKey("DirectorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Manager")
                         .WithMany("Analytics2")
                         .HasForeignKey("ManagerId");
 
-                    b.HasOne("Sofco.Model.Utils.Product", "Product")
+                    b.HasOne("Sofco.Domain.Utils.Product", "Product")
                         .WithMany("Analytics")
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("Sofco.Model.Utils.PurchaseOrder", "PurchaseOrder")
+                    b.HasOne("Sofco.Domain.Utils.PurchaseOrder", "PurchaseOrder")
                         .WithMany("Analytics")
                         .HasForeignKey("PurchaseOrderId");
 
-                    b.HasOne("Sofco.Model.Utils.ServiceType", "ServiceType")
+                    b.HasOne("Sofco.Domain.Utils.ServiceType", "ServiceType")
                         .WithMany("Analytics")
                         .HasForeignKey("ServiceTypeId");
 
-                    b.HasOne("Sofco.Model.Utils.SoftwareLaw", "SoftwareLaw")
+                    b.HasOne("Sofco.Domain.Utils.SoftwareLaw", "SoftwareLaw")
                         .WithMany("Analytics")
                         .HasForeignKey("SoftwareLawId");
 
-                    b.HasOne("Sofco.Model.Utils.Solution", "Solution")
+                    b.HasOne("Sofco.Domain.Utils.Solution", "Solution")
                         .WithMany("Analytics")
                         .HasForeignKey("SolutionId");
 
-                    b.HasOne("Sofco.Model.Utils.Technology", "Technology")
+                    b.HasOne("Sofco.Domain.Utils.Technology", "Technology")
                         .WithMany("Analytics")
                         .HasForeignKey("TechnologyId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Certificate", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Certificate", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Common.File", "File")
+                    b.HasOne("Sofco.Domain.Models.Common.File", "File")
                         .WithMany()
                         .HasForeignKey("FileId");
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Hito", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Hito", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
+                    b.HasOne("Sofco.Domain.Models.Billing.Solfac", "Solfac")
                         .WithMany("Hitos")
                         .HasForeignKey("SolfacId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.HitoDetail", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.HitoDetail", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Hito", "Hito")
+                    b.HasOne("Sofco.Domain.Models.Billing.Hito", "Hito")
                         .WithMany("Details")
                         .HasForeignKey("HitoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Invoice", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Invoice", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
+                    b.HasOne("Sofco.Domain.Models.Billing.Solfac", "Solfac")
                         .WithMany("Invoices")
                         .HasForeignKey("SolfacId");
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("Invoices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.InvoiceHistory", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.InvoiceHistory", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Invoice", "Invoice")
+                    b.HasOne("Sofco.Domain.Models.Billing.Invoice", "Invoice")
                         .WithMany("Histories")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.PurchaseOrder", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.PurchaseOrder", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.AllocationManagement.Analytic", "Analytic")
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("AnalyticId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "CommercialManager")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CommercialManager")
                         .WithMany("PurchaseOrder2")
                         .HasForeignKey("CommercialManagerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Common.File", "File")
+                    b.HasOne("Sofco.Domain.Models.Common.File", "File")
                         .WithMany()
                         .HasForeignKey("FileId");
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "Manager")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Manager")
                         .WithMany("PurchaseOrder1")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.Solfac", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.Solfac", b =>
                 {
-                    b.HasOne("Sofco.Model.Utils.Currency", "Currency")
+                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
                         .WithMany("Solfacs")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.DocumentType", "DocumentType")
+                    b.HasOne("Sofco.Domain.Utils.DocumentType", "DocumentType")
                         .WithMany("Solfacs")
                         .HasForeignKey("DocumentTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.ImputationNumber", "ImputationNumber")
+                    b.HasOne("Sofco.Domain.Utils.ImputationNumber", "ImputationNumber")
                         .WithMany("Solfacs")
                         .HasForeignKey("ImputationNumber3Id")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Utils.PaymentTerm", "PaymentTerm")
+                    b.HasOne("Sofco.Domain.Utils.PaymentTerm", "PaymentTerm")
                         .WithMany("Solfacs")
                         .HasForeignKey("PaymentTermId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "UserApplicant")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")
                         .HasForeignKey("UserApplicantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacAttachment", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacAttachment", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
+                    b.HasOne("Sofco.Domain.Models.Billing.Solfac", "Solfac")
                         .WithMany("Attachments")
                         .HasForeignKey("SolfacId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Models.Billing.SolfacHistory", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacHistory", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Billing.Solfac", "Solfac")
+                    b.HasOne("Sofco.Domain.Models.Billing.Solfac", "Solfac")
                         .WithMany("Histories")
                         .HasForeignKey("SolfacId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.RoleFunctionality", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.RoleFunctionality", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Admin.Functionality", "Functionality")
+                    b.HasOne("Sofco.Domain.Models.Admin.Functionality", "Functionality")
                         .WithMany("RoleFunctionality")
                         .HasForeignKey("FunctionalityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.Role", "Role")
+                    b.HasOne("Sofco.Domain.Models.Admin.Role", "Role")
                         .WithMany("RoleFunctionality")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Model.Relationships.UserGroup", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.UserGroup", b =>
                 {
-                    b.HasOne("Sofco.Model.Models.Admin.Group", "Group")
+                    b.HasOne("Sofco.Domain.Models.Admin.Group", "Group")
                         .WithMany("UserGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Model.Models.Admin.User", "User")
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("UserGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

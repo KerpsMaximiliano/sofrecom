@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class History : BaseEntity
     {

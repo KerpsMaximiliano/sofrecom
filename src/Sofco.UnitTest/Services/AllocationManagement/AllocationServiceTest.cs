@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL.AllocationManagement;
-using Sofco.Model.DTO;
+using Sofco.Domain.DTO;
 using Sofco.Service.Implementations.AllocationManagement;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.DAL;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
 {

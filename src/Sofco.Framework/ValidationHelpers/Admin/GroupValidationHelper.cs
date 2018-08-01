@@ -1,7 +1,7 @@
 ﻿using Sofco.Core.DAL.Admin;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Admin
 {

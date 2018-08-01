@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Enums.TimeManagement
+﻿namespace Sofco.Domain.Enums
 {
     public enum AnalyticStatus
     {

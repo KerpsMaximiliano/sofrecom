@@ -18,11 +18,11 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
-using Sofco.Model.Enums;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement

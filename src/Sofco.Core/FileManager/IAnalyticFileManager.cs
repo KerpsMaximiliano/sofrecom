@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using OfficeOpenXml;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.FileManager
 {

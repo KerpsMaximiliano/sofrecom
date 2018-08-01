@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Models.Billing;
+﻿using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Relationships
+namespace Sofco.Domain.Relationships
 {
     public class SolfacCertificate
     {

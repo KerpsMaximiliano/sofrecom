@@ -9,9 +9,9 @@ using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Crm;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -164,7 +164,7 @@ namespace Sofco.Service.Implementations.Billing
             return list;
         }
 
-        private void SetPurchaseOrderValues(Model.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)
+        private void SetPurchaseOrderValues(Domain.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)
         {
             switch (solfac.Status)
             {

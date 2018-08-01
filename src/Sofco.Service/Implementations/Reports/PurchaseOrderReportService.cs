@@ -12,11 +12,11 @@ using Sofco.Core.DAL.Views;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Reports;
 using Sofco.Core.Services.Reports;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Reports;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Reports;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Reports
 {

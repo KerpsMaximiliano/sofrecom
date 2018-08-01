@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Core.Models.Rrhh
 {

@@ -6,8 +6,8 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Framework.Managers
 {

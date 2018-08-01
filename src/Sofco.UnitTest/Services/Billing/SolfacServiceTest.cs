@@ -11,9 +11,9 @@ using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Logger;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.Billing;
 
 namespace Sofco.UnitTest.Services.Billing

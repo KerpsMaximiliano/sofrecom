@@ -4,16 +4,17 @@ using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
+using Sofco.Domain.Enums;
 using Sofco.Framework.MailData;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Utils;
+
+using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.StatusHandlers.Analytic
 {
     public static class AnalyticStatusClose
     {
-        public static void Save(Model.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response, AnalyticStatus status)
+        public static void Save(Domain.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response, AnalyticStatus status)
         {
             unitOfWork.AllocationRepository.RemoveAllocationByAnalytic(analytic.Id, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
 
@@ -25,7 +26,7 @@ namespace Sofco.Framework.StatusHandlers.Analytic
             response.AddSuccess(Resources.AllocationManagement.Analytic.CloseSuccess);
         }
 
-        public static void SendMail(Response response, Model.Models.AllocationManagement.Analytic analytic, EmailConfig emailConfig, IMailSender mailSender, IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
+        public static void SendMail(Response response, Domain.Models.AllocationManagement.Analytic analytic, EmailConfig emailConfig, IMailSender mailSender, IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
             var recipientsList = new List<string>();
 

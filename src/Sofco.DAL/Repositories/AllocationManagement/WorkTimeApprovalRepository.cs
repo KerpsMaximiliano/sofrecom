@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

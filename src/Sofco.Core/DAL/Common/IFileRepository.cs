@@ -1,4 +1,4 @@
-﻿using Sofco.Model.Models.Common;
+﻿using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.Common
 {

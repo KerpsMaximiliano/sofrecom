@@ -1,11 +1,11 @@
 ﻿using Sofco.Core.DAL;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
     public class SpecialLicense : LicenseValidator, ILicenseValidator
     {
-        public void Validate(Response response, Model.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
+        public void Validate(Response response, Domain.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
         {
             if (string.IsNullOrWhiteSpace(domain.Comments))
             {

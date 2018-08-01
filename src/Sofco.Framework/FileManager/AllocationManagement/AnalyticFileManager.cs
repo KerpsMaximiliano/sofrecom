@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Sofco.Core.FileManager;
-using Sofco.Model.Enums;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Framework.FileManager.AllocationManagement
 {

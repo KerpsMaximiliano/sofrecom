@@ -16,14 +16,14 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Rrhh;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
-using File = Sofco.Model.Models.Common.File;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Rrhh
 {
@@ -359,7 +359,7 @@ namespace Sofco.Service.Implementations.Rrhh
             }
         }
 
-        private WorkTime BuildWorkTime(License license, DateTime startDate, Model.Models.Admin.User user)
+        private WorkTime BuildWorkTime(License license, DateTime startDate, Domain.Models.Admin.User user)
         {
             var worktime = new WorkTime();
 

@@ -3,8 +3,8 @@ using AutoMapper;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {

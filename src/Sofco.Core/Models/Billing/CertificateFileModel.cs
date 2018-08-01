@@ -1,6 +1,6 @@
 ﻿using System;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.Models.Billing
 {

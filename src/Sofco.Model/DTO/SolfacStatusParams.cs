@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.DTO
+namespace Sofco.Domain.DTO
 {
     public class SolfacStatusParams
     {

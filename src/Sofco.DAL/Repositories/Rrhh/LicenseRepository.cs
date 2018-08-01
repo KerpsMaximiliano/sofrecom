@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.Models.Rrhh;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Rrhh
 {

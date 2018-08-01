@@ -13,10 +13,10 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {

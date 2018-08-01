@@ -2,7 +2,7 @@
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.Billing;
 
 namespace Sofco.Service.Implementations.Common

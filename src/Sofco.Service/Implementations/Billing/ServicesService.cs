@@ -6,8 +6,8 @@ using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -26,11 +26,11 @@ namespace Sofco.Service.Implementations.Billing
             this.solfacDelegateData = solfacDelegateData;
         }
 
-        public Response<List<Model.Models.Billing.Service>> GetServices(string customerId)
+        public Response<List<Domain.Models.Billing.Service>> GetServices(string customerId)
         { 
-            var result = new List<Model.Models.Billing.Service>();
+            var result = new List<Domain.Models.Billing.Service>();
 
-            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<Model.Models.Billing.Service>> { Data = result };
+            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<Domain.Models.Billing.Service>> { Data = result };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
             
@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Billing
                 result.AddRange(serviceData.GetServices(customerId, item));
             }
 
-            return new Response<List<Model.Models.Billing.Service>> { Data = result };
+            return new Response<List<Domain.Models.Billing.Service>> { Data = result };
         }
 
         public Response<List<SelectListModel>> GetServicesOptions(string customerId)
@@ -59,11 +59,11 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Model.Models.Billing.Service> GetService(string serviceId, string customerId)
+        public Response<Domain.Models.Billing.Service> GetService(string serviceId, string customerId)
         {
             var result = GetServices(customerId).Data;
 
-            return new Response<Model.Models.Billing.Service> { Data = result.FirstOrDefault(x => x.CrmId.Equals(serviceId)) };
+            return new Response<Domain.Models.Billing.Service> { Data = result.FirstOrDefault(x => x.CrmId.Equals(serviceId)) };
         }
 
         public Analytic GetAnalyticByService(string serviceId)

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
@@ -48,9 +48,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 
-        public Model.Models.Billing.PurchaseOrder CreateDomain(string userName)
+        public Domain.Models.Billing.PurchaseOrder CreateDomain(string userName)
         {
-            var domain = new Model.Models.Billing.PurchaseOrder();
+            var domain = new Domain.Models.Billing.PurchaseOrder();
 
             FillData(domain, userName);
 
@@ -69,7 +69,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             return domain;
         }
 
-        public void UpdateDomain(Model.Models.Billing.PurchaseOrder domain, string userName)
+        public void UpdateDomain(Domain.Models.Billing.PurchaseOrder domain, string userName)
         {
             FillData(domain, userName);
 
@@ -108,7 +108,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             }
         }
 
-        private void FillData(Model.Models.Billing.PurchaseOrder domain, string userName)
+        private void FillData(Domain.Models.Billing.PurchaseOrder domain, string userName)
         {
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;

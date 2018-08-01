@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Framework.StatusHandlers.License
 {

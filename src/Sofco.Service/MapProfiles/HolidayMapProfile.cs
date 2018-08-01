@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoMapper;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Nolaborables;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Nolaborables;
 
 namespace Sofco.Service.MapProfiles
 {

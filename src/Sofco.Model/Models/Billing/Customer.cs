@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Models.Billing
+﻿namespace Sofco.Domain.Models.Billing
 {
     public class Customer
     {
