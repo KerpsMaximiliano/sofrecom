@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Service.MapProfiles

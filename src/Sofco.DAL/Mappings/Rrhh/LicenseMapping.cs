@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.DAL.Mappings.Rrhh
 {

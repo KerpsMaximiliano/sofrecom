@@ -15,12 +15,12 @@ using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
-using File = Sofco.Model.Models.Common.File;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
+using PurchaseOrder = Sofco.Domain.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Service.Implementations.Billing
 {

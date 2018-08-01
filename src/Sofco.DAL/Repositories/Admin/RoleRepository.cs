@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.DAL.Repositories.Admin
 {

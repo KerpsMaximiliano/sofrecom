@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
 {

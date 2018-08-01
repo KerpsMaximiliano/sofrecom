@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Billing
 {

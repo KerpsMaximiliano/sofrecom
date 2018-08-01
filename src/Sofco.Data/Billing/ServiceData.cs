@@ -25,7 +25,7 @@ namespace Sofco.Data.Billing
             this.unitOfWork = unitOfWork;
         }
 
-        public IList<Model.Models.Billing.Service> GetServices(string customerId, string username)
+        public IList<Domain.Models.Billing.Service> GetServices(string customerId, string username)
         {
             var email = sessionManager.GetUserEmail(username);
 
@@ -48,7 +48,7 @@ namespace Sofco.Data.Billing
                 cacheExpire);
         }
 
-        public Model.Models.Billing.Service GetService(Guid? serviceId)
+        public Domain.Models.Billing.Service GetService(Guid? serviceId)
         {
             var cacheKey = string.Format(ServiceByIdCacheKey, serviceId);
 

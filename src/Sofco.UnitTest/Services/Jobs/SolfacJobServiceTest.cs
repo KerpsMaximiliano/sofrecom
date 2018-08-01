@@ -9,10 +9,9 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Mail;
-using Sofco.DAL;
 using Sofco.Domain.Crm;
-using Sofco.Model;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain;
+using Sofco.Domain.Models.Billing;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Service.Settings.Jobs;
 

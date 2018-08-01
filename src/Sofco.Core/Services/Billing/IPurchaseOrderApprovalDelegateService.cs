@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Billing
 {

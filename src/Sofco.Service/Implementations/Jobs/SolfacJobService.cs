@@ -7,7 +7,7 @@ using Sofco.Core.CrmServices;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
-using Sofco.Model;
+using Sofco.Domain;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Framework.MailData;

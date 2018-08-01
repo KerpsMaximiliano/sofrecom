@@ -8,8 +8,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Framework.MailData;
-using Sofco.Model;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs

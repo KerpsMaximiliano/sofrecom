@@ -6,8 +6,8 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {

@@ -6,8 +6,8 @@ using Sofco.Common.Extensions;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.WorkTimeManagement
 {

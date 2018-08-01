@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing
 {

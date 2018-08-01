@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofco.Service", "src\Sofco.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofco.Resources", "src\Sofco.Resources\Sofco.Resources.csproj", "{5CAE3528-FA3A-46B4-A750-A8B564FE2FBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofco.Model", "src\Sofco.Model\Sofco.Model.csproj", "{66E60B16-A51B-421F-AD11-E1194D6F5583}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofco.Domain", "src\Sofco.Model\Sofco.Domain.csproj", "{66E60B16-A51B-421F-AD11-E1194D6F5583}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sofco.Framework", "src\Sofco.Framework\Sofco.Framework.csproj", "{D7D4F1AA-DC81-48D8-AD4B-E48518A0BAA7}"
 EndProject

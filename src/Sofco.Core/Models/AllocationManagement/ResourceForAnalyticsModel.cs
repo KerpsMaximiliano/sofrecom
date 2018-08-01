@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
 {

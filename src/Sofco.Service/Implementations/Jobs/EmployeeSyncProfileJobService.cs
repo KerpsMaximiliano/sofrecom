@@ -7,7 +7,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Framework.Helpers;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 
 namespace Sofco.Service.Implementations.Jobs

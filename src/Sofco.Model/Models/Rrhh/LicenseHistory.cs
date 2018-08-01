@@ -1,7 +1,7 @@
-﻿using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+﻿using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Models.Rrhh
+namespace Sofco.Domain.Models.Rrhh
 {
     public class LicenseHistory : History
     {

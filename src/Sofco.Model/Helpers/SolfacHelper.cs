@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Helpers
+namespace Sofco.Domain.Helpers
 {
     public class SolfacHelper
     {

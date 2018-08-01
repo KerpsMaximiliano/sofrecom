@@ -8,10 +8,10 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Rrhh;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Rrhh

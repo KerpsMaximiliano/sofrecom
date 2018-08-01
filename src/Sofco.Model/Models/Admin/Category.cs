@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Relationships;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class Category : BaseEntity, ILogicalDelete
     {

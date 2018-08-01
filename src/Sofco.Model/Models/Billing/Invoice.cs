@@ -1,11 +1,11 @@
 ﻿using System;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Models.Common;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class Invoice : BaseEntity
     {

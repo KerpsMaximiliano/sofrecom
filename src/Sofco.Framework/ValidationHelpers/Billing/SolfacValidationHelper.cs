@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Billing;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {

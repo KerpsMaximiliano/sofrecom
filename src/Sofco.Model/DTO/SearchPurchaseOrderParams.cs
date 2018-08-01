@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.DTO
+namespace Sofco.Domain.DTO
 {
     public class SearchPurchaseOrderParams
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Reports;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.Models.Reports;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Reports

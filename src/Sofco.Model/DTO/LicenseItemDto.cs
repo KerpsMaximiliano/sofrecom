@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Rrhh;
 
-namespace Sofco.Model.DTO
+namespace Sofco.Domain.DTO
 {
     public class LicenseItemDto
     {

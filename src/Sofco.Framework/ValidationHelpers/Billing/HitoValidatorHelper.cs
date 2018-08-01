@@ -1,6 +1,6 @@
-﻿using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+﻿using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {

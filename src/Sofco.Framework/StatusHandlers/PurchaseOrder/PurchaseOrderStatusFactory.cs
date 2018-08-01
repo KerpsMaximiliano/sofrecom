@@ -4,7 +4,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 {

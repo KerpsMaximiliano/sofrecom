@@ -10,7 +10,7 @@ using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Framework.Helpers;
-using Sofco.Model;
+using Sofco.Domain;
 
 namespace Sofco.Framework.Mail
 {

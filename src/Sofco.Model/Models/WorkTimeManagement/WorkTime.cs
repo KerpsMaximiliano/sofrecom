@@ -1,9 +1,9 @@
 ﻿using System;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
 
-namespace Sofco.Model.Models.WorkTimeManagement
+namespace Sofco.Domain.Models.WorkTimeManagement
 {
     public class WorkTime : BaseEntity
     {

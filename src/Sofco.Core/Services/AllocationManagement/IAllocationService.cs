@@ -1,9 +1,9 @@
-﻿using Sofco.Model.DTO;
-using Sofco.Model.Utils;
+﻿using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
 {

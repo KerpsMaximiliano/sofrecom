@@ -6,9 +6,9 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.StatusHandlers.License
@@ -22,7 +22,7 @@ namespace Sofco.Framework.StatusHandlers.License
             this.emailConfig = emailConfig;
         }
 
-        public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Model.Models.Rrhh.License license)
+        public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
             if(!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
@@ -32,9 +32,9 @@ namespace Sofco.Framework.StatusHandlers.License
             }
         }
 
-        public void SaveStatus(Model.Models.Rrhh.License license, LicenseStatusChangeModel model, IUnitOfWork unitOfWork)
+        public void SaveStatus(Domain.Models.Rrhh.License license, LicenseStatusChangeModel model, IUnitOfWork unitOfWork)
         {
-            var licenseToModif = new Model.Models.Rrhh.License { Id = license.Id, Status = model.Status };
+            var licenseToModif = new Domain.Models.Rrhh.License { Id = license.Id, Status = model.Status };
             unitOfWork.LicenseRepository.UpdateStatus(licenseToModif);
         }
 
@@ -43,7 +43,7 @@ namespace Sofco.Framework.StatusHandlers.License
             return Resources.Rrhh.License.RejectSuccess;
         }
 
-        public IMailData GetEmailData(Model.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
+        public IMailData GetEmailData(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
             var body = string.Format(MailMessageResource.LicenseRejectMessage, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", parameters.Comment, license.Type.Description);

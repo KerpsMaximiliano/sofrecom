@@ -1,6 +1,6 @@
 ﻿using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.StatusHandlers
 {

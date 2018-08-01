@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Rrhh;
 
-namespace Sofco.Model.Models.AllocationManagement
+namespace Sofco.Domain.Models.AllocationManagement
 {
     public class LicenseType : BaseEntity
     {

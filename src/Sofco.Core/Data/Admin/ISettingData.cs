@@ -1,4 +1,4 @@
-﻿using Sofco.Model.Models.Admin;
+﻿using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.Data.Admin
 {

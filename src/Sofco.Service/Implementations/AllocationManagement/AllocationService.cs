@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 using Sofco.Framework.Helpers;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {

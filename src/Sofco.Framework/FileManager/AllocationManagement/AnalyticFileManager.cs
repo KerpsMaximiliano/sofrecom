@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.FileManager;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Framework.FileManager.AllocationManagement
 {

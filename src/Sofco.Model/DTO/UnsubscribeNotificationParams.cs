@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Sofco.Model.DTO
+namespace Sofco.Domain.DTO
 {
     public class UnsubscribeNotificationParams
     {

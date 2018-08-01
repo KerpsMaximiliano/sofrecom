@@ -1,9 +1,9 @@
 ﻿using System;
 using Sofco.Core.DAL;
 using Sofco.Framework.StatusHandlers.License;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Rrhh
 {

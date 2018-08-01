@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing
 {

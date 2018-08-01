@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 using Sofco.Service.Implementations.Admin;
 
 namespace Sofco.UnitTest.Services.Admin

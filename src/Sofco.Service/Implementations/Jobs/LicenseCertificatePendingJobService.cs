@@ -7,8 +7,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Framework.MailData;
-using Sofco.Model;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Service.Implementations.Jobs
 {

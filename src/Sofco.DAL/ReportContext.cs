@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.DAL
 {

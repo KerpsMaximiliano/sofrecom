@@ -1,4 +1,4 @@
-﻿using Sofco.Model.Enums;
+﻿using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.Billing
 {

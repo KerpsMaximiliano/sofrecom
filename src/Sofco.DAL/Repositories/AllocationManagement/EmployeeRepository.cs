@@ -5,9 +5,9 @@ using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

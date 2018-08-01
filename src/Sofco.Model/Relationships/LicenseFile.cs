@@ -1,7 +1,7 @@
-﻿using Sofco.Model.Models.Common;
-using Sofco.Model.Models.Rrhh;
+﻿using Sofco.Domain.Models.Common;
+using Sofco.Domain.Models.Rrhh;
 
-namespace Sofco.Model.Relationships
+namespace Sofco.Domain.Relationships
 {
     public class LicenseFile
     {

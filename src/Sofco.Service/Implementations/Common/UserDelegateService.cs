@@ -7,9 +7,9 @@ using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Services.Common;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Common
 {

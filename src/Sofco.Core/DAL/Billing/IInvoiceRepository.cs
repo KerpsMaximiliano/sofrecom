@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.DAL.Billing
 {

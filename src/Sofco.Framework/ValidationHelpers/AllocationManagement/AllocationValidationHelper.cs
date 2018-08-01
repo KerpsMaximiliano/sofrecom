@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Utils;
-using Sofco.Model.DTO;
 using System.Linq;
+using Sofco.Domain.Utils;
+using Sofco.Domain.DTO;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {

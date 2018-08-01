@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Service.MapProfiles
 {

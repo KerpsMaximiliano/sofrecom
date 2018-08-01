@@ -5,7 +5,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderSearchResult
     {
-        public PurchaseOrderSearchResult(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public PurchaseOrderSearchResult(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
             Number = purchaseOrder.Number;

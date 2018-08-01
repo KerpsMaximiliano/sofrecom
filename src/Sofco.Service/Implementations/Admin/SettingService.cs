@@ -5,9 +5,9 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
 using Sofco.Framework.ValidationHelpers.Admin;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Admin
 {

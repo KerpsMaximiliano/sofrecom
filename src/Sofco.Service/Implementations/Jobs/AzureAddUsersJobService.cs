@@ -5,10 +5,10 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Jobs;
-using Sofco.Model.AzureAd;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
+using Sofco.Domain.AzureAd;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Jobs
 {

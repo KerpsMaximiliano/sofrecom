@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Domain.Crm;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.CrmServices
 {
