@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sofco.Domain.Utils;
 using Sofco.Domain.DTO;
-using System.Linq;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 
@@ -48,6 +49,27 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 {
                     response.Messages.Add(new Message(Resources.AllocationManagement.Allocation.ReleaseDateIsRequired, MessageType.Error));
                 }
+            }
+        }
+
+        public static void ValidatePercentage(Response response, AllocationMassiveAddModel model)
+        {
+            if (!model.Percentage.HasValue || model.Percentage < 0 || model.Percentage > 100)
+            {
+                response.AddError(Resources.AllocationManagement.Allocation.WrongPercentage);
+            }
+        }
+
+        public static void ValidateDates(Response response, AllocationMassiveAddModel model)
+        {
+            if (!model.StartDate.HasValue)
+            {
+                response.AddError(Resources.AllocationManagement.Allocation.DateSinceRequired);
+            }
+
+            if (!model.EndDate.HasValue)
+            {
+                response.AddError(Resources.AllocationManagement.Allocation.DateToRequired);
             }
         }
     }

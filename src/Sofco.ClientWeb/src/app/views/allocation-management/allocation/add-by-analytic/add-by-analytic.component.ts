@@ -50,7 +50,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.monthQuantity = this.appSetting.AllocationManagement_Months;
-        this.pmoUser = this.menuService.hasFunctionality('ALLOC', 'QARDD');
+        this.pmoUser = this.menuService.hasFunctionality('CONTR', 'QARDD');
 
         var analytic = JSON.parse(sessionStorage.getItem("analytic"));
 

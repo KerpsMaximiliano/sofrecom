@@ -58,6 +58,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
                 return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
             }
+            else
+            {
+                query = query.Where(x => x.EndDate == null);
+            }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
