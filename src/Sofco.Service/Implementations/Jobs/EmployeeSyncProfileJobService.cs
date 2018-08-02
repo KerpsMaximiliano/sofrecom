@@ -85,6 +85,8 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.Name = employee.Name?.Trim();
                 employee.Technology = employee.Technology?.Trim();
                 employee.Seniority = employee.Seniority?.Trim();
+                employee.DocumentNumberType = employee.DocumentNumberType?.Trim();
+                employee.PhoneNumber = employee.PhoneNumber?.Trim();
             }
         }
 
