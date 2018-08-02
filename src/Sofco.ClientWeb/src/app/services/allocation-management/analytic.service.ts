@@ -74,6 +74,10 @@ export class AnalyticService {
     return this.http.post<any>(`${this.baseUrl}/analytics/search`, query);
   }
 
+  getOpportunities(id) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}/opportunities`);
+  }
+
   createReport(ids){
     return this.http.post(`${this.baseUrl}/analytics/report`, ids, {
       responseType: 'arraybuffer',

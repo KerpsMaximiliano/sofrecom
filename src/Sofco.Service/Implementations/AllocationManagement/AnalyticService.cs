@@ -14,6 +14,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
@@ -151,6 +152,27 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 logger.LogError(ex);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<SelectListModel>> GetOpportunities(int id)
+        {
+            var response = new Response<IList<SelectListModel>> { Data = new List<SelectListModel>() };
+
+            var analytic = unitOfWork.AnalyticRepository.Get(id);
+
+            if (!string.IsNullOrWhiteSpace(analytic?.ServiceId))
+            {
+                var projects = unitOfWork.ProjectRepository.GetAllActives(analytic.ServiceId);
+
+                response.Data = projects.Select(x => new SelectListModel
+                {
+                    Id = $"{x.OpportunityNumber} - {x.OpportunityName}",
+                    Text = $"{x.OpportunityNumber} - {x.OpportunityName}"
+                })
+                .ToList();
             }
 
             return response;

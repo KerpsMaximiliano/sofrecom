@@ -8,6 +8,15 @@
 </div>
 
 <div class="row">
+    <div class="col-lg-9">
+        <select-two id="opportunity-select" [label]="'billing.purchaseOrder.fields.proposal'" [(value)]="model.proposal" [options]="opportunities"></select-two>
+    </div>
+    <div class="col-lg-3">
+        <button id="search-opportunity" (click)="searchOpportunities()" type="button" class="btn btn-primary btn-block m-t-md btn-sm">Buscar Propuestas <i class="fa fa-search"></i></button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.number' | translate }}</label>
