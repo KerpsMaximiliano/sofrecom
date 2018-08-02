@@ -68,7 +68,13 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Province),
                 nameof(Employee.Country),
                 nameof(Employee.HealthInsuranceCode),
-                nameof(Employee.PrepaidHealthCode)
+                nameof(Employee.PrepaidHealthCode),
+                nameof(Employee.DocumentNumberType),
+                nameof(Employee.DocumentNumber),
+                nameof(Employee.Cuil),
+                nameof(Employee.PhoneCountryCode),
+                nameof(Employee.PhoneAreaCode),
+                nameof(Employee.PhoneNumber)
             };
         }
 
