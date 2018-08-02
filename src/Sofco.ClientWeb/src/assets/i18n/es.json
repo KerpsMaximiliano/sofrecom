@@ -587,7 +587,10 @@
                 "percentage": "Facturabilidad",
                 "start": "Ingreso"
             },
-            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
+            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
+            "phone": "Teléfono",
+            "cuil": "Cuil",
+            "document": "Documento"
         },
         "news": {
             "title": "Novedades",

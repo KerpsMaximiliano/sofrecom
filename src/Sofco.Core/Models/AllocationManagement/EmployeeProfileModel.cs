@@ -66,5 +66,17 @@ namespace Sofco.Core.Models.AllocationManagement
         public string BusinessHoursDescription { get; set; }
 
         public string Manager { get; set; }
+
+        public string DocumentNumberType { get; set; }
+
+        public int DocumentNumber { get; set; }
+
+        public decimal Cuil { get; set; }
+
+        public int PhoneCountryCode { get; set; }
+
+        public int PhoneAreaCode { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

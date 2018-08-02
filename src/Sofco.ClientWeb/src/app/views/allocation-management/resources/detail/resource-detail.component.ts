@@ -215,4 +215,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.errorHandlerService.handleErrors(error);
         });
     }
-} 
+
+    getFormattedPhone() {
+        if(this.model == null) return "";
+
+        const phoneCountryCode = this.model.phoneCountryCode;
+        const phoneAreaCode = this.model.phoneAreaCode;
+        const phoneNumber = this.model.phoneNumber;
+
+        return "+"+phoneCountryCode+" "+phoneAreaCode+" "+phoneNumber;
+    }
+}
