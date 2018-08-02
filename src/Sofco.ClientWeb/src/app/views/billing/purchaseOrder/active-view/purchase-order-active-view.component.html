@@ -19,14 +19,6 @@
 </div>
         
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="btn-right">
-                <button *ngIf="menuService.hasFunctionality('PUROR', 'ALTA')" class="btn btn-primary btn-outline dim btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
-            </div>
-        </div>
-    </div>
-
     <purchase-order-view-filter #purchaseOrderViewFilter storeSessionName="purchaseOrderActiveView" [useStatus]="false" (change)="viewFilterChange($event)"></purchase-order-view-filter>
 
     <div class="row">
