@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.AzureAd
+﻿namespace Sofco.Domain.AzureAd
 {
     public class AzureAdLoginResponse
     {

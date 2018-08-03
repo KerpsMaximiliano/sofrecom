@@ -1,12 +1,12 @@
 ﻿using System;
 using Sofco.Core.DAL;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
     public class ExamLicense : LicenseValidator, ILicenseValidator
     {
-        public void Validate(Response response, Model.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
+        public void Validate(Response response, Domain.Models.Rrhh.License domain, IUnitOfWork unitOfWork)
         {
             var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);

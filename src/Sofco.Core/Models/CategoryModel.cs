@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Models.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.Models
 {

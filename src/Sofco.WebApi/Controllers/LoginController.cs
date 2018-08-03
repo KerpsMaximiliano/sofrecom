@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services;
-using Sofco.Model.Users;
+using Sofco.Domain.Users;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers

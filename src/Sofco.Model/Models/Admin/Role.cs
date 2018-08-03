@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Interfaces;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Interfaces;
+using Sofco.Domain.Relationships;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class Role : BaseEntity, ILogicalDelete, IAuditDates
     {

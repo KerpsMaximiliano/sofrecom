@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.WorkTimeManagement
 {

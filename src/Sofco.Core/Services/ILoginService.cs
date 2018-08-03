@@ -1,8 +1,7 @@
-﻿using Sofco.Common.Domains;
-using Sofco.Core.Models.Admin;
-using Sofco.Model.AzureAd;
-using Sofco.Model.Users;
-using Sofco.Model.Utils;
+﻿using Sofco.Core.Models.Admin;
+using Sofco.Domain.AzureAd;
+using Sofco.Domain.Users;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services
 {

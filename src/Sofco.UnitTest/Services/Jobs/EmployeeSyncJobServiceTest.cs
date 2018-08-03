@@ -12,7 +12,7 @@ using Sofco.Core.Mail;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.Jobs
 {

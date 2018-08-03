@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

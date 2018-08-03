@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.DAL.Billing
 {
@@ -9,5 +9,7 @@ namespace Sofco.Core.DAL.Billing
         Service GetByIdCrm(string crmServiceId);
         IList<Service> GetAllActives(string customerId);
         IList<Service> GetAllByManager(string customerId, string externalManagerId);
+        void UpdateActive(Service service);
+        void UpdateAnalytic(Service service);
     }
 }

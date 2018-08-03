@@ -1,5 +1,5 @@
-﻿using Sofco.Model.AzureAd;
-using Sofco.Model.Utils;
+﻿using Sofco.Domain.AzureAd;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Admin
 {

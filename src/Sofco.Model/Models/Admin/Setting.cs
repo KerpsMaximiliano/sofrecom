@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Sofco.Common.Domains;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class Setting : IEntityDate
     {

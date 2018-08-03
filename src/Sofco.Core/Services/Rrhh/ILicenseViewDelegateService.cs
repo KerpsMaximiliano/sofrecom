@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.Rrhh;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Rrhh
 {

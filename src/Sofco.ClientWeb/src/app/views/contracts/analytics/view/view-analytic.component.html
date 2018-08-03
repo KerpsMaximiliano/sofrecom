@@ -25,9 +25,13 @@
                     {{'billing.project.title' | translate }} <i class="fa fa-building"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('CONTR', 'CLOSE')"> 
+                <button class="btn btn-warning btn-outline dim" (click)="openForClose()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('CONTR', 'CLOSE')"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>   
+
+                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="form.model.status == 1"> 
+                    {{ 'allocationManagement.analytics.closeForExpenses' | translate }} <i class="fa fa-times-circle"></i> 
+                </button>
 
                 <button (click)="edit()" class="btn btn-primary btn-outline dim" *ngIf="form.model.status != 2 && menuService.hasFunctionality('CONTR', 'DAF-EDIT-ANA')">
                     {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> 

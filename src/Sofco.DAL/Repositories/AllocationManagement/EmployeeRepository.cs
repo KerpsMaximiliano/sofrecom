@@ -5,9 +5,9 @@ using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -57,6 +57,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
 
                 return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
+            }
+            else
+            {
+                query = query.Where(x => x.EndDate == null);
             }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))

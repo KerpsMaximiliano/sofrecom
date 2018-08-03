@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.MapProfiles
 {

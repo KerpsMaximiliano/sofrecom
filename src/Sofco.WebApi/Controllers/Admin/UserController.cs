@@ -8,7 +8,7 @@ using Sofco.Core.Models;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin

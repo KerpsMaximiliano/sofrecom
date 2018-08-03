@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.Common
 {

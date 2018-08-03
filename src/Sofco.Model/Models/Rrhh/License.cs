@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
-namespace Sofco.Model.Models.Rrhh
+namespace Sofco.Domain.Models.Rrhh
 {
     public class License : BaseEntity
     {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Models.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Repositories.Billing
 {

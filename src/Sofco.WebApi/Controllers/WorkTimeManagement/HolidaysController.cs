@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.WorkTimeManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.WorkTimeManagement

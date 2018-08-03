@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class Task : BaseEntity, ILogicalDelete
     {

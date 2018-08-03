@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model;
+using Sofco.Domain;
 
 namespace Sofco.Core.Mail
 {

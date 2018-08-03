@@ -4,7 +4,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Data.Billing
 {

@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Users
+﻿namespace Sofco.Domain.Users
 {
     public class UserLoginRefresh
     {

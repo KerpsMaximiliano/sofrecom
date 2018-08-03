@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Sofco.Model.AzureAd
+namespace Sofco.Domain.AzureAd
 {
     public class AzureAdUserResponse
     {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
-namespace Sofco.Model.Models.AllocationManagement
+namespace Sofco.Domain.Models.AllocationManagement
 {
     public class Employee : BaseEntity, IEntityDate
     {
@@ -84,6 +84,19 @@ namespace Sofco.Model.Models.AllocationManagement
         public EmployeeEndReason TypeEndReason { get; set; }
 
         public int? ManagerId { get; set; }
+
         public User Manager { get; set; }
+
+        public string DocumentNumberType { get; set; }
+
+        public int DocumentNumber { get; set; }
+
+        public decimal Cuil { get; set; }
+
+        public int PhoneCountryCode { get; set; }
+
+        public int PhoneAreaCode { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

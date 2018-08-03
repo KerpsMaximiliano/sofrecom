@@ -1,8 +1,8 @@
 ﻿using Sofco.Core.DAL;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
-using PurchaseOrder = Sofco.Model.Models.Billing.PurchaseOrder;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
+using PurchaseOrder = Sofco.Domain.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
 {

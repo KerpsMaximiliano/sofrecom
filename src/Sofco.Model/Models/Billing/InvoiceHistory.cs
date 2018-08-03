@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Enums;
+﻿using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class InvoiceHistory : History
     {

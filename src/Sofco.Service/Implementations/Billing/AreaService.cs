@@ -6,7 +6,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using AreaModel = Sofco.Core.Models.Billing.AreaModel;
 
 namespace Sofco.Service.Implementations.Billing

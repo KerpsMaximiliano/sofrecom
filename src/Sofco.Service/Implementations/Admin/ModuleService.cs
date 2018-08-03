@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
-using Sofco.Model.Utils;
-using Sofco.Model.Enums;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Enums;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Service.Implementations.Admin
 {

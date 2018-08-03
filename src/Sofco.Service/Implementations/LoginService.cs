@@ -8,10 +8,10 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Framework.Helpers;
-using Sofco.Model.AzureAd;
-using Sofco.Model.Enums;
-using Sofco.Model.Users;
-using Sofco.Model.Utils;
+using Sofco.Domain.AzureAd;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Users;
+using Sofco.Domain.Utils;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 

@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
 {

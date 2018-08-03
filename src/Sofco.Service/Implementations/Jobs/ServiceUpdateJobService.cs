@@ -60,7 +60,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private void Update(CrmService crmService, Model.Models.Billing.Service service)
+        private void Update(CrmService crmService, Domain.Models.Billing.Service service)
         {
             FillData(service, crmService);
 
@@ -77,7 +77,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void Create(CrmService crmService)
         {
-            var service = new Model.Models.Billing.Service();
+            var service = new Domain.Models.Billing.Service();
 
             FillData(service, crmService);
 
@@ -92,7 +92,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private void FillData(Model.Models.Billing.Service service, CrmService crmService)
+        private void FillData(Domain.Models.Billing.Service service, CrmService crmService)
         {
             service.CrmId = crmService.Id;
             service.Name = crmService.Nombre;

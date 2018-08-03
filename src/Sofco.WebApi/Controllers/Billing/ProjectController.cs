@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.DTO;
+using Sofco.Domain.DTO;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing

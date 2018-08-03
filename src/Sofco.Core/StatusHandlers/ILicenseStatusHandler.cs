@@ -1,8 +1,8 @@
 ﻿using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.StatusHandlers
 {

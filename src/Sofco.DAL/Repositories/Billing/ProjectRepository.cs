@@ -2,7 +2,7 @@
 using System.Linq;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Repositories.Billing
 {

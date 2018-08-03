@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Utils;
+﻿using Sofco.Domain.Utils;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class PurchaseOrderAmmountDetail
     {

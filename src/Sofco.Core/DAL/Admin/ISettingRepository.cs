@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
 {

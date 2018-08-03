@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Core.DAL.WorkTimeManagement
 {

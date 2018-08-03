@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.DAL.Repositories.Common
 {

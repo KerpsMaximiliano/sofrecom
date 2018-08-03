@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Model.DTO
+namespace Sofco.Domain.DTO
 {
     public class HitoSplittedParams
     {

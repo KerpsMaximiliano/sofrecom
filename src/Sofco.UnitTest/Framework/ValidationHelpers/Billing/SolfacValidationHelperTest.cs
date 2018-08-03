@@ -6,8 +6,8 @@ using Moq;
 using NUnit.Framework;
 using Sofco.Core.DAL.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.UnitTest.Framework.ValidationHelpers.Billing
 {

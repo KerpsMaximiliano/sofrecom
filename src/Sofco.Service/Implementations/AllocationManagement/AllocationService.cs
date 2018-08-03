@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 using Sofco.Framework.Helpers;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -18,11 +19,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<AllocationService> logger;
+        private readonly IAllocationFileManager allocationFileManager;
 
-        public AllocationService(IUnitOfWork unitOfWork, ILogMailer<AllocationService> logger)
+        public AllocationService(IUnitOfWork unitOfWork, ILogMailer<AllocationService> logger, IAllocationFileManager allocationFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.allocationFileManager = allocationFileManager;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -90,7 +93,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
-                if(allocation.All(x => x.Percentage == 0)) continue;
+                if (allocation.All(x => x.Percentage == 0)) continue;
 
                 if (allocation.Any())
                 {
@@ -139,6 +142,86 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public ICollection<Employee> GetByEmployeesByAnalytic(int analyticId)
         {
             return unitOfWork.AllocationRepository.GetByAnalyticId(analyticId);
+        }
+
+        public Response<byte[]> AddMassive(AllocationMassiveAddModel model)
+        {
+            var response = new Response<byte[]>();
+            var employeesWithError = new List<Tuple<string, string>>();
+
+            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, model.AnalyticId);
+            AllocationValidationHelper.ValidatePercentage(response, model);
+            AllocationValidationHelper.ValidateDates(response, model);
+
+            if (response.HasErrors()) return response;
+
+            var firstMonth = new DateTime(model.StartDate.GetValueOrDefault().Year, model.StartDate.GetValueOrDefault().Month, 1);
+            var lastMonth = new DateTime(model.EndDate.GetValueOrDefault().Year, model.EndDate.GetValueOrDefault().Month, 1);
+
+            try
+            {
+                foreach (var employeeId in model.EmployeeIds)
+                {
+                    var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, firstMonth.Date, lastMonth.Date);
+                    var firstMonthAux = firstMonth.Date;
+
+                    while (firstMonthAux.Date <= lastMonth.Date)
+                    {
+                        var allocationsFiltered = allocationsBetweenDays.Where(x => x.StartDate.Date == firstMonthAux.Date).ToList();
+
+                        if (allocationsFiltered.Any())
+                        {
+                            var percentageSum = allocationsFiltered.Sum(x => x.Percentage);
+
+                            if (percentageSum + model.Percentage > 100)
+                            {
+                                var employee = allocationsFiltered.FirstOrDefault()?.Employee;
+
+                                employeesWithError.Add(new Tuple<string, string>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("d")));
+                            }
+                            else
+                            {
+                                InsertNewAllocation(model, employeeId, firstMonthAux);
+                            }
+                        }
+                        else
+                        {
+                            InsertNewAllocation(model, employeeId, firstMonthAux);
+                        }
+
+                        firstMonthAux = firstMonthAux.AddMonths(1);
+                    }
+                }
+
+                unitOfWork.Save();
+
+                if (employeesWithError.Any())
+                {
+                    response.Data = allocationFileManager.CreateReport(employeesWithError).GetAsByteArray();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        private void InsertNewAllocation(AllocationMassiveAddModel model, int employeeId, DateTime firstMonthAux)
+        {
+            var allocation = new Allocation
+            {
+                Id = 0,
+                AnalyticId = model.AnalyticId,
+                StartDate = firstMonthAux.Date,
+                Percentage = model.Percentage.GetValueOrDefault(),
+                EmployeeId = employeeId,
+                ReleaseDate = model.EndDate.GetValueOrDefault().Date
+            };
+
+            unitOfWork.AllocationRepository.Insert(allocation);
         }
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
@@ -283,7 +366,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private void InsertNewAllocation(AllocationDto allocationDto, AllocationMonthDto month)
         {
-            Allocation allocation = new Allocation
+            var allocation = new Allocation
             {
                 Id = 0,
                 AnalyticId = allocationDto.AnalyticId,
@@ -292,6 +375,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 EmployeeId = allocationDto.EmployeeId,
                 ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date
             };
+
             unitOfWork.AllocationRepository.Insert(allocation);
         }
     }

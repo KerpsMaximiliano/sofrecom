@@ -7,7 +7,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Framework.Helpers;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -68,7 +68,13 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Province),
                 nameof(Employee.Country),
                 nameof(Employee.HealthInsuranceCode),
-                nameof(Employee.PrepaidHealthCode)
+                nameof(Employee.PrepaidHealthCode),
+                nameof(Employee.DocumentNumberType),
+                nameof(Employee.DocumentNumber),
+                nameof(Employee.Cuil),
+                nameof(Employee.PhoneCountryCode),
+                nameof(Employee.PhoneAreaCode),
+                nameof(Employee.PhoneNumber)
             };
         }
 
@@ -79,6 +85,8 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.Name = employee.Name?.Trim();
                 employee.Technology = employee.Technology?.Trim();
                 employee.Seniority = employee.Seniority?.Trim();
+                employee.DocumentNumberType = employee.DocumentNumberType?.Trim();
+                employee.PhoneNumber = employee.PhoneNumber?.Trim();
             }
         }
 

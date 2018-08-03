@@ -1,8 +1,8 @@
 ﻿using System;
 using Sofco.Common.Domains;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Models.WorkTimeManagement
+namespace Sofco.Domain.Models.WorkTimeManagement
 {
     public class Holiday : BaseEntity, IEntityDate
     {

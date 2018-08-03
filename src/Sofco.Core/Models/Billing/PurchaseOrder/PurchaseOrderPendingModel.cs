@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
@@ -10,7 +10,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             
         }
 
-        public PurchaseOrderPendingModel(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public PurchaseOrderPendingModel(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             Id = purchaseOrder.Id;
             Number = purchaseOrder.Number;

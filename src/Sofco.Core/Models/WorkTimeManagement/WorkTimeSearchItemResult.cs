@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {

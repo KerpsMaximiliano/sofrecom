@@ -1,11 +1,12 @@
 ﻿using System;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Services.AllocationManagement
 {
@@ -40,5 +41,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<byte[]> CreateReport(List<int> analytics);
 
         Response UpdateDaf(Analytic analytic);
+
+        Response<IList<SelectListModel>> GetOpportunities(int id);
     }
 }

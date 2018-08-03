@@ -11,15 +11,15 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 using Sofco.Core.Mail;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Resources.Mails;
-using File = Sofco.Model.Models.Common.File;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Billing
 {

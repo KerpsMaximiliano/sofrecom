@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Rrhh;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Models.Common;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Rrhh

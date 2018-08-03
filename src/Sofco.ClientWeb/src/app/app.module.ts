@@ -34,7 +34,6 @@ import { CryptographyService } from 'app/services/common/cryptography.service';
 import { LaddaModule } from 'angular2-ladda';
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
-// import { NgxInactivity } from 'ngx-inactivity';
 import { SettingsService } from 'app/services/admin/settings.service';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -56,7 +55,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToastrModule.forRoot(),
     appRouter,
     ChartsModule,
-    // NgxInactivity,
     LaddaModule.forRoot({
       style: "zoom-in",
       spinnerSize: 30,
@@ -95,7 +93,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CryptographyService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     AuthService,
-    // { provide: LOCALE_ID, useValue: "es-Ar" }
+    //{ provide: LOCALE_ID, useValue: "es-Ar" }
   ],
   bootstrap: [AppComponent]
 })

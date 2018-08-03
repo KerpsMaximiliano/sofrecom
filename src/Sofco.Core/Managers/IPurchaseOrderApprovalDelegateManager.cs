@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.Managers
 {

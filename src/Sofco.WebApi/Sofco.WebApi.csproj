@@ -43,9 +43,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
     <ProjectReference Include="..\Sofco.DAL\Sofco.DAL.csproj" />
     <ProjectReference Include="..\Sofco.Framework\Sofco.Framework.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Service\Sofco.Service.csproj" />
     <ProjectReference Include="..\Sofco.Repository.Rh\Sofco.Repository.Rh.csproj" />
   </ItemGroup>

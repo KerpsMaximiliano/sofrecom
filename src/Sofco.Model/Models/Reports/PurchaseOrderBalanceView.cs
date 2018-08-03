@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Models.Reports
+namespace Sofco.Domain.Models.Reports
 {
     public class PurchaseOrderBalanceView
     {

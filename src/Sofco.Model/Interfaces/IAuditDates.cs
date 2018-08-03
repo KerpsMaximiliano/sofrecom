@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Model.Interfaces
+namespace Sofco.Domain.Interfaces
 {
     public interface IAuditDates
     {

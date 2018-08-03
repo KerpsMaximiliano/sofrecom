@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.Billing
 {
@@ -11,7 +11,7 @@ namespace Sofco.Core.Models.Billing
         {
         }
 
-        public SolfacDetail(Model.Models.Billing.Solfac domain)
+        public SolfacDetail(Domain.Models.Billing.Solfac domain)
         {
             Id = domain.Id;
             ClientName = domain.ClientName;
@@ -207,9 +207,9 @@ namespace Sofco.Core.Models.Billing
 
         public string ManagerId { get; set; }
 
-        public Model.Models.Billing.Solfac CreateDomain()
+        public Domain.Models.Billing.Solfac CreateDomain()
         {
-            var solfac = new Model.Models.Billing.Solfac();
+            var solfac = new Domain.Models.Billing.Solfac();
 
             solfac.Id = Id;
             solfac.ClientName = ClientName;

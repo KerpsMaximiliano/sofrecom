@@ -1,4 +1,4 @@
-﻿using Sofco.Model;
+﻿using Sofco.Domain;
 
 namespace Sofco.Core.Models.AllocationManagement
 {

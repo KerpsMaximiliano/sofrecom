@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Billing
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Relationships;
 
-namespace Sofco.Model.Models.Common
+namespace Sofco.Domain.Models.Common
 {
     public class File : BaseEntity
     {

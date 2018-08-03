@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

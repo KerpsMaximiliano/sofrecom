@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using OfficeOpenXml;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Core.FileManager
 {

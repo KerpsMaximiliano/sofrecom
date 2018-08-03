@@ -2,7 +2,7 @@
 using System.Linq;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Repositories.Billing
 {
@@ -25,6 +25,16 @@ namespace Sofco.DAL.Repositories.Billing
         public IList<Service> GetAllByManager(string customerId, string externalManagerId)
         {
             return context.Services.Where(x => x.Active && x.AccountId.Equals(customerId) && x.ManagerId.Equals(externalManagerId)).ToList().AsReadOnly();
+        }
+
+        public void UpdateActive(Service service)
+        {
+            context.Entry(service).Property("Active").IsModified = true;
+        }
+
+        public void UpdateAnalytic(Service service)
+        {
+            context.Entry(service).Property("Analytic").IsModified = true;
         }
     }
 }

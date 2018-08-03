@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing
 {
@@ -16,6 +16,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<PurchaseOrder>().Property(_ => _.FicheDeSignature).HasMaxLength(200);
             builder.Entity<PurchaseOrder>().Property(_ => _.PaymentForm).HasMaxLength(200);
             builder.Entity<PurchaseOrder>().Property(_ => _.Comments).HasMaxLength(2000);
+            builder.Entity<PurchaseOrder>().Property(_ => _.Proposal).HasMaxLength(600);
 
             builder.Entity<PurchaseOrder>().HasOne(x => x.File).WithMany().HasForeignKey(x => x.FileId);
             builder.Entity<PurchaseOrder>().HasOne(x => x.Area).WithMany(x => x.PurchaseOrders).HasForeignKey(x => x.AreaId);

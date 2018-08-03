@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {

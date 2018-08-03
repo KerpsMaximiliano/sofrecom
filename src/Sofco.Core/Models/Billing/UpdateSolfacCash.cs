@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.DTO;
+using Sofco.Domain.DTO;
 
 namespace Sofco.Core.Models.Billing
 {
