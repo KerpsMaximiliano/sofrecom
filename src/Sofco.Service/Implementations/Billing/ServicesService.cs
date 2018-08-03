@@ -70,5 +70,22 @@ namespace Sofco.Service.Implementations.Billing
         {
             return unitOfWork.AnalyticRepository.GetByService(serviceId);
         }
+
+        public Response<List<SelectListModel>> GetAllNotRelatedOptions(string customerId)
+        {
+            if (string.IsNullOrWhiteSpace(customerId) || customerId == "null") return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
+
+            var result = unitOfWork.ServiceRepository.GetAllNotRelatedOptions(customerId);
+
+            var response = new Response<List<SelectListModel>>
+            {
+                Data = result
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
+        }
     }
 }

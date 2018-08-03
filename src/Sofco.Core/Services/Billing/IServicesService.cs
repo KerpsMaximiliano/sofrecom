@@ -15,5 +15,6 @@ namespace Sofco.Core.Services.Billing
         Response<Service> GetService(string serviceId, string customerId);
 
         Analytic GetAnalyticByService(string serviceId);
+        Response<List<SelectListModel>> GetAllNotRelatedOptions(string customerId);
     }
 }

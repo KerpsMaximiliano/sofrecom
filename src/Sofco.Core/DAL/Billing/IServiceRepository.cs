@@ -11,5 +11,6 @@ namespace Sofco.Core.DAL.Billing
         IList<Service> GetAllByManager(string customerId, string externalManagerId);
         void UpdateActive(Service service);
         void UpdateAnalytic(Service service);
+        IList<Service> GetAllNotRelatedOptions(string customerId);
     }
 }

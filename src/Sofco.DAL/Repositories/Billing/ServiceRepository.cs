@@ -36,5 +36,10 @@ namespace Sofco.DAL.Repositories.Billing
         {
             context.Entry(service).Property("Analytic").IsModified = true;
         }
+
+        public IList<Service> GetAllNotRelatedOptions(string customerId)
+        {
+            return context.Services.Where(x => x.AccountId.Equals(customerId) && x.Active && string.IsNullOrWhiteSpace(x.Analytic)).ToList().AsReadOnly();
+        }
     }
 }
