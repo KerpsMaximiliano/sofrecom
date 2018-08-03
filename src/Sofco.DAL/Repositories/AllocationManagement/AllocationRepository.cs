@@ -59,6 +59,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("delete from app.allocations where releasedate = '0001-01-01 00:00:00.0000000'");
         }
 
+        public IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now)
+        {
+            return context.Allocations.Where(x => x.EmployeeId == id && x.StartDate.Date > now.Date).ToList();
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations
