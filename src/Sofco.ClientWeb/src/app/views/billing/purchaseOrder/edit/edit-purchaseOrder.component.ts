@@ -92,7 +92,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#search-opportunity').attr('disabled', 'disabled');
                     $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
-                    $('textarea').attr('disabled', 'disabled');
+                    $('#description').attr('disabled', 'disabled');
+                    $('#comments').attr('disabled', 'disabled');
                     this.form.currencyDisabled = true;
                 }
             },
