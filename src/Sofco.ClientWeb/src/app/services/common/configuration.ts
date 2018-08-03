@@ -24,8 +24,8 @@ export class Configuration {
     }
 
     getHeaders(){
-        let headers = new Headers();
-        let token = Cookie.get('access_token');
+        const headers = new Headers();
+        const token = Cookie.get('access_token');
 
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
@@ -35,7 +35,7 @@ export class Configuration {
     }
 
     getLoginHeaders(){
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Access-Control-Allow-Origin', '*');
         return headers;
     }

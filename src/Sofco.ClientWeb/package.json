@@ -1,6 +1,6 @@
 {
   "name": "sofcoar",
-  "version": "1.42.89",
+  "version": "1.43.89",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -77,7 +77,7 @@
     "summernote": "^0.8.10",
     "sweetalert2": "^7.15.1",
     "web-animations-js": "^2.3.1",
-    "zone.js": "^0.8.20"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular/cli": "^1.7.3",
