@@ -163,5 +163,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
+
+        [HttpGet("{id}/opportunities")]
+        public IActionResult GetOpportunities(int id)
+        {
+            var response = analyticService.GetOpportunities(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

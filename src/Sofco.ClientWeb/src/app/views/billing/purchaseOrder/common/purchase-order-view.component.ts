@@ -225,7 +225,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
     addPurchaseOrderAdjust(data): any[] {
         data.forEach(item => {
-            if(item.adjustment > 0){
+            if(item.adjustment != 0){
                 const newItem = this.createPurchaseOrderAdjustment(item);
                 data.push(newItem);
             }
