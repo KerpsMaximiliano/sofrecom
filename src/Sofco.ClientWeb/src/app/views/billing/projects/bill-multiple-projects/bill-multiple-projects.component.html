@@ -41,7 +41,7 @@
         <div class="col-sm-4" *ngFor="let project of projects; let i = index">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5 class="text-ellipsis"> {{ project.nombre }} </h5>
+                    <h5 class="text-ellipsis"> {{ project.name }} </h5>
                 </div>
        
                 <hitos-by-project [projectId]="project.id" [index]="i" (selectHitoEvent)="selectHito($event)"></hitos-by-project>
