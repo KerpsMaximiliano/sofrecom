@@ -177,7 +177,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             {
                                 var employee = allocationsFiltered.FirstOrDefault()?.Employee;
 
-                                employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("d"), percentageSum));
+                                employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("Y"), percentageSum));
                             }
                             else
                             {

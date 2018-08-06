@@ -10,6 +10,6 @@
     "releaseDateIsRequired": "Fecha de liberación es requerida.",
     "wrongPercentage": "Porcentaje ingresado es incorrecto",
     "monthDifferent": "La fecha ingresada no puede ser diferente a la del mes en curso de la última asignación",
-    "employeeWithErrors": "Las asignaciones masivas fueron realizadas con exito pero algunas contenian algun impedimento",
+    "employeeWithErrors": "Las asignaciones masivas fueron realizadas con exito pero algunas contienen impedimentos",
     "massiveSuccess": "Las asignaciones masivas fueron realizadas con exito"
 }
