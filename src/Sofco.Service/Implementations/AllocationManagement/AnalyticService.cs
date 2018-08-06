@@ -10,10 +10,12 @@ using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
@@ -21,7 +23,6 @@ using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.Enums;
-
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Resources.Mails;
 
@@ -39,9 +40,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IEmployeeData employeeData;
         private readonly IAnalyticFileManager analyticFileManager;
         private readonly IUserData userData;
+        private readonly IServiceData serviceData;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, 
+            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
             ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
@@ -54,6 +56,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeData = employeeData;
             this.analyticFileManager = analyticFileManager;
             this.userData = userData;
+            this.serviceData = serviceData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -156,6 +159,27 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<IList<SelectListModel>> GetOpportunities(int id)
+        {
+            var response = new Response<IList<SelectListModel>> { Data = new List<SelectListModel>() };
+
+            var analytic = unitOfWork.AnalyticRepository.Get(id);
+
+            if (!string.IsNullOrWhiteSpace(analytic?.ServiceId))
+            {
+                var projects = unitOfWork.ProjectRepository.GetAllActives(analytic.ServiceId);
+
+                response.Data = projects.Select(x => new SelectListModel
+                {
+                    Id = $"{x.OpportunityNumber} - {x.OpportunityName}",
+                    Text = $"{x.OpportunityNumber} - {x.OpportunityName}"
+                })
+                .ToList();
+            }
+
+            return response;
+        }
+
         public ICollection<Analytic> GetAll()
         {
             return unitOfWork.AnalyticRepository.GetAllReadOnly();
@@ -225,8 +249,27 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+
+                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+                {
+                    var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
+
+                    if (service != null)
+                    {
+                        service.Analytic = analytic.Title;
+                        unitOfWork.ServiceRepository.UpdateAnalytic(service);
+                    }
+                }
+
+                if (analytic.SolutionId == 0) analytic.SolutionId = null;
+                if (analytic.TechnologyId == 0) analytic.TechnologyId = null;
+                if (analytic.ServiceTypeId == 0) analytic.ServiceTypeId = null;
+
                 unitOfWork.AnalyticRepository.Insert(analytic);
+
                 unitOfWork.Save();
+
+                serviceData.ClearKeys();
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.SaveSuccess);
             }
@@ -309,6 +352,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
             {
                 var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
+
                 if (result.HasErrors)
                 {
                     response.AddError(Resources.Common.CrmGeneralError);
@@ -318,6 +362,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+                {
+                    var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
+
+                    if (service != null)
+                    {
+                        service.Active = false;
+                        unitOfWork.ServiceRepository.UpdateActive(service);
+                    }
+                }
+
                 AnalyticStatusClose.Save(analytic, unitOfWork, response, status);
             }
             catch (Exception ex)
@@ -361,10 +416,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
+                var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance });
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance, mailQuality });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);

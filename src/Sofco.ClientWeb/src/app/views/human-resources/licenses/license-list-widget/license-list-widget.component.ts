@@ -1,12 +1,7 @@
 import { OnInit, OnDestroy, Component, Input } from "@angular/core";
 import { LicenseService } from "app/services/human-resources/licenses.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Router } from "@angular/router";
 
 declare var moment: any;
@@ -29,12 +24,8 @@ export class LicenseListWidget implements OnInit, OnDestroy {
     public loading: boolean = false;
 
     constructor(private licenseService: LicenseService,
-        private employeeService: EmployeeService,
         private router: Router,
-        private menuService: MenuService,
-        private datatableService: DataTableService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){
+        private datatableService: DataTableService){
     }
 
     ngOnInit(): void {
@@ -43,14 +34,14 @@ export class LicenseListWidget implements OnInit, OnDestroy {
                 this.data = data;
                 this.initGrid()
             },
-            error => {});
+            () => { });
         }
         else{
             this.getDataSubscrip = this.licenseService.getByStatus(this.statusId).subscribe(data => {
                 this.data = data;
                 this.initGrid()
             },
-            error => {});
+            () => { });
         }
     }
 

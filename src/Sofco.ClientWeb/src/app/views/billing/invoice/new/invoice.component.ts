@@ -87,7 +87,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               err => this.errorHandlerService.handleErrors(err));
         }
 
-        this.model.project = this.project.nombre;
+        this.model.project = this.project.name;
         this.model.projectId = this.projectId;
         this.model.analytic = this.project.analytic;
         this.model.invoiceStatus = InvoiceStatus[InvoiceStatus.SendPending];

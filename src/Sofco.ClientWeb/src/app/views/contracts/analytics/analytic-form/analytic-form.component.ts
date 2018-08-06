@@ -151,7 +151,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     getServices(){
         this.messageService.showLoading();
             
-        this.serviceService.getAllOptions(this.customerId).subscribe(d => {
+        this.serviceService.getAllNotRelated(this.customerId).subscribe(d => {
             this.messageService.closeLoading();
             this.services = d.data;
         },
@@ -168,6 +168,19 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
         if(services.length > 0){
             this.model.service = services[0].text;
+
+            this.messageService.showLoading();
+
+            this.serviceService.getById(this.customerId, this.serviceId).subscribe(response => {
+                this.messageService.closeLoading();
+
+                this.model.solutionId = response.data.solutionTypeId;
+                this.model.technologyId = response.data.technologyTypeId;
+                this.model.serviceTypeId = response.data.serviceTypeId;
+            }, 
+            error => {
+                this.messageService.closeLoading();
+            });
         }
     }
 }

@@ -398,4 +398,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             }, 100);
         }
       }
+
+    openCategoriesModal(){
+        this.categories = this.categories.map(item => {
+            item.selected = false;
+            return item;
+        });
+
+        this.categoriesModal.show();
+    }
 } 

@@ -21,5 +21,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         bool Exist(int allocationId);
         ICollection<Employee> GetByAnalyticId(int analyticId);
         void DeleteAllocationWithReleaseDateNull();
+        IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now);
     }
 }

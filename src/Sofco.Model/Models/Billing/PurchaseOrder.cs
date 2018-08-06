@@ -45,6 +45,8 @@ namespace Sofco.Domain.Models.Billing
 
         public string Comments { get; set; }
 
+        public string Proposal { get; set; }
+
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<Solfac> Solfacs { get; set; }

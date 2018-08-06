@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="btn-right" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+            <div class="btn-right" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD')">
                 <button class="btn btn-success btn-sm btn-outline dim" (click)="export()" *ngIf="model.length > 0"> {{ 'ACTIONS.export' | translate }} <i class="fa fa-download"></i></button>
                 <button class="btn btn-primary btn-sm btn-outline dim" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>

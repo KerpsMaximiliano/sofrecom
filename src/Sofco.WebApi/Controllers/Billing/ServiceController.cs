@@ -39,6 +39,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{customerId}/options/notrelated")]
+        public IActionResult GetAllNotRelatedOptions(string customerId)
+        {
+            var response = servicesService.GetAllNotRelatedOptions(customerId);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{customerId}")]
         public IActionResult Get(string customerId)
         {

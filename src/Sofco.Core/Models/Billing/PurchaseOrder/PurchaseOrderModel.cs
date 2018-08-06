@@ -46,6 +46,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public string Comments { get; set; }
 
+        public string Proposal { get; set; }
+
+
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 
         public Domain.Models.Billing.PurchaseOrder CreateDomain(string userName)
@@ -122,6 +125,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.PaymentForm = PaymentForm;
             domain.Margin = Margin;
             domain.Comments = Comments;
+            domain.Proposal = Proposal;
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;

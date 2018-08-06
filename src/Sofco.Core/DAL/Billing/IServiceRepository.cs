@@ -9,5 +9,8 @@ namespace Sofco.Core.DAL.Billing
         Service GetByIdCrm(string crmServiceId);
         IList<Service> GetAllActives(string customerId);
         IList<Service> GetAllByManager(string customerId, string externalManagerId);
+        void UpdateActive(Service service);
+        void UpdateAnalytic(Service service);
+        IList<Service> GetAllNotRelatedOptions(string customerId);
     }
 }

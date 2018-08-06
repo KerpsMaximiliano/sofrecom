@@ -162,6 +162,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+                var allocations = unitOfWork.AllocationRepository.GetLastAllocationsForEmployee(employeeToChange.Id, DateTime.Now);
+
+                if(allocations.Any()) unitOfWork.AllocationRepository.Delete(allocations);
+
                 employeeToChange.CreatedByUser = userName;
                 employeeToChange.Modified = DateTime.UtcNow;
                 employeeToChange.EndDate = response.Data.EndDate;

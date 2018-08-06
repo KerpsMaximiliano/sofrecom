@@ -28,6 +28,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             PaymentForm = domain.PaymentForm;
             Margin = domain.Margin;
             Comments = domain.Comments;
+            Proposal = domain.Proposal;
 
             if (domain.PurchaseOrderAnalytics.Any())
             {
@@ -53,6 +54,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     .ToList();
             }
         }
+
+        public string Proposal { get; set; }
 
         public int Id { get; set; }
 
