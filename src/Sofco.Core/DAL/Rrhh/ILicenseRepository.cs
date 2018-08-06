@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.Rrhh;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.DAL.Rrhh
 {
@@ -17,6 +17,7 @@ namespace Sofco.Core.DAL.Rrhh
         ICollection<License> GetByStatus(LicenseStatus statusId);
         ICollection<License> Search(LicenseSearchParams parameters);
         ICollection<License> GetByManager(int managerId);
+        ICollection<License> GetByManagerIds(List<int> managerIds);
         ICollection<License> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
         ICollection<License> GetByEmployeeAndDates(int employeeId, DateTime startDate, DateTime endDate);
         void UpdateStatus(License license);

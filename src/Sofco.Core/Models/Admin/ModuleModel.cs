@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Sofco.Model;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.Models.Admin
 {

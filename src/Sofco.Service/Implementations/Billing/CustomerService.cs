@@ -1,55 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.Crm.Billing;
-using Sofco.Model.Utils;
-using Sofco.Service.Http.Interfaces;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerData customerData;
-        private readonly ICrmHttpClient client;
-        private readonly CrmConfig crmConfig;
         private readonly ISessionManager sessionManager;
         private readonly ISolfacDelegateData solfacDelegateData;
         private readonly ILogMailer<CustomerService> logger;
+        private readonly IUnitOfWork unitOfWork;
 
         public CustomerService(ICustomerData customerData, 
-            ICrmHttpClient client, 
-            IOptions<CrmConfig> crmOptions, 
             ISessionManager sessionManager,
             ILogMailer<CustomerService> logger,
+            IUnitOfWork unitOfWork,
             ISolfacDelegateData solfacDelegateData)
         {
             this.customerData = customerData;
-            this.client = client;
             this.sessionManager = sessionManager;
             this.solfacDelegateData = solfacDelegateData;
-            crmConfig = crmOptions.Value;
+            this.unitOfWork = unitOfWork;
             this.logger = logger;
         }
 
-        public Response<List<CrmCustomer>> GetCustomers(bool getAll)
+        public Response<List<Customer>> GetCustomers()
         {
-            var response = new Response<List<CrmCustomer>>();
-            var result = new List<CrmCustomer>();
+            var response = new Response<List<Customer>> { Data = new List<Customer>() };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+
             foreach (var item in userNames)
             {
                 try
                 {
-                    result.AddRange(customerData.GetCustomers(item, getAll).ToList());
+                    response.Data.AddRange(customerData.GetCustomers(item));
                 }
                 catch (Exception e)
                 {
@@ -57,19 +51,18 @@ namespace Sofco.Service.Implementations.Billing
                     response.AddWarning(Resources.Common.CrmGeneralError);
                 }
             }
-            response.Data = result.DistinctBy(x => x.Id);
 
             return response;
         }
 
-        public Response<List<SelectListModel>> GetCustomersOptions(bool getAll)
+        public Response<List<SelectListModel>> GetCustomersOptions()
         {
-            var result = GetCustomers(getAll);
+            var result = GetCustomers();
 
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel {Id = x.Id, Text = x.Nombre})
+                    .Select(x => new SelectListModel {Id = x.CrmId, Text = x.Name})
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -84,7 +77,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -92,9 +85,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<CrmCustomer> GetCustomerById(string customerId)
+        public Response<Customer> GetCustomerById(string customerId)
         {
-            var response = new Response<CrmCustomer>();
+            var response = new Response<Customer>();
 
             if (string.IsNullOrWhiteSpace(customerId))
             {
@@ -102,11 +95,9 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            var url = $"{crmConfig.Url}/api/account/{customerId}";
+            var customer = unitOfWork.CustomerRepository.GetByIdCrm(customerId);
 
-            var customer = client.Get<CrmCustomer>(url).Data;
-
-            if (customer.Id.Equals("00000000-0000-0000-0000-000000000000"))
+            if (customer == null)
             {
                 response.AddError(Resources.Billing.Customer.NotFound);
                 return response;
@@ -116,13 +107,11 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private Response<List<CrmCustomer>> GetCustomersByCurrentManager()
+        private Response<IList<Customer>> GetCustomersByCurrentManager()
         {
-            var response = new Response<List<CrmCustomer>>();
+            var response = new Response<IList<Customer>>();
 
-            var result = customerData.GetCustomersByManager(sessionManager.GetUserName()).ToList();
-
-            response.Data = result.DistinctBy(x => x.Id);
+            response.Data = customerData.GetCustomers(sessionManager.GetUserName());
 
             return response;
         }

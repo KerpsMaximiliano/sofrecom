@@ -6,14 +6,14 @@ using Sofco.DAL.Mappings.Common;
 using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.DAL.Mappings.WorkTimeManagement;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL
 {
@@ -56,6 +56,9 @@ namespace Sofco.DAL
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<PurchaseOrderHistory> PurchaseOrderHistories { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -140,6 +143,10 @@ namespace Sofco.DAL
             builder.MapEmployeeCategory();
             builder.MapWorkTime();
             builder.MapPurchaseOrderAnalytic();
+            builder.MapEmployeeProfileHistory();
+            builder.MapCustomer();
+            builder.MapService();
+            builder.MapProject();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Sofco.Model.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class Response<T> : Response where T : class
     {

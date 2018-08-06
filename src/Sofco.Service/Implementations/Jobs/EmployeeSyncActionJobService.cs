@@ -11,15 +11,15 @@ using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Framework.MailData;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Repository.Rh.Settings;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.Jobs
 {
-    public class EmployeeSyncJobService : IEmployeeSyncJobService
+    public class EmployeeSyncActionJobService : IEmployeeSyncActionJobService
     {
         private const int FromLastMonth = -1;
 
@@ -35,14 +35,14 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        private readonly ILogMailer<EmployeeSyncJobService> logger;
+        private readonly ILogMailer<EmployeeSyncActionJobService> logger;
 
         private readonly IMailBuilder mailBuilder;
 
-        public EmployeeSyncJobService(ITigerEmployeeRepository tigerEmployeeRepository,
+        public EmployeeSyncActionJobService(ITigerEmployeeRepository tigerEmployeeRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILogMailer<EmployeeSyncJobService> logger,
+            ILogMailer<EmployeeSyncActionJobService> logger,
             IMailSender mailSender,
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder)
         {

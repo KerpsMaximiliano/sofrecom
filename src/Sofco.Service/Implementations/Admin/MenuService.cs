@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
@@ -9,9 +10,8 @@ using Sofco.Core.DAL.Common;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Admin
 {
@@ -27,22 +27,22 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager;
 
+        private readonly ILicenseViewDelegateManager licenseViewDelegateManager;
+
+        private readonly ISolfacDelegateManager solfacDelegateManager;
+
         private readonly EmailConfig emailConfig;
 
-        private readonly AppSetting appSetting;
-
-        private readonly IUserDelegateRepository userDelegateRepository;
-
-        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, IUserDelegateRepository userDelegateRepository, IOptions<AppSetting> appSetting, IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager)
+        public MenuService(IUnitOfWork unitOfWork, ISessionManager sessionManager, IUserService userService, IOptions<EmailConfig> emailConfig, IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager)
         {
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.userService = userService;
-            this.userDelegateRepository = userDelegateRepository;
             this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
             this.purchaseOrderActiveDelegateManager = purchaseOrderActiveDelegateManager;
+            this.licenseViewDelegateManager = licenseViewDelegateManager;
+            this.solfacDelegateManager = solfacDelegateManager;
             this.emailConfig = emailConfig.Value;
-            this.appSetting = appSetting.Value;
         }
 
         public Response<MenuResponseModel> GetFunctionalitiesByUserName()
@@ -90,9 +90,7 @@ namespace Sofco.Service.Implementations.Admin
 
         private List<Role> GetRoles()
         {
-            var userName = sessionManager.GetUserName();
-
-            var groupsId = unitOfWork.UserGroupRepository.GetGroupsId(userName);
+            var groupsId = unitOfWork.UserGroupRepository.GetGroupsId(sessionManager.GetUserName());
 
             var roles = unitOfWork.RoleRepository.GetRolesByGroup(groupsId).ToList();
 
@@ -100,12 +98,9 @@ namespace Sofco.Service.Implementations.Admin
 
             roles.AddRange(purchaseOrderActiveDelegateManager.GetDelegatedRoles());
 
-            if (userDelegateRepository.HasUserDelegate(userName, UserDelegateType.Solfac))
-            {
-                var solfacDelegateRole = unitOfWork.RoleRepository.GetByCode(appSetting.SolfacGeneratorCode);
+            roles.AddRange(licenseViewDelegateManager.GetDelegatedRoles());
 
-                roles.Add(solfacDelegateRole);
-            }
+            roles.AddRange(solfacDelegateManager.GetDelegatedRoles());
 
             return roles;
         }

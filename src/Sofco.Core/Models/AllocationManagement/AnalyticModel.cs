@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
 {
@@ -124,6 +124,18 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.ServiceTypeId = ServiceTypeId;
             domain.UsersQv = string.Join(";", UsersQv);
             domain.CostCenterId = CostCenterId;
+        }
+
+        public Analytic CreateDomainDaf()
+        {
+            var domain = new Analytic
+            {
+                Id = Id,
+                SoftwareLawId = SoftwareLawId,
+                ActivityId = ActivityId
+            };
+
+            return domain;
         }
     }
 }

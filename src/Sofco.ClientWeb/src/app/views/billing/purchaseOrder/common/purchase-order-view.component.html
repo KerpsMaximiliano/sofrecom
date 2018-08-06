@@ -12,6 +12,7 @@
             <th class="text-right">{{'billing.purchaseOrder.fields.balance' | translate }}</th>
             <th>{{'billing.purchaseOrder.projectManager' | translate }}</th>
             <th>{{'billing.purchaseOrder.commercialManager' | translate }}</th>
+            <th>{{'billing.solfac.pdf' | translate }}</th>
             <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
         </tr>
     </thead>
@@ -30,6 +31,7 @@
             <td class="text-right">{{ purchaseOrder.balance | amountFormat }}</td>
             <td>{{ purchaseOrder.projectManagerNames }}</td>
             <td>{{ purchaseOrder.accountManagerNames }}</td>
+            <td>{{ purchaseOrder.pdfUrl }}</td>
             <td class="text-center column-xs">
                 <button *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="clickViewHandler(purchaseOrder)"><i class="fa fa-eye"></i></button>
 
@@ -38,7 +40,7 @@
                 </button>
 
                 <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
-                    <i class="fa fa-eye"></i>
+                    <i class="fa fa-file"></i>
                 </button>
             </td>
         </tr>

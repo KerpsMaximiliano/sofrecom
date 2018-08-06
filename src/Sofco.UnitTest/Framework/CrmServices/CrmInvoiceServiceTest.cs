@@ -9,8 +9,8 @@ using Sofco.Core.Config;
 using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
 using Sofco.Framework.CrmServices;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.UnitTest.Framework.CrmServices

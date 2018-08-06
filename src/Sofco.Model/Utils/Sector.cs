@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Rrhh;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class Sector : Option, ILogicalDelete
     {

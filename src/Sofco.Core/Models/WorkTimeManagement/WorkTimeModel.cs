@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {

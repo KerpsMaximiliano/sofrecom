@@ -5,7 +5,7 @@ using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Data.Billing
 {

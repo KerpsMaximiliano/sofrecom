@@ -11,7 +11,7 @@ namespace Sofco.Service.Implementations.Jobs
         {
             this.unitOfWork = unitOfWork;
         }
-
+         
         public void ResetExamDays()
         {
             unitOfWork.EmployeeRepository.ResetAllExamDays();

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -208,6 +208,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public bool ExistManagerId(int managerId)
         {
             return context.Analytics.Any(x => x.ManagerId == managerId && x.Status == AnalyticStatus.Open);
+        }
+
+        public void UpdateDaf(Analytic analytic)
+        {
+            context.Entry(analytic).Property("SoftwareLawId").IsModified = true;
+            context.Entry(analytic).Property("ActivityId").IsModified = true;
         }
     }
 }

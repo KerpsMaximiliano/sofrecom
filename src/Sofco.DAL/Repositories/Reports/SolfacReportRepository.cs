@@ -2,8 +2,8 @@
 using System.Linq;
 using Sofco.Core.DAL.Report;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.DAL.Repositories.Reports
 {

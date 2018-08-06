@@ -26,6 +26,8 @@
 
         public string PmoCode { get; set; }
 
+        public string QualityCode { get; set; }
+
         public string RrhhCode { get; set; }
 
         public string ComplianceCode { get; set; }

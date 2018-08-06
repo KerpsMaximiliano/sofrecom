@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.DAL.Admin
 {

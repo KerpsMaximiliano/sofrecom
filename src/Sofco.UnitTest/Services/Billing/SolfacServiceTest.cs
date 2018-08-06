@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Domains;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
@@ -11,11 +10,10 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.Billing;
 
 namespace Sofco.UnitTest.Services.Billing
@@ -29,7 +27,6 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ISolfacStatusFactory> solfacStatusFactoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<CrmConfig> crmConfigMock;
-        private Mock<IMailSender> mailSenderMock;
         private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<IUserData> userDataMock;

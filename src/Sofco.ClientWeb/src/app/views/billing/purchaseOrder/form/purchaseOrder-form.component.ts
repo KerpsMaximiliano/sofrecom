@@ -1,13 +1,15 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { Option } from "app/models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { UtilsService } from "../../../../services/common/utils.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 import { MessageService } from "../../../../services/common/message.service";
+import { resolve } from "url";
+import { reject } from "../../../../../../node_modules/@types/q";
 
 @Component({
     selector: 'purchase-order-form',
@@ -102,5 +104,50 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();    
             this.errorHandlerService.handleErrors(err)
         });
+    }
+
+    getOpportunities(analyticid, resolve){
+        this.analyticService.getOpportunities(analyticid).subscribe(res => {
+            resolve();
+
+            if(res.data && res.data.length > 0){
+                res.data.forEach(item => {
+                    this.opportunities.push(item);
+                });
+            }
+        },
+        err => {
+            resolve();
+            this.messageService.closeLoading();    
+        });
+    }
+
+    searchOpportunities(){
+       var analytics = $('#analytics').val();
+       this.opportunities = [];
+       
+        if(analytics.length > 0) {
+
+            this.messageService.showLoading();
+
+            var promises = new Array();
+
+            analytics.forEach(item => {
+
+                var promise = new Promise((resolve, reject) => {
+                    this.getOpportunities(item, resolve);
+                });
+
+                promises.push(promise);
+            });
+
+            Promise.all(promises).then(data => { 
+                this.messageService.closeLoading();
+                
+                setTimeout(() => {
+                    $('#opportunity-select select').val(this.model.proposal).trigger('change');
+                }, 300);
+             });
+       }
     }
 } 

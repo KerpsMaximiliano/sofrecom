@@ -1,8 +1,8 @@
 ﻿using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {

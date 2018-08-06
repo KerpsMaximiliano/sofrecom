@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Data.Billing
 {

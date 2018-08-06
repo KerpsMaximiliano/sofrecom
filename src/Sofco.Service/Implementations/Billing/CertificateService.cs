@@ -9,11 +9,11 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
-using File = Sofco.Model.Models.Common.File;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Billing
 {

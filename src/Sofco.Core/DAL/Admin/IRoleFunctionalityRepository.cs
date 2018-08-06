@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.DAL.Admin
 {

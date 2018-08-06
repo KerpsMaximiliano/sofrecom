@@ -4,7 +4,7 @@ using System.Reflection;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Mail;
-using Sofco.Model;
+using Sofco.Domain;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Mail

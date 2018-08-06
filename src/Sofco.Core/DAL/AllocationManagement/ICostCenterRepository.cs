@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.DAL.Common;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {

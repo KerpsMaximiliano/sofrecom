@@ -7,12 +7,12 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Validations;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {

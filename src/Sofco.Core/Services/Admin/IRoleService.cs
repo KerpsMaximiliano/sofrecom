@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Utils;
-using System.Collections.Generic;
-using Sofco.Model.Models.Admin;
+﻿using System.Collections.Generic;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Admin
 {

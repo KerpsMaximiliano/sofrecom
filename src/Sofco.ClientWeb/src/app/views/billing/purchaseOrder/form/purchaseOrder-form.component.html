@@ -8,6 +8,15 @@
 </div>
 
 <div class="row">
+    <div class="col-lg-9">
+        <select-two id="opportunity-select" [label]="'billing.purchaseOrder.fields.proposal'" [(value)]="model.proposal" [options]="opportunities"></select-two>
+    </div>
+    <div class="col-lg-3">
+        <button id="search-opportunity" (click)="searchOpportunities()" type="button" class="btn btn-primary btn-block m-t-md btn-sm">Buscar Propuestas <i class="fa fa-search"></i></button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.number' | translate }}</label>
@@ -42,7 +51,10 @@
     <div class="col-sm-12">
         <div class="input-group m-b">
             <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
-            <input [disabled]="!item.enable || currencyDisabled" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+
+            <input *ngIf="(mode == 'new' || model.status == 4 || model.status == 8)" [disabled]="!item.enable || currencyDisabled" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+            <span *ngIf="(mode == 'edit' && (model.status !== 4 && model.status != 8))" class="input-group-addon addon-width bg-muted">{{ item.ammount | number: '1.2-2' }}</span> 
+
             <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && !item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
             <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && item.enable" class="input-group-addon pointer bg-danger" (click)="item.enable = !item.enable"><i class="fa fa-times"></i></span> 
         </div>
@@ -78,10 +90,10 @@
 
 <div class="form-group">
     <label class="control-label">{{'billing.purchaseOrder.fields.description' | translate }}</label>
-    <textarea class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.description"></textarea>
+    <textarea id="description" class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.description"></textarea>
 </div>
 
 <div class="form-group">
     <label class="control-label">{{'billing.purchaseOrder.fields.comments' | translate }}</label>
-    <textarea class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.comments"></textarea>
+    <textarea id="comments" class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.comments"></textarea>
 </div>

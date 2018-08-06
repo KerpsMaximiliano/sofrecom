@@ -4,9 +4,9 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sofco.Common.Settings;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.AzureAd;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.AzureAd;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.Service.Http.Interfaces;
 using Sofco.Service.Settings;
 

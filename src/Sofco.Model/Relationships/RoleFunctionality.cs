@@ -1,6 +1,6 @@
-﻿using Sofco.Model.Models.Admin;
+﻿using Sofco.Domain.Models.Admin;
 
-namespace Sofco.Model.Relationships
+namespace Sofco.Domain.Relationships
 {
     public class RoleFunctionality
     {

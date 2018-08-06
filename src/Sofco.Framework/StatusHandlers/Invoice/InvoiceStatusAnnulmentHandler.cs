@@ -2,9 +2,9 @@
 using Sofco.Core.StatusHandlers;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
-using Sofco.Model.DTO;
-using Sofco.Model.Utils;
-using Sofco.Model.Enums;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Framework.StatusHandlers.Invoice
 {
@@ -22,17 +22,17 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             return Resources.Billing.Invoice.Cancelled;
         }
 
-        public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        public void SaveStatus(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
-            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Cancelled };
+            var invoiceToModif = new Domain.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Cancelled };
             unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
         }
 
-        public void SendMail(IMailSender mailSender, Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        public void SendMail(IMailSender mailSender, Domain.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
         }
 
-        public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        public Response Validate(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             return new Response();
         }

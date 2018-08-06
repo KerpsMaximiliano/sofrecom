@@ -7,7 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Framework.Managers
 {

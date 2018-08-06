@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@a
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
@@ -54,6 +54,7 @@ export class StatusRejectComponent implements OnDestroy  {
     rejectByCDG(){
         if(!this.rejectComments || this.rejectComments == ""){
             this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.rejectModal.resetButtons();
             return;
         }
 

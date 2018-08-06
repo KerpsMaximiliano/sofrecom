@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.Admin;
-using Sofco.Model.AzureAd;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.AzureAd;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Service.MapProfiles
 {

@@ -23,5 +23,9 @@
         public string PurchaseOrderActiveViewCode { get; set; }
 
         public string PurchaseOrderActiveDelegateCode { get; set; }
+
+        public string LicenseViewDelegateCode { get; set; }
+
+        public string LicenseViewCode { get; set; }
     }
 }

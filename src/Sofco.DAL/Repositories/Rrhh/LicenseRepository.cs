@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.Models.Rrhh;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Rrhh
 {
@@ -78,6 +78,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
                 .Where(x => x.ManagerId == managerId).ToList();
+        }
+
+        public ICollection<License> GetByManagerIds(List<int> managerIds)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => managerIds.Contains(x.ManagerId)).ToList();
         }
 
         public ICollection<License> GetByManagerAndStatus(LicenseStatus statusId, int managerId)

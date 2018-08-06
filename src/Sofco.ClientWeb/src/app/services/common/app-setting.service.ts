@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SettingsService } from "app/services/admin/settings.service";
 import { AppSetting } from 'app/services/common/app-setting';
-import 'rxjs/add/operator/toPromise';
+
 
 @Injectable()
 export class AppSettingService {

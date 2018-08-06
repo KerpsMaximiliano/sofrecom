@@ -4,9 +4,9 @@ using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.Invoice
 {
@@ -22,7 +22,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             this.mailBuilder = mailBuilder;
         }
 
-        public Response Validate(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        public Response Validate(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
             var response = new Response();
 
@@ -52,14 +52,14 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             return response;
         }
 
-        private string GetBodyMail(Model.Models.Billing.Invoice invoice, string siteUrl)
+        private string GetBodyMail(Domain.Models.Billing.Invoice invoice, string siteUrl)
         {
             var link = $"{siteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}";
 
             return string.Format(Resources.Mails.MailMessageResource.InvoiceStatusApproveMessage, link);
         }
 
-        private string GetSubjectMail(Model.Models.Billing.Invoice invoice)
+        private string GetSubjectMail(Domain.Models.Billing.Invoice invoice)
         {
             return string.Format(Resources.Mails.MailSubjectResource.InvoiceStatusApproveTitle, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
         }
@@ -69,19 +69,19 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             return Resources.Billing.Invoice.Approved;
         }
 
-        private string GetRecipients(Model.Models.Billing.Invoice invoice)
+        private string GetRecipients(Domain.Models.Billing.Invoice invoice)
         {
             return invoice.User.Email;
         }
 
-        public void SaveStatus(Model.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
+        public void SaveStatus(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
-            var invoiceToModif = new Model.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber };
+            var invoiceToModif = new Domain.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Approved, InvoiceNumber = parameters.InvoiceNumber };
 
             unitOfWork.InvoiceRepository.UpdateStatusAndApprove(invoiceToModif);
         }
 
-        public void SendMail(IMailSender mailSender, Model.Models.Billing.Invoice invoice, EmailConfig emailConfig)
+        public void SendMail(IMailSender mailSender, Domain.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
             var subjectToDaf = GetSubjectMail(invoice);
             var bodyToDaf = GetBodyMail(invoice, emailConfig.SiteUrl);

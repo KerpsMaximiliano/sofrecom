@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Validations
 {

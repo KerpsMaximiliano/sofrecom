@@ -21,17 +21,21 @@
             <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
-                    {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
-                </button>
-
-                <button class="btn btn-success btn-outline dim" (click)="goToProjects()" *ngIf="showClientButton"> 
+                <button class="btn btn-success btn-outline dim" (click)="goToProjects()" *ngIf="showClientButton && menuService.hasFunctionality('SOLFA', 'ALTA')"> 
                     {{'billing.project.title' | translate }} <i class="fa fa-building"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="confirmModal.show()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('ALLOC', 'CLOSE')"> 
+                <button class="btn btn-warning btn-outline dim" (click)="openForClose()" *ngIf="form.model.status != 2 && menuService.hasFunctionality('CONTR', 'CLOSE')"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>   
+
+                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="form.model.status == 1"> 
+                    {{ 'allocationManagement.analytics.closeForExpenses' | translate }} <i class="fa fa-times-circle"></i> 
+                </button>
+
+                <button (click)="edit()" class="btn btn-primary btn-outline dim" *ngIf="form.model.status != 2 && menuService.hasFunctionality('CONTR', 'DAF-EDIT-ANA')">
+                    {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> 
+                </button>
             </div>
         </div>
     </div>

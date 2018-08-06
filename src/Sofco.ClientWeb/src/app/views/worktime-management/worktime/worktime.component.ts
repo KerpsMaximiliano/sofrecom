@@ -10,7 +10,7 @@ import { WorktimeService } from 'app/services/worktime-management/worktime.servi
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { EmployeeService } from 'app/services/allocation-management/employee.service';
 import { TaskService } from 'app/services/admin/task.service';
-import { WorkTimeTaskModel } from 'app/models/worktime-management/WorkTimeTaskModel';
+import { WorkTimeTaskModel } from 'app/models/worktime-management/workTimeTask.model';
 import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
 import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
 import { AppSetting } from 'app/services/common/app-setting';
@@ -359,6 +359,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.addRecentTask(res.data);
     },
     error => {
+      this.editModal.resetButtons();
       this.errorHandlerService.handleErrors(error);
     });
   }
@@ -542,6 +543,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     if (totalHours > this.appSetting.WorkingHoursPerDaysMax) {
       this.messageService.showErrorByFolder("workTimeManagement/workTime", "hoursMaxError?" + this.appSetting.WorkingHoursPerDaysMax);
       (<any>$('#calendar')).fullCalendar('removeEvents', function(evt) { return evt.id === 0; });
+
+      this.editModal.resetButtons();
       return false;
     }
 

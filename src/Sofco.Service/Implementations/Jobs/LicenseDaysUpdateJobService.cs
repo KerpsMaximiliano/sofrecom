@@ -4,8 +4,8 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Jobs
 {

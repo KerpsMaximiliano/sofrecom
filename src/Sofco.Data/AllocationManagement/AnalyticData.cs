@@ -5,7 +5,7 @@ using Sofco.Core.Cache;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Data.AllocationManagement
 {

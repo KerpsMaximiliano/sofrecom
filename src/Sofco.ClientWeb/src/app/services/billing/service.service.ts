@@ -23,6 +23,10 @@ export class ServiceService {
     return this.http.get<any>(`${this.apiUrl}/${customerId}/options/all`);
   }
 
+  getAllNotRelated(customerId){
+    return this.http.get<any>(`${this.apiUrl}/${customerId}/options/notrelated`);
+  }
+
   getOpportunities(serviceId){
     return this.http.get<any>(`${this.apiUrl}/${serviceId}/opportunities`);
   }

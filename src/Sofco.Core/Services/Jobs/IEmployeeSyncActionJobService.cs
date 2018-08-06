@@ -1,6 +1,6 @@
 ﻿namespace Sofco.Core.Services.Jobs
 {
-    public interface IEmployeeSyncJobService
+    public interface IEmployeeSyncActionJobService
     {
         void SyncNewEmployees();
 

@@ -29,5 +29,7 @@
         public int? PaymentTermCode { get; set; }
 
         public string PaymentTermDescription { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }

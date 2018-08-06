@@ -5,8 +5,8 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 {
@@ -35,7 +35,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             this.recipientManager = recipientManager;
         }
 
-        public void Validate(Response response, PurchaseOrderStatusParams model, Model.Models.Billing.PurchaseOrder purchaseOrder)
+        public void Validate(Response response, PurchaseOrderStatusParams model, Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             if (model.MustReject && string.IsNullOrWhiteSpace(model.Comments))
             {
@@ -43,7 +43,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             }
         }
 
-        public void Save(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        public void Save(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             purchaseOrder.Status = model.MustReject ? PurchaseOrderStatus.Reject : PurchaseOrderStatus.OperativePending;
             unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
@@ -54,7 +54,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             return model.MustReject ? Resources.Billing.PurchaseOrder.RejectSuccess : Resources.Billing.PurchaseOrder.ComercialSuccess;
         }
 
-        public void SendMail(Model.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        public void SendMail(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
             var data = !model.MustReject ? CreateMailSuccess(purchaseOrder) : CreateMailReject(purchaseOrder, model.Comments);
 
@@ -62,7 +62,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             mailSender.Send(email);
         }
 
-        private MailDefaultData CreateMailSuccess(Model.Models.Billing.PurchaseOrder purchaseOrder)
+        private MailDefaultData CreateMailSuccess(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
 
@@ -80,7 +80,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             return data;
         }
 
-        private MailDefaultData CreateMailReject(Model.Models.Billing.PurchaseOrder purchaseOrder, string comments)
+        private MailDefaultData CreateMailReject(Domain.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
             var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
 

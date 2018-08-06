@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Model.Interfaces;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
+using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class User : BaseEntity, ILogicalDelete, IAuditDates
     {

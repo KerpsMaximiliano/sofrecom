@@ -1,0 +1,16 @@
+USE [rhsqlsfcm]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[View_tb031]
+AS
+SELECT obsoc, dobso
+FROM dbo.tb031
+
+GO
+

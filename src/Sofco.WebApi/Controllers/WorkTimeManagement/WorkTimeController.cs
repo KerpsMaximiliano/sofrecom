@@ -52,7 +52,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         }
 
         [HttpPut("{id}/approve")]
-        public IActionResult Approve(int id) 
+        public IActionResult Approve(int id)
         {
             var response = workTimeService.Approve(id);
 

@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MessageService } from 'app/services/common/message.service';
@@ -116,27 +116,21 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
         currency: "",
         remito: false,
         hitos: [],
-        purchaseOrders: "",
         names: "",
         ids: "",
-        analytics: ""
       }
 
       var projectsSelected = {
-        purchaseOrders: [],
         names: [],
         ids: [],
-        analytics: []
       };
 
       for(let i = 0; i < this.projects.length; i++){
 
         if(this.hitosSelected['hito'+i]) {
 
-          projectsSelected.purchaseOrders.push(this.projects[i].purchaseOrder);
-          projectsSelected.names.push(this.projects[i].nombre);
-          projectsSelected.ids.push(this.projects[i].id);
-          projectsSelected.analytics.push(this.projects[i].analytic);
+          projectsSelected.names.push(this.projects[i].name);
+          projectsSelected.ids.push(this.projects[i].crmId);
 
           if(this.projects[i].remito){
             json.remito = this.projects[i].remito;
@@ -159,10 +153,8 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
         }
       }
 
-      json.purchaseOrders = projectsSelected.purchaseOrders.join(';');
       json.names = projectsSelected.names.join(';');
       json.ids = projectsSelected.ids.join(';');
-      json.analytics = projectsSelected.analytics.join(';');
 
       sessionStorage.setItem('multipleProjects', JSON.stringify(json));
 

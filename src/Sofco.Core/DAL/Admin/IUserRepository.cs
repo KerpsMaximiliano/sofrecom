@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
 {

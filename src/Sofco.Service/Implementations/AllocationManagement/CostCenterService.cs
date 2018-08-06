@@ -4,8 +4,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {

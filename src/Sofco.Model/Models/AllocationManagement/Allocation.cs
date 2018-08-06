@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Model.Models.AllocationManagement
+namespace Sofco.Domain.Models.AllocationManagement
 {
     public class Allocation : BaseEntity
     {

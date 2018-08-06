@@ -33,6 +33,12 @@ namespace Sofco.Core.Models.Reports
 
         public string ProjectManagerNames { get; set; }
 
+        public int? FileId { get; set; }
+
+        public string FileName { get; set; }
+
+        public string PdfUrl { get; set; }
+
         public List<PurchaseOrderBalanceDetailViewModel> Details { get; set; }
     }
 }

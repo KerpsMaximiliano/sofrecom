@@ -1,6 +1,6 @@
 import { MessageService } from 'app/services/common/message.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { SettingsService } from 'app/services/admin/settings.service';
 import { AppSettingService } from 'app/services/common/app-setting.service';

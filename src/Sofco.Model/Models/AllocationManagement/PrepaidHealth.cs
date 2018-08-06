@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Sofco.Common.Domains;
 
-namespace Sofco.Model.Models.AllocationManagement
+namespace Sofco.Domain.Models.AllocationManagement
 {
     public class PrepaidHealth : BaseEntity, IEntityDate
     {

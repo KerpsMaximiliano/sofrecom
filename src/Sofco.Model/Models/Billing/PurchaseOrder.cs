@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class PurchaseOrder : BaseEntity
     {
@@ -44,6 +44,8 @@ namespace Sofco.Model.Models.Billing
         public decimal Margin { get; set; }
 
         public string Comments { get; set; }
+
+        public string Proposal { get; set; }
 
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 

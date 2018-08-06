@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Common;
@@ -10,17 +12,19 @@ using Sofco.Core.DAL.Views;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Reports;
 using Sofco.Core.Services.Reports;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Reports;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Reports;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Reports
 {
     public class PurchaseOrderReportService : IPurchaseOrderReportService
     {
         private const char Delimiter = ';';
+
+        private const int PdfPathId = 1;
 
         private readonly IUnitOfWork unitOfWork;
 
@@ -36,7 +40,16 @@ namespace Sofco.Service.Implementations.Reports
 
         private readonly ILogMailer<PurchaseOrderReportService> logger;
 
-        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository, IMapper mapper, ILogMailer<PurchaseOrderReportService> logger, IUnitOfWork unitOfWork, IUserData userData, ISessionManager sessionManager, IUserDelegateRepository userDelegateRepository)
+        private readonly EmailConfig emailConfig;
+
+        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository, 
+            IMapper mapper, 
+            ILogMailer<PurchaseOrderReportService> logger, 
+            IUnitOfWork unitOfWork, 
+            IUserData userData,
+            ISessionManager sessionManager, 
+            IOptions<EmailConfig> emailOptions,
+            IUserDelegateRepository userDelegateRepository)
         {
             this.purchaseOrderRepository = purchaseOrderRepository;
             this.mapper = mapper;
@@ -45,6 +58,7 @@ namespace Sofco.Service.Implementations.Reports
             this.userData = userData;
             this.sessionManager = sessionManager;
             this.userDelegateRepository = userDelegateRepository;
+            this.emailConfig = emailOptions.Value;
         }
 
         public Response<List<PurchaseOrderBalanceViewModel>> Get(SearchPurchaseOrderParams parameters)
@@ -181,6 +195,9 @@ namespace Sofco.Service.Implementations.Reports
 
             foreach (var item in result)
             {
+                if(item.FileId.HasValue && item.FileId.Value > 0)
+                    item.PdfUrl = $"{emailConfig.SiteUrl}pdf/{item.FileId}/{PdfPathId}";
+
                 item.Details = Translate(details.Where(s =>
                     s.PurchaseOrderId == item.PurchaseOrderId
                     && s.CurrencyId == item.CurrencyId).ToList());

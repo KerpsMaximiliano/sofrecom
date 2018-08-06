@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Solfac } from 'app/models/billing/solfac/solfac';
 import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
 import { SolfacService } from "app/services/billing/solfac.service";
@@ -93,9 +93,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.projectId = multipleProjects.ids;
       this.model.project = multipleProjects.names;
       this.model.projectId = multipleProjects.ids;
-      this.model.imputationNumber1 = multipleProjects.analytics; 
       this.model.currencyId = this.getCurrencyId(multipleProjects.currency);
-      this.model.analytic = multipleProjects.analytics;
       this.model.remito = multipleProjects.remito;
 
       this.model.hitos = new Array<Hito>();
@@ -121,16 +119,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.integratorProject = project;
 
-      this.getInvoicesOptions(project.id);
-      this.projectId = project.id;
-      this.model.project = project.nombre;
-      this.model.projectId = project.id;
+      this.getInvoicesOptions(project.crmId);
+      this.projectId = project.crmId;
+      this.model.project = project.name;
+      this.model.projectId = project.crmId;
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
-
       this.model.remito = project.remito;
-      this.model.analytic = project.analytic;
-      this.model.imputationNumber1 = project.analytic;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
@@ -186,7 +181,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
 
       if(customer){
-        this.model.businessName = customer.nombre;
+        this.model.businessName = customer.name;
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
 
@@ -197,7 +192,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.paymentTermId = customer.paymentTermCode;
       } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
-          this.model.businessName = data.nombre;
+          this.model.businessName = data.name;
           this.model.clientName = data.contact;
           this.model.celphone = data.telephone;
 

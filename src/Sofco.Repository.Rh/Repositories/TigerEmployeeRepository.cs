@@ -31,7 +31,13 @@ SELECT
 	ospla,
 	dospl,
     domif as officeaddress,
-    LOWER(demai) as email
+    LOWER(demai) as email,
+    tidoc as documentNumberType,
+    nudoc as documentNumber,
+    nusin as cuil,
+    CAST(teddi as INTEGER) as phoneCountryCode,
+    CAST(teddn as INTEGER) as phoneAreaCode,
+    telef as phoneNumber
 FROM
 	View_A001
 ";
@@ -80,6 +86,13 @@ FROM
             return TigerEmployeeSet
                 .FromSql(sql, sqlParameter)
                 .ToList();
+        }
+
+        public List<TigerEmployee> GetActive()
+        {
+            var sql = string.Format("{0} WHERE {1}", TigerEmployeeSql, " febaj IS NOT NULL");
+
+            return TigerEmployeeSet.FromSql(sql).ToList();
         }
     }
 }

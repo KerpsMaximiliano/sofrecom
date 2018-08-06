@@ -2,7 +2,7 @@
 using Sofco.Common.Domains;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Reports;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.Service.Implementations.Reports
 {

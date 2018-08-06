@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Sofco.Common.Domains;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class HitoDetail : BaseEntity, IEntityDate
     {

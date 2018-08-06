@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.DAL.Repositories.Common
 {
@@ -96,9 +96,13 @@ namespace Sofco.DAL.Repositories.Common
 
         private UserDelegate GetStored(UserDelegate userDelegate)
         {
-            return userDelegate.Type != UserDelegateType.Solfac 
-                ? GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type) 
-                : GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            if (userDelegate.Type == UserDelegateType.Solfac
+                || userDelegate.Type == UserDelegateType.LicenseView)
+            {
+                return GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
+            }
+
+            return GetBySourceIdAndUserId(userDelegate.SourceId, userDelegate.UserId, userDelegate.Type);
         }
 
         private UserDelegate GetByServiceIdAndUserId(Guid? serviceId, int userId, UserDelegateType type)

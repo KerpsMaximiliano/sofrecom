@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -97,7 +97,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("serviceId", this.serviceId);
       sessionStorage.setItem("projectDetail", JSON.stringify(project));
       
-      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${project.id}`]);
+      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${project.crmId}`]);
     }
 
     getCurrencySymbol(currency){

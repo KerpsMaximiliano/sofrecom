@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model
+﻿namespace Sofco.Domain
 {
     public class BaseEntity
     {

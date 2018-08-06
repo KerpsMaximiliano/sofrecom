@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
     <ProjectReference Include="..\Sofco.Common\Sofco.Common.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

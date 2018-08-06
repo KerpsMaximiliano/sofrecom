@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.DAL.Mappings.Admin
 {

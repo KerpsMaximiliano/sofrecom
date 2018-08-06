@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class AnalyticOptions
     {

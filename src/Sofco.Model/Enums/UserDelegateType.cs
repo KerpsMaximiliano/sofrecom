@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Enums
+﻿namespace Sofco.Domain.Enums
 {
     public enum UserDelegateType
     {
@@ -12,6 +12,8 @@
 
         PurchaseOrderApprovalDaf,
 
-        PurchaseOrderActive
+        PurchaseOrderActive,
+
+        LicenseView
     }
 }

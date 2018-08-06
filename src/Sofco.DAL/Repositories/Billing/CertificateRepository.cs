@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Billing
 {

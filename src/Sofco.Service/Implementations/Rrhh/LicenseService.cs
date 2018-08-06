@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
@@ -15,14 +16,14 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.ValidationHelpers.Rrhh;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Models.WorkTimeManagement;
-using Sofco.Model.Relationships;
-using Sofco.Model.Utils;
-using File = Sofco.Model.Models.Common.File;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Rrhh
 {
@@ -36,19 +37,21 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IMailBuilder mailBuilder;
         private readonly IMailSender mailSender;
         private readonly ILicenseFileManager licenseFileManager;
+        private readonly IUserData userData;
 
         public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
                               ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
-                              IMailSender mailSender, ILicenseFileManager licenseFileManager)
+                              IMailSender mailSender, ILicenseFileManager licenseFileManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.fileConfig = fileOptions.Value;
+            fileConfig = fileOptions.Value;
             this.sessionManager = sessionManager;
             this.licenseStatusFactory = licenseStatusFactory;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.licenseFileManager = licenseFileManager;
+            this.userData = userData;
         }
 
         public Response<string> Add(LicenseAddModel model)
@@ -168,7 +171,11 @@ namespace Sofco.Service.Implementations.Rrhh
 
         public IList<LicenseListItem> GetByManager(int managerId)
         {
-            var licenses = unitOfWork.LicenseRepository.GetByManager(managerId);
+            var managerIds = GetDelegateManagerIds();
+
+            managerIds.Add(managerId);
+
+            var licenses = unitOfWork.LicenseRepository.GetByManagerIds(managerIds);
 
             return licenses.Select(x => new LicenseListItem(x)).ToList();
         }
@@ -352,7 +359,7 @@ namespace Sofco.Service.Implementations.Rrhh
             }
         }
 
-        private WorkTime BuildWorkTime(License license, DateTime startDate, Model.Models.Admin.User user)
+        private WorkTime BuildWorkTime(License license, DateTime startDate, Domain.Models.Admin.User user)
         {
             var worktime = new WorkTime();
 
@@ -492,6 +499,20 @@ namespace Sofco.Service.Implementations.Rrhh
                 var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams, license);
                 response.AddMessages(statusResponse.Messages);
             }
+        }
+
+        private List<int> GetDelegateManagerIds()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var serviceIds =
+                unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id, UserDelegateType.LicenseView)
+                .Select(s => s.ServiceId.ToString())
+                .ToList();
+
+            var analytics = unitOfWork.AnalyticRepository.GetByServiceIds(serviceIds);
+
+            return analytics.Where(s => s.ManagerId.HasValue).Select(s => s.ManagerId.Value).ToList();
         }
     }
 }

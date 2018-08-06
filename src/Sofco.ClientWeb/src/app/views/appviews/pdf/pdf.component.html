@@ -1,0 +1,13 @@
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="text-center pdf-toolbar">
+        <div class="btn-group">
+            <button id="prev" class="btn btn-white" (click)="onPrevPage()"><i class="fa fa-long-arrow-left"></i> <span class="hidden-xs">Anterior</span></button>
+            <button id="next" class="btn btn-white" (click)="onNextPage()"><i class="fa fa-long-arrow-right"></i> <span class="hidden-xs">Proxima</span></button>
+            <span class="btn btn-white hidden-xs">Pagina: {{ pageNum }} / {{ documentPagesNumber }}</span>
+        </div>
+    </div>
+
+    <div class="text-center m-t-md">
+        <canvas style="width: 100%" id="the-canvas" class="pdfcanvas border-left-right border-top-bottom"></canvas>
+    </div> 
+</div> 

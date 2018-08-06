@@ -9,9 +9,9 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -93,14 +93,14 @@ namespace Sofco.Service.Implementations.Billing
         {
             var userMail = sessionManager.GetUserEmail();
 
-            var customers = customerData.GetCustomers(userMail, false);
+            var customers = customerData.GetCustomers(userMail);
 
             var serviceIds = new List<string>();
             foreach (var crmCustomer in customers)
             {
-                var crmServices = serviceData.GetServices(crmCustomer.Id, userMail, false);
+                var crmServices = serviceData.GetServices(crmCustomer.CrmId, userMail);
 
-                serviceIds.AddRange(crmServices.Select(crmService => crmService.Id));
+                serviceIds.AddRange(crmServices.Select(crmService => crmService.CrmId));
             }
 
             return unitOfWork.UserDelegateRepository.GetByServiceIds(serviceIds, UserDelegateType.PurchaseOrderActive);
@@ -129,7 +129,7 @@ namespace Sofco.Service.Implementations.Billing
             var user = userData.GetById(userDelegate.UserId);
 
             model.ManagerName = service.Manager;
-            model.ServiceName = service.Nombre;
+            model.ServiceName = service.Name;
             model.UserName = user.Name;
             return model;
         }

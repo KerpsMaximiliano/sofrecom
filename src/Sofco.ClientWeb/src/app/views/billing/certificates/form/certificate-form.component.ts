@@ -3,7 +3,7 @@ import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { CustomerService } from "app/services/billing/customer.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";

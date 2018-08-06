@@ -3,7 +3,7 @@
 namespace Sofco.Domain.Crm.Billing
 {
     public class CrmService
-    {
+    { 
         public string Id { get; set; }
 
         public string Nombre { get; set; }

@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
 import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 @Component({

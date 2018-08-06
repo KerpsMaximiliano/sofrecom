@@ -1,6 +1,6 @@
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Option } from 'app/models/option';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { MessageService } from 'app/services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';

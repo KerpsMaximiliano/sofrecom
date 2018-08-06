@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Model;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Utils;
+using Sofco.Domain;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Models.Rrhh
 {

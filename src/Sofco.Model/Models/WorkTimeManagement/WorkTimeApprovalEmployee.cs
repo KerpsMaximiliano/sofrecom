@@ -1,4 +1,4 @@
-﻿namespace Sofco.Model.Models.WorkTimeManagement
+﻿namespace Sofco.Domain.Models.WorkTimeManagement
 {
     public class WorkTimeApprovalEmployee
     {

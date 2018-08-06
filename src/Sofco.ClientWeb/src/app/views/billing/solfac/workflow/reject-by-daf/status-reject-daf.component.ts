@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } 
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
@@ -55,6 +55,7 @@ export class StatusRejectDafComponent implements OnDestroy  {
     rejectByCDG(){
         if(!this.rejectComments || this.rejectComments == ""){
             this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.rejectByDafModal.hide();
             return;
         }
 
@@ -81,7 +82,7 @@ export class StatusRejectDafComponent implements OnDestroy  {
                 }
             },
             error => {
-                this.rejectByDafModal.hide();
+                this.rejectByDafModal.resetButtons();
                 this.errorHandlerService.handleErrors(error);
             });
     }

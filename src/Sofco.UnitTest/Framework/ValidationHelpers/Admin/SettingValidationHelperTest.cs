@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Sofco.Framework.ValidationHelpers.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.UnitTest.Framework.ValidationHelpers.Admin
 {

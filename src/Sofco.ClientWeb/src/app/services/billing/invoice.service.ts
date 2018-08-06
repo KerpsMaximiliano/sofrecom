@@ -1,5 +1,6 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { MenuService } from 'app/services/admin/menu.service';
 import { HttpClient } from '@angular/common/http';
@@ -55,49 +56,19 @@ export class InvoiceService {
     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/export`, {
       responseType: 'arraybuffer',
       observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
 
   exportExcelFile(id){
     return this.http.get(`${this.baseUrl}/invoices/${id}/excel/export`, {
       responseType: 'arraybuffer',
       observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
-
-  //todo: borrar
-//   getExcel(id) {
-//     return this.http.get(`${this.baseUrl}/invoices/${id}/excel`, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//    }).map((res: any) => {
-//      return new Blob([res.body], { type: 'application/octet-stream' });
-//    });
-//   }
-
-//   //todo: borrar
-//   downloadPdf(id) {
-//     return this.http.get(`${this.baseUrl}/invoices/${id}/pdf/download`, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//     }).map((res: any) => {
-//       return new Blob([res.body], { type: 'application/octet-stream' });
-//     });
-//   }
-
-//  //todo: borrar
-//   export(model) {
-//     return this.http.post(`${this.baseUrl}/invoices/excel`, model, {
-//       responseType: 'arraybuffer',
-//       observe: 'response'
-//    }).map((res: any) => {
-//      return new Blob([res.body], { type: 'application/octet-stream' });
-//    });
-//   }
 
   search(parameters) {
     return this.http.post<any>(`${this.baseUrl}/invoices/search`, parameters);

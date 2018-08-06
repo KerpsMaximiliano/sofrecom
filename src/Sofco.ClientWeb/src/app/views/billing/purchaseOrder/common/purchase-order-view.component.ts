@@ -1,5 +1,5 @@
 import { Component, OnInit,  OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
@@ -75,7 +75,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [{
-                "targets": [ 1,9,10 ], "visible": false, "searchable": false
+                "targets": [ 1,9,10,11 ], "visible": false, "searchable": false
             }]
         }
 
@@ -179,6 +179,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         const ammountNumberPos1 = 5;
         const balanceNumberPos2 = 6;
         data.header.splice(0, 2);
+        data.header.push(this.i18nService.translateByKey('billing.solfac.pdf'));
         const dataBody = data.body;
         const result = [];
         for(let index = 0; index < dataBody.length; index++) {
@@ -190,6 +191,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             dataBodyItem[receptionDatePos] = item.receptionDate;
             dataBodyItem[ammountNumberPos1] = item.ammount;
             dataBodyItem[balanceNumberPos2] = item.balance;
+            dataBodyItem.push(item.pdfUrl);
             result.push(dataBodyItem);
             const details = item.details;
             if(details.length == 0) continue;
@@ -223,7 +225,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
     addPurchaseOrderAdjust(data): any[] {
         data.forEach(item => {
-            if(item.adjustment > 0){
+            if(item.adjustment != 0){
                 const newItem = this.createPurchaseOrderAdjustment(item);
                 data.push(newItem);
             }

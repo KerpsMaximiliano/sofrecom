@@ -10,7 +10,7 @@ import {BlankLayoutComponent} from "./blankLayout.component";
 import {NavigationComponent} from "./../navigation/navigation.component";
 import {FooterComponent} from "./../footer/footer.component";
 import {TopNavbarComponent} from "./../topnavbar/topnavbar.component";
-import { NgxInactivity } from 'ngx-inactivity';
+// import { NgxInactivity } from 'ngx-inactivity';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { CommonModule } from '@angular/common';
 
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     RouterModule,
-    NgxInactivity, 
+    // NgxInactivity, 
     Ng2ModalModule,
     BsDropdownModule.forRoot(),
     TranslateModule

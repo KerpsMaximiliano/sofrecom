@@ -7,7 +7,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {

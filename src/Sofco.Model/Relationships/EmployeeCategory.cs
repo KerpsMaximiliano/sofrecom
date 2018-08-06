@@ -1,7 +1,7 @@
-﻿using Sofco.Model.Models.Admin;
-using Sofco.Model.Models.AllocationManagement;
+﻿using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
 
-namespace Sofco.Model.Relationships
+namespace Sofco.Domain.Relationships
 {
     public class EmployeeCategory
     {

@@ -6,9 +6,8 @@ using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.Crm.Billing;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -27,31 +26,32 @@ namespace Sofco.Service.Implementations.Billing
             this.solfacDelegateData = solfacDelegateData;
         }
 
-        public Response<List<CrmService>> GetServices(string customerId, bool getAll)
-        {
-            var result = new List<CrmService>();
+        public Response<List<Domain.Models.Billing.Service>> GetServices(string customerId)
+        { 
+            var result = new List<Domain.Models.Billing.Service>();
 
-            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<CrmService>> { Data = result };
+            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<Domain.Models.Billing.Service>> { Data = result };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
             
             foreach (var item in userNames)
             {
-                result.AddRange(serviceData.GetServices(customerId, item, getAll));
+                result.AddRange(serviceData.GetServices(customerId, item));
             }
-            return new Response<List<CrmService>> { Data = result.DistinctBy(x => x.Id) };
+
+            return new Response<List<Domain.Models.Billing.Service>> { Data = result };
         }
 
-        public Response<List<SelectListModel>> GetServicesOptions(string customerId, bool getAll)
+        public Response<List<SelectListModel>> GetServicesOptions(string customerId)
         {
-            if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
+            if (string.IsNullOrWhiteSpace(customerId) || customerId == "null") return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
 
-            var result = GetServices(customerId, getAll);
+            var result = GetServices(customerId);
 
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel { Id = x.Id, Text = x.Nombre })
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
                     .OrderBy(x => x.Text)
                     .ToList()
             };
@@ -59,16 +59,33 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<CrmService> GetService(string serviceId, string customerId)
+        public Response<Domain.Models.Billing.Service> GetService(string serviceId, string customerId)
         {
-            var result = GetServices(customerId, false).Data;
+            var result = GetServices(customerId).Data;
 
-            return new Response<CrmService> { Data = result.FirstOrDefault(x => x.Id.Equals(serviceId)) };
+            return new Response<Domain.Models.Billing.Service> { Data = result.FirstOrDefault(x => x.CrmId.Equals(serviceId)) };
         }
 
         public Analytic GetAnalyticByService(string serviceId)
         {
             return unitOfWork.AnalyticRepository.GetByService(serviceId);
+        }
+
+        public Response<List<SelectListModel>> GetAllNotRelatedOptions(string customerId)
+        {
+            if (string.IsNullOrWhiteSpace(customerId) || customerId == "null") return new Response<List<SelectListModel>> { Data = new List<SelectListModel>() };
+
+            var result = unitOfWork.ServiceRepository.GetAllNotRelatedOptions(customerId);
+
+            var response = new Response<List<SelectListModel>>
+            {
+                Data = result
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
         }
     }
 }

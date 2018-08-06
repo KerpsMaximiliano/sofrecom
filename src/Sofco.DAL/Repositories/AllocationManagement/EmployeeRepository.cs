@@ -5,9 +5,9 @@ using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -56,7 +56,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             {
                 var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
 
-                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id)).ToList();
+                return query.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
+            }
+            else
+            {
+                query = query.Where(x => x.EndDate == null);
             }
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
@@ -176,6 +180,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
 
             Update(storedItem, employee);
+
+            context.SaveChanges();
         }
 
         public void Update(List<Employee> employees)
@@ -186,13 +192,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             foreach(var item in employees)
             {
-                if(storedNumbers.Contains(item.EmployeeNumber))
-                {
-                    var updateItem = storedItems
-                        .First(s => s.EmployeeNumber == item.EmployeeNumber);
+                if (!storedNumbers.Contains(item.EmployeeNumber)) continue;
 
-                    Update(updateItem, item);
-                }
+                var updateItem = storedItems.First(s => s.EmployeeNumber == item.EmployeeNumber);
+
+                Update(updateItem, item);
             }
 
             context.SaveChanges();

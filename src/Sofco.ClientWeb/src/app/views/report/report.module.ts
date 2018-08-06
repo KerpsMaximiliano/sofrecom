@@ -8,7 +8,6 @@ import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgDatepickerModule } from 'ng2-datepicker';
-import { Daterangepicker } from 'ng2-daterangepicker';
 
 import { SpinnerModule } from "app/components/spinner/spinner.module";
 import { WidgetModule } from 'app/components/widget/widget.module';

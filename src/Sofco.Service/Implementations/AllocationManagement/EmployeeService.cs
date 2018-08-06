@@ -12,11 +12,11 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Framework.MailData;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement

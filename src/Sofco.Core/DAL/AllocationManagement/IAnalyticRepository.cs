@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -49,5 +49,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Analytic> GetByPurchaseOrder(int purchaseOrderId);
 
         bool ExistManagerId(int managerId);
+
+        void UpdateDaf(Analytic analytic);
     }
 }

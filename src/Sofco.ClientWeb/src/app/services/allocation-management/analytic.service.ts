@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "app/services/common/service";
@@ -52,6 +54,10 @@ export class AnalyticService {
     return this.http.put<any>(`${this.baseUrl}/analytics`, model);
   }
 
+  updateDaf(model) {
+    return this.http.put<any>(`${this.baseUrl}/analytics/daf`, model);
+  }
+
   close(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/close`, {});
   }
@@ -68,12 +74,16 @@ export class AnalyticService {
     return this.http.post<any>(`${this.baseUrl}/analytics/search`, query);
   }
 
+  getOpportunities(id) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/${id}/opportunities`);
+  }
+
   createReport(ids){
     return this.http.post(`${this.baseUrl}/analytics/report`, ids, {
       responseType: 'arraybuffer',
       observe: 'response'
-    }).map((res: any) => {
+    }).pipe(map((res: any) => {
       return new Blob([res.body], { type: 'application/octet-stream' });
-    });
+    }));
   }
 }

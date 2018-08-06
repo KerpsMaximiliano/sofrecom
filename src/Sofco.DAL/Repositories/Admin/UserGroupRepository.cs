@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Admin
 {

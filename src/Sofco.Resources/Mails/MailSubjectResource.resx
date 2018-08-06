@@ -186,4 +186,7 @@
   <data name="OcProcessTitle" xml:space="preserve">
     <value>Proceso Aprobación Orden de Compra - {0} - {1}</value>
   </data>
+  <data name="CloseForExpensesAnalytic" xml:space="preserve">
+    <value>Cierre para Costos analítica: {0}</value>
+  </data>
 </root>

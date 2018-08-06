@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 declare var PDFJS: any;
 
 @Component({

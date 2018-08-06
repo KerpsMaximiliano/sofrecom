@@ -2,8 +2,8 @@
 using AutoMapper;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Models.Reports;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Models.Reports;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.Service.MapProfiles
 {
@@ -18,7 +18,6 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.StatusText, x => x.MapFrom(_ => _.Status.ToString()))
                 .ForMember(s => s.AccountManagerNames, x => x.MapFrom(_ => DistinctString(_.AccountManagerNames)))
                 .ForMember(s => s.ProjectManagerNames, x => x.MapFrom(_ => DistinctString(_.ProjectManagerNames)));
-
 
             CreateMap<PurchaseOrderBalanceDetailView, PurchaseOrderBalanceDetailViewModel>()
                 .ForMember(s => s.StatusId, x => x.MapFrom(_ => _.Status))

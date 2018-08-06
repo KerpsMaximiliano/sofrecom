@@ -1,5 +1,5 @@
 ﻿using Sofco.Core.Models.Admin;
-using Sofco.Model.Utils;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Admin
 {

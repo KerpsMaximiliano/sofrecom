@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } 
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { SolfacService } from "app/services/billing/solfac.service";
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { SolfacStatus } from "app/models/enums/solfacStatus";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from 'app/services/common/message.service';
@@ -92,9 +92,12 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     }
                 },
                 error => {
+                    this.updateBillModal.hide();
                     this.errorHandlerService.handleErrors(error);
                 });
-        }else{
+        }
+        else{
+            this.updateBillModal.hide();
             this.messageService.showError("billing.solfac.includeInvoiceCode");
         }
     }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.Common;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Common
 {

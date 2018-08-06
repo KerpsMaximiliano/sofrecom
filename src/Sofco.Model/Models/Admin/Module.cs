@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Common.Domains;
 
-namespace Sofco.Model.Models.Admin
+namespace Sofco.Domain.Models.Admin
 {
     public class Module : BaseEntity, ILogicalDelete
     {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { SolfacService } from "app/services/billing/solfac.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'app/services/common/errorHandler.service';

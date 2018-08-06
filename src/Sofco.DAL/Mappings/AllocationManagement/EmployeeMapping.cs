@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Mappings.AllocationManagement
 {
@@ -23,6 +23,8 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.Email).HasMaxLength(150);
             builder.Entity<Employee>().Property(x => x.BusinessHoursDescription).HasMaxLength(150);
             builder.Entity<Employee>().Property(x => x.EndReason).HasMaxLength(2000);
+            builder.Entity<Employee>().Property(x => x.DocumentNumberType).HasMaxLength(100);
+            builder.Entity<Employee>().Property(x => x.PhoneNumber).HasMaxLength(100);
 
             builder.Entity<Employee>().HasMany(x => x.Licenses).WithOne(x => x.Employee).HasForeignKey(x => x.EmployeeId);
             builder.Entity<Employee>().HasOne(x => x.TypeEndReason).WithMany(x => x.Employees).HasForeignKey(x => x.TypeEndReasonId).OnDelete(DeleteBehavior.Restrict);

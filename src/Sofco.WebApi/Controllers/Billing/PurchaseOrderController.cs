@@ -9,10 +9,10 @@ using Sofco.Core.Config;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Utils;
-using Sofco.WebApi.Extensions;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
+using Sofco.WebApi.Extensions; 
 
 namespace Sofco.WebApi.Controllers.Billing
 {

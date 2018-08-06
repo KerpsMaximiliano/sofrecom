@@ -31,6 +31,8 @@
     <Compile Remove="Migrations\20180702153817_UserDelegateServiceId.Designer.cs" />
     <Compile Remove="Migrations\20180717183228_Functionality.cs" />
     <Compile Remove="Migrations\20180717183228_Functionality.Designer.cs" />
+    <Compile Remove="Migrations\20180723204800_EmployeeProfileHistory.cs" />
+    <Compile Remove="Migrations\20180723204800_EmployeeProfileHistory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,9 +43,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Model.csproj" />
     <ProjectReference Include="..\Sofco.DAL\Sofco.DAL.csproj" />
     <ProjectReference Include="..\Sofco.Framework\Sofco.Framework.csproj" />
+    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Service\Sofco.Service.csproj" />
     <ProjectReference Include="..\Sofco.Repository.Rh\Sofco.Repository.Rh.csproj" />
   </ItemGroup>

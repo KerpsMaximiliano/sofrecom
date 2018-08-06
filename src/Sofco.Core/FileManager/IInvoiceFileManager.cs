@@ -1,5 +1,5 @@
 ﻿using OfficeOpenXml;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.FileManager
 {

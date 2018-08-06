@@ -12,14 +12,14 @@ using Sofco.Core.Mail;
 using Sofco.Repository.Rh.Repositories.Interfaces;
 using Sofco.Service.Implementations.Jobs;
 using Sofco.Domain.Rh.Tiger;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.UnitTest.Services.Jobs
 {
     [TestFixture]
     public class EmployeeSyncJobServiceTest
     {
-        private EmployeeSyncJobService sut;
+        private EmployeeSyncActionJobService sut;
 
         private Mock<ITigerEmployeeRepository> tigerEmployeeRepositoryMock;
 
@@ -31,7 +31,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
         private Mock<IUnitOfWork> unitOfWork;
 
-        private Mock<ILogMailer<EmployeeSyncJobService>> logger;
+        private Mock<ILogMailer<EmployeeSyncActionJobService>> logger;
 
         private Mock<IMailSender> mailSender;
 
@@ -52,7 +52,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             unitOfWork = new Mock<IUnitOfWork>();
 
-            logger = new Mock<ILogMailer<EmployeeSyncJobService>>();
+            logger = new Mock<ILogMailer<EmployeeSyncActionJobService>>();
 
             mailSender = new Mock<IMailSender>();
 
@@ -64,7 +64,7 @@ namespace Sofco.UnitTest.Services.Jobs
 
             unitOfWork.SetupGet(x => x.EmployeeSyncActionRepository).Returns(employeeSyncActionRepositoryMock.Object);
 
-            sut = new EmployeeSyncJobService(
+            sut = new EmployeeSyncActionJobService(
                 tigerEmployeeRepositoryMock.Object,
                 unitOfWork.Object,
                 mapperMock.Object,

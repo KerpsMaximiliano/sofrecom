@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Model.Models.Common;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.DAL.Mappings.Common
 {

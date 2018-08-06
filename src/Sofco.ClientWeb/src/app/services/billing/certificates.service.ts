@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
@@ -52,9 +54,9 @@ export class CertificatesService {
     return this.http.get(`${this.baseUrl}/certificates/export/${id}`, {
       responseType: 'arraybuffer',
       observe: 'response'
-   }).map((res: any) => {
+   }).pipe(map((res: any) => {
      return new Blob([res.body], { type: 'application/octet-stream' });
-   });
+   }));
  }
 }
 

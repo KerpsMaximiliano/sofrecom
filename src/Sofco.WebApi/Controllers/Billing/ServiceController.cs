@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
 using Sofco.WebApi.Extensions;
@@ -27,7 +26,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}/options")]
         public IActionResult GetOptions(string customerId)
         {
-            var response = servicesService.GetServicesOptions(customerId, false);
+            var response = servicesService.GetServicesOptions(customerId);
 
             return this.CreateResponse(response);
         }
@@ -35,7 +34,15 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}/options/all")]
         public IActionResult GetAllOptions(string customerId)
         {
-            var response = servicesService.GetServicesOptions(customerId, true);
+            var response = servicesService.GetServicesOptions(customerId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{customerId}/options/notrelated")]
+        public IActionResult GetAllNotRelatedOptions(string customerId)
+        {
+            var response = servicesService.GetAllNotRelatedOptions(customerId);
 
             return this.CreateResponse(response);
         }
@@ -43,7 +50,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("{customerId}")]
         public IActionResult Get(string customerId)
         {
-            var response = servicesService.GetServices(customerId, false);
+            var response = servicesService.GetServices(customerId);
 
             return this.CreateResponse(response);
         }

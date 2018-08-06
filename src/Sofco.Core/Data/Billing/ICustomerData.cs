@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Data.Billing
 {
     public interface ICustomerData
     {
-        IList<CrmCustomer> GetCustomers(string userMail, bool getAll);
-
-        IList<CrmCustomer> GetCustomersByManager(string userMail);
+        IList<Customer> GetCustomers(string username);
+        void ClearKeys();
     }
 }

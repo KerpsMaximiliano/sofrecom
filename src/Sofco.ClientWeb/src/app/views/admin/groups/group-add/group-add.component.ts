@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService } from 'app/services/common/message.service';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { GroupService } from "app/services/admin/group.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { RoleService } from "app/services/admin/role.service";
 import { Group } from "app/models/admin/group";
 

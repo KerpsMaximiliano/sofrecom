@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
@@ -81,14 +81,19 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
+                    this.form.searchOpportunities();
                 }, 1000);
 
                 if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input').attr('disabled', 'disabled');
                     $('#customer-select select').attr('disabled', 'disabled');
+                    $('#opportunity-select select').attr('disabled', 'disabled');
                     $('#analytics').attr('disabled', 'disabled');
+                    $('#search-opportunity').attr('disabled', 'disabled');
                     $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
+                    $('#description').attr('disabled', 'disabled');
+                    $('#comments').attr('disabled', 'disabled');
                     this.form.currencyDisabled = true;
                 }
             },

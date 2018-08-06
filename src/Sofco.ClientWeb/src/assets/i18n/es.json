@@ -286,6 +286,7 @@
                 "opportunity": "Oportunidad",
                 "currency": "Moneda",
                 "balance": "Saldo",
+                "proposal": "Propuestas",
                 "ammount": "Monto",
                 "company": "Compañia",
                 "comercial": "Comercial",
@@ -586,7 +587,10 @@
                 "percentage": "Facturabilidad",
                 "start": "Ingreso"
             },
-            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha."
+            "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
+            "phone": "Teléfono",
+            "cuil": "Cuil",
+            "document": "Documento"
         },
         "news": {
             "title": "Novedades",
@@ -721,7 +725,11 @@
             "holidaysByLaw": "Vacaciones por ley",
             "finalizeExtraHolidays": "Finalizar Acuerdo",
             "cancelComments": "Se debe agregar un motivo para cancelar",
-            "addCancelComments": "Ingrese los motivos para cancelar"
+            "addCancelComments": "Ingrese los motivos para cancelar",
+            "delegate": {
+                "viewTitle": "Delegar Vista Licencia",
+                "delegateAction": "Delegar"
+            }
         }
     },
     "ACTIONS":{
@@ -781,7 +789,8 @@
         "sessionExpiredMessage": "Se sesion ha caducado. Debe volver a loguearse al sistema",
         "viewProfile": "Ver Perfil",
         "selectAll": "Seleccionar todo",
-        "removeAll": "Quitar todo"
+        "removeAll": "Quitar todo",
+        "reassingAllocation": "Asignación masiva de recursos"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",

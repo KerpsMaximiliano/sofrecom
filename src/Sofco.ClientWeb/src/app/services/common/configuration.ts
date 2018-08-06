@@ -5,32 +5,27 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { environment } from '../../../environments/environment'
 
 @Injectable()
-export class  Configuration {
+export class Configuration {
 
     UrlApi: string;
     crmCloseStatusCode: string;
 
-    public spanishLang = 'es';
     public currLang = 'es';
 
     constructor(public tr: TranslateService){
-        tr.addLangs([this.spanishLang]);
-        tr.setDefaultLang(this.spanishLang);
-        tr.use(this.spanishLang);
-
         this.UrlApi = environment.urlApi;
         this.crmCloseStatusCode = environment.crmCloseStatusCode;
     }
 
     setCurrLang(currLang: string){
-        return;
-        // this.currLang = currLang;
-        // this.tr.use(this.currLang);
+        this.currLang = currLang;
+        this.tr.use(this.currLang);
+        localStorage.setItem('lang', this.currLang);
     }
 
     getHeaders(){
-        let headers = new Headers();
-        let token = Cookie.get('access_token');
+        const headers = new Headers();
+        const token = Cookie.get('access_token');
 
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
@@ -40,7 +35,7 @@ export class  Configuration {
     }
 
     getLoginHeaders(){
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Access-Control-Allow-Origin', '*');
         return headers;
     }

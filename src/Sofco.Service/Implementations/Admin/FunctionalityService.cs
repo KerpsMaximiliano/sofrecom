@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL;
-using Sofco.Model.Utils;
-using Sofco.Model.Enums;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Enums;
 using Sofco.Core.Services.Admin;
 using Sofco.DAL;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Service.Implementations.Admin
 {

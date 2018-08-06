@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Model.DTO;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Relationships;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {

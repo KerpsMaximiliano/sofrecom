@@ -1,13 +1,11 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ProjectService } from "app/services/billing/project.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SolfacStatus } from 'app/models/enums/solfacStatus';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DocumentTypes } from 'app/models/enums/documentTypes';
 import { MessageService } from 'app/services/common/message.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { Configuration } from 'app/services/common/configuration';
@@ -115,7 +113,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     goToProjects(){
         this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects`]);
-    }
+      }
 
     goToServices(){
       this.router.navigate([`/billing/customers/${this.customerId}/services`]);
@@ -127,6 +125,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(service){
           this.service.analytic = service.analytic;
           this.service.manager = service.manager;
+          this.service.managerId = service.managerId;
           this.service.serviceType = service.serviceType;
           this.service.solutionType = service.solutionType;
           this.service.technologyType = service.technologyType;
@@ -480,7 +479,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
  
     translateHito(hito:any) {
         hito.projectId = this.projectId;
-        hito.managerId = this.project.ownerId;
+        hito.managerId = this.service.managerId;
         hito.opportunityId = this.project.opportunityId;
         return hito;
     }

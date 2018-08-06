@@ -92,6 +92,13 @@ export class MenuService {
         return false;
     }
 
+    hasContractsMenu() {
+        if (this.hasModule("CONTR")) {
+            return true;
+        }
+        return false;
+    }
+
     hasReportMenu() {
         if (this.hasModule("REPOR")) {
              return true;

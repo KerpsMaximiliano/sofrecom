@@ -13,19 +13,19 @@ import { AuthGuard } from "app/guards/auth.guard";
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
         children: [
-        { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
-        { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANADD" } },
-        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ANEDT" } },
-        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "QUERY" } },
+        { path: "", component: AnalyticSearchComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "QUERY" } },
+        { path: "new", component: NewAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ANADD" } },
+        { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ANEDT" } },
+        { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
     ]},
     {
       path: "costCenter",
       children: [
-        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCLST" } },
-        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } },
-        { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "CCADD" } }
+        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCLST" } },
+        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } },
+        { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } }
       ]
     }
 ];

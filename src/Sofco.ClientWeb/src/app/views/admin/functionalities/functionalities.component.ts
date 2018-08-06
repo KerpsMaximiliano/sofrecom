@@ -2,7 +2,7 @@ import { DatatablesLocationTexts } from 'app/components/datatables/datatables.lo
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
 import { DatatablesColumn } from "app/components/datatables/datatables.columns";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { DatatablesOptions } from "app/components/datatables/datatables.options";
 import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
 import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";

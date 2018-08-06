@@ -2,7 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Invoice } from "app/models/billing/invoice/invoice";
 import { InvoiceService } from "app/services/billing/invoice.service";
 import { MessageService } from "app/services/common/message.service";
@@ -62,8 +62,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.customer = JSON.parse(sessionStorage.getItem("customer"));
 
         if(this.customer){
-            this.model.customerId = this.customer.id;
-            this.model.accountName = this.customer.nombre;
+            this.model.customerId = this.customer.crmId;
+            this.model.accountName = this.customer.name;
             this.model.address = this.customer.address;
             this.model.zipcode = this.customer.postalCode;
             this.model.city = this.customer.city;
@@ -73,8 +73,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
         else{
             this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
-                this.model.customerId = data.id;
-                this.model.accountName = data.nombre;
+                this.model.customerId = data.crmId;
+                this.model.accountName = data.name;
                 this.model.address = data.address;
                 this.model.zipcode = data.postalCode;
                 this.model.city = data.city;

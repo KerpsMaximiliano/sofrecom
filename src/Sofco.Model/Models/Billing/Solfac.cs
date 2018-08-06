@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
-using Sofco.Model.Models.Admin;
-using Sofco.Model.Relationships;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Relationships;
 
-namespace Sofco.Model.Models.Billing
+namespace Sofco.Domain.Models.Billing
 {
     public class Solfac : BaseEntity
     {

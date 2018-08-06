@@ -2,7 +2,8 @@
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Models.Common;
-using Sofco.Model.Models.Common;
+using Sofco.Core.Models.Rrhh;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.Service.MapProfiles
 {
@@ -19,6 +20,10 @@ namespace Sofco.Service.MapProfiles
             CreateMap<PurchaseOrderApprovalDelegateModel, UserDelegate>();
 
             CreateMap<UserDelegate, PurchaseOrderActiveDelegateModel>();
+
+            CreateMap<LicenseViewDelegateModel, UserDelegate>();
+
+            CreateMap<UserDelegate, LicenseViewDelegateModel>();
         }
     }
 }

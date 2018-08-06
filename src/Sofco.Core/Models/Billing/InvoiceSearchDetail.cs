@@ -1,5 +1,5 @@
 ﻿using System;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing
 {

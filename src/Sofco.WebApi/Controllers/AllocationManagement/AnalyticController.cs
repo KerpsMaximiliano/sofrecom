@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.AllocationManagement;
-using Sofco.Model.Enums.TimeManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AllocationManagement
@@ -105,6 +105,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpPut("daf")]
+        public IActionResult PutDaf([FromBody] AnalyticModel model)
+        {
+            var response = analyticService.UpdateDaf(model.CreateDomainDaf());
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("title/costcenter/{costCenterId}")]
         public IActionResult GetNewTitle(int costCenterId)
         {
@@ -154,6 +162,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
                 return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
+        [HttpGet("{id}/opportunities")]
+        public IActionResult GetOpportunities(int id)
+        {
+            var response = analyticService.GetOpportunities(id);
+
+            return this.CreateResponse(response);
         }
     }
 }

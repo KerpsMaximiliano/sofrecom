@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
-using Sofco.Model.Models.WorkTimeManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.WorkTimeManagement
 {
@@ -14,7 +14,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         {
         }
 
-        public List<Holiday> Get(int year)
+        public new List<Holiday> Get(int year)
         {
             return context.Holidays.Where(s => s.Date.ToUniversalTime().Year == year).OrderBy(s => s.Date).ToList();
         }

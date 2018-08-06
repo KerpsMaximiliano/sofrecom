@@ -4,7 +4,8 @@ using System.Linq;
 using Hangfire;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Services.Admin;
-using Sofco.Model.Models.Admin;
+using Sofco.Core.Services.Jobs;
+using Sofco.Domain.Models.Admin;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Helpers;
 using Sofco.WebJob.Jobs.Interfaces;
@@ -41,11 +42,15 @@ namespace Sofco.WebJob.Services
 
             RecurringJob.AddOrUpdate<IAzureJob>(JobNames.Azure, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IEmployeeSyncJob>(JobNames.TigerEmployeeSync, j => j.Execute(), Cron.Daily(7), localTimeZone);
+            RecurringJob.AddOrUpdate<IEmployeeSyncActionJob>(JobNames.TigerEmployeeSync, j => j.Execute(), Cron.Daily(7), localTimeZone);
+
+            RecurringJob.AddOrUpdate<ICustomerUpdateJob>(JobNames.CustomerUpdate, j => j.Execute(), Cron.Daily(7), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IServiceUpdateJob>(JobNames.ServiceUpdate, j => j.Execute(), Cron.Daily(7), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IProjectUpdateJob>(JobNames.ProjectUpdate, j => j.Execute(), Cron.Daily(7), localTimeZone);
 
             RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(JobNames.TigerHealthInsurance, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
-
-            //RecurringJob.AddOrUpdate<ILicenseDaysUpdateJob>(JobNames.LicenseDaysUpdate, j => j.Execute(), Cron.Yearly(9, 30), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(JobNames.EmployeeResetExamDays, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
 
@@ -56,6 +61,8 @@ namespace Sofco.WebJob.Services
             var licenseCertificatePending = licenseCertificatePendingDayOfMonth != null ? Cron.Monthly(int.Parse(licenseCertificatePendingDayOfMonth.Value)) : Cron.Monthly(25);
 
             RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(JobNames.LicenseCertificatePending, j => j.Execute(), licenseCertificatePending, localTimeZone);
+
+            RecurringJob.AddOrUpdate<IEmployeeSyncProfileJobService>(JobNames.EmployeeProfileHistory, j => j.Sync(), Cron.Daily(10, 15), localTimeZone);
         }
 
         private void ClearJobs()

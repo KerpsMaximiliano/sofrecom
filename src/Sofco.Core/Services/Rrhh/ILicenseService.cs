@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.Models.Rrhh;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Common;
-using Sofco.Model.Models.Rrhh;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Rrhh
 {

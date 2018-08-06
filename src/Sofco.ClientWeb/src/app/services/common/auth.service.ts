@@ -1,7 +1,9 @@
-import { Observable } from 'rxjs/Observable';
+
+import {map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Cookie } from 'ng2-cookies/src/services';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
+
+
 import { Http } from '@angular/http';
 import { Service } from './service';
 import { Injectable } from '@angular/core';
@@ -25,13 +27,13 @@ export class AuthService {
          refreshToken: refreshToken
        });
 
-        return response.map(res => {
+        return response.pipe(map(res => {
             const data = JSON.parse(res['_body']).data;
 
             Cookie.set('access_token', data.accessToken);
             Cookie.set('refresh_token', data.refreshToken);
 
             return data.accessToken;
-        });
+        }));
     }
 }

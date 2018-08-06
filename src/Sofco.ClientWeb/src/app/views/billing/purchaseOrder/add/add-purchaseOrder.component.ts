@@ -1,7 +1,7 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";

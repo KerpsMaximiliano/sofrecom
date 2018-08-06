@@ -6,8 +6,8 @@ using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
-using Sofco.Model.Enums;
-using Sofco.Model.Models.Admin;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Framework.Managers
 {

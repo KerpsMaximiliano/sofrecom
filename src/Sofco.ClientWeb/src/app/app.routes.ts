@@ -7,6 +7,7 @@ import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.comp
 import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
 import { LoginComponent } from "app/views/appviews/login/login.component";
 import { ModuleWithProviders } from '@angular/core';
+import { PdfComponent } from 'app/views/appviews/pdf/pdf.component';
 
 export const ROUTES:Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full', canActivate: [AuthGuard] },
@@ -22,7 +23,14 @@ export const ROUTES:Routes = [
     path: '', component: BlankLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      { path: '403', component: ForbiddenComponent, canActivate: [AuthGuard] }
+      { path: '403', component: ForbiddenComponent, canActivate: [AuthGuard] },
+    ]
+  },
+
+  {
+    path: 'pdf', component: BasicLayoutComponent,
+    children: [
+      { path: ':id/:type', component: PdfComponent, canActivate: [AuthGuard] }
     ]
   },
 

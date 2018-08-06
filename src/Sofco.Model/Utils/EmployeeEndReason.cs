@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.AllocationManagement;
+using Sofco.Domain.Models.AllocationManagement;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class EmployeeEndReason : Option
     {

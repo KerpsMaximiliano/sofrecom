@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Models.Billing;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Billing;
 
-namespace Sofco.Model.Utils
+namespace Sofco.Domain.Utils
 {
     public class ImputationNumber : Option
     {

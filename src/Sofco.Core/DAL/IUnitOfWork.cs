@@ -11,7 +11,6 @@ namespace Sofco.Core.DAL
     public interface IUnitOfWork
     {
         #region Admin
-
         IUserRepository UserRepository { get; }
         IRoleRepository RoleRepository { get; }
         IGroupRepository GroupRepository { get; }
@@ -24,6 +23,7 @@ namespace Sofco.Core.DAL
         ICategoryRepository CategoryRepository { get; }
         ITaskRepository TaskRepository { get; }
         ISectorRepository SectorRepository { get; }
+        IAreaRepository AreaRepository { get; }
 
         #endregion
 
@@ -35,7 +35,9 @@ namespace Sofco.Core.DAL
         IPurchaseOrderRepository PurchaseOrderRepository { get; }
         ICertificateRepository CertificateRepository { get; }
         ISolfacCertificateRepository SolfacCertificateRepository { get; }
-        IAreaRepository AreaRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
+        IServiceRepository ServiceRepository { get; }
+        IProjectRepository ProjectRepository { get; }
 
         #endregion
 

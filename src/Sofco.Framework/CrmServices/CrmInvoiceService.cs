@@ -10,11 +10,11 @@ using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
 using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Helpers;
-using Sofco.Model.Models.Billing;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Helpers;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Framework.CrmServices

@@ -33,13 +33,13 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.employeeNumber' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.employeeNumber' | translate }}" type="text" [(ngModel)]="searchModel.employeeNumber">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.employeeNumber' | translate }}" type="text" [(ngModel)]="searchModel.employeeNumber">
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -50,19 +50,19 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.profile' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.profile' | translate }}" type="text" [(ngModel)]="searchModel.profile">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.senority' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.senority' | translate }}" type="text" [(ngModel)]="searchModel.seniority">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
-                                <input class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -94,9 +94,13 @@
     </div>
 
     <div class="ibox" *ngIf="resources.length > 0"> 
-        <div class="ibox-title" *ngIf="canAddCategories()">
+        <div class="ibox-title">
             <div class="ibox-tools">
-                <button class="btn btn-primary btn-sm" (click)="categoriesModal.show()" [disabled]="addCategoryDisabled()"> {{'ADMIN.category.add' | translate }} <i class="fa fa-plus"></i></button>
+                <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                <button class="btn btn-primary btn-sm" (click)="allocationsModal.show()" [disabled]="noneResourseSelected()"> Asignar Seleccionados <i class="fa fa-plus"></i></button>
+                <button *ngIf="canAddCategories()" class="btn btn-primary btn-sm" (click)="openCategoriesModal()" [disabled]="noneResourseSelected()"> {{'ADMIN.category.add' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>
         <div class="ibox-content">
@@ -168,5 +172,25 @@
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 
         </icheck>
+    </div>
+</ng2-modal>
+
+
+<ng2-modal [config]="allocationsModalConfig" #allocationsModal (accept)="sendNewAllocations()">
+    <select-two [label]="'allocationManagement.analytics.title'" [(value)]="allocationModel.analyticId" [options]="analytics"></select-two>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.allocation.percentage' | translate }}</label>
+        <input class="form-control" type="text" [(ngModel)]="allocationModel.percentage">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.dateFrom' | translate }}</label>
+        <date-picker [(date)]="allocationModel.startDate"></date-picker>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.dateTo' | translate }}</label>
+        <date-picker [(date)]="allocationModel.endDate"></date-picker>
     </div>
 </ng2-modal>

@@ -10,11 +10,11 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Common;
-using Sofco.Model.DTO;
-using Sofco.Model.Enums;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
-using File = Sofco.Model.Models.Common.File;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.WebApi.Controllers.Billing
 {
@@ -88,7 +88,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(model);
         }
 
-
         [HttpPost("{invoiceId}/file")]
         public async Task<IActionResult> File(int invoiceId)
         {
@@ -134,7 +133,7 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult GetPdfFile(int id)
         {
             var response = fileService.ExportFile(id, fileConfig.InvoicesPdfPath);
-            
+
             if (response.HasErrors())
                 return BadRequest(response);
 

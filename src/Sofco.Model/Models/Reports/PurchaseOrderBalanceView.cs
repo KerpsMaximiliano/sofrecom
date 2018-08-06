@@ -1,7 +1,7 @@
 ﻿using System;
-using Sofco.Model.Enums;
+using Sofco.Domain.Enums;
 
-namespace Sofco.Model.Models.Reports
+namespace Sofco.Domain.Models.Reports
 {
     public class PurchaseOrderBalanceView
     {
@@ -38,5 +38,9 @@ namespace Sofco.Model.Models.Reports
         public string AccountManagerNames { get; set; }
 
         public string ProjectManagerNames { get; set; }
+
+        public int? FileId { get; set; }
+
+        public string FileName { get; set; }
     }
 }

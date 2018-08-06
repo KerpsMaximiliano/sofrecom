@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models;
-using Sofco.Domain.Crm.Billing;
-using Sofco.Model.Models.AllocationManagement;
-using Sofco.Model.Utils;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Billing
 {
     public interface IServicesService
     {
-        Response<List<CrmService>> GetServices(string customerId, bool getAll);
+        Response<List<Service>> GetServices(string customerId);
 
-        Response<List<SelectListModel>> GetServicesOptions(string customerId, bool getAll);
+        Response<List<SelectListModel>> GetServicesOptions(string customerId);
 
-        Response<CrmService> GetService(string serviceId, string customerId);
+        Response<Service> GetService(string serviceId, string customerId);
 
         Analytic GetAnalyticByService(string serviceId);
+        Response<List<SelectListModel>> GetAllNotRelatedOptions(string customerId);
     }
 }

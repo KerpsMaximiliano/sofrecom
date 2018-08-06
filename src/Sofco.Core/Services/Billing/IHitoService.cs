@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Sofco.Model.DTO;
-using Sofco.Model.Utils;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Billing
 {
