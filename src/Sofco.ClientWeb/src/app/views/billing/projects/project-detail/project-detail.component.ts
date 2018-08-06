@@ -519,6 +519,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     askForAnnulment(){
+        if(!this.annulmentComments || this.annulmentComments == ""){
+            this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.invoiceAnnulmentModal.resetButtons();
+            return;
+        }
+
         var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.id);
 
         var json = {
