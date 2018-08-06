@@ -8,6 +8,6 @@ namespace Sofco.Core.DAL.Billing
     {
         Customer GetByIdCrm(string crmCustomerId);
         IList<Customer> GetAllActives();
-        IList<Customer> GetAllByManager(string externalManagerId);
+        IList<Customer> GetAllByServices(IEnumerable<string> servicesIds);
     }
 }

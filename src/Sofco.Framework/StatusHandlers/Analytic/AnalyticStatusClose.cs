@@ -23,7 +23,7 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
             unitOfWork.Save();
 
-            response.AddSuccess(Resources.AllocationManagement.Analytic.CloseSuccess);
+            response.AddSuccess(status == AnalyticStatus.Close ? Resources.AllocationManagement.Analytic.CloseSuccess : Resources.AllocationManagement.Analytic.CloseForExpensesSuccess);
         }
 
         public static void SendMail(Response response, Domain.Models.AllocationManagement.Analytic analytic, EmailConfig emailConfig, IMailSender mailSender, IUnitOfWork unitOfWork, IMailBuilder mailBuilder)

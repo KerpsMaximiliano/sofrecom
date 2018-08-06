@@ -22,9 +22,9 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Customers.Where(x => x.Active).ToList().AsReadOnly();
         }
 
-        public IList<Customer> GetAllByManager(string externalManagerId)
+        public IList<Customer> GetAllByServices(IEnumerable<string> servicesIds)
         {
-            return context.Customers.Where(x => x.OwnerId.Equals(externalManagerId) && x.Active).ToList();
+            return context.Customers.Where(x => servicesIds.Contains(x.CrmId)).ToList().AsReadOnly();
         }
     }
 }

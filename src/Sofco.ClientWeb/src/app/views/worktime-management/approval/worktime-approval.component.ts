@@ -254,6 +254,12 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     }
 
     rejectAll(){
+        if(!this.rejectComments || this.rejectComments == ""){
+            this.messageService.showError("billing.solfac.rejectCommentRequired");
+            this.rejectAllModal.resetButtons();
+            return;
+        }
+
         var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
 
         if(hoursSelected.length == 0) return;

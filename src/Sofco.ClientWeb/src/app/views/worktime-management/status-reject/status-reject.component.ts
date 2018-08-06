@@ -44,6 +44,7 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
   confirm(){
     if(!this.rejectComments || this.rejectComments == ""){
         this.messageService.showError("billing.solfac.rejectCommentRequired");
+        this.rejectModal.resetButtons();
         return;
     }
 

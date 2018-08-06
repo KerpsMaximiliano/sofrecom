@@ -18,7 +18,7 @@ namespace Sofco.Framework.FileManager.AllocationManagement
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public ExcelPackage CreateReport(IList<Tuple<string, string>> list)
+        public ExcelPackage CreateReport(IList<Tuple<string, string, decimal>> list)
         {
             var memoryStream = this.GetTemplateStream().Result;
 
@@ -27,7 +27,7 @@ namespace Sofco.Framework.FileManager.AllocationManagement
             return Create(excel, list);
         }
 
-        private ExcelPackage Create(ExcelPackage excel, IList<Tuple<string, string>> list)
+        private ExcelPackage Create(ExcelPackage excel, IList<Tuple<string, string, decimal>> list)
         {
             var sheet = excel.Workbook.Worksheets.First();
 
@@ -37,6 +37,7 @@ namespace Sofco.Framework.FileManager.AllocationManagement
 
                 sheet.Cells[$"A{i}"].Value = item.Item1;
                 sheet.Cells[$"B{i}"].Value = item.Item2;
+                sheet.Cells[$"C{i}"].Value = item.Item3;
             }
 
             return excel;

@@ -13,6 +13,7 @@
     "titleIsRequired": "El titulo es requerido",
     "updateSuccess": "Analítica actualizada exitosamente",
     "closeSuccess": "Se ha cerrado la analítica exitosamente" ,
+    "closeForExpensesSuccess": "La analítica se ha cerrado para costos exitosamente" ,
     "serviceAlreadyRelated": "Ya hay una analítica relacionada al servicio",
     "wrongMonthQuantity": "Meses a mostrar debe ser mayor o igual a 1 y menor o igual a 36"
 }
