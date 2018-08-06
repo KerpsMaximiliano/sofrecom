@@ -201,9 +201,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost("requestAnnulment")]
-        public IActionResult RequestAnnulment([FromBody] IList<int> invoices)
+        public IActionResult RequestAnnulment([FromBody] InvoiceAnnulmentModel model)
         {
-            var response = invoiceService.RequestAnnulment(invoices);
+            var response = invoiceService.RequestAnnulment(model);
 
             return this.CreateResponse(response);
         }

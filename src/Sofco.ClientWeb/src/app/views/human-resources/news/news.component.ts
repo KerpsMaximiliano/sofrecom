@@ -135,6 +135,7 @@ export class NewsComponent implements OnInit, OnDestroy {
             this.confirmModal.hide();
         },
         error => {
+            this.confirmModal.resetButtons();
             this.errorHandlerService.handleErrors(error);
         });
     }
@@ -148,6 +149,7 @@ export class NewsComponent implements OnInit, OnDestroy {
             this.confirmModal.hide();
         },
         error => {
+            this.confirmModal.resetButtons();
             this.errorHandlerService.handleErrors(error);
         });
     }
@@ -166,6 +168,7 @@ export class NewsComponent implements OnInit, OnDestroy {
             this.deleteModal.hide();
         },
         error => {
+            this.deleteModal.resetButtons();
             this.errorHandlerService.handleErrors(error);
         });
     }

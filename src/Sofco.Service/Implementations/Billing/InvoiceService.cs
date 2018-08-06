@@ -16,6 +16,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Resources.Mails;
@@ -267,11 +268,11 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.InvoiceRepository.GetHistories(id);
         }
 
-        public Response RequestAnnulment(IList<int> invoiceIds)
+        public Response RequestAnnulment(InvoiceAnnulmentModel model)
         {
             var response = new Response();
 
-            var invoices = unitOfWork.InvoiceRepository.GetByIds(invoiceIds);
+            var invoices = unitOfWork.InvoiceRepository.GetByIds(model.Invoices);
 
             if (!invoices.Any()) return response;
 
@@ -288,7 +289,7 @@ namespace Sofco.Service.Implementations.Billing
                 var invoicesToListString = invoices.Select(x => $"<a href='{emailConfig.SiteUrl}billing/invoice/{x.Id}/project/{x.ProjectId}' target='_blank'>{x.ExcelFileData?.FileName}</a>");
 
                 var subject = MailSubjectResource.InvoiceRequestAnnulment;
-                var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString));
+                var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString), model.Comments);
 
                 var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
 

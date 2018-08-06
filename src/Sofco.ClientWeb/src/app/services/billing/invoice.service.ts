@@ -82,7 +82,7 @@ export class InvoiceService {
     return this.http.get<any>(`${this.baseUrl}/invoices/${invoiceId}/histories`);
   }
 
-  askForAnnulment(ids) {
-    return this.http.post<any>(`${this.baseUrl}/invoices/requestAnnulment`, ids);
+  askForAnnulment(model) {
+    return this.http.post<any>(`${this.baseUrl}/invoices/requestAnnulment`, model);
  }
 }

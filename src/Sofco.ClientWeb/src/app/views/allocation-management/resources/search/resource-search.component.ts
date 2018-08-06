@@ -121,7 +121,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
         if(this.getCategorySubscrip) this.getCategorySubscrip.unsubscribe();
         if(this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
-        if(this.allocationsSubscrip) this.addCategoriesSubscrip.unsubscribe();
+        if(this.allocationsSubscrip) this.allocationsSubscrip.unsubscribe();
         if(this.getAllEmployeesSubscrip) this.getAllEmployeesSubscrip.unsubscribe();
     }
 

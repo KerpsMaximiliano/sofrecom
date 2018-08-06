@@ -173,7 +173,7 @@
 
                                     <div class="button-group" *ngIf="canCreateInvoice()">
                                         <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
-                                        <button class="btn btn-warning" *ngIf="canAskForAnnulment()" (click)="askForAnnulment()"> {{'billing.project.detail.invoices.askAnnulment' | translate }} <i class="fa fa-times"></i></button>
+                                        <button class="btn btn-warning" *ngIf="canAskForAnnulment()" (click)="invoiceAnnulmentModal.show()"> {{'billing.project.detail.invoices.askAnnulment' | translate }} <i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
 
@@ -195,3 +195,10 @@
 <ng2-modal [config]="closeHitoModalConfig" #closeHitoModal (accept)="closeHito()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
+
+<ng2-modal [config]="invoiceAnnulmentModalConfig" #invoiceAnnulmentModal (accept)="askForAnnulment()">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea class="form-control" rows="6" [(ngModel)]="annulmentComments"></textarea>
+    </div>
+</ng2-modal> 

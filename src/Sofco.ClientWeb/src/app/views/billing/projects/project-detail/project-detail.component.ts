@@ -47,6 +47,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     incomesCashed: number = 0;
     incomesPending: number = 0;
 
+    public annulmentComments: string;
+
     billedHitoStatus:string = "Facturado";
     pendingHitoStatus:string = "Pendiente";
     projectedHitoStatus:string = "Proyectado";
@@ -63,6 +65,16 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     public closeHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
         "closeHitoModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    @ViewChild('invoiceAnnulmentModal') invoiceAnnulmentModal;
+    public invoiceAnnulmentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "invoiceAnnulmentModal",
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -509,10 +521,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     askForAnnulment(){
         var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.id);
 
-        this.messageService.showLoading();
+        var json = {
+            invoices: invoicesIds,
+            comments: this.annulmentComments
+        }
 
-        this.invoiceService.askForAnnulment(invoicesIds).subscribe(data => {
-            this.messageService.closeLoading();
+        this.invoiceService.askForAnnulment(json).subscribe(data => {
+            this.invoiceAnnulmentModal.hide();
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.invoices.forEach(item => {
@@ -522,7 +537,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
         },
         err => {
-            this.messageService.closeLoading();
+            this.invoiceAnnulmentModal.hide();
             this.errorHandlerService.handleErrors(err);
         });
     }

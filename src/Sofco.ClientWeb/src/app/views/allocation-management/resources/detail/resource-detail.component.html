@@ -137,43 +137,43 @@
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <dl class="dl-horizontal">
                                     <dt>{{'allocationManagement.resources.address' | translate }}</dt>
-                                    <dd>{{ model?.address }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.address }}</dd>
 
                                     <dt>{{'allocationManagement.resources.location' | translate }}</dt>
-                                    <dd>{{ model?.location }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.location }}</dd>
 
                                     <dt>{{'allocationManagement.resources.province' | translate }}</dt>
-                                    <dd>{{ model?.province }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.province }}</dd>
 
                                     <dt>{{'allocationManagement.resources.healtInsurance' | translate }}</dt>
-                                    <dd>{{ model?.healthInsurance?.name }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.healthInsurance?.name }}</dd>
 
                                     <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
-                                    <dd>{{ model?.prepaidHealth?.name }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.prepaidHealth?.name }}</dd>
 
                                     <dt *ngIf="isRrhh">{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
-                                    <dd *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
+                                    <dd class="text-ellipsis" *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
 
                                     <dt>{{'allocationManagement.resources.businessHours' | translate }}</dt>
-                                    <dd>{{ model?.businessHours }} hs</dd>
+                                    <dd class="text-ellipsis">{{ model?.businessHours }} hs</dd>
 
                                     <dt>{{'allocationManagement.resources.businessHoursDescription' | translate }}</dt>
-                                    <dd>{{ model?.businessHoursDescription }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.businessHoursDescription }}</dd>
                                 </dl>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <dl class="dl-horizontal">
                                     <dt>{{'allocationManagement.resources.cuil' | translate }}</dt>
-                                    <dd>{{ model?.cuil }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.cuil }}</dd>
     
                                     <dt>{{'allocationManagement.resources.phone' | translate }}</dt>
-                                    <dd>{{ getFormattedPhone() }}</dd>
+                                    <dd class="text-ellipsis">{{ getFormattedPhone() }}</dd>
 
                                     <dt>{{'allocationManagement.resources.document' | translate }}</dt>
-                                    <dd>{{ model?.documentNumber }}</dd>
+                                    <dd class="text-ellipsis">{{ model?.documentNumber }}</dd>
                                 </dl>
                             </div>
                         </div>

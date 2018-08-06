@@ -110,7 +110,10 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Busca una cadena traducida similar a Se solicita la anulación de los siguientes remitos: &lt;/br&gt;
-        ///{0}.
+        ///{0}
+        /// &lt;/br&gt; &lt;/br&gt;
+        ///Motivo:  &lt;/br&gt;
+        ///{1}.
         /// </summary>
         public static string InvoiceRequestAnnulment {
             get {
