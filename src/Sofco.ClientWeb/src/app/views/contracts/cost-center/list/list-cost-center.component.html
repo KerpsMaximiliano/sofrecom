@@ -20,7 +20,7 @@
         <div class="ibox-title">
             <h4 class="pull-left">{{ 'contracts.costCenter.title' | translate }}</h4>
             
-            <div class="ibox-tools" *ngIf="menuService.hasFunctionality('ALLOC', 'ANADD')">
+            <div class="ibox-tools" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD')">
                 <div class="btn-group">
                     <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-primary':'btn-white'" (click)="filterActives(true)">Activos</button>
                     <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-white':'btn-primary'" (click)="filterActives(false)">Todos</button>
