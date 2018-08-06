@@ -48,6 +48,8 @@ namespace Sofco.Service.Implementations.Jobs
 
                 employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
 
+                ProcessEmailCase(stored, newEmployee);
+
                 ElementComparerHelper.ApplyModifications(stored, newEmployee, modifiedFields);
 
                 unitOfWork.EmployeeRepository.Save(stored);
@@ -74,7 +76,8 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Cuil),
                 nameof(Employee.PhoneCountryCode),
                 nameof(Employee.PhoneAreaCode),
-                nameof(Employee.PhoneNumber)
+                nameof(Employee.PhoneNumber),
+                nameof(Employee.Email)
             };
         }
 
@@ -87,6 +90,7 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.Seniority = employee.Seniority?.Trim();
                 employee.DocumentNumberType = employee.DocumentNumberType?.Trim();
                 employee.PhoneNumber = employee.PhoneNumber?.Trim();
+                employee.Email = employee.Email?.Trim();
             }
         }
 
@@ -109,6 +113,15 @@ namespace Sofco.Service.Implementations.Jobs
         private List<Employee> Translate(List<TigerEmployee> tigerEmployees)
         {
             return mapper.Map<List<TigerEmployee>, List<Employee>>(tigerEmployees);
+        }
+        
+        private void ProcessEmailCase(Employee oldItem, Employee newItem)
+        {
+            if (string.IsNullOrEmpty(newItem.Email)
+                && !string.IsNullOrEmpty(oldItem.Email))
+            {
+                newItem.Email = oldItem.Email;
+            }
         }
     }
 }
