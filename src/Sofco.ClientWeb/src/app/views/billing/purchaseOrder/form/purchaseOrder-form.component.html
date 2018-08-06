@@ -51,7 +51,10 @@
     <div class="col-sm-12">
         <div class="input-group m-b">
             <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
-            <input [disabled]="!item.enable || currencyDisabled" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+
+            <input *ngIf="(mode == 'new' || model.status == 4 || model.status == 8)" [disabled]="!item.enable || currencyDisabled" type="number" class="form-control" myNumberOnly min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+            <span *ngIf="(mode == 'edit' && (model.status !== 4 && model.status != 8))" class="input-group-addon addon-width bg-muted">{{ item.ammount | number: '1.2-2' }}</span> 
+
             <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && !item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
             <span *ngIf="(mode == 'new' || model.status == 4 || model.status == 8) && item.enable" class="input-group-addon pointer bg-danger" (click)="item.enable = !item.enable"><i class="fa fa-times"></i></span> 
         </div>
