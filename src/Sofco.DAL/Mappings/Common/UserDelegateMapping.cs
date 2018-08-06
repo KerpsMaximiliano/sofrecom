@@ -11,7 +11,6 @@ namespace Sofco.DAL.Mappings.Common
             builder.Entity<UserDelegate>().Property(_ => _.ServiceId).IsRequired();
             builder.Entity<UserDelegate>().Property(_ => _.UserId).IsRequired();
             builder.Entity<UserDelegate>().Property(_ => _.CreatedUser).HasMaxLength(50);
-            builder.Entity<UserDelegate>().HasIndex(x => new { x.ServiceId, x.UserId }).IsUnique();
         }
     }
 }
