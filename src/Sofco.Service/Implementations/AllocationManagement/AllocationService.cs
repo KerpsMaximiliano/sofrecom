@@ -147,7 +147,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response<byte[]> AddMassive(AllocationMassiveAddModel model)
         {
             var response = new Response<byte[]>();
-            var employeesWithError = new List<Tuple<string, string>>();
+            var employeesWithError = new List<Tuple<string, string, decimal>>();
 
             AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, model.AnalyticId);
             AllocationValidationHelper.ValidatePercentage(response, model);
@@ -177,7 +177,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             {
                                 var employee = allocationsFiltered.FirstOrDefault()?.Employee;
 
-                                employeesWithError.Add(new Tuple<string, string>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("d")));
+                                employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("d"), percentageSum));
                             }
                             else
                             {

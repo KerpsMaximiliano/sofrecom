@@ -27,6 +27,11 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Services.Where(x => x.Active && x.AccountId.Equals(customerId) && x.ManagerId.Equals(externalManagerId)).ToList().AsReadOnly();
         }
 
+        public IList<Service> GetAllByManager(string externalManagerId)
+        {
+            return context.Services.Where(x => x.Active && x.ManagerId.Equals(externalManagerId)).ToList().AsReadOnly();
+        }
+
         public void UpdateActive(Service service)
         {
             context.Entry(service).Property("Active").IsModified = true;

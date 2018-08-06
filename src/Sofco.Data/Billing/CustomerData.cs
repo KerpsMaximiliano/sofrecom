@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Billing;
@@ -40,7 +41,11 @@ namespace Sofco.Data.Billing
                     else
                     {
                         var user = unitOfWork.UserRepository.GetByEmail(email);
-                        return unitOfWork.CustomerRepository.GetAllByManager(user.ExternalManagerId);
+                        var services = unitOfWork.ServiceRepository.GetAllByManager(user.ExternalManagerId);
+
+                        var servicesIds = services.Select(x => x.AccountId);
+
+                        return unitOfWork.CustomerRepository.GetAllByServices(servicesIds);
                     }
                 },
                 x => x.CrmId,

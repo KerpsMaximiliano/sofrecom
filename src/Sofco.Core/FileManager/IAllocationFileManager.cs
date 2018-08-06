@@ -7,6 +7,6 @@ namespace Sofco.Core.FileManager
 {
     public interface IAllocationFileManager
     {
-        ExcelPackage CreateReport(IList<Tuple<string, string>> list);
+        ExcelPackage CreateReport(IList<Tuple<string, string, decimal>> list);
     }
 }

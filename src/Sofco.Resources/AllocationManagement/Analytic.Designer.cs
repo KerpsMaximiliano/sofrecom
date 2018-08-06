@@ -62,6 +62,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/analytic.closeForExpensesSuccess.
+        /// </summary>
+        public static string CloseForExpensesSuccess {
+            get {
+                return ResourceManager.GetString("CloseForExpensesSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/analytic.closeSuccess.
         /// </summary>
         public static string CloseSuccess {
