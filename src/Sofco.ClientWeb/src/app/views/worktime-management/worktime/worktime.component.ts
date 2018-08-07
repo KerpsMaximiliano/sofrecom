@@ -102,6 +102,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       var taskToRemove = this.model.calendar.findIndex(item => item.id == this.taskModel.id);
       this.model.calendar.splice(taskToRemove, 1);
       this.updateCalendarEvents();
+
+      this.getModel();
     },
     error => {
       this.errorHandlerService.handleErrors(error);
