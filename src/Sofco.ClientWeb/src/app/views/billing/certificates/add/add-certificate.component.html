@@ -54,7 +54,7 @@
                 <div class="file-box">
                     <div class="file">
                         <div class="icon"><i class="fa fa-file"></i></div>
-                        <div class="file-name text-word-break">
+                        <div class="file-name text-word-break" [ngClass]="form?.model.fileName.endsWith('.pdf') ? 'pdf-file' : ''" (click)="viewFile()">
                             {{ form.model.fileName }} 
                             <br>
                             <small>{{'billing.invoice.createdAt' | translate }}: {{ creationDate }}</small>
@@ -80,3 +80,5 @@
 <ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal> 
+
+<pdf-viewer #pdfViewer></pdf-viewer>

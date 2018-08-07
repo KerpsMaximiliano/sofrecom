@@ -1,10 +1,10 @@
 {
     "created": "Area creada exitosamente",
     "textRequired": "La descripcion es requerida",
-    "disabled": "La area fue deshabilitada correctamente",
-    "enabled": "La area fue habilitada correctamente",
+    "disabled": "El area fue deshabilitada correctamente",
+    "enabled": "El area fue habilitada correctamente",
     "notFound": "area no encontrada",
-    "updated": "La area fue actualizada exitosamente",
+    "updated": "El area fue actualizada exitosamente",
     "responsableRequired": "El responsable es requerido",
     "textAlreadyExist": "La descripcion ya existe"
 }

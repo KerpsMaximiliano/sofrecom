@@ -82,6 +82,16 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
             }
+
+            if (model.Date.DayOfWeek == DayOfWeek.Saturday || model.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsWeekend);
+            }
+
+            if (unitOfWork.HolidayRepository.IsHoliday(model.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
+            }
         }
 
         public static void ValidateUserComment(Response<WorkTime> response, WorkTimeAddModel model)

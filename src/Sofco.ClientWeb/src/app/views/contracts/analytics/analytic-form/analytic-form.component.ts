@@ -153,7 +153,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             
         this.serviceService.getAllNotRelated(this.customerId).subscribe(d => {
             this.messageService.closeLoading();
-            this.services = d.data;
+            this.services = d.data;    
         },
         err => {
             this.messageService.closeLoading();

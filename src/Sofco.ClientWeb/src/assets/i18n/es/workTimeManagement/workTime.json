@@ -27,5 +27,7 @@
     "rejectedWithSomeErrors": "Algunas horas fueron rechazadas correctamente y algunas contenian algun error",
     "deleteSuccess": "La hora cargada fue eliminada correctamente",
     "cannotDelete": "Solo se puede eliminar la hora en estado borrador o rechazada",
-    "datesRequired": "Las fechas son requeridas"
+    "datesRequired": "Las fechas son requeridas",
+    "dateIsWeekend": "No se pueden cargar horas un fin de semana",
+    "dateIsHoliday": "No se pueden cargar horas un dia feriado"
 }

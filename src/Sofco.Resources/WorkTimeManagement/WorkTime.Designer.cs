@@ -134,6 +134,24 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateIsHoliday.
+        /// </summary>
+        public static string DateIsHoliday {
+            get {
+                return ResourceManager.GetString("DateIsHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateIsWeekend.
+        /// </summary>
+        public static string DateIsWeekend {
+            get {
+                return ResourceManager.GetString("DateIsWeekend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateOutOfRange.
         /// </summary>
         public static string DateOutOfRangeError {

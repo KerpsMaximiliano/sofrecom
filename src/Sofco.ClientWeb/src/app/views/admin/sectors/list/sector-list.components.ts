@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { SectorService } from "../../../../services/admin/sector.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 declare var moment: any;
 
 @Component({
@@ -15,10 +16,21 @@ declare var moment: any;
   export class SectorListComponent implements OnInit, OnDestroy {
 
     public sectors: any[] = new Array(); 
+    public sectorSelected: any;
 
     public getSubscrip: Subscription;
     public deactivateSubscrip: Subscription;
     public activateSubscrip: Subscription;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private messageService: MessageService,
                 private router: Router,
@@ -56,32 +68,46 @@ declare var moment: any;
     }
 
     habInhabClick(sector){
+        this.sectorSelected = sector
+
         if (sector.active){
-            this.deactivate(sector);
+            this.confirm = this.deactivate;    
         } else {
-            this.activate(sector);
+            this.confirm = this.activate; 
         }
+
+        this.confirmModal.show();
     }
 
-    deactivate(sector){
-        this.deactivateSubscrip = this.sectorService.active(sector.id, false).subscribe(
+    confirm(){}
+
+    deactivate(){
+        this.deactivateSubscrip = this.sectorService.active(this.sectorSelected.id, false).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
-                sector.active = false;
-                sector.endDate = moment.now();
+
+                this.sectorSelected.active = false;
+                this.sectorSelected.endDate = moment.now();
+
+                this.sectorSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => this.errorHandlerService.handleErrors(err),
+            () => this.confirmModal.hide());
     }
   
-    activate(sector){
-        this.activateSubscrip = this.sectorService.active(sector.id, true).subscribe(
+    activate(){
+        this.activateSubscrip = this.sectorService.active(this.sectorSelected.id, true).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
-                sector.active = true;
-                sector.endDate = null;
-                sector.startDate = moment.now();
+                
+                this.sectorSelected.active = true;
+                this.sectorSelected.endDate = null;
+                this.sectorSelected.startDate = moment.now();
+
+                this.sectorSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => this.errorHandlerService.handleErrors(err),
+            () => this.confirmModal.hide());
     }
 
     initGrid(){

@@ -25,6 +25,7 @@ import { WorkTimeApprovalDelegateService } from 'app/services/allocation-managem
 import { AllocationRouter } from 'app/views/allocation-management/allocation-management.router';
 import { CategoryService } from '../../services/admin/category.service';
 import { LicenseService } from '../../services/human-resources/licenses.service';
+import { EmployeeProfileHistoryService } from '../../services/allocation-management/employee-profile-history.service';
 import { CommonModule } from '@angular/common';
 import { ResourceDetailModule } from 'app/views/allocation-management/resources/detail/resource-detail.module';
 import { AllocationAssingTableModule } from 'app/views/allocation-management/allocation/allocation-assignment-table/alloc-assing-table.module';
@@ -56,7 +57,7 @@ import { AllocationAssingTableModule } from 'app/views/allocation-management/all
     PCheckModule,
     AllocationRouter
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApprovalDelegateService, CategoryService, LicenseService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApprovalDelegateService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
 
   exports: [],
 })

@@ -72,14 +72,17 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 this.form.model = data;
                 this.showClientButton = this.form.model.clientExternalId != null;
 
-                this.form.customerId = this.form.model.clientExternalId;
-                this.form.serviceId = this.form.model.serviceId;
+                if(this.form.model.clientExternalId){
+                    this.form.services.push({ id: this.form.model.serviceId, text: this.form.model.service })
 
-                this.form.getServices();
+                    this.form.customerId = this.form.model.clientExternalId;
+                    this.form.serviceId = this.form.model.serviceId;
+                }
 
                 setTimeout(() => {
                     $('#userId').val(this.form.model.usersQv).trigger('change');
-                }, 1000);
+                    $('#service-select select').val(this.form.serviceId).trigger('change');
+                }, 500);
             },
             error => {
                 this.messageService.closeLoading();

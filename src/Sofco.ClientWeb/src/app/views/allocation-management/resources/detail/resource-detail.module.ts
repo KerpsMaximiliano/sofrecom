@@ -8,6 +8,7 @@ import { LicenseService } from "app/services/human-resources/licenses.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { RouterModule } from "@angular/router";
 import { Select2Module } from "../../../../components/select2/select2";
+import { EmployeeProfileHistoryService } from "app/services/allocation-management/employee-profile-history.service";
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import { Select2Module } from "../../../../components/select2/select2";
         ResourceDetailComponent
     ],
     providers: [
-        LicenseService, EmployeeService
+        LicenseService, EmployeeService, EmployeeProfileHistoryService
     ],
     exports: [
         ResourceDetailComponent

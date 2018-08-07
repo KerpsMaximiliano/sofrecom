@@ -93,11 +93,13 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
 
         for(let i = 0; i < this.projects.length; i++){
 
-          this.hitosSelected['hito'+i].forEach(hito => {
-            if(!currencies.includes(hito.moneyId)){
-              currencies.push(hito.moneyId);
-            }
-          });
+          if(this.hitosSelected['hito'+i]) {
+            this.hitosSelected['hito'+i].forEach(hito => {
+              if(!currencies.includes(hito.moneyId)){
+                currencies.push(hito.moneyId);
+              }
+            });
+          }
         }
         
         if(currencies.length > 1){

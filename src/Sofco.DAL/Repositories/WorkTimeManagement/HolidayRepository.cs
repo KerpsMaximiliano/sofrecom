@@ -56,6 +56,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.SaveChanges();
         }
 
+        public bool IsHoliday(DateTime date)
+        {
+            return context.Holidays.Any(x => x.Date.Date == date.Date);
+        }
+
         private void SaveFromExternalData(Holiday holiday)
         {
             var stored = GetStored(holiday);

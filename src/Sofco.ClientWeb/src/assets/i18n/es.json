@@ -585,12 +585,33 @@
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
-                "start": "Ingreso"
+                "start": "Ingreso",
+                "birthday": "Fecha de nacimiento",
+                "address": "Dirección",
+                "location": "Localidad/Barrio",
+                "province": "Estado/Provincia",
+                "country": "País",
+                "healthInsuranceCode": "Obra Social",
+                "prepaidHealthCode": "Medicina Prepaga",
+                "documentNumberType": "Tipo documento",
+                "documentNumber": "Documento",
+                "cuil": "Cuil",
+                "phoneCountryCode": "Código de pais",
+                "phoneAreaCode": "Código de área",
+                "phoneNumber": "Teléfono",
+                "email": "Email"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
             "phone": "Teléfono",
             "cuil": "Cuil",
-            "document": "Documento"
+            "document": "Documento",
+            "profileHistoryGrid": {
+                "name": "Actualizaciones",
+                "date": "Fecha",
+                "field": "Campo",
+                "oldValue": "Valor anterior",
+                "newValue": "Valor posterior"
+            }
         },
         "news": {
             "title": "Novedades",

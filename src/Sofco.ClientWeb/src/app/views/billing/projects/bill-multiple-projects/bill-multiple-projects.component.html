@@ -44,7 +44,7 @@
                     <h5 class="text-ellipsis"> {{ project.name }} </h5>
                 </div>
        
-                <hitos-by-project [projectId]="project.id" [index]="i" (selectHitoEvent)="selectHito($event)"></hitos-by-project>
+                <hitos-by-project [projectId]="project.crmId" [index]="i" (selectHitoEvent)="selectHito($event)"></hitos-by-project>
             </div>
         </div>
     </div>
