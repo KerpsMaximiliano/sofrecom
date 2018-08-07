@@ -141,6 +141,12 @@
   <data name="CannotDelete" xml:space="preserve">
     <value>workTimeManagement/workTime.cannotDelete</value>
   </data>
+  <data name="DateIsHoliday" xml:space="preserve">
+    <value>workTimeManagement/workTime.dateIsHoliday</value>
+  </data>
+  <data name="DateIsWeekend" xml:space="preserve">
+    <value>workTimeManagement/workTime.dateIsWeekend</value>
+  </data>
   <data name="DateOutOfRangeError" xml:space="preserve">
     <value>workTimeManagement/workTime.dateOutOfRange</value>
   </data>

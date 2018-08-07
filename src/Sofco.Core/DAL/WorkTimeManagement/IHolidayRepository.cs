@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -15,5 +16,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void SaveFromExternalData(List<Holiday> holidays);
 
         void Delete(int holidayId);
+
+        bool IsHoliday(DateTime date);
     }
 }
