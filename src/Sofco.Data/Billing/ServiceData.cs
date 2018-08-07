@@ -34,7 +34,9 @@ namespace Sofco.Data.Billing
                 {
                     var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(email);
                     var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(email);
-                    var hasAllAccess = hasDirectorGroup || hasCommercialGroup;
+                    var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(email);
+
+                    var hasAllAccess = hasDirectorGroup || hasCommercialGroup || hasCdgGroup;
 
                     if (hasAllAccess)
                         return unitOfWork.ServiceRepository.GetAllActives(customerId);
