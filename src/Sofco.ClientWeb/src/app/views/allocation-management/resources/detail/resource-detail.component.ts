@@ -10,6 +10,8 @@ import { LicenseService } from "../../../../services/human-resources/licenses.se
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 import { UserService } from "../../../../services/admin/user.service";
+import { EmployeeProfileHistoryService } from "../../../../services/allocation-management/employee-profile-history.service";
+import { I18nService } from "../../../../services/common/i18n.service";
 
 @Component({
     selector: 'resource-detail',
@@ -44,6 +46,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public licenses: any[] = new Array();
     public tasks: any[] = new Array();
     public managers: any[] = new Array();
+    public profileHistories: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -53,6 +56,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     getManagersSubscript: Subscription;
 
     constructor(private router: Router,
+                private i18nService: I18nService,
                 private menuService: MenuService,
                 private messageService: MessageService,
                 private licenseService: LicenseService,
@@ -60,6 +64,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 private dataTableService: DataTableService,
                 private activatedRoute: ActivatedRoute,
                 private employeeService: EmployeeService,
+                private employeeProfileHistoryService: EmployeeProfileHistoryService,
                 private errorHandlerService: ErrorHandlerService){
 
         this.businessHoursModalConfig.acceptInlineButton = true;
@@ -87,6 +92,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.getProfile();
             this.getLicenses();
             this.getTasks();
+            this.getProfileHistories();
         });
     }
 
@@ -224,5 +230,38 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         const phoneNumber = this.model.phoneNumber;
 
         return "+"+phoneCountryCode+" "+phoneAreaCode+" "+phoneNumber;
+    }
+
+    getProfileHistories() {
+        this.getSubscrip = this.employeeProfileHistoryService.getCurrent().subscribe(response => {
+            this.profileHistories = this.mapProfileHistories(response.data);
+        },
+        error => {
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    mapProfileHistories(data:any[]) {
+        const result = [];
+        const self = this;
+
+        data.forEach(x => {
+            const fields = JSON.parse(x.fields);
+            fields.forEach(item => {
+                const key = self.lowerizeFirstLetter(item);
+                result.push({
+                    "field": self.i18nService.translateByKey('allocationManagement.resources.grid.' + key),
+                    "oldValue": x.employeePrevious[key],
+                    "newValue": x.employee[key],
+                    "dateTime": x.dateTime
+                });
+            });
+        });
+
+        return result;
+    }
+
+    lowerizeFirstLetter(txt) {
+        return txt.charAt(0).toLowerCase() + txt.slice(1);
     }
 }

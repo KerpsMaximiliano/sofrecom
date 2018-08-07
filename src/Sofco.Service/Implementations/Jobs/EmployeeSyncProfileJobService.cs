@@ -94,18 +94,18 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private EmployeeProfileHistory CreateProfileHistory(Employee current, Employee previous, string[] modifiedFields)
+        private EmployeeProfileHistory CreateProfileHistory(Employee current, Employee updated, string[] modifiedFields)
         {
             var currentData = JsonSerializeHelper.Serialize(current);
-            var previousData = JsonSerializeHelper.Serialize(previous);
+            var updateData = JsonSerializeHelper.Serialize(updated);
             var modifiedFieldsData = JsonSerializeHelper.Serialize(modifiedFields);
 
             return new EmployeeProfileHistory
             {
                 Created = DateTime.UtcNow,
                 EmployeeNumber = current.EmployeeNumber,
-                EmployeeData = currentData,
-                EmployeePreviousData = previousData,
+                EmployeeData = updateData,
+                EmployeePreviousData = currentData,
                 ModifiedFields = modifiedFieldsData
             };
         }
