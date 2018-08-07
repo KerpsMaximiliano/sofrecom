@@ -133,6 +133,7 @@
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
                     <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -273,6 +274,28 @@
                                     <tr *ngFor="let item of tasks">
                                         <td> {{ item.category }} </td>
                                         <td> {{ item.task }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab-6" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="tasksTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.field' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.oldValue' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.newValue' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.date' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of profileHistories">
+                                        <td> {{ item.field }} </td>
+                                        <td> {{ item.oldValue }} </td>
+                                        <td> {{ item.newValue }} </td>
+                                        <td> {{ item.dateTime | date:'dd/MM/yyyy HH:mm:ss' }} </td>
                                     </tr>
                                 </tbody>
                             </table>
