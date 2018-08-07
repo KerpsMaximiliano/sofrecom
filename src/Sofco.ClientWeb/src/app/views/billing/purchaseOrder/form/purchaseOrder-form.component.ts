@@ -45,6 +45,11 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         if(this.mode == 'new'){
             this.getCurrencies();
         }
+
+        var self = this;
+        $('#analytics').on('change', function(){ 
+            self.searchOpportunities();
+        });
     }
 
     ngOnDestroy(): void {

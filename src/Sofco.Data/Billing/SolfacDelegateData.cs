@@ -47,6 +47,8 @@ namespace Sofco.Data.Billing
                 .Select(solfacDelegate => serviceData.GetService(solfacDelegate.ServiceId))
                 .Select(service =>
                 {
+                    if (service == null) return string.Empty;
+
                     var user = userData.GetByExternalManagerId(service.ManagerId);
 
                     return user != null ? user.UserName : string.Empty;
