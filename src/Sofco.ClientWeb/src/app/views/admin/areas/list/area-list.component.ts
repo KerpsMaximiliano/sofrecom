@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { AreaService } from "../../../../services/admin/area.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 declare var moment: any;
 
 @Component({
@@ -15,10 +16,21 @@ declare var moment: any;
   export class AreaListComponent implements OnInit, OnDestroy {
 
     public areas: any[] = new Array(); 
-
+    private areaSelected: any;
+ 
     public getSubscrip: Subscription;
     public deactivateSubscrip: Subscription;
     public activateSubscrip: Subscription;
+
+    @ViewChild('confirmModal') confirmModal;
+    public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private messageService: MessageService,
                 private router: Router,
@@ -56,32 +68,46 @@ declare var moment: any;
     }
 
     habInhabClick(area){
+        this.areaSelected = area
+
         if (area.active){
-            this.deactivate(area);
+            this.confirm = this.deactivate;    
         } else {
-            this.activate(area);
+            this.confirm = this.activate; 
         }
+
+        this.confirmModal.show();
     }
 
-    deactivate(area){
-        this.deactivateSubscrip = this.areaService.active(area.id, false).subscribe(
+    confirm(){}
+
+    deactivate(){
+        this.deactivateSubscrip = this.areaService.active(this.areaSelected.id, false).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
-                area.active = false;
-                area.endDate = moment.now();
+
+                this.areaSelected.active = false;
+                this.areaSelected.endDate = moment.now();
+
+                this.areaSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => this.errorHandlerService.handleErrors(err),
+            () => this.confirmModal.hide());
     }
   
-    activate(area){
-        this.activateSubscrip = this.areaService.active(area.id, true).subscribe(
+    activate(){
+        this.activateSubscrip = this.areaService.active(this.areaSelected.id, true).subscribe(
             data => {
                 if(data.messages) this.messageService.showMessages(data.messages);
-                area.active = true;
-                area.endDate = null;
-                area.startDate = moment.now();
+
+                this.areaSelected.active = true;
+                this.areaSelected.endDate = null;
+                this.areaSelected.startDate = moment.now();
+
+                this.areaSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => this.errorHandlerService.handleErrors(err),
+            () => this.confirmModal.hide());
     }
 
     initGrid(){

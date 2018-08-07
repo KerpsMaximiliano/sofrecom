@@ -20,6 +20,7 @@ export class NewCertificateComponent implements OnDestroy {
 
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
+    @ViewChild('pdfViewer') pdfViewer;
 
     addSubscrip: Subscription;
 
@@ -102,13 +103,22 @@ export class NewCertificateComponent implements OnDestroy {
         }
   
         this.selectedFile.nativeElement.value = '';
-    }
+    } 
 
     exportExcel(){
         this.certificateService.exportFile(this.form.model.fileId).subscribe(file => {
             FileSaver.saveAs(file, this.form.model.fileName);
         },
         err => this.errorHandlerService.handleErrors(err));
+    }
+
+    viewFile(){
+        if(this.form.model.fileName.endsWith('.pdf')){
+            this.certificateService.getFile(this.form.model.fileId).subscribe(response => {
+                this.pdfViewer.renderFile(response.data);
+            },
+            err => this.errorHandlerService.handleErrors(err));
+        }
     }
 
     deleteFile(){
