@@ -1,0 +1,10 @@
+{
+    "created": "Zone cr��e avec succ�s",
+    "textRequired": "La description est obligatoire",
+    "disabled": "La zone a �t� d�sactiv�e correctement",
+    "enabled": "La zone a �t� activ�e correctement",
+    "notFound": "zone non trouv�e",
+    "updated": "La zone a �t� mise � jour avec succ�s",
+    "responsibleRequired": "Le responsable est requis",
+    "textAlreadyExist": "La description existe d�j�"
+}

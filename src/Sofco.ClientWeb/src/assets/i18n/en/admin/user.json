@@ -1,15 +1,15 @@
-{
-    "alreadyExist": "User already existing in the system",
-    "created": "User created successfully",
-    "disabled": "User disabled successfully",
-    "enabled": "User enabled successfully",
-    "groupAssigned": "Group assigned correctly",
-    "groupRemoved": "Group removed correctly",
-    "loginFailed": "Incorrect username or password",
-    "notFound": "User not found",
-    "userGroupsUpdated": "User groups updated correctly",
-    "nameRequired": "The name is required",
-    "usernameRequired": "The username is required",
-    "emailRequired": "The email is required",
-    "userInactive": "The user is inactive"
+﻿{
+     "alreadyExist": "User already existing in the system",
+     "created": "User created correctly",
+     "disabled": "User disabled correctly",
+     "enabled": "User enabled correctly",
+     "groupAssigned": "Group assigned correctly",
+     "groupRemoved": "Group removed correctly",
+     "loginFailed": "Incorrect username or password",
+     "notFound": "User not found",
+     "userGroupsUpdated": "User groups updated successfully",
+     "nameRequired": "The name is required",
+     "usernameRequired": "The user is required",
+     "emailRequired": "The email is required",
+     "userInactive": "The user is inactive"
 }

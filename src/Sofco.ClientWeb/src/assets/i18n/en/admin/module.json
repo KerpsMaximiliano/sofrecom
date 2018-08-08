@@ -1,10 +1,10 @@
-{
-    "created": "Module created successfully ",
-    "disabled": "Module disabled successfully",
-    "enabled": "Module enabled successfully",
-    "functionalitiesUpdated": "Features updated",
-    "notFound": "Module not found",
-    "updated": "Module updated successfully",
-    "descriptionRequired": "The description field is required",
-    "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
+﻿{
+     "created": "Module created correctly",
+     "disabled": "Module disabled correctly",
+     "enabled": "Module enabled correctly",
+     "functionalitiesUpdated": "Updated functionalities",
+     "notFound": "Module not found",
+     "updated": "Module updated correctly",
+     "descriptionRequired": "The description field is required",
+     "wrongDescriptionLength": "The description field must have a maximum of 50 characters"
 }

@@ -1,0 +1,10 @@
+{
+    "created": "Sector created successfully",
+    "textRequired": "The description is required",
+    "disabled": "The sector was disabled correctly",
+    "enabled": "The sector was enabled correctly",
+    "notFound": "sector not found",
+    "updated": "The sector was successfully updated",
+    "responsibleRequired": "Responsible is required",
+    "textAlreadyExist": "The description already exists"
+}

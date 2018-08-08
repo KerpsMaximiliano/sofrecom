@@ -1,4 +1,6 @@
 {
-    "notFound": "News not found",
-    "deleted": "News successfully removed"
+    "notFound": "Novelty not found",
+    "deleted": "Newly deleted successfully",
+    "endReasonTypeRequired": "Reason for low is required",
+    "commentsRequired": "Comments are required"
 }

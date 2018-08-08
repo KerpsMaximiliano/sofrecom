@@ -1,0 +1,9 @@
+{
+    "created": "Category successfully created",
+    "descriptionRequired": "The description is required",
+    "disabled": "The category was disabled correctly",
+    "enabled": "The category was enabled correctly",
+    "notFound": "Category not found",
+    "updated": "The category was updated successfully",
+    "descriptionAlreadyExist": "The description already exists"
+}

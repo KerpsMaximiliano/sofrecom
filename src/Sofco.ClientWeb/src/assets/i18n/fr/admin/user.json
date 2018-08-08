@@ -1,15 +1,15 @@
-{
-    "alreadyExist": "Usuario ya existente en el sistema",
-    "created": "Usuario creado correctamente",
-    "disabled": "Usuario inhabilitado correctamente",
-    "enabled": "Usuario habilitado correctamente",
-    "groupAssigned": "Grupo asignado correctamente",
-    "groupRemoved": "Grupo removido correctamente",
-    "loginFailed": "Usuario o Contraseña incorrectas",
-    "notFound": "Usuario no encontrado",
-    "userGroupsUpdated": "Grupos del usuario actualizados correctamente",
-    "nameRequired": "El nombre es requerido",
-    "usernameRequired": "El nombre es requerido",
-    "emailRequired": "El nombre es requerido",
-    "userInactive": "El usuario esta inactivo"
+﻿{
+     "alreadyExist": "Utilisateur déjà existant dans le système",
+     "created": "Utilisateur créé correctement",
+     "disabled": "Utilisateur désactivé correctement",
+     "enabled": "Utilisateur activé correctement",
+     "groupAssigned": "Groupe assigné correctement",
+     "groupRemoved": "Groupe supprimé correctement",
+     "loginFailed": "Nom d'utilisateur ou mot de passe incorrect",
+     "notFound": "Utilisateur non trouvé",
+     "userGroupsUpdated": "Groupes d'utilisateurs mis à jour avec succès",
+     "nameRequired": "Le nom est requis",
+     "usernameRequired": "L'utilisateur est requis",
+     "emailRequired": "L'email est requis",
+     "userInactive": "L'utilisateur est inactif"
 }
