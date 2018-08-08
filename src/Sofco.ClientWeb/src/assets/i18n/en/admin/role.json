@@ -1,16 +1,16 @@
-{
-    "created": "Role successfully created",
-    "deleted": "Role successfully removed",
-    "descriptionRequired": "The description field is required",
-    "disabled": "Role disabled successfully",
-    "enabled": "Role enabled successfully",
-    "modulesUpdated": "Role modules updated",
-    "notFound": "Role not found",
-    "roleFunctionalitiesUpdated": "Role functionalities updated successfully",
-    "roleMenusUpdated": "Change of updated menus successfully",
-    "roleModuleAlreadyCreated": "Module already associated with the role",
-    "roleModuleAlreadyRemoved": "Module not associated with the role",
-    "updated": "Role modified successfully",
-    "wrongDescriptionLength": "The description field must have a maximum of 50 characters",
-    "descriptionExist": "Description already exist"
+﻿{
+    "created": "Role created successfully",
+    "deleted": "Role removed successfully",
+    "descriptionRequired": "The description field is required",
+    "disabled": "Role disabled properly",
+    "enabled": "Role enabled correctly",
+    "modulesUpdated": "Updated role modules",
+    "notFound": "Role not found",
+    "roleFunctionalitiesUpdated": "Role functionalities updated correctly",
+    "roleMenusUpdated": "Change of updated menus correctly",
+    "roleModuleAlreadyCreated": "Module already associated to the role",
+    "roleModuleAlreadyRemoved": "Module not associated with the role",
+    "updated": "Role modified correctly",
+    "wrongDescriptionLength": "The description field must have a maximum of 50 characters",
+    "descriptionExist": "Description already exists"
 }

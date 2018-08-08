@@ -1,12 +1,13 @@
-{
-    "notFound": "Resource not found",
-    "added": "Resource successfully created",
-    "wrongStatus": "The action can not be performed with the current status of the row",
-    "deleted": "The employee has been deleted correctly",
-    "nameRequired": "The Name is required",
-    "employeesNotFound": "No results found with the selected parameters",
-    "updateSuccess": "Resource successfully updated",
-    "businessHoursEmpty": "El horario laboral no puede estar vacio",
-    "businessHoursUpdated": "Horas por contrato actualizadas correctamente",
-    "businessHoursWrong": "La jornada laboral no puede ser menor a 1 hora y mayor a 8"
-} 
+﻿{
+     "notFound": "Resource not found",
+     "added": "Employee created successfully",
+     "wrongStatus": "The action can not be performed with the current status of the record",
+     "deleted": "The employee has been discharged correctly",
+     "nameRequired": "The name of the resource is required",
+     "employeesNotFound": "No results found with the selected parameters",
+     "updateSuccess": "Employee successfully updated",
+     "categoriesAdded": "Selected categories have been added to the selected resources",
+     "businessHoursEmpty": "Working hours can not be empty",
+     "businessHoursUpdated": "Hours per contract updated correctly",
+     "businessHoursWrong": "The working day can not be less than 1 hour and greater than 8"
+}

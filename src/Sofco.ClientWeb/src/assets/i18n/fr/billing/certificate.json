@@ -1,0 +1,11 @@
+﻿{
+     "clientIsRequired": "Le client est requis",
+     "saveSuccess": "Certificat créé avec succès",
+     "nameIsRequired": "Le nom est requis",
+     "yearIsRequired": "Année invalide",
+     "notFound": "Certificat non trouvé",
+     "fileAdded": "Fichier téléchargé avec succès",
+     "solfacCertificateDeleted": "Le certificat a bien été supprimé de l'application",
+     "solfacCertificateRelated": "Le certificat a bien été ajouté à la requête",
+     "updated": "Certificat mis à jour avec succès"
+}
