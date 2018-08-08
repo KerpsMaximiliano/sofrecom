@@ -1,0 +1,10 @@
+{
+    "created": "T�che cr��e avec succ�s",
+    "descriptionRequired": "La description est obligatoire",
+    "disabled": "La t�che a �t� d�sactiv�e correctement",
+    "enabled": "La t�che a �t� correctement activ�e",
+    "notFound": "t�che non trouv�e",
+    "updated": "La t�che a �t� mise � jour avec succ�s",
+    "categoryRequired": "La cat�gorie est requise",
+    "descriptionAlreadyExist": "La description existe d�j�"
+}

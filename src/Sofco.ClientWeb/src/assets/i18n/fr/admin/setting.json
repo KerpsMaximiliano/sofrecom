@@ -1,0 +1,3 @@
+{
+    "wrongWorkingHoursPerDaysMax": "Erreur dans le limite d'heures pour  jour de travail  - La valeur de l'heure doit être un nombre supérieur ou égal à 1 et inférieur ou égal à 24"
+}

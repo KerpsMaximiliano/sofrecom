@@ -1,10 +1,10 @@
-{
-    "created": "Modulo creado correctamente",
-    "disabled": "Modulo inhabilitado correctamente",
-    "enabled": "Modulo habilitado correctamente",
-    "functionalitiesUpdated": "Funcionalidades actualizadas",
-    "notFound": "Modulo no encontrada",
-    "updated": "Modulo actualizado correctamente",
-    "descriptionRequired": "El campo descripción es requerido",
-    "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres"
+﻿{
+    "created": "Module créé correctement",
+    "disabled": "Module désactivé correctement",
+    "enabled": "Module activé correctement",
+    "functionalitiesUpdated": "Fonctionnalités mises à jour",
+    "notFound": "Module non trouvé",
+    "updated": "Module mis à jour correctement",
+    "descriptionRequired": "Le champ de description est obligatoire",
+    "wrongDescriptionLength": "Le champ de description doit comporter un maximum de 50 caractères"
 }

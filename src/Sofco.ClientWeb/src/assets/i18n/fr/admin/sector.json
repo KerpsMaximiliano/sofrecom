@@ -1,0 +1,10 @@
+{
+    "created": "Secteur cr�� avec succ�s",
+    "textRequired": "La description est obligatoire",
+    "disabled": "Le secteur a �t� d�sactiv� correctement",
+    "enabled": "Le secteur a �t� activ� correctement",
+    "notFound": "secteur non trouv�",
+    "updated": "Le secteur a �t� mis � jour avec succ�s",
+    "responsibleRequired": "Le responsable est requis",
+    "textAlreadyExist": "La description existe d�j�"
+}

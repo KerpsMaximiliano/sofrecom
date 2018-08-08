@@ -1,0 +1,10 @@
+{
+    "created": "Successfully created task",
+    "descriptionRequired": "The description is required",
+    "disabled": "The task was disabled correctly",
+    "enabled": "The task was enabled correctly",
+    "notFound": "task not found",
+    "updated": "The task was successfully updated",
+    "categoryRequired": "The category is required",
+    "descriptionAlreadyExist": "The description already exists"
+}

@@ -1,12 +1,13 @@
-{
-    "added": "Recurso asignado a la analitica correctamente.",
-    "billingPercentageExceeded": "Se supero el porcentaje que puede ser asignado el recurso",
-    "cannotBeAssign": "No puede ser asignado el recurso a la analitica. Entra en conflicto con otras analiticas",
-    "dateSinceOutOfRange": "Fecha de inicio fuera del rango de la analitica",
-    "dateSinceRequired": "Fecha desde es requerida",
-    "dateToLessThanDateSince": "Fecha de fin no puede ser menor a la fecha de inicio",
-    "dateToOutOfRange": "Fecha de fin fuera del rango de la analitica",
-    "dateToRequired": "Fecha hasta es requerida",
-    "releaseDateIsRequired": "Fecha de liberación es requerida.",
-    "wrongPercentage": "Porcentaje ingresado es incorrecto"
+﻿{
+     "added": "Ressource affectée aux analyses correctement.",
+     "billingPercentageExceeded": "Le pourcentage que la ressource peut être affectée a été dépassé",
+     "cannotBeAssign": "La ressource ne peut pas être affectée à l'analytique, elle est en conflit avec d'autres analyses",
+     "dateSinceOutOfRange": "Date de début en dehors de la plage de l'analyse",
+     "dateSinceRequired": "Date from est requise",
+     "dateToLessThanDateSince": "La date de fin ne peut être inférieure à la date de début",
+     "dateToOutOfRange": "Date de fin en dehors de la plage analytique",
+     "dateToRequired": "Date est requise",
+     "releaseDateIsRequired": "La date de publication est obligatoire.",
+     "wrongPercentage": "Le pourcentage entré est incorrect",
+     "monthDifferent": "La date saisie ne peut pas être différente du mois en cours de la dernière affectation"
 }

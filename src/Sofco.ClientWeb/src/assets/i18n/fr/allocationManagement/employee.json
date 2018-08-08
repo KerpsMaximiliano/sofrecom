@@ -1,3 +1,13 @@
-{
-    "notFound": "Recurso no encontrado"
+﻿{
+     "notFound": "Ressource non trouvée",
+     "ajouté": "Employé créé avec succès",
+     "wrongStatus": "L'action ne peut pas être effectuée avec le statut actuel de l'enregistrement",
+     "deleted": "L'employé a été correctement déchargé",
+     "nameRequired": "Le nom de la ressource est requis",
+     "employeesNotFound": "Aucun résultat trouvé avec les paramètres sélectionnés",
+     "updateSuccess": "Employé mis à jour avec succès",
+     "categoriesAdded": "Les catégories sélectionnées ont été ajoutées aux ressources sélectionnées",
+     "businessHoursEmpty": "Les heures de travail ne peuvent être vides",
+     "businessHoursUpdated": "Heures par contrat mises à jour correctement",
+     "businessHoursWrong": "La journée de travail ne peut pas être inférieure à 1 heure et supérieure à 8"
 }

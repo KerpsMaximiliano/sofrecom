@@ -82,10 +82,12 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Domain.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
+
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, RejectStatusDescription);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage, 
-                purchaseOrder.Number, 
+                ocText, 
                 AreaDescription, 
                 comments, 
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
