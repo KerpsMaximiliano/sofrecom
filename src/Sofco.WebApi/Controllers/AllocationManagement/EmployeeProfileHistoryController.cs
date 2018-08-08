@@ -16,11 +16,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             this.service = service;
         }
 
-        [HttpGet]
-        [Route("current")]
-        public IActionResult GetByCurrent()
+        [HttpGet("{employeeNumber}")]
+        public IActionResult GetById(string employeeNumber)
         {
-            var response = service.GetByCurrentUser();
+            var response = service.GetByEmployeeNumber(employeeNumber);
 
             return this.CreateResponse(response);
         }
