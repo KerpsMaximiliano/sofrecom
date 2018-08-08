@@ -48,9 +48,11 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         public void SendMail(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
 
-            var body = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, StatusDescription);
+
+            var body = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, ocText, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
 
             var recipients = recipientManager.GetRecipientsCompliance();
 
