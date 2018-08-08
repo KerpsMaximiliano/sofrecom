@@ -92,7 +92,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.getProfile();
             this.getLicenses();
             this.getTasks();
-            this.getProfileHistories();
         });
     }
 
@@ -118,6 +117,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
             this.initGrid();
+            this.getProfileHistories();
         },
         error => {
             this.messageService.closeLoading();
@@ -233,7 +233,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     getProfileHistories() {
-        this.getSubscrip = this.employeeProfileHistoryService.getCurrent().subscribe(response => {
+        this.getSubscrip = this.employeeProfileHistoryService.getByEmployeeNumber(this.model.employeeNumber).subscribe(response => {
             this.profileHistories = this.mapProfileHistories(response.data);
         },
         error => {

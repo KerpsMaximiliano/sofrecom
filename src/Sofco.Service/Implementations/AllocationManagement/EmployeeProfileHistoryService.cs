@@ -24,11 +24,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeData = employeeData;
         }
 
-        public Response<List<EmployeeProfileHistoryModel>> GetByCurrentUser()
+        public Response<List<EmployeeProfileHistoryModel>> GetByEmployeeNumber(string employeeNumber)
         {
-            var currentEmployee = employeeData.GetCurrentEmployee();
-
-            var result = Translate(repository.GetByEmployeeNumber(currentEmployee.EmployeeNumber));
+            var result = Translate(repository.GetByEmployeeNumber(employeeNumber));
 
             return new Response<List<EmployeeProfileHistoryModel>> { Data = result };
         }
