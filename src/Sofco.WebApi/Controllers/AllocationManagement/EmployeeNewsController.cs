@@ -12,9 +12,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     {
         private readonly IEmployeeNewsService employeeNewsService;
 
-        public EmployeeNewsController(IEmployeeNewsService employeeNewsService)
+        private readonly IEmployeeUpdateService employeeUpdateService;
+
+        public EmployeeNewsController(IEmployeeNewsService employeeNewsService, IEmployeeUpdateService employeeUpdateService)
         {
             this.employeeNewsService = employeeNewsService;
+            this.employeeUpdateService = employeeUpdateService;
         }
 
         [HttpGet]
@@ -45,6 +48,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Cancel(int id)
         {
             var response = employeeNewsService.Cancel(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public IActionResult Update()
+        {
+            var response = employeeUpdateService.UpdateEmployees();
 
             return this.CreateResponse(response);
         }
