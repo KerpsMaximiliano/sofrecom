@@ -31,4 +31,8 @@ export class EmployeeNewsService {
   getTypeEndReasons() {
     return this.http.get<any>(`${this.service.UrlApi}/utils/employeeTypeEndReasons`);
   }
+
+  update(){
+    return this.http.post<any>(`${this.apiUrl}/update/`, {});
+  }
 }

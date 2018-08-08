@@ -52,6 +52,17 @@ export class NewsComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('confirmUpdateEmployeeModal') confirmUpdateEmployeeModal;
+    public confirmUpdateEmployeeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "confirmUpdateEmployeeModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel",
+        false
+    );
+
     constructor(private employeeNewsService: EmployeeNewsService,
                 public menuService: MenuService,
                 private i18nService: I18nService,
@@ -169,6 +180,22 @@ export class NewsComponent implements OnInit, OnDestroy {
         },
         error => {
             this.deleteModal.resetButtons();
+            this.errorHandlerService.handleErrors(error);
+        });
+    }
+
+    updateEmployee() {
+        this.confirmUpdateEmployeeModal.show();
+    }
+
+    confirmUpdateEmployee() {
+        this.getAllSubscrip = this.employeeNewsService.update().subscribe(data => {
+            if(data.messages) this.messageService.showMessages(data.messages);
+
+            this.confirmUpdateEmployeeModal.hide();
+        },
+        error => {
+            this.confirmUpdateEmployeeModal.resetButtons();
             this.errorHandlerService.handleErrors(error);
         });
     }
