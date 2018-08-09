@@ -125,7 +125,7 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billing/purchaseOrder.closeSuccess.
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.closeSuccess.
         /// </summary>
         public static string CloseSuccess {
             get {
@@ -134,7 +134,7 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billing/purchaseOrder.comercialManagerIsRequired.
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.comercialManagerIsRequired.
         /// </summary>
         public static string ComercialManagerIsRequired {
             get {
@@ -206,20 +206,23 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billing/purchaseOrder.delegateWrongDataError.
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.delegateWrongDataError.
         /// </summary>
         public static string DelegateWrongDataError {
             get {
                 return ResourceManager.GetString("DelegateWrongDataError", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.deleteSuccess.
+        /// </summary>
         public static string DeleteSuccess {
             get {
                 return ResourceManager.GetString("DeleteSuccess", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.draftSuccess.
         /// </summary>
@@ -284,7 +287,7 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billing/purchaseOrder.numberAlreadyExist.
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.numberAlreadyExist.
         /// </summary>
         public static string NumberAlreadyExist {
             get {
@@ -361,6 +364,24 @@ namespace Sofco.Resources.Billing {
         public static string UpdateSuccess {
             get {
                 return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.userAreaWrong.
+        /// </summary>
+        public static string UserAreaWrong {
+            get {
+                return ResourceManager.GetString("UserAreaWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.userSectorWrong.
+        /// </summary>
+        public static string UserSectorWrong {
+            get {
+                return ResourceManager.GetString("UserSectorWrong", resourceCulture);
             }
         }
         

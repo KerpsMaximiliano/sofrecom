@@ -30,5 +30,7 @@
     "delegateWrongDataError": "Datos incorrecto",
     "deleteSuccess": "La orden de compra fue eliminada exitosamente",
     "cannotDeleteWithWfStarted": "No se puede eliminar porque ya se ha iniciado el flujo de aprobacion",
-    "cannotDelete": "No se puede eliminar en el estado actual"
+    "cannotDelete": "No se puede eliminar en el estado actual",
+    "userAreaWrong": "Solo el responsable de area seleccionado puede aprobar la orden de compra",
+    "userSectorWrong": "Solo el responsable de sector seleccionado puede aprobar la orden de compra"
 } 

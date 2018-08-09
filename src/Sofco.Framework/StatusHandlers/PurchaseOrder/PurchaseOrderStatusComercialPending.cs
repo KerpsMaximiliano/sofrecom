@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
@@ -13,26 +14,29 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
     public class PurchaseOrderStatusComercialPending : IPurchaseOrderStatusHandler
     {
         private readonly IUnitOfWork unitOfWork;
-
         private readonly IMailBuilder mailBuilder;
-
         private readonly IMailSender mailSender;
-
         private readonly EmailConfig emailConfig;
-
         private readonly IPurchaseOrderStatusRecipientManager recipientManager;
+        private readonly IUserData userData;
 
         private const string StatusDescription = "Pendiente Aprobación Operativa";
         private const string RejectStatusDescription = "Rechazada";
         private const string AreaDescription = "Comercial";
 
-        public PurchaseOrderStatusComercialPending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig, IPurchaseOrderStatusRecipientManager recipientManager)
+        public PurchaseOrderStatusComercialPending(IUnitOfWork unitOfWork, 
+            IMailBuilder mailBuilder, 
+            IMailSender mailSender, 
+            EmailConfig emailConfig, 
+            IPurchaseOrderStatusRecipientManager recipientManager,
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.emailConfig = emailConfig;
             this.recipientManager = recipientManager;
+            this.userData = userData;
         }
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Domain.Models.Billing.PurchaseOrder purchaseOrder)
@@ -40,6 +44,15 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             if (model.MustReject && string.IsNullOrWhiteSpace(model.Comments))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.CommentsRequired);
+            }
+
+            var area = unitOfWork.AreaRepository.Get(purchaseOrder.AreaId.GetValueOrDefault());
+
+            if (area == null) return;
+
+            if (area.ResponsableUserId != userData.GetCurrentUser().Id)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.UserAreaWrong);
             }
         }
 
