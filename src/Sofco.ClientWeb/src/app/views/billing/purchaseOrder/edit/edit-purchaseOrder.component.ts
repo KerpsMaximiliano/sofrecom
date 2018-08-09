@@ -84,7 +84,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     this.form.searchOpportunities();
                 }, 1000);
 
-                if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
+                if(this.form.model.status != PurchaseOrderStatus.Draft 
+                    && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input').attr('disabled', 'disabled');
                     $('#customer-select select').attr('disabled', 'disabled');
                     $('#opportunity-select select').attr('disabled', 'disabled');
@@ -95,6 +96,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#description').attr('disabled', 'disabled');
                     $('#comments').attr('disabled', 'disabled');
                     this.form.currencyDisabled = true;
+                    this.form.isReadOnly = true;
                 }
             },
             error => {
