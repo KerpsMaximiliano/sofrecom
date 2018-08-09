@@ -623,7 +623,8 @@
                 "startDate": "Fecha de Alta",
                 "endDate":"Fecha de Baja",
                 "status":"Estado"
-            }
+            },
+            "updateRrhh": "Actualización datos"
         },
         "analytics": {
             "listTitle": "Listado de Analiticas",

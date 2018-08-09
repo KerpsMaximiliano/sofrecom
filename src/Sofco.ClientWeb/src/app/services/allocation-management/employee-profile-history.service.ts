@@ -11,7 +11,7 @@ export class EmployeeProfileHistoryService {
     this.apiUrl = this.service.UrlApi + '/employeeProfileHistories';
   }
 
-  getCurrent() {
-    return this.http.get<any>(`${this.apiUrl}/current`);
+  getByEmployeeNumber(employeeNumber) {
+    return this.http.get<any>(`${this.apiUrl}/${employeeNumber}`);
   }
 }

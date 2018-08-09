@@ -29,7 +29,9 @@ export class OcStatusOperativeComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.OperativePending && this.menuService.hasFunctionality('PUROR', 'OPERA')){
+    if(this.ocId > 0 
+        && this.status == PurchaseOrderStatus.OperativePending 
+        && this.menuService.hasFunctionality('PUROR', 'OPERA')){
         return true;
     }
 

@@ -29,7 +29,9 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.CompliancePending && this.menuService.hasFunctionality('PUROR', 'COMPL')){
+    if(this.ocId > 0
+        && this.status == PurchaseOrderStatus.CompliancePending
+        && this.menuService.hasFunctionality('PUROR', 'COMPL')){
         return true;
     }
 

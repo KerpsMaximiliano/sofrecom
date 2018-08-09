@@ -42,10 +42,11 @@ export class OcStatusRejectComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && (this.status == PurchaseOrderStatus.CompliancePending || 
-                         this.status == PurchaseOrderStatus.ComercialPending || 
-                         this.status == PurchaseOrderStatus.OperativePending || 
-                         this.status == PurchaseOrderStatus.DafPending)){
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && 
+        (this.status == PurchaseOrderStatus.CompliancePending || 
+          this.status == PurchaseOrderStatus.ComercialPending || 
+          this.status == PurchaseOrderStatus.OperativePending || 
+          this.status == PurchaseOrderStatus.DafPending)){
         return true;
     }
 
