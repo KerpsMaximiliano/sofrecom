@@ -1,15 +1,16 @@
-{
-    "created": "Rol creado exitosamente",
-    "deleted": "Rol eliminado correctamente",
-    "descriptionRequired": "El campo descripción es requerido",
-    "disabled": "Rol deshabilitado correctamente",
-    "enabled": "Rol habilitado correctamente",
-    "modulesUpdated": "Modulos del rol actualizados",
-    "notFound": "Rol no encontrado",
-    "roleFunctionalitiesUpdated": "Funcionalidades del rol actualizadas correctamente",
-    "roleMenusUpdated": "Cambio de menus actualizados correctamente",
-    "roleModuleAlreadyCreated": "Modulo ya asociado al rol",
-    "roleModuleAlreadyRemoved": "Modulo no asociado al rol",
-    "updated": "Rol modificado correctamente",
-    "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres"
-}
+﻿{
+    "created": "Rôle créé avec succès",
+	"deleted": "Rôle supprimé avec succès",
+	"descriptionRequired": "Le champ de description est obligatoire",
+	"disabled": "Rôle désactivé correctement",
+	"enabled": "Rôle activé correctement",
+	"modulesUpdated": "Modules de rôle mis à jour",
+	"notFound": "Rôle non trouvé",
+	"roleFunctionalitiesUpdated": "Fonctionnalités de rôle mises à jour correctement",
+	"roleMenusUpdated": "Modification des menus mis à jour correctement",
+	"roleModuleAlreadyCreated": "Module déjà associé au rôle",
+	"roleModuleAlreadyRemoved": "Module non associé au rôle",
+	"mis à jour": "Rôle modifié correctement",
+	"wrongDescriptionLength": "Le champ de description doit comporter un maximum de 50 caractères",
+	"descriptionExist": "La description existe déjà"
+} 

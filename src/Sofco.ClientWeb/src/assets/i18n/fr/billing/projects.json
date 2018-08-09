@@ -1,3 +1,12 @@
-{
-    "notFound": "Proyecto no encontrado"
+﻿{
+	"notFound": "Projet non trouvé",
+	"hitoAmmoutRequired": "Les quantités sont obligatoires et ne peuvent pas être inférieures à 0",
+	"almost2HitosRequired": "Au moins 2 étapes sont nécessaires pour diviser",
+	"hitoSplitted": "Le jalon a été divisé correctement, CRM a été mis à jour correctement",
+	"opportunityRequired": "L'opportunité n'est pas chargée dans CRM. Mettre à jour CRM avant de générer le jalon",
+	"hitoQuantityBetween2and5": "Le nombre de jalons à diviser doit être compris entre 2 et 5",
+	"hitoSplittedRequired": "Avant de sauvegarder doit diviser le jalon",
+	"nameRequired": "Le nom est requis",
+	"monthRequired": "Le mois est requis",
+	"hitoCreated": "Le jalon a été créé correctement, CRM a été mis à jour correctement"
 }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from 'app/services/common/service';
 import { HttpClient } from '@angular/common/http';
 

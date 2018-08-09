@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Service } from 'app/services/common/service';
 import { Menu } from 'app/models/admin/menu';
 import { HttpClient } from '@angular/common/http';
-import { DatepickerOptions } from 'ng2-datepicker';
 import { UserInfoService } from '../common/user-info.service';
 
 @Injectable()

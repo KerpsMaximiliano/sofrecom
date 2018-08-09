@@ -1,8 +1,8 @@
 {
-    "created": "Functionality created successfully",
-    "disabled": "Functionality disabled successfully",
-    "enabled": "Functionality enabled successfully",
-    "moduleFunctionalityAlreadyCreated": "Functionality already associated with the module",
+    "created": "Functionality created correctly",
+    "disabled": "Functionality disabled correctly",
+    "enabled": "Functionality enabled correctly",
+    "moduleFunctionalityAlreadyCreated": "Functionality already associated to the module",
     "moduleFunctionalityAlreadyRemoved": "Functionality not associated with the module",
     "notFound": "Functionality not found"
 }

@@ -1,0 +1,12 @@
+﻿{
+	"save": "Centre de coûts enregistré avec succès",
+	"codeIsRequired": "Le code est requis",
+	"codeWrongLength": "Le code doit avoir 3 chiffres",
+	"letterIsRequired": "La lettre est requise",
+	"letterWrong": "La lettre ne doit pas être un caractère spécial",
+	"descriptionRequired": "La description est obligatoire",
+	"disabled": "Centre de coûts désactivé correctement",
+	"enabled": "Centre de coûts activé correctement",
+	"notFound": "Centre de coûts non trouvé",
+	"codeAlreadyExist": "Le code existe déjà"
+}

@@ -43,12 +43,12 @@ namespace Sofco.Service.Implementations.Jobs
                 var newEmployee = procesedEmployees.FirstOrDefault(s => s.EmployeeNumber == stored.EmployeeNumber);
                 if(newEmployee == null) continue;
 
+                ProcessEmailCase(stored, newEmployee);
+
                 var modifiedFields = ElementComparerHelper.CompareModification(newEmployee, stored, GetFieldToCompare());
                 if (!modifiedFields.Any()) continue;
 
                 employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
-
-                ProcessEmailCase(stored, newEmployee);
 
                 ElementComparerHelper.ApplyModifications(stored, newEmployee, modifiedFields);
 

@@ -6,6 +6,6 @@ namespace Sofco.Core.Services.AllocationManagement
 {
     public interface IEmployeeProfileHistoryService
     {
-        Response<List<EmployeeProfileHistoryModel>> GetByCurrentUser();
+        Response<List<EmployeeProfileHistoryModel>> GetByEmployeeNumber(string employeeNumber);
     }
 }

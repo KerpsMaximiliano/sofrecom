@@ -7,7 +7,7 @@ namespace Sofco.Core.DAL.Billing
     public interface ICustomerRepository : IBaseRepository<Customer>
     {
         Customer GetByIdCrm(string crmCustomerId);
-        IList<Customer> GetAllActives();
         IList<Customer> GetAllByServices(IEnumerable<string> servicesIds);
+        IList<Customer> GetAllActives();
     }
 }

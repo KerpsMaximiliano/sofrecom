@@ -46,9 +46,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getAnalytic();
-
-        $('#customer-select select').attr('disabled', 'disabled');
-        $('#service-select select').attr('disabled', 'disabled');
     }
 
     ngOnDestroy(): void {
@@ -67,15 +64,11 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                 this.form.model = data;
 
                 if(this.form.model.clientExternalId){
-                    
-                    this.form.services.push({ id: this.form.model.serviceId, text: this.form.model.service })
-
                     this.form.customerId = this.form.model.clientExternalId;
                     this.form.serviceId = this.form.model.serviceId;
                 }
 
                 setTimeout(() => {
-                    $('#service-select select').val(this.form.serviceId).trigger('change');
                     $('#userId').val(this.form.model.usersQv).trigger('change');
                 }, 500);
             },

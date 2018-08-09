@@ -1,13 +1,15 @@
-{
-    "created": "Grupo creado exitosamente",
-    "deleted": "Grupo eliminado correctamente",
-    "descriptionAlreadyExist": "La descripción ya existe",
-    "disabled": "Grupo deshabilitado correctamente",
-    "enabled": "Grupo habilitado correctamente",
-    "notFound": "Grupo no encontrado",
-    "roleAssigned": "Rol asignado al grupo correctamente",
-    "roleRemoved": "Rol removido al grupo correctamente",
-    "updated": "Grupo modificado correctamente",
-    "descriptionRequired": "El campo descripción es requerido",
-    "wrongDescriptionLength": "El campo descripción debe tener un maximo de 50 caracteres"
+﻿{
+	"created": "Groupe créé avec succès",
+	"deleted": "Groupe supprimé avec succès",
+	"descriptionAlreadyExist": "La description existe déjà",
+	"disabled": "Groupe désactivé correctement",
+	"enabled": "Groupe activé correctement",
+	"notFound": "Groupe non trouvé",
+	"roleAssigned": "Rôle assigné au groupe correctement",
+	"roleRemoved": "Rôle supprimé correctement dans le groupe",
+	"updated": "Groupe modifié avec succès",
+	"descriptionRequired": "Le champ de description est obligatoire",
+	"wrongDescriptionLength": "Le champ de description doit avoir un maximum de 500 caractères",
+	"wrongEmail": "L'email entré n'est pas valide",
+	"mailRequired": "Le mail est requis"
 }

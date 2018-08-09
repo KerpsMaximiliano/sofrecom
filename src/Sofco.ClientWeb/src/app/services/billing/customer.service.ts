@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Service } from 'app/services/common/service';
 import { HttpClient } from '@angular/common/http';
 
@@ -23,7 +22,6 @@ export class CustomerService {
   getAllOptions() {
     return this.http.get<any>(`${this.apiUrl}/all/options`);
   }
-
 
   getOptionsByCurrentManager() {
     return this.http.get<any>(`${this.apiUrl}/options/currentManager`);

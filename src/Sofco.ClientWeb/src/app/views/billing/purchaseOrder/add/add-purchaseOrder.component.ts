@@ -51,6 +51,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.form.model.currencyId = 0;
         this.form.model.clientExternalId = 0;
+        this.form.getCustomers(true);
     }
 
     ngOnDestroy(): void {

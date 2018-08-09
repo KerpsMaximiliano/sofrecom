@@ -1,11 +1,9 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from "app/services/common/service";
 import { MenuService } from 'app/services/admin/menu.service';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SolfacService {

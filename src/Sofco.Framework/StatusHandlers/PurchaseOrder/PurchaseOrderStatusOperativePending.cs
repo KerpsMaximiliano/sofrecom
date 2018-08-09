@@ -1,4 +1,6 @@
-﻿using Sofco.Core.Config;
+﻿using System.Linq;
+using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
@@ -13,26 +15,29 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
     public class PurchaseOrderStatusOperativePending : IPurchaseOrderStatusHandler
     {
         private readonly IUnitOfWork unitOfWork;
-
         private readonly IMailBuilder mailBuilder;
-
         private readonly IMailSender mailSender;
-
         private readonly EmailConfig emailConfig;
-
         private readonly IPurchaseOrderStatusRecipientManager recipientManager;
+        private readonly IUserData userData;
 
         private const string StatusDescription = "Pendiente Aprobación DAF";
         private const string RejectStatusDescription = "Rechazada";
         private const string AreaDescription = "Operativa";
 
-        public PurchaseOrderStatusOperativePending(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, EmailConfig emailConfig, IPurchaseOrderStatusRecipientManager recipientManager)
+        public PurchaseOrderStatusOperativePending(IUnitOfWork unitOfWork, 
+            IMailBuilder mailBuilder, 
+            IMailSender mailSender, 
+            EmailConfig emailConfig, 
+            IPurchaseOrderStatusRecipientManager recipientManager,
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.emailConfig = emailConfig;
             this.recipientManager = recipientManager;
+            this.userData = userData;
         }
 
         public void Validate(Response response, PurchaseOrderStatusParams model, Domain.Models.Billing.PurchaseOrder purchaseOrder)
@@ -40,6 +45,20 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             if (model.MustReject && string.IsNullOrWhiteSpace(model.Comments))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.CommentsRequired);
+            }
+
+            var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
+
+            if (analytics.Any())
+            {
+                var sectorIds = analytics.Select(x => x.SectorId).ToList();
+                var sectors = unitOfWork.SectorRepository.Get(sectorIds);
+                var responsables = sectors.Select(x => x.ResponsableUserId);
+
+                if (!responsables.Contains(userData.GetCurrentUser().Id))
+                {
+                    response.AddError(Resources.Billing.PurchaseOrder.UserSectorWrong);
+                }
             }
         }
 
@@ -81,10 +100,12 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Domain.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, RejectStatusDescription);
+            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
+
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, RejectStatusDescription);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
-                purchaseOrder.Number,
+                ocText,
                 AreaDescription,
                 comments,
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");

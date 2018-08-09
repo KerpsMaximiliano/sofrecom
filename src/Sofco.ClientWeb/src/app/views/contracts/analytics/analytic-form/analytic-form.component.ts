@@ -44,7 +44,10 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         let service = JSON.parse(sessionStorage.getItem('serviceDetail'));
         let analyticWithProject = sessionStorage.getItem('analyticWithProject');
 
-        this.getCustomers();
+        if(this.mode == 'new'){
+            this.getCustomers();
+        }
+        
         this.getUsers();
 
         this.getOptionsSubscrip = this.analyticService.getFormOptions().subscribe(

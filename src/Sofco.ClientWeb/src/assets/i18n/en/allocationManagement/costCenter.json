@@ -1,12 +1,12 @@
-{
-    "save": "Cost center successfully saved",
-    "codeIsRequired": "The code is required",
-    "codeWrongLength": "The code must have 3 digits",
-    "letterIsRequired": "The letter is required",
-    "letterWrong": "The letter should not be a special character",
-    "descriptionRequired": "The description is required",
-    "disabled": "Cost Center disabled successfully",
-    "enabled": "Cost Center enabled successfully",
-    "notFound": "Cost Center not found",
-    "codeAlreadyExist": "Code already exist"
-} 
+﻿{
+	"save": "Cost center saved successfully",
+	"codeIsRequired": "The code is required",
+	"codeWrongLength": "The code must have 3 digits",
+	"letterIsRequired": "The letter is required",
+	"letterWrong": "The letter should not be a special character",
+	"descriptionRequired": "The description is required",
+	"disabled": "Cost center disabled correctly",
+	"enabled": "Cost center enabled correctly",
+	"notFound": "Cost center not found",
+	"codeAlreadyExist": "Code already exists"
+}

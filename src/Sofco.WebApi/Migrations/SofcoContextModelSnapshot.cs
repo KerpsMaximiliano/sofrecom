@@ -374,7 +374,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("CreatedByUser")
                         .HasMaxLength(50);
 
-                    b.Property<decimal>("Cuil");
+                    b.Property<decimal>("Cuil")
+                        .HasColumnType("decimal(12, 0)");
 
                     b.Property<int>("DocumentNumber");
 

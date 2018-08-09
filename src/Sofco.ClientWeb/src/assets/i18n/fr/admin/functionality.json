@@ -1,8 +1,8 @@
 {
-    "created": "Funcionalidad creado correctamente",
-    "disabled": "Funcionalidad inhabilitada correctamente",
-    "enabled": "Funcionalidad habilitada correctamente",
-    "moduleFunctionalityAlreadyCreated": "Funcionalidad ya asociada al modulo",
-    "moduleFunctionalityAlreadyRemoved": "Funcionalidad no asociada al modulo",
-    "notFound": "Funcionalidad no encontrada"
+    "created": "Fonctionnalit� cr��e correctement",
+    "disabled": "Fonctionnalit� d�sactiv�e correctement",
+    "enabled": "Fonctionnalit� activ�e correctement",
+    "moduleFunctionalityAlreadyCreated": "Fonctionnalit� d�j� associ�e au module",
+    "moduleFunctionalityAlreadyRemoved": "Fonctionnalit� non associ�e au module",
+    "notFound": "Fonctionnalit� non trouv�e"
 }
