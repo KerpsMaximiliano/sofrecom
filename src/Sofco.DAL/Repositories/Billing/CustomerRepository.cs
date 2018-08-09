@@ -17,14 +17,14 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Customers.SingleOrDefault(x => x.CrmId.Equals(crmCustomerId));
         }
 
-        public IList<Customer> GetAllActives()
-        {
-            return context.Customers.Where(x => x.Active).ToList().AsReadOnly();
-        }
-
         public IList<Customer> GetAllByServices(IEnumerable<string> servicesIds)
         {
             return context.Customers.Where(x => servicesIds.Contains(x.CrmId)).ToList().AsReadOnly();
+        }
+
+        public IList<Customer> GetAllActives()
+        {
+            return context.Customers.Where(x => x.Active).ToList().AsReadOnly();
         }
     }
 }
