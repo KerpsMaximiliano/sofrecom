@@ -599,7 +599,8 @@
                 "phoneCountryCode": "Código de pais",
                 "phoneAreaCode": "Código de área",
                 "phoneNumber": "Teléfono",
-                "email": "Email"
+                "email": "Email",
+                "seniority": "Seniority"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
             "phone": "Teléfono",
