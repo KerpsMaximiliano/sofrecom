@@ -1,15 +1,15 @@
 ﻿{
-    "created": "Group created successfully",
-    "deleted": "Group successfully deleted",
-    "descriptionAlreadyExist": "The description already exists",
-    "disabled": "Group disabled correctly",
-    "enabled": "Group enabled correctly",
-    "notFound": "Group not found",
-    "roleAssigned": "Role assigned to the group correctly",
-    "roleRemoved": "Role removed to the group correctly",
-    "updated": "Group modified successfully",
-    "descriptionRequired": "The description field is required",
-    "wrongDescriptionLength": "The description field must have a maximum of 500 characters",
-    "wrongEmail": "The entered email is not valid",
-    "mailRequired": "The mail is required"
+	"created": "Group created successfully",
+	"deleted": "Group successfully deleted",
+	"descriptionAlreadyExist": "The description already exists",
+	"disabled": "Group disabled correctly",
+	"enabled": "Group enabled correctly",
+	"notFound": "Group not found",
+	"roleAssigned": "Role assigned to the group correctly",
+	"roleRemoved": "Role removed to the group correctly",
+	"updated": "Group modified successfully",
+	"descriptionRequired": "The description field is required",
+	"wrongDescriptionLength": "The description field must have a maximum of 500 characters",
+	"wrongEmail": "The entered email is not valid",
+	"mailRequired": "The mail is required"
 }
