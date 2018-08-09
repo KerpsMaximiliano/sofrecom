@@ -19,5 +19,10 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(s => s.ResponsableUser)
                 .ToList();
         }
+
+        public IList<Sector> Get(IList<int> sectorIds)
+        {
+            return context.Sectors.Where(x => sectorIds.Contains(x.Id)).ToList();
+        }
     }
 }

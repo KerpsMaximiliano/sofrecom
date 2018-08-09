@@ -1,15 +1,15 @@
 ﻿{
-     "created": "Groupe créé avec succès",
-     "deleted": "Groupe supprimé avec succès",
-     "descriptionAlreadyExist": "La description existe déjà",
-     "disabled": "Groupe désactivé correctement",
-     "enabled": "Groupe activé correctement",
-     "notFound": "Groupe non trouvé",
-     "roleAssigned": "Rôle assigné au groupe correctement",
-     "roleRemoved": "Rôle supprimé correctement dans le groupe",
-     "updated": "Groupe modifié avec succès",
-     "descriptionRequired": "Le champ de description est obligatoire",
-     "wrongDescriptionLength": "Le champ de description doit avoir un maximum de 500 caractères",
-     "wrongEmail": "L'email entré n'est pas valide",
-     "mailRequired": "Le mail est requis"
-}  
+	"created": "Groupe créé avec succès",
+	"deleted": "Groupe supprimé avec succès",
+	"descriptionAlreadyExist": "La description existe déjà",
+	"disabled": "Groupe désactivé correctement",
+	"enabled": "Groupe activé correctement",
+	"notFound": "Groupe non trouvé",
+	"roleAssigned": "Rôle assigné au groupe correctement",
+	"roleRemoved": "Rôle supprimé correctement dans le groupe",
+	"updated": "Groupe modifié avec succès",
+	"descriptionRequired": "Le champ de description est obligatoire",
+	"wrongDescriptionLength": "Le champ de description doit avoir un maximum de 500 caractères",
+	"wrongEmail": "L'email entré n'est pas valide",
+	"mailRequired": "Le mail est requis"
+}

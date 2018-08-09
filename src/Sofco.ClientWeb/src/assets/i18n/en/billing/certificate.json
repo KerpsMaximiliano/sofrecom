@@ -1,11 +1,11 @@
 ﻿{
-     "clientIsRequired": "Client is required",
-     "saveSuccess": "Certificate created successfully",
-     "nameIsRequired": "Name is required",
-     "yearIsRequired": "Invalid year",
-     "notFound": "Certificate not found",
-     "fileAdded": "File successfully uploaded",
-     "solfacCertificateDeleted": "The certificate was successfully removed from the application",
-     "solfacCertificateRelated": "The certificate was successfully added to the request",
-     "updated": "Certificate successfully updated"
+	"clientIsRequired": "Client is required",
+	"saveSuccess": "Certificate created successfully",
+	"nameIsRequired": "Name is required",
+	"yearIsRequired": "Invalid year",
+	"notFound": "Certificate not found",
+	"fileAdded": "File successfully uploaded",
+	"solfacCertificateDeleted": "The certificate was successfully removed from the application",
+	"solfacCertificateRelated": "The certificate was successfully added to the request",
+	"updated": "Certificate successfully updated"
 }
