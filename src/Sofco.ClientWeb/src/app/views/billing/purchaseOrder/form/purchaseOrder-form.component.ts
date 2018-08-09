@@ -2,14 +2,12 @@ import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { CustomerService } from "../../../../services/billing/customer.service";
+import { CustomerService } from "app/services/billing/customer.service";
 import { Option } from "app/models/option";
-import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
-import { UtilsService } from "../../../../services/common/utils.service";
-import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
-import { MessageService } from "../../../../services/common/message.service";
-import { resolve } from "url";
-import { reject } from "../../../../../../node_modules/@types/q";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { UtilsService } from "app/services/common/utils.service";
+import { PurchaseOrderStatus } from "app/models/enums/purchaseOrderStatus";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'purchase-order-form',
@@ -24,7 +22,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
     public areas: any[] = new Array();
-    public currencyDisabled: boolean = false;
+    public currencyDisabled = false;
+    public isReadOnly = false;
 
     @Input() mode: string;
 
@@ -122,14 +121,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         },
         err => {
             resolve();
-            this.messageService.closeLoading();    
+            this.messageService.closeLoading();
         });
     }
 
     searchOpportunities(){
        var analytics = $('#analytics').val();
        this.opportunities = [];
-       
+
         if(analytics.length > 0) {
 
             this.messageService.showLoading();
@@ -147,11 +146,11 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
             Promise.all(promises).then(data => { 
                 this.messageService.closeLoading();
-                
+
                 setTimeout(() => {
                     $('#opportunity-select select').val(this.model.proposal).trigger('change');
                 }, 300);
              });
        }
     }
-} 
+}
