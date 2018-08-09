@@ -1,13 +1,13 @@
 ﻿{
-     "added": "Ressource affectée aux analyses correctement.",
-     "billingPercentageExceeded": "Le pourcentage que la ressource peut être affectée a été dépassé",
-     "cannotBeAssign": "La ressource ne peut pas être affectée à l'analytique, elle est en conflit avec d'autres analyses",
-     "dateSinceOutOfRange": "Date de début en dehors de la plage de l'analyse",
-     "dateSinceRequired": "Date from est requise",
-     "dateToLessThanDateSince": "La date de fin ne peut être inférieure à la date de début",
-     "dateToOutOfRange": "Date de fin en dehors de la plage analytique",
-     "dateToRequired": "Date est requise",
-     "releaseDateIsRequired": "La date de publication est obligatoire.",
-     "wrongPercentage": "Le pourcentage entré est incorrect",
-     "monthDifferent": "La date saisie ne peut pas être différente du mois en cours de la dernière affectation"
+	"added": "Ressource affectée aux analyses correctement.",
+	"billingPercentageExceeded": "Le pourcentage que la ressource peut être affectée a été dépassé",
+	"cannotBeAssign": "La ressource ne peut pas être affectée à l'analytique, elle est en conflit avec d'autres analyses",
+	"dateSinceOutOfRange": "Date de début en dehors de la plage de l'analyse",
+	"dateSinceRequired": "Date from est requise",
+	"dateToLessThanDateSince": "La date de fin ne peut être inférieure à la date de début",
+	"dateToOutOfRange": "Date de fin en dehors de la plage analytique",
+	"dateToRequired": "Date est requise",
+	"releaseDateIsRequired": "La date de publication est obligatoire.",
+	"wrongPercentage": "Le pourcentage entré est incorrect",
+	"monthDifferent": "La date saisie ne peut pas être différente du mois en cours de la dernière affectation"
 }
