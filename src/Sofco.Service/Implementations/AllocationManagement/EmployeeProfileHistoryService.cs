@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Services.AllocationManagement;
@@ -15,13 +14,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly IMapper mapper;
 
-        private readonly IEmployeeData employeeData;
-
-        public EmployeeProfileHistoryService(IEmployeeProfileHistoryRepository repository, IMapper mapper, IEmployeeData employeeData)
+        public EmployeeProfileHistoryService(IEmployeeProfileHistoryRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
-            this.employeeData = employeeData;
         }
 
         public Response<List<EmployeeProfileHistoryModel>> GetByEmployeeNumber(string employeeNumber)

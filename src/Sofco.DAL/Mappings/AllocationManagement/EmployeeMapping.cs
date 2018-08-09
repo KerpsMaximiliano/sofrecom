@@ -25,6 +25,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.EndReason).HasMaxLength(2000);
             builder.Entity<Employee>().Property(x => x.DocumentNumberType).HasMaxLength(100);
             builder.Entity<Employee>().Property(x => x.PhoneNumber).HasMaxLength(100);
+            builder.Entity<Employee>().Property(x => x.Cuil).HasColumnType("decimal(12, 0)");
 
             builder.Entity<Employee>().HasMany(x => x.Licenses).WithOne(x => x.Employee).HasForeignKey(x => x.EmployeeId);
             builder.Entity<Employee>().HasOne(x => x.TypeEndReason).WithMany(x => x.Employees).HasForeignKey(x => x.TypeEndReasonId).OnDelete(DeleteBehavior.Restrict);
