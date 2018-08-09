@@ -38,10 +38,20 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two id="customer-select" [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                <select-two *ngIf="mode == 'new'" id="customer-select" [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+
+                <div *ngIf="mode != 'new'">
+                    <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
+                    <p>{{ model.clientExternalName }}</p>
+                </div>
             </div>
             <div class="col-sm-6">
-                <select-two id="service-select" [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                <select-two *ngIf="mode == 'new'" id="service-select" [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+
+                <div *ngIf="mode != 'new'">
+                    <label class="control-label">{{ 'billing.solfac.service' | translate }}</label>
+                    <p>{{ model.service }}</p>
+                </div>
             </div>
         </div>
 
