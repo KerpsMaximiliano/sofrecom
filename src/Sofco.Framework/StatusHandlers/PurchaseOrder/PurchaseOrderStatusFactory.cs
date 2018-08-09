@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
@@ -20,13 +21,21 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private readonly IPurchaseOrderStatusRecipientManager recipientManager;
 
-        public PurchaseOrderStatusFactory(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IPurchaseOrderStatusRecipientManager recipientManager)
+        private readonly IUserData userData;
+
+        public PurchaseOrderStatusFactory(IUnitOfWork unitOfWork, 
+            IMailBuilder mailBuilder, 
+            IMailSender mailSender, 
+            IOptions<EmailConfig> emailOptions, 
+            IPurchaseOrderStatusRecipientManager recipientManager,
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.recipientManager = recipientManager;
             emailConfig = emailOptions.Value;
+            this.userData = userData;
         }
 
         public IPurchaseOrderStatusHandler GetInstance(PurchaseOrderStatus status)
@@ -35,8 +44,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             {
                 case PurchaseOrderStatus.Draft: return new PurchaseOrderStatusDraft(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
                 case PurchaseOrderStatus.CompliancePending: return new PurchaseOrderStatusCompliancePending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
-                case PurchaseOrderStatus.ComercialPending: return new PurchaseOrderStatusComercialPending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
-                case PurchaseOrderStatus.OperativePending: return new PurchaseOrderStatusOperativePending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
+                case PurchaseOrderStatus.ComercialPending: return new PurchaseOrderStatusComercialPending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager, userData);
+                case PurchaseOrderStatus.OperativePending: return new PurchaseOrderStatusOperativePending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager, userData);
                 case PurchaseOrderStatus.DafPending: return new PurchaseOrderStatusDafPending(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
                 case PurchaseOrderStatus.Reject: return new PurchaseOrderStatusReject(unitOfWork, mailBuilder, mailSender, emailConfig, recipientManager);
                 default: return null;

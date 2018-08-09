@@ -222,4 +222,10 @@
   <data name="YearIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.yearIsRequired</value>
   </data>
+  <data name="UserAreaWrong" xml:space="preserve">
+    <value>billing/purchaseOrder.userAreaWrong</value>
+  </data>
+  <data name="UserSectorWrong" xml:space="preserve">
+    <value>billing/purchaseOrder.userSectorWrong</value>
+  </data>
 </root>

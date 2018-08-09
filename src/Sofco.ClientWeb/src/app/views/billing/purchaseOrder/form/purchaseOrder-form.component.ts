@@ -30,7 +30,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
     getOptionsSubscrip: Subscription;
     getAnalyticSubscrip: Subscription;
-    getCurrenciesSubscrip: Subscription;
+    getAreasSubscrip: Subscription;
 
     constructor(private analyticService: AnalyticService,
                 private utilsService: UtilsService,
@@ -39,7 +39,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
                 private errorHandlerService: ErrorHandlerService){}
 
     ngOnInit(): void {
-        this.getCustomers();
         this.getAreas();
 
         if(this.mode == 'new'){
@@ -55,18 +54,18 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.getOptionsSubscrip) this.getOptionsSubscrip.unsubscribe();
         if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
-        if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
+        if(this.getAreasSubscrip) this.getAreasSubscrip.unsubscribe();
     }
 
     getAreas(){
-        this.getCurrenciesSubscrip = this.utilsService.getAreas().subscribe(d => {
+        this.getAreasSubscrip = this.utilsService.getAreas().subscribe(d => {
             this.areas = d;
         },
         err => this.errorHandlerService.handleErrors(err));
     }
 
     getCurrencies(){
-        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(currencies => {
+        this.getAreasSubscrip = this.utilsService.getCurrencies().subscribe(currencies => {
 
             if(this.mode == 'new'){
                 currencies.forEach((item) => {
@@ -98,15 +97,15 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
             err => this.errorHandlerService.handleErrors(err));
     }
 
-    getCustomers(){
-        this.messageService.showLoading();
+    getCustomers(showLoading: boolean){
+        if(showLoading) this.messageService.showLoading();
 
         this.customerService.getAllOptions().subscribe(res => {
-            this.messageService.closeLoading();         
+            if(showLoading) this.messageService.closeLoading();         
             this.customers = res.data;
         },
         err => {
-            this.messageService.closeLoading();    
+            if(showLoading) this.messageService.closeLoading();    
             this.errorHandlerService.handleErrors(err)
         });
     }

@@ -64,9 +64,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
+            this.form.getCustomers(false);
 
             this.getByIdSubscrip = this.purchaseOrderService.getById(params['id']).subscribe(data => {
-                this.messageService.closeLoading();
                 this.form.model = data;
 
                 this.uploaderConfig();
