@@ -98,6 +98,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 startDate = startDate.AddDays(1);
             }
+
+            var holidays = unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month);
+
+            if (holidays.Any())
+            {
+                result.Data.Resume.BusinessHours -= holidays.Count * 8;
+            }
         }
 
         public Response<WorkTime> Save(WorkTimeAddModel model)
