@@ -8,5 +8,7 @@ namespace Sofco.Core.Data.Billing
         IList<Sector> GetAll();
 
         void ClearKeys();
+
+        List<int> GetIdByCurrent();
     }
 }

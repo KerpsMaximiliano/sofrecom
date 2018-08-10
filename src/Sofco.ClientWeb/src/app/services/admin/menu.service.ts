@@ -23,6 +23,8 @@ export class MenuService {
     public pmoMail: string;
     public rrhhMail: string;
     public sellerMail: string;
+    public areaIds: any[];
+    public sectorIds: any[];
 
     constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
@@ -42,6 +44,8 @@ export class MenuService {
                 this.pmoMail = menu.pmoMail;
                 this.rrhhMail = menu.rrhhMail;
                 this.sellerMail = menu.sellerMail;
+                this.areaIds = menu.areaIds;
+                this.sectorIds = menu.sectorIds;
             }
         }
 
@@ -109,5 +113,13 @@ export class MenuService {
             return true;
        }
        return false;
+    }
+
+    hasAreaAccess(areaId:number):boolean {
+        return this.areaIds.indexOf(areaId)>-1;
+    }
+
+    hasSectorAccess(sectorId:number):boolean {
+        return this.sectorIds.indexOf(sectorId)>-1;
     }
 }

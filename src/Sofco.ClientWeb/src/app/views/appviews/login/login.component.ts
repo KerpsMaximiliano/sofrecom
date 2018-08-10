@@ -84,6 +84,8 @@ export class LoginComponent implements OnInit {
                 this.menuService.pmoMail = menu.pmoMail;
                 this.menuService.rrhhMail = menu.rrhhMail;
                 this.menuService.sellerMail = menu.sellerMail;
+                this.menuService.areaIds = menu.areaIds;
+                this.menuService.sectorIds = menu.sectorIds;
 
                 this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || `/profile/${this.menuService.user.employeeId}`;
 

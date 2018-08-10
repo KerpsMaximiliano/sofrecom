@@ -15,6 +15,7 @@ export class OcStatusComercialComponent implements OnDestroy  {
 
   @Input() ocId: number;
   @Input() status: number;
+  @Input() model: any;
 
   subscrip: Subscription;
 
@@ -29,7 +30,11 @@ export class OcStatusComercialComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.status == PurchaseOrderStatus.ComercialPending && this.menuService.hasFunctionality('PUROR', 'COMER')){
+    if(this.ocId > 0
+        && this.status == PurchaseOrderStatus.ComercialPending
+        && this.menuService.hasFunctionality('PUROR', 'COMER')
+        && this.menuService.hasAreaAccess(this.model.areaId)
+    ){
         return true;
     }
 
