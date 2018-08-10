@@ -27,10 +27,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     indexToConfirm: number;
     confirmBodyAction: string;
 
-    public endReasonType: number = 0;
+    public endReasonType = 0;
 
     public rejectComments: string;
- 
+
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -86,12 +86,11 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
-            this.model = response.data;
-
-            var options = { selector: "#newsTable" }
-            this.dataTableService.initialize(options);
-            
             this.messageService.closeLoading();
+            this.model = response.data;
+            const options = { selector: "#newsTable" };
+            this.dataTableService.destroy(options.selector);
+            this.dataTableService.initialize(options);
         },
         error => {
             this.messageService.closeLoading();
@@ -193,6 +192,7 @@ export class NewsComponent implements OnInit, OnDestroy {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             this.confirmUpdateEmployeeModal.hide();
+            this.getAll();
         },
         error => {
             this.confirmUpdateEmployeeModal.resetButtons();
