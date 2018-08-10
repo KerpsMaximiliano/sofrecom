@@ -43,9 +43,14 @@ namespace Sofco.Service.Implementations.Jobs
                 var newEmployee = procesedEmployees.FirstOrDefault(s => s.EmployeeNumber == stored.EmployeeNumber);
                 if(newEmployee == null) continue;
 
-                ProcessEmailCase(stored, newEmployee);
+                var fields = GetFieldToCompare();
 
-                var modifiedFields = ElementComparerHelper.CompareModification(newEmployee, stored, GetFieldToCompare());
+                if (string.IsNullOrEmpty(stored.Email))
+                {
+                    fields.Add(nameof(Employee.Email));
+                }
+
+                var modifiedFields = ElementComparerHelper.CompareModification(newEmployee, stored, fields.ToArray());
                 if (!modifiedFields.Any()) continue;
 
                 employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
@@ -56,9 +61,9 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private string[] GetFieldToCompare()
+        private List<string> GetFieldToCompare()
         {
-            return new[]
+            return new List<string>
             {
                 nameof(Employee.Name),
                 nameof(Employee.Birthday),
@@ -76,8 +81,7 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Cuil),
                 nameof(Employee.PhoneCountryCode),
                 nameof(Employee.PhoneAreaCode),
-                nameof(Employee.PhoneNumber),
-                nameof(Employee.Email)
+                nameof(Employee.PhoneNumber)
             };
         }
 

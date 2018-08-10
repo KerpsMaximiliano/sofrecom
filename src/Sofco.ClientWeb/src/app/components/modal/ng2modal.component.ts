@@ -24,9 +24,9 @@ export class Ng2ModalComponent implements OnInit {
   @Input() size;
 
   // @Input() isLoading: boolean = false;
-  @Input() isSaveEnabled: boolean = true;
+  @Input() isSaveEnabled = true;
 
-  isProcessing: boolean = false;
+  isProcessing = false;
 
   @ViewChild('btnDelete') btnDelete;
   @ViewChild('btnSuccess') btnSuccess;
