@@ -625,7 +625,7 @@
                 "endDate":"Fecha de Baja",
                 "status":"Estado"
             },
-            "updateRrhh": "Actualización datos"
+            "updateRrhh": "Actualizar datos"
         },
         "analytics": {
             "listTitle": "Listado de Analiticas",

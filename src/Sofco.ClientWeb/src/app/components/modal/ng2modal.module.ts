@@ -16,11 +16,10 @@ import { ButtonsModule } from 'app/components/buttons/buttons.module';
     LaddaModule,
     ButtonsModule
   ],
-  declarations: [ 
+  declarations: [
       Ng2ModalComponent
   ],
   providers: [
-      
   ],
   exports: [
       Ng2ModalComponent
