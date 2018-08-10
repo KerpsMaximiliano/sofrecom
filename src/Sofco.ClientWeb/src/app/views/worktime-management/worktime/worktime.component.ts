@@ -519,11 +519,15 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   saveDropTask(taskModel: WorkTimeTaskModel) {
     if (!this.validateHoursPerDay(taskModel)) { return; }
 
+    this.messageService.showLoading();
+
     this.subscription = this.worktimeService.post(taskModel).subscribe(res => {
+      this.messageService.closeLoading();
       if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
     },
     error => {
+      this.messageService.closeLoading();
       this.errorHandlerService.handleErrors(error);
       this.getModel();
     });
