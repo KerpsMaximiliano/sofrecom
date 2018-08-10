@@ -32,7 +32,9 @@ export class OcStatusOperativeComponent implements OnDestroy  {
   canSend(){
     if(this.ocId > 0 
         && this.status == PurchaseOrderStatus.OperativePending
-        && this.menuService.hasFunctionality('PUROR', 'OPERA')){
+        && this.menuService.hasFunctionality('PUROR', 'OPERA')
+        && this.menuService.hasSectorAccess(this.model.sectorIds)
+    ){
         return true;
     }
 
