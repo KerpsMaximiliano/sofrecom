@@ -33,6 +33,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             if (domain.PurchaseOrderAnalytics.Any())
             {
                 AnalyticIds = domain.PurchaseOrderAnalytics.Select(x => x.AnalyticId).ToArray();
+                SectorIds = domain.PurchaseOrderAnalytics.Where(x => x.Analytic != null).Select(x => x.Analytic.SectorId).ToArray();
             }
 
             if (domain.File != null)
@@ -102,5 +103,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public int[] AnalyticIds { get; set; }
 
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
+
+        public int[] SectorIds { get; set; }
     }
 }
