@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
-import { Message } from "app/models/message";
-import { I18nService } from 'app/services/common/i18n.service';
+import { Message } from "../../models/message";
+import { I18nService } from './i18n.service';
 
 declare var swal: any;
 

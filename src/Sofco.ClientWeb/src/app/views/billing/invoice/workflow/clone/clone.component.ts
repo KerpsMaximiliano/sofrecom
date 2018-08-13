@@ -1,11 +1,9 @@
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
-import { InvoiceService } from 'app/services/billing/invoice.service';
-import { MenuService } from 'app/services/admin/menu.service';
+import { InvoiceService } from '../../../../../services/billing/invoice.service';
+import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
   selector: 'clone-invoice',
@@ -28,9 +26,7 @@ export class CloneInvoiceComponent implements OnDestroy  {
   subscrip: Subscription;
 
   constructor(private invoiceService: InvoiceService,
-    private messageService: MessageService,
     private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
 
@@ -45,18 +41,11 @@ export class CloneInvoiceComponent implements OnDestroy  {
   clone(){
     this.subscrip = this.invoiceService.clone(this.invoiceId).subscribe(data => {
         this.cloneModal.hide();
-        if(data.messages) this.messageService.showMessages(data.messages);
 
         setTimeout(() => { 
           this.router.navigate([`/billing/invoice/${data.data.id}/project/${data.data.projectId}`]); 
         }, 500)
     },
-    err => {
-      this.cloneModal.hide();
-      
-      setTimeout(() => { 
-        this.errorHandlerService.handleErrors(err);
-      }, 500)
-    });
+    () => this.cloneModal.hide());
   }
 }

@@ -1,5 +1,5 @@
-import { HitoDetail } from 'app/models/billing/solfac/hitoDetail';
-import { Hito } from 'app/models/billing/solfac/hito';
+import { HitoDetail } from './hitoDetail';
+import { Hito } from './hito';
 
 export class Solfac {
     constructor(

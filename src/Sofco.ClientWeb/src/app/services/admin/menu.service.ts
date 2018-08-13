@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Service } from 'app/services/common/service';
-import { Menu } from 'app/models/admin/menu';
+import { Service } from '../common/service';
+import { Menu } from '../../models/admin/menu';
 import { HttpClient } from '@angular/common/http';
 import { UserInfoService } from '../common/user-info.service';
 

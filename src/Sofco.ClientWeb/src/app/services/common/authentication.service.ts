@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Service } from "app/services/common/service";
-import { CryptographyService } from "app/services/common/cryptography.service";
+import { Service } from "./service";
+import { CryptographyService } from "./cryptography.service";
 
 @Injectable()
 export class AuthenticationService {

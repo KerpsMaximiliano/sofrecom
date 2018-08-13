@@ -1,6 +1,5 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
 import { FileUploader } from "ng2-file-upload";
@@ -44,8 +43,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     public alertDisable: boolean = true;
  
     constructor(private purchaseOrderService: PurchaseOrderService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+                private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -70,7 +68,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
 
                 this.form.model.id = response.data.id;
                 this.form.model.status = response.data.status;
@@ -80,7 +77,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
             });
     }
 
@@ -120,16 +116,14 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
     exportExcel(){
         this.purchaseOrderService.exportFile(this.fileId).subscribe(file => {
             FileSaver.saveAs(file, this.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
     
     viewFile(){
         if(this.fileName.endsWith('.pdf')){
             this.purchaseOrderService.getFile(this.fileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -147,7 +141,6 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
         });
     }
 

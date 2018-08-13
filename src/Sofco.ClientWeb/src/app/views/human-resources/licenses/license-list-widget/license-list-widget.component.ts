@@ -1,7 +1,7 @@
 import { OnInit, OnDestroy, Component, Input } from "@angular/core";
-import { LicenseService } from "app/services/human-resources/licenses.service";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
 import { Subscription } from "rxjs";
-import { DataTableService } from "app/services/common/datatable.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
 import { Router } from "@angular/router";
 
 declare var moment: any;

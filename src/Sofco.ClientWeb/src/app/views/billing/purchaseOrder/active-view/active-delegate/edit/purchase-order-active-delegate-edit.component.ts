@@ -1,12 +1,10 @@
 import { Component, Input, Output, OnInit, OnDestroy } from '@angular/core';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CustomerService } from 'app/services/billing/customer.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from 'app/services/common/message.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { UserService } from 'app/services/admin/user.service';
-import { PurchaseOrderActiveDelegateService } from 'app/services/billing/purchase-order-active-delegate.service';
+import { ServiceService } from '../../../../../../services/billing/service.service';
+import { CustomerService } from '../../../../../../services/billing/customer.service';
+import { MessageService } from '../../../../../../services/common/message.service';
+import { I18nService } from '../../../../../../services/common/i18n.service';
+import { UserService } from '../../../../../../services/admin/user.service';
+import { PurchaseOrderActiveDelegateService } from '../../../../../../services/billing/purchase-order-active-delegate.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 declare var $: any;
@@ -41,7 +39,6 @@ export class PurchaseOrderActiveDelegateEditComponent implements OnInit, OnDestr
         private customerService: CustomerService,
         private usersService: UserService,
         private delegateService: PurchaseOrderActiveDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService,
         private i18nService: I18nService,
         private router: Router) {
@@ -68,7 +65,6 @@ export class PurchaseOrderActiveDelegateEditComponent implements OnInit, OnDestr
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -117,9 +113,6 @@ export class PurchaseOrderActiveDelegateEditComponent implements OnInit, OnDestr
         this.subscription = this.serviceService.getOptions(this.customerId).subscribe(res => {
             this.services = res.data;
             this.updateServiceControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -133,9 +126,6 @@ export class PurchaseOrderActiveDelegateEditComponent implements OnInit, OnDestr
         this.subscription = this.usersService.getOptions().subscribe(res => {
             this.users = res;
             this.initUserControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -200,7 +190,6 @@ export class PurchaseOrderActiveDelegateEditComponent implements OnInit, OnDestr
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

@@ -1,16 +1,15 @@
-import { MessageService } from 'app/services/common/message.service';
-import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
-import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../../../services/common/message.service';
+import { DatatablesLocationTexts } from '../../../../components/datatables/datatables.location-texts';
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
-import { DatatablesColumn } from "app/components/datatables/datatables.columns";
+import { DatatablesEditionType } from "../../../../components/datatables/datatables.edition-type";
+import { DatatablesColumn } from "../../../../components/datatables/datatables.columns";
 import { Subscription } from "rxjs";
-import { DatatablesOptions } from "app/components/datatables/datatables.options";
-import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
-import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { ModuleService } from "app/services/admin/module.service";
-import { I18nService } from 'app/services/common/i18n.service';
+import { DatatablesOptions } from "../../../../components/datatables/datatables.options";
+import { DatatablesDataType } from "../../../../components/datatables/datatables.datatype";
+import { DatatablesAlignment } from "../../../../components/datatables/datatables.alignment";
+import { ModuleService } from "../../../../services/admin/module.service";
+import { I18nService } from '../../../../services/common/i18n.service';
 
 @Component({
   selector: 'app-modules',
@@ -76,11 +75,9 @@ export class ModulesComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
         private service: ModuleService,
         private messageService: MessageService,
-        private i18nService: I18nService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private i18nService: I18nService) { }
 
     ngOnInit() {
       this.getAll();
@@ -100,8 +97,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
           if(callback != null){
             callback();
           }
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
     }
 
     getEntity(id: number, callback = null){
@@ -114,10 +110,7 @@ export class ModulesComponent implements OnInit, OnDestroy {
             callback(data);
           }
         },
-        err => {
-          this.messageService.closeLoading();
-          this.errorHandlerService.handleErrors(err);
-        });
+        () => this.messageService.closeLoading());
     }
 
     editClick(id: number){
@@ -134,22 +127,16 @@ export class ModulesComponent implements OnInit, OnDestroy {
 
     deactivate(id: number){
         this.deactivateSubscrip = this.service.deactivate(id).subscribe(
-            data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
-                this.getEntity(id, (e)=>this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            () => {
+            this.getEntity(id, (e) => this.dt.updateById(id, e));
+          });
     }
 
     activate(id: number){
         this.activateSubscrip = this.service.activate(id).subscribe(
-            data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
-                this.getEntity(id, (e)=>this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            () => {
+            this.getEntity(id, (e) => this.dt.updateById(id, e));
+          });
     }
 
 }

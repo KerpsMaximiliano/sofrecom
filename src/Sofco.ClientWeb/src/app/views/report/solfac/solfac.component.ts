@@ -3,13 +3,13 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component'
+import { DateRangePickerComponent } from '../../../components/date-range-picker/date-range-picker.component'
 
-import { ReportHelper } from "app/views/report/common/report-helper"
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from 'app/services/admin/menu.service';
-import { SolfacReportService } from 'app/services/report/solfacReport.service';
+import { ReportHelper } from "../common/report-helper"
+import { ErrorHandlerService } from "../../../services/common/errorHandler.service";
+import { DataTableService } from "../../../services/common/datatable.service";
+import { MenuService } from '../../../services/admin/menu.service';
+import { SolfacReportService } from '../../../services/report/solfacReport.service';
 import { SolfacChartComponent } from './solfac-chart.component';
 
 declare var jQuery:any;

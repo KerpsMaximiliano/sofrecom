@@ -1,11 +1,10 @@
 import { Component, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
+import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { MessageService } from '../../../../../services/common/message.service';
 declare var $: any;
 
 @Component({
@@ -37,8 +36,7 @@ export class StatusBillComponent implements OnDestroy  {
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
-        private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) {}
+        private menuService: MenuService) {}
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -68,8 +66,6 @@ export class StatusBillComponent implements OnDestroy  {
                 data => {
                     this.billModal.hide();
                     
-                    if(data.messages) this.messageService.showMessages(data.messages);
-                 
                     if(this.history.observers.length > 0){
                         this.history.emit();
                     }
@@ -84,7 +80,6 @@ export class StatusBillComponent implements OnDestroy  {
                 },
                 error => {
                     this.billModal.hide();
-                    this.errorHandlerService.handleErrors(error);
                 });
         }
         else {

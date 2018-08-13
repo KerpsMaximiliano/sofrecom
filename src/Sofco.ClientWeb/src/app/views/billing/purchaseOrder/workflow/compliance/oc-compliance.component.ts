@@ -1,10 +1,9 @@
 import { Component, OnDestroy, Input } from '@angular/core';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../../services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
 import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
@@ -21,7 +20,6 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
     private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
   ngOnDestroy(): void {
@@ -42,15 +40,11 @@ export class OcStatusComplianceComponent implements OnDestroy  {
   send(){
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, {}).subscribe(
         data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
-
             setTimeout(() => {
                 this.router.navigate(['/billing/purchaseOrders/pendings']);
             }, 1000);
         },
-        error => {
-            this.errorHandlerService.handleErrors(error);
-        },
+        () => {},
         () => {
             this.messageService.closeLoading();
         });

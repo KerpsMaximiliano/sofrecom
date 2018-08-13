@@ -1,10 +1,9 @@
 import { OnDestroy, Component, OnInit, Input, ViewChild, Output, EventEmitter } from "@angular/core";
-import { AllocationModel, Allocation } from "app/models/allocation-management/allocation";
+import { AllocationModel, Allocation } from "../../../../models/allocation-management/allocation";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MessageService } from "app/services/common/message.service";
-import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { MessageService } from "../../../../services/common/message.service";
+import { AllocationService } from "../../../../services/allocation-management/allocation.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 @Component({
     selector: 'allocation-assignment-table',
@@ -46,8 +45,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     monthLastAllocation: number;
 
     constructor(private allocationsService: AllocationService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){}
+        private messageService: MessageService){}
 
     ngOnInit(): void {
         if(this.resourceId > 0){
@@ -131,7 +129,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
         });
     }
  
@@ -224,7 +221,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         error => {
             this.allocationSelected.releaseDate = null;
             this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 

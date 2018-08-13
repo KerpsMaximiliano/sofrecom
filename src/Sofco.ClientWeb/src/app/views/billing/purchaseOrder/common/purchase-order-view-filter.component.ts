@@ -1,13 +1,12 @@
 import { Component, OnInit,  OnDestroy, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Option } from "app/models/option";
-import { CustomerService } from "app/services/billing/customer.service";
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
-import { EmployeeService } from 'app/services/allocation-management/employee.service';
-import { DateRangePickerComponent } from 'app/components/date-range-picker/date-range-picker.component';
-import { UserService } from 'app/services/admin/user.service';
-import { MenuService } from 'app/services/admin/menu.service';
-import { PurchaseOrderViewComponent } from '../common/purchase-order-view.component';
+import { Option } from "../../../../models/option";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { PurchaseOrderService } from '../../../../services/billing/purchaseOrder.service';
+import { EmployeeService } from '../../../../services/allocation-management/employee.service';
+import { DateRangePickerComponent } from '../../../../components/date-range-picker/date-range-picker.component';
+import { UserService } from '../../../../services/admin/user.service';
+import { MenuService } from '../../../../services/admin/menu.service';
+import { PurchaseOrderViewComponent } from './purchase-order-view.component';
 import { Subscription } from 'rxjs';
 declare var $: any;
 declare var moment: any;
@@ -54,8 +53,7 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
         private purchaseOrderService: PurchaseOrderService,
         private employeeService: EmployeeService,
         private userService: UserService,
-        public menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) {}
+        public menuService: MenuService) {}
 
     ngOnInit() {
         this.getCustomers();
@@ -96,16 +94,12 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
         if(!this.useStatus) return;
         this.purchaseOrderService.getStatuses().subscribe(res => {
           this.statuses = res;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCustomers() {
         this.customerService.getAllOptions().subscribe(res => {
             this.customers = res.data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -162,22 +156,19 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
         this.suscription = this.purchaseOrderService.getAnalyticsByCurrentUser().subscribe(res => {
             this.analytics = res.data;
             this.searchCriteriaChange();
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getManagers() {
         this.suscription = this.employeeService.getManagers().subscribe(data => {
             this.projectManagers = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getCommercialManagers() {
         this.suscription = this.userService.getCommercialManagers().subscribe(res => {
             this.commercialManagers = res.data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     clean() {

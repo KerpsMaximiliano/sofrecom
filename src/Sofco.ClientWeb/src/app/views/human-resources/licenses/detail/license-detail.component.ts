@@ -1,16 +1,13 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { ActivatedRoute } from "@angular/router";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
-import { LicenseService } from "app/services/human-resources/licenses.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { License } from "../../../../models/rrhh/license";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
+import { MenuService } from "../../../../services/admin/menu.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { LicenseDetail } from "app/models/rrhh/licenseDetail";
-import { Option } from "../../../../models/option";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { LicenseDetail } from "../../../../models/rrhh/licenseDetail";
 import * as FileSaver from "file-saver";
 
 @Component({
@@ -46,11 +43,9 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     );
  
     constructor(private licenseService: LicenseService,
-                private router: Router,
                 public menuService: MenuService,
                 private activatedRoute: ActivatedRoute,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+                private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -65,7 +60,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
 
                 this.history.getHistories(params['id']);
             },
-            error => this.errorHandlerService.handleErrors(error),
+            () => { },
             () => this.messageService.closeLoading());
         });
     }
@@ -80,17 +75,15 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     configUploader(){
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+        this.uploader.onCompleteItem = (response:any) => {
             var json = JSON.parse(response);
-
-            if(json.messages) this.messageService.showMessages(json.messages);
 
             var file = json.data;
             var option = { id: file.id, text: file.fileName };
             this.model.files.push(option);
         };
 
-        this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
+        this.uploader.onSuccessItem = (item: any) => {
             item.remove();
             this.selectedFile.nativeElement.value = '';
         };
@@ -103,11 +96,10 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     }
 
     deleteFile(){
-        this.deleteFileSubscrip = this.licenseService.deleteFile(this.fileIdToDelete).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
+        this.deleteFileSubscrip = this.licenseService.deleteFile(this.fileIdToDelete).subscribe(() => {
             this.model.files.splice(this.indexToDelete, 1);
-          },
-          err => this.errorHandlerService.handleErrors(err),
+        },
+          () => { },
          () => this.confirmModal.hide());
     }
 
@@ -120,18 +112,16 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     fileDelivered(){
         this.messageService.showLoading();
 
-        this.fileDeliveredSubscrip = this.licenseService.fileDelivered(this.model.id).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
+        this.fileDeliveredSubscrip = this.licenseService.fileDelivered(this.model.id).subscribe(() => {
             this.model.hasCertificate = true;
-          },
-          err => this.errorHandlerService.handleErrors(err),
+        },
+          () => { },
           () => this.messageService.closeLoading());
     }
 
     exportExcel(id, name){
         this.licenseService.exportFile(id).subscribe(file => {
             FileSaver.saveAs(file, name);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 } 

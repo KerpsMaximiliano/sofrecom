@@ -1,5 +1,5 @@
-import { Group } from "app/models/admin/group";
-import { Module } from "app/models/admin/module";
+import { Group } from "./group";
+import { Module } from "./module";
 
 export class Role {
     constructor(

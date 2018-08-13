@@ -2,10 +2,9 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { AuthenticationService } from "app/services/common/authentication.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { UserService } from "app/services/admin/user.service";
+import { AuthenticationService } from "../../../services/common/authentication.service";
+import { MenuService } from "../../../services/admin/menu.service";
+import { UserService } from "../../../services/admin/user.service";
 import { UserInfoService } from '../../../services/common/user-info.service';
 
 @Component({
@@ -27,8 +26,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private menuService: MenuService,
-        private userService: UserService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private userService: UserService) { }
 
     ngOnInit() {
     }
@@ -39,10 +37,7 @@ export class LoginComponent implements OnInit {
         this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(
             data => { this.onLoginSucces(data); },
-            error => { 
-                this.errorHandlerService.handleErrors(error);
-                this.loading = false;
-            });
+            () => this.loading = false);
     }
 
     onLoginSucces(data) {
@@ -58,8 +53,7 @@ export class LoginComponent implements OnInit {
                 this.menuService.user = userData;
 
                 this.getMenuData();
-            },
-            error => this.errorHandlerService.handleErrors(error));
+            });
     }
 
     getMenuData(){
@@ -91,11 +85,7 @@ export class LoginComponent implements OnInit {
                 this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || `/profile/${this.menuService.user.employeeId}`;
 
                 this.router.navigate([this.returnUrl]);
-            },
-            error => {
-               this.errorHandlerService.handleErrors(error);
-            }
-        );
+            });
     }
 
     onSubmit(){

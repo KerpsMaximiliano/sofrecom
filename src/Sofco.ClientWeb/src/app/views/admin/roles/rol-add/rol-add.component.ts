@@ -1,10 +1,9 @@
-import { Option } from 'app/models/option';
+import { Option } from '../../../../models/option';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'app/services/common/message.service';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { RoleService } from "app/services/admin/role.service";
-import { Role } from "app/models/admin/role";
+import { MessageService } from '../../../../services/common/message.service';
+import { RoleService } from "../../../../services/admin/role.service";
+import { Role } from "../../../../models/admin/role";
 
 @Component({
   selector: 'app-rol-add',
@@ -19,8 +18,7 @@ export class RolAddComponent implements OnInit {
     public funcsAdded: Option[];
 
     constructor(private service: RoleService, 
-                private messageService: MessageService,private router: Router,
-                private errorHandlerService: ErrorHandlerService) { }
+                private messageService: MessageService,private router: Router) { }
 
     ngOnInit() { }
 
@@ -32,11 +30,9 @@ export class RolAddComponent implements OnInit {
         this.service.add(this.rol).subscribe(
           data => {
             this.messageService.closeLoading();
-            if(data.messages) this.messageService.showMessages(data.messages);
 
             this.router.navigate(["/admin/roles"]);
-          },
-          err => this.errorHandlerService.handleErrors(err));
+          });
       }
     }
 }

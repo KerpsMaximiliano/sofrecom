@@ -1,10 +1,9 @@
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../services/common/message.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { SettingsService } from 'app/services/admin/settings.service';
-import { AppSettingService } from 'app/services/common/app-setting.service';
-import { AppSetting } from 'app/services/common/app-setting';
+import { SettingsService } from '../../../services/admin/settings.service';
+import { AppSettingService } from '../../../services/common/app-setting.service';
+import { AppSetting } from '../../../services/common/app-setting';
 
 @Component({
   selector: 'app-settings',
@@ -26,8 +25,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       private service: SettingsService,
       private messageService: MessageService,
       private appSettting: AppSetting,
-      private appSetttingService: AppSettingService,
-      private errorHandlerService: ErrorHandlerService) {
+      private appSetttingService: AppSettingService) {
   }
 
   ngOnInit() {
@@ -48,8 +46,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.settings = settings.filter(item => item.category !== this.JobsSettingCategory);
         this.jobSettings = settings.filter(item => item.category === this.JobsSettingCategory);
       },
-      err => this.errorHandlerService.handleErrors(err),
-      () => { this.loading = false; });
+      err => this.loading = false);
   }
 
   getLicenseTypes() {
@@ -57,28 +54,23 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.licenseTypesSubscrip = this.service.getLicenseTypes().subscribe(
       response => { this.licenseTypes = response; },
-      err => {},
-      () => this.messageService.closeLoading()
-    );
+      err => this.messageService.closeLoading());
   }
 
   save() {
     this.loading = true;
+
     this.serviceSubscrip = this.service.save(this.settings).subscribe(
       d => { this.settings = d.data; this.saveResponseHandler(); },
-      err => { this.errorHandlerService.handleErrors(err); this.loading = false; },
-      () => { this.loading = false; });
+      err => this.loading = false);
   }
 
   updateLicenseType(item) {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveLicenseType(item).subscribe(
-      response => {
-        if (response.messages) { this.messageService.showMessages(response.messages); }
-      },
-      err => this.errorHandlerService.handleErrors(err),
-      () => this.messageService.closeLoading());
+      response => { },
+      err => this.messageService.closeLoading());
   }
 
   saveResponseHandler() {
@@ -97,10 +89,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
-      response => {
-        if (response.messages) { this.messageService.showMessages(response.messages); }
-      },
-      err => this.errorHandlerService.handleErrors(err),
-      () => this.messageService.closeLoading());
+      response => { },
+      err => this.messageService.closeLoading());
   }
 }

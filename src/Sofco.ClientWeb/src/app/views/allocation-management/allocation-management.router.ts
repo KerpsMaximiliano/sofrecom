@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from "@angular/router";
-import { AllocationReportComponent } from "app/views/allocation-management/allocation/report/allocation-report.component";
-import { AuthGuard } from "app/guards/auth.guard";
-import { ResourceSearchComponent } from "app/views/allocation-management/resources/search/resource-search.component";
-import { ResourceDetailComponent } from "app/views/allocation-management/resources/detail/resource-detail.component";
-import { AddAllocationByResourceComponent } from "app/views/allocation-management/allocation/add-by-resource/add-by-resource.component";
-import { WorkTimeApprovalDelegateComponent } from "app/views/allocation-management/worktime/worktime-approval-delegate/worktime-approval-delegate.component";
+import { AllocationReportComponent } from "./allocation/report/allocation-report.component";
+import { AuthGuard } from "../../guards/auth.guard";
+import { ResourceSearchComponent } from "./resources/search/resource-search.component";
+import { ResourceDetailComponent } from "./resources/detail/resource-detail.component";
+import { AddAllocationByResourceComponent } from "./allocation/add-by-resource/add-by-resource.component";
+import { WorkTimeApprovalDelegateComponent } from "./worktime/worktime-approval-delegate/worktime-approval-delegate.component";
 
 const ALLOCATION_ROUTER: Routes = [
     { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },

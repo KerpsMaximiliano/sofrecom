@@ -1,13 +1,8 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { MenuService } from "app/services/admin/menu.service";
-import { CustomerService } from "app/services/billing/customer.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Option } from "app/models/option";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { Option } from "../../../../models/option";
 
 @Component({
     selector: 'certificate-form',
@@ -22,11 +17,7 @@ export class CertificateFormComponent implements OnInit, OnDestroy {
 
     getOptionsSubscrip: Subscription;
 
-    constructor(private router: Router,
-                private menuService: MenuService,
-                private customerService: CustomerService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+    constructor(private customerService: CustomerService){
     }
 
     ngOnInit(): void {
@@ -40,9 +31,6 @@ export class CertificateFormComponent implements OnInit, OnDestroy {
     getCustomers() {
         this.getOptionsSubscrip = this.customerService.getOptions().subscribe(res => {
             this.customers = res.data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

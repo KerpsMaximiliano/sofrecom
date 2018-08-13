@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Message } from 'app/models/message';
-import { MessageService } from 'app/services/common/message.service';
-import { AuthenticationService } from 'app/services/common/authentication.service';
+import { Message } from '../../models/message';
+import { MessageService } from './message.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class ErrorHandlerService {

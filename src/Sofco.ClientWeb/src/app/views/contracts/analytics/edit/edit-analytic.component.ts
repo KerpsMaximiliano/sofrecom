@@ -1,11 +1,10 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
-import { I18nService } from "app/services/common/i18n.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "../../../../services/common/i18n.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
@@ -40,8 +39,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                 private messageService: MessageService,
                 public menuService: MenuService,
                 private i18nService: I18nService,
-                private activatedRoute: ActivatedRoute,
-                private errorHandlerService: ErrorHandlerService){
+                private activatedRoute: ActivatedRoute){
     }
 
     ngOnInit(): void {
@@ -72,10 +70,9 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                     $('#userId').val(this.form.model.usersQv).trigger('change');
                 }, 500);
             },
-            error => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
-            });
+            () => {
+                    this.messageService.closeLoading();
+                });
         });
     }
 
@@ -86,14 +83,12 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.addSubscrip = this.analyticService.update(this.form.model).subscribe(
-            data => {
+            () => {
                 this.messageService.closeLoading();
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.router.navigate(['contracts/analytics']);
             },
-            err => {
+            () => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
             });
     }
 
@@ -122,27 +117,16 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     close(){
         if(this.statusClose){
             this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response);
+                this.confirmModal.hide();
                 this.form.model.status = 2;
-            },
-            err => {
-                this.errorHandlerService.handleErrors(err);
             });
         }
         else {
             this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response);
+                this.confirmModal.hide();
                 this.form.model.status = 3;
-            },
-            err => {
-                this.errorHandlerService.handleErrors(err);
             });
         }
-    }
-
-    closeSuccess(response){
-        this.confirmModal.hide();
-        if(response.messages) this.messageService.showMessages(response.messages);
     }
 
     goToProjects(){

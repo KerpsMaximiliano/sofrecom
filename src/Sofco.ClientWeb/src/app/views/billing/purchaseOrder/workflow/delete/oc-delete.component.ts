@@ -1,11 +1,10 @@
 import { Component, OnDestroy, Input } from '@angular/core';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../../services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
-import { MenuService } from 'app/services/admin/menu.service';
+import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
+import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
   selector: 'oc-status-delete',
@@ -20,7 +19,6 @@ export class OcStatusDeleteComponent implements OnDestroy  {
 
   constructor(private purchaseOrderService: PurchaseOrderService,
     private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService,
     private menuService: MenuService,
     private router: Router) { }
 
@@ -39,15 +37,11 @@ export class OcStatusDeleteComponent implements OnDestroy  {
   send(){
     this.subscrip = this.purchaseOrderService.delete(this.ocId).subscribe(
         data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
-
             setTimeout(() => {
                 this.router.navigate(['/billing/purchaseOrders/query']);
             }, 1000);
         },
-        error => {
-            this.errorHandlerService.handleErrors(error);
-        },
+        error => {},
         () => {
             this.messageService.closeLoading();
         });

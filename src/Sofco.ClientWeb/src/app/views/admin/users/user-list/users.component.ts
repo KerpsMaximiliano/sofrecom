@@ -1,16 +1,15 @@
-import { MessageService } from 'app/services/common/message.service';
-import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
+import { MessageService } from '../../../../services/common/message.service';
+import { DatatablesLocationTexts } from '../../../../components/datatables/datatables.location-texts';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
-import { DatatablesColumn } from "app/components/datatables/datatables.columns";
+import { DatatablesEditionType } from "../../../../components/datatables/datatables.edition-type";
+import { DatatablesColumn } from "../../../../components/datatables/datatables.columns";
 import { Subscription } from "rxjs";
-import { DatatablesOptions } from "app/components/datatables/datatables.options";
-import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
-import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { UserService } from "app/services/admin/user.service";
-import { I18nService } from 'app/services/common/i18n.service';
+import { DatatablesOptions } from "../../../../components/datatables/datatables.options";
+import { DatatablesDataType } from "../../../../components/datatables/datatables.datatype";
+import { DatatablesAlignment } from "../../../../components/datatables/datatables.alignment";
+import { UserService } from "../../../../services/admin/user.service";
+import { I18nService } from '../../../../services/common/i18n.service';
 
 @Component({
   selector: 'app-users',
@@ -62,7 +61,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       private router: Router,
       private service: UserService,
       private messageService: MessageService,
-      private errorHandlerService: ErrorHandlerService,
       private i18nService: I18nService) {
 
       this.options.descripFieldName = "name";
@@ -87,10 +85,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.data = d;
             },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            err => this.messageService.closeLoading());
     }
 
     goToDetail(id: number) {
@@ -101,8 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.service.get(id).subscribe(
             data => {
                 if (callback != null) { callback(data); }
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     habInhab(obj: any){
@@ -116,20 +110,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     deactivate(id: number){
         this.deleteSubscrip = this.service.deactivate(id).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.getEntity(id, (e) => this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     activate(id: number){
         this.habilitarSubscrip = this.service.activate(id).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.getEntity(id, (e) => this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 }

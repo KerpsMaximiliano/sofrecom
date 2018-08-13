@@ -1,9 +1,9 @@
 import { Routes, RouterModule } from "@angular/router";
-import { WorkTimeApprovalComponent } from "app/views/worktime-management/approval/worktime-approval.component";
-import { WorkTimeReportComponent } from "app/views/worktime-management/report/worktime-report.component";
-import { WorkTimeSearchComponent } from "app/views/worktime-management/search/worktime-search.component";
-import { HolidaysComponent } from "app/views/worktime-management/holidays/holidays.component";
-import { AuthGuard } from "app/guards/auth.guard";
+import { WorkTimeApprovalComponent } from "./approval/worktime-approval.component";
+import { WorkTimeReportComponent } from "./report/worktime-report.component";
+import { WorkTimeSearchComponent } from "./search/worktime-search.component";
+import { HolidaysComponent } from "./holidays/holidays.component";
+import { AuthGuard } from "../../guards/auth.guard";
 
 const WORKTIME_ROUTER: Routes = [
     {
