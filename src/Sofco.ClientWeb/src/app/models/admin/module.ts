@@ -1,5 +1,5 @@
-import { Menu } from "app/models/admin/menu";
-import { Functionality } from "app/models/admin/functionality";
+import { Menu } from "./menu";
+import { Functionality } from "./functionality";
 import { Role } from "./role";
 
 export class Module {

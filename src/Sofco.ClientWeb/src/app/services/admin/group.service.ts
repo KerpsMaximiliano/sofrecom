@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
-import { Service } from "app/services/common/service";
-import { Group } from "app/models/admin/group";
+import { Service } from "../common/service";
+import { Group } from "../../models/admin/group";
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()

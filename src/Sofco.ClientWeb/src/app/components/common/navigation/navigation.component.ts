@@ -1,11 +1,11 @@
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../services/common/message.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { smoothlyMenu } from '../../../app.helpers';
 import 'jquery-slimscroll';
-import { MenuService } from "app/services/admin/menu.service";
-import { Menu } from "app/models/admin/menu";
+import { MenuService } from "../../../services/admin/menu.service";
+import { Menu } from "../../../models/admin/menu";
 
 declare var jQuery:any;
 

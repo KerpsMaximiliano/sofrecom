@@ -1,10 +1,9 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
-import { CostCenterService } from "app/services/allocation-management/cost-center.service";
+import { CostCenterService } from "../../../../services/allocation-management/cost-center.service";
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { ServiceService } from "../../../../services/billing/service.service";
 import { UserService } from "../../../../services/admin/user.service";
@@ -37,8 +36,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 private customerService: CustomerService,
                 private userService: UserService,
                 private serviceService: ServiceService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){}
+                private messageService: MessageService){}
 
     ngOnInit(): void {
         let service = JSON.parse(sessionStorage.getItem('serviceDetail'));
@@ -63,14 +61,12 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                         this.model.managerId = manager[0].id;  
                     }
                 }
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
 
         this.getCostCenterOptionsSubscrip = this.costCenter.getOptions().subscribe(
             data => {
                 this.costCenters = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
 
         if(this.mode == 'new'){
             this.model.activityId = 1;
@@ -108,16 +104,12 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         this.getNewTitleSubscrip = this.analyticService.getNewTitle(this.model.costCenterId).subscribe(
             response => {
                 this.model.title = response.data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getUsers(){
         this.userService.getOptions().subscribe(data => {
             this.users = data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -130,7 +122,6 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -160,7 +151,6 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

@@ -1,10 +1,9 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ServiceService } from "app/services/billing/service.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from 'app/services/common/message.service';
+import { ServiceService } from "../../../services/billing/service.service";
+import { DataTableService } from "../../../services/common/datatable.service";
+import { MessageService } from '../../../services/common/message.service';
 
 @Component({
   selector: 'app-services',
@@ -23,8 +22,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
         private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private datatableService: DataTableService) { }
 
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -54,8 +52,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
         var options = { selector: "#serviceTable" }
         this.datatableService.initialize(options);
-
-        this.errorHandlerService.handleErrors(err)
       });
     }
 

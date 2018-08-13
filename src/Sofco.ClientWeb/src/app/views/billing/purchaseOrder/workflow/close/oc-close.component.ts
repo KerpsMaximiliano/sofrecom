@@ -1,11 +1,9 @@
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
 import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
@@ -32,9 +30,7 @@ export class OcStatusCloseComponent implements OnDestroy  {
   public closeComments: string;
 
   constructor(private purchaseOrderService: PurchaseOrderService,
-    private messageService: MessageService,
     private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
   ngOnDestroy(): void {
@@ -56,17 +52,14 @@ export class OcStatusCloseComponent implements OnDestroy  {
 
   send(){
     this.subscrip = this.purchaseOrderService.close(this.ocId, { comments: this.closeComments, mustReject: false}).subscribe(
-        data => {
-            this.modal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            setTimeout(() => {
-              this.router.navigate(['/billing/purchaseOrders/pendings']);
-            }, 1000);
-        },
-        error => {
-            this.modal.hide();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => {
+        this.modal.hide();
+        setTimeout(() => {
+          this.router.navigate(['/billing/purchaseOrders/pendings']);
+        }, 1000);
+      },
+        () => {
+        this.modal.hide();
+      });
     }
 }

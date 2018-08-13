@@ -1,11 +1,10 @@
 import { Component, OnDestroy } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
+import { PurchaseOrderService } from "../../../../services/billing/purchaseOrder.service";
 import { Router } from "@angular/router";
-import { DataTableService } from "app/services/common/datatable.service";
-import { I18nService } from "app/services/common/i18n.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { I18nService } from "../../../../services/common/i18n.service";
 import { MessageService } from "../../../../services/common/message.service";
 
 @Component({
@@ -22,8 +21,7 @@ export class PurchaseOrderPendingsComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private messageService: MessageService,
                 private i18nService: I18nService,
-                private datatableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){}
+                private datatableService: DataTableService){}
 
     ngOnInit(): void {
         this.getPendings();
@@ -45,7 +43,6 @@ export class PurchaseOrderPendingsComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

@@ -1,11 +1,10 @@
 import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
-import { InvoiceService } from 'app/services/billing/invoice.service';
-import { InvoiceStatus } from 'app/models/enums/invoiceStatus';
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { MessageService } from '../../../../../services/common/message.service';
+import { InvoiceService } from '../../../../../services/billing/invoice.service';
+import { InvoiceStatus } from '../../../../../models/enums/invoiceStatus';
 declare var $: any;
 
 @Component({
@@ -36,8 +35,7 @@ export class StatusApproveComponent implements OnDestroy  {
 
     constructor(private invoiceService: InvoiceService,
         private messageService: MessageService,
-        private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private menuService: MenuService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -58,7 +56,6 @@ export class StatusApproveComponent implements OnDestroy  {
 
             this.subscrip = this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Approved, "", this.invoiceNumber).subscribe(data => {
                 this.approveConfirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
 
                 if(this.history.observers.length > 0){
                     this.history.emit();
@@ -73,9 +70,6 @@ export class StatusApproveComponent implements OnDestroy  {
     
                     this.updateStatus.emit(toModif);
                 }
-            },
-            err => {
-                this.errorHandlerService.handleErrors(err);
             });
         }
         else{

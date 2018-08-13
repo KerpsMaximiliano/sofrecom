@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SettingsService } from "app/services/admin/settings.service";
-import { AppSetting } from 'app/services/common/app-setting';
+import { SettingsService } from "../admin/settings.service";
+import { AppSetting } from './app-setting';
 
 
 @Injectable()

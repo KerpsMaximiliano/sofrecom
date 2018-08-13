@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Option } from 'app/models/option';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { FunctionalityService } from "app/services/admin/functionality.service";
-import { ModuleService } from "app/services/admin/module.service";
-import { Module } from "app/models/admin/module";
-import { I18nService } from 'app/services/common/i18n.service';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
+import { Option } from '../../../../models/option';
+import { ErrorHandlerService } from "../../../../services/common/errorHandler.service";
+import { FunctionalityService } from "../../../../services/admin/functionality.service";
+import { ModuleService } from "../../../../services/admin/module.service";
+import { Module } from "../../../../models/admin/module";
+import { I18nService } from '../../../../services/common/i18n.service';
 
 @Component({
   selector: 'app-module-edit',

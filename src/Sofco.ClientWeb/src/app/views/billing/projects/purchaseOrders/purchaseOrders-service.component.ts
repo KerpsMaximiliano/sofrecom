@@ -1,13 +1,10 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from 'app/services/admin/menu.service';
-import { ServiceService } from 'app/services/billing/service.service';
+import { ServiceService } from '../../../../services/billing/service.service';
 import { PurchaseOrderService } from '../../../../services/billing/purchaseOrder.service';
 import * as FileSaver from "file-saver";
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../services/common/message.service';
 
 @Component({
   selector: 'service-purchase-orders',
@@ -31,10 +28,7 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
         private purchaseOrderService: PurchaseOrderService,
-        private menuService: MenuService,
-        private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private messageService: MessageService) { }
 
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -58,9 +52,6 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
       this.getAllSubscrip = this.service.getPurchaseOrders(this.serviceId).subscribe(d => {
         this.messageService.closeLoading();
         this.purchaseOrders = d;
-      },
-      err => {
-        this.errorHandlerService.handleErrors(err)
       });
     }
 
@@ -74,8 +65,7 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
     exportExcel(item){
         this.purchaseOrderService.exportFile(item.fileId).subscribe(file => {
             FileSaver.saveAs(file, item.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     goToServices(){
@@ -86,8 +76,7 @@ export class PurchaseOrdersByServiceComponent implements OnInit, OnDestroy {
       if(item.fileName.endsWith('.pdf')){
           this.purchaseOrderService.getFile(item.fileId).subscribe(response => {
               this.pdfViewer.renderFile(response.data);
-          },
-          err => this.errorHandlerService.handleErrors(err));
+          });
       }
   }
 

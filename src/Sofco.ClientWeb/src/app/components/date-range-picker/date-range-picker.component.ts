@@ -1,8 +1,7 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { Daterangepicker, DaterangepickerConfig } from 'ng2-daterangepicker';
+import { DaterangepickerConfig } from 'ng2-daterangepicker';
 import * as moment from 'moment';
-import { ReportHelper } from 'app/views/report/common/report-helper';
-import { I18nService } from "app/services/common/i18n.service";
+import { I18nService } from "../../services/common/i18n.service";
 
 @Component({
   selector: 'date-range-picker',

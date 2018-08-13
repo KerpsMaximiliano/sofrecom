@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Configuration } from 'app/services/common/configuration';
+import { Configuration } from './configuration';
 declare var $: any;
 
 @Injectable()

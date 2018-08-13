@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-import { DataTableService } from "app/services/common/datatable.service";
-import { TaskService } from "app/services/admin/task.service";
-import { MenuService } from "app/services/admin/menu.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { TaskService } from "../../../../services/admin/task.service";
+import { MenuService } from "../../../../services/admin/menu.service";
 declare var moment: any;
 
 @Component({
@@ -24,8 +23,7 @@ declare var moment: any;
                 private router: Router,
                 public menuService: MenuService,
                 private dataTableService: DataTableService,
-                private taskService: TaskService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private taskService: TaskService) { }
 
     ngOnInit(): void {
         this.getAll();
@@ -45,10 +43,7 @@ declare var moment: any;
             this.tasks = response;
             this.initGrid();
         }, 
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);   
-        });
+        error => this.messageService.closeLoading());
     }
 
     goToDetail(task){
@@ -66,21 +61,17 @@ declare var moment: any;
     deactivate(task){
         this.deactivateSubscrip = this.taskService.active(task.id, false).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
                 task.active = false;
                 task.endDate = moment.now();
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
   
     activate(task){
         this.activateSubscrip = this.taskService.active(task.id, true).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
                 task.active = true;
                 task.endDate = null;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     initGrid(){

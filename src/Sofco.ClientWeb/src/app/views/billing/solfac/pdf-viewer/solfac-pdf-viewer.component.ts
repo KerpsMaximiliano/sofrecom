@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
-import { InvoiceService } from 'app/services/billing/invoice.service';
+import { InvoiceService } from '../../../../services/billing/invoice.service';
 declare var PDFJS: any;
 
 @Component({
@@ -29,9 +27,7 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
     ctx: any;
 
     constructor(private invoiceService: InvoiceService,
-        private messageService: MessageService,
-        private solfacService: SolfacService,
-        private errorHandlerService: ErrorHandlerService) { 
+        private solfacService: SolfacService) { 
     }
 
     ngOnInit(): void {
@@ -55,8 +51,7 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
         this.solfacService.getFile(fileId).subscribe(file => {
             var pdfData = atob(file);
             this.render(pdfData);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     } 
 
     getPdf(invoiceId){
@@ -65,8 +60,7 @@ export class SolfacPdfViewerComponent implements OnInit, OnDestroy  {
         this.invoiceService.getPdfFile(invoiceId).subscribe(file => {
             var pdfData = atob(file);
             this.render(pdfData);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     } 
 
     render(pdfData){

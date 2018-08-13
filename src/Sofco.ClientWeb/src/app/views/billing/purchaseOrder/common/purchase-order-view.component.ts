@@ -1,13 +1,12 @@
 import { Component, OnInit,  OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { PurchaseOrderService } from '../../../../services/billing/purchaseOrder.service';
 import * as FileSaver from "file-saver";
-import { I18nService } from 'app/services/common/i18n.service';
-import { AmountFormatPipe } from 'app/pipes/amount-format.pipe';
-import { MenuService } from 'app/services/admin/menu.service';
-import { PurchaseOrderBalanceModel } from 'app/models/billing/purchase-order/purchase-order-balance-model';
+import { I18nService } from '../../../../services/common/i18n.service';
+import { AmountFormatPipe } from '../../../../pipes/amount-format.pipe';
+import { MenuService } from '../../../../services/admin/menu.service';
+import { PurchaseOrderBalanceModel } from '../../../../models/billing/purchase-order/purchase-order-balance-model';
 declare var $: any;
 declare var moment: any;
 
@@ -37,8 +36,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         private purchaseOrderService: PurchaseOrderService,
         public menuService: MenuService,
         private datatableService: DataTableService,
-        private i18nService: I18nService,
-        private errorHandlerService: ErrorHandlerService) {}
+        private i18nService: I18nService) {}
 
     ngOnInit() {
         this.adjustmentSuffix = " - " + this.i18nService.translateByKey('billing.purchaseOrder.adjustment');
@@ -89,16 +87,14 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     export(purchaseOrder){
         this.suscription = this.purchaseOrderService.exportFile(purchaseOrder.fileId).subscribe(file => {
             FileSaver.saveAs(file, purchaseOrder.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     viewFile(purchaseOrder){
         if(purchaseOrder.fileName.endsWith('.pdf')){
             this.suscription = this.purchaseOrderService.getFile(purchaseOrder.fileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 

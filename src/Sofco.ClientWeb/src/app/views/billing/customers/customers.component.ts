@@ -1,10 +1,8 @@
 import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { CustomerService } from "app/services/billing/customer.service";
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
+import { CustomerService } from "../../../services/billing/customer.service";
+import { DataTableService } from "../../../services/common/datatable.service";
 import { MessageService } from '../../../services/common/message.service';
 
 @Component({
@@ -21,8 +19,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: CustomerService,
         private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private datatableService: DataTableService) { }
 
     ngOnInit() {
       this.getAll();
@@ -43,10 +40,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
         this.messageService.closeLoading();
       },
-      err => {
-        this.messageService.closeLoading();
-        this.errorHandlerService.handleErrors(err);
-      });
+      err => this.messageService.closeLoading());
     }
 
     goToServices(customer){

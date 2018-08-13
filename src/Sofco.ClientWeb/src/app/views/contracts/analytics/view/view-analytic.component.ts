@@ -1,11 +1,10 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
 import { I18nService } from "../../../../services/common/i18n.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";
 
 declare var $: any;
@@ -39,8 +38,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 public menuService: MenuService,
                 private messageService: MessageService,
-                private activatedRoute: ActivatedRoute,
-                private errorHandlerService: ErrorHandlerService){
+                private activatedRoute: ActivatedRoute){
     }
 
     ngOnInit(): void {
@@ -73,7 +71,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 this.showClientButton = this.form.model.clientExternalId != null;
 
                 if(this.form.model.clientExternalId){
-
                     this.form.customerId = this.form.model.clientExternalId;
                     this.form.serviceId = this.form.model.serviceId;
                 }
@@ -84,7 +81,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
             },
             error => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
             });
         });
     }
@@ -97,9 +93,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         if(this.statusClose){
             this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
                 this.closeSuccess(response, 2);
-            },
-            err => {
-                this.errorHandlerService.handleErrors(err);
             });
         }
         else {
@@ -107,7 +100,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 this.closeSuccess(response, 3);
             },
             err => {
-                this.errorHandlerService.handleErrors(err);
                 this.confirmModal.hide();
             });
         }
@@ -116,7 +108,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     closeSuccess(response, status){
         this.form.model.status = status;
         this.confirmModal.hide();
-        if(response.messages) this.messageService.showMessages(response.messages);
     }
 
     getStatus() {
@@ -144,12 +135,10 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         this.editSubscrip = this.analyticService.updateDaf(this.form.model).subscribe(
             data => {
                 this.messageService.closeLoading();
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.router.navigate(['contracts/analytics']);
             },
             err => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
             });
     }
 

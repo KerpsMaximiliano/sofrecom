@@ -1,15 +1,11 @@
 import { Subscription } from 'rxjs';
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { GroupService } from "app/services/admin/group.service";
-import { RoleService } from "app/services/admin/role.service";
-import { Group } from "app/models/admin/group";
-import { Role } from "app/models/admin/role";
-import { Module } from '../../../../models/admin/module';
-import { group } from '@angular/animations';
-declare var $: any;
+import { GroupService } from "../../../../services/admin/group.service";
+import { RoleService } from "../../../../services/admin/role.service";
+import { Group } from "../../../../models/admin/group";
+import { Role } from "../../../../models/admin/role";
 
 @Component({
   selector: 'app-group-edit',
@@ -34,8 +30,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private activatedRoute: ActivatedRoute, 
     private router: Router,
-    private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService) { 
+    private messageService: MessageService) { 
   }
 
   ngOnInit() {
@@ -60,8 +55,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
         if(!data.role){
           this.module.role = <Role>{};
         }
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
   }
 
   getAllRoles(){
@@ -75,10 +69,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
 
         this.messageService.closeLoading();
       },
-      err => { 
-        this.errorHandlerService.handleErrors(err);
-        this.messageService.closeLoading();
-      });
+      err => this.messageService.closeLoading());
   }
 
   goToGroups(){
@@ -88,9 +79,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
   onSubmit(form){
     this.editSubscrip = this.service.edit(this.module).subscribe(
       data => {
-        if(data.messages) this.messageService.showMessages(data.messages);
         this.router.navigate(["/admin/groups"])
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
   }
 }

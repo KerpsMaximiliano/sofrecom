@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { DataTableService } from 'app/services/common/datatable.service';
+import { ErrorHandlerService } from '../../../../../services/common/errorHandler.service';
+import { DataTableService } from '../../../../../services/common/datatable.service';
 import { Router } from '@angular/router';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { PurchaseOrderActiveDelegateService } from 'app/services/billing/purchase-order-active-delegate.service';
+import { PurchaseOrderActiveDelegateService } from '../../../../../services/billing/purchase-order-active-delegate.service';
 
 @Component({
     selector: 'app-purchase-order-active-delegate',
@@ -58,9 +58,6 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
         this.subscription = this.purchaseOrderDelegateService.getAll().subscribe(response => {
             this.delegates = response.data;
             this.initTable();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -77,9 +74,6 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
         this.confirmModal.hide();
         this.subscription = this.purchaseOrderDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
             this.getDelegates();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

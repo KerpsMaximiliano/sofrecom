@@ -1,9 +1,8 @@
 import { Component, Input, ViewChild, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { SolfacService } from 'app/services/billing/solfac.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { DataTableService } from 'app/services/common/datatable.service';
+import { SolfacService } from '../../../../services/billing/solfac.service';
+import { DataTableService } from '../../../../services/common/datatable.service';
 
 @Component({
   selector: 'solfac-history',
@@ -31,7 +30,6 @@ export class SolfacHistoryComponent implements OnInit, OnDestroy {
     getHistoriesSubscrip: Subscription;
 
     constructor(private solfacService: SolfacService,
-                private errorHandlerService: ErrorHandlerService,
                 private datatableService: DataTableService) {
 
     }
@@ -47,8 +45,7 @@ export class SolfacHistoryComponent implements OnInit, OnDestroy {
             var options = { selector: "#historyTable" }
             this.datatableService.destroy(options.selector);
             this.datatableService.initialize(options);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     ngOnDestroy(){

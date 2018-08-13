@@ -1,9 +1,8 @@
 import { Component, Input, ViewChild, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { DataTableService } from 'app/services/common/datatable.service';
-import { InvoiceService } from 'app/services/billing/invoice.service';
+import { DataTableService } from '../../../../services/common/datatable.service';
+import { InvoiceService } from '../../../../services/billing/invoice.service';
 
 @Component({
   selector: 'invoice-history',
@@ -30,7 +29,6 @@ export class InvoiceHistoryComponent implements OnInit, OnDestroy {
     getHistoriesSubscrip: Subscription;
 
     constructor(private invoiceService: InvoiceService,
-                private errorHandlerService: ErrorHandlerService,
                 private datatableService: DataTableService) {
 
     }
@@ -46,8 +44,7 @@ export class InvoiceHistoryComponent implements OnInit, OnDestroy {
             var options = { selector: "#historyTable" }
             this.datatableService.destroy(options.selector);
             this.datatableService.initialize(options);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     ngOnDestroy(){

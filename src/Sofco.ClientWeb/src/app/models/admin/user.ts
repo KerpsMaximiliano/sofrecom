@@ -1,5 +1,5 @@
 
-import { Group } from "app/models/admin/group";
+import { Group } from "./group";
 
 export interface User {
     id: number,

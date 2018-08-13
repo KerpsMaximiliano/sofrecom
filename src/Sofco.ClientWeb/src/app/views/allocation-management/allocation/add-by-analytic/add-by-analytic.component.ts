@@ -1,16 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { AllocationSearch } from "app/models/allocation-management/allocationSearch";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { MessageService } from "app/services/common/message.service";
-import { AppSetting } from 'app/services/common/app-setting'
-
-declare var $:any;
+import { ActivatedRoute } from "@angular/router";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { AllocationSearch } from "../../../../models/allocation-management/allocationSearch";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { AppSetting } from '../../../../services/common/app-setting'
 
 @Component({
     selector: 'add-by-analytic',
@@ -39,13 +34,9 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     pmoUser: boolean;
 
     constructor(private analyticService: AnalyticService,
-                private router: Router,
                 private menuService: MenuService,
-                private messageService: MessageService,
-                private allocationService: AllocationService,
                 private employeeService: EmployeeService,
                 private activatedRoute: ActivatedRoute,
-                private errorHandlerService: ErrorHandlerService,
                 private appSetting: AppSetting){}
 
     ngOnInit(): void {
@@ -66,8 +57,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
                     this.analytic = data;
 
                     this.getTimeline(params['id']);
-                },
-                error => this.errorHandlerService.handleErrors(error));
+                });
             });
         } 
 
@@ -84,8 +74,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     getAllocationResources(){
         this.getAllocationResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getTimeline(analyticId){

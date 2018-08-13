@@ -1,13 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CustomerService } from 'app/services/billing/customer.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from 'app/services/common/message.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { UserService } from 'app/services/admin/user.service';
+import { ServiceService } from '../../../../../../services/billing/service.service';
+import { CustomerService } from '../../../../../../services/billing/customer.service';
+import { MessageService } from '../../../../../../services/common/message.service';
+import { I18nService } from '../../../../../../services/common/i18n.service';
+import { UserService } from '../../../../../../services/admin/user.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LicenseViewDelegateService } from 'app/services/human-resources/license-view-delegate.service';
+import { LicenseViewDelegateService } from '../../../../../../services/human-resources/license-view-delegate.service';
 declare var $: any;
 
 @Component({
@@ -40,7 +39,6 @@ export class LicenseViewDelegateEditComponent implements OnInit, OnDestroy {
         private customerService: CustomerService,
         private usersService: UserService,
         private delegateService: LicenseViewDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService,
         private i18nService: I18nService,
         private router: Router) {
@@ -67,7 +65,6 @@ export class LicenseViewDelegateEditComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -116,9 +113,6 @@ export class LicenseViewDelegateEditComponent implements OnInit, OnDestroy {
         this.subscription = this.serviceService.getOptions(this.customerId).subscribe(res => {
             this.services = res.data;
             this.updateServiceControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -132,9 +126,6 @@ export class LicenseViewDelegateEditComponent implements OnInit, OnDestroy {
         this.subscription = this.usersService.getOptions().subscribe(res => {
             this.users = res;
             this.initUserControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -199,7 +190,6 @@ export class LicenseViewDelegateEditComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

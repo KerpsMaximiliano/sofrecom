@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from "app/services/common/message.service";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 
 declare var google: any;
 declare var self: any;
@@ -19,10 +16,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     showTimeLine = false;
 
-    constructor(private analyticService: AnalyticService,
-                private dataTableService: DataTableService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+    constructor(private analyticService: AnalyticService){
     }
 
     ngOnInit(): void {
@@ -38,14 +32,11 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         this.showTimeLine = false;
 
         this.getAllSubscrip = this.analyticService.getTimelineResources(analyticId, moment(dateSince).format('YYYY-MM-DD'), months).subscribe(data => {
-            if (data.messages) this.messageService.showMessages(data.messages);
-
             if (data.data && data.data.length > 0){
                 this.model = data.data;
                 this.configChart();
             }
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     configChart() {
@@ -71,7 +62,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         const releaseDates = [];
         const releaseData = [];
 
-        self.this.model.forEach(function(item, index){
+        self.this.model.forEach(function(item){
             const startDate = new Date(item.startDate);
             const endDate = new Date(item.endDate);
 

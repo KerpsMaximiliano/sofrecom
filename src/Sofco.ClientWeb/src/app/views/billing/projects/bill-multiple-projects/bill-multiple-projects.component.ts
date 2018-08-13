@@ -1,9 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ProjectService } from "app/services/billing/project.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MessageService } from 'app/services/common/message.service';
+import { ProjectService } from "../../../../services/billing/project.service";
+import { MessageService } from '../../../../services/common/message.service';
 
 @Component({
   selector: 'bill-multiple-projects',
@@ -25,8 +24,7 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
-        private service: ProjectService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private service: ProjectService) { }
 
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -60,7 +58,6 @@ export class BillMultipleProjectsComponent implements OnInit, OnDestroy {
       },
       err => {
         this.messageService.closeLoading();
-        this.errorHandlerService.handleErrors(err)
       });
     }
 

@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Router } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { UserService } from "app/services/admin/user.service";
+import { UserService } from "../../../../services/admin/user.service";
 import { SectorService } from "../../../../services/admin/sector.service";
 
 @Component({
@@ -23,8 +22,7 @@ export class SectorAddComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
                 private router: Router,
                 private sectorService: SectorService,
-                private userService: UserService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private userService: UserService) { }
 
     ngOnInit(): void {
         this.messageService.showLoading();
@@ -33,10 +31,7 @@ export class SectorAddComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.responsables = response; 
         }, 
-        error => {
-            this.errorHandlerService.handleErrors(error);
-            this.messageService.closeLoading();
-        });
+        error => this.messageService.closeLoading());
     }
 
     ngOnDestroy(): void {
@@ -54,12 +49,8 @@ export class SectorAddComponent implements OnInit, OnDestroy {
         this.addSubscript = this.sectorService.add(this.text, this.responsableId).subscribe(response => {
             this.messageService.closeLoading();
 
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.goBack();   
         }, 
-        error => { 
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        error => this.messageService.closeLoading());
     }
 }

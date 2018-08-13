@@ -1,11 +1,10 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService } from 'app/services/common/message.service';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { GroupService } from "app/services/admin/group.service";
+import { MessageService } from '../../../../services/common/message.service';
+import { GroupService } from "../../../../services/admin/group.service";
 import { Subscription } from "rxjs";
-import { RoleService } from "app/services/admin/role.service";
-import { Group } from "app/models/admin/group";
+import { RoleService } from "../../../../services/admin/role.service";
+import { Group } from "../../../../models/admin/group";
 
 @Component({
   selector: 'app-group-add',
@@ -21,8 +20,7 @@ export class GroupAddComponent implements OnInit, OnDestroy {
   constructor(private service: GroupService, 
     private messageService: MessageService,
     private roleService: RoleService,
-    private router: Router,
-    private errorHandlerService: ErrorHandlerService) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.getAllRoles();
@@ -36,10 +34,9 @@ export class GroupAddComponent implements OnInit, OnDestroy {
       data => {
         this.messageService.closeLoading();
         
-        if(data.messages) this.messageService.showMessages(data.messages);
         this.router.navigate(["/admin/groups"]);
       },
-      err => this.errorHandlerService.handleErrors(err));
+      err => this.messageService.closeLoading());
   }
 
   ngOnDestroy(){
@@ -50,8 +47,7 @@ export class GroupAddComponent implements OnInit, OnDestroy {
     this.getRolesSubscrip = this.roleService.getOptions().subscribe(
       d => {
         this.roles = d;
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
   }
 
   goToGroups(){

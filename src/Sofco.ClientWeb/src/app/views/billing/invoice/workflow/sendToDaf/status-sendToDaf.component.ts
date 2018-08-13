@@ -1,11 +1,9 @@
 import { OnDestroy, Component, ViewChild, Input, Output, EventEmitter } from "@angular/core";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../../components/modal/ng2modal-config";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { InvoiceStatus } from "app/models/enums/invoiceStatus";
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { InvoiceService } from "../../../../../services/billing/invoice.service";
+import { InvoiceStatus } from "../../../../../models/enums/invoiceStatus";
 
 @Component({
     selector: 'invoice-status-sendToDaf',
@@ -34,36 +32,27 @@ import { InvoiceStatus } from "app/models/enums/invoiceStatus";
     public comments: string;
 
     constructor(private invoiceService: InvoiceService,
-        private messageService: MessageService,
-        private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private menuService: MenuService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
     }
 
     sendToDAF(){
-        this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Sent, this.comments, "").subscribe(data => {
+        this.invoiceService.changeStatus(this.invoiceId, InvoiceStatus.Sent, this.comments, "").subscribe(() => {
             this.sendToDafModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            if(this.history.observers.length > 0){
+            if (this.history.observers.length > 0) {
                 this.history.emit();
             }
-
-            if(this.callback.observers.length > 0){
+            if (this.callback.observers.length > 0) {
                 var toModif = {
                     invoiceStatus: InvoiceStatus[InvoiceStatus.Sent],
                     reloadUploader: true
-                }
-
+                };
                 this.callback.emit(toModif);
             }
         },
-        err => {
-            this.sendToDafModal.hide();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => this.sendToDafModal.hide());
     }
 
     canSendToDaf(){

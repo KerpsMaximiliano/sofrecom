@@ -1,8 +1,7 @@
 import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../services/common/message.service';
 import { WorktimeService } from '../../../services/worktime-management/worktime.service';
 
 @Component({
@@ -29,8 +28,7 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
   @Output() onSuccess: EventEmitter<any> = new EventEmitter();
 
   constructor(private messageService: MessageService,
-    private worktimeService: WorktimeService,
-    private errorHandlerService: ErrorHandlerService) { }
+    private worktimeService: WorktimeService) { }
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -51,7 +49,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
     this.subscrip = this.worktimeService.reject(this.workTime.id, this.rejectComments).subscribe(
         data => {
             this.rejectModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
 
             if(this.onSuccess.observers.length > 0){
                 this.onSuccess.emit();
@@ -59,7 +56,6 @@ export class WorkTimeStatusRejectComponent implements OnDestroy  {
         },
         error => {
             this.rejectModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 }

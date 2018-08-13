@@ -1,13 +1,12 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { CustomerService } from "app/services/billing/customer.service";
-import { Option } from "app/models/option";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { UtilsService } from "app/services/common/utils.service";
-import { PurchaseOrderStatus } from "app/models/enums/purchaseOrderStatus";
-import { MessageService } from "app/services/common/message.service";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { Option } from "../../../../models/option";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { UtilsService } from "../../../../services/common/utils.service";
+import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
+import { MessageService } from "../../../../services/common/message.service";
 
 @Component({
     selector: 'purchase-order-form',
@@ -34,8 +33,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
                 private utilsService: UtilsService,
                 private messageService: MessageService,
-                private customerService: CustomerService,
-                private errorHandlerService: ErrorHandlerService){}
+                private customerService: CustomerService){}
 
     ngOnInit(): void {
         this.getAreas();
@@ -59,8 +57,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getAreas(){
         this.getAreasSubscrip = this.utilsService.getAreas().subscribe(d => {
             this.areas = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCurrencies(){
@@ -84,16 +81,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
                     });
                 }
             }
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
  
     getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getCustomers(showLoading: boolean){
@@ -105,7 +100,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         },
         err => {
             if(showLoading) this.messageService.closeLoading();    
-            this.errorHandlerService.handleErrors(err)
         });
     }
 

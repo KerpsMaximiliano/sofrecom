@@ -1,10 +1,7 @@
 import { Component, ViewChild, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
 import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
@@ -50,15 +47,13 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         employeeId: 0
     };
 
-    constructor(private router: Router,
-        private messageService: MessageService,
+    constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
         private analyticService: AnalyticService,
         private customerService: CustomerService,
         private employeeService: EmployeeService,
-        private dataTableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService){}
+        private dataTableService: DataTableService){}
 
     ngOnInit(): void {
         this.getCustomers();
@@ -92,45 +87,37 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     getManagers(){
         this.getManagersSubscrip = this.employeeService.getManagers().subscribe(data => {
             this.managers = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getMonths(){
         this.getMonthsSubscrip = this.utilsService.getMonths().subscribe(data => {
             this.months = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getYears(){
         this.getYearsSubscrip = this.utilsService.getYears().subscribe(data => {
             this.years = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getResources(){
         this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.searchModel.clientId).subscribe(
             data => {
                 this.analytics = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getCustomers(){
         this.getCustomerSubscrip = this.customerService.getOptions().subscribe(res => {
             this.customers = res.data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -140,9 +127,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data;
-            if(response.messages){
-                this.messageService.showMessages(response.messages);
-            } 
 
             if(this.data.length > 0){
                 this.initGrid();
@@ -153,10 +137,9 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
             sessionStorage.setItem('lastWorktimeReportQuery', JSON.stringify(this.searchModel));
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     initGrid(){

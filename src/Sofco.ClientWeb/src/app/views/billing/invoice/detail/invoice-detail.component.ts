@@ -1,18 +1,15 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { Invoice } from "app/models/billing/invoice/invoice";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { MessageService } from "app/services/common/message.service";
+import { Invoice } from "../../../../models/billing/invoice/invoice";
+import { InvoiceService } from "../../../../services/billing/invoice.service";
+import { MessageService } from "../../../../services/common/message.service";
 import * as FileSaver from "file-saver";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { MenuService } from "app/services/admin/menu.service";
-import { InvoiceStatus } from "app/models/enums/invoiceStatus";
-
-declare var $: any;
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { InvoiceStatus } from "../../../../models/enums/invoiceStatus";
 
 @Component({
   selector: 'app-invoice-detail',
@@ -51,8 +48,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
                 public menuService: MenuService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService) {}
+                private messageService: MessageService) {}
 
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -69,8 +65,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 sessionStorage.setItem("serviceId", this.model.serviceId);
                 sessionStorage.setItem("customerId", this.model.customerId);
                 sessionStorage.setItem("customerName", this.model.accountName);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         });
     }
 
@@ -113,11 +108,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                           allowedMimeType: ['application/pdf'],
                                          });
 
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+        this.uploader.onCompleteItem = (response:any) => {
             var dataJson = JSON.parse(response);
 
-            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
-            
             if(dataJson){
                 this.model.pdfFileName = dataJson.data.fileName;
                 this.model.pdfFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
@@ -140,10 +133,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                           allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                                         });
 
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+        this.uploader.onCompleteItem = (response:any) => {
             var dataJson = JSON.parse(response);
-
-            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
 
             if(dataJson){
                 this.model.excelFileName = dataJson.data.fileName;
@@ -171,15 +162,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     exportExcel(){
         this.service.exportExcelFile(this.model.excelFileId).subscribe(file => {
             FileSaver.saveAs(file, this.model.excelFileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
  
     exportPdf(){
         this.service.exportPdfFile(this.model.pdfFileId).subscribe(file => {
             FileSaver.saveAs(file, this.model.pdfFileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     clearSelectedFile(){
@@ -209,8 +198,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => { this.goToProject(); }, 1500)
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     updateStatus(event){
@@ -228,8 +216,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(this.model.pdfFileName.endsWith('.pdf')){
             this.service.getPdfFile(this.model.pdfFileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 } 

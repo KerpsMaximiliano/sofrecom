@@ -1,13 +1,11 @@
-import { MessageService } from 'app/services/common/message.service';
 import { Subscription } from 'rxjs';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { GroupService } from "app/services/admin/group.service";
-import { UserService } from "app/services/admin/user.service";
-import { UserDetail } from "app/models/admin/userDetail";
-import { MenuService } from 'app/services/admin/menu.service';
+import { GroupService } from "../../../../services/admin/group.service";
+import { UserService } from "../../../../services/admin/user.service";
+import { UserDetail } from "../../../../models/admin/userDetail";
+import { MenuService } from '../../../../services/admin/menu.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -50,9 +48,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         private service: UserService, 
         private activatedRoute: ActivatedRoute, 
         private menuService: MenuService,
-        private groupService: GroupService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private groupService: GroupService) { }
 
     ngOnInit() {
         this.routeSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -70,8 +66,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             user => {
                 this.user = user;
                 this.getAllGroups();
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     ngOnDestroy(){
@@ -98,8 +93,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
                 }
 
                 this.groupsToAdd = groups;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     private isOptionInArray(arrGroup, option: any): boolean{
@@ -127,28 +121,19 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         };
 
         this.service.assignGroups(this.id, objToSend).subscribe(
-            data => {
+            () => {
                 this.modalGroups.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
-            },
-            err => { 
-                this.errorHandlerService.handleErrors(err);
             });
     }
 
     unassignGroup(){
         this.service.unassignGroup(this.user.id, this.groupId).subscribe(
-            data => {
+            () => {
                 this.confirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
             },
-            err => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(err);
-            }
-        );
+            () => this.confirmModal.hide());
     }
 
     openConfirmModal(groupId){

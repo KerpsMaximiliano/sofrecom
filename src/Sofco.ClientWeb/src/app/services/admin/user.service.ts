@@ -2,7 +2,7 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, URLSearchParams, RequestOptions } from '@angular/http';
-import { Service } from 'app/services/common/service';
+import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
