@@ -24,6 +24,7 @@ export class OcStatusRejectComponent implements OnDestroy  {
 
   @Input() ocId: number;
   @Input() status: number;
+  @Input() model: any;
 
   subscrip: Subscription;
 
@@ -38,15 +39,25 @@ export class OcStatusRejectComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && 
-        (this.status == PurchaseOrderStatus.CompliancePending || 
-          this.status == PurchaseOrderStatus.ComercialPending || 
-          this.status == PurchaseOrderStatus.OperativePending || 
-          this.status == PurchaseOrderStatus.DafPending)){
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') &&
+        (this.status === PurchaseOrderStatus.CompliancePending ||
+          this.hasCommercialAccess() ||
+          this.hasOperationAccess() ||
+          this.status === PurchaseOrderStatus.DafPending)){
         return true;
     }
 
     return false;
+  }
+
+  hasCommercialAccess() {
+    return (this.status === PurchaseOrderStatus.ComercialPending
+      && this.menuService.hasAreaAccess(this.model.areaId));
+  }
+
+  hasOperationAccess() {
+    return (this.status === PurchaseOrderStatus.OperativePending
+      && this.menuService.hasSectorAccess(this.model.sectorIds));
   }
 
   showModal(){

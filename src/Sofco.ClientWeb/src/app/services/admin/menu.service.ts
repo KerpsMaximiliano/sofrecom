@@ -119,7 +119,13 @@ export class MenuService {
         return this.areaIds.indexOf(areaId)>-1;
     }
 
-    hasSectorAccess(sectorId:number):boolean {
-        return this.sectorIds.indexOf(sectorId)>-1;
+    hasSectorAccess(sectorIds:number[]):boolean {
+        let isValid = false;
+        this.sectorIds.forEach(x => {
+            if(sectorIds.indexOf(x)>-1){
+                isValid = true;
+            }
+        });
+        return isValid;
     }
 }
