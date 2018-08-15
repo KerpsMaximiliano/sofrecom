@@ -115,8 +115,9 @@ namespace Sofco.Framework.FileManager
             {
                 try
                 {
-                    unitOfWork.WorkTimeRepository.Insert(WorkTimesToAdd);
-                    unitOfWork.Save();
+                    unitOfWork.BeginTransaction();
+                    unitOfWork.WorkTimeRepository.InsertBulk(WorkTimesToAdd);
+                    unitOfWork.Commit();
                 }
                 catch (Exception e)
                 {
