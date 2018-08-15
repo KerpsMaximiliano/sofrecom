@@ -7,7 +7,6 @@ import * as FileSaver from "file-saver";
 import { CertificatesService } from "../../../../services/billing/certificates.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
-
 @Component({
     selector: 'add-certificate',
     templateUrl: './add-certificate.component.html',
@@ -69,7 +68,7 @@ export class NewCertificateComponent implements OnDestroy {
                                           maxFileSize: 10*1024*1024
                                         });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
             
             if(dataJson){

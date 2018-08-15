@@ -224,6 +224,87 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importDateNull.
+        /// </summary>
+        public static string ImportDateNull {
+            get {
+                return ResourceManager.GetString("ImportDateNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importDatesOutOfRange.
+        /// </summary>
+        public static string ImportDatesOutOfRange {
+            get {
+                return ResourceManager.GetString("ImportDatesOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importDateWrong.
+        /// </summary>
+        public static string ImportDateWrong {
+            get {
+                return ResourceManager.GetString("ImportDateWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importEmployeeIsNotInAnalytic.
+        /// </summary>
+        public static string ImportEmployeeIsNotInAnalytic {
+            get {
+                return ResourceManager.GetString("ImportEmployeeIsNotInAnalytic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importEmployeeWithLicense.
+        /// </summary>
+        public static string ImportEmployeeWithLicense {
+            get {
+                return ResourceManager.GetString("ImportEmployeeWithLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importHoursExceed.
+        /// </summary>
+        public static string ImportHoursExceed {
+            get {
+                return ResourceManager.GetString("ImportHoursExceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importHoursNull.
+        /// </summary>
+        public static string ImportHoursNull {
+            get {
+                return ResourceManager.GetString("ImportHoursNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importTaskNoExist.
+        /// </summary>
+        public static string ImportTaskNoExist {
+            get {
+                return ResourceManager.GetString("ImportTaskNoExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.importUserWithEmailNull.
+        /// </summary>
+        public static string ImportUserWithEmailNull {
+            get {
+                return ResourceManager.GetString("ImportUserWithEmailNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.monthError.
         /// </summary>
         public static string MonthError {

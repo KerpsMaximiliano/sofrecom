@@ -45,6 +45,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         const settings: Array<any> = d.body.data;
         this.settings = settings.filter(item => item.category !== this.JobsSettingCategory);
         this.jobSettings = settings.filter(item => item.category === this.JobsSettingCategory);
+        this.loading = false
       },
       err => this.loading = false);
   }
@@ -53,7 +54,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.getLicenseTypes().subscribe(
-      response => { this.licenseTypes = response; },
+      response => { 
+        this.licenseTypes = response; 
+        this.messageService.closeLoading(); 
+      },
       err => this.messageService.closeLoading());
   }
 
@@ -69,7 +73,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveLicenseType(item).subscribe(
-      response => { },
+      response => { this.messageService.closeLoading(); },
       err => this.messageService.closeLoading());
   }
 
@@ -89,7 +93,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
-      response => { },
+      response => { this.messageService.closeLoading(); },
       err => this.messageService.closeLoading());
   }
 }

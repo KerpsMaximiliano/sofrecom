@@ -38,6 +38,11 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Tasks.Any(x => x.Description == description);
         }
 
+        public IList<int> GetAllIds()
+        {
+            return context.Tasks.Where(x => x.Active).Select(x => x.Id).ToList();
+        }
+
         public new IList<Task> GetAll()
         {
             return context.Tasks.Include(x => x.Category).ToList().AsReadOnly();

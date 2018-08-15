@@ -135,6 +135,9 @@
   <data name="FileDeleted" xml:space="preserve">
     <value>common.fileDeleted</value>
   </data>
+  <data name="FileMustBeIncluded" xml:space="preserve">
+    <value>common.fileMustBeIncluded</value>
+  </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>common.fileNotFound</value>
   </data>

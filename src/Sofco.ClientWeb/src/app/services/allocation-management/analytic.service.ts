@@ -70,6 +70,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
   }
 
+  getByManager() {
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/currentManager`);
+  }
+
   get(query) {
     return this.http.post<any>(`${this.baseUrl}/analytics/search`, query);
   }

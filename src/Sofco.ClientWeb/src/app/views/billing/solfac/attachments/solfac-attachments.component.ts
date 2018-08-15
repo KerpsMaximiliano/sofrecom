@@ -61,7 +61,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
 
         this.uploader = new FileUploader({url: this.solfacService.getUrlForImportFile(this.solfacId), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var json = JSON.parse(response);
 
             var file = json.data;

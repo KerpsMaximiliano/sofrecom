@@ -87,7 +87,7 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
                                           maxFileSize: 10*1024*1024
                                         });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
             
             if(dataJson){

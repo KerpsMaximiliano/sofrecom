@@ -27,10 +27,11 @@ import { WorkTimeRouter } from './worktime.router';
 import { EmployeeService } from '../../services/allocation-management/employee.service';
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
 import { CustomerService } from '../../services/billing/customer.service';
+import { ImportWorkTimesComponent } from 'app/views/worktime-management/import/import-worktime.component';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
-                 WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent],
+                 WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent, ImportWorkTimesComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
