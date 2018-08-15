@@ -63,8 +63,9 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
 
                 localStorage.setItem('menu', JSON.stringify(menu));
-                Cookie.set("currentUser", this.model.username);
-                Cookie.set("currentUserMail", this.model.username);
+                const username = this.model.username.split('@')[0];
+                Cookie.set("currentUser", username);
+                Cookie.set("currentUserMail", username);
 
                 this.menuService.menu = menu.menus;
                 this.menuService.userIsDirector = menu.isDirector;
