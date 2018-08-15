@@ -131,7 +131,8 @@
             "StartDateHolidays": "Fecha de inicio período vacacional",
             "jobsSettingTitle": "Parámetros de Jobs",
             "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
-            "WorkingHoursPerDaysMax": "Tope jornada laboral"
+            "WorkingHoursPerDaysMax": "Tope jornada laboral",
+            "CloseMonth": "Dia del cierre del mes"
         }
     },
     "billing":{
@@ -935,6 +936,18 @@
             "date": "Fecha",
             "hours": "Horas",
             "status": "Estado"
+        },
+        "import": {
+            "title": "Importación masiva de horas",
+            "shortTitle": "Importación Masiva",
+            "export": "Exportar template",
+            "importSuccess": "La importación masiva fue realizada con exito.",
+            "importContainsErrors": "Errores en la importación",
+            "employeeNumber": "Legajo",
+            "resource": "Recurso",
+            "date": "Fecha",
+            "row": "Fila",
+            "error": "Error"
         },
         "Draft": "Borrador",
         "Sent": "Enviada",

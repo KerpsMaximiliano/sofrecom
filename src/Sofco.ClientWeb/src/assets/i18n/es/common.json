@@ -17,5 +17,6 @@
     "mailSent": "El Email fue enviado correctamente",
     "fileDeleted": "Archivo eliminado correctamente",
     "crmGeneralError": "Error interno de CRM",
-    "currencyRequired": "La moneda es requerida"
+    "currencyRequired": "La moneda es requerida",
+    "fileMustBeIncluded": "El archivo es requerido"
 }

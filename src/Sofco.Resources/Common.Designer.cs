@@ -116,6 +116,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.fileMustBeIncluded.
+        /// </summary>
+        public static string FileMustBeIncluded {
+            get {
+                return ResourceManager.GetString("FileMustBeIncluded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.fileNotFound.
         /// </summary>
         public static string FileNotFound {

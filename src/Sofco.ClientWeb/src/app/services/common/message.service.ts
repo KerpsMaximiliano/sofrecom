@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastrService, IndividualConfig } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { Message } from "../../models/message";
 import { I18nService } from './i18n.service';
 

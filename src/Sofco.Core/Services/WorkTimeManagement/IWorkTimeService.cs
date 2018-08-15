@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
@@ -35,5 +36,9 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response RejectAll(WorkTimeRejectParams parameters);
 
         Response Delete(int id);
+
+        void Import(int analyticId, IFormFile file, Response<IList<WorkTimeImportResult>> response);
+
+        byte[] ExportTemplate();
     }
 }

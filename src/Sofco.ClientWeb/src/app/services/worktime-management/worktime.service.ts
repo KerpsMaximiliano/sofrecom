@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Service } from "../common/service";
 import { HttpClient } from '@angular/common/http';
 import { MenuService } from '../admin/menu.service';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class WorktimeService {
@@ -65,5 +66,18 @@ export class WorktimeService {
 
   sendHours(){
     return this.http.put<any>(`${this.apiUrl}/send`, {});
+  }
+
+  getUrlForImportFile(analyticId){
+    return `${this.apiUrl}/import/${analyticId}`;
+  }
+
+  exportTemplate(){
+    return this.http.get(`${this.apiUrl}/export/template`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
   }
 }

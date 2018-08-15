@@ -116,7 +116,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                                           maxFileSize: 50*1024*1024
                                         });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
             
             if(dataJson){

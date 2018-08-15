@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -10,9 +12,11 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.FileManager;
 using Sofco.Core.Validations;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -28,13 +32,25 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeValidation workTimeValidation;
 
-        public WorkTimeService(ILogMailer<WorkTimeService> logger, IUnitOfWork unitOfWork, IUserData userData, IEmployeeData employeeData, IWorkTimeValidation workTimeValidation)
+        private readonly IWorkTimeFileManager workTimeFileManager;
+
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public WorkTimeService(ILogMailer<WorkTimeService> logger, 
+            IUnitOfWork unitOfWork, 
+            IUserData userData,
+            IHostingEnvironment hostingEnvironment,
+            IEmployeeData employeeData, 
+            IWorkTimeValidation workTimeValidation,
+            IWorkTimeFileManager workTimeFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.employeeData = employeeData;
             this.workTimeValidation = workTimeValidation;
             this.logger = logger;
+            this.workTimeFileManager = workTimeFileManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
@@ -491,6 +507,22 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             return response;
+        }
+
+        public void Import(int analyticId, IFormFile file, Response<IList<WorkTimeImportResult>> response)
+        {
+            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analyticId);
+
+            if (response.HasErrors()) return;
+
+            workTimeFileManager.Import(analyticId, file, response);
+        }
+
+        public byte[] ExportTemplate()
+        {
+            var bytes = System.IO.File.ReadAllBytes($"{hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/worktime-template.xlsx");
+
+            return bytes;
         }
 
         public IEnumerable<Option> GetStatus()

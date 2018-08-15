@@ -108,7 +108,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                           allowedMimeType: ['application/pdf'],
                                          });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
 
             if(dataJson){
@@ -133,7 +133,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                           allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
                                         });
 
-        this.uploader.onCompleteItem = (response:any) => {
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
 
             if(dataJson){
