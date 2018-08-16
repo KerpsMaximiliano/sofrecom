@@ -32,8 +32,8 @@ namespace Sofco.Service.Implementations.Jobs
                                                                               "SEGUIMIENTO", "SOPORTE", "SOFCOAR", "SOFRE", "SRTI", "TFS",
                                                                               "CIENA", "ZABBIX", "AVAYA", "COMPRAS", "COMUNICACION" };
 
-        public AzureAddUsersJobService(IAzureService azureService, 
-            IUnitOfWork unitOfWork, 
+        public AzureAddUsersJobService(IAzureService azureService,
+            IUnitOfWork unitOfWork,
             IOptions<EmailConfig> emailOptions,
             IOptions<AppSetting> appSetting)
         {
@@ -53,11 +53,11 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (!user.UserPrincipalName.Contains($"@{appSetting.Domain}")) continue;
 
-                if(UsersToExcludeForContains.Any(x => x.Contains(user.UserPrincipalName))) continue;
+                if (UsersToExcludeForContains.Any(item => user.UserPrincipalName.Contains(item))) continue;
 
-                if(UsersToExcludeForEquals.Any(x => x.Equals(user.UserPrincipalName))) continue;
+                if (UsersToExcludeForEquals.Any(x => user.UserPrincipalName.Equals(x))) continue;
 
-                if(UsersToExcludeForStartWith.Any(x => x.StartsWith(user.UserPrincipalName))) continue;
+                if (UsersToExcludeForStartWith.Any(x => user.UserPrincipalName.StartsWith(x))) continue;
 
                 if (unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName)) continue;
 
