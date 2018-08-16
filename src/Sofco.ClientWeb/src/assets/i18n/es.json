@@ -962,6 +962,10 @@
             "newHoliday": "Crear feriado",
             "importConfirm": "Confirma importar feriados desde una fuente externa?",
             "deleteConfirm": "Confirma eliminar el feriado seleccionado?"
+        },
+        "worktimeControl": {
+            "title": "Control de Horas",
+            "yearMonth": "Año - Mes"
         }
     },
     "months": {
