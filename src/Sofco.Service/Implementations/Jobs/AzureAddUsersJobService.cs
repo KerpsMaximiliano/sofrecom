@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
@@ -22,6 +24,14 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
+        private List<string> UsersToExcludeForContains => new List<string> { "SHARE", "ADMI", "ALERTA", "USER" };
+        private List<string> UsersToExcludeForEquals => new List<string> { "DAF", "IDAP_BIND" };
+        private List<string> UsersToExcludeForStartWith => new List<string> { "AZ", "BNP", "BNRD", "BNSH", "CARDIF", "EMPLEO", "ESCUEL",
+                                                                              "HEALTH", "HELP", "ISO9", "LABORATO", "KLMDM", "LINKEDIN",
+                                                                              "OXIGENO", "PMO", "RECURSOS", "REBRANDI", "RELACIONES", "RRHH",
+                                                                              "SEGUIMIENTO", "SOPORTE", "SOFCOAR", "SOFRE", "SRTI", "TFS",
+                                                                              "CIENA", "ZABBIX", "AVAYA", "COMPRAS", "COMUNICACION" };
+
         public AzureAddUsersJobService(IAzureService azureService, 
             IUnitOfWork unitOfWork, 
             IOptions<EmailConfig> emailOptions,
@@ -43,7 +53,11 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (!user.UserPrincipalName.Contains($"@{appSetting.Domain}")) continue;
 
+                if(UsersToExcludeForContains.Any(x => x.Contains(user.UserPrincipalName))) continue;
 
+                if(UsersToExcludeForEquals.Any(x => x.Equals(user.UserPrincipalName))) continue;
+
+                if(UsersToExcludeForStartWith.Any(x => x.StartsWith(user.UserPrincipalName))) continue;
 
                 if (unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName)) continue;
 
