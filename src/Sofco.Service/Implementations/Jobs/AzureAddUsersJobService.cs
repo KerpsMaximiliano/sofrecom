@@ -53,7 +53,7 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (!user.UserPrincipalName.Contains($"@{appSetting.Domain}")) continue;
 
-                if (UsersToExcludeForContains.Any(item => user.UserPrincipalName.Contains(item))) continue;
+                if (UsersToExcludeForContains.Any(x => user.UserPrincipalName.Contains(x))) continue;
 
                 if (UsersToExcludeForEquals.Any(x => user.UserPrincipalName.Equals(x))) continue;
 
