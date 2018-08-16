@@ -43,6 +43,8 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (!user.UserPrincipalName.Contains($"@{appSetting.Domain}")) continue;
 
+
+
                 if (unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName)) continue;
 
                 var domain = SaveUser(user);
