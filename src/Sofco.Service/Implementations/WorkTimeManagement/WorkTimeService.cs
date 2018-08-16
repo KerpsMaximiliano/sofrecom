@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -515,7 +516,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (response.HasErrors()) return;
 
-            workTimeFileManager.Import(analyticId, file, response);
+            var memoryStream = new MemoryStream();
+            file.CopyTo(memoryStream);
+
+            workTimeFileManager.Import(analyticId, memoryStream, response);
         }
 
         public byte[] ExportTemplate()

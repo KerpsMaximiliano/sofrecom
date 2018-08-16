@@ -112,6 +112,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             var dataJson = JSON.parse(response);
 
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+
                 this.model.pdfFileName = dataJson.data.fileName;
                 this.model.pdfFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.model.pdfFileId = dataJson.data.id;
@@ -137,6 +139,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             var dataJson = JSON.parse(response);
 
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.model.excelFileName = dataJson.data.fileName;
                 this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.model.excelFileId = dataJson.data.id;

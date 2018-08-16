@@ -120,6 +120,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             var dataJson = JSON.parse(response);
             
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.form.model.fileName = dataJson.data.fileName;
                 this.form.model.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.form.model.fileId = dataJson.data.id;

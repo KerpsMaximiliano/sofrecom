@@ -107,6 +107,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var json = JSON.parse(response);
 
+            if(json.messages) this.messageService.showMessages(json.messages);
+            
             var file = json.data;
             this.files.push({ id: file.id, name: file.fileName });
         };
