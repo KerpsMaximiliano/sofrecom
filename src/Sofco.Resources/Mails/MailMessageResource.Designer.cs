@@ -436,7 +436,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se le informa que uno de sus recursos le ha enviado horas para su aprobación.
+        ///   Busca una cadena traducida similar a Se informa que uno de sus recursos le ha enviado horas para su aprobación.
         /// </summary>
         public static string WorkTimeSendHours {
             get {

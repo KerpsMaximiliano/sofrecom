@@ -189,6 +189,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return `label-${hito.status}`
     }
 
+    resolveHitoCheckClass(hito){
+        if(hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0){
+            return 'pending-related';
+        }
+        
+        return `${hito.status}`
+    }
+
     getHitos(){
         this.getHitosSubscrip = this.projectService.getHitos(this.projectId).subscribe(d => {
             this.hitos = d.map(item => {

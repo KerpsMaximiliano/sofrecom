@@ -312,6 +312,6 @@ Muchas gracias.</value>
 Saludos</value>
   </data>
   <data name="WorkTimeSendHours" xml:space="preserve">
-    <value>Se le informa que uno de sus recursos le ha enviado horas para su aprobación</value>
+    <value>Se informa que uno de sus recursos le ha enviado horas para su aprobación</value>
   </data>
 </root>

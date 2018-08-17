@@ -90,7 +90,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics() {
-        this.subscription = this.analyticService.getByCurrentUser().subscribe(res => {
+        this.subscription = this.analyticService.getByManager().subscribe(res => {
             this.analytics = res.data;
             this.setAnalyticSelect();
         });
