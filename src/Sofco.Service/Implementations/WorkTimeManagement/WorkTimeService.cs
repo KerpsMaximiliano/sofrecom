@@ -378,9 +378,28 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var employee = employeeData.GetCurrentEmployee();
 
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+
+            var now = DateTime.Now.Date;
+            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
+
+            DateTime dateFrom;
+            DateTime dateTo;
+
+            if (now.Day > closeMonthValue)
+            {
+                dateFrom = new DateTime(now.Year, now.Month, 1);
+                dateTo = new DateTime(now.Year, now.Month + 1, 1);
+            }
+            else
+            {
+                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
+                dateTo = new DateTime(now.Year, now.Month, 1);
+            }
+
             try
             {
-                var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id);
+                var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id, dateFrom, dateTo);
 
                 if (managers.Any())
                 {

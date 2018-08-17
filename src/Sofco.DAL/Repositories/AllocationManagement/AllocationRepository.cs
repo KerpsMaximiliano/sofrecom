@@ -65,10 +65,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Where(x => x.EmployeeId == id && x.StartDate.Date > now.Date).ToList();
         }
 
-        public IList<User> GetManagers(int employeeId)
+        public IList<User> GetManagers(int employeeId, DateTime dateFrom, DateTime dateTo)
         {
             var analyticIds = context.Allocations
-                .Where(x => x.EmployeeId == employeeId)
+                .Where(x => x.EmployeeId == employeeId && (x.StartDate.Date == dateFrom.Date || x.StartDate.Date == dateTo.Date))
                 .Select(x => x.AnalyticId)
                 .Distinct()
                 .ToList();
