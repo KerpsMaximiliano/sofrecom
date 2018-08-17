@@ -30,7 +30,7 @@ namespace Sofco.Service.Implementations.Jobs
                                                                               "HEALTH", "HELP", "ISO9", "LABORATO", "KLMDM", "LINKEDIN",
                                                                               "OXIGENO", "PMO", "RECURSOS", "REBRANDI", "RELACIONES", "RRHH",
                                                                               "SEGUIMIENTO", "SOPORTE", "SOFCOAR", "SOFRE", "SRTI", "TFS",
-                                                                              "CIENA", "ZABBIX", "AVAYA", "COMPRAS", "COMUNICACION" };
+                                                                              "CIENA", "ZABBIX", "AVAYA", "COMPRAS", "COMUNICACION", "EX" };
 
         public AzureAddUsersJobService(IAzureService azureService,
             IUnitOfWork unitOfWork,
