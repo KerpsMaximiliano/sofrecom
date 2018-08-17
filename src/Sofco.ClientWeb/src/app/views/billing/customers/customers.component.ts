@@ -38,6 +38,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         this.customers = d.data;
 
         var options = { selector: "#customerTable" }
+        this.datatableService.destroy(options.selector);
         this.datatableService.initialize(options);
 
         this.messageService.closeLoading();

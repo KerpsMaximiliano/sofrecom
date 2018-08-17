@@ -78,6 +78,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
+      this.datatableService.destroy(params.selector);
       this.datatableService.initialize(params);
     }
 
