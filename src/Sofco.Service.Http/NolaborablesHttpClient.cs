@@ -17,7 +17,7 @@ namespace Sofco.Service.Http
 
         public Result<T> Get<T>(string urlPath)
         {
-            var result = client.Get<T>(urlPath);
+            var result = client.Get<T>(urlPath, timeOut: TimeSpan.FromMinutes(5));
 
             if (result.HasErrors)
             {
