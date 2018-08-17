@@ -54,4 +54,8 @@ export class ProjectService {
   getIfIsRelated(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/services/${serviceId}/analytic`);
   }
+
+  update() {
+    return this.http.put<any>(`${this.baseUrl}/projects`, {});
+  }
 }

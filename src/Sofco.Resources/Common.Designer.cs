@@ -159,5 +159,14 @@ namespace Sofco.Resources {
                 return ResourceManager.GetString("SaveFileError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a common.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
     }
 }

@@ -38,4 +38,8 @@ export class ServiceService {
   getById(customerId, serviceId) {
     return this.http.get<any>(`${this.apiUrl}/${serviceId}/account/${customerId}`);
   }
+
+  update() {
+    return this.http.put<any>(this.apiUrl, {});
+  }
 }

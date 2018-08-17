@@ -18,5 +18,6 @@
     "fileDeleted": "Archivo eliminado correctamente",
     "crmGeneralError": "Error interno de CRM",
     "currencyRequired": "La moneda es requerida",
-    "fileMustBeIncluded": "El archivo es requerido"
+    "fileMustBeIncluded": "El archivo es requerido",
+    "updateSuccess": "Los datos fueron actualizados correctamente"
 }

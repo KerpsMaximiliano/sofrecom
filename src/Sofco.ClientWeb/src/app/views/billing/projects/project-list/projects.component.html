@@ -46,6 +46,10 @@
         <button class="btn btn-primary btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD') && analytic?.id == 0"> 
             {{'allocationManagement.analytics.new' | translate }} <i class="fa fa-plus"></i> 
         </button>
+
+        <button class="btn btn-sm btn-success btn-outline dim" (click)="update()">
+            {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i>
+        </button>
     </div>
 
     <div class="row">
