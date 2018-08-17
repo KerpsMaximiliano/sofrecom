@@ -6,6 +6,7 @@ import { AuthenticationService } from "../../../services/common/authentication.s
 import { MenuService } from "../../../services/admin/menu.service";
 import { UserService } from "../../../services/admin/user.service";
 import { UserInfoService } from '../../../services/common/user-info.service';
+import { MessageService } from '../../../services/common/message.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private messageService: MessageService,
         private authenticationService: AuthenticationService,
         private menuService: MenuService,
         private userService: UserService) { }
@@ -37,7 +39,11 @@ export class LoginComponent implements OnInit {
         this.loginSubscrip = this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(
             data => { this.onLoginSucces(data); },
-            () => this.loading = false);
+            (response) => {
+                var json = JSON.parse(response._body)
+                if(json.messages) this.messageService.showMessages(json.messages);
+                this.loading = false;
+            });
     }
 
     onLoginSucces(data) {

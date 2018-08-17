@@ -189,4 +189,7 @@
   <data name="CloseForExpensesAnalytic" xml:space="preserve">
     <value>Cierre para Costos analítica: {0}</value>
   </data>
+  <data name="WorkTimeSendHours" xml:space="preserve">
+    <value>Horas pendientes de aprobación</value>
+  </data>
 </root>

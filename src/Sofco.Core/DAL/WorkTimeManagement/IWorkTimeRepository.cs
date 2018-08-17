@@ -35,5 +35,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         IList<WorkTime> Search(SearchParams parameters);
 
         void InsertBulk(IList<WorkTime> workTimesToAdd);
+        void SendManagerHours(int id);
     }
 }

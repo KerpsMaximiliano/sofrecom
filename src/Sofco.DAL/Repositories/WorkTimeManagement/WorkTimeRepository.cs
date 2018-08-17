@@ -173,6 +173,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.BulkInsert(workTimesToAdd);
         }
 
+        public void SendManagerHours(int employeeid)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid}");
+        }
+
         public decimal GetPendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes
