@@ -53,11 +53,11 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (!user.UserPrincipalName.Contains($"@{appSetting.Domain}")) continue;
 
-                if (UsersToExcludeForContains.Any(x => user.UserPrincipalName.Contains(x))) continue;
+                if (UsersToExcludeForContains.Any(x => user.UserPrincipalName.ToLowerInvariant().Contains(x.ToLowerInvariant()))) continue;
 
-                if (UsersToExcludeForEquals.Any(x => user.UserPrincipalName.Equals(x))) continue;
+                if (UsersToExcludeForEquals.Any(x => user.UserPrincipalName.ToLowerInvariant().Equals(x.ToLowerInvariant()))) continue;
 
-                if (UsersToExcludeForStartWith.Any(x => user.UserPrincipalName.StartsWith(x))) continue;
+                if (UsersToExcludeForStartWith.Any(x => user.UserPrincipalName.ToLowerInvariant().StartsWith(x.ToLowerInvariant()))) continue;
 
                 if (unitOfWork.UserRepository.ExistByMail(user.UserPrincipalName)) continue;
 
