@@ -143,6 +143,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var dataJson = JSON.parse(response);
             
+            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+            
             this.excelUploaded = true;
             this.model.excelFileName = dataJson.data.fileName;
             this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();

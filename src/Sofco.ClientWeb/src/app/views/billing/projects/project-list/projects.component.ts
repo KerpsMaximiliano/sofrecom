@@ -15,6 +15,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     projects: any[] = new Array();
     getAllSubscrip: Subscription;
     paramsSubscrip: Subscription;
+    updateSubscrip: Subscription;
     customerId: string;
     serviceId: string;
     serviceName: string;
@@ -46,6 +47,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
       if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
       if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+      if(this.updateSubscrip) this.updateSubscrip.unsubscribe();
     }
 
     getIfIsRelated(){
@@ -76,6 +78,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
+      this.datatableService.destroy(params.selector);
       this.datatableService.initialize(params);
     }
 
@@ -127,5 +130,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   
     goToPurchaseOrders(){
       this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/purchaseOrders`]);
+    }
+    
+    update(){
+      this.messageService.showLoading();
+
+      this.updateSubscrip = this.service.update().subscribe(data => {
+        this.messageService.closeLoading();
+        this.getAll();
+      });
     }
 }

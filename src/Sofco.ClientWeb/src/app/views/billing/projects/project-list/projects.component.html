@@ -28,23 +28,27 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+    <button class="btn btn-success btn-sm btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
 
     <div class="btn-right">
-        <button class="btn btn-success btn-outline dim" (click)="goToResources()"> 
+        <button class="btn btn-success btn-sm btn-outline dim" (click)="goToResources()"> 
             {{'allocationManagement.resources.listTitle' | translate }} <i class="fa fa-users"></i> 
         </button>
 
-        <button class="btn btn-success btn-outline dim" (click)="goToPurchaseOrders()"> 
+        <button class="btn btn-success btn-sm btn-outline dim" (click)="goToPurchaseOrders()"> 
             {{'billing.purchaseOrder.title' | translate }} <i class="fa fa-file"></i> 
         </button>
 
-        <button class="btn btn-primary btn-outline dim" (click)="goToEditAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANEDT') && analytic?.id > 0"> 
+        <button class="btn btn-primary btn-sm btn-outline dim" (click)="goToEditAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANEDT') && analytic?.id > 0"> 
             {{'allocationManagement.analytics.editTitle' | translate }} <i class="fa fa-save"></i> 
         </button>
 
-        <button class="btn btn-primary btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD') && analytic?.id == 0"> 
+        <button class="btn btn-primary btn-sm btn-outline dim" (click)="goToCreateAnalytic()" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD') && analytic?.id == 0"> 
             {{'allocationManagement.analytics.new' | translate }} <i class="fa fa-plus"></i> 
+        </button>
+
+        <button class="btn btn-sm btn-sm btn-success btn-outline dim" (click)="update()">
+            {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i>
         </button>
     </div>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Common.Extensions;
 using Sofco.Core.DAL.WorkTimeManagement;
@@ -165,6 +166,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
 
             return query.ToList();
+        }
+
+        public void InsertBulk(IList<WorkTime> workTimesToAdd)
+        {
+            context.BulkInsert(workTimesToAdd);
         }
 
         public decimal GetPendingHoursByEmployeeId(int employeeId)

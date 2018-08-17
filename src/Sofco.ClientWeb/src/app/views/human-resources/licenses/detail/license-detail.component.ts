@@ -78,6 +78,8 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             var json = JSON.parse(response);
 
+            if(json.messages) this.messageService.showMessages(json.messages);
+            
             var file = json.data;
             var option = { id: file.id, text: file.fileName };
             this.model.files.push(option);

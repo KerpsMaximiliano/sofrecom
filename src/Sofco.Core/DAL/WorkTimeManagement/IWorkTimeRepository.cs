@@ -33,5 +33,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         decimal GetPendingHoursByEmployeeId(int employeeId);
 
         IList<WorkTime> Search(SearchParams parameters);
+
+        void InsertBulk(IList<WorkTime> workTimesToAdd);
     }
 }

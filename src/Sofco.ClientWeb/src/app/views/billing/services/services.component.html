@@ -22,32 +22,30 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <table class="table table-striped" id="serviceTable" width="100%">
-                        <thead>
-                            <tr>
-                                <th>{{"billing.service.grid.name" | translate}}</th>
-                                <th>{{"billing.project.grid.manager" | translate}}</th>
-                                <th>{{"billing.project.grid.analytic" | translate}}</th>
-                                <th>{{"billing.service.grid.startDate" | translate}}</th>
-                                <th>{{"billing.service.grid.endDate" | translate}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let service of services" class="pointer" (click)="goToProjects(service)">
-                                <td>{{service.name}}</td>
-                                <td>{{service.manager}}</td>
-                                <td>{{service.analytic}}</td>
-                                <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{service.endDate | date:'dd/MM/yyyy'}}</td>
-                            </tr>
-                        </tbody>
-                    </table>   
-                </div>
-            </div>
+    <button class="btn btn-sm btn-success btn-outline dim pull-right" (click)="update()"> {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i></button>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <table class="table table-striped" id="serviceTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{{"billing.service.grid.name" | translate}}</th>
+                        <th>{{"billing.project.grid.manager" | translate}}</th>
+                        <th>{{"billing.project.grid.analytic" | translate}}</th>
+                        <th>{{"billing.service.grid.startDate" | translate}}</th>
+                        <th>{{"billing.service.grid.endDate" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let service of services" class="pointer" (click)="goToProjects(service)">
+                        <td>{{service.name}}</td>
+                        <td>{{service.manager}}</td>
+                        <td>{{service.analytic}}</td>
+                        <td>{{service.startDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{service.endDate | date:'dd/MM/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>   
         </div>
     </div>
 </div>

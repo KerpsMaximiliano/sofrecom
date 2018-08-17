@@ -30,4 +30,8 @@ export class CustomerService {
   getById(customerId) {
     return this.http.get<any>(`${this.apiUrl}/${customerId}`);
   }
+
+  update() {
+    return this.http.put<any>(this.apiUrl, {});
+  }
 }

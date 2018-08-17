@@ -55,5 +55,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut]
+        public IActionResult Put()
+        {
+            var response = customerService.Update();
+
+            return this.CreateResponse(response);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -416,12 +417,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     model.Client = worktime.Analytic.ClientExternalName;
                     model.Analytic = $"{worktime.Analytic.Name} - {worktime.Analytic.Service}";
-                    model.Manager = worktime.Analytic.Manager.Name;
+                    model.Manager = worktime.Analytic?.Manager?.Name;
                 }
 
                 if (worktime.Employee != null)
                 {
-                    model.Employee = $"{worktime.Employee.EmployeeNumber} - {worktime.Employee.Name}";
+                    model.Employee = $"{worktime.Employee?.EmployeeNumber} - {worktime.Employee.Name}";
                     model.Profile = worktime.Employee.Profile;
                 }
 
@@ -515,7 +516,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (response.HasErrors()) return;
 
-            workTimeFileManager.Import(analyticId, file, response);
+            var memoryStream = new MemoryStream();
+            file.CopyTo(memoryStream);
+
+            workTimeFileManager.Import(analyticId, memoryStream, response);
         }
 
         public byte[] ExportTemplate()

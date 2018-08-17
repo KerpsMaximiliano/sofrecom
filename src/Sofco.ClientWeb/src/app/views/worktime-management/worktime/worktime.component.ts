@@ -82,6 +82,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.getModel();
     this.getAnalytics();
     this.getCategories();
+
+    // $("#editModal").draggable({ handle: ".modal-header" });
   }
 
   setTaskColors() {

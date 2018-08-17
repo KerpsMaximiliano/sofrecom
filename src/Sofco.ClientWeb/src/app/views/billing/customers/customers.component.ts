@@ -12,6 +12,7 @@ import { MessageService } from '../../../services/common/message.service';
 export class CustomersComponent implements OnInit, OnDestroy {
 
     getAllSubscrip: Subscription;
+    updateSubscrip: Subscription;
     customers: any[];
     public loading = true;
 
@@ -27,6 +28,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
       if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if (this.updateSubscrip) this.updateSubscrip.unsubscribe();
     }
 
     getAll(){
@@ -36,6 +38,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         this.customers = d.data;
 
         var options = { selector: "#customerTable" }
+        this.datatableService.destroy(options.selector);
         this.datatableService.initialize(options);
 
         this.messageService.closeLoading();
@@ -49,5 +52,14 @@ export class CustomersComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("customerName", customer.name);
       
       this.router.navigate([`/billing/customers/${customer.crmId}/services`]);
+    }
+
+    update(){
+      this.messageService.showLoading();
+
+      this.updateSubscrip = this.service.update().subscribe(data => {
+        this.messageService.closeLoading();
+        this.getAll();
+      });
     }
 }

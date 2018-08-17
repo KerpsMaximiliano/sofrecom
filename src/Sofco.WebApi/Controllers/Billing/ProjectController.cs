@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
-using Sofco.Domain.DTO;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
@@ -79,6 +77,14 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPut]
+        public IActionResult Put()
+        {
+            var response = projectService.Update();
+
+            return this.CreateResponse(response);
         }
     }
 }

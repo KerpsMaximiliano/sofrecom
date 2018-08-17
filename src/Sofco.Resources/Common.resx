@@ -150,4 +150,7 @@
   <data name="SaveFileError" xml:space="preserve">
     <value>common.saveFileError</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>common.updateSuccess</value>
+  </data>
 </root>

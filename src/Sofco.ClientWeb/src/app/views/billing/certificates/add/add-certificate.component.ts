@@ -72,6 +72,8 @@ export class NewCertificateComponent implements OnDestroy {
             var dataJson = JSON.parse(response);
             
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
 
                 this.form.model.fileId = dataJson.data.id;

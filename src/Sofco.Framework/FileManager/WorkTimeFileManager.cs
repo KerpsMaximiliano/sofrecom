@@ -47,7 +47,7 @@ namespace Sofco.Framework.FileManager
             UserMails = new Dictionary<string, int>();
         }
 
-        public void Import(int analyticId, IFormFile file, Response<IList<WorkTimeImportResult>> response)
+        public void Import(int analyticId, MemoryStream memoryStream, Response<IList<WorkTimeImportResult>> response)
         {
             var settingHour = unitOfWork.SettingRepository.GetByKey("WorkingHoursPerDaysMax");
             var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
@@ -57,9 +57,6 @@ namespace Sofco.Framework.FileManager
             FillHolidays(settingCloseMonth);
          
             response.Data = new List<WorkTimeImportResult>();
-
-            var memoryStream = new MemoryStream();
-            file.CopyTo(memoryStream);
 
             var excel = new ExcelPackage(memoryStream);
 
@@ -115,8 +112,9 @@ namespace Sofco.Framework.FileManager
             {
                 try
                 {
-                    unitOfWork.WorkTimeRepository.Insert(WorkTimesToAdd);
-                    unitOfWork.Save();
+                    unitOfWork.BeginTransaction();
+                    unitOfWork.WorkTimeRepository.InsertBulk(WorkTimesToAdd);
+                    unitOfWork.Commit();
                 }
                 catch (Exception e)
                 {

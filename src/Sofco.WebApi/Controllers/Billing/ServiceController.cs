@@ -94,5 +94,13 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return Ok(purchaseOrders.Select(x => new PurchaseOrderSearchResult(x)));
         }
+
+        [HttpPut]
+        public IActionResult Put()
+        {
+            var response = servicesService.Update();
+
+            return this.CreateResponse(response);
+        }
     }
 }

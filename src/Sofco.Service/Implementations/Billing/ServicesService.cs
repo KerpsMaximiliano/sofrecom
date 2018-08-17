@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 
@@ -17,13 +20,22 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IServiceData serviceData;
         private readonly ISessionManager sessionManager;
         private readonly ISolfacDelegateData solfacDelegateData;
+        private readonly IServiceUpdateJobService serviceUpdateJobService;
+        private readonly ILogMailer<ServicesService> logger;
 
-        public ServicesService(IUnitOfWork unitOfWork, IServiceData serviceData, ISessionManager sessionManager, ISolfacDelegateData solfacDelegateData)
+        public ServicesService(IUnitOfWork unitOfWork, 
+            IServiceData serviceData, 
+            ISessionManager sessionManager,
+            ISolfacDelegateData solfacDelegateData,
+            ILogMailer<ServicesService> logger,
+            IServiceUpdateJobService serviceUpdateJobService)
         {
             this.unitOfWork = unitOfWork;
             this.serviceData = serviceData;
             this.sessionManager = sessionManager;
             this.solfacDelegateData = solfacDelegateData;
+            this.serviceUpdateJobService = serviceUpdateJobService;
+            this.logger = logger;
         }
 
         public Response<List<Domain.Models.Billing.Service>> GetServices(string customerId)
@@ -84,6 +96,24 @@ namespace Sofco.Service.Implementations.Billing
                     .OrderBy(x => x.Text)
                     .ToList()
             };
+
+            return response;
+        }
+
+        public Response Update()
+        {
+            var response = new Response();
+
+            try
+            {
+                serviceUpdateJobService.Execute();
+                response.AddSuccess(Resources.Common.UpdateSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.GeneralError);
+            }
 
             return response;
         }
