@@ -16,18 +16,20 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h4 class="pull-left">{{ 'workTimeManagement.holiday.title' | translate }}</h4>
-
-            <div style="width:100%">
-                <div style="width:200px; margin: 0 auto">
+            <div class="row">
+                <div class="col-md-3">
+                    <h4 class="pull-left">{{ 'workTimeManagement.holiday.title' | translate }}</h4>
+                </div>
+                <div class="col-md-4">
                     <input id="yearControl" type="text" class="form-control" style="text-align: center" name="selectedYear" [(ngModel)]="selectedYear">
                 </div>
-            </div>
-
-            <div class="ibox-tools">
-                <button class="btn btn-primary" (click)="importExternalData()"> {{ 'workTimeManagement.holiday.importExternalData' | translate }} <i class="fa fa-download"></i></button>
-                <br>
-                <button class="btn btn-success" (click)="showEditModal()"> {{ 'workTimeManagement.holiday.newHoliday' | translate }} <i class="fa fa-plus-circle"></i></button>
+                <div class="col-md-5">
+                    <div class="text-right">
+                        <button class="btn btn-primary" (click)="importExternalData()"> {{ 'workTimeManagement.holiday.importExternalData' | translate }} <i class="fa fa-download"></i></button>
+                        <br>
+                        <button class="btn btn-success" (click)="showEditModal()"> {{ 'workTimeManagement.holiday.newHoliday' | translate }} <i class="fa fa-plus-circle"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="ibox-content">
