@@ -37,12 +37,24 @@ export class Ng2ModalComponent implements OnInit {
   }
 
   show(){
-    setTimeout(() => {
-      $('#' + this.config.id).modal({
-        backdrop: 'static',
-        keyboard: false
-      });
-    }, 0);
+    if(this.config.isDraggable){
+      setTimeout(() => {
+        $('#' + this.config.id).modal({
+          backdrop: false,
+          keyboard: false
+        });
+
+        $('#' + this.config.id).draggable({ handle: ".modal-header" });
+      }, 0);
+    }
+    else{
+      setTimeout(() => {
+        $('#' + this.config.id).modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+      }, 0);
+    }
   }
 
   hide(){

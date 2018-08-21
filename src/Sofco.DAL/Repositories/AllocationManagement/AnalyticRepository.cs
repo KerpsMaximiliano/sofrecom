@@ -129,7 +129,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId)
         {
             return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1))
+                .Where(x => x.EmployeeId == employeeId && 
+                            x.StartDate.Date == new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1) && 
+                            x.Percentage > 0)
                 .Include(x => x.Analytic)
                 .Select(x => new Analytic
                 {
