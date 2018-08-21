@@ -88,7 +88,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
 
-            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+
+            var now = DateTime.Now.Date;
+            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
+
+            DateTime dateFrom;
+            DateTime dateTo;
+
+            if (now.Day > closeMonthValue)
+            {
+                dateFrom = new DateTime(now.Year, now.Month, 1);
+                dateTo = new DateTime(now.Year, now.Month + 1, 1);
+            }
+            else
+            {
+                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
+                dateTo = new DateTime(now.Year, now.Month, 1);
+            }
+
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, dateFrom.Date, dateTo.Date).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
         }
