@@ -1,19 +1,19 @@
-import { Component, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, ViewChild, } from '@angular/core';
 import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
 import { MessageService } from '../../../services/common/message.service';
-import { WorktimeService } from '../../../services/worktime-management/worktime.service';
+import { WorktimeControlService } from '../../../services/worktime-management/worktime-control.service';
 import { DateRangePickerComponent } from '../../../components/date-range-picker/date-range-picker.component';
 import { CustomerService } from '../../../services/billing/customer.service';
 import { ServiceService } from '../../../services/billing/service.service';
-import { UserService } from '../../../services/admin/user.service';
 import { I18nService } from '../../../services/common/i18n.service';
 import { Router } from '../../../../../node_modules/@angular/router';
 declare var $: any;
 
 @Component({
   selector: 'app-worktime-control',
-  templateUrl: './worktime-control.component.html'
+  templateUrl: './worktime-control.component.html',
+  styleUrls: ['./worktime-control.component.scss']
 })
 export class WorkTimeControlComponent implements OnDestroy  {
 
@@ -27,12 +27,13 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public serviceId: string = null;
   public model: any;
   public date = new Date();
+  public selectedDate = new Date();
 
   @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
   constructor(private serviceService: ServiceService,
     private customerService: CustomerService,
-    private usersService: UserService,
+    private worktimeControlService: WorktimeControlService,
     private messageService: MessageService,
     private i18nService: I18nService,
     private router: Router) {
@@ -42,6 +43,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
       this.getCustomers();
       this.initServiceControl();
       this.initControls();
+      this.getWorktimeResume();
     }
 
     getCustomers() {
@@ -68,6 +70,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
       $('#customerControl').on('select2:unselecting', function(){
           self.customerId = null;
           self.serviceId = null;
+          self.getWorktimeResume();
       });
       $('#customerControl').on('select2:select', function(evt){
           const item = evt.params.data;
@@ -85,10 +88,12 @@ export class WorkTimeControlComponent implements OnDestroy  {
     });
     $('#serviceControl').on('select2:unselecting', function(){
         self.serviceId = null;
+        self.getWorktimeResume();
     });
     $('#serviceControl').on('select2:select', function(evt){
         const item = evt.params.data;
         self.serviceId = item.id === this.nullId ? null : item.id;
+        self.getWorktimeResume();
     });
   }
 
@@ -142,11 +147,27 @@ export class WorkTimeControlComponent implements OnDestroy  {
     $('#yearMonthControl').datepicker({
         autoclose: true,
         minViewMode: 1,
-        format: 'yyyy - mm',
-        language: 'es'
+        format: 'yyyy - mm'
     }).on('changeDate', function(selected){
         self.date = selected.date;
+        self.getWorktimeResume();
     });
     $('#yearMonthControl').datepicker('update', self.date);
   }
+
+    getWorktimeResume() {
+        this.messageService.showLoading();
+        const model = {
+            serviceId : this.serviceId,
+            year: this.date.getFullYear(),
+            month: this.date.getMonth() + 1
+        };
+        this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {
+            this.messageService.closeLoading();
+            this.model = res.data;
+        },
+        err => {
+            this.messageService.closeLoading();
+        });
+    }
 }

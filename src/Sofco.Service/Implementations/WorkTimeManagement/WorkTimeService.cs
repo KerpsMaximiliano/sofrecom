@@ -14,6 +14,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.FileManager;
+using Sofco.Core.Managers;
 using Sofco.Core.Validations;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
@@ -35,6 +36,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeFileManager workTimeFileManager;
 
+        private readonly IWorkTimeResumeManager workTimeResumeManger;
+
         private readonly IHostingEnvironment hostingEnvironment;
 
         public WorkTimeService(ILogMailer<WorkTimeService> logger, 
@@ -43,7 +46,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IHostingEnvironment hostingEnvironment,
             IEmployeeData employeeData, 
             IWorkTimeValidation workTimeValidation,
-            IWorkTimeFileManager workTimeFileManager)
+            IWorkTimeFileManager workTimeFileManager, 
+            IWorkTimeResumeManager workTimeResumeManger)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -51,6 +55,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeValidation = workTimeValidation;
             this.logger = logger;
             this.workTimeFileManager = workTimeFileManager;
+            this.workTimeResumeManger = workTimeResumeManger;
             this.hostingEnvironment = hostingEnvironment;
         }
 
@@ -70,13 +75,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
 
-                result.Data.Calendar = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
+                var calendars = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
-                FillResume(result, startDate, endDate);
+                result.Data.Calendar = calendars;
+
+                var resumeModel = workTimeResumeManger.GetResume(calendars, startDate, endDate);
 
                 var dateUtc = date.ToUniversalTime();
 
                 result.Data.Holidays = unitOfWork.HolidayRepository.Get(dateUtc.Year, dateUtc.Month);
+
+                result.Data.Resume = resumeModel;
 
                 return result;
             }
@@ -87,40 +96,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 result.AddError(Resources.Common.GeneralError);
 
                 return result;
-            }
-        }
-
-        private void FillResume(Response<WorkTimeModel> result, DateTime startDate, DateTime endDate)
-        {
-            result.Data.Resume = new WorkTimeResumeModel
-            {
-                HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours),
-                HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours),
-                HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
-                HoursPendingApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours),
-                HoursWithLicense = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours)
-            };
-
-            while (startDate.Date <= endDate.Date)
-            {
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    result.Data.Resume.BusinessHours += 8;
-
-                    if (startDate.Date <= DateTime.UtcNow.Date)
-                    {
-                        result.Data.Resume.HoursUntilToday += 8;
-                    }
-                }
-
-                startDate = startDate.AddDays(1);
-            }
-
-            var holidays = unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month);
-
-            if (holidays.Any())
-            {
-                result.Data.Resume.BusinessHours -= holidays.Count * 8;
             }
         }
 
@@ -524,7 +499,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public byte[] ExportTemplate()
         {
-            var bytes = System.IO.File.ReadAllBytes($"{hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/worktime-template.xlsx");
+            var bytes = File.ReadAllBytes($"{hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/worktime-template.xlsx");
 
             return bytes;
         }

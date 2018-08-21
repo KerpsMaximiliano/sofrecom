@@ -34,21 +34,35 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label class="control-label">{{'workTimeManagement.worktimeControl.yearMonth' | translate }}</label>
-                    <div class='input-group date' id='datetimepicker2'>
-                        <input id="yearMonthControl" type="text" class="form-control form-control-1 input-sm yearMonth">
+                    <div class='input-group date ed-datepicker filterDate' style="width:200px">
+                        <input id="yearMonthControl" type="text" class="form-control input-sm yearMonth">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="ibox-footer" style="margin-top:10px">
-                <div class="text-right">
-                    <button class="btn btn-warning btn-sm" (click)="clean()">{{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                </div>
-            </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+
+            <dl class="dl-horizontal" style="min-width: 250px; max-width: 500px;">
+                <dt>{{ 'workTimeManagement.worktimeControl.workingHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.businessHours }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursApproved }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.licenseHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursWithLicense }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursPending }} hs</dd>
+            </dl>
 
         </div>
+
     </div>
 </div>

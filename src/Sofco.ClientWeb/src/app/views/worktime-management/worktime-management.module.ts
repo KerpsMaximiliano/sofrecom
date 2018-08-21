@@ -17,6 +17,7 @@ import { IboxtoolsModule } from '../../components/common/iboxtools/iboxtools.mod
 
 import { UtilsService } from '../../services/common/utils.service';
 import { WorktimeService } from '../../services/worktime-management/worktime.service';
+import { WorktimeControlService } from '../../services/worktime-management/worktime-control.service';
 import { HolidayService } from '../../services/worktime-management/holiday.service';
 import { EmployeeService } from '../../services/allocation-management/employee.service';
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
@@ -43,7 +44,8 @@ import { WorkTimeControlComponent } from './worktime-control/worktime-control.co
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
              PCheckModule, WorkTimeRouter],
 
-  providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, I18nService],
+  providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
+        I18nService, WorktimeControlService],
 
   exports     : []
 })
