@@ -26,6 +26,7 @@
                 <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="goBack()" [attachments]="solfacAttachments.files?.length"></status-sendToCdg>
                 
                 <button class="btn btn-primary btn-outline dim" (click)="validate()" *ngIf="canUpdate()"> {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-primary btn-outline dim" (click)="validateSend()" *ngIf="canUpdate()"> {{'ACTIONS.updateAndSend' | translate }} <i class="fa fa-save"></i></button>
             </div>
         </div>
     </div>
