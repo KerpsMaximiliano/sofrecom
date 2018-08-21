@@ -30,7 +30,6 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     constructor(private purchaseOrderDelegateService: PurchaseOrderActiveDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private router: Router) {
     }
@@ -49,7 +48,8 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
     initTable() {
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
-            selector: '#delegateTable',
+            selector: '#delegateTable', 
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             order: [[ 0, 'asc' ]]
         });
     }

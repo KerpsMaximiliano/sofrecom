@@ -47,7 +47,11 @@ export class PurchaseOrderPendingsComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var options = { selector: "#purchaseOrderTable" }
+        var options = { 
+            selector: "#purchaseOrderTable",
+            columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ],
+        }
+
         this.datatableService.initialize(options);
     }
 
