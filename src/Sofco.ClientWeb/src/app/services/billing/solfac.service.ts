@@ -57,6 +57,10 @@ export class SolfacService {
     return this.http.put<any>(`${this.baseUrl}/solfacs`, model);
   }
 
+  updateAndSend(model) {
+    return this.http.put<any>(`${this.baseUrl}/solfacs/send`, model);
+  }
+
   send(model) {
      return this.http.post(`${this.baseUrl}/solfacs/send`, model);
   }

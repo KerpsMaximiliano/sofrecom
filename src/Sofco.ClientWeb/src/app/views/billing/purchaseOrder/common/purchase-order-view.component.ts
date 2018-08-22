@@ -72,9 +72,10 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             customizeExcelExportData: function(data) {
                 self.customizeExcelExportData(data);
             },
-            columnDefs: [{
-                "targets": [ 1,9,10,11 ], "visible": false, "searchable": false
-            }]
+            columnDefs: [
+                { "targets": [ 1,9,10,11 ], "visible": false, "searchable": false },
+                { "aTargets": [4], "sType": "date-uk"},
+            ]
         }
 
         this.datatableService.destroy('#purchaseOrderTable');

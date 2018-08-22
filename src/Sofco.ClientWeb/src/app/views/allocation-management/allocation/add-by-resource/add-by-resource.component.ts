@@ -47,7 +47,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.monthQuantity = this.appSetting.AllocationManagement_Months;
-        this.pmoUser = this.menuService.hasFunctionality('ALLOC', 'QARDD');
+        this.pmoUser = this.menuService.hasFunctionality('CONTR', 'QARDD');
         var resource = JSON.parse(sessionStorage.getItem("resource"));
         
         if(resource){

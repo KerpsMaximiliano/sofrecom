@@ -241,10 +241,34 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.solfacService.validate(this.model).subscribe(
         data => {
           this.updateModal.show();
+          this.update = this.justUpdate;
         });
     }
 
-    update(){
+    validateSend(){
+      this.solfacService.validate(this.model).subscribe(
+        data => {
+          this.updateModal.show();
+          this.update = this.updateAndSend;
+        });
+    }
+
+    updateAndSend(){
+      this.model.comments = this.updateComments;
+
+      this.solfacService.updateAndSend(this.model).subscribe(
+          data => {
+            this.updateModal.hide();
+            this.goBack();
+          },
+          err => {
+            this.updateModal.hide();
+          });
+    }
+
+    update(){}
+
+    justUpdate(){
       this.model.comments = this.updateComments;
 
       this.solfacService.update(this.model).subscribe(

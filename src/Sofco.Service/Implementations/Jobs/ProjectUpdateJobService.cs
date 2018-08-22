@@ -81,6 +81,7 @@ namespace Sofco.Service.Implementations.Jobs
             var project = new Project();
 
             FillData(project, crmProject);
+            project.Active = true;
 
             try
             {
@@ -112,7 +113,6 @@ namespace Sofco.Service.Implementations.Jobs
             project.Remito = crmProject.Remito;
             project.Integrator = crmProject.Integrator;
             project.IntegratorId = crmProject.IntegratorId;
-            project.Active = true;
         }
     }
 }

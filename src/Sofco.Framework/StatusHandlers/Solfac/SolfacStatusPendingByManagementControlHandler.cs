@@ -116,7 +116,19 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
         {
-            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
+            string ocNumber;
+
+            if (solfac.PurchaseOrder == null)
+            {
+                var oc = unitOfWork.PurchaseOrderRepository.Get(solfac.PurchaseOrderId.GetValueOrDefault());
+                ocNumber = oc.Number;
+            }
+            else
+            {
+                ocNumber = solfac.PurchaseOrder.Number;
+            }
+
+            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), ocNumber);
         }
 
         private void SendMailForOcConsumed(Domain.Models.Billing.PurchaseOrder purchaseOrder)

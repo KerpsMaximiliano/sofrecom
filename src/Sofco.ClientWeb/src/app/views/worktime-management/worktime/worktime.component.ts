@@ -72,6 +72,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
         this.editModalConfig.deleteButton = true;
         this.editModalConfig.acceptInlineButton = true;
+        this.editModalConfig.isDraggable = true;
   }
 
   ngOnInit() {
@@ -82,8 +83,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.getModel();
     this.getAnalytics();
     this.getCategories();
-
-    // $("#editModal").draggable({ handle: ".modal-header" });
   }
 
   setTaskColors() {

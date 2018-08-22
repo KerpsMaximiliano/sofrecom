@@ -97,7 +97,7 @@
                                         <tbody>
                                             <tr *ngFor="let hito of hitos">
                                                 <td class="col-lg-1">
-                                                    <pcheck [(checked)]="hito.included"></pcheck>
+                                                    <pcheck  class="hito-{{ resolveHitoCheckClass(hito) }}" [(checked)]="hito.included"></pcheck>
                                                 </td>
                                                 <td>{{ hito.name }}</td>
                                                 <td>{{ getCurrencySymbol(hito.money) }} {{ hito.ammount | number: '1.2-2' }}</td>

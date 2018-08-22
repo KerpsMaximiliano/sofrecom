@@ -276,5 +276,14 @@ namespace Sofco.Resources.Mails {
                 return ResourceManager.GetString("SolfacStatusRejectedByDafTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Horas pendientes de aprobación.
+        /// </summary>
+        public static string WorkTimeSendHours {
+            get {
+                return ResourceManager.GetString("WorkTimeSendHours", resourceCulture);
+            }
+        }
     }
 }
