@@ -8,6 +8,7 @@ import { CustomerService } from '../../../services/billing/customer.service';
 import { ServiceService } from '../../../services/billing/service.service';
 import { I18nService } from '../../../services/common/i18n.service';
 import { Router } from '../../../../../node_modules/@angular/router';
+import { DataTableService } from '../../../services/common/datatable.service';
 declare var $: any;
 
 @Component({
@@ -35,6 +36,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     private customerService: CustomerService,
     private worktimeControlService: WorktimeControlService,
     private messageService: MessageService,
+    private datatableService: DataTableService,
     private i18nService: I18nService,
     private router: Router) {
   }
@@ -44,6 +46,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
       this.initServiceControl();
       this.initControls();
       this.getWorktimeResume();
+      this.initGrid();
     }
 
     getCustomers() {
@@ -169,5 +172,19 @@ export class WorkTimeControlComponent implements OnDestroy  {
         err => {
             this.messageService.closeLoading();
         });
+    }
+
+    initGrid(){
+        const gridSelector = '#resourceTable';
+
+        const params = {
+            selector: gridSelector,
+            title: this.i18nService.translateByKey('workTimeManagement.worktimeControl.title'),
+            withExport: true
+        }
+
+        this.datatableService.destroy(gridSelector);
+
+        this.datatableService.initialize(params);
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -19,11 +22,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeResumeManager workTimeResumeManager;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager)
+        private readonly IMapper mapper;
+
+        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.workTimeResumeManager = workTimeResumeManager;
+            this.mapper = mapper;
         }
 
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
@@ -49,23 +55,61 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             result.Data = new WorkTimeControlModel
             {
                 Resume = resumeModel,
-                Resources = GetResources()
+                Resources = GetResources(workTimes.ToList(), startDate, endDate)
             };
 
             return result;
         }
 
-        private List<WorkTimeControlResourceModel> GetResources()
+        private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
         {
-            return new List<WorkTimeControlResourceModel>
+            var grouped = new Dictionary<string, List<WorkTime>>();
+            foreach (var workTime in workTimes)
             {
-                new WorkTimeControlResourceModel
+                var key = workTime.Analytic.Title + workTime.Employee.EmployeeNumber;
+                if (grouped.ContainsKey(key))
                 {
-                    Analytic = "111-5444",
-                    EmployeeNumber = "6900",
-                    EmployeeName = "Luan Oliveira"
+                    grouped[key].Add(workTime);
                 }
-            };
+                else
+                {
+                    grouped.Add(key, new List<WorkTime> { workTime});
+                }
+            }
+
+            var result = new List<WorkTimeControlResourceModel>();
+
+            foreach (var item in grouped)
+            {
+                var list = item.Value;
+                var model = list.First();
+
+                var resource = new WorkTimeControlResourceModel
+                {
+                    Analytic = model.Analytic.Title,
+                    EmployeeName = model.Employee.Name,
+                    EmployeeNumber = model.Employee.EmployeeNumber
+                };
+
+                var models = list.Select(x => new WorkTimeCalendarModel(x)).ToList();
+
+                var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
+
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(model.EmployeeId, startDate, endDate);
+
+                var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
+
+                if (allocationAnalytic == null) continue;
+
+                resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                resource.RegisteredHours = resume.HoursApproved;
+                resource.PendingHours = resume.HoursPending;
+                resource.LicenseHours = resume.HoursWithLicense;
+                resource.Details = Translate(workTimes);
+                result.Add(resource);
+            }
+
+            return result;
         }
 
         private int GetAnalyticId(Guid? serviceId)
@@ -83,6 +127,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
             return int.Parse(closeMonthSetting.Value);
+        }
+
+        private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
+        {
+            return mapper.Map<List<WorkTime>, List<WorkTimeControlResourceDetailModel>>(workTimes);
         }
     }
 }

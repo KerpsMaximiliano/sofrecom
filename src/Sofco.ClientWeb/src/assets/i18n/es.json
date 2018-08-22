@@ -967,11 +967,17 @@
         "worktimeControl": {
             "title": "Control de Horas",
             "yearMonth": "Año - Mes",
-            "workingHoursTotal": "Total de horas laborables",
+            "businessHoursTotal": "Total de horas laborables",
             "registeredHoursTotal": "Total de horas cargadas",
-            "licenseHoursTotal": "Total de horas correspondientes a licencias",
+            "licenseHoursTotal": "Total de horas de licencias",
             "pendingHoursTotal": "Horas pendientes de carga",
-            "resource": "Recurso"
+            "analytic": "Analítica",
+            "employeeNumber": "Legajo",
+            "employeeName": "Nombre",
+            "businessHours": "Horas laborables",
+            "registeredHours": "Horas cargadas",
+            "licenseHours": "Horas licencias",
+            "pendingHours": "Horas pendientes"
         }
     },
     "months": {

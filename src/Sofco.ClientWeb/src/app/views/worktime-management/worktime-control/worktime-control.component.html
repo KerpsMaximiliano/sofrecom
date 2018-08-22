@@ -48,7 +48,7 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <dl class="dl-horizontal" style="min-width: 250px; max-width: 500px;">
-                <dt>{{ 'workTimeManagement.worktimeControl.workingHoursTotal' | translate }}</dt>
+                <dt>{{ 'workTimeManagement.worktimeControl.businessHoursTotal' | translate }}</dt>
                 <dd>{{ model?.resume?.businessHours }} hs</dd>
                 <hr style="margin:0px">
                 <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
@@ -61,16 +61,31 @@
                 <dd>{{ model?.resume?.hoursPending }} hs</dd>
             </dl>
         </div>
+    </div>
+
+    <div class="ibox float-e-margins">
         <div class="ibox-content" *ngIf="model != null && model.resources != null">
-            <table class="table table-striped" id="Table" width="100%">
+            <table class="table table-striped" id="resourceTable" width="100%">
                 <thead>
                     <tr>
-                        <th>{{'workTimeManagement.worktimeControl.resource' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.analytic' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.employeeNumber' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.employeeName' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.businessHours' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.registeredHours' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.licenseHours' | translate }}</th>
+                        <th>{{'workTimeManagement.worktimeControl.pendingHours' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of model.resources">
                         <td>{{ item.analytic }}</td>
+                        <td>{{ item.employeeNumber }}</td>
+                        <td>{{ item.employeeName }}</td>
+                        <td>{{ item.businessHours }}</td>
+                        <td>{{ item.registeredHours }}</td>
+                        <td>{{ item.licenseHours }}</td>
+                        <td>{{ item.pendingHours }}</td>
                     </tr>
                 </tbody>
             </table>

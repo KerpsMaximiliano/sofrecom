@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class WorkTimeControlResourceModel
@@ -9,5 +9,15 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string EmployeeNumber { get; set; }
 
         public string EmployeeName { get; set; }
+
+        public decimal BusinessHours { get; set; }
+
+        public decimal RegisteredHours { get; set; }
+
+        public decimal LicenseHours { get; set; }
+
+        public decimal PendingHours { get; set; }
+
+        public List<WorkTimeControlResourceDetailModel> Details { get; set; }
     }
 }
