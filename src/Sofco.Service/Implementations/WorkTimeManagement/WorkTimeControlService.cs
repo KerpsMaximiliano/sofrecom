@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
-using Sofco.Core.Data.AllocationManagement;
-using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -49,10 +48,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             result.Data = new WorkTimeControlModel
             {
-                Resume = resumeModel
+                Resume = resumeModel,
+                Resources = GetResources()
             };
 
             return result;
+        }
+
+        private List<WorkTimeControlResourceModel> GetResources()
+        {
+            return new List<WorkTimeControlResourceModel>
+            {
+                new WorkTimeControlResourceModel
+                {
+                    Analytic = "111-5444",
+                    EmployeeNumber = "6900",
+                    EmployeeName = "Luan Oliveira"
+                }
+            };
         }
 
         private int GetAnalyticId(Guid? serviceId)

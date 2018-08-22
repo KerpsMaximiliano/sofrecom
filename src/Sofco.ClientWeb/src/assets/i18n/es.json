@@ -970,7 +970,8 @@
             "workingHoursTotal": "Total de horas laborables",
             "registeredHoursTotal": "Total de horas cargadas",
             "licenseHoursTotal": "Total de horas correspondientes a licencias",
-            "pendingHoursTotal": "Horas pendientes de carga"
+            "pendingHoursTotal": "Horas pendientes de carga",
+            "resource": "Recurso"
         }
     },
     "months": {
