@@ -1,0 +1,68 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>{{'workTimeManagement.worktimeControl.title' | translate }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>{{'workTimeManagement.title' | translate }}</li>
+            <li class="active">
+                <strong>{{'workTimeManagement.worktimeControl.title' | translate }}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.solfac.customers' | translate }}</label>
+                        <select id="customerControl" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4" [hidden]="!showService()">
+                    <div class="form-group">
+                        <label class="control-label">{{'billing.service.title' | translate }}</label>
+                        <select id="serviceControl" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="control-label">{{'workTimeManagement.worktimeControl.yearMonth' | translate }}</label>
+                    <div class='input-group date ed-datepicker filterDate' style="width:200px">
+                        <input id="yearMonthControl" type="text" class="form-control input-sm yearMonth">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+
+            <dl class="dl-horizontal" style="min-width: 250px; max-width: 500px;">
+                <dt>{{ 'workTimeManagement.worktimeControl.workingHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.businessHours }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursApproved }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.licenseHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursWithLicense }} hs</dd>
+                <hr style="margin:0px">
+                <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
+                <dd>{{ model?.resume?.hoursPending }} hs</dd>
+            </dl>
+
+        </div>
+
+    </div>
+</div>

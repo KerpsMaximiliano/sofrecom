@@ -12,7 +12,7 @@ using Sofco.Core.Services.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
-using Sofco.WebApi.Extensions; 
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Billing
 {

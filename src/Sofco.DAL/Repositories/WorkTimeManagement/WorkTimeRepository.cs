@@ -28,6 +28,18 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
+        public IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId, int analyticId)
+        {
+            return context.WorkTimes
+                .Where(x => x.UserId == currentUserId 
+                    && x.AnalyticId == analyticId
+                    && x.Date >= startDate && x.Date <= endDate)
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
+                .ToList();
+        }
+
         public IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams parameters)
         {
             IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License);
