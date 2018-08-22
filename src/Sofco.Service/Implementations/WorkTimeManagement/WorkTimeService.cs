@@ -17,6 +17,7 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Mail;
 using Sofco.Core.Validations;
+using Sofco.Domain;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.MailData;
@@ -55,8 +56,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IWorkTimeFileManager workTimeFileManager, 
             IWorkTimeResumeManager workTimeResumeManger,
             IMailSender mailSender,
-            IMailBuilder mailBuilder,
-            IWorkTimeFileManager workTimeFileManager)
+            IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -354,7 +354,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var employee = employeeData.GetCurrentEmployee();
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
             var now = DateTime.Now.Date;
             var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
@@ -377,38 +377,35 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id, dateFrom, dateTo);
 
-                if (managers.Any())
+                if (!managers.Any()) return;
+
+                var mails = managers.Select(x => x.Email).ToList();
+
+                foreach (var manager in managers)
                 {
-                    var mails = new List<string>();
+                    var delegates = unitOfWork.WorkTimeApprovalRepository.GetByUserId(manager.Id);
 
-                    mails = managers.Select(x => x.Email).ToList();
-
-                    foreach (var manager in managers)
-                    {
-                        var delegates = unitOfWork.WorkTimeApprovalRepository.GetByUserId(manager.Id);
-
-                        mails.AddRange(delegates.Select(x => x.Email));
-                    }
-
-                    mails = mails.Distinct().ToList();
-
-                    var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
-
-                    var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
-
-                    var recipients = string.Join(";", mails);
-
-                    var data = new MailDefaultData
-                    {
-                        Title = subject,
-                        Message = body,
-                        Recipients = recipients
-                    };
-
-                    var email = mailBuilder.GetEmail(data);
-
-                    mailSender.Send(email);
+                    mails.AddRange(delegates.Select(x => x.Email));
                 }
+
+                mails = mails.Distinct().ToList();
+
+                var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
+
+                var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
+
+                var recipients = string.Join(";", mails);
+
+                var data = new MailDefaultData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipients
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
             }
             catch (Exception e)
             {
