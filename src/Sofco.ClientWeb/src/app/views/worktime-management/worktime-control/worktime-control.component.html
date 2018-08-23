@@ -65,9 +65,11 @@
 
     <div class="ibox float-e-margins">
         <div class="ibox-content" *ngIf="model != null && model.resources != null">
-            <table class="table table-striped" id="resourceTable" width="100%">
+            <table class="table table-striped" id="gridTable" width="100%">
                 <thead>
                     <tr>
+                        <th></th>
+                        <th></th>
                         <th>{{'workTimeManagement.worktimeControl.analytic' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.employeeNumber' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.employeeName' | translate }}</th>
@@ -79,6 +81,10 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of model.resources">
+                        <td [ngClass]="item.details.length > 0 ? 'details-control' : ''" style="width:20px">
+                            <i [ngClass]="item.details.length > 0 ? 'fa fa-plus-square' : ''" [attr.data-id]="item.id"></i>
+                        </td>
+                        <td>{{ item.id }}</td>
                         <td>{{ item.analytic }}</td>
                         <td>{{ item.employeeNumber }}</td>
                         <td>{{ item.employeeName }}</td>

@@ -8,7 +8,6 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
-using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -84,12 +83,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var list = item.Value;
                 var model = list.First();
 
-                var resource = new WorkTimeControlResourceModel
-                {
-                    Analytic = model.Analytic.Title,
-                    EmployeeName = model.Employee.Name,
-                    EmployeeNumber = model.Employee.EmployeeNumber
-                };
+                var resource = Translate(model);
 
                 var models = list.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -105,7 +99,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.RegisteredHours = resume.HoursApproved;
                 resource.PendingHours = resume.HoursPending;
                 resource.LicenseHours = resume.HoursWithLicense;
-                resource.Details = Translate(workTimes);
+                resource.Details = Translate(workTimes.Where(s => s.AnalyticId == model.AnalyticId).ToList());
                 result.Add(resource);
             }
 
@@ -132,6 +126,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
         {
             return mapper.Map<List<WorkTime>, List<WorkTimeControlResourceDetailModel>>(workTimes);
+        }
+
+        private WorkTimeControlResourceModel Translate(WorkTime workTime)
+        {
+            return mapper.Map<WorkTime, WorkTimeControlResourceModel>(workTime);
         }
     }
 }
