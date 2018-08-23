@@ -32,6 +32,19 @@ namespace Sofco.DAL.Repositories.Billing
             return context.Services.Where(x => x.Active && x.ManagerId.Equals(externalManagerId)).ToList().AsReadOnly();
         }
 
+        public void UpdateInactives(IList<int> idsAdded)
+        {
+            var services = context.Services.Where(x => !idsAdded.Contains(x.Id)).ToList();
+
+            foreach (var service in services)
+            {
+                service.Active = false;
+                context.Entry(service).Property("Active").IsModified = true;
+            }
+
+            context.SaveChanges();
+        }
+
         public void UpdateActive(Service service)
         {
             context.Entry(service).Property("Active").IsModified = true;

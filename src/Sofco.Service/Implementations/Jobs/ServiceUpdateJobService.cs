@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
@@ -18,6 +19,8 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ILogMailer<ServiceUpdateJobService> logger;
         private readonly IServiceData serviceData;
 
+        private IList<int> IdsAdded { get; set; }
+
         public ServiceUpdateJobService(IUnitOfWork unitOfWork,
             ICrmHttpClient client,
             IServiceData serviceData,
@@ -29,6 +32,8 @@ namespace Sofco.Service.Implementations.Jobs
             crmConfig = crmOptions.Value;
             this.logger = logger;
             this.serviceData = serviceData;
+
+            IdsAdded = new List<int>();
         }
 
         public void Execute()
@@ -51,6 +56,8 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
+                unitOfWork.ServiceRepository.UpdateInactives(IdsAdded);
+
                 unitOfWork.Commit();
                 serviceData.ClearKeys();
             }
@@ -68,6 +75,8 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 unitOfWork.ServiceRepository.Update(service);
                 unitOfWork.Save();
+
+                IdsAdded.Add(service.Id);
             }
             catch (Exception e)
             {

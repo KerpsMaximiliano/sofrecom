@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Billing;
@@ -19,6 +20,8 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ILogMailer<ProjectUpdateJobService> logger;
         private readonly IProjectData projectData;
 
+        private IList<int> IdsAdded { get; set; }
+
         public ProjectUpdateJobService(IUnitOfWork unitOfWork,
             ICrmHttpClient client,
             IProjectData projectData,
@@ -30,6 +33,8 @@ namespace Sofco.Service.Implementations.Jobs
             crmConfig = crmOptions.Value;
             this.logger = logger;
             this.projectData = projectData;
+
+            IdsAdded = new List<int>();
         }
 
         public void Execute()
@@ -52,6 +57,8 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
+                unitOfWork.ProjectRepository.UpdateInactives(IdsAdded);
+
                 unitOfWork.Commit();
                 projectData.ClearKeys();
             }
@@ -69,6 +76,8 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 unitOfWork.ProjectRepository.Update(project);
                 unitOfWork.Save();
+
+                IdsAdded.Add(project.Id);
             }
             catch (Exception e)
             {
@@ -81,8 +90,7 @@ namespace Sofco.Service.Implementations.Jobs
             var project = new Project();
 
             FillData(project, crmProject);
-            project.Active = true;
-
+            
             try
             {
                 unitOfWork.ProjectRepository.Insert(project);
@@ -113,6 +121,7 @@ namespace Sofco.Service.Implementations.Jobs
             project.Remito = crmProject.Remito;
             project.Integrator = crmProject.Integrator;
             project.IntegratorId = crmProject.IntegratorId;
+            project.Active = true;
         }
     }
 }
