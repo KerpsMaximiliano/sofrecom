@@ -86,7 +86,10 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
             this.messageService.closeLoading();
             this.model = response.data;
-            const options = { selector: "#newsTable" };
+            const options = { 
+                selector: "#newsTable",
+                columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+             };
             this.dataTableService.destroy(options.selector);
             this.dataTableService.initialize(options);
         },

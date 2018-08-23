@@ -191,7 +191,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     removeItem(){
         this.hoursPending.splice(this.indexToRemove, 1);
-        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ] };
         this.initGrid(options);
     }
 
