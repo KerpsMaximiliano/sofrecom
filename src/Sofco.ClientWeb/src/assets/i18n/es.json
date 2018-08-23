@@ -963,6 +963,21 @@
             "newHoliday": "Crear feriado",
             "importConfirm": "Confirma importar feriados desde una fuente externa?",
             "deleteConfirm": "Confirma eliminar el feriado seleccionado?"
+        },
+        "worktimeControl": {
+            "title": "Control de Horas",
+            "yearMonth": "Año - Mes",
+            "businessHoursTotal": "Total de horas laborables",
+            "registeredHoursTotal": "Total de horas cargadas",
+            "licenseHoursTotal": "Total de horas de licencias",
+            "pendingHoursTotal": "Horas pendientes de carga",
+            "analytic": "Analítica",
+            "employeeNumber": "Legajo",
+            "employeeName": "Nombre",
+            "businessHours": "Horas laborables",
+            "registeredHours": "Horas cargadas",
+            "licenseHours": "Horas licencias",
+            "pendingHours": "Horas pendientes"
         }
     },
     "months": {

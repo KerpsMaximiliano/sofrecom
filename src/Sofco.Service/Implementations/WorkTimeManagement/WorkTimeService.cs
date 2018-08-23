@@ -14,8 +14,10 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.FileManager;
+using Sofco.Core.Managers;
 using Sofco.Core.Mail;
 using Sofco.Core.Validations;
+using Sofco.Domain;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.MailData;
@@ -37,6 +39,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeFileManager workTimeFileManager;
 
+        private readonly IWorkTimeResumeManager workTimeResumeManger;
+
         private readonly IHostingEnvironment hostingEnvironment;
 
         private readonly IMailSender mailSender;
@@ -49,9 +53,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IHostingEnvironment hostingEnvironment,
             IEmployeeData employeeData, 
             IWorkTimeValidation workTimeValidation,
+            IWorkTimeFileManager workTimeFileManager, 
+            IWorkTimeResumeManager workTimeResumeManger,
             IMailSender mailSender,
-            IMailBuilder mailBuilder,
-            IWorkTimeFileManager workTimeFileManager)
+            IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -59,6 +64,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeValidation = workTimeValidation;
             this.logger = logger;
             this.workTimeFileManager = workTimeFileManager;
+            this.workTimeResumeManger = workTimeResumeManger;
             this.hostingEnvironment = hostingEnvironment;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
@@ -80,13 +86,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
 
-                result.Data.Calendar = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
+                var calendars = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
-                FillResume(result, startDate, endDate);
+                result.Data.Calendar = calendars;
+
+                var resumeModel = workTimeResumeManger.GetResume(calendars, startDate, endDate);
 
                 var dateUtc = date.ToUniversalTime();
 
                 result.Data.Holidays = unitOfWork.HolidayRepository.Get(dateUtc.Year, dateUtc.Month);
+
+                result.Data.Resume = resumeModel;
 
                 return result;
             }
@@ -97,40 +107,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 result.AddError(Resources.Common.GeneralError);
 
                 return result;
-            }
-        }
-
-        private void FillResume(Response<WorkTimeModel> result, DateTime startDate, DateTime endDate)
-        {
-            result.Data.Resume = new WorkTimeResumeModel
-            {
-                HoursApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours),
-                HoursRejected = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours),
-                HoursPending = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
-                HoursPendingApproved = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours),
-                HoursWithLicense = result.Data.Calendar.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours)
-            };
-
-            while (startDate.Date <= endDate.Date)
-            {
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    result.Data.Resume.BusinessHours += 8;
-
-                    if (startDate.Date <= DateTime.UtcNow.Date)
-                    {
-                        result.Data.Resume.HoursUntilToday += 8;
-                    }
-                }
-
-                startDate = startDate.AddDays(1);
-            }
-
-            var holidays = unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month);
-
-            if (holidays.Any())
-            {
-                result.Data.Resume.BusinessHours -= holidays.Count * 8;
             }
         }
 
@@ -378,7 +354,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var employee = employeeData.GetCurrentEmployee();
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
             var now = DateTime.Now.Date;
             var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
@@ -401,38 +377,35 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id, dateFrom, dateTo);
 
-                if (managers.Any())
+                if (!managers.Any()) return;
+
+                var mails = managers.Select(x => x.Email).ToList();
+
+                foreach (var manager in managers)
                 {
-                    var mails = new List<string>();
+                    var delegates = unitOfWork.WorkTimeApprovalRepository.GetByUserId(manager.Id);
 
-                    mails = managers.Select(x => x.Email).ToList();
-
-                    foreach (var manager in managers)
-                    {
-                        var delegates = unitOfWork.WorkTimeApprovalRepository.GetByUserId(manager.Id);
-
-                        mails.AddRange(delegates.Select(x => x.Email));
-                    }
-
-                    mails = mails.Distinct().ToList();
-
-                    var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
-
-                    var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
-
-                    var recipients = string.Join(";", mails);
-
-                    var data = new MailDefaultData
-                    {
-                        Title = subject,
-                        Message = body,
-                        Recipients = recipients
-                    };
-
-                    var email = mailBuilder.GetEmail(data);
-
-                    mailSender.Send(email);
+                    mails.AddRange(delegates.Select(x => x.Email));
                 }
+
+                mails = mails.Distinct().ToList();
+
+                var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
+
+                var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
+
+                var recipients = string.Join(";", mails);
+
+                var data = new MailDefaultData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipients
+                };
+
+                var email = mailBuilder.GetEmail(data);
+
+                mailSender.Send(email);
             }
             catch (Exception e)
             {
