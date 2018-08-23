@@ -33,6 +33,10 @@ export class DataTableService {
                     options.aoColumnDefs = params.columnDefs;
                 }
 
+                if(params.withOutSorting){
+                    options.bSort = false;
+                }
+
                 if(params.order){
                     options.order = params.order;
                 }

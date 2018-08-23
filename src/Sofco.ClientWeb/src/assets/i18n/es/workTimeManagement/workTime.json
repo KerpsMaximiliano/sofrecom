@@ -34,9 +34,10 @@
     "importDateNull": "La fecha esta vacia o esta en un formato incorrecto",
     "importDateWrong": "La fecha no puede ser un fin de semana ni un dia feriado",
     "importHoursExceed": "Se ha excedido en las horas que se pueden cargar por dia",
-    "importTaskNoExist": "La tarea no existente",
+    "importTaskNoExist": "La tarea no existe",
     "importHoursNull": "Las horas son requeridas",
     "importDatesOutOfRange": "La fecha no corresponde al periodo en curso",
     "importEmployeeWithLicense": "Recurso con licencia cargada",
-    "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar"
+    "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
+    "fileEmpty": "El archivo importado no contiene registros"
 }

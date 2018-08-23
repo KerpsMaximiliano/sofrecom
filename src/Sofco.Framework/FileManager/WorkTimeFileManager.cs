@@ -37,6 +37,8 @@ namespace Sofco.Framework.FileManager
 
         private DateTime DateTo { get; set; }
 
+        private int RowsAdded { get; set; }
+
         public WorkTimeFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeFileManager> logger, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
@@ -55,6 +57,7 @@ namespace Sofco.Framework.FileManager
             TaskIds = unitOfWork.TaskRepository.GetAllIds();
             Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analyticId);
             FillHolidays(settingCloseMonth);
+            RowsAdded = 0;
          
             response.Data = new List<WorkTimeImportResult>();
 
@@ -83,6 +86,8 @@ namespace Sofco.Framework.FileManager
                     var hour = sheet.GetValue(i, 6)?.ToString();
                     var comments = sheet.GetValue(i, 7)?.ToString();
 
+                    if (DateTime.TryParse(date, out var datetime)) date = datetime.ToString("d");
+               
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
                     if (!ValidateEmployee(response, employee, employeeNumber, i, employeeDesc, date)) continue;
@@ -110,6 +115,12 @@ namespace Sofco.Framework.FileManager
 
             if (!response.Data.Any())
             {
+                if (RowsAdded == 0)
+                {
+                    response.AddError(Resources.WorkTimeManagement.WorkTime.FileEmpty);
+                    return;
+                }
+
                 try
                 {
                     unitOfWork.BeginTransaction();
@@ -153,6 +164,7 @@ namespace Sofco.Framework.FileManager
                     UserMails.Add(employee.Email, user.Id);
                     worktime.UserId = user.Id;
                     WorkTimesToAdd.Add(worktime);
+                    RowsAdded++;
                 }
                 else
                 {
@@ -251,7 +263,7 @@ namespace Sofco.Framework.FileManager
                     if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
                         Holidays.Any(x => x.Date.Date == datetime.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
                         response.Data.Add(item);
 
@@ -261,7 +273,7 @@ namespace Sofco.Framework.FileManager
                     if (employee.Licenses.Any(x =>
                         datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
                         response.Data.Add(item);
 
@@ -270,7 +282,7 @@ namespace Sofco.Framework.FileManager
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                     response.Data.Add(item);
 

@@ -6,6 +6,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
 import { CertificatesService } from "../../../../services/billing/certificates.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { AuthService } from "../../../../services/common/auth.service";
 
 @Component({
     selector: 'add-certificate',
@@ -36,6 +37,7 @@ export class NewCertificateComponent implements OnDestroy {
     );
 
     constructor(private certificateService: CertificatesService,
+                private authService: AuthService,
                 private messageService: MessageService){
     }
 
@@ -69,6 +71,22 @@ export class NewCertificateComponent implements OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
             if(dataJson){

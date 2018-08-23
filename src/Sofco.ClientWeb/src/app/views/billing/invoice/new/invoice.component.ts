@@ -12,6 +12,7 @@ import { InvoiceStatus } from "../../../../models/enums/invoiceStatus";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { CustomerService } from '../../../../services/billing/customer.service';
 import { SolfacAccountControlComponent } from '../../solfac/solfac-account-control/solfac-account-control.component';
+import { AuthService } from '../../../../services/common/auth.service';
 declare var $: any;
 
 @Component({
@@ -47,6 +48,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
+                private authService: AuthService,
                 public menuService: MenuService,
                 private customerService: CustomerService,
                 private messageService: MessageService) {}
@@ -138,9 +140,26 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 maxFileSize: 10*1024*1024
             }
         );
+
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.configUploader(this.model.id);
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
             if(dataJson.messages) this.messageService.showMessages(dataJson.messages);

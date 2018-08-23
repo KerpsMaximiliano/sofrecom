@@ -7,6 +7,8 @@ import { WorktimeService } from "app/services/worktime-management/worktime.servi
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { I18nService } from "../../../services/common/i18n.service";
 import * as FileSaver from "file-saver";
+import { DataTableService } from "../../../services/common/datatable.service";
+import { AuthService } from "../../../services/common/auth.service";
 
 @Component({
     selector: 'import-worktime',
@@ -28,6 +30,8 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
     constructor(private analyticService: AnalyticService,
                 private messageService: MessageService, 
+                private authService: AuthService,
+                private dataTableService: DataTableService,
                 private i18nService: I18nService,
                 private worktimeService: WorktimeService){    
     }
@@ -48,28 +52,46 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.worktimeService.getUrlForImportFile(this.analyticId),
-                                          authToken: 'Bearer ' + Cookie.get('access_token') ,
-                                          maxFileSize: 10*1024*1024,
-                                          allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-                                        });
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+            maxFileSize: 10*1024*1024,
+            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            this.messageService.closeLoading();
-
             if(status == 401){
-                console.log('volver a subir el archivo');
-                this.clearSelectedFile();
-                return
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
             }
+
+            this.messageService.closeLoading();
 
             var dataJson = JSON.parse(response);
             
             if(dataJson){
                 if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
                 this.errors = dataJson.data;
+
+                if(this.errors.length > 0){
+                    var options = { 
+                        selector: "#errorsTable",
+                        withOutSorting: true
+                    };
+            
+                    this.dataTableService.destroy(options.selector); 
+                    this.dataTableService.initialize(options);
+                }
             }
 
-            if(this.errors.length == 0){
+            if(this.errors.length == 0 && dataJson.messages.filter(x => x.type == 1).length == 0){
                 this.showSuccess = true;
             }
 

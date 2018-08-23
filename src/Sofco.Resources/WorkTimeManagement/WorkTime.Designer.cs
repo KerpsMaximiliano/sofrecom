@@ -206,6 +206,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.fileEmpty.
+        /// </summary>
+        public static string FileEmpty {
+            get {
+                return ResourceManager.GetString("FileEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.hoursMaxError?{0}.
         /// </summary>
         public static string HoursMaxError {
