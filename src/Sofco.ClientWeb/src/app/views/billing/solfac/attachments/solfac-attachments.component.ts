@@ -8,6 +8,7 @@ import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { MenuService } from '../../../../services/admin/menu.service';
 import { CertificatesService } from '../../../../services/billing/certificates.service';
+import { AuthService } from '../../../../services/common/auth.service';
 
 declare var $: any;
 
@@ -50,6 +51,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     );
 
     constructor(private solfacService: SolfacService,
+                private authService: AuthService,
                 private messageService: MessageService,
                 private certificateService: CertificatesService,
                 private menuService: MenuService) {
@@ -58,10 +60,35 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getAttachments();
         this.getCertificatesRelated();
+        this.uploaderConfig();
+    }
 
+    ngOnDestroy(){
+        if(this.getAttachmentsSubscrip) this.getAttachmentsSubscrip.unsubscribe();
+        if(this.getCertificateAvailableSubscrip) this.getCertificateAvailableSubscrip.unsubscribe();
+        if(this.getCertificatesRelatedSubscrip) this.getCertificatesRelatedSubscrip.unsubscribe();
+    }
+
+    uploaderConfig(){
         this.uploader = new FileUploader({url: this.solfacService.getUrlForImportFile(this.solfacId), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var json = JSON.parse(response);
 
             if(json.messages) this.messageService.showMessages(json.messages);
@@ -73,12 +100,6 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         this.uploader.onSuccessItem = (item: any) => {
             item.remove();
         };
-    }
-
-    ngOnDestroy(){
-        if(this.getAttachmentsSubscrip) this.getAttachmentsSubscrip.unsubscribe();
-        if(this.getCertificateAvailableSubscrip) this.getCertificateAvailableSubscrip.unsubscribe();
-        if(this.getCertificatesRelatedSubscrip) this.getCertificatesRelatedSubscrip.unsubscribe();
     }
 
     getAttachments(){

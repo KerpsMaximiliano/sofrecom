@@ -9,6 +9,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { LicenseDetail } from "../../../../models/rrhh/licenseDetail";
 import * as FileSaver from "file-saver";
+import { AuthService } from "../../../../services/common/auth.service";
 
 @Component({
     selector: 'license-detail',
@@ -44,6 +45,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
  
     constructor(private licenseService: LicenseService,
                 public menuService: MenuService,
+                private authService: AuthService,
                 private activatedRoute: ActivatedRoute,
                 private messageService: MessageService){
     }
@@ -76,6 +78,22 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.configUploader();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var json = JSON.parse(response);
 
             if(json.messages) this.messageService.showMessages(json.messages);
@@ -90,6 +108,14 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
             this.selectedFile.nativeElement.value = '';
         };
     }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    } 
 
     openConfirmModal(fileId, index){
         this.fileIdToDelete = fileId;

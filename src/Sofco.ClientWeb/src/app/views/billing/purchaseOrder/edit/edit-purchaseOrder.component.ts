@@ -10,6 +10,7 @@ import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 import { MenuService } from "../../../../services/admin/menu.service";
+import { AuthService } from "../../../../services/common/auth.service";
 
 declare var $: any;
 
@@ -52,6 +53,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 public menuService: MenuService,
+                private authService: AuthService,
                 private messageService: MessageService,
                 private router: Router){
     }
@@ -117,6 +119,22 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
             if(dataJson){

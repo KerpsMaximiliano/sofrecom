@@ -186,7 +186,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetByAnalyticWithWorkTimes(int analyticId)
         {
-            var ids = context.Allocations.Where(x => x.AnalyticId == analyticId)
+            var ids = context.Allocations.Where(x => x.AnalyticId == analyticId && x.Percentage > 0)
                 .Select(x => x.Employee.Id)
                 .Distinct()
                 .ToList();

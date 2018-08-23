@@ -10,6 +10,7 @@ import { License } from "../../../../models/rrhh/license";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
+import { AuthService } from "../../../../services/common/auth.service";
 
 declare var $: any;
 
@@ -61,6 +62,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     constructor(private licenseService: LicenseService,
                 private employeeService: EmployeeService,
                 private router: Router,
+                private authService: AuthService,
                 private activatedRoute: ActivatedRoute,
                 public menuService: MenuService,
                 private messageService: MessageService){}
@@ -105,6 +107,20 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.configUploader();
+                    }
+                });
+
+                return;
+            }
+
             var json = JSON.parse(response);
 
             if(json.messages) this.messageService.showMessages(json.messages);

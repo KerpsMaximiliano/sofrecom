@@ -10,6 +10,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";
 import { InvoiceStatus } from "../../../../models/enums/invoiceStatus";
+import { AuthService } from '../../../../services/common/auth.service';
 
 @Component({
   selector: 'app-invoice-detail',
@@ -47,6 +48,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
+                private authService: AuthService,
                 public menuService: MenuService,
                 private messageService: MessageService) {}
 
@@ -109,6 +111,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                          });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.pdfConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
 
             if(dataJson){
@@ -136,6 +154,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.excelConfig();
+                    }
+                });
+
+                return;
+            }
+
             var dataJson = JSON.parse(response);
 
             if(dataJson){

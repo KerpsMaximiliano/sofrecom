@@ -240,4 +240,7 @@
   <data name="ImportEmployeeWithLicense" xml:space="preserve">
     <value>workTimeManagement/workTime.importEmployeeWithLicense</value>
   </data>
+  <data name="FileEmpty" xml:space="preserve">
+    <value>workTimeManagement/workTime.fileEmpty</value>
+  </data>
 </root>

@@ -19,5 +19,6 @@
     "crmGeneralError": "Error interno de CRM",
     "currencyRequired": "La moneda es requerida",
     "fileMustBeIncluded": "El archivo es requerido",
-    "updateSuccess": "Los datos fueron actualizados correctamente"
+    "updateSuccess": "Los datos fueron actualizados correctamente",
+    "fileMustReupload": "Las credenciales expiraron y fueron regeneradas. Por favor, es necesario volver a cargar los archivos."
 }
