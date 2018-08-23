@@ -693,3 +693,7 @@ pre {
 .ibox {
     transition: box-shadow 0.7s ease-in-out;
 }
+
+td.details-control {
+  cursor: pointer;
+}

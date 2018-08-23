@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ViewChild, } from '@angular/core';
-import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
 import { MessageService } from '../../../services/common/message.service';
 import { WorktimeControlService } from '../../../services/worktime-management/worktime-control.service';
@@ -7,9 +6,11 @@ import { DateRangePickerComponent } from '../../../components/date-range-picker/
 import { CustomerService } from '../../../services/billing/customer.service';
 import { ServiceService } from '../../../services/billing/service.service';
 import { I18nService } from '../../../services/common/i18n.service';
-import { Router } from '../../../../../node_modules/@angular/router';
 import { DataTableService } from '../../../services/common/datatable.service';
+import { MenuService } from '../../../services/admin/menu.service';
+import { AmountFormatPipe } from '../../../pipes/amount-format.pipe';
 declare var $: any;
+declare var moment: any;
 
 @Component({
   selector: 'app-worktime-control',
@@ -29,6 +30,8 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public model: any;
   public date = new Date();
   public selectedDate = new Date();
+  public data: any[] = new Array();
+  public gridSelector = '#gridTable';
 
   @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
@@ -36,17 +39,16 @@ export class WorkTimeControlComponent implements OnDestroy  {
     private customerService: CustomerService,
     private worktimeControlService: WorktimeControlService,
     private messageService: MessageService,
+    public menuService: MenuService,
     private datatableService: DataTableService,
-    private i18nService: I18nService,
-    private router: Router) {
+    private i18nService: I18nService) {
   }
 
     ngOnInit() {
       this.getCustomers();
       this.initServiceControl();
       this.initControls();
-      this.getWorktimeResume();
-      this.initGrid();
+      this.getData();
     }
 
     getCustomers() {
@@ -62,7 +64,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     setCustomerSelect() {
-      const data = this.mapToSelect(this.customers, this.model);
+      const data = this.mapToSelect(this.customers);
       const self = this;
 
       $('#customerControl').select2({
@@ -73,7 +75,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
       $('#customerControl').on('select2:unselecting', function(){
           self.customerId = null;
           self.serviceId = null;
-          self.getWorktimeResume();
+          self.getData();
       });
       $('#customerControl').on('select2:select', function(evt){
           const item = evt.params.data;
@@ -91,12 +93,12 @@ export class WorkTimeControlComponent implements OnDestroy  {
     });
     $('#serviceControl').on('select2:unselecting', function(){
         self.serviceId = null;
-        self.getWorktimeResume();
+        self.getData();
     });
     $('#serviceControl').on('select2:select', function(evt){
         const item = evt.params.data;
         self.serviceId = item.id === this.nullId ? null : item.id;
-        self.getWorktimeResume();
+        self.getData();
     });
   }
 
@@ -106,7 +108,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
         });
   }
 
-  mapToSelect(data: Array<any>, selectedOption: string): Array<any> {
+  mapToSelect(data: Array<any>): Array<any> {
       const result = new Array<any>();
       result.push({id: this.nullId, text: ''});
       data.forEach(s => {
@@ -130,7 +132,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
 
   updateServiceControl() {
       const options = $('#serviceControl').data('select2').options.options;
-      options.data = this.mapToSelect(this.services, this.model);
+      options.data = this.mapToSelect(this.services);
       $('#serviceControl').empty().select2(options);
   }
 
@@ -153,12 +155,12 @@ export class WorkTimeControlComponent implements OnDestroy  {
         format: 'yyyy - mm'
     }).on('changeDate', function(selected){
         self.date = selected.date;
-        self.getWorktimeResume();
+        self.getData();
     });
     $('#yearMonthControl').datepicker('update', self.date);
   }
 
-    getWorktimeResume() {
+    getData() {
         this.messageService.showLoading();
         const model = {
             serviceId : this.serviceId,
@@ -168,6 +170,8 @@ export class WorkTimeControlComponent implements OnDestroy  {
         this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {
             this.messageService.closeLoading();
             this.model = res.data;
+            this.data = res.data.resources;
+            this.initGrid();
         },
         err => {
             this.messageService.closeLoading();
@@ -175,16 +179,87 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     initGrid(){
-        const gridSelector = '#resourceTable';
+        const columns = [{
+            "className": 'details-control',
+            "orderable": false,
+            "data": null,
+            "defaultContent": ''
+        }, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
         const params = {
-            selector: gridSelector,
+            selector: this.gridSelector,
+            columns: columns,
             title: this.i18nService.translateByKey('workTimeManagement.worktimeControl.title'),
-            withExport: true
+            withExport: true,
+            columnDefs: [
+                { "targets": [ 1 ], "visible": false, "searchable": false }
+            ]
         }
 
-        this.datatableService.destroy(gridSelector);
+        this.datatableService.destroy(this.gridSelector);
 
         this.datatableService.initialize(params);
+
+        this.updateTableDetail();
+    }
+
+    formatDetail( data ) {
+        const id = $(data[0]).data("id");
+        const item = <any>this.data.find(x => x.id == id);
+
+        const details = item != null ? item.details : [];
+
+        let tbody = "";
+
+        details.forEach(x => {
+            tbody += this.getRowDetailForma(x);
+        });
+
+        return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
+            '<thead>' +
+                '<th>' + this.i18nService.translateByKey('ADMIN.task.task') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('ADMIN.task.category') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('workTimeManagement.date') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('workTimeManagement.worktimeControl.registeredHours') + '</th>' +
+            '</thead>' +
+            '<tbody>' + tbody + '</tbody>' +
+        '</table></div>';
+    }
+
+    updateTableDetail() {
+        const self = this;
+
+        $(document).ready(function() {
+            const dataTableSelector = self.gridSelector + ' tbody';
+
+            $(dataTableSelector).unbind('click');
+            $(dataTableSelector).on('click', 'td.details-control', function () {
+                const datatable = $(self.gridSelector).DataTable();
+                const tr = $(this).closest('tr');
+                const tdi = tr.find("i.fa");
+                const row = datatable.row(tr);
+
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    tdi.first().removeClass('fa-minus-square');
+                    tdi.first().addClass('fa-plus-square');
+                } else {
+                    row.child(self.formatDetail(row.data())).show();
+                    tr.addClass('shown');
+                    tdi.first().removeClass('fa-plus-square');
+                    tdi.first().addClass('fa-minus-square');
+                }
+            });
+        });
+    }
+
+    getRowDetailForma(item) {
+        return '<tr>' +
+                '<td>' + item.taskDescription + '</td>' +
+                '<td>' + item.categoryDescription + '</td>' +
+                '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
+                '<td>' + item.registeredHours + '</td>' +
+                '</tr>';
     }
 }
