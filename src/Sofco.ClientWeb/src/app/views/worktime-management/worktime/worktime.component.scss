@@ -106,3 +106,33 @@ dd {
     border-radius: 3px;
     box-sizing: border-box;
 }
+
+.config-tasks {
+    position: fixed;
+    top: 90px;
+    right: 0;
+    overflow: hidden;
+}
+
+.taskPreloaded {
+    background: black;
+    color: white;
+}
+
+.task-preload {
+    background: bottom;
+    padding-top: 10px;
+    margin-bottom: -5px;
+}
+
+.task-preload-title {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.hours-detail {
+    dt {
+        width: 75%;
+    }
+}

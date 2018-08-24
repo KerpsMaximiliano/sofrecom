@@ -83,8 +83,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.getModel();
     this.getAnalytics();
     this.getCategories();
+  }
 
-    $('.navbar-minimalize')[0].click();
+  toggleNavigation(): void {
+    $(".theme-config-box").toggleClass("show");
   }
 
   setTaskColors() {
@@ -340,7 +342,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.hide();
-      if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
       this.addRecentTask(res.data);
     },
