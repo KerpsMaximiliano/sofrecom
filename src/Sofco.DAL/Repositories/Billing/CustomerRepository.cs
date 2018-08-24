@@ -26,5 +26,18 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Customers.Where(x => x.Active).ToList().AsReadOnly();
         }
+
+        public void UpdateInactives(IList<int> idsAdded)
+        {
+            var customers = context.Customers.Where(x => !idsAdded.Contains(x.Id)).ToList();
+
+            foreach (var customer in customers)
+            {
+                customer.Active = false;
+                context.Entry(customer).Property("Active").IsModified = true;
+            }
+
+            context.SaveChanges();
+        }
     }
 }

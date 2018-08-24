@@ -48,7 +48,8 @@ export class LicenseViewDelegateComponent implements OnInit, OnDestroy {
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
             selector: '#delegateTable',
-            order: [[ 0, 'asc' ]]
+            order: [[ 0, 'asc' ]],
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
         });
     }
 

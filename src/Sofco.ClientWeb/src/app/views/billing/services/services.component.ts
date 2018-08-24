@@ -52,11 +52,10 @@ export class ServicesComponent implements OnInit, OnDestroy {
       err => {
         this.messageService.closeLoading();
 
-        var options = { selector: "#serviceTable" }
-        this.datatableService.initialize(options);
+        this.initGrid();
       });
     }
-
+ 
     initGrid(){
       var params = {
         selector: '#serviceTable',

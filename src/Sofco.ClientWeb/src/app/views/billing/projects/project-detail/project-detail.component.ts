@@ -246,7 +246,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     initSolfacGrid(){
         var params = {
           selector: '#solfacTable',
-          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+          columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
         this.datatableService.initialize(params);

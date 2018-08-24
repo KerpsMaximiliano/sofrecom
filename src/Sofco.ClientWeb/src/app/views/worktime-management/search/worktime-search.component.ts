@@ -133,7 +133,8 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
         var options = { 
             selector: "#searchTable",
-            columns: columns,
+            columns: columns, 
+            columnDefs: [ {"aTargets": [7], "sType": "date-uk"} ],
             title: title,
             withExport: true
         };
