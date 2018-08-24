@@ -321,7 +321,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var response = new Response();
 
             var user = userData.GetCurrentUser();
-            var isManager = unitOfWork.UserRepository.HasManagerGroup(user.Email);
+            var isManager = unitOfWork.UserRepository.HasManagerGroup(user.UserName);
 
             try
             {
