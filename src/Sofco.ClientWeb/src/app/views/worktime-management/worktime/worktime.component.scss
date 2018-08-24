@@ -55,11 +55,6 @@ dd {
     padding:2px;
 }
 
-.ibox-task
- {
-    padding-bottom: 0px;
-}
-
 :host ::ng-deep .eventTask  {
     cursor: default;
 }
@@ -81,4 +76,33 @@ dd {
 .ibox-no-shadow {
     box-shadow: none;
     transition: unset;
+}
+
+.ibox-resume {
+    padding: 10px 10px 0px 10px!important;
+}
+
+.external-event {
+    display: inline-table;
+    width: 100%;
+}
+
+.ibox-tasks {
+    padding: 10px 10px 15px 10px!important;
+    max-height: 240px;
+}
+
+.scroll-tasks {
+    overflow: auto;
+    max-height: 220px;
+}
+
+.analytic-task-title  {
+    display: block;
+    margin: 5px 0;
+    padding: 5px 10px;
+    text-decoration: none;
+    border: 1px solid #e7eaec;
+    border-radius: 3px;
+    box-sizing: border-box;
 }

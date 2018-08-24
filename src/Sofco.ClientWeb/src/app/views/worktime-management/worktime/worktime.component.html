@@ -15,8 +15,84 @@
     
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
+        <div class="col-md-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5 class="pull-left">{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
+                    <div class="ibox-tools">
+                        <button class="btn btn-success btn-xs" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
+                    </div>
+                </div>
+                <div class="ibox-content ibox-tasks">
+                    <div class="scroll-tasks">
+                        <div class="dd">
+                            <ol class="dd-list">
+                                <li *ngFor="let item of recentAnalyticTasks; let i = index; let last = last" class="dd-item">
+                                    <div class="bg-success analytic-task-title">{{ item.analytic }}</div>
+                                    
+                                    <ol class="dd-list">
+                                        <li *ngFor="let taskItem of item.tasks; let t = index" class="dd-item bg-success m-b-xs" style="width: 100%">
+                                            <div class='external-event bg-success'
+                                                [attr.data-task]="taskItem.task"
+                                                [attr.data-color]="draftTaskColor"
+                                                [attr.data-taskId]="taskItem.taskId"
+                                                [attr.data-analyticId]="taskItem.analyticId"
+                                                [attr.data-hours]="taskItem.hours">
+                                                {{ taskItem.task }} - {{ taskItem.hours }} hs
+
+                                                <a class="pull-right" (click)="removeTask(taskItem)">
+                                                    <i class="fa fa-close text-white"></i>
+                                                </a>
+                                            </div>
+                                    
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{ 'workTimeManagement.workTime.resume' | translate }}</h5>
+                </div>
+                <div class="ibox-content ibox-resume">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal" style="min-width: 250px">
+                                <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
+                                <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
+                                <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
+                                <dd class="bg-danger">{{ model?.resume?.hoursRejected }} hs</dd>
+                                <dt class="bg-warning">{{ 'workTimeManagement.workTime.pendingToSend' | translate }}</dt>
+                                <dd class="bg-warning">{{ model?.resume?.hoursPending }} hs</dd>
+                                <dt class="bg-success">{{ 'workTimeManagement.workTime.pendingToApprove' | translate }}</dt>
+                                <dd class="bg-success">{{ model?.resume?.hoursPendingApproved }} hs</dd>
+                                <dt class="bg-license">{{ 'workTimeManagement.workTime.resumeLicense' | translate }}</dt>
+                                <dd class="bg-license">{{ model?.resume?.hoursWithLicense }} hs</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal" style="min-width: 250px">
+                                <dt>{{ 'workTimeManagement.workTime.totalResume' | translate }}</dt>
+                                <dd>{{ model?.resume?.total }} hs</dd>
+                                <hr style="margin:0px">
+                                <dt>{{ 'workTimeManagement.workTime.workingHours' | translate }}</dt>
+                                <dd>{{ model?.resume?.businessHours }} hs</dd>
+                                <dt>{{ 'workTimeManagement.workTime.currentHoursToDate' | translate }}</dt>
+                                <dd>{{ model?.resume?.hoursUntilToday }} hs</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
                     <div class="row">
@@ -29,82 +105,6 @@
                     </div>
                     <hr>
                     <div id="calendar"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="ibox ibox-task">
-                <div class="ibox-content">
-                    <button class="btn btn-success" style="width:100%" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
-
-                    <div class="row">
-                        <div class="ibox ibox-task ibox-no-shadow">
-                            <div class="ibox-title ibox-task-title">
-                                <h5>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h5>
-                                <iboxtools #boxtools></iboxtools>
-                            </div>
-                            <div class="ibox-content ibox-task external-events">
-                                <div id='external-events' *ngFor="let item of recentAnalyticTasks; let i = index; let last = last">
-                                    <div class="panel-group" id="accordion{{ i }}" (loaded)="taskReady()">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading task-panel-head">
-                                                <h5 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" [href]="'#collapse'+i">{{ item.analytic }}</a>
-                                                </h5>
-                                            </div>
-                                            <div [id]="'collapse'+i" class="panel-collapse collapse in">
-                                                <div class="panel-body">
-                                                    <div class='bg-success row task-item-row' *ngFor="let taskItem of item.tasks; let t = index">
-                                                        <div class='external-event bg-success task-item' 
-                                                            [attr.data-task]="taskItem.task"
-                                                            [attr.data-color]="draftTaskColor"
-                                                            [attr.data-taskId]="taskItem.taskId"
-                                                            [attr.data-analyticId]="taskItem.analyticId"
-                                                            [attr.data-hours]="taskItem.hours"
-                                                            >{{ taskItem.task }} - {{ taskItem.hours }} hs</div>
-                                                        <a class="task-item-close" (click)="removeTask(taskItem)">
-                                                            <i class="fa fa-close text-white"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ibox" style="min-width: 270px">
-                <div class="ibox-title">
-                    <h5>{{ 'workTimeManagement.workTime.resume' | translate }}</h5>
-                </div>
-                <div class="ibox-content">
-
-                    <dl class="dl-horizontal" style="min-width: 250px">
-                        <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
-                        <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
-                        <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
-                        <dd class="bg-danger">{{ model?.resume?.hoursRejected }} hs</dd>
-                        <dt class="bg-warning">{{ 'workTimeManagement.workTime.pendingToSend' | translate }}</dt>
-                        <dd class="bg-warning">{{ model?.resume?.hoursPending }} hs</dd>
-                        <dt class="bg-success">{{ 'workTimeManagement.workTime.pendingToApprove' | translate }}</dt>
-                        <dd class="bg-success">{{ model?.resume?.hoursPendingApproved }} hs</dd>
-                        <dt class="bg-license">{{ 'workTimeManagement.workTime.resumeLicense' | translate }}</dt>
-                        <dd class="bg-license">{{ model?.resume?.hoursWithLicense }} hs</dd>
-
-                        <dt>{{ 'workTimeManagement.workTime.totalResume' | translate }}</dt>
-                        <dd>{{ model?.resume?.total }} hs</dd>
-                        <hr style="margin:0px">
-                        <dt>{{ 'workTimeManagement.workTime.workingHours' | translate }}</dt>
-                        <dd>{{ model?.resume?.businessHours }} hs</dd>
-                        <dt>{{ 'workTimeManagement.workTime.currentHoursToDate' | translate }}</dt>
-                        <dd>{{ model?.resume?.hoursUntilToday }} hs</dd>
-                    </dl>
-
                 </div>
             </div>
         </div>

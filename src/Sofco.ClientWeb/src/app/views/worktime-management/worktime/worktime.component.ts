@@ -83,6 +83,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.getModel();
     this.getAnalytics();
     this.getCategories();
+
+    $('.navbar-minimalize')[0].click();
   }
 
   setTaskColors() {
@@ -189,7 +191,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   eventDragInit() {
       const self = this;
-      $('#external-events div.external-event').each(function() {
+      $('.external-event').each(function() {
         $(this).data('event', {
             id: 0,
             title: $(this).data('task'),
@@ -399,7 +401,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
     const className = (item.status !== this.licenseStatus) ? '' : 'eventTask';
-    const title = item.hours + ' h - ' + item.taskName;
+    const title = item.analyticTitle + ' ' + item.hours + 'h-' + item.taskName;
     return {
       id: item.id,
       title: title,
