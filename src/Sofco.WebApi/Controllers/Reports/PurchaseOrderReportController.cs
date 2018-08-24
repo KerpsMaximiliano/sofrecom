@@ -21,7 +21,7 @@ namespace Sofco.WebApi.Controllers.Reports
         public IActionResult Get([FromBody] SearchPurchaseOrderParams parameters)
         {
             var response = purchaseOrderReportService.Get(parameters);
-
+             
             return this.CreateResponse(response);
         }
 
