@@ -53,17 +53,42 @@
         </div> -->
 
     <div class="ibox">
+        <div class="ibox-title">
+            <h3 class="pull-left">{{ 'workTimeManagement.workTime.calendar' | translate }}</h3>
+
+            <div class="ibox-tools">
+                <button class="btn btn-success" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
+                <btn-confirm [class]="'btn-primary'" [text]="'workTimeManagement.workTime.sendHours'" [icon]="'fa-arrow-circle-right'" (onConfirm)="sendHours()"></btn-confirm> 
+            </div>
+        </div>
         <div class="ibox-content">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>{{ 'workTimeManagement.workTime.calendar' | translate }}</h3>
-                </div>
-                <div class="col-md-6 text-right">
-                    <button class="btn btn-success" (click)="showEditModal()"> {{ 'workTimeManagement.workTime.loadNewTask' | translate }} <i class="fa fa-plus-circle"></i></button>
-                    <btn-confirm [class]="'btn-primary'" [text]="'workTimeManagement.workTime.sendHours'" [icon]="'fa-arrow-circle-right'" (onConfirm)="sendHours()"></btn-confirm> 
+            <h2>{{ 'workTimeManagement.workTime.taskPreloaded' | translate }}</h2>
+
+            <div class="row m-b-md">
+                <div class="col-lg-4" *ngFor="let item of recentAnalyticTasks; let i = index; let last = last">
+                    <div class="m-b-sm">
+                        <strong> {{ item.analytic }} </strong>
+                    </div>
+
+                    <ul class="list-inline">
+                        <li *ngFor="let taskItem of item.tasks; let t = index">
+                            <div class='external-event bg-cadetblue'
+                                [attr.data-task]="taskItem.task"
+                                [attr.data-color]="draftTaskColor"
+                                [attr.data-taskId]="taskItem.taskId"
+                                [attr.data-analyticId]="taskItem.analyticId"
+                                [attr.data-hours]="taskItem.hours">
+                                {{ taskItem.task }} - {{ taskItem.hours }} hs
+    
+                                <a class="pull-right m-l-md" (click)="removeTask(taskItem)">
+                                    <i class="fa fa-close text-white"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <hr>
+
             <div id="calendar"></div>
         </div>
     </div>
@@ -138,7 +163,7 @@
         </div>
     </form>
 </ng2-modal>
-
+<!-- 
 <div class="config-tasks">
     <div class="theme-config-box">
         <div class="spin-icon" (click)="toggleNavigation()">
@@ -165,10 +190,9 @@
                                 <i class="fa fa-close text-white"></i>
                             </a>
                         </div>
-                
                     </li>
                 </ol>
             </div>
         </div>
     </div>
-</div>
+</div> -->
