@@ -55,6 +55,11 @@ dd {
     padding:2px;
 }
 
+.ibox-task
+ {
+    padding-bottom: 0px;
+}
+
 :host ::ng-deep .eventTask  {
     cursor: default;
 }
@@ -76,68 +81,4 @@ dd {
 .ibox-no-shadow {
     box-shadow: none;
     transition: unset;
-}
-
-.ibox-resume {
-    padding: 10px 10px 0px 10px!important;
-}
-
-.external-event {
-    display: inline-table;
-    width: 100%;
-}
-
-.ibox-tasks {
-    padding: 10px 10px 15px 10px!important;
-    max-height: 240px;
-}
-
-.scroll-tasks {
-    overflow: auto;
-    max-height: 220px;
-}
-
-.analytic-task-title  {
-    display: block;
-    margin: 5px 0;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: 1px solid #e7eaec;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-.config-tasks {
-    position: fixed;
-    top: 90px;
-    right: 0;
-    overflow: hidden;
-}
-
-.taskPreloaded {
-    background: black;
-    color: white;
-}
-
-.task-preload {
-    background: bottom;
-    padding-top: 10px;
-    margin-bottom: -5px;
-}
-
-.task-preload-title {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-}
-
-.hours-detail {
-    dt {
-        width: 75%;
-    }
-}
-
-.bg-cadetblue{ 
-    background: cadetblue;
-    color: white;
 }
