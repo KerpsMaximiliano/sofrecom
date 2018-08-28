@@ -20,6 +20,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public decimal PendingHours { get; set; }
 
+        public decimal AllocationPercentage { get; set; }
+
         public List<WorkTimeControlResourceDetailModel> Details { get; set; }
     }
 }
