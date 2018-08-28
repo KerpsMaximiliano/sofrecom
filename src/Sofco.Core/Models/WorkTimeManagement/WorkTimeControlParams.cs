@@ -6,8 +6,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
     {
         public Guid? ServiceId { get; set; }
 
-        public int Year { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public int Month { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

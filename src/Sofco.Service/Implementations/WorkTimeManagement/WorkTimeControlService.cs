@@ -35,17 +35,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var result = new Response<WorkTimeControlModel>();
 
-            var closeDay = GetCloseDay();
+            var startDate = parameters.StartDate;
 
-            var endDate = new DateTime(parameters.Year, parameters.Month, closeDay);
+            var endDate = parameters.EndDate;
 
-            var startDate = endDate.AddMonths(-1);
-
-            var currentUser = userData.GetCurrentUser();
-
-            var workTimes = parameters.ServiceId.HasValue
-                ? unitOfWork.WorkTimeRepository.Get(startDate, endDate, currentUser.Id, GetAnalyticId(parameters.ServiceId))
-                : unitOfWork.WorkTimeRepository.Get(startDate, endDate, currentUser.Id);
+            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.ServiceId));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -72,7 +66,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 }
                 else
                 {
-                    grouped.Add(key, new List<WorkTime> { workTime});
+                    grouped.Add(key, new List<WorkTime> { workTime });
                 }
             }
 
@@ -99,32 +93,41 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.RegisteredHours = resume.HoursApproved;
                 resource.PendingHours = resume.HoursPending;
                 resource.LicenseHours = resume.HoursWithLicense;
-                resource.Details = Translate(workTimes.Where(s => s.AnalyticId == model.AnalyticId).ToList());
+                resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
                 result.Add(resource);
             }
 
             return result;
         }
 
-        private int GetAnalyticId(Guid? serviceId)
+        private List<int> GetAnalyticIds(Guid? serviceId)
         {
-            if (!serviceId.HasValue) return 0;
+            if (!serviceId.HasValue)
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                var ids = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id);
+
+                return ids.ToList();
+            }
 
             var analytic = unitOfWork.AnalyticRepository
                 .GetByService(serviceId.Value.ToString());
 
-            return analytic?.Id ?? 0;
-        }
-
-        private int GetCloseDay()
-        {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
-
-            return int.Parse(closeMonthSetting.Value);
+            return new List<int> {analytic?.Id ?? 0};
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
         {
+            var categoriyIds = workTimes.Select(s => s.Task.CategoryId).Distinct().ToList();
+
+            var categories = unitOfWork.CategoryRepository.GetByIds(categoriyIds);
+
+            foreach (var workTime in workTimes)
+            {
+                workTime.Task.Category = categories.Single(s => s.Id == workTime.Task.CategoryId);
+            }
+
             return mapper.Map<List<WorkTime>, List<WorkTimeControlResourceDetailModel>>(workTimes);
         }
 

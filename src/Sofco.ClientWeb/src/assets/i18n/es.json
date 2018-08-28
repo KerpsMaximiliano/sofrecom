@@ -966,7 +966,7 @@
         },
         "worktimeControl": {
             "title": "Control de Horas",
-            "yearMonth": "Año - Mes",
+            "dateRange": "Desde-Hasta",
             "businessHoursTotal": "Total de horas laborables",
             "registeredHoursTotal": "Total de horas cargadas",
             "licenseHoursTotal": "Total de horas de licencias",

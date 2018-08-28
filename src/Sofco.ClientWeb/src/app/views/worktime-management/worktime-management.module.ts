@@ -34,6 +34,7 @@ import { HolidaysComponent } from './holidays/holidays.component';
 import { WorkTimeRouter } from './worktime.router';
 import { ImportWorkTimesComponent } from 'app/views/worktime-management/import/import-worktime.component';
 import { WorkTimeControlComponent } from './worktime-control/worktime-control.component';
+import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
@@ -42,7 +43,7 @@ import { WorkTimeControlComponent } from './worktime-control/worktime-control.co
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
-             PCheckModule, WorkTimeRouter],
+             PCheckModule, WorkTimeRouter, DateRangePickerModule],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
         I18nService, WorktimeControlService],

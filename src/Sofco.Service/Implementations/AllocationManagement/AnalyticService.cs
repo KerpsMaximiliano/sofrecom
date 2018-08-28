@@ -18,6 +18,7 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
+using Sofco.Domain;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Domain.Utils;
@@ -88,7 +89,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
             var now = DateTime.Now.Date;
             var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
