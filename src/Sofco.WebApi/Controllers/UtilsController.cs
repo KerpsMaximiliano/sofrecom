@@ -45,6 +45,14 @@ namespace Sofco.WebApi.Controllers
             return Ok(months);
         }
 
+        [HttpGet("closeMonths")]
+        public IActionResult GetCloseMonths()
+        {
+            var months = utilsService.GetCloseMonths();
+
+            return Ok(months);
+        }
+
         [HttpGet("years")]
         public IActionResult GetYears()
         {

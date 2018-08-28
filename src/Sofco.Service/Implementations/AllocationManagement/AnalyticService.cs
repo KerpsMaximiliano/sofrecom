@@ -88,6 +88,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response<List<Option>> GetByCurrentUser()
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
+            var userId = userData.GetCurrentUser().Id;
 
             var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
@@ -108,9 +109,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 dateTo = new DateTime(now.Year, now.Month, 1);
             }
 
-            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, dateFrom.Date, dateTo.Date).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, dateFrom.Date, dateTo.Date).ToList();
 
-            return new Response<List<Option>> { Data = result };
+            var response = new Response<List<Option>> { Data = new List<Option>() };
+
+            foreach (var analytic in result)
+            {
+                if (response.Data.All(x => x.Id != analytic.Id))
+                {
+                    response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                }
+            }
+
+            return response;
         }
 
         public Response<List<Option>> GetByCurrentManager()

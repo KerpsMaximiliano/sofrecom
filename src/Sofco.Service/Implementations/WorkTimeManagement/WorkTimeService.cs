@@ -424,9 +424,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 return response;
             }
 
+            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var value = Convert.ToInt32(closeMonthSetting.Value);
+
             var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorktimeReport(parameters);
 
             response.Data = new List<WorkTimeReportModel>();
+
+            var startDate = new DateTime(parameters.Year, parameters.Month-1, value+1);
+            var endDate = new DateTime(parameters.Year, parameters.Month, value);
 
             foreach (var allocation in allocations)
             {
@@ -441,11 +447,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 model.Analytic = $"{allocation.Analytic.Name} - {allocation.Analytic.Service}";
                 model.Manager = allocation.Analytic.Manager.Name;
                 model.Employee = allocation.Employee.Name;
-                model.MonthYear = $"{parameters.Month}-{parameters.Year}";
+                model.MonthYear = $"{allocation.StartDate.Month}-{allocation.StartDate.Year}";
                 model.Facturability = allocation.Employee.BillingPercentage;
                 model.AllocationPercentage = allocation.Percentage;
                 model.HoursMustLoad = CalculateHoursToLoad(allocation);
-                model.HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, allocation.StartDate, allocation.AnalyticId);
+                model.HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId);
 
                 model.Result = model.HoursLoaded >= model.HoursMustLoad;
 
@@ -555,8 +561,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var response = new Response();
 
             var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
-
-            WorkTimeValidationHandler.ValidateDelete(worktime, response);
+             
+            WorkTimeValidationHandler.ValidateDelete(worktime, response, unitOfWork);
 
             if (response.HasErrors()) return response;
 

@@ -26,7 +26,7 @@
     "yearAndMonthRequired": "Mes y Año son requeridos",
     "rejectedWithSomeErrors": "Algunas horas fueron rechazadas correctamente y algunas contenian algun error",
     "deleteSuccess": "La hora cargada fue eliminada correctamente",
-    "cannotDelete": "Solo se puede eliminar la hora en estado borrador o rechazada",
+    "cannotDelete": "No se pueden eliminar horas correspondientes a un periodo cerrado",
     "datesRequired": "Las fechas son requeridas",
     "dateIsWeekend": "No se pueden cargar horas un fin de semana",
     "dateIsHoliday": "No se pueden cargar horas un dia feriado",

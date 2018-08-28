@@ -72,7 +72,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
         this.editModalConfig.deleteButton = true;
         this.editModalConfig.acceptInlineButton = true;
-        this.editModalConfig.isDraggable = true;
   }
 
   ngOnInit() {
@@ -100,12 +99,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.model.calendar.splice(taskToRemove, 1);
       this.updateCalendarEvents();
 
+      this.editModal.hide();
+
       this.getModel();
     },
-    error => {},
-    () => {
-      this.editModal.hide();
-    });
+    error => this.editModal.hide());
   }
 
   calendarInit() {
@@ -279,12 +277,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     }
     this.showSaveTask();
 
-    if(this.taskModel.status != 1 && this.taskModel.status != 4){
-      this.editModalConfig.deleteButton = false;
-    }
-    else{
-      this.editModalConfig.deleteButton = true;
-    }
+    this.editModalConfig.deleteButton = true;
 
     this.editModal.show();
   }
@@ -338,7 +331,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.hide();
-      if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
       this.addRecentTask(res.data);
     },

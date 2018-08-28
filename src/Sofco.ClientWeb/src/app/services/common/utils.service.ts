@@ -15,6 +15,10 @@ export class UtilsService {
     return this.http.get<any>(`${this.apiUrl}/months`);
   }
 
+  getCloseMonths() {
+    return this.http.get<any>(`${this.apiUrl}/closeMonths`);
+  }
+
   getYears() {
     return this.http.get<any>(`${this.apiUrl}/years`);
   }
