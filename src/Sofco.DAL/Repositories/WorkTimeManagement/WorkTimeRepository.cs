@@ -28,11 +28,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
-        public IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId, int analyticId)
+        public IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds)
         {
             return context.WorkTimes
-                .Where(x => x.UserId == currentUserId 
-                    && x.AnalyticId == analyticId
+                .Where(x => analyticIds.Contains(x.AnalyticId)
                     && x.Date >= startDate && x.Date <= endDate)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
