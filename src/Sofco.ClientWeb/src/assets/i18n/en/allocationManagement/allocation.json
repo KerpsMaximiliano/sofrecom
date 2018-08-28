@@ -9,5 +9,7 @@
 	"dateToRequired": "Date is required",
 	"releaseDateIsRequired": "Release date is required.",
 	"wrongPercentage": "Percentage entered is incorrect",
-	"monthDifferent": "The entered date can not be different from the current month of the last assignment"
+	"monthDifferent": "The entered date can not be different from the current month of the last assignment",
+	"employeeWithErrors": "The massive assignments were made successfully but some contain impediments",
+    "massiveSuccess": "The massive assignments were made successfully"
 }

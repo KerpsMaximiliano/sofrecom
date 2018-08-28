@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { smoothlyMenu } from '../../../app.helpers';
 import * as _ from 'lodash';
 import { AuthenticationService } from "../../../services/common/authentication.service";
@@ -25,16 +24,16 @@ export class TopNavbarComponent {
         private router: Router,
         public menuService: MenuService){
 
-        configService.setCurrLang('es');
+        // configService.setCurrLang('es');
 
-        // var lang =  Cookie.get("lang");
+        var lang =  Cookie.get("lang");
 
-        // if(lang){
-        //   configService.setCurrLang(lang);
-        // }
-        // else{
-        //   configService.setCurrLang('es');
-        // }
+        if(lang){
+          configService.setCurrLang(lang);
+        }
+        else{
+          configService.setCurrLang('es');
+        }
 
       this.userName = this.menuService.currentUser;
 
