@@ -33,6 +33,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
             {
                 AnalyticId = domain.AnalyticId;
                 AnalyticName = domain.Analytic.Name;
+                AnalyticTitle = domain.Analytic.Title;
             }
         }
 
@@ -56,6 +57,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public int AnalyticId { get; set; }
 
         public string AnalyticName { get; set; }
+        public string AnalyticTitle { get; set; }
 
         public WorkTimeStatus Status { get; set; }
     }

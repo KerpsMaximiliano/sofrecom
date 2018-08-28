@@ -5,6 +5,7 @@
             <th></th>
             <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
             <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
+            <th>Propuesta</th>
             <th class="text-right">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</th>
             <th class="text-center">{{'billing.purchaseOrder.fields.status' | translate }}</th>
             <th>{{'billing.purchaseOrder.fields.currency' | translate }}</th>
@@ -12,7 +13,6 @@
             <th class="text-right">{{'billing.purchaseOrder.fields.balance' | translate }}</th>
             <th>{{'billing.purchaseOrder.projectManager' | translate }}</th>
             <th>{{'billing.purchaseOrder.commercialManager' | translate }}</th>
-            <th>{{'billing.solfac.pdf' | translate }}</th>
             <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
         </tr>
     </thead>
@@ -24,6 +24,7 @@
             <td>{{ purchaseOrder.id }}</td>
             <td>{{ purchaseOrder.number }}</td>
             <td>{{ purchaseOrder.clientExternalName }}</td>
+            <td>{{ purchaseOrder.proposal }}</td>
             <td class="text-right">{{ purchaseOrder.receptionDate | date: "dd/MM/yyyy" }}</td>
             <td class="text-center"> <label class="label label-oc-{{purchaseOrder.statusId}}">{{ purchaseOrder.statusText | translate }}</label> </td>
             <td>{{ purchaseOrder.currencyText }}</td>
@@ -31,7 +32,6 @@
             <td class="text-right">{{ purchaseOrder.balance | amountFormat }}</td>
             <td>{{ purchaseOrder.projectManagerNames }}</td>
             <td>{{ purchaseOrder.accountManagerNames }}</td>
-            <td>{{ purchaseOrder.pdfUrl }}</td>
             <td class="text-center column-xs">
                 <button *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="clickViewHandler(purchaseOrder)"><i class="fa fa-eye"></i></button>
 
