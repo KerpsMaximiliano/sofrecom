@@ -30,5 +30,7 @@
 	"delegateWrongDataError": "Incorrect data",
 	"deleteSuccess": "The purchase order was successfully deleted",
 	"cannotDeleteWithWfStarted": "Unable to delete because the approval flow has already started",
-	"cannotDelete": "Can not be deleted in the current state"
+	"cannotDelete": "Can not be deleted in the current state",
+	"userAreaWrong": "Only the person in charge of the selected area can approve the purchase order",
+    "userSectorWrong": "Only the person in charge of the selected sector can approve the purchase order"
 }

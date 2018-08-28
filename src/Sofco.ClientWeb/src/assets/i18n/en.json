@@ -91,6 +91,32 @@
 			 "category": "Category",
 			 "task": "Task"
 		},
+		"area": {
+            "admin": "Area Management",
+            "title": "Areas",
+            "list": "List of Areas",
+            "description":"Description",
+            "edit": "Edit Area",
+            "add": "Add Area",
+            "responsable": "Responsable",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "active": "Active",
+            "area": "Area"
+        },
+        "sector": {
+            "admin": "Sector Management",
+            "title": "Sectors",
+            "list": "List of Sectors",
+            "edit": "Edit Sector",
+            "description":"Description",
+            "add": "Add Sector",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "active": "Active",
+            "responsable": "Responsable",
+            "area": "Sector"
+        },
 		"settings": {
 			"title": "Configs",
 			"licenseTitle": "Licenses's Configuration",
@@ -105,7 +131,8 @@
 			"StartDateHolidays": "Start date holiday period",
 			"jobsSettingTitle": "Parameters of Jobs",
 			"LicenseCertificatePendingDayOfMonth": "Notification of certificates not delivered (day of the month).",
-			"WorkingHoursPerDaysMax": "Top working day"
+			"WorkingHoursPerDaysMax": "Top working day",
+			"CloseMonth": "Day of the close of the month"
 		}
 	},
 	"billing":{
@@ -238,7 +265,16 @@
 			"parameters": "Search Parameters",
 			"noOrdersFound": "There are no purchase orders loaded",
 			"adjustmentModelTitle": "Include the amounts to be adjusted",
-			 "fileMissing": "To complete the process of loading the Purchase Order you must upload the file (pdf) of it",
+			"createAdjustment": "Create Adjustment",
+            "sendToOperative": "Send to Operative",
+            "sendToComercial": "Send to Comercial",
+            "sendToCompliance": "Send to Compliance",
+            "sendToDaf": "Send to DAF",
+            "goToPendings": "Go to pendings",
+            "ocPendings": "Purchase orders pendings",
+            "ocPendingsShortTitle": "Orders pendings",
+            "pendings": "Pendings",
+			"fileMissing": "To complete the process of loading the Purchase Order you must upload the file (pdf) of it",
 			"fields": {
 				"number": "Numer",
 				"client": "Client",
@@ -251,18 +287,43 @@
 				"opportunity": "Opportunity",
 				"currency": "Currency",
 				"balance": "Balance",
+				"proposal": "Proposals",
 				"ammount": "Amount",
 				"company": "Company",
 				"commercial": "Commercial",
 				"project": "Project",
 				"description": "Description",
+				"comments": "Comments",
+                "margin": "Margin",
+                "paymentForm": "Payment Form",
+                "ficheDeSignature": "Fiche De Signature",
 				"analytic": "Analytics",
 				"billingPendingAmmount": "Pending to Bill",
 				"cashPendingAmmount": "Pending To Be Charged",
 				"ammountCashed": "Revenue Collected"
 			},
 			"projectManager": "Project Manager",
-			"commercialManager": "Account Manager"
+			"commercialManager": "Account Manager",
+			"delegate": {
+                "approvalTitle": "Delegate Purchase Order Approval",
+                "activeTitle": "Delegate Purchase Order Actives",
+                "delegateAction": "Delegate",
+                "type": "Type",
+                "source": "Origin",
+                "users": "Users",
+                "saveSuccess": "User added successfully",
+                "responsable": "Responsable",
+                "user": "User",
+                "createdUser": "Created by",
+                "createdDate": "Creation Date",
+                "deleteConfirm": "Are you sure you want to delete the selected delegate?",
+                "PurchaseOrderApprovalCommercial": "Area",
+                "PurchaseOrderApprovalOperation": "Operation",
+                "PurchaseOrderApprovalCompliance": "Compliance",
+                "PurchaseOrderApprovalDaf": "DAF"
+			},
+			"adjustment": "Ajuste",
+            "activeViewTitle": "Orden de Compras Activas"
 		},
 		"solfac": {
 			"title": "Invoicing Request",
@@ -420,7 +481,7 @@
 			"list": "List of cost centers",
 			"edit": {
 				"title": "Edit cost center"
-},
+			},
 			"add": {
 				"title": "New cost center",
 				"code": "Code",
@@ -475,7 +536,8 @@
 				"boss": "Superior",
 				"manager": "Manager",
 				"office": "Address",
-				"billeability": "Billingability (%)"
+				"billeability": "Billingability (%)",
+				"unassigned": "Unassigned"
 			}
 		},
 		"resources": {
@@ -511,6 +573,7 @@
 			"endDate": "Date Low",
 			"reason": "Reason",
 			"comments": "Comments",
+			"manager": "Manager",
 			"grid": {
 				"name": "Name",
 				"senority": "Seniority",
@@ -523,9 +586,34 @@
 				"startDate": "Start",
 				"releaseDate": "Release",
 				"percentage": "Billingability",
-				"start": "Ingress"
+				"start": "Ingress",
+				"birthday": "Birthday",
+                "address": "Address",
+                "location": "Location",
+                "province": "Province",
+                "country": "Country",
+                "healthInsuranceCode": "Health Insurance",
+                "prepaidHealthCode": "Prepaid Health",
+                "documentNumberType": "Document type",
+                "documentNumber": "Document",
+                "cuil": "Cuil",
+                "phoneCountryCode": "Country code",
+                "phoneAreaCode": "Area code",
+                "phoneNumber": "Telephone",
+                "email": "Email",
+                "seniority": "Seniority"
 			},
-			"pendingWorkingHoursAlert": "Resource with tasks / hours pending approval to date."
+			"pendingWorkingHoursAlert": "Resource with tasks / hours pending approval to date.",
+			"phone": "Telephone",
+            "cuil": "Cuil",
+            "document": "Document",
+            "profileHistoryGrid": {
+                "name": "Updates",
+                "date": "Date",
+                "field": "Field",
+                "oldValue": "Old value",
+                "newValue": "New value"
+            }
 		},
 		"news": {
 			"title": "News",
@@ -537,7 +625,8 @@
 				"startDate": "Date of Registration",
 				"endDate": "Date of Discharge",
 				"status": "State"
-			}
+			},
+			"updateRrhh": "Update data"
 		},
 		"analytics": {
 			"listTitle": "List of Analytics",
@@ -550,6 +639,7 @@
 			"viewTitle": "View Analytics",
 			"assigned": "Assigned Analytics",
 			"close": "Close Analytic",
+			"closeForExpenses": "Close for expenses",
 			"add": {
 				"title": "Title",
 				"startDate": "Start date",
@@ -643,23 +733,27 @@
 			"days": "Days",
 			"enjoy": "Paid",
 			"status": "State",
-			"managed": "Request  Leaves",
-			"authPending": " Leaves Pending Authorization",
-			"approved": "Approved  Leaves",
-			"pending": " Leaves Pending Approval",
-			"load": "Update License",
+			"managed": "Request Licenses",
+			"authPending": "Licenses Pending Authorization",
+			"approved": "Approved Licenses",
+			"pending": " Licenses Pending Approval",
+			"load": "Load License",
 			"report": "Generate Report",
-			"holidaysPendingByLaw": " Leaves Pending",
-			"holidaysPending": "Pending  Leaves (workday)",
+			"holidaysPendingByLaw": " Licenses Pending",
+			"holidaysPending": "Pending Licenses (workday)",
 			"hasCertificate": "Certificate",
-			"detail": "Detail of the Leave",
+			"detail": "Detail of the License",
 			"detailTitle": "Detail",
 			"fileDelivered": "Delivered Documentation",
 			"extraHolidays": "Extra agreed Leaves",
 			"holidaysByLaw": "Annual Leave by law",
 			"finalizeExtraHolidays": "End Agreement",
 			"cancelComments": "A reason to cancel must be added",
-			"addCancelComments": "Enter the reasons to cancel"
+			"addCancelComments": "Enter the reasons to cancel",
+			"delegate": {
+                "viewTitle": "Delegate License Approval",
+                "delegateAction": "Delegate"
+            }
 		}
 	},
 	"ACTIONS": {
@@ -675,6 +769,7 @@
 		"yes": "Yes",
 		"no": "No",
 		"update": "Update",
+		"updateAndSend": "Update and Send",
 		"search": "Search",
 		"close": "Close",
 		"back": "Back",
@@ -683,6 +778,7 @@
 		"sendToDaf": "Send to DAF",
 		"annulment": "Cancel",
 		"save": "Save",
+		"information": "Information",
 		"saveAndSend": "Save and Send",
 		"sendToCDG": "Send to CDG",
 		"bill": "Billed",
@@ -713,9 +809,13 @@
 		"pendingDocumentation": "Documentation Pending",
 		"authorize": "Authorize",
 		"approveSelected": "Approve selected",
+		"rejectSelected": "Reject selected",
 		"sessionExpiredTitle": "The session has expired ...",
 		"sessionExpiredMessage": "Session has expired, you must log in again to the system",
-		"viewProfile": "View Profile"
+		"viewProfile": "View Profile",
+		"selectAll": "Seleccionar todo",
+        "removeAll": "Quitar todo",
+        "reassingAllocation": "AsignaciÃ³n masiva de recursos"
 	},
 	"SendPending": "Draft",
 	"PendingByManagementControl": "P. Review Control Management",
@@ -750,6 +850,10 @@
 	"Consumed": "Consumed",
 	"Closed": "Closed",
 	"Draft": "Draft",
+	"ComercialPending": "Pending Aprob. Comercial", 
+    "OperativePending": "Pending Aprob. Operative", 
+    "DafPending": "Pending Aprob. DAF", 
+    "CompliancePending": "Pending Aprob. Compliance", 
 	"Pending": "Pending Approval",
 	"License": "Leave",
 	"ApprovePending": "Pending documentation",
@@ -833,6 +937,18 @@
 			"hours": "Hours",
 			"status": "State"
 		},
+        "import": {
+            "title": "Massive import of hours",
+            "shortTitle": "Massive import",
+            "export": "Export template",
+            "importSuccess": "The massive import was carried out successfully.",
+            "importContainsErrors": "Errors in the massive",
+            "employeeNumber": "Employee Number",
+            "resource": "Resource",
+            "date": "Date",
+            "row": "Row",
+            "error": "Error"
+		},
 		"Draft": "Draft",
 		"Sent": "Sent",
 		"Approved": "Approved",
@@ -846,7 +962,22 @@
 			"newHoliday": "Create a holiday",
 			"importConfirm": "Confirm importing holidays from an external source?",
 			"deleteConfirm": "Confirm to delete the selected holiday?"
-		}
+		},
+        "worktimeControl": {
+            "title": "Hours Control",
+            "dateRange": "From-To",
+            "businessHoursTotal": "Business Hours Total",
+            "registeredHoursTotal": "Registered Hours Total",
+            "licenseHoursTotal": "License Hours Total",
+            "pendingHoursTotal": "Pending Hours Total",
+            "analytic": "Analytic",
+            "employeeNumber": "Eployee Number",
+            "employeeName": "Name",
+            "businessHours": "Business Hours",
+            "registeredHours": "Registered Hours",
+            "licenseHours": "License Hours",
+            "pendingHours": "Pending Hours"
+        }
 	},
 	"months": {
 		"january": "January",
