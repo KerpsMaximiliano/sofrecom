@@ -91,9 +91,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     getMonths(){
-        this.getMonthsSubscrip = this.utilsService.getMonths().subscribe(data => {
-            this.months = data;
-        });
+        this.getMonthsSubscrip = this.utilsService.getCloseMonths().subscribe(data => this.months = data);
     }
 
     getYears(){

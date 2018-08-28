@@ -140,10 +140,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Database.ExecuteSqlCommand($"DELETE FROM app.worktimes where employeeid = {licenseEmployeeId} AND date >= '{licenseStartDate:yyyy-MM-dd}' and date <= '{licenseEndDate:yyyy-MM-dd}'");
         }
 
-        public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, int analyticId)
+        public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
         {
-            var endDate = new DateTime(startdate.Year, startdate.Month, DateTime.DaysInMonth(startdate.Year, startdate.Month));
-
             return context.WorkTimes
                 .Where(x => x.Date.Date >= startdate.Date && x.Date.Date <= endDate.Date && 
                             x.AnalyticId == analyticId &&

@@ -73,7 +73,7 @@ export class Ng2ModalComponent implements OnInit {
       this.btnSuccess.reset();
     }
   }
-
+ 
   closeEvent(){
     this.hide();
     this.close.emit();
