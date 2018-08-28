@@ -8,7 +8,6 @@ import { ServiceService } from '../../../services/billing/service.service';
 import { I18nService } from '../../../services/common/i18n.service';
 import { DataTableService } from '../../../services/common/datatable.service';
 import { MenuService } from '../../../services/admin/menu.service';
-import { AmountFormatPipe } from '../../../pipes/amount-format.pipe';
 declare var $: any;
 declare var moment: any;
 
@@ -32,6 +31,8 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public selectedDate = new Date();
   public data: any[] = new Array();
   public gridSelector = '#gridTable';
+  public startDate: Date;
+  public endDate: Date;
 
   @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
@@ -161,12 +162,17 @@ export class WorkTimeControlComponent implements OnDestroy  {
   }
 
     getData() {
-        this.messageService.showLoading();
+        if(this.dateRangePicker) {
+            this.startDate = this.dateRangePicker.start.toDate();
+            this.endDate = this.dateRangePicker.end.toDate();
+        }
+
         const model = {
             serviceId : this.serviceId,
-            year: this.date.getFullYear(),
-            month: this.date.getMonth() + 1
+            startDate: this.startDate,
+            endDate: this.endDate
         };
+        this.messageService.showLoading();
         this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {
             this.messageService.closeLoading();
             this.model = res.data;
@@ -217,9 +223,9 @@ export class WorkTimeControlComponent implements OnDestroy  {
 
         return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
             '<thead>' +
+                '<th>' + this.i18nService.translateByKey('workTimeManagement.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.task') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.category') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('workTimeManagement.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('workTimeManagement.worktimeControl.registeredHours') + '</th>' +
             '</thead>' +
             '<tbody>' + tbody + '</tbody>' +
@@ -256,10 +262,10 @@ export class WorkTimeControlComponent implements OnDestroy  {
 
     getRowDetailForma(item) {
         return '<tr>' +
-                '<td>' + item.taskDescription + '</td>' +
-                '<td>' + item.categoryDescription + '</td>' +
-                '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
-                '<td>' + item.registeredHours + '</td>' +
-                '</tr>';
+            '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
+            '<td>' + item.taskDescription + '</td>' +
+            '<td>' + item.categoryDescription + '</td>' +
+            '<td>' + item.registeredHours + '</td>' +
+            '</tr>';
     }
 }

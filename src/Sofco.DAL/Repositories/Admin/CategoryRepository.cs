@@ -24,6 +24,11 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Categories.Include(x => x.Tasks).SingleOrDefault(x => x.Id == id);
         }
 
+        public List<Category> GetByIds(List<int> ids)
+        {
+            return context.Categories.Where(x => ids.Contains(x.Id)).ToList();
+        }
+
         public bool ExistById(int categoryId)
         {
             return context.Categories.Any(x => x.Id == categoryId);

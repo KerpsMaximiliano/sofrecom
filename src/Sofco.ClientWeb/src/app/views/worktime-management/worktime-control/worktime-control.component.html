@@ -33,13 +33,8 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <label class="control-label">{{'workTimeManagement.worktimeControl.yearMonth' | translate }}</label>
-                    <div class='input-group date ed-datepicker filterDate' style="width:200px">
-                        <input id="yearMonthControl" type="text" class="form-control input-sm yearMonth">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+                    <label class="control-label">{{'workTimeManagement.worktimeControl.dateRange' | translate }}</label>
+                    <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="getData(data)"></date-range-picker>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     {
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
 
-        IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId, int analyticId);
+        IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds);
 
         IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams model);
 
