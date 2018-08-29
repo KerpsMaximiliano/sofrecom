@@ -287,7 +287,7 @@
 				"opportunity": "Opportunity",
 				"currency": "Currency",
 				"balance": "Balance",
-				"proposal": "Proposals",
+				"proposal": "Proposal",
 				"ammount": "Amount",
 				"company": "Company",
 				"commercial": "Commercial",
@@ -908,7 +908,7 @@
 			"pendingToSend": "Pending to send",
 			"pendingToApprove": "Pending approval",
 			"totalResume": "Total summary",
-			"working hours": "Working Hours",
+			"workingHours": "Working Hours",
 			"currentHoursToDate": "Hours to date",
 			"resumeLicense": "Not working"
 		},
