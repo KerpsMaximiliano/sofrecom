@@ -93,6 +93,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.RegisteredHours = resume.HoursApproved;
                 resource.PendingHours = resume.HoursPending;
                 resource.LicenseHours = resume.HoursWithLicense;
+                resource.AllocationPercentage = allocationAnalytic.Percentage;
                 resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
                 result.Add(resource);
             }
