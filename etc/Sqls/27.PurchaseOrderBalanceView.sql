@@ -5,6 +5,7 @@ SELECT
 	po.ClientExternalId,
 	po.ClientExternalName,
 	po.FileId,
+	po.Proposal,
 	fil.FileName,
 	po.Id as PurchaseOrderId,
 	poad.CurrencyId,
@@ -36,4 +37,4 @@ LEFT JOIN app.Files fil ON fil.Id = po.FileId
 GROUP BY 
 	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, 
 	fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, 
-	po.Status, poad.Adjustment, poad.AdjustmentBalance
+	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal
