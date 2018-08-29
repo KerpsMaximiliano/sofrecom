@@ -145,6 +145,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("options/currentManager")]
+        public IActionResult GetByCurrentManager()
+        {
+            var response = analyticService.GetByCurrentManager();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("search")]
         public IActionResult GetByParameters([FromBody] AnalyticSearchParameters query)
         {

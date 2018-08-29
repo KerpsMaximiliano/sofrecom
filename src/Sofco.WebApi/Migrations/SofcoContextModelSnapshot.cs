@@ -992,6 +992,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Adjustment");
 
+                    b.Property<decimal?>("AdjustmentBalance");
+
                     b.Property<decimal>("Ammount");
 
                     b.Property<decimal>("Balance");

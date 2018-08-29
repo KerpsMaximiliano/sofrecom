@@ -23,6 +23,21 @@
 	"sentSuccess": "Times sent correctly",
 	"wrongStatus": "It is not allowed to modify the task with the current status.",
 	"deleteError": "An error occurred when deleting the loaded work hours",
+    "rejectedWithSomeErrors": "Some hours were rejected correctly and some contained some error",
+    "deleteSuccess": "The loaded time was deleted correctly",
+    "cannotDelete": "You can not delete hours corresponding to a closed period",
 	"yearAndMonthRequired": "Month and Year are required",
-	"datesRequired": "Dates are required"
+	"datesRequired": "Dates are required",
+	"dateIsWeekend": "Can not load hours a weekend",
+    "dateIsHoliday": "Can not load hours a holiday",
+    "importEmployeeIsNotInAnalytic": "The resource does not belong to the analytic",
+    "importDateNull": "The date is empty or in an incorrect format",
+    "importDateWrong": "The date can not be a weekend or a holiday",
+    "importHoursExceed": "It has exceeded the hours that can be charged per day",
+    "importTaskNoExist": "The task does not exist",
+    "importHoursNull": "The hours are required",
+    "importDatesOutOfRange": "The date does not correspond to the current period",
+    "importEmployeeWithLicense": "Resource with a loaded license",
+    "importUserWithEmailNull": "The resource does not have mail. Communicate with gaps@sofrecom.com.ar",
+    "fileEmpty": "The imported file does not contain records"
 }

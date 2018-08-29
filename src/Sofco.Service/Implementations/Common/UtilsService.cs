@@ -76,6 +76,25 @@ namespace Sofco.Service.Implementations.Common
             yield return new Option { Id = 11, Text = Resources.Months.November };
             yield return new Option { Id = 12, Text = Resources.Months.December };
         }
+        public IEnumerable<Option> GetCloseMonths()
+        {
+            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var value = Convert.ToInt32(closeMonthSetting.Value);
+            var valueBefore = value + 1;
+
+            yield return new Option { Id = 1, Text = $"{valueBefore} Diciembre al {value} Enero" };
+            yield return new Option { Id = 2, Text = $"{valueBefore} Enero al {value} Febrero" };
+            yield return new Option { Id = 3, Text = $"{valueBefore} Febrero al {value} Marzo" };
+            yield return new Option { Id = 4, Text = $"{valueBefore} Marzo al {value} Abril" };
+            yield return new Option { Id = 5, Text = $"{valueBefore} Abril al {value} Mayo" };
+            yield return new Option { Id = 6, Text = $"{valueBefore} Mayo al {value} Junio" };
+            yield return new Option { Id = 7, Text = $"{valueBefore} Junio al {value} Julio" };
+            yield return new Option { Id = 8, Text = $"{valueBefore} Julio al {value} Agosto" };
+            yield return new Option { Id = 9, Text = $"{valueBefore} Agosto al {value} Septiembre" };
+            yield return new Option { Id = 10, Text = $"{valueBefore} Septiembre al {value} Octubre" };
+            yield return new Option { Id = 11, Text = $"{valueBefore} Octubre al {value} Noviembre" };
+            yield return new Option { Id = 12, Text = $"{valueBefore} Noviembre al {value} Diciembre" };
+        }
 
         public IEnumerable<Option> GetYears()
         {

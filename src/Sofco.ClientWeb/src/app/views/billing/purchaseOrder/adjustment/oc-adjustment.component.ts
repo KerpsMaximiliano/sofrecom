@@ -1,9 +1,7 @@
 import { Component, OnDestroy, ViewChild } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
-import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { PurchaseOrderService } from "../../../../services/billing/purchaseOrder.service";
 import { Subscription } from "rxjs";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 @Component({
     selector: 'purchase-order-adjustment',
@@ -27,9 +25,7 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
 
     addSubscrip: Subscription;
 
-    constructor(private purchaseOrderService: PurchaseOrderService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){
+    constructor(private purchaseOrderService: PurchaseOrderService){
     }
 
     ngOnDestroy(): void {
@@ -44,16 +40,11 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
 
     create(){
         this.addSubscrip = this.purchaseOrderService.makeAdjustment(this.id, this.details).subscribe(
-            response => {
+            () => {
                 this.adjustmentModal.hide();
-                if(response.messages) this.messageService.showMessages(response.messages);
-
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
-            },
-            err => {
-                this.errorHandlerService.handleErrors(err);
             });
     }
 }

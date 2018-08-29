@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from '@angular/router';
-import { FileService } from 'app/services/common/file.service';
+import { FileService } from '../../../services/common/file.service';
 import { MessageService } from '../../../services/common/message.service';
-import { ErrorHandlerService } from '../../../services/common/errorHandler.service';
 declare var PDFJS: any;
 
 @Component({
@@ -32,7 +31,6 @@ export class PdfComponent implements OnInit, OnDestroy  {
 
     constructor(private activatedRoute: ActivatedRoute, 
         private fileService: FileService,
-        private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService) { }
 
     ngOnInit(): void {
@@ -62,10 +60,7 @@ export class PdfComponent implements OnInit, OnDestroy  {
 
             this.renderFile(response.data);
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => this.messageService.closeLoading());
     }
 
     renderFile(file){

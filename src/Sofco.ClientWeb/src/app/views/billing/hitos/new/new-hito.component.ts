@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnInit, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
-import { ProjectService } from 'app/services/billing/project.service';
-import { NewHito } from 'app/models/billing/solfac/newHito';
+import { ProjectService } from '../../../../services/billing/project.service';
+import { NewHito } from '../../../../models/billing/solfac/newHito';
 import { UtilsService } from '../../../../services/common/utils.service';
 import { Option } from '../../../../models/option';
 
@@ -33,16 +31,13 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
 
   public currencies: Option[] = new Array();
 
-    constructor(private messageService: MessageService,
-    private utilsService: UtilsService,
-    private projectService: ProjectService,
-    private errorHandlerService: ErrorHandlerService) {}
+    constructor(private utilsService: UtilsService,
+    private projectService: ProjectService) {}
 
     ngOnInit(): void {
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
             this.currencies = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     ngOnDestroy(): void {
@@ -64,16 +59,11 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
     }
 
     save(){
-        this.subscrip = this.projectService.createNewHito(this.hito).subscribe(data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
+        this.subscrip = this.projectService.createNewHito(this.hito).subscribe(() => {
             this.newHitoModal.hide();
-
-            if(this.hitosReload.observers.length > 0){
+            if (this.hitosReload.observers.length > 0) {
                 this.hitosReload.emit();
             }
-        },
-        err =>  {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 }

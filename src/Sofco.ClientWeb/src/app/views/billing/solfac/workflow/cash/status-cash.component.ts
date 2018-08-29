@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
+import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
+import { MenuService } from "../../../../../services/admin/menu.service";
 
-declare var $: any;
 
 @Component({
   selector: 'status-cash',
@@ -36,9 +33,7 @@ export class StatusCashComponent implements OnDestroy  {
   cashedDate: Date = new Date();
 
   constructor(private solfacService: SolfacService,
-    private messageService: MessageService,
-    private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService) {}
+    private menuService: MenuService) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -60,26 +55,21 @@ export class StatusCashComponent implements OnDestroy  {
         }
 
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
-            data => {
+            () => {
                 this.cashModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-
-                if(this.history.observers.length > 0){
+                if (this.history.observers.length > 0) {
                     this.history.emit();
                 }
-
-                if(this.updateStatus.observers.length > 0){
+                if (this.updateStatus.observers.length > 0) {
                     var toModif = {
                         statusName: SolfacStatus[SolfacStatus.AmountCashed],
                         cashedDate: this.cashedDate
-                    }
-    
+                    };
                     this.updateStatus.emit(toModif);
                 }
             },
-            error => {
+            () => {
                 this.cashModal.hide();
-                this.errorHandlerService.handleErrors(error);
             });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -15,5 +16,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<WorkTimeApproval> GetByAnalyticId(int analyticId);
 
         List<Analytic> GetByAnalyticApproval(int currentUserId);
+        IList<User> GetByUserId(int employeeId);
     }
 }

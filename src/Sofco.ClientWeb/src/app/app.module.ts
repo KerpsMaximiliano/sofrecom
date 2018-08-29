@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
-import { Service } from 'app/services/common/service';
+import { Service } from './services/common/service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -22,22 +22,23 @@ import { LayoutsModule } from "./components/common/layouts/layouts.module";
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { AuthenticationService } from "app/services/common/authentication.service";
-import { Configuration } from "app/services/common/configuration";
-import { MessageService } from "app/services/common/message.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { I18nService } from 'app/services/common/i18n.service';
-import { AppSettingService } from 'app/services/common/app-setting.service';
-import { AppSetting } from 'app/services/common/app-setting';
-import { CryptographyService } from 'app/services/common/cryptography.service';
+import { ErrorHandlerService } from "./services/common/errorHandler.service";
+import { AuthenticationService } from "./services/common/authentication.service";
+import { Configuration } from "./services/common/configuration";
+import { MessageService } from "./services/common/message.service";
+import { MenuService } from "./services/admin/menu.service";
+import { DataTableService } from "./services/common/datatable.service";
+import { I18nService } from './services/common/i18n.service';
+import { AppSettingService } from './services/common/app-setting.service';
+import { AppSetting } from './services/common/app-setting';
+import { CryptographyService } from './services/common/cryptography.service';
 
 import { LaddaModule } from 'angular2-ladda';
 import { RequestInterceptorService } from './services/common/request-interceptor.service';
 import { AuthService } from './services/common/auth.service';
-import { SettingsService } from 'app/services/admin/settings.service';
+import { SettingsService } from './services/admin/settings.service';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpServiceInterceptor } from 'app/services/common/httpServiceInterceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -96,6 +97,7 @@ registerLocaleData(localeEs, 'es');
     },
     CryptographyService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpServiceInterceptor, multi: true },
     AuthService,
     { provide: LOCALE_ID, useValue: "es-Ar" }
   ],

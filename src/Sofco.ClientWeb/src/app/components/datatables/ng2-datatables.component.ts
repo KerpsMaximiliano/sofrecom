@@ -1,5 +1,5 @@
 
-import { Ng2ModalConfig } from './../modal/ng2modal-config';
+import { Ng2ModalConfig } from '../modal/ng2modal-config';
 import { DatatablesDataType } from './datatables.datatype';
 import { DatatablesOptions } from './datatables.options';
 import { Router } from '@angular/router';
@@ -10,8 +10,8 @@ import { DatatablesEditionType } from "./datatables.edition-type";
 import { DatatablesAlignment } from "./datatables.alignment";
 import { Subject } from 'rxjs/Rx';
 import { BehaviorSubject } from "rxjs";
-import { MenuService } from 'app/services/admin/menu.service';
-import { Configuration } from 'app/services/common/configuration';
+import { MenuService } from '../../services/admin/menu.service';
+import { Configuration } from '../../services/common/configuration';
 declare var $: any;
 
 @Component({

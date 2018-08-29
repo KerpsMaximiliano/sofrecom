@@ -311,4 +311,7 @@ Muchas gracias.</value>
     <value>Estimados, &lt;/br&gt;&lt;/br&gt; Se procedió al Cierre para Costos de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href='{2}' target='_blank'&gt;link&lt;/a&gt; &lt;/br&gt;&lt;/br&gt;
 Saludos</value>
   </data>
+  <data name="WorkTimeSendHours" xml:space="preserve">
+    <value>Se informa que uno de sus recursos le ha enviado horas para su aprobación</value>
+  </data>
 </root>

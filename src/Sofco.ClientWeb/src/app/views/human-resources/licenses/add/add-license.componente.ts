@@ -1,16 +1,16 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { Router, ActivatedRouteSnapshot, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
-import { LicenseService } from "app/services/human-resources/licenses.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { MenuService } from "app/services/admin/menu.service";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { MenuService } from "../../../../services/admin/menu.service";
 import { License } from "../../../../models/rrhh/license";
 import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
+import { AuthService } from "../../../../services/common/auth.service";
 
 declare var $: any;
 
@@ -62,10 +62,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     constructor(private licenseService: LicenseService,
                 private employeeService: EmployeeService,
                 private router: Router,
+                private authService: AuthService,
                 private activatedRoute: ActivatedRoute,
                 public menuService: MenuService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){}
+                private messageService: MessageService){}
 
     ngOnInit(): void {
         var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
@@ -107,15 +107,29 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.uploader = new FileUploader({url: this.licenseService.getUrlForImportFile(this.model.id), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.configUploader();
+                    }
+                });
+
+                return;
+            }
+
             var json = JSON.parse(response);
 
             if(json.messages) this.messageService.showMessages(json.messages);
-
+            
             var file = json.data;
             this.files.push({ id: file.id, name: file.fileName });
         };
 
-        this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
+        this.uploader.onSuccessItem = (item: any) => {
             item.remove();
             this.selectedFile.nativeElement.value = '';
         };
@@ -130,14 +144,12 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {
             this.messageService.closeLoading();
-            if(data.messages) this.messageService.showMessages(data.messages);
             this.model.id = data.data;
             this.configUploader();
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     getEmployees(){
@@ -147,18 +159,16 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.resources = data;
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     getManagers(){
         this.getManagersSubscrip = this.licenseService.getAuthorizers().subscribe(data => {
             this.managers = data;
             this.model.managerId = 0;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getLicenceTypes(){
@@ -166,16 +176,14 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.licensesTypesOptions = data;
             this.licensesTypes = data.optionsWithPayment;
             this.model.typeId = 0;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getSectors(){
         this.getSectorsSubscrip = this.licenseService.getSectors().subscribe(data => {
             this.sectors = data;
             this.model.sectorId = 0;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     licenseTypeSetOnChange(){
@@ -211,11 +219,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     deleteFile(){
-        this.deleteFileSubscrip = this.licenseService.deleteFile(this.fileIdToDelete).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
+        this.deleteFileSubscrip = this.licenseService.deleteFile(this.fileIdToDelete).subscribe(() => {
             this.files.splice(this.indexToDelete, 1);
-          },
-          err => this.errorHandlerService.handleErrors(err),
+        },
+          () => { },
          () => this.confirmModal.hide());
     }
 

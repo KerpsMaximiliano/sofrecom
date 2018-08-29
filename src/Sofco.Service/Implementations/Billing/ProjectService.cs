@@ -8,6 +8,7 @@ using Sofco.Core.Models;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
@@ -21,16 +22,19 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IProjectData projectData;
         private readonly ILogMailer<ProjectService> logger;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IProjectUpdateJobService projectUpdateJobService;
 
         public ProjectService(ISolfacService solfacService,
             IProjectData projectData, 
             ILogMailer<ProjectService> logger,
+            IProjectUpdateJobService projectUpdateJobService,
             IUnitOfWork unitOfWork)
         {
             this.solfacService = solfacService;
             this.projectData = projectData;
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.projectUpdateJobService = projectUpdateJobService;
         }
 
         public IList<CrmProjectHito> GetHitosByProject(string projectId)
@@ -162,6 +166,24 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return list;
+        }
+
+        public Response Update()
+        {
+            var response = new Response();
+
+            try
+            {
+                projectUpdateJobService.Execute();
+                response.AddSuccess(Resources.Common.UpdateSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.GeneralError);
+            }
+
+            return response;
         }
 
         private void SetPurchaseOrderValues(Domain.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)

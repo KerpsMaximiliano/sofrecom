@@ -149,6 +149,35 @@ namespace Sofco.WebApi.Controllers.Billing
             return this.CreateResponse(response);
         }
 
+        [HttpPut]
+        [Route("send")]
+        public IActionResult PutAndSend([FromBody] SolfacDetail model)
+        {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors())
+                return BadRequest(errors);
+
+            var domain = model.CreateDomain();
+
+            var response = solfacService.Update(domain, model.Comments);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            var solfacStatusParams = new SolfacStatusParams(model.UserApplicantId, SolfacStatus.PendingByManagementControl);
+
+            var handleStatus = solfacService.ChangeStatus(domain, solfacStatusParams, emailConfig);
+
+            if (handleStatus.HasErrors())
+            {
+                response.AddMessages(handleStatus.Messages);
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost]
         [Route("send")]
         public IActionResult Send([FromBody] SolfacViewModel model)

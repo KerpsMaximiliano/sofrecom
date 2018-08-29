@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { DataTableService } from 'app/services/common/datatable.service';
+import { DataTableService } from '../../../../../services/common/datatable.service';
 import { Router } from '@angular/router';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { LicenseViewDelegateService } from 'app/services/human-resources/license-view-delegate.service';
+import { LicenseViewDelegateService } from '../../../../../services/human-resources/license-view-delegate.service';
 
 @Component({
     selector: 'app-license-view-delegate',
@@ -30,7 +29,6 @@ export class LicenseViewDelegateComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     constructor(private licenseViewDelegateService: LicenseViewDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private router: Router) {
     }
@@ -50,7 +48,8 @@ export class LicenseViewDelegateComponent implements OnInit, OnDestroy {
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
             selector: '#delegateTable',
-            order: [[ 0, 'asc' ]]
+            order: [[ 0, 'asc' ]],
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
         });
     }
 
@@ -58,9 +57,6 @@ export class LicenseViewDelegateComponent implements OnInit, OnDestroy {
         this.subscription = this.licenseViewDelegateService.getAll().subscribe(response => {
             this.delegates = response.data;
             this.initTable();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -77,9 +73,6 @@ export class LicenseViewDelegateComponent implements OnInit, OnDestroy {
         this.confirmModal.hide();
         this.subscription = this.licenseViewDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
             this.getDelegates();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

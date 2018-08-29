@@ -74,6 +74,8 @@
           <li [ngClass]="{active: activeRoute('approval')}" *ngIf="menuService.hasFunctionality('WOTIM', 'APPRO')"><a [routerLink]="['/workTimeManagement/workTime/approval']">{{'workTimeManagement.approvalHours' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasFunctionality('WOTIM', 'REPOR')"><a [routerLink]="['/workTimeManagement/workTime/report']">{{'workTimeManagement.report.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('search')}" *ngIf="menuService.hasFunctionality('WOTIM', 'QUERY')"><a [routerLink]="['/workTimeManagement/workTime/search']">{{'workTimeManagement.query.query' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('import')}" *ngIf="menuService.hasFunctionality('WOTIM', 'IMPORT')"><a [routerLink]="['/workTimeManagement/workTime/import']">{{ 'workTimeManagement.import.shortTitle' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('control')}" *ngIf="menuService.hasFunctionality('WOTIM', 'WORKTIMECONTROL')"><a [routerLink]="['/workTimeManagement/workTime/control']">{{ 'workTimeManagement.worktimeControl.title' | translate }}</a></li>
         </ul>
       </li>
 

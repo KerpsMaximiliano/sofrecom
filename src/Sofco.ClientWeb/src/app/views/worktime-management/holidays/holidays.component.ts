@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MessageService } from 'app/services/common/message.service';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { HolidayService } from 'app/services/worktime-management/holiday.service';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { DataTableService } from 'app/services/common/datatable.service';
+import { HolidayService } from '../../../services/worktime-management/holiday.service';
+import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
+import { DataTableService } from '../../../services/common/datatable.service';
 
 @Component({
   selector: 'app-holidays',
@@ -14,7 +12,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
 
   public loading = false;
   public holidays: any[] = new Array();
-  private subscription: Subscription;
+  subscription: Subscription;
   public holidayModel: any = {};
   public selectedYear: number = new Date().getFullYear();
 
@@ -47,10 +45,8 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   @ViewChild('confirmImportModal') confirmImportModal;
 
   constructor(
-      private messageService: MessageService,
       private holidayService: HolidayService,
-      private datatableService: DataTableService,
-      private errorHandlerService: ErrorHandlerService) {
+      private datatableService: DataTableService) {
   }
 
   ngOnInit() {
@@ -78,9 +74,6 @@ export class HolidaysComponent implements OnInit, OnDestroy {
     this.subscription = this.holidayService.get(this.selectedYear).subscribe(response => {
       this.holidays = response.data;
       this.initGrid();
-    },
-    error => {
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -117,11 +110,9 @@ export class HolidaysComponent implements OnInit, OnDestroy {
     this.subscription = this.holidayService.post(this.holidayModel).subscribe(res => {
       this.editModal.isLoading = false;
       this.editModal.hide();
-      if (res.messages) this.messageService.showMessages(res.messages);
       this.getHolidays();
     },
     error => {
-      this.errorHandlerService.handleErrors(error);
       this.editModal.isLoading = false;
     });
   }
@@ -143,11 +134,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   processImport() {
     this.confirmImportModal.hide();
     this.subscription = this.holidayService.importExternalData(this.selectedYear).subscribe(res => {
-      if (res.messages) this.messageService.showMessages(res.messages);
       this.getHolidays();
-    },
-    error => {
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -155,11 +142,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
     const id = this.holidayModel.id;
     this.confirmDeleteModal.hide();
     this.subscription = this.holidayService.delete(id).subscribe(response => {
-      if (response.messages) this.messageService.showMessages(response.messages);
       this.getHolidays();
-    },
-    err => {
-        this.errorHandlerService.handleErrors(err);
     });
   }
 

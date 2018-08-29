@@ -1,7 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpinnerComponent } from "app/components/spinner/spinner.component";
+import { SpinnerComponent } from "./spinner.component";
 
 @NgModule({
   imports: [

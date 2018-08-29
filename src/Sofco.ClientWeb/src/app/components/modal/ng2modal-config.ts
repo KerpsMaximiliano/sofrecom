@@ -1,6 +1,7 @@
 export class Ng2ModalConfig{
     public deleteButton: boolean = false;
     public acceptInlineButton: boolean = false;
+    public isDraggable: boolean = false;
 
     constructor(
         public title: string = "Modal Title",

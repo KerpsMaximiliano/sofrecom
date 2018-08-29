@@ -6,16 +6,14 @@
     <div class="modal-content">
  
       <!-- header-->
-      <div class="modal-header">
+      <div class="modal-header pointer">
           <button type="button" class="close" data-dismiss="modal" (click)="closeEvent($event)" *ngIf="config.closeIcon">&times;</button>
           <h3 class="modal-title">{{config.title | translate}}</h3>
       </div>
 
       <!-- body-->
       <div class="modal-body">
-        <!-- Modal content-->
         <ng-content></ng-content>
-
       </div>
 
       <!-- footer-->

@@ -2,7 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { environment } from '../../../environments/environment'
+import { environment } from 'environments/environment'
 
 @Injectable()
 export class Configuration {

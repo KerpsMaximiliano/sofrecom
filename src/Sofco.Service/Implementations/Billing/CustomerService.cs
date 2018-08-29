@@ -7,6 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
 
@@ -19,18 +20,21 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacDelegateData solfacDelegateData;
         private readonly ILogMailer<CustomerService> logger;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ICustomerUpdateJobService customerUpdateJobService;
 
         public CustomerService(ICustomerData customerData, 
             ISessionManager sessionManager,
             ILogMailer<CustomerService> logger,
             IUnitOfWork unitOfWork,
-            ISolfacDelegateData solfacDelegateData)
+            ISolfacDelegateData solfacDelegateData,
+            ICustomerUpdateJobService customerUpdateJobService)
         {
             this.customerData = customerData;
             this.sessionManager = sessionManager;
             this.solfacDelegateData = solfacDelegateData;
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.customerUpdateJobService = customerUpdateJobService;
         }
 
         public Response<List<Customer>> GetCustomers()
@@ -104,6 +108,24 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             response.Data = customer;
+            return response;
+        }
+
+        public Response Update()
+        {
+            var response = new Response();
+
+            try
+            {
+                customerUpdateJobService.Execute();
+                response.AddSuccess(Resources.Common.UpdateSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.GeneralError);
+            }
+
             return response;
         }
 

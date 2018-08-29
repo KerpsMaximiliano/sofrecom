@@ -1,7 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WidgetCurrencyComponent } from 'app/components/widget/widget-currency.component';
+import { WidgetCurrencyComponent } from './widget-currency.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({

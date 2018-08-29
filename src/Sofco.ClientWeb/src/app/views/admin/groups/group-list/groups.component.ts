@@ -1,18 +1,17 @@
-import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'app/services/common/message.service';
-import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
+import { MessageService } from '../../../../services/common/message.service';
+import { DatatablesLocationTexts } from '../../../../components/datatables/datatables.location-texts';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
-import { DatatablesColumn } from "app/components/datatables/datatables.columns";
+import { DatatablesEditionType } from "../../../../components/datatables/datatables.edition-type";
+import { DatatablesColumn } from "../../../../components/datatables/datatables.columns";
 import { Subscription } from "rxjs";
-import { DatatablesOptions } from "app/components/datatables/datatables.options";
-import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
-import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { GroupService } from "app/services/admin/group.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { I18nService } from 'app/services/common/i18n.service';
+import { DatatablesOptions } from "../../../../components/datatables/datatables.options";
+import { DatatablesDataType } from "../../../../components/datatables/datatables.datatype";
+import { DatatablesAlignment } from "../../../../components/datatables/datatables.alignment";
+import { ErrorHandlerService } from "../../../../services/common/errorHandler.service";
+import { GroupService } from "../../../../services/admin/group.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { I18nService } from '../../../../services/common/i18n.service';
 
 @Component({
   selector: 'app-groups',
@@ -103,12 +102,10 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   constructor(
       private router: Router,
-      private route: ActivatedRoute,
       private service: GroupService,
       public menuService: MenuService,
       private i18nService: I18nService,
-      private messageService: MessageService,
-      private errorHandlerService: ErrorHandlerService) {
+      private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -130,18 +127,14 @@ export class GroupsComponent implements OnInit, OnDestroy {
         this.data = d;
         if(callback != null){ callback(); }
       },
-      err => {
-        this.messageService.closeLoading();
-        this.errorHandlerService.handleErrors(err);
-      });
+      () => this.messageService.closeLoading());
   }
 
   getEntity(id: number, callback = null){
     this.getSubscrip = this.service.get(id).subscribe(
       data => {
         if(callback != null){ callback(data); }
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
   }
 
   editClick(id: number){
@@ -150,12 +143,9 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   deleteClick(id: number){
     this.deleteSubscrip = this.service.delete(id).subscribe(
-      data => {
-        if(data.messages) this.messageService.showMessages(data.messages);
-
-        this.getEntity(id, (e)=>this.dt.updateById(id, e));
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      () => {
+        this.getEntity(id, (e) => this.dt.updateById(id, e));
+      });
   }
 
   habInhab(obj: any){
@@ -168,21 +158,15 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   deactivate(id: number){
       this.deactivateSubscrip = this.service.deactivate(id).subscribe(
-          data => {
-              if(data.messages) this.messageService.showMessages(data.messages);
-
-              this.getEntity(id, (e)=>this.dt.updateById(id, e));
-          },
-          err => this.errorHandlerService.handleErrors(err));
+          () => {
+          this.getEntity(id, (e) => this.dt.updateById(id, e));
+        });
   }
 
   activate(id: number){
       this.activateSubscrip = this.service.activate(id).subscribe(
-          data => {
-              if(data.messages) this.messageService.showMessages(data.messages);
-
-              this.getEntity(id, (e)=>this.dt.updateById(id, e));
-          },
-          err => this.errorHandlerService.handleErrors(err));
+          () => {
+          this.getEntity(id, (e) => this.dt.updateById(id, e));
+        });
   }
 }

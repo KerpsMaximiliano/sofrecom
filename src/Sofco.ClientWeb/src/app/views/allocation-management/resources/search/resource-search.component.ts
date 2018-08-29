@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router } from "@angular/router";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { UserService } from "app/services/admin/user.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { UserService } from "../../../../services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
 import { AllocationService } from "../../../../services/allocation-management/allocation.service";
 import * as FileSaver from "file-saver";
@@ -99,15 +98,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 private allocationService: AllocationService,
                 private usersService: UserService,
                 private categoryService: CategoryService,
-                private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService) {
+                private dataTableService: DataTableService) {
     }
 
     ngOnInit(): void {
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
 
         this.getAnalytics();
         this.getCategories();
@@ -139,10 +136,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.subscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
             this.showEndEmployeeModal(res.data);
         },
-        error => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.confirmModal.hide());
     }
 
     showEndEmployeeModal(data) {
@@ -158,12 +152,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
         this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
             this.confirmModal.hide();
-            if (data.messages) this.messageService.showMessages(data.messages);
         },
-        error => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.confirmModal.hide());
     }
 
     getAnalytics(){
@@ -172,16 +162,14 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 this.analytics = data;
 
                 this.setLastQuery();
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getCategories(){
         this.getCategorySubscrip = this.categoryService.getOptions().subscribe(
             data => {
                 this.categories = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     setLastQuery(){
@@ -231,7 +219,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
             if (response.messages) {
                 this.initGrid();
-                this.messageService.showMessages(response.messages);
             }
 
             this.messageService.closeLoading();
@@ -239,10 +226,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
             sessionStorage.setItem('lastResourceQuery', JSON.stringify(this.searchModel));
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.messageService.closeLoading());
     }
 
     searchAll(){
@@ -259,10 +243,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
             this.collapse();
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.messageService.closeLoading());
     }
 
     initGrid(){
@@ -326,13 +307,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
         this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
             this.categoriesModal.hide();
-
-            this.messageService.showMessages(response.messages);
         },
-        error => {
-            this.categoriesModal.hide();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.categoriesModal.hide());
     }
 
     canAddCategories(){
@@ -383,10 +359,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 this.messageService.showSuccessByFolder('allocationManagement/allocation', 'massiveSuccess');
             }
         },
-        error => {
-            this.allocationsModal.hide();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => this.allocationsModal.hide());
     }
 
     onKeydown(event) {

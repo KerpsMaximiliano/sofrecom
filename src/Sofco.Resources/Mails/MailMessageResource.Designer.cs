@@ -434,5 +434,14 @@ namespace Sofco.Resources.Mails {
                 return ResourceManager.GetString("SolfacStatusRejectedByDafMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se informa que uno de sus recursos le ha enviado horas para su aprobación.
+        /// </summary>
+        public static string WorkTimeSendHours {
+            get {
+                return ResourceManager.GetString("WorkTimeSendHours", resourceCulture);
+            }
+        }
     }
 }

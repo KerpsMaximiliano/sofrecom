@@ -1,9 +1,8 @@
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { DataTableService } from 'app/services/common/datatable.service';
-import { LicenseService } from 'app/services/human-resources/licenses.service';
+import { DataTableService } from '../../../../services/common/datatable.service';
+import { LicenseService } from '../../../../services/human-resources/licenses.service';
 
 @Component({
   selector: 'license-history',
@@ -29,7 +28,6 @@ export class LicenseHistoryComponent implements OnInit, OnDestroy {
     getHistoriesSubscrip: Subscription;
 
     constructor(private licenseService: LicenseService,
-                private errorHandlerService: ErrorHandlerService,
                 private datatableService: DataTableService) {
     }
 
@@ -43,8 +41,7 @@ export class LicenseHistoryComponent implements OnInit, OnDestroy {
             var options = { selector: "#historyTable" }
             this.datatableService.destroy(options.selector);
             this.datatableService.initialize(options);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     ngOnDestroy(){

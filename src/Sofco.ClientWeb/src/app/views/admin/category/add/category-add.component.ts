@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
+import { Component, OnDestroy } from "@angular/core";
+import { MessageService } from "../../../../services/common/message.service";
 import { Router } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { CategoryService } from "app/services/admin/category.service";
+import { CategoryService } from "../../../../services/admin/category.service";
 
 @Component({
     selector: 'app-category-add',
@@ -17,8 +16,7 @@ import { CategoryService } from "app/services/admin/category.service";
 
     constructor(private messageService: MessageService,
                 private router: Router,
-                private categoryService: CategoryService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private categoryService: CategoryService) { }
 
     ngOnDestroy(): void {
         if(this.addSubscript) this.addSubscript.unsubscribe();
@@ -33,13 +31,8 @@ import { CategoryService } from "app/services/admin/category.service";
 
         this.addSubscript = this.categoryService.add(this.description).subscribe(response => {
             this.messageService.closeLoading();
-
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.router.navigate(["/admin/categories"]);    
         }, 
-        error => { 
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-         });
+        error => this.messageService.closeLoading());
     }
   }

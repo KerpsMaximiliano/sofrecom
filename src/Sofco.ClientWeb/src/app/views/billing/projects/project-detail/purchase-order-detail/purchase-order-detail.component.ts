@@ -1,8 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from 'app/services/common/message.service';
+import { DataTableService } from "../../../../../services/common/datatable.service";
 import { ProjectService } from '../../../../../services/billing/project.service';
 
 @Component({
@@ -16,9 +14,7 @@ export class ProjectPurchaseOrdersComponent implements OnDestroy {
 
     constructor(
         private projectService: ProjectService,
-        private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private datatableService: DataTableService) { }
 
     ngOnDestroy(){
       if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
@@ -34,9 +30,6 @@ export class ProjectPurchaseOrdersComponent implements OnDestroy {
 
         this.datatableService.destroy(params.selector);
         this.datatableService.initialize(params);
-      },
-      err => {
-        this.errorHandlerService.handleErrors(err);
       });
     }
 }

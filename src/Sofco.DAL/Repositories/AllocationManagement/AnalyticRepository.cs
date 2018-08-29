@@ -126,10 +126,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         }
 
-        public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId)
+        public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)
         {
-            return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1))
+            var analyticsByAllocations = context.Allocations
+                .Where(x =>  x.EmployeeId == employeeId && x.Percentage > 0 &&
+                            (x.StartDate.Date == dateFrom || x.StartDate.Date == dateTo))
                 .Include(x => x.Analytic)
                 .Select(x => new Analytic
                 {
@@ -138,6 +139,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     Name = x.Analytic.Name
                 })
                 .ToList();
+
+            var analyticsByManagers = context.Analytics
+                .Where(x => x.ManagerId.GetValueOrDefault() == userId && x.Status == AnalyticStatus.Open)
+                .Select(x => new Analytic
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Name = x.Name
+                })
+                .ToList();
+
+            return analyticsByAllocations.Union(analyticsByManagers).ToList();
         }
 
         public Analytic GetByTitle(string title)

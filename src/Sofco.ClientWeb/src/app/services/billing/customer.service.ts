@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Service } from 'app/services/common/service';
+import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -29,5 +29,9 @@ export class CustomerService {
 
   getById(customerId) {
     return this.http.get<any>(`${this.apiUrl}/${customerId}`);
+  }
+
+  update() {
+    return this.http.put<any>(this.apiUrl, {});
   }
 }

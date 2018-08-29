@@ -1,7 +1,7 @@
 
-import { User } from "app/models/admin/user";
-import { Role } from "app/models/admin/role";
-import { Module } from "app/models/admin/module";
+import { User } from "./user";
+import { Role } from "./role";
+import { Module } from "./module";
 
 export interface UserDetail extends User {
     roles: Role[],

@@ -1,13 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from 'app/services/common/message.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { UserService } from 'app/services/admin/user.service';
+import { MessageService } from '../../../../../services/common/message.service';
+import { I18nService } from '../../../../../services/common/i18n.service';
+import { UserService } from '../../../../../services/admin/user.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PurchaseOrderApprovalDelegateService } from 'app/services/billing/purchase-order-approval-delegate.service';
-import { UtilsService } from 'app/services/common/utils.service';
-import { PurchaseOrderDelegateModel } from 'app/models/billing/purchase-order/purchase-order-delegate-model';
+import { PurchaseOrderApprovalDelegateService } from '../../../../../services/billing/purchase-order-approval-delegate.service';
+import { UtilsService } from '../../../../../services/common/utils.service';
+import { PurchaseOrderDelegateModel } from '../../../../../models/billing/purchase-order/purchase-order-delegate-model';
 declare var $: any;
 
 @Component({
@@ -57,7 +56,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
     constructor(private utilsService: UtilsService,
         private usersService: UserService,
         private purchaseOrderDelegateService: PurchaseOrderApprovalDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private messageService: MessageService,
         private i18nService: I18nService,
         private router: Router) {
@@ -87,9 +85,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
                 self.clearControls();
                 self.updateSourceControl();
             }, function() { self.clearControls(); });
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -115,9 +110,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
             this.initSelect2Control(res.data, '#areaControl', 'areaId', function(){
                 self.selectControlCallback();
             }, function() { self.responsable = null; });
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -128,9 +120,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
             this.initSelect2Control(res.data, '#sectorControl', 'sectorId', function(){
                 self.selectControlCallback();
             }, function() { self.responsable = null; });
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -141,9 +130,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
             this.initSelect2Control(res.data, '#complianceControl', 'complianceId', function(){
                 self.selectControlCallback();
             }, function() { self.responsable = null; });
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -154,9 +140,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
             this.initSelect2Control(res.data, '#dafControl', 'dafId', function(){
                 self.selectControlCallback();
             }, function() { self.responsable = null; });
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -228,9 +211,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
         this.subscription = this.usersService.getOptions().subscribe(res => {
             this.users = res;
             this.initSelect2Control(this.users, '#userControl', 'userId');
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -260,9 +240,6 @@ export class PurchaseOrderApprovalDelegateEditComponent implements OnInit, OnDes
         this.subscription = this.purchaseOrderDelegateService.save(model).subscribe(users => {
             this.messageService.succes('billing.solfac.delegate.saveSuccess');
             this.router.navigate(['/billing/purchaseOrders/approval/delegate']);
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

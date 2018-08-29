@@ -4,17 +4,17 @@ import {RouterModule} from "@angular/router";
 
 import {PeityModule } from '../../components/charts/peity';
 import {SparklineModule } from '../../components/charts/sparkline';
-import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.component";
+import { ForbiddenComponent } from "./errors/403/forbidden.component";
 import { TranslateModule } from "@ngx-translate/core";
-import { LoginComponent } from "app/views/appviews/login/login.component";
-import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
-import { SpinnerModule } from 'app/components/spinner/spinner.module';
-import { CryptographyService } from 'app/services/common/cryptography.service';
+import { LoginComponent } from "./login/login.component";
+import { StarterViewComponent } from "./home/starterview.component";
+import { SpinnerModule } from '../../components/spinner/spinner.module';
+import { CryptographyService } from '../../services/common/cryptography.service';
 import { LaddaModule } from 'angular2-ladda';
-import { UserService } from 'app/services/admin/user.service';
+import { UserService } from '../../services/admin/user.service';
 import { CommonModule } from '@angular/common';
-import { FileService } from 'app/services/common/file.service';
-import { PdfComponent } from 'app/views/appviews/pdf/pdf.component';
+import { FileService } from '../../services/common/file.service';
+import { PdfComponent } from './pdf/pdf.component';
 
 @NgModule({
   declarations: [

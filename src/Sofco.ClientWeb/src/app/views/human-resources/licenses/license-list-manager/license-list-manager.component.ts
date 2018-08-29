@@ -1,13 +1,9 @@
 import { OnInit, OnDestroy, Component } from "@angular/core";
-import { LicenseService } from "app/services/human-resources/licenses.service";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
 import { Router } from "@angular/router";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { Subscription } from "rxjs";
-import { DataTableService } from "app/services/common/datatable.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
+import { DataTableService } from "../../../../services/common/datatable.service";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 
 declare var moment: any;
@@ -28,10 +24,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
 
     constructor(private licenseService: LicenseService,
         private router: Router,
-        private datatableService: DataTableService,
-        private menuService: MenuService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){
+        private datatableService: DataTableService){
     }
 
     ngOnInit(): void {
@@ -52,8 +45,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
         this.getDataSubscrip = this.licenseService.getByManager(this.managerId).subscribe(data => {
             this.data = data;
             this.initGrid();
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     initGrid(){

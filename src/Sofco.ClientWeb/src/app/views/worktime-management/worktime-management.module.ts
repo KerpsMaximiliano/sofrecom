@@ -1,42 +1,52 @@
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
+import { Ng2DatatablesModule } from '../../components/datatables/ng2-datatables.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ICheckModule } from "app/components/icheck/icheck.module";
-import { PCheckModule } from "app/components/pcheck/pcheck.module";
-import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
+import { ICheckModule } from "../../components/icheck/icheck.module";
+import { PCheckModule } from "../../components/pcheck/pcheck.module";
+import { Ng2ModalModule } from "../../components/modal/ng2modal.module";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgDatepickerModule } from 'ng2-datepicker';
-import { Select2Module } from 'app/components/select2/select2';
-import { LayoutsModule } from 'app/components/common/layouts/layouts.module';
-import { SpinnerModule } from 'app/components/spinner/spinner.module';
-import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
-import { WorkTimeApprovalComponent } from 'app/views/worktime-management/approval/worktime-approval.component';
-import { WorktimeService } from 'app/services/worktime-management/worktime.service';
-import { IboxtoolsModule } from 'app/components/common/iboxtools/iboxtools.module';
-import { WorkTimeStatusApproveComponent } from 'app/views/worktime-management/status-approve/status-approve.component';
-import { WorkTimeStatusRejectComponent } from 'app/views/worktime-management/status-reject/status-reject.component';
-import { UtilsService } from 'app/services/common/utils.service';
-import { WorkTimeReportComponent } from 'app/views/worktime-management/report/worktime-report.component';
-import { WorkTimeSearchComponent } from 'app/views/worktime-management/search/worktime-search.component';
-import { HolidaysComponent } from './holidays/holidays.component';
-import { HolidayService } from 'app/services/worktime-management/holiday.service';
-import { WorkTimeRouter } from 'app/views/worktime-management/worktime.router';
+import { Select2Module } from '../../components/select2/select2';
+import { LayoutsModule } from '../../components/common/layouts/layouts.module';
+import { SpinnerModule } from '../../components/spinner/spinner.module';
+import { DatePickerModule } from '../../components/date-picker/date-picker.module';
+import { IboxtoolsModule } from '../../components/common/iboxtools/iboxtools.module';
+
+import { UtilsService } from '../../services/common/utils.service';
+import { WorktimeService } from '../../services/worktime-management/worktime.service';
+import { WorktimeControlService } from '../../services/worktime-management/worktime-control.service';
+import { HolidayService } from '../../services/worktime-management/holiday.service';
 import { EmployeeService } from '../../services/allocation-management/employee.service';
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
 import { CustomerService } from '../../services/billing/customer.service';
+import { ServiceService } from '../../services/billing/service.service';
+import { I18nService } from '../../services/common/i18n.service';
+
+import { WorkTimeApprovalComponent } from './approval/worktime-approval.component';
+import { WorkTimeStatusApproveComponent } from './status-approve/status-approve.component';
+import { WorkTimeStatusRejectComponent } from './status-reject/status-reject.component';
+import { WorkTimeReportComponent } from './report/worktime-report.component';
+import { WorkTimeSearchComponent } from './search/worktime-search.component';
+import { HolidaysComponent } from './holidays/holidays.component';
+import { WorkTimeRouter } from './worktime.router';
+import { ImportWorkTimesComponent } from 'app/views/worktime-management/import/import-worktime.component';
+import { WorkTimeControlComponent } from './worktime-control/worktime-control.component';
+import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
-                 WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent],
+                 WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent, ImportWorkTimesComponent,
+                WorkTimeControlComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
-             PCheckModule, WorkTimeRouter],
+             PCheckModule, WorkTimeRouter, DateRangePickerModule],
 
-  providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService],
+  providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
+        I18nService, WorktimeControlService],
 
   exports     : []
 })

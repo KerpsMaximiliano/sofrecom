@@ -1,11 +1,11 @@
 import { Routes, RouterModule } from "@angular/router";
-import { AuthGuard } from "app/guards/auth.guard";
-import { UnemployeesSearchComponent } from "app/views/human-resources/resources/search-unemployees/unemployees-search.component";
-import { AddLicenseComponent } from "app/views/human-resources/licenses/add/add-license.componente";
-import { LicenseListRrhh } from "app/views/human-resources/licenses/license-dahsboard-rrhh/license-list-rrhh.component";
-import { LicenseListManager } from "app/views/human-resources/licenses/license-list-manager/license-list-manager.component";
-import { LicenseDetailComponent } from "app/views/human-resources/licenses/detail/license-detail.component";
-import { NewsComponent } from "app/views/human-resources/news/news.component";
+import { AuthGuard } from "../../guards/auth.guard";
+import { UnemployeesSearchComponent } from "./resources/search-unemployees/unemployees-search.component";
+import { AddLicenseComponent } from "./licenses/add/add-license.componente";
+import { LicenseListRrhh } from "./licenses/license-dahsboard-rrhh/license-list-rrhh.component";
+import { LicenseListManager } from "./licenses/license-list-manager/license-list-manager.component";
+import { LicenseDetailComponent } from "./licenses/detail/license-detail.component";
+import { NewsComponent } from "./news/news.component";
 import { LicenseViewDelegateComponent } from "./licenses/license-view/license-view-delegate/license-view-delegate.component";
 import { LicenseViewDelegateEditComponent } from "./licenses/license-view/license-view-delegate/edit/license-view-delegate-edit.component";
 

@@ -1,8 +1,8 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Service } from "app/services/common/service";
-import { MenuService } from 'app/services/admin/menu.service';
+import { Service } from "../common/service";
+import { MenuService } from '../admin/menu.service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()

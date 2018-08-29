@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Service } from 'app/services/common/service';
-import { Menu } from 'app/models/admin/menu';
+import { Service } from '../common/service';
+import { Menu } from '../../models/admin/menu';
 import { HttpClient } from '@angular/common/http';
 import { UserInfoService } from '../common/user-info.service';
 
@@ -23,6 +23,8 @@ export class MenuService {
     public pmoMail: string;
     public rrhhMail: string;
     public sellerMail: string;
+    public areaIds: any[];
+    public sectorIds: any[];
 
     constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
@@ -42,6 +44,8 @@ export class MenuService {
                 this.pmoMail = menu.pmoMail;
                 this.rrhhMail = menu.rrhhMail;
                 this.sellerMail = menu.sellerMail;
+                this.areaIds = menu.areaIds;
+                this.sectorIds = menu.sectorIds;
             }
         }
 
@@ -109,5 +113,19 @@ export class MenuService {
             return true;
        }
        return false;
+    }
+
+    hasAreaAccess(areaId:number):boolean {
+        return this.areaIds.indexOf(areaId)>-1;
+    }
+
+    hasSectorAccess(sectorIds:number[]):boolean {
+        let isValid = false;
+        this.sectorIds.forEach(x => {
+            if(sectorIds.indexOf(x)>-1){
+                isValid = true;
+            }
+        });
+        return isValid;
     }
 }

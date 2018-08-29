@@ -1,14 +1,14 @@
 import { Component, Input, ViewChild, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SolfacService } from 'app/services/billing/solfac.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { SolfacService } from '../../../../services/billing/solfac.service';
 import { FileUploader } from 'ng2-file-upload';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../services/common/message.service';
 import * as FileSaver from "file-saver";
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { MenuService } from 'app/services/admin/menu.service';
-import { CertificatesService } from 'app/services/billing/certificates.service';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
+import { MenuService } from '../../../../services/admin/menu.service';
+import { CertificatesService } from '../../../../services/billing/certificates.service';
+import { AuthService } from '../../../../services/common/auth.service';
 
 declare var $: any;
 
@@ -51,30 +51,16 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     );
 
     constructor(private solfacService: SolfacService,
+                private authService: AuthService,
                 private messageService: MessageService,
                 private certificateService: CertificatesService,
-                private menuService: MenuService,
-                private errorHandlerService: ErrorHandlerService) {
+                private menuService: MenuService) {
     }
 
     ngOnInit() {
         this.getAttachments();
         this.getCertificatesRelated();
-
-        this.uploader = new FileUploader({url: this.solfacService.getUrlForImportFile(this.solfacId), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
-
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            var json = JSON.parse(response);
-
-            if(json.messages) this.messageService.showMessages(json.messages);
-
-            var file = json.data;
-            this.files.push({ id: file.id, name: file.name, creationDate: file.creationDate });
-        };
-
-        this.uploader.onSuccessItem = (item: any, response: any, status: any, headers: any) => {
-            item.remove();
-        };
+        this.uploaderConfig();
     }
 
     ngOnDestroy(){
@@ -83,18 +69,49 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         if(this.getCertificatesRelatedSubscrip) this.getCertificatesRelatedSubscrip.unsubscribe();
     }
 
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.solfacService.getUrlForImportFile(this.solfacId), authToken: `Bearer ${Cookie.get('access_token')}`, maxFileSize: 10*1024*1024 });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
+            var json = JSON.parse(response);
+
+            if(json.messages) this.messageService.showMessages(json.messages);
+
+            var file = json.data;
+            this.files.push({ id: file.id, name: file.name, creationDate: file.creationDate });
+        };
+
+        this.uploader.onSuccessItem = (item: any) => {
+            item.remove();
+        };
+    }
+
     getAttachments(){
         this.getAttachmentsSubscrip = this.solfacService.getAttachments(this.solfacId).subscribe(d => {
             this.files = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCertificatesRelated(){
         this.getCertificatesRelatedSubscrip = this.solfacService.getCertificatesRelated(this.solfacId).subscribe(d => {
             this.certificatesRelated = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     clearSelectedFile(){
@@ -106,8 +123,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     exportFile(file){
         this.solfacService.downloadFile(file.id).subscribe(response => {
             FileSaver.saveAs(response, file.name);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
  
     showPdf(file){
@@ -122,19 +138,15 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         this.confirmModal.hide();
         this.messageService.showLoading();
 
-        this.solfacService.deleteFile(this.fileId).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
+        this.solfacService.deleteFile(this.fileId).subscribe(() => {
             this.files.splice(this.index, 1);
-
             this.fileId = null;
             this.index = null;
-
             this.messageService.closeLoading();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     confirm() {}
@@ -149,26 +161,22 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
     getCertificatesAvailable(customerId){
         this.getCertificateAvailableSubscrip = this.certificateService.getByClient(customerId).subscribe(data => {
           this.certificates = data;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     exportCertificate(certificate){
         this.certificateService.exportFile(certificate.fileId).subscribe(file => {
             FileSaver.saveAs(file, certificate.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     deleteCertificate(){
-        this.getCertificateAvailableSubscrip = this.solfacService.deleteCertificate(this.solfacId, this.certificateId).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
+        this.getCertificateAvailableSubscrip = this.solfacService.deleteCertificate(this.solfacId, this.certificateId).subscribe(() => {
             this.certificatesRelated.splice(this.index, 1);
-
             this.certificates.push({ id: this.certificateId, text: this.certificateName });
-            $("#certificate").select2('data', {id: this.certificateId.toString(), text: this.certificateName});   
-          },
-          err => this.errorHandlerService.handleErrors(err),
+            $("#certificate").select2('data', { id: this.certificateId.toString(), text: this.certificateName });
+        },
+          () => { },
         () => this.confirmModal.hide());
     }
 
@@ -188,8 +196,6 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.solfacService.addCertificates(this.solfacId, certificatesValues).subscribe(data => {
-          if(data.messages) this.messageService.showMessages(data.messages);
-      
           if(data.data && data.data.length > 0){
   
             data.data.forEach(element => {
@@ -203,7 +209,7 @@ export class SolfacAttachmentsComponent implements OnInit, OnDestroy {
             })
           }
         },
-        err => this.errorHandlerService.handleErrors(err),
+        () => { },
         () => this.messageService.closeLoading());
       }
 }

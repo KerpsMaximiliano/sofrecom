@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AppSetting } from 'app/services/common/app-setting'
+import { AppSetting } from '../../../services/common/app-setting'
 declare function require(name: string);
 
 @Component({

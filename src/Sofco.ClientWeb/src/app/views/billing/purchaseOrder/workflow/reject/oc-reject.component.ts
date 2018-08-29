@@ -1,11 +1,9 @@
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
-import { PurchaseOrderStatus } from 'app/models/enums/purchaseOrderStatus';
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
+import { PurchaseOrderStatus } from '../../../../../models/enums/purchaseOrderStatus';
+import { PurchaseOrderService } from '../../../../../services/billing/purchaseOrder.service';
 import { MenuService } from '../../../../../services/admin/menu.service';
 
 @Component({
@@ -26,15 +24,14 @@ export class OcStatusRejectComponent implements OnDestroy  {
 
   @Input() ocId: number;
   @Input() status: number;
+  @Input() model: any;
 
   subscrip: Subscription;
 
   public rejectComments: string;
 
   constructor(private purchaseOrderService: PurchaseOrderService,
-    private messageService: MessageService,
     private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
   ngOnDestroy(): void {
@@ -42,15 +39,25 @@ export class OcStatusRejectComponent implements OnDestroy  {
   }
 
   canSend(){
-    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') && 
-        (this.status == PurchaseOrderStatus.CompliancePending || 
-          this.status == PurchaseOrderStatus.ComercialPending || 
-          this.status == PurchaseOrderStatus.OperativePending || 
-          this.status == PurchaseOrderStatus.DafPending)){
+    if(this.ocId > 0 && this.menuService.hasFunctionality('PUROR', 'REJEC') &&
+        (this.status === PurchaseOrderStatus.CompliancePending ||
+          this.hasCommercialAccess() ||
+          this.hasOperationAccess() ||
+          this.status === PurchaseOrderStatus.DafPending)){
         return true;
     }
 
     return false;
+  }
+
+  hasCommercialAccess() {
+    return (this.status === PurchaseOrderStatus.ComercialPending
+      && this.menuService.hasAreaAccess(this.model.areaId));
+  }
+
+  hasOperationAccess() {
+    return (this.status === PurchaseOrderStatus.OperativePending
+      && this.menuService.hasSectorAccess(this.model.sectorIds));
   }
 
   showModal(){
@@ -61,7 +68,6 @@ export class OcStatusRejectComponent implements OnDestroy  {
     this.subscrip = this.purchaseOrderService.changeStatus(this.ocId, { comments: this.rejectComments, mustReject: true}).subscribe(
         data => {
             this.modal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
 
             setTimeout(() => {
               this.router.navigate(['/billing/purchaseOrders/pendings']);
@@ -69,7 +75,6 @@ export class OcStatusRejectComponent implements OnDestroy  {
         },
         error => {
             this.modal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 }

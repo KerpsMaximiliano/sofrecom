@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { CostCenterService } from "app/services/allocation-management/cost-center.service";
-import { CostCenter } from "app/models/allocation-management/costCenter";
+import { MessageService } from "../../../../services/common/message.service";
+import { CostCenterService } from "../../../../services/allocation-management/cost-center.service";
+import { CostCenter } from "../../../../models/allocation-management/costCenter";
 
 @Component({
     selector: 'edit-cost-center',
@@ -20,10 +18,8 @@ export class EditCostCenterComponent implements OnInit, OnDestroy {
 
     constructor(private costCenterService: CostCenterService,
                 private router: Router,
-                private menuService: MenuService,
                 private activatedRoute: ActivatedRoute,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+                private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -34,10 +30,9 @@ export class EditCostCenterComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
                 this.model = data;
             },
-            error => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
-            });
+            () => {
+                    this.messageService.closeLoading();
+                });
         });
     }
 
@@ -51,14 +46,12 @@ export class EditCostCenterComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.addSubscrip = this.costCenterService.edit(this.model).subscribe(
-            data => {
-              this.messageService.closeLoading();
-              if(data.messages) this.messageService.showMessages(data.messages);
-              this.router.navigate(['/contracts/costCenter']);
-            },
-            err => {
+            () => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
+                this.router.navigate(['/contracts/costCenter']);
+            },
+            () => {
+                this.messageService.closeLoading();
             });
     }
 }

@@ -21,5 +21,18 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Projects.Where(x => x.ServiceId.Equals(serviceId)).ToList();
         }
+
+        public void UpdateInactives(IList<int> idsAdded)
+        {
+            var projects = context.Projects.Where(x => !idsAdded.Contains(x.Id)).ToList();
+
+            foreach (var project in projects)
+            {
+                project.Active = false;
+                context.Entry(project).Property("Active").IsModified = true;
+            }
+
+            context.SaveChanges();
+        }
     }
 }

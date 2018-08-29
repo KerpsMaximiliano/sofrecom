@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Common.Extensions;
 using Sofco.Core.DAL.WorkTimeManagement;
@@ -21,6 +22,17 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         {
             return context.WorkTimes
                 .Where(x => x.UserId == currentUserId && x.Date >= startDate && x.Date <= endDate)
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
+                .ToList();
+        }
+
+        public IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds)
+        {
+            return context.WorkTimes
+                .Where(x => analyticIds.Contains(x.AnalyticId)
+                    && x.Date >= startDate && x.Date <= endDate)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
@@ -127,10 +139,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Database.ExecuteSqlCommand($"DELETE FROM app.worktimes where employeeid = {licenseEmployeeId} AND date >= '{licenseStartDate:yyyy-MM-dd}' and date <= '{licenseEndDate:yyyy-MM-dd}'");
         }
 
-        public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, int analyticId)
+        public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
         {
-            var endDate = new DateTime(startdate.Year, startdate.Month, DateTime.DaysInMonth(startdate.Year, startdate.Month));
-
             return context.WorkTimes
                 .Where(x => x.Date.Date >= startdate.Date && x.Date.Date <= endDate.Date && 
                             x.AnalyticId == analyticId &&
@@ -165,6 +175,16 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
 
             return query.ToList();
+        }
+
+        public void InsertBulk(IList<WorkTime> workTimesToAdd)
+        {
+            context.BulkInsert(workTimesToAdd);
+        }
+
+        public void SendManagerHours(int employeeid)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid}");
         }
 
         public decimal GetPendingHoursByEmployeeId(int employeeId)

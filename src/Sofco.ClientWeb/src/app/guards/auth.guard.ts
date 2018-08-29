@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { MenuService } from "app/services/admin/menu.service";
+import { MenuService } from "../services/admin/menu.service";
 import { AuthenticationService } from '../services/common/authentication.service';
 
 @Injectable()

@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { DataTableService } from "app/services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 import { UserService } from "../../../../services/admin/user.service";
 import { EmployeeProfileHistoryService } from "../../../../services/allocation-management/employee-profile-history.service";
@@ -64,8 +63,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 private dataTableService: DataTableService,
                 private activatedRoute: ActivatedRoute,
                 private employeeService: EmployeeService,
-                private employeeProfileHistoryService: EmployeeProfileHistoryService,
-                private errorHandlerService: ErrorHandlerService){
+                private employeeProfileHistoryService: EmployeeProfileHistoryService){
 
         this.businessHoursModalConfig.acceptInlineButton = true;
     }
@@ -119,10 +117,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.initGrid();
             this.getProfileHistories();
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => this.messageService.closeLoading());
     }
 
     initGrid(){
@@ -149,8 +144,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             };
     
             this.dataTableService.initialize(params);
-        },
-        error => {});
+        });
     }
 
     goToDetail(item){
@@ -161,9 +155,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.finalizeExtraHolidaysSubscrip = this.employeeService.finalizeExtraHolidays(this.resourceId).subscribe(data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
+            this.messageService.closeLoading()
         },
-        error => this.errorHandlerService.handleErrors(error),
         () => this.messageService.closeLoading());
     }
 
@@ -174,8 +167,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             var params = { selector: "#tasksTable" };
     
             this.dataTableService.initialize(params);
-        },
-        error => { this.errorHandlerService.handleErrors(error) });
+        });
     }
 
     updateBusinessHours(){
@@ -188,17 +180,13 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         };
 
         this.finalizeExtraHolidaysSubscrip = this.employeeService.updateBusinessHours(this.resourceId, json).subscribe(data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
             this.businessHoursModal.hide();
 
             setTimeout(() => {
                 window.location.reload();
             }, 750);
         },
-        error => { 
-            this.businessHoursModal.resetButtons();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => this.businessHoursModal.resetButtons());
     }
 
     canAddLicense(){
@@ -216,9 +204,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     getUsers(){
         this.getManagersSubscript = this.userService.getOptions().subscribe(response => {
             this.managers = response;
-        }, 
-        error => {
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -235,9 +220,6 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     getProfileHistories() {
         this.getSubscrip = this.employeeProfileHistoryService.getByEmployeeNumber(this.model.employeeNumber).subscribe(response => {
             this.profileHistories = this.mapProfileHistories(response.data);
-        },
-        error => {
-            this.errorHandlerService.handleErrors(error);
         });
     }
 

@@ -40,5 +40,9 @@ namespace Sofco.Core.Models.Admin
         public string SellerMail { get; set; }
 
         public bool IsManager { get; set; }
+
+        public List<int> AreaIds { get; set; }
+
+        public List<int> SectorIds { get; set; }
     }
 }

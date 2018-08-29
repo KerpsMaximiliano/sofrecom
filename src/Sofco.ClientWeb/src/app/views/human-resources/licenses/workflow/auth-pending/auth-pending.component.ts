@@ -1,10 +1,9 @@
 import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
-import { LicenseService } from 'app/services/human-resources/licenses.service';
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { MessageService } from '../../../../../services/common/message.service';
+import { LicenseService } from '../../../../../services/human-resources/licenses.service';
 import { LicenseStatus } from '../../../../../models/enums/licenseStatus';
 
 @Component({
@@ -34,8 +33,7 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
 
   constructor(private licenseService: LicenseService,
     private messageService: MessageService,
-    private menuService: MenuService,
-    private errorHandlerService: ErrorHandlerService) { }
+    private menuService: MenuService) { }
 
 
   ngOnDestroy(): void {
@@ -64,8 +62,6 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
     this.subscrip = this.licenseService.changeStatus(this.licenseId, json).subscribe(
         data => {
             this.authPendingModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
             if(this.history.observers.length > 0){
                 this.history.emit();
             }
@@ -81,7 +77,6 @@ export class LicenseAuthPendingComponent implements OnDestroy  {
         },
         error => {
             this.authPendingModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 }

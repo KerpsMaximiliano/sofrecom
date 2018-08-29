@@ -1,18 +1,14 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Option } from "app/models/option";
-import { CustomerService } from "app/services/billing/customer.service";
-import { ServiceService } from "app/services/billing/service.service";
-import { ProjectService } from "app/services/billing/project.service";
-import { UserService } from "app/services/admin/user.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from "app/services/common/message.service";
-import { InvoiceService } from 'app/services/billing/invoice.service';
-import { MenuService } from 'app/services/admin/menu.service';
-import { I18nService } from 'app/services/common/i18n.service';
+import { Option } from "../../../../models/option";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { ServiceService } from "../../../../services/billing/service.service";
+import { ProjectService } from "../../../../services/billing/project.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { InvoiceService } from '../../../../services/billing/invoice.service';
+import { MenuService } from '../../../../services/admin/menu.service';
 import { EmployeeService } from '../../../../services/allocation-management/employee.service';
 declare var $: any;
 declare var moment: any;
@@ -51,8 +47,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private serviceService: ServiceService,
         private projectService: ProjectService,
         private employeeService: EmployeeService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) {}
+        private datatableService: DataTableService) {}
 
     ngOnInit() {
         this.getCustomers();
@@ -93,15 +88,13 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     getUserOptions(){
         this.employeeService.getOptions().subscribe(res => {
           this.userApplicants = res;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getStatuses(){
         this.service.getStatus().subscribe(res => {
           this.statuses = res;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCustomers(){
@@ -111,10 +104,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.customers = res.data;
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => this.messageService.closeLoading());
     }
 
     customerChange(){
@@ -126,8 +116,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         if(this.customerId != "0"){
             this.serviceService.getOptions(this.customerId).subscribe(res => {
                 this.services = res.data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -138,8 +127,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         if(this.serviceId != "0"){
             this.projectService.getOptions(this.serviceId).subscribe(res => {
                 this.projects = res.data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -170,17 +158,14 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
                 this.data = [];
 
-                if (res.messages) {
-                    this.messageService.showMessages(res.messages);
-                } else {
+                if (!res.messages) {
                     this.data = res;
                     sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(parameters));
                 }
 
                this.initGrid();
             }, 500);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
  
     showUserApplicantFilter(){

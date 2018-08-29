@@ -1,16 +1,16 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
-import { PurchaseOrderService } from "app/services/billing/purchaseOrder.service";
+import { PurchaseOrderService } from "../../../../services/billing/purchaseOrder.service";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 import { MenuService } from "../../../../services/admin/menu.service";
+import { AuthService } from "../../../../services/common/auth.service";
 
 declare var $: any;
 
@@ -53,9 +53,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 private activatedRoute: ActivatedRoute,
                 public menuService: MenuService,
+                private authService: AuthService,
                 private messageService: MessageService,
-                private router: Router,
-                private errorHandlerService: ErrorHandlerService){
+                private router: Router){
     }
 
     ngOnInit(): void {
@@ -84,7 +84,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     this.form.searchOpportunities();
                 }, 1000);
 
-                if(this.form.model.status != PurchaseOrderStatus.Draft && this.form.model.status != PurchaseOrderStatus.Reject){
+                if(this.form.model.status != PurchaseOrderStatus.Draft 
+                    && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input').attr('disabled', 'disabled');
                     $('#customer-select select').attr('disabled', 'disabled');
                     $('#opportunity-select select').attr('disabled', 'disabled');
@@ -95,12 +96,12 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('#description').attr('disabled', 'disabled');
                     $('#comments').attr('disabled', 'disabled');
                     this.form.currencyDisabled = true;
+                    this.form.isReadOnly = true;
                 }
             },
-            error => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
-            });
+            () => {
+                    this.messageService.closeLoading();
+                });
         });
     }
 
@@ -118,11 +119,27 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
-            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
-
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.form.model.fileName = dataJson.data.fileName;
                 this.form.model.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.form.model.fileId = dataJson.data.id;
@@ -151,28 +168,23 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
             FileSaver.saveAs(file, this.form.model.fileName);
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     deleteFile(){
         this.confirmModal.hide();
         this.messageService.showLoading();
 
-        this.purchaseOrderService.deleteFile(this.form.model.id).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
-
+        this.purchaseOrderService.deleteFile(this.form.model.id).subscribe(() => {
             this.form.model.fileId = null;
             this.form.model.fileName = null;
-
             this.messageService.closeLoading();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
  
     viewFile(){
@@ -184,10 +196,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 this.pdfViewer.renderFile(response.data);
             },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            () => {
+                    this.messageService.closeLoading();
+                });
         }
     }
 
@@ -196,17 +207,14 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
         this.form.model.analyticIds = $('#analytics').val();
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
-            response => {
+            () => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
-
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
             },
-            err => {
+            () => {
                 this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
             });
     }
 

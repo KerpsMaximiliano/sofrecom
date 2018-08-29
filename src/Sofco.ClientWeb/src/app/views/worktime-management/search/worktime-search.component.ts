@@ -1,12 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../services/common/message.service";
+import { DataTableService } from "../../../services/common/datatable.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { EmployeeService } from "../../../services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { CustomerService } from "../../../services/billing/customer.service";
 
@@ -53,8 +50,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         private analyticService: AnalyticService,
         private customerService: CustomerService,
         private employeeService: EmployeeService,
-        private dataTableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService){}
+        private dataTableService: DataTableService){}
 
     ngOnInit(): void {
         this.getCustomers();
@@ -86,38 +82,31 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     getStatus(){
         this.getStatusSubscrip = this.worktimeService.getStatus().subscribe(data => {
             this.statuses = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getManagers(){
         this.getManagersSubscrip = this.employeeService.getManagers().subscribe(data => {
             this.managers = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getResources(){
         this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.searchModel.clientId).subscribe(
             data => {
                 this.analytics = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getCustomers(){
         this.getCustomerSubscrip = this.customerService.getOptions().subscribe(res => {
             this.customers = res.data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -126,7 +115,6 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.search(this.searchModel).subscribe(response => {
             this.data = response.data;
-            if(response.messages) this.messageService.showMessages(response.messages);
 
             this.initGrid();
             this.messageService.closeLoading();
@@ -134,10 +122,9 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
             sessionStorage.setItem('lastWorktimeSearchQuery', JSON.stringify(this.searchModel));
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     initGrid(){
@@ -146,7 +133,8 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
         var options = { 
             selector: "#searchTable",
-            columns: columns,
+            columns: columns, 
+            columnDefs: [ {"aTargets": [7], "sType": "date-uk"} ],
             title: title,
             withExport: true
         };

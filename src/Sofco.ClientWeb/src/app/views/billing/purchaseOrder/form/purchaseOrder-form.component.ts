@@ -1,15 +1,12 @@
 import { Component, OnDestroy, Input } from "@angular/core";
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
 import { CustomerService } from "../../../../services/billing/customer.service";
-import { Option } from "app/models/option";
+import { Option } from "../../../../models/option";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { UtilsService } from "../../../../services/common/utils.service";
 import { PurchaseOrderStatus } from "../../../../models/enums/purchaseOrderStatus";
 import { MessageService } from "../../../../services/common/message.service";
-import { resolve } from "url";
-import { reject } from "../../../../../../node_modules/@types/q";
 
 @Component({
     selector: 'purchase-order-form',
@@ -24,7 +21,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
     public areas: any[] = new Array();
-    public currencyDisabled: boolean = false;
+    public currencyDisabled = false;
+    public isReadOnly = false;
 
     @Input() mode: string;
 
@@ -35,8 +33,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
                 private utilsService: UtilsService,
                 private messageService: MessageService,
-                private customerService: CustomerService,
-                private errorHandlerService: ErrorHandlerService){}
+                private customerService: CustomerService){}
 
     ngOnInit(): void {
         this.getAreas();
@@ -60,8 +57,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     getAreas(){
         this.getAreasSubscrip = this.utilsService.getAreas().subscribe(d => {
             this.areas = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCurrencies(){
@@ -85,16 +81,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
                     });
                 }
             }
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
  
     getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     getCustomers(showLoading: boolean){
@@ -106,7 +100,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         },
         err => {
             if(showLoading) this.messageService.closeLoading();    
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -122,14 +115,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         },
         err => {
             resolve();
-            this.messageService.closeLoading();    
+            this.messageService.closeLoading();
         });
     }
 
     searchOpportunities(){
        var analytics = $('#analytics').val();
        this.opportunities = [];
-       
+
         if(analytics.length > 0) {
 
             this.messageService.showLoading();
@@ -147,11 +140,11 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
             Promise.all(promises).then(data => { 
                 this.messageService.closeLoading();
-                
+
                 setTimeout(() => {
                     $('#opportunity-select select').val(this.model.proposal).trigger('change');
                 }, 300);
              });
        }
     }
-} 
+}

@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-import { CategoryService } from "app/services/admin/category.service";
+import { CategoryService } from "../../../../services/admin/category.service";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { MenuService } from "../../../../services/admin/menu.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 declare var moment: any;
 
 @Component({
@@ -37,8 +36,7 @@ declare var moment: any;
                 private router: Router,
                 public menuService: MenuService,
                 private dataTableService: DataTableService,
-                private categoryService: CategoryService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private categoryService: CategoryService) { }
 
     ngOnInit(): void {
         this.getAll();
@@ -58,10 +56,7 @@ declare var moment: any;
             this.categories = response;
             this.initGrid();
         }, 
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);   
-        });
+        error => this.messageService.closeLoading());
     }
 
     goToDetail(category){
@@ -87,16 +82,12 @@ declare var moment: any;
             data => {
                 this.confirmModal.hide();
 
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.categorySelected.active = false;
                 this.categorySelected.endDate = moment.now();
 
                 this.categorySelected = null;
             },
-            err => { 
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(err);
-            });
+            err => this.confirmModal.hide());
     }
   
     activate(){
@@ -104,16 +95,12 @@ declare var moment: any;
             data => {
                 this.confirmModal.hide();
 
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.categorySelected.active = true;
                 this.categorySelected.endDate = null;
 
                 this.categorySelected = null;
             },
-            err => { 
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(err);
-            });
+            err => this.confirmModal.hide());
     }
 
     initGrid(){

@@ -1,16 +1,13 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { UserService } from 'app/services/admin/user.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { DataTableService } from 'app/services/common/datatable.service';
-import { MessageService } from 'app/services/common/message.service';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { WorkTimeApprovalDelegateService } from 'app/services/allocation-management/worktime-approval-delegate.service';
-import { Ng2DatatablesModule } from 'app/components/datatables/ng2-datatables.module';
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { UserService } from '../../../../services/admin/user.service';
+import { I18nService } from '../../../../services/common/i18n.service';
+import { DataTableService } from '../../../../services/common/datatable.service';
+import { MessageService } from '../../../../services/common/message.service';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
+import { WorkTimeApprovalDelegateService } from '../../../../services/allocation-management/worktime-approval-delegate.service';
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 declare var $: any;
 
 @Component({
@@ -59,7 +56,6 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     constructor(private workTimeApprovalDelegateService: WorkTimeApprovalDelegateService,
         private analyticService: AnalyticService,
         private usersService: UserService,
-        private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private messageService: MessageService,
         private i18nService: I18nService,
@@ -90,19 +86,13 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
             this.workTimeApprovals = res.data;
             this.initTable();
         },
-        err => {
-            this.loading = false;
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => this.loading = false);
     }
 
     getAnalytics() {
-        this.subscription = this.analyticService.getByCurrentUser().subscribe(res => {
+        this.subscription = this.analyticService.getByManager().subscribe(res => {
             this.analytics = res.data;
             this.setAnalyticSelect();
-        },
-        error => {
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -151,9 +141,6 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         this.subscription = this.usersService.getOptions().subscribe(res => {
             this.users = res;
             this.initUserControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -161,9 +148,6 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         this.subscription = this.workTimeApprovalDelegateService.getApprovals(this.analyticId).subscribe(res => {
             this.approvers = res.data;
             this.updateApproverUserControl();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -237,13 +221,9 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
         this.subscription = this.workTimeApprovalDelegateService.save(data).subscribe(response => {
             this.messageService.closeLoading();
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => this.messageService.closeLoading());
     }
 
     setAddApprovers() {
@@ -263,11 +243,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         const id = this.itemSelected.workTimeApproval.id;
         this.confirmModal.hide();
         this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.getWorkTimeApprovals();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

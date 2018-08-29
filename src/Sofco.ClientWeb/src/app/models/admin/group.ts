@@ -1,5 +1,5 @@
 
-import { Role } from "app/models/admin/role";
+import { Role } from "./role";
 
 export class Group {
     public id: number;

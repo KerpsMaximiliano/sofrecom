@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Option } from 'app/models/option';
+import { Option } from '../../models/option';
 import { Injectable } from '@angular/core';
 import { Response, URLSearchParams, RequestOptions } from '@angular/http';
-import { Service } from 'app/services/common/service';
-import { Role } from 'app/models/admin/role';
+import { Service } from '../common/service';
+import { Role } from '../../models/admin/role';
 
 @Injectable()
 export class RoleService {

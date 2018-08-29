@@ -1,16 +1,7 @@
-
 import {throwError as observableThrowError,  Observable ,  BehaviorSubject } from 'rxjs';
-
 import {take, filter, catchError, switchMap, finalize} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpErrorResponse } from '@angular/common/http';
-
-
-
-
-
-
-
 import { AuthService } from './auth.service';
 
 @Injectable()

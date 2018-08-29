@@ -171,6 +171,30 @@
   <data name="HoursWrong" xml:space="preserve">
     <value>workTimeManagement/workTime.hoursWrong</value>
   </data>
+  <data name="ImportDateNull" xml:space="preserve">
+    <value>workTimeManagement/workTime.importDateNull</value>
+  </data>
+  <data name="ImportDatesOutOfRange" xml:space="preserve">
+    <value>workTimeManagement/workTime.importDatesOutOfRange</value>
+  </data>
+  <data name="ImportDateWrong" xml:space="preserve">
+    <value>workTimeManagement/workTime.importDateWrong</value>
+  </data>
+  <data name="ImportEmployeeIsNotInAnalytic" xml:space="preserve">
+    <value>workTimeManagement/workTime.importEmployeeIsNotInAnalytic</value>
+  </data>
+  <data name="ImportHoursExceed" xml:space="preserve">
+    <value>workTimeManagement/workTime.importHoursExceed</value>
+  </data>
+  <data name="ImportHoursNull" xml:space="preserve">
+    <value>workTimeManagement/workTime.importHoursNull</value>
+  </data>
+  <data name="ImportTaskNoExist" xml:space="preserve">
+    <value>workTimeManagement/workTime.importTaskNoExist</value>
+  </data>
+  <data name="ImportUserWithEmailNull" xml:space="preserve">
+    <value>workTimeManagement/workTime.importUserWithEmailNull</value>
+  </data>
   <data name="MonthError" xml:space="preserve">
     <value>workTimeManagement/workTime.monthError</value>
   </data>
@@ -212,5 +236,11 @@
   </data>
   <data name="YearError" xml:space="preserve">
     <value>workTimeManagement/workTime.yearError</value>
+  </data>
+  <data name="ImportEmployeeWithLicense" xml:space="preserve">
+    <value>workTimeManagement/workTime.importEmployeeWithLicense</value>
+  </data>
+  <data name="FileEmpty" xml:space="preserve">
+    <value>workTimeManagement/workTime.fileEmpty</value>
   </data>
 </root>

@@ -2,7 +2,7 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Service } from "app/services/common/service";
+import { Service } from "../common/service";
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -68,6 +68,10 @@ export class AnalyticService {
 
   getByCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
+  }
+
+  getByManager() {
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/currentManager`);
   }
 
   get(query) {

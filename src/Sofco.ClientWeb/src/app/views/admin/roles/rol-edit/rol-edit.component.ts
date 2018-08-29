@@ -1,17 +1,12 @@
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Option } from 'app/models/option';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-import { MessageService } from 'app/services/common/message.service';
+import { MessageService } from '../../../../services/common/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { FunctionalityService } from "app/services/admin/functionality.service";
-import { ModuleService } from "app/services/admin/module.service";
-import { RoleService } from "app/services/admin/role.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Role } from "app/models/admin/role";
-declare var $: any;
+import { ModuleService } from "../../../../services/admin/module.service";
+import { RoleService } from "../../../../services/admin/role.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { Role } from "../../../../models/admin/role";
 
 @Component({
   selector: 'app-rol-edit',
@@ -85,9 +80,7 @@ export class RolEditComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute, 
         private router: Router,
         public menuService: MenuService,
-        private messageService: MessageService,
-        private functionalityService: FunctionalityService,
-        private errorHandlerService: ErrorHandlerService) { 
+        private messageService: MessageService) { 
     }
 
     ngOnInit() {
@@ -110,11 +103,10 @@ export class RolEditComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.service.getDetail(this.id).subscribe(
             data => {
                 this.role = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
  
-    onSubmit(form){
+    onSubmit(){
         this.messageService.showLoading();
 
         var model = {
@@ -127,18 +119,16 @@ export class RolEditComponent implements OnInit, OnDestroy {
             data => {
                 this.messageService.closeLoading();
 
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.router.navigate(["/admin/roles"])
             },
-            err => this.errorHandlerService.handleErrors(err));
+            err => this.messageService.closeLoading());
     }
 
     getAllModules(){
         this.modulesSubscrip = this.moduleService.getOptionsWithFunctionalities().subscribe(
             data => {
                 this.allModules = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     addFunctionality(){
@@ -210,14 +200,9 @@ export class RolEditComponent implements OnInit, OnDestroy {
         this.service.unAssignFunctionality(this.role.id, this.functId).subscribe(
             data => {
                 this.functConfirmModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
             },
-            err => {
-                this.functConfirmModal.hide();
-                this.errorHandlerService.handleErrors(err);
-            }
-        );
+            err => this.functConfirmModal.hide());
     }
 
     unAssignModule(moduleId: number){
@@ -229,14 +214,10 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
         this.service.unAssignFunctionalities(this.role.id , arrFunctsToAdd).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
                 this.getDetails();
                 this.confirmModal.hide();
             },
-            err => {
-                this.confirmModal.hide();
-                this.errorHandlerService.handleErrors(err);
-            });
+            err => this.confirmModal.hide());
     }
 
     assignFunctionalities(){
@@ -250,14 +231,10 @@ export class RolEditComponent implements OnInit, OnDestroy {
 
             this.service.assignFunctionalities(this.role.id , arrFunctsToAdd).subscribe(
                 data => {
-                    if(data.messages) this.messageService.showMessages(data.messages);
                     this.getDetails();
                     this.functModal.hide();
                 },
-                err => {
-                    this.functModal.hide();
-                    this.errorHandlerService.handleErrors(err);
-                });
+                err => this.functModal.hide());
         }
     }
 }

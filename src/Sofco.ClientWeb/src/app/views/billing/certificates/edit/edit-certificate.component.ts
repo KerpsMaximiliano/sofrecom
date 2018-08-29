@@ -1,15 +1,14 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { ActivatedRoute } from "@angular/router";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { CertificatesService } from "app/services/billing/certificates.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { CertificatesService } from "../../../../services/billing/certificates.service";
+import { AuthService } from "../../../../services/common/auth.service";
 
-declare var $: any;
 
 @Component({
     selector: 'edit-certificate',
@@ -45,10 +44,9 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
     );
 
     constructor(private certificateService: CertificatesService,
-                private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+                private authService: AuthService,
+                private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -61,10 +59,7 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
 
                 this.uploaderConfig();
             },
-            error => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(error);
-            });
+            () => this.messageService.closeLoading());
         });
     }
 
@@ -82,14 +77,10 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
         this.form.model.clientExternalName = client.text;
 
         this.updateSubscrip = this.certificateService.update(this.form.model).subscribe(
-            response => {
+            () => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
             },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            () => this.messageService.closeLoading());
     }
 
     uploaderConfig(){
@@ -99,11 +90,27 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
-            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
-
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.form.model.fileName = dataJson.data.fileName;
                 this.form.model.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
                 this.form.model.fileId = dataJson.data.id;
@@ -127,34 +134,26 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
     exportExcel(){
         this.certificateService.exportFile(this.form.model.fileId).subscribe(file => {
             FileSaver.saveAs(file, this.form.model.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     deleteFile(){
         this.confirmModal.hide();
         this.messageService.showLoading();
 
-        this.certificateService.deleteFile(this.form.model.id).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
-
+        this.certificateService.deleteFile(this.form.model.id).subscribe(() => {
             this.form.model.fileId = null;
             this.form.model.fileName = null;
-
             this.messageService.closeLoading();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => this.messageService.closeLoading());
     }
 
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
             this.certificateService.getFile(this.form.model.fileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 }  

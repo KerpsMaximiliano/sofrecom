@@ -19,32 +19,30 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <table class="table table-striped" id="customerTable" width="100%">
-                        <thead>
-                            <tr>
-                                <th>{{"billing.customer.grid.name" | translate}}</th>
-                                <th>{{"billing.customer.grid.cuit" | translate}}</th>
-                                <th>{{"billing.customer.grid.address" | translate}}</th>
-                                <th>{{"billing.customer.grid.province" | translate}}</th>
-                                <th>{{"billing.customer.grid.country" | translate}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let customer of customers" (click)="goToServices(customer)" class="pointer">
-                                <td>{{customer.name}}</td>
-                                <td>{{customer.cuit}}</td>
-                                <td>{{customer.address}}</td>
-                                <td>{{customer.province}}</td>
-                                <td>{{customer.country}}</td>
-                            </tr>
-                        </tbody>
-                    </table>        
-                </div>
-            </div>
+    <button class="btn btn-sm btn-success btn-outline dim pull-right" (click)="update()"> {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i></button>
+
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <table class="table table-striped" id="customerTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>{{"billing.customer.grid.name" | translate}}</th>
+                        <th>{{"billing.customer.grid.cuit" | translate}}</th>
+                        <th>{{"billing.customer.grid.address" | translate}}</th>
+                        <th>{{"billing.customer.grid.province" | translate}}</th>
+                        <th>{{"billing.customer.grid.country" | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let customer of customers" (click)="goToServices(customer)" class="pointer">
+                        <td>{{customer.name}}</td>
+                        <td>{{customer.cuit}}</td>
+                        <td>{{customer.address}}</td>
+                        <td>{{customer.province}}</td>
+                        <td>{{customer.country}}</td>
+                    </tr>
+                </tbody>
+            </table>        
         </div>
     </div>
 </div>

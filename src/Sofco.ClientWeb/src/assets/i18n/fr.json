@@ -575,7 +575,7 @@
             "grid":{
                 "name":"Nom",
                 "senority":"Ancienneté",
-                "employeeNumber":"Legajo",
+                "employeeNumber":"Fichier",
                 "profile":"Profil",
                 "office":"Bureau",
                 "manager":"Supérieur",
@@ -593,7 +593,7 @@
             "listTitle":"Liste des Nouveautés",
             "endReasonTypes":"Raisons",
             "grid":{
-                "employeeNumber":"Legajo",
+                "employeeNumber":"Fichier",
                 "name": "Nom",
                 "startDate":"Date Début",
                 "endDate": "Date Fin",
@@ -843,7 +843,7 @@
             "invoiceDate":"invoiceDate",
             "amount":"Montant" 
         }, 
-        "dateRange":"Date de réception Debut- Fin",
+        "dateRange":"Date de réception Début - Fin",
         "dayOfWeek":"Lu Ma Me Je Ve Sa Di",
         "monthNames":"Jan Fév Mar Avr Mai Juin Juil Août Sep Oct Nov Déc",
         "resultNotFound":"Aucune donnée trouvée."
@@ -854,7 +854,7 @@
         "approvalHours":"Approbation des heures",
         "hoursPending":"Heures en attente d'approbation",
         "hoursApproved":"Heures approuvées",
-        "analytic":"Analitica-Service",
+        "analytic":"Analytique-Service",
         "employee":"Dossier - Nom ",
         "task":"Tâche ",
         "date":"Date",
@@ -882,7 +882,7 @@
         "report":{
             "title":"Estimé vs Consumé",
             "client":"Client",
-            "analytic":"Analitica-Service",
+            "analytic":"Analytique-Service",
             "manager":"Manager",
             "employee":"Ressource",
             "interval":"Période",
@@ -917,7 +917,22 @@
             "newHoliday":"Créer un jour férié",
             "importConfirm":"Confirmer l'importation des Congés Officiels à partir d'une source externe?",
             "deleteConfirm":"Confirmer pour éliminer le férié sélectionnée?"
-        } 
+        },
+        "worktimeControl": {
+            "title": "Control des Heures",
+            "dateRange": "Début - Fin",
+            "businessHoursTotal": "Total des heures de travail",
+            "registeredHoursTotal": "Total des heures chargées",
+            "licenseHoursTotal": "Total des heures de licence",
+            "pendingHoursTotal": "Heures en attente de chargement",
+            "analytic": "Analytique",
+            "employeeNumber": "Fichier",
+            "employeeName": "Nom",
+            "businessHours": "Heures de travai",
+            "registeredHours": "Heures chargées",
+            "licenseHours": "Heures de licence",
+            "pendingHours": "Heures en attente de chargement"
+        }
     }, 
     "months":{
         "january":"Janvier",

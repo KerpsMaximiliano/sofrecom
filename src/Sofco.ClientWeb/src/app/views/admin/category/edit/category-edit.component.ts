@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { CategoryService } from "app/services/admin/category.service";
+import { CategoryService } from "../../../../services/admin/category.service";
 
 @Component({
     selector: 'app-category-edit',
@@ -21,8 +20,7 @@ import { CategoryService } from "app/services/admin/category.service";
     constructor(private messageService: MessageService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private categoryService: CategoryService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private categoryService: CategoryService) { }
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -44,10 +42,7 @@ import { CategoryService } from "app/services/admin/category.service";
             this.messageService.closeLoading();
             this.description = response.data.description;
         }, 
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);   
-        });
+        error => this.messageService.closeLoading());
     }
 
     goBack(){
@@ -60,12 +55,8 @@ import { CategoryService } from "app/services/admin/category.service";
         this.editSubscript = this.categoryService.edit({ id: this.id, description: this.description }).subscribe(response => {
             this.messageService.closeLoading();
 
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.router.navigate(["/admin/categories"]);    
         }, 
-        error => { 
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-         });
+        error => this.messageService.closeLoading());
     }
   }

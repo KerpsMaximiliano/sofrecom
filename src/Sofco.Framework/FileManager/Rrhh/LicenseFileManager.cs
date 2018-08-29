@@ -20,7 +20,7 @@ namespace Sofco.Framework.FileManager.Rrhh
         {
             this.hostingEnvironment = hostingEnvironment;
         }
-
+         
         public ExcelPackage CreateLicenseReportExcel(IList<License> licenses)
         {
             var memoryStream = this.GetTemplateStream().Result;

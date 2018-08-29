@@ -2,18 +2,17 @@ import * as moment from 'moment';
 import 'jqueryui';
 import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from 'app/services/common/message.service';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { MessageService } from '../../../services/common/message.service';
+import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { OptionsInput } from 'fullcalendar';
-import { WorktimeService } from 'app/services/worktime-management/worktime.service';
-import { AnalyticService } from 'app/services/allocation-management/analytic.service';
-import { EmployeeService } from 'app/services/allocation-management/employee.service';
-import { TaskService } from 'app/services/admin/task.service';
-import { WorkTimeTaskModel } from 'app/models/worktime-management/workTimeTask.model';
-import { RecentTaskModel } from 'app/models/worktime-management/recentTaskModel';
-import { RecentAnalyticTaskModel } from 'app/models/worktime-management/recentAnalyticTaskModel';
-import { AppSetting } from 'app/services/common/app-setting';
+import { WorktimeService } from '../../../services/worktime-management/worktime.service';
+import { AnalyticService } from '../../../services/allocation-management/analytic.service';
+import { EmployeeService } from '../../../services/allocation-management/employee.service';
+import { TaskService } from '../../../services/admin/task.service';
+import { WorkTimeTaskModel } from '../../../models/worktime-management/workTimeTask.model';
+import { RecentTaskModel } from '../../../models/worktime-management/recentTaskModel';
+import { RecentAnalyticTaskModel } from '../../../models/worktime-management/recentAnalyticTaskModel';
+import { AppSetting } from '../../../services/common/app-setting';
 
 @Component({
     selector: 'app-worktime',
@@ -68,7 +67,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private employeeService: EmployeeService,
       private taskService: TaskService,
       private worktimeService: WorktimeService,
-      private errorHandlerService: ErrorHandlerService,
       private messageService: MessageService,
       private appSetting: AppSetting) {
 
@@ -97,20 +95,15 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   deleteTask(){
     this.subscription = this.worktimeService.delete(this.taskModel.id).subscribe(response => {
-      if (response.messages) this.messageService.showMessages(response.messages);
-
       var taskToRemove = this.model.calendar.findIndex(item => item.id == this.taskModel.id);
       this.model.calendar.splice(taskToRemove, 1);
       this.updateCalendarEvents();
 
+      this.editModal.hide();
+
       this.getModel();
     },
-    error => {
-      this.errorHandlerService.handleErrors(error);
-    },
-    () => {
-      this.editModal.hide();
-    });
+    error => this.editModal.hide());
   }
 
   calendarInit() {
@@ -249,7 +242,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     },
     error => {
       this.messageService.closeLoading();
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -261,12 +253,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   sendHours() {
     this.subscription = this.worktimeService.sendHours().subscribe(response => {
-      if (response.messages) this.messageService.showMessages(response.messages);
       this.getModel();
     },
-    error => {
-      this.errorHandlerService.handleErrors(error);
-    },
+    error => {},
     () => {
       this.messageService.closeLoading();
     });
@@ -288,12 +277,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     }
     this.showSaveTask();
 
-    if(this.taskModel.status != 1 && this.taskModel.status != 4){
-      this.editModalConfig.deleteButton = false;
-    }
-    else{
-      this.editModalConfig.deleteButton = true;
-    }
+    this.editModalConfig.deleteButton = true;
 
     this.editModal.show();
   }
@@ -301,9 +285,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   getAnalytics() {
     this.subscription = this.analyticService.getByCurrentUser().subscribe(res => {
         this.analytics = res.data;
-    },
-    error => {
-        this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -326,18 +307,12 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
       this.categories = uniqueCategories;
       this.allTasks = tasks;
-    },
-    error => {
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
   getTasks() {
     this.subscription = this.taskService.getOptions().subscribe(res => {
       this.allTasks = res;
-    },
-    error => {
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -356,13 +331,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.subscription = this.worktimeService.post(this.taskModel).subscribe(res => {
       this.editModal.hide();
-      if (res.messages) this.messageService.showMessages(res.messages);
       this.getModel();
       this.addRecentTask(res.data);
     },
     error => {
       this.editModal.resetButtons();
-      this.errorHandlerService.handleErrors(error);
     });
   }
 
@@ -519,12 +492,14 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   saveDropTask(taskModel: WorkTimeTaskModel) {
     if (!this.validateHoursPerDay(taskModel)) { return; }
 
+    this.messageService.showLoading();
+
     this.subscription = this.worktimeService.post(taskModel).subscribe(res => {
-      if (res.messages) this.messageService.showMessages(res.messages);
+      this.messageService.closeLoading();
       this.getModel();
     },
     error => {
-      this.errorHandlerService.handleErrors(error);
+      this.messageService.closeLoading();
       this.getModel();
     });
   }
