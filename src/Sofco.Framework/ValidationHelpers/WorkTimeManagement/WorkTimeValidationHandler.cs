@@ -78,13 +78,6 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateRequired);
             }
 
-            var period = GetPeriod(unitOfWork);
-
-            if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
-            {
-                response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
-            }
-
             if (model.Date.DayOfWeek == DayOfWeek.Saturday || model.Date.DayOfWeek == DayOfWeek.Sunday)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsWeekend);
@@ -94,6 +87,13 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
             }
+
+            //var period = GetPeriod(unitOfWork);
+
+            //if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
+            //{
+            //    response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
+            //}
         }
 
         public static void ValidateUserComment(Response<WorkTime> response, WorkTimeAddModel model)
