@@ -77,6 +77,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
             if(userInfo && userInfo.employeeId && userInfo.name){
                 this.model.employeeId = userInfo.employeeId;
+                this.model.managerId = userInfo.managerId;
+
                 this.userApplicantName = userInfo.name;
             }
         } else {
@@ -88,7 +90,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.getSectors();
         this.licenseTypeSetOnChange();
     }
-
+ 
     ngOnDestroy(): void {
         if(this.addSubscrip) this.addSubscrip.unsubscribe();
         if(this.getManagersSubscrip) this.getManagersSubscrip.unsubscribe();
@@ -167,7 +169,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     getManagers(){
         this.getManagersSubscrip = this.licenseService.getAuthorizers().subscribe(data => {
             this.managers = data;
-            this.model.managerId = 0;
         });
     }
 

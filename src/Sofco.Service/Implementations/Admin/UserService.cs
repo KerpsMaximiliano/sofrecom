@@ -223,6 +223,7 @@ namespace Sofco.Service.Implementations.Admin
             var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
 
             model.EmployeeId = employee?.Id ?? 0;
+            model.ManagerId = employee?.ManagerId ?? 0;
 
             response.Data = model;
 
