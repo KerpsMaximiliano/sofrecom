@@ -64,6 +64,7 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
             if (this.hitosReload.observers.length > 0) {
                 this.hitosReload.emit();
             }
-        });
+        }, 
+        error => this.newHitoModal.resetButtons());
     }
 }

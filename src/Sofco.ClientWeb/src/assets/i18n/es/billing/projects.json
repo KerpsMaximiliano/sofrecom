@@ -8,5 +8,6 @@
     "hitoSplittedRequired": "Antes de guardar debe dividir el hito",
     "nameRequired": "El nombre es requerido",
     "monthRequired": "El mes es requerido",
-    "hitoCreated": "Hito fue creado correctamente. Se actualizó correctamente CRM"
+    "hitoCreated": "Hito fue creado correctamente. Se actualizó correctamente CRM",
+    "dateRequired": "La fecha es requerida"
 }
