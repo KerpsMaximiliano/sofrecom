@@ -82,9 +82,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var startDate = new DateTime(date.Year, date.Month, 1);
 
-                var endDate = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+                var endDate = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
 
-                var workTimes = unitOfWork.WorkTimeRepository.Get(startDate.Date, endDate.Date, currentUser.Id);
+                var workTimes = unitOfWork.WorkTimeRepository.Get(startDate, endDate, currentUser.Id);
 
                 var calendars = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
