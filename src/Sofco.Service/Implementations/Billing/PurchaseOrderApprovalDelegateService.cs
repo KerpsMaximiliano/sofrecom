@@ -286,18 +286,6 @@ namespace Sofco.Service.Implementations.Billing
                 }
             }
 
-            if (model.Type == UserDelegateType.PurchaseOrderApprovalOperation)
-            {
-                var item = sectorData.GetAll().FirstOrDefault(s => s.Id == model.SourceId);
-
-                if (item == null) return response;
-
-                if (item.ResponsableUserId == model.UserId)
-                {
-                    isValid = false;
-                }
-            }
-
             if (!isValid)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.DelegateSameUserError);

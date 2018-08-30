@@ -11,6 +11,8 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     {
         private const int UserCommentMaxLength = 500;
 
+        private static bool ValidatePeriodCloseMonth = false;
+
         public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
             if (model.EmployeeId <= 0)
@@ -88,12 +90,14 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
             }
 
-            //var period = GetPeriod(unitOfWork);
+            if (!ValidatePeriodCloseMonth) return;
 
-            //if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
-            //{
-            //    response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
-            //}
+            var period = GetPeriod(unitOfWork);
+
+            if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
+            }
         }
 
         public static void ValidateUserComment(Response<WorkTime> response, WorkTimeAddModel model)
@@ -137,9 +141,11 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 return;
             }
 
+            if (!ValidatePeriodCloseMonth) return;
+
             var period = GetPeriod(unitOfWork);
-         
-            if(!(worktime.Date.Date >= period.Item1.Date && worktime.Date.Date <= period.Item2.Date))
+
+            if (!(worktime.Date.Date >= period.Item1.Date && worktime.Date.Date <= period.Item2.Date))
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
             }
