@@ -28,6 +28,8 @@ namespace Sofco.Core.Models.Admin
 
         public int EmployeeId { get; set; }
 
+        public int ManagerId { get; set; }
+
         public User CreateDomain()
         {
             var user = new User
