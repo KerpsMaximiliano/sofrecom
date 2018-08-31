@@ -35,13 +35,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Employee> GetByService(string serviceId)
         {
-            return context.Allocations
+            var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            var employees = context.Allocations
                 .Include(x => x.Analytic)
-                .Include(x => x.Employee)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId))
-                .Select(x => x.Employee)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.StartDate.Date == date.Date)
+                .Select(x => x.EmployeeId)
                 .Distinct()
                 .ToList();
+
+            return context.Employees.Include(x => x.EmployeeCategories).Where(x => employees.Contains(x.Id)).ToList();
         }
 
         public ICollection<Employee> GetByAnalyticId(int analyticId)

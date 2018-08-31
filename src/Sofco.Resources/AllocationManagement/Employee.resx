@@ -138,14 +138,23 @@
   <data name="EmployeesNotFound" xml:space="preserve">
     <value>allocationManagement/employee.employeesNotFound</value>
   </data>
+  <data name="HoursRequired" xml:space="preserve">
+    <value>allocationManagement/employee.hoursRequired</value>
+  </data>
   <data name="NameRequired" xml:space="preserve">
     <value>allocationManagement/employee.nameRequired</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/employee.notFound</value>
   </data>
+  <data name="PhoneRequired" xml:space="preserve">
+    <value>allocationManagement/employee.phoneRequired</value>
+  </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>allocationManagement/employee.updateSuccess</value>
+  </data>
+  <data name="UserRelated" xml:space="preserve">
+    <value>allocationManagement/employee.userRelated</value>
   </data>
   <data name="WrongStatus" xml:space="preserve">
     <value>allocationManagement/employee.wrongStatus</value>

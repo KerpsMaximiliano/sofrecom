@@ -11,5 +11,6 @@
     "nameRequired": "El nombre es requerido",
     "usernameRequired": "El usuario es requerido",
     "emailRequired": "El mail es requerido",
-    "userInactive": "El usuario esta inactivo"
+    "userInactive": "El usuario esta inactivo",
+    "managerNotFound": "Superior no encontrado"
 }

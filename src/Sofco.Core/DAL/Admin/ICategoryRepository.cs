@@ -20,5 +20,7 @@ namespace Sofco.Core.DAL.Admin
         bool ExistEmployeeCategory(int employeeId, int categoryId);
 
         void AddEmployeeCategory(EmployeeCategory employeeCategory);
+
+        void RemoveEmployeeCategory(EmployeeCategory employeeCategory);
     }
 }

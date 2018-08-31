@@ -90,10 +90,6 @@
 </ng2-modal> 
 
 <ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
-    <div class="alert alert-warning">
-        {{'ADMIN.category.areYouSureAdd' | translate }}
-    </div>
-
     <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 
