@@ -19,7 +19,7 @@ namespace Sofco.Core.Services.Admin
 
         Response<User> ChangeUserGroups(int userId, List<int> groupsToAdd, List<int> groupsToRemove);
 
-        Response<UserModel> GetByMail();
+        Response<UserModel> GetUserInfo();
 
         bool HasDirectorGroup();
 
