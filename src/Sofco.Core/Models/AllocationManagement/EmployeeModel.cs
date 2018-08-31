@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
@@ -19,6 +21,11 @@ namespace Sofco.Core.Models.AllocationManagement
             Technology = domain.Technology;
             Percentage = domain.BillingPercentage;
             StartDate = domain.StartDate;
+
+            if (domain.EmployeeCategories != null && domain.EmployeeCategories.Any())
+                Categories = domain.EmployeeCategories.Select(x => x.CategoryId).ToList();
+            else
+                Categories = new List<int>();
         }
 
         public int Id { get; set; }
@@ -38,5 +45,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public bool Selected { get; set; }
 
         public DateTime StartDate { get; set; }
+
+        public IList<int> Categories { get; set; }
     }
 }

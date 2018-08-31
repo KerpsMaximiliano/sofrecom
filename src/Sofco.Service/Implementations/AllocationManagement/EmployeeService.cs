@@ -167,12 +167,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             foreach (var employeeId in parameters.Employees)
             {
-                foreach (var categoryId in parameters.Categories)
+                foreach (var categoryId in parameters.CategoriesToAdd)
                 {
                     if (!unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
                     {
                         var employeeCategory = new EmployeeCategory(employeeId, categoryId);
                         unitOfWork.CategoryRepository.AddEmployeeCategory(employeeCategory);
+                    }
+                }
+
+                foreach (var categoryId in parameters.CategoriesToRemove)
+                {
+                    if (unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
+                    {
+                        var employeeCategory = new EmployeeCategory(employeeId, categoryId);
+                        unitOfWork.CategoryRepository.RemoveEmployeeCategory(employeeCategory);
                     }
                 }
             }

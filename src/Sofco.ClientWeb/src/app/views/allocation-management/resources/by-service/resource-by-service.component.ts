@@ -80,8 +80,6 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
         });
-
-        this.getCategories();
     }
 
     ngOnDestroy(): void {
@@ -95,10 +93,12 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
  
     getAll(){
         this.messageService.showLoading();
-
+ 
         this.getAllSubscrip = this.allocationervice.getAllocationsByService(this.serviceId).subscribe(data => {
             this.resources = data;
             this.messageService.closeLoading();
+
+            this.getCategories();
         },
         () => this.messageService.closeLoading());
     }
@@ -141,6 +141,15 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     openCategoryModal(resource){
         this.resourceSelected = resource;
+
+        this.categories.forEach(item => {
+            item.selected = false;
+
+            if(resource.categories.includes(item.id)){
+                item.selected = true;
+            }
+        });
+
         this.categoriesModal.show();
     }
 
@@ -169,12 +178,14 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     saveCategories(){
         var categoriesSelected = this.categories.filter(x => x.selected == true).map(item => item.id);
+        var categoriesNotSelected = this.categories.filter(x => x.selected == false).map(item => item.id);
         var usersSelected = [this.resourceSelected.id];
 
         if(categoriesSelected.length == 0) return;
 
         var json = {
-            categories: categoriesSelected,
+            categoriesToAdd: categoriesSelected,
+            categoriesToRemove: categoriesNotSelected,
             employees: usersSelected
         }
 
