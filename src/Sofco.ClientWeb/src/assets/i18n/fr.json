@@ -253,9 +253,9 @@
             } 
         }, 
         "purchaseOrder": { 
-            "addTitle":"Ajout Commande d'achat",
-            "editTitle":"Détail Commande d'achat",
-            "searchTitle":"Recherche Commandes d'achat",
+            "addTitle":"Ajout commande d'achat",
+            "editTitle":"Détail commande d'achat",
+            "searchTitle":"Recherche commandes d'achat",
             "title":"Commandes d'achat",
             "name":"Commande d'achat",
             "add":"Ajout",
@@ -264,14 +264,14 @@
             "parameters":"Paramètres de recherche",
             "noOrdersFound":"Il n'y a pas de commandes d'achat chargées",
             "adjustmentModelTitle":"Inclure les montants à ajuster",
-            "createAdjustment": "Crear Ajuste OC",
-            "sendToOperative": "Enviar a Operativa",
-            "sendToComercial": "Enviar a Comercial",
-            "sendToCompliance": "Enviar a Compliance",
-            "sendToDaf": "Enviar a DAF",
-            "goToPendings": "Ir a pendientes",
-            "ocPendings": "Ordenes de compra pendientes",
-            "ocPendingsShortTitle": "Ordenes Pendientes",
+            "createAdjustment": "Creé Ajustement Commande",
+            "sendToOperative": "Envoyer a Operatif",
+            "sendToComercial": "Envoyer a Commercial",
+            "sendToCompliance": "Envoyer a Compliance",
+            "sendToDaf": "Envoyer a DAF",
+            "goToPendings": "Aller en attente",
+            "ocPendings": "Commandes en attente",
+            "ocPendingsShortTitle": "Commandes en attente",
             "pendings": "Pendientes",
             "fileMissing":"Pour terminer le processus de chargement du Commandes d'achat, vous devez télécharger le fichier (pdf)",
             "fields": { 
@@ -281,8 +281,8 @@
                 "year":"Année",
                 "area":"Zone",
                 "status":"Etat",
-                "startDate":"Date De",
-                "endDate":"Date jusqu'à",
+                "startDate":"Date début",
+                "endDate":"Date fin",
                 "opportunity":"Opportunité",
                 "currency":"Devise",
                 "balance":"Balance",
@@ -535,7 +535,7 @@
                 "manager": "Gestionnaire",
                 "office":"Adresse",
                 "billeability":"Possibilité de facturer (%)",
-                "unassigned": "NO asignados"
+                "unassigned": "Non attribué"
             } 
         }, 
         "resources":{
@@ -565,8 +565,8 @@
             "businessHoursDescription":"Calendrier",
             "businessHoursModal":"Modifier Heures par Contrat",
             "hoursByContract":"Heures par Contrat",
-            "dateFrom":"Date De",
-            "dateTo":"Date jusqu'à",
+            "dateFrom":"Date début",
+            "dateTo":"Date fin",
             "startDate":"Date Début",
             "endDate":"Date Fin",
             "reason":"Raison",
@@ -598,7 +598,8 @@
                 "startDate":"Date Début",
                 "endDate": "Date Fin",
                 "status": "Etat"
-            }
+            },
+            "updateRrhh": "Modifier les données"
         },
         "analytics":{
             "listTitle":"Liste des Analytiques",
@@ -611,7 +612,7 @@
             "viewTitle":"Voir Analytique",
             "assigned":"Analytics Attribués",
             "close":"Fermer Analytique",
-            "closeForExpenses": "Cerrar para costos",
+            "closeForExpenses": "Fermer pour coûts",
             "add":{
                 "title":"Titre",
                 "startDate": "Date Début",
