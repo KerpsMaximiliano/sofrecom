@@ -157,7 +157,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Authorize]
         public IActionResult GetByMail()
         {
-            var response = userService.GetByMail();
+            var response = userService.GetUserInfo();
 
             return this.CreateResponse(response);
         }

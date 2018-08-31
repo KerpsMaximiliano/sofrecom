@@ -24,8 +24,18 @@
                     </div>
  
                     <div class="form-group" *ngIf="fromProfile == true">
-                        <label style="font-size: 16px"> {{'rrhh.license.employee' | translate }}: </label>
-                        <span style="font-size: 16px"> {{ userApplicantName }}</span>
+                        <label style="font-size: 15px"> {{'rrhh.license.employee' | translate }}: </label>
+                        <span style="font-size: 14px"> {{ userApplicantName }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size: 15px"> {{'rrhh.license.manager' | translate }}: </label>
+                        <span style="font-size: 14px"> {{ model.managerDesc }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size: 15px"> {{'rrhh.license.sector' | translate }}: </label>
+                        <span style="font-size: 14px"> {{ model.sectorDesc }}</span>
                     </div>
 
                     <div class="row">
@@ -82,10 +92,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <select-two id="managerId" [label]="'rrhh.license.manager'" [(value)]="model.managerId" [options]="managers"></select-two>
-                    
-                    <select-two [label]="'rrhh.license.sector'" [(value)]="model.sectorId" [options]="sectors"></select-two>
                 </div>
                 <div class="ibox-footer">
                     <button (click)="back()" *ngIf="!menuService.userIsRrhh" class="btn btn-success" type="button"> <i class="fa fa-user"></i> {{'ACTIONS.viewProfile' | translate }} </button>

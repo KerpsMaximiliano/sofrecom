@@ -78,6 +78,9 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             if(userInfo && userInfo.employeeId && userInfo.name){
                 this.model.employeeId = userInfo.employeeId;
                 this.model.managerId = userInfo.managerId;
+                this.model.managerDesc = userInfo.managerDesc;
+                this.model.sectorId = userInfo.sectorId;
+                this.model.sectorDesc = userInfo.sectorDesc;
 
                 this.userApplicantName = userInfo.name;
             }
@@ -85,9 +88,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.getEmployees();
         }
 
-        this.getManagers();
         this.getLicenceTypes();
-        this.getSectors();
         this.licenseTypeSetOnChange();
     }
  
@@ -166,24 +167,11 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             });
     }
 
-    getManagers(){
-        this.getManagersSubscrip = this.licenseService.getAuthorizers().subscribe(data => {
-            this.managers = data;
-        });
-    }
-
     getLicenceTypes(){
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
             this.licensesTypesOptions = data;
             this.licensesTypes = data.optionsWithPayment;
             this.model.typeId = 0;
-        });
-    }
-
-    getSectors(){
-        this.getSectorsSubscrip = this.licenseService.getSectors().subscribe(data => {
-            this.sectors = data;
-            this.model.sectorId = 0;
         });
     }
 

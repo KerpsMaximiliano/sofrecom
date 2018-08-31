@@ -4,7 +4,9 @@ export class License {
     public id: number;
     public employeeId: string;
     public managerId: number;
+    public managerDesc: string;
     public sectorId: number;
+    public sectorDesc: string;
     public startDate: Date;
     public endDate: Date;
     public typeId: number;

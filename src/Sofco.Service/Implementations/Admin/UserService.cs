@@ -204,7 +204,7 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public Response<UserModel> GetByMail()
+        public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();
 
@@ -220,11 +220,24 @@ namespace Sofco.Service.Implementations.Admin
 
             var model = Translate(user);
 
-            var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+            var employee = unitOfWork.EmployeeRepository.GetUserInfo(email);
 
             model.EmployeeId = employee?.Id ?? 0;
-            model.ManagerId = employee?.ManagerId ?? 0;
             model.IsExternal = employee?.IsExternal ?? false;
+
+            if (employee?.Manager != null)
+            {
+                model.ManagerId = employee.ManagerId.GetValueOrDefault();
+                model.ManagerDesc = employee.Manager.Name;
+            }
+
+            var allocationFirst = employee?.Allocations.FirstOrDefault();
+
+            if (allocationFirst != null)
+            {
+                model.SectorId = allocationFirst.Analytic?.SectorId ?? 0;
+                model.SectorDesc = allocationFirst.Analytic?.Sector?.Text;
+            }
 
             response.Data = model;
 
