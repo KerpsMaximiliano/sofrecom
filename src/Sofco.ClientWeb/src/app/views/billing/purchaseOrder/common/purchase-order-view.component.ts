@@ -52,12 +52,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        const columns = [{
-            "className": 'details-control',
-            "orderable": false,
-            "data": null,
-            "defaultContent": ''
-        }, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const excelColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
@@ -65,7 +60,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
         const params = {
             selector: '#purchaseOrderTable',
-            columns: columns,
+            columns: excelColumns,
             title: title,
             withExport: true,
             customizeExcelExport: this.customizeExcelExport,
@@ -73,8 +68,8 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [
-                { "targets": [ 1,9,10,11 ], "visible": false, "searchable": false },
-                { "aTargets": [4], "sType": "date-uk"},
+                { "targets": [ 1,10,11 ], "visible": false, "searchable": false },
+                { "aTargets": [5], "sType": "date-uk"},
             ]
         }
 
@@ -173,8 +168,8 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         const self = this;
         const idPos = 1;
         const receptionDatePos = 3;
-        const ammountNumberPos1 = 5;
-        const balanceNumberPos2 = 6;
+        const ammountNumberPos = 6;
+        const balanceNumberPos = 7;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
@@ -184,9 +179,9 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
-            dataBodyItem[receptionDatePos] = item.receptionDate;
-            dataBodyItem[ammountNumberPos1] = item.ammount;
-            dataBodyItem[balanceNumberPos2] = item.balance;
+            dataBodyItem[receptionDatePos] = moment(item.receptionDate).format("YYYY-MM-DD");
+            dataBodyItem[ammountNumberPos] = item.ammount;
+            dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
             const details = item.details;
             if(details.length == 0) continue;
@@ -213,7 +208,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         return ['',
             d.analytic,
             d.description,
-            moment(d.updatedDate).format("DD/MM/YYYY"),
+            moment(d.updatedDate).format("YYYY-MM-DD"),
             this.i18nService.translateByKey(d.statusText),
             d.total];
     }
