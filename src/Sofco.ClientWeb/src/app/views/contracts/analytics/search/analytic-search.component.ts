@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router } from "@angular/router";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { I18nService } from "app/services/common/i18n.service";
-import { CustomerService } from "app/services/billing/customer.service";
-import { ServiceService } from "app/services/billing/service.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { I18nService } from "../../../../services/common/i18n.service";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { ServiceService } from "../../../../services/billing/service.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import * as FileSaver from "file-saver";
 declare var moment: any;
 
@@ -52,8 +51,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 public menuService: MenuService,
                 private messageService: MessageService,
-                private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){
+                private dataTableService: DataTableService){
     }
 
     ngOnInit(): void {
@@ -79,8 +77,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.analytics = this.mapAnalyticToSelect(data);
             this.loading = false;
             this.searchCriteriaChange();
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     ngOnDestroy(): void {
@@ -143,9 +140,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     getCustomers() {
         this.customerService.getAllOptions().subscribe(d => {
             this.customers = d.data;
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -168,7 +162,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -187,8 +180,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     getManagers() {
         this.suscription = this.employeeService.getManagers().subscribe(data => {
             this.managers = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     searchCriteriaChange() {
@@ -223,8 +215,7 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
             this.dataTableService.destroy(options.selector);
             this.dataTableService.initialize(options);
             this.storeSearchCriteria(searchCriteria);
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     storeSearchCriteria(searchCriteria) {
@@ -242,7 +233,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

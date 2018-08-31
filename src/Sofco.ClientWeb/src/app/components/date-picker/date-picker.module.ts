@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DatePickerComponent } from 'app/components/date-picker/date-picker.component';
+import { DatePickerComponent } from './date-picker.component';
 import { FormsModule } from '@angular/forms';
-import { DatepickerDirectiveModule } from 'app/components/date-picker/date-picker.directive';
+import { DatepickerDirectiveModule } from './date-picker.directive';
 
 @NgModule({
   imports: [

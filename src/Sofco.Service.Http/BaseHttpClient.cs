@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Sofco.Common.Domains;
+using Sofco.Service.Http.Extensions;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Http
@@ -23,7 +24,7 @@ namespace Sofco.Service.Http
             var request = new HttpRequestMessage
             {
                 Method = verb,
-                RequestUri = new Uri(urlPath)
+                RequestUri = new Uri(urlPath),
             };
 
             return request;
@@ -83,11 +84,16 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
-        public Result<T> Get<T>(string urlPath, string token = null)
+        public Result<T> Get<T>(string urlPath, string token = null, TimeSpan ? timeOut = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
 
-            if(!string.IsNullOrEmpty(token))
+            if (timeOut != null)
+            {
+                requestMessage.SetTimeout(TimeSpan.FromMinutes(5));
+            }
+
+            if (!string.IsNullOrEmpty(token))
             {
                 requestMessage.Headers.Add("Authorization", token);
             }

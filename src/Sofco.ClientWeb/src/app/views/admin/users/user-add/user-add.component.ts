@@ -1,8 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnDestroy } from '@angular/core';
-import { MessageService } from 'app/services/common/message.service';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { UserService } from 'app/services/admin/user.service';
+import { MessageService } from '../../../../services/common/message.service';
+import { UserService } from '../../../../services/admin/user.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,7 +10,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./user-add.component.scss']
 })
 export class UserAddComponent implements OnDestroy {
-
 
     public model: any = { userPrincipalName: "", name: "", userName: "" };
     public loading: boolean = false;
@@ -25,8 +23,7 @@ export class UserAddComponent implements OnDestroy {
 
     constructor(private service: UserService, 
                 private messageService: MessageService,
-                private router: Router,
-                private errorHandlerService: ErrorHandlerService) { }
+                private router: Router) { }
 
     ngOnDestroy(): void {
         if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
@@ -45,14 +42,11 @@ export class UserAddComponent implements OnDestroy {
         this.saveSubscrip = this.service.save(json).subscribe(
             response => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
 
                 setTimeout(() => {
                     this.router.navigate(['/admin/users']);
                 }, 500)
-            },
-            error => this.errorHandlerService.handleErrors(error)
-        )
+            })
     }
  
     back(){
@@ -81,10 +75,7 @@ export class UserAddComponent implements OnDestroy {
                     this.messageService.showError("ADMIN.USERS.userNotFoundInAd");
                 }
             },
-            error => {
-                this.loading = false;
-                this.errorHandlerService.handleErrors(error)
-            }
+            error => this.loading = false
         )
     }
 
@@ -100,10 +91,6 @@ export class UserAddComponent implements OnDestroy {
 
                 this.model = response.data;
             },
-            error => {
-                this.loading = false;
-                this.errorHandlerService.handleErrors(error)
-            }
-        )
+            error => this.loading = false)
     }
 }

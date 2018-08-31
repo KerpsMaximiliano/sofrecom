@@ -1,9 +1,6 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ProjectService } from "app/services/billing/project.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MessageService } from 'app/services/common/message.service';
+import { ProjectService } from "../../../../../services/billing/project.service";
 
 @Component({
   selector: 'hitos-by-project',
@@ -23,11 +20,7 @@ export class HitosByProjectComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
 
     constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private messageService: MessageService,
-        private projectService: ProjectService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private projectService: ProjectService) { }
 
     ngOnInit() {
         this.id = "hito" + this.index;
@@ -47,10 +40,9 @@ export class HitosByProjectComponent implements OnInit, OnDestroy {
 
             this.loading = false;
         },
-        err => {
-            this.loading = false;
-            this.errorHandlerService.handleErrors(err);
-        });        
+        () => {
+                this.loading = false;
+            });        
     }
 
     ngOnDestroy(){

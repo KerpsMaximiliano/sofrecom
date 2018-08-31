@@ -184,6 +184,19 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.SaveChanges();
         }
 
+        public IList<Employee> GetByAnalyticWithWorkTimes(int analyticId)
+        {
+            var ids = context.Allocations.Where(x => x.AnalyticId == analyticId && x.Percentage > 0)
+                .Select(x => x.Employee.Id)
+                .Distinct()
+                .ToList();
+
+            return context.Employees
+                .Include(x => x.WorkTimes)
+                .Include(x => x.Licenses)
+                .Where(x => ids.Contains(x.Id)).ToList();
+        }
+
         public void Update(List<Employee> employees)
         {
             var storedItems = GetByEmployeeNumber(employees.Select(s => s.EmployeeNumber).ToArray());

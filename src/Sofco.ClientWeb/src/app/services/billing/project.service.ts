@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Service } from 'app/services/common/service';
+import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -53,5 +53,9 @@ export class ProjectService {
 
   getIfIsRelated(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/services/${serviceId}/analytic`);
+  }
+
+  update() {
+    return this.http.put<any>(`${this.baseUrl}/projects`, {});
   }
 }

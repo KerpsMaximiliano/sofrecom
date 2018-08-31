@@ -24,7 +24,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.mapper = mapper;
         }
 
-
         public Response<List<Holiday>> Get(int year)
         {
             var response = new Response<List<Holiday>> {Data = repository.Get(year)};

@@ -16,12 +16,9 @@
 </div>
  
 <div class="wrapper wrapper-content animated fadeInRight">
+    <button class="btn btn-sm btn-success btn-outline dim pull-right" (click)="updateEmployee()"> {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i></button>
+
     <div class="ibox">
-        <div class="ibox-title">
-            <div class="ibox-tools">
-                <button class="btn btn-sm btn-success btn-outline dim" (click)="updateEmployee()"> {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i></button>
-            </div>
-        </div>
         <div class="ibox-content">
 
             <table class="table table-striped dataTable" role="grid" id="newsTable">

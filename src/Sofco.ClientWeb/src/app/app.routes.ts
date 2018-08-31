@@ -3,11 +3,11 @@ import { AuthGuard } from './guards/auth.guard';
 import { Routes, RouterModule } from "@angular/router";
 import { BlankLayoutComponent } from "./components/common/layouts/blankLayout.component";
 import { BasicLayoutComponent } from "./components/common/layouts/basicLayout.component";
-import { ForbiddenComponent } from "app/views/appviews/errors/403/forbidden.component";
-import { StarterViewComponent } from "app/views/appviews/home/starterview.component";
-import { LoginComponent } from "app/views/appviews/login/login.component";
+import { ForbiddenComponent } from "./views/appviews/errors/403/forbidden.component";
+import { StarterViewComponent } from "./views/appviews/home/starterview.component";
+import { LoginComponent } from "./views/appviews/login/login.component";
 import { ModuleWithProviders } from '@angular/core';
-import { PdfComponent } from 'app/views/appviews/pdf/pdf.component';
+import { PdfComponent } from './views/appviews/pdf/pdf.component';
 
 export const ROUTES:Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full', canActivate: [AuthGuard] },

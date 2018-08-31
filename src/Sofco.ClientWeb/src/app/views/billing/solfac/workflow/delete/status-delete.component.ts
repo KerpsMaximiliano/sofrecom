@@ -1,10 +1,8 @@
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MessageService } from 'app/services/common/message.service';
+import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,8 +31,6 @@ export class StatusDeleteComponent implements OnDestroy  {
   subscrip: Subscription;
 
   constructor(private solfacService: SolfacService,
-    private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
 
@@ -53,17 +49,14 @@ export class StatusDeleteComponent implements OnDestroy  {
   }
 
   delete(){
-    this.solfacService.delete(this.solfacId).subscribe(data => {
-        this.deleteModal.hide();
-        if(data.messages) this.messageService.showMessages(data.messages);
-
-        setTimeout(() => { 
-        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${this.projectId}`]); 
-        }, 500)
+    this.solfacService.delete(this.solfacId).subscribe(() => {
+      this.deleteModal.hide();
+      setTimeout(() => {
+        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/${this.projectId}`]);
+      }, 500);
     },
-    err => {
+    () => {
         this.deleteModal.hide();
-        this.errorHandlerService.handleErrors(err);
-    });
+      });
   }
 }

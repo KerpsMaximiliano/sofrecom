@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { MessageService } from "app/services/common/message.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { AppSetting } from 'app/services/common/app-setting'
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { ActivatedRoute } from "@angular/router";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
+import { AppSetting } from '../../../../services/common/app-setting'
 
 declare var $:any;
 
@@ -37,13 +34,9 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     pmoUser: boolean;
   
     constructor(private analyticService: AnalyticService,
-        private router: Router,
         private menuService: MenuService,
-        private allocationsService: AllocationService,
-        private messageService: MessageService,
         private activatedRoute: ActivatedRoute,
         private employeeService: EmployeeService,
-        private errorHandlerService: ErrorHandlerService,
         private appSetting: AppSetting){}
 
     ngOnDestroy(): void {
@@ -54,7 +47,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.monthQuantity = this.appSetting.AllocationManagement_Months;
-        this.pmoUser = this.menuService.hasFunctionality('ALLOC', 'QARDD');
+        this.pmoUser = this.menuService.hasFunctionality('CONTR', 'QARDD');
         var resource = JSON.parse(sessionStorage.getItem("resource"));
         
         if(resource){
@@ -68,15 +61,13 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
 
                 this.getByIdSubscrip = this.employeeService.getById(params['id']).subscribe(data => {
                     this.resource = data.data;
-                },
-                error => this.errorHandlerService.handleErrors(error));
+                });
             });
         }
 
         this.getAllSubscrip = this.analyticService.getOptions().subscribe(data => {
             this.analytics = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     add(){

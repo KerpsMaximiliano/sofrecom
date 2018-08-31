@@ -1,14 +1,14 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Option } from "app/models/option";
-import { CustomerService } from "app/services/billing/customer.service";
+import { ErrorHandlerService } from "../../../../services/common/errorHandler.service";
+import { Option } from "../../../../models/option";
+import { CustomerService } from "../../../../services/billing/customer.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from "app/services/common/message.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MessageService } from "../../../../services/common/message.service";
 import * as FileSaver from "file-saver";
-import { CertificatesService } from 'app/services/billing/certificates.service';
+import { CertificatesService } from '../../../../services/billing/certificates.service';
 declare var $: any;
 declare var moment: any;
 
@@ -85,7 +85,6 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
 
                 this.data = response.data;
                 sessionStorage.setItem('lastCertificateQuery', JSON.stringify(parameters));

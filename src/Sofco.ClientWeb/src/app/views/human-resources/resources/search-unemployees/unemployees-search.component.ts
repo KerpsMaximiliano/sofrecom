@@ -1,11 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { ErrorHandlerService } from "../../../../services/common/errorHandler.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { MessageService } from "../../../../services/common/message.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -44,8 +42,7 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     constructor(
         private messageService: MessageService,
         private employeeService: EmployeeService,
-        private dataTableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService){}
+        private dataTableService: DataTableService){}
 
     ngOnInit(): void {
         var data = JSON.parse(sessionStorage.getItem('lastUnemployeeQuery'));
@@ -74,7 +71,6 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error)
         });
     }
 

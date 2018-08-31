@@ -18,6 +18,7 @@ using Sofco.Core.Mail;
 using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
+using Sofco.Domain;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Domain.Utils;
@@ -87,10 +88,40 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response<List<Option>> GetByCurrentUser()
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
+            var userId = userData.GetCurrentUser().Id;
 
-            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId).Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
-            return new Response<List<Option>> { Data = result };
+            var now = DateTime.Now.Date;
+            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
+
+            DateTime dateFrom;
+            DateTime dateTo;
+
+            if (now.Day > closeMonthValue)
+            {
+                dateFrom = new DateTime(now.Year, now.Month, 1);
+                dateTo = new DateTime(now.Year, now.Month + 1, 1);
+            }
+            else
+            {
+                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
+                dateTo = new DateTime(now.Year, now.Month, 1);
+            }
+
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, dateFrom.Date, dateTo.Date).ToList();
+
+            var response = new Response<List<Option>> { Data = new List<Option>() };
+
+            foreach (var analytic in result)
+            {
+                if (response.Data.All(x => x.Id != analytic.Id))
+                {
+                    response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                }
+            }
+
+            return response;
         }
 
         public Response<List<Option>> GetByCurrentManager()

@@ -1,4 +1,4 @@
-import { Module } from "app/models/admin/module";
+import { Module } from "./module";
 
 export class Functionality {
     constructor(

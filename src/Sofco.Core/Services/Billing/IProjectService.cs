@@ -21,5 +21,7 @@ namespace Sofco.Core.Services.Billing
         Response<IList<OpportunityOption>> GetOpportunities(string serviceId);
 
         IList<PurchaseOrderWidgetModel> GetPurchaseOrders(string projectId);
+
+        Response Update();
     }
 }

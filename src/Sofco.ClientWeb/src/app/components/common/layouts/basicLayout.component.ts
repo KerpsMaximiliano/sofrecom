@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { detectBody } from '../../../app.helpers';
 // import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { AuthenticationService } from 'app/services/common/authentication.service';
+import { AuthenticationService } from '../../../services/common/authentication.service';
 import { Router } from '@angular/router';
 
 declare var jQuery:any;

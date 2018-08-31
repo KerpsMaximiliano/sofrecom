@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { SolfacService } from "app/services/billing/solfac.service";
+import { SolfacService } from "../../../../services/billing/solfac.service";
 import { Router, ActivatedRoute } from '@angular/router';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
 import * as FileSaver from "file-saver";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { MessageService } from "app/services/common/message.service";
-import { Option } from 'app/models/option';
+import { InvoiceService } from "../../../../services/billing/invoice.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { Option } from '../../../../models/option';
 
 @Component({
   selector: 'app-solfac-detail',
@@ -34,7 +33,6 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private invoiceService: InvoiceService,
                 private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService,
                 private router: Router) { }
 
     ngOnInit() {
@@ -55,8 +53,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     getOptions() {
         this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId).subscribe(data => {
           this.purchaseOrders = data.purchaseOrders;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getSolfac(){
@@ -75,7 +72,6 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -98,15 +94,13 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     exportPdf(invoice){
         this.invoiceService.exportPdfFile(invoice.pdfFileId).subscribe(file => {
             FileSaver.saveAs(file, invoice.pdfFileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getInvoices(){
         this.solfacService.getInvoices(this.solfacId).subscribe(data => {
             this.invoicesRelated = data;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     updateStatus(event){
@@ -124,8 +118,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(invoice.pdfFileName.endsWith('.pdf')){
             this.invoiceService.getPdfFile(invoice.pdfFileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -133,8 +126,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(file.name.endsWith('.pdf')){
             this.solfacService.getFile(file.id).subscribe(response => {
                 this.pdfViewer.renderFile(response);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 }

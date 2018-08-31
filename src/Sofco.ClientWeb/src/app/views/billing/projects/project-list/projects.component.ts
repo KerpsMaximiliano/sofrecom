@@ -1,10 +1,9 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ProjectService } from "app/services/billing/project.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from 'app/services/admin/menu.service';
+import { ProjectService } from "../../../../services/billing/project.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from '../../../../services/admin/menu.service';
 import { MessageService } from '../../../../services/common/message.service';
 
 @Component({
@@ -16,6 +15,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     projects: any[] = new Array();
     getAllSubscrip: Subscription;
     paramsSubscrip: Subscription;
+    updateSubscrip: Subscription;
     customerId: string;
     serviceId: string;
     serviceName: string;
@@ -29,8 +29,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         private service: ProjectService,
         public menuService: MenuService,
         private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private datatableService: DataTableService) { }
 
     ngOnInit() {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -48,13 +47,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
       if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
       if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+      if(this.updateSubscrip) this.updateSubscrip.unsubscribe();
     }
 
     getIfIsRelated(){
       this.getAllSubscrip = this.service.getIfIsRelated(this.serviceId).subscribe(response => {
         this.analytic = response;
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
     }
 
     getAll(){
@@ -70,7 +69,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       err => {
         this.initGrid();
         this.messageService.closeLoading();
-        this.errorHandlerService.handleErrors(err)
       });
     }
 
@@ -80,6 +78,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
 
+      this.datatableService.destroy(params.selector);
       this.datatableService.initialize(params);
     }
 
@@ -131,5 +130,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   
     goToPurchaseOrders(){
       this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/purchaseOrders`]);
+    }
+    
+    update(){
+      this.messageService.showLoading();
+
+      this.updateSubscrip = this.service.update().subscribe(data => {
+        this.messageService.closeLoading();
+        this.getAll();
+      });
     }
 }

@@ -1,5 +1,5 @@
 import { OnInit, ElementRef, NgModule, Directive } from '@angular/core';
-import { Select2Component } from 'app/components/select2/select2.component';
+import { Select2Component } from './select2.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';

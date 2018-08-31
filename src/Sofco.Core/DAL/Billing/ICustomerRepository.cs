@@ -9,5 +9,6 @@ namespace Sofco.Core.DAL.Billing
         Customer GetByIdCrm(string crmCustomerId);
         IList<Customer> GetAllByServices(IEnumerable<string> servicesIds);
         IList<Customer> GetAllActives();
+        void UpdateInactives(IList<int> idsAdded);
     }
 }

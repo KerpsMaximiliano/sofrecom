@@ -1,17 +1,15 @@
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Option } from "app/models/option";
-import { CustomerService } from "app/services/billing/customer.service";
-import { ServiceService } from "app/services/billing/service.service";
-import { ProjectService } from "app/services/billing/project.service";
-import { UserService } from "app/services/admin/user.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from "app/services/common/message.service";
-import { SolfacStatus } from 'app/models/enums/solfacStatus';
-import { MenuService } from 'app/services/admin/menu.service';
+import { SolfacService } from "../../../../services/billing/solfac.service";
+import { Option } from "../../../../models/option";
+import { CustomerService } from "../../../../services/billing/customer.service";
+import { ServiceService } from "../../../../services/billing/service.service";
+import { ProjectService } from "../../../../services/billing/project.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { SolfacStatus } from '../../../../models/enums/solfacStatus';
+import { MenuService } from '../../../../services/admin/menu.service';
 import { EmployeeService } from '../../../../services/allocation-management/employee.service';
 
 declare var moment: any;
@@ -50,8 +48,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private serviceService: ServiceService,
         private projectService: ProjectService,
         private menuService: MenuService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) {}
+        private datatableService: DataTableService) {}
 
     ngOnInit() {
         this.getCustomers();
@@ -114,15 +111,13 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     getUserOptions() {
         this.employeeService.getManagers().subscribe(d => {
           this.userApplicants = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getStatuses() {
         this.service.getStatus().subscribe(d => {
           this.statuses = d;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     getCustomers() {
@@ -132,10 +127,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.customers = d.data;
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     customerChange(){
@@ -147,8 +141,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         if(this.customerId != "0"){
             this.serviceService.getOptions(this.customerId).subscribe(d => {
                 this.services = d.data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -159,8 +152,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         if(this.serviceId != "0"){
             this.projectService.getOptions(this.serviceId).subscribe(d => {
                 this.projects = d.data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -205,18 +197,13 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
                 this.data = [];
 
-                if (response.messages) {
-                    this.messageService.showMessages(response.messages);
-                } else {
+                if (!response.messages) {
                     this.data = response;
                     sessionStorage.setItem('lastSolfacQuery', JSON.stringify(parameters));
                 }
 
                 this.initGrid();
             }, 500);
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 

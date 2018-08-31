@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
-import { I18nService } from 'app/services/common/i18n.service';
+import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { I18nService } from '../../../../../services/common/i18n.service';
 
 @Component({
   selector: 'status-sendToCdg',
@@ -38,10 +35,8 @@ export class StatusSendToCdgComponent implements OnDestroy  {
   message: string;
 
   constructor(private solfacService: SolfacService,
-    private messageService: MessageService,
     private menuService: MenuService,
-    private i18nService: I18nService,
-    private errorHandlerService: ErrorHandlerService) { }
+    private i18nService: I18nService) { }
 
 
   ngOnDestroy(): void {
@@ -78,33 +73,26 @@ export class StatusSendToCdgComponent implements OnDestroy  {
     }
 
     this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
-        data => {
+        () => {
             this.sendToCdgModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
-
-            if(this.history.observers.length > 0){
+            if (this.history.observers.length > 0) {
                 this.history.emit();
             }
-        
-            if(this.updateStatus.observers.length > 0){
+            if (this.updateStatus.observers.length > 0) {
                 var toModif = {
                     statusName: SolfacStatus[SolfacStatus.PendingByManagementControl]
-                }
-
+                };
                 this.updateStatus.emit(toModif);
             }
-
-            if(this.back.observers.length > 0){
+            if (this.back.observers.length > 0) {
                 var self = this;
-
-                setTimeout(function() {
+                setTimeout(function () {
                     self.back.emit();
                 }, 500);
             }
         },
-        error => {
+        () => {
             this.sendToCdgModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 }

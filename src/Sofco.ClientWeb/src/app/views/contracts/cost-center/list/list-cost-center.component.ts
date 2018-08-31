@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router } from "@angular/router";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { CostCenterService } from "app/services/allocation-management/cost-center.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { CostCenterService } from "../../../../services/allocation-management/cost-center.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 declare var moment: any;
 
@@ -41,8 +40,7 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
                 private router: Router,
                 public menuService: MenuService,
                 private messageService: MessageService,
-                private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){
+                private dataTableService: DataTableService){
     }
 
     ngOnInit(): void {
@@ -55,7 +53,6 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -85,13 +82,11 @@ export class ListCostCenterComponent implements OnInit, OnDestroy {
     confirm(){
         this.costCenterService.changeStatus(this.costCenterSelected.id, !this.costCenterSelected.active).subscribe(data => {
             this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
             this.costCenterSelected.active = !this.costCenterSelected.active;
             this.filterActives(this.actives);
         },
         error => {
             this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 

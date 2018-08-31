@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { TaskService } from "app/services/admin/task.service";
+import { TaskService } from "../../../../services/admin/task.service";
 import { CategoryService } from "../../../../services/admin/category.service";
 
 @Component({
@@ -27,8 +26,7 @@ import { CategoryService } from "../../../../services/admin/category.service";
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private taskService: TaskService,
-                private categoryService: CategoryService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private categoryService: CategoryService) { }
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -40,10 +38,7 @@ import { CategoryService } from "../../../../services/admin/category.service";
             this.messageService.closeLoading();
             this.categories = response;
         }, 
-        error => {
-            this.errorHandlerService.handleErrors(error);
-            this.messageService.closeLoading();
-        });
+        error => this.messageService.closeLoading());
     }
 
     ngOnDestroy(): void {
@@ -61,10 +56,7 @@ import { CategoryService } from "../../../../services/admin/category.service";
             this.description = response.data.description;
             this.categoryId = response.data.categoryId;
         }, 
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);   
-        });
+        error => this.messageService.closeLoading());
     }
 
     goBack(){
@@ -76,13 +68,8 @@ import { CategoryService } from "../../../../services/admin/category.service";
 
         this.editSubscript = this.taskService.edit({ id: this.id, description: this.description, categoryId: this.categoryId }).subscribe(response => {
             this.messageService.closeLoading();
-
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.router.navigate(["/admin/tasks"]);    
         }, 
-        error => { 
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
-        });
+        error => this.messageService.closeLoading());
     }
   }

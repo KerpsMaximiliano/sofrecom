@@ -8,5 +8,6 @@ namespace Sofco.Core.DAL.Billing
     {
         Project GetByIdCrm(string crmProjectId);
         IList<Project> GetAllActives(string serviceId);
+        void UpdateInactives(IList<int> idsAdded);
     }
 }

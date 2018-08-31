@@ -1,12 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
-import { ProjectService } from 'app/services/billing/project.service';
-import { NewHito } from 'app/models/billing/solfac/newHito';
+import { ProjectService } from '../../../services/billing/project.service';
+import { NewHito } from '../../../models/billing/solfac/newHito';
 
 @Component({
   selector: 'split-hito',
@@ -31,9 +27,7 @@ export class SplitHitoComponent implements OnDestroy  {
   public hito: NewHito = new NewHito();
   public hitoSelected: any;
 
-  constructor(private messageService: MessageService,
-    private projectService: ProjectService,
-    private errorHandlerService: ErrorHandlerService) {}
+  constructor(private projectService: ProjectService) {}
 
   ngOnDestroy(): void {
     if(this.subscrip) this.subscrip.unsubscribe();
@@ -66,16 +60,11 @@ export class SplitHitoComponent implements OnDestroy  {
     this.hito.moneyId = this.hitoSelected.moneyId;
     this.hito.ammountFirstHito = this.hitoSelected.ammount;
 
-    this.subscrip = this.projectService.spltHito(this.hito).subscribe(data => {
-        if(data.messages) this.messageService.showMessages(data.messages);
-        this.spliHitoModal.hide();
-
-        if(this.hitosReload.observers.length > 0){
-          this.hitosReload.emit();
-        }
-    },
-    err =>  {
-        this.errorHandlerService.handleErrors(err)
+    this.subscrip = this.projectService.spltHito(this.hito).subscribe(() => {
+      this.spliHitoModal.hide();
+      if (this.hitosReload.observers.length > 0) {
+        this.hitosReload.emit();
+      }
     });
   }
 }

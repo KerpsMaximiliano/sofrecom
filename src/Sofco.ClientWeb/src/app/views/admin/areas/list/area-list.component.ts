@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { MessageService } from "app/services/common/message.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Router } from "@angular/router";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from "app/services/admin/menu.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
 import { AreaService } from "../../../../services/admin/area.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 declare var moment: any;
 
 @Component({
@@ -36,8 +35,7 @@ declare var moment: any;
                 private router: Router,
                 public menuService: MenuService,
                 private dataTableService: DataTableService,
-                private areaService: AreaService,
-                private errorHandlerService: ErrorHandlerService) { }
+                private areaService: AreaService) { }
 
     ngOnInit(): void {
         this.getAll();
@@ -57,10 +55,7 @@ declare var moment: any;
             this.areas = response.data;
             this.initGrid();
         }, 
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);   
-        });
+        error => this.messageService.closeLoading());
     }
 
     goToDetail(area){
@@ -84,30 +79,24 @@ declare var moment: any;
     deactivate(){
         this.deactivateSubscrip = this.areaService.active(this.areaSelected.id, false).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.areaSelected.active = false;
                 this.areaSelected.endDate = moment.now();
 
                 this.areaSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err),
-            () => this.confirmModal.hide());
+            err => this.confirmModal.hide());
     }
   
     activate(){
         this.activateSubscrip = this.areaService.active(this.areaSelected.id, true).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.areaSelected.active = true;
                 this.areaSelected.endDate = null;
                 this.areaSelected.startDate = moment.now();
 
                 this.areaSelected = null;
             },
-            err => this.errorHandlerService.handleErrors(err),
-            () => this.confirmModal.hide());
+            err => this.confirmModal.hide());
     }
 
     initGrid(){

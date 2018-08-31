@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { SolfacService } from "app/services/billing/solfac.service";
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
+import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
+import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from 'app/services/common/message.service';
-import { Router } from '@angular/router';
+import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
+import { MenuService } from "../../../../../services/admin/menu.service";
+import { MessageService } from '../../../../../services/common/message.service';
 
 @Component({
   selector: 'status-reject-daf',
@@ -36,8 +34,7 @@ export class StatusRejectDafComponent implements OnDestroy  {
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
-        private menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private menuService: MenuService) { }
 
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
@@ -65,25 +62,20 @@ export class StatusRejectDafComponent implements OnDestroy  {
         }
 
         this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
-            data => {
+            () => {
                 this.rejectByDafModal.hide();
-                if(data.messages) this.messageService.showMessages(data.messages);
-                
-                if(this.history.observers.length > 0){
+                if (this.history.observers.length > 0) {
                     this.history.emit();
                 }
-            
-                if(this.updateStatus.observers.length > 0){
+                if (this.updateStatus.observers.length > 0) {
                     var toModif = {
                         statusName: SolfacStatus[SolfacStatus.RejectedByDaf]
-                    }
-    
+                    };
                     this.updateStatus.emit(toModif);
                 }
             },
-            error => {
+            () => {
                 this.rejectByDafModal.resetButtons();
-                this.errorHandlerService.handleErrors(error);
             });
     }
 }

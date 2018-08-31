@@ -1,14 +1,13 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ProjectService } from "app/services/billing/project.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { DataTableService } from "app/services/common/datatable.service";
-import { SolfacStatus } from 'app/models/enums/solfacStatus';
-import { MessageService } from 'app/services/common/message.service';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
-import { Configuration } from 'app/services/common/configuration';
+import { ProjectService } from "../../../../services/billing/project.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { SolfacStatus } from '../../../../models/enums/solfacStatus';
+import { MessageService } from '../../../../services/common/message.service';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
+import { Configuration } from '../../../../services/common/configuration';
 import { ServiceService } from '../../../../services/billing/service.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
 import { InvoiceStatus } from '../../../../models/enums/invoiceStatus';
@@ -90,7 +89,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         public menuService: MenuService,
         private serviceService: ServiceService,
-        private errorHandlerService: ErrorHandlerService,
         private config: Configuration) {}
  
     ngOnInit() {
@@ -149,8 +147,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.service.serviceType = response.data.serviceType;
             this.service.solutionType = response.data.solutionType;
             this.service.technologyType = response.data.technologyType;
-          },
-          err => this.errorHandlerService.handleErrors(err));
+          });
         }
     }
 
@@ -181,7 +178,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         },
         err => {
             this.loading = false;
-            this.errorHandlerService.handleErrors(err);
         });
     }
  
@@ -193,6 +189,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return `label-${hito.status}`
     }
 
+    resolveHitoCheckClass(hito){
+        if(hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0){
+            return 'pending-related';
+        }
+        
+        return `${hito.status}`
+    }
+
     getHitos(){
         this.getHitosSubscrip = this.projectService.getHitos(this.projectId).subscribe(d => {
             this.hitos = d.map(item => {
@@ -201,8 +205,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             });
 
             this.initHitosGrid();
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     initHitosGrid(){
@@ -220,8 +223,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.invoices = d;
 
             this.initInvoicesGrid();
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     initInvoicesGrid(){
@@ -238,14 +240,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.solfacs = d;
 
             this.initSolfacGrid();
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     initSolfacGrid(){
         var params = {
           selector: '#solfacTable',
-          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+          columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
         this.datatableService.initialize(params);
@@ -406,14 +407,12 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         var hito = this.getHitosSelected()[0];
     
         this.projectService.closeHito(hito.id).subscribe(data => {
-            if(data.messages) this.messageService.showMessages(data.messages);
             hito.status = "Cerrado";
             hito.statusCode = this.config.crmCloseStatusCode;
             this.closeHitoModal.hide();
         },
         err => {
             this.closeHitoModal.hide();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -534,7 +533,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
         this.invoiceService.askForAnnulment(json).subscribe(data => {
             this.invoiceAnnulmentModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
 
             this.invoices.forEach(item => {
                 if(invoicesIds.includes(item.id)){
@@ -544,7 +542,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         },
         err => {
             this.invoiceAnnulmentModal.hide();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

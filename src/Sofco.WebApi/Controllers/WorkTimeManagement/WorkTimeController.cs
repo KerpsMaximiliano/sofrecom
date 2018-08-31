@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.WorkTimeManagement
@@ -129,6 +131,33 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             var response = workTimeService.Delete(id);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("import/{analyticId}")]
+        public IActionResult Import(int analyticId)
+        {
+            var response = new Response<IList<WorkTimeImportResult>>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                workTimeService.Import(analyticId, file, response);
+            }
+            else
+            {
+                response.AddError(Resources.Common.FileMustBeIncluded);
+            }
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("export/template")]
+        public IActionResult ExportTemplate()
+        {
+            var file = workTimeService.ExportTemplate();
+
+            return File(file, "application/octet-stream", string.Empty);
         }
     }
 }

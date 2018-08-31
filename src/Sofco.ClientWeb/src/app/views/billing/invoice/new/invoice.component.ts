@@ -1,18 +1,18 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Subscription } from "rxjs";
-import { Invoice } from "app/models/billing/invoice/invoice";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { MessageService } from "app/services/common/message.service";
+import { Invoice } from "../../../../models/billing/invoice/invoice";
+import { InvoiceService } from "../../../../services/billing/invoice.service";
+import { MessageService } from "../../../../services/common/message.service";
 import * as FileSaver from "file-saver";
 import { FileUploader } from 'ng2-file-upload';
-import { MenuService } from "app/services/admin/menu.service";
-import { InvoiceStatus } from "app/models/enums/invoiceStatus";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { CustomerService } from 'app/services/billing/customer.service';
-import { SolfacAccountControlComponent } from 'app/views/billing/solfac/solfac-account-control/solfac-account-control.component';
+import { MenuService } from "../../../../services/admin/menu.service";
+import { InvoiceStatus } from "../../../../models/enums/invoiceStatus";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { CustomerService } from '../../../../services/billing/customer.service';
+import { SolfacAccountControlComponent } from '../../solfac/solfac-account-control/solfac-account-control.component';
+import { AuthService } from '../../../../services/common/auth.service';
 declare var $: any;
 
 @Component({
@@ -48,10 +48,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private service: InvoiceService,
+                private authService: AuthService,
                 public menuService: MenuService,
                 private customerService: CustomerService,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService) {}
+                private messageService: MessageService) {}
 
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -83,8 +83,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.model.cuit = data.cuit;
 
                 sessionStorage.setItem("customer", JSON.stringify(data));
-              },
-              err => this.errorHandlerService.handleErrors(err));
+              });
         }
 
         this.model.project = this.project.name;
@@ -106,16 +105,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.service.add(this.model).subscribe(data => {
                 this.messageService.closeLoading();
 
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.configUploader(data.data.id);
 
                 this.model.id = data.data.id;
             },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            err => this.messageService.closeLoading());
     }
  
     cancel(){
@@ -129,10 +123,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => this.messageService.closeLoading());
     }
 
     sendCallback(event){
@@ -149,15 +140,31 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 maxFileSize: 10*1024*1024
             }
         );
+
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.configUploader(this.model.id);
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
             if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
-
+            
             this.excelUploaded = true;
-            // this.messageService.succes("billing.invoice.excelAddedSucces");
             this.model.excelFileName = dataJson.data.fileName;
             this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
             this.model.excelFileId = dataJson.data.id;
@@ -168,11 +175,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.service.delete(this.model.id).subscribe(data => {
             this.confirmModal.hide();
 
-            if(data.messages) this.messageService.showMessages(data.messages);
-
             setTimeout(() => { this.cancel(); }, 1500)
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     canDelete(){

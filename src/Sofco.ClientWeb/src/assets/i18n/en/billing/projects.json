@@ -8,5 +8,6 @@
 	"hitoSplittedRequired": "Before saving must divide the milestone",
 	"nameRequired": "The name is required",
 	"monthRequired": "The month is required",
-	"hitoCreated": "Milestone was created correctly, CRM was updated correctly"
+	"hitoCreated": "Milestone was created correctly, CRM was updated correctly",
+	"dateRequired": "The date is required"
 }

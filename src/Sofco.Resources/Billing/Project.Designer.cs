@@ -71,6 +71,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/projects.dateRequired.
+        /// </summary>
+        public static string DateRequired {
+            get {
+                return ResourceManager.GetString("DateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/projects.hitoAmmoutRequired.
         /// </summary>
         public static string HitoAmmoutRequired {

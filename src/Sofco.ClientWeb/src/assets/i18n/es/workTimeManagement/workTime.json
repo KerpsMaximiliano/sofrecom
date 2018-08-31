@@ -26,8 +26,18 @@
     "yearAndMonthRequired": "Mes y Año son requeridos",
     "rejectedWithSomeErrors": "Algunas horas fueron rechazadas correctamente y algunas contenian algun error",
     "deleteSuccess": "La hora cargada fue eliminada correctamente",
-    "cannotDelete": "Solo se puede eliminar la hora en estado borrador o rechazada",
+    "cannotDelete": "No se pueden eliminar horas correspondientes a un periodo cerrado",
     "datesRequired": "Las fechas son requeridas",
     "dateIsWeekend": "No se pueden cargar horas un fin de semana",
-    "dateIsHoliday": "No se pueden cargar horas un dia feriado"
-}
+    "dateIsHoliday": "No se pueden cargar horas un dia feriado",
+    "importEmployeeIsNotInAnalytic": "El recurso no pertenece a la analitica",
+    "importDateNull": "La fecha esta vacia o esta en un formato incorrecto",
+    "importDateWrong": "La fecha no puede ser un fin de semana ni un dia feriado",
+    "importHoursExceed": "Se ha excedido en las horas que se pueden cargar por dia",
+    "importTaskNoExist": "La tarea no existe",
+    "importHoursNull": "Las horas son requeridas",
+    "importDatesOutOfRange": "La fecha no corresponde al periodo en curso",
+    "importEmployeeWithLicense": "Recurso con licencia cargada",
+    "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
+    "fileEmpty": "El archivo importado no contiene registros"
+} 

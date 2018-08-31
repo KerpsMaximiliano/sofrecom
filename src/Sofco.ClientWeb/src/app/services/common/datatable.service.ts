@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Configuration } from 'app/services/common/configuration';
+import { Configuration } from './configuration';
 declare var $: any;
 
 @Injectable()
@@ -31,6 +31,10 @@ export class DataTableService {
 
                 if(params.columnDefs){
                     options.aoColumnDefs = params.columnDefs;
+                }
+
+                if(params.withOutSorting){
+                    options.bSort = false;
                 }
 
                 if(params.order){

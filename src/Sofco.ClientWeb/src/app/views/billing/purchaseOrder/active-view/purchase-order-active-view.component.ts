@@ -1,10 +1,9 @@
 import { Router } from '@angular/router';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MessageService } from "app/services/common/message.service";
-import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
-import { MenuService } from 'app/services/admin/menu.service';
+import { MessageService } from "../../../../services/common/message.service";
+import { PurchaseOrderService } from '../../../../services/billing/purchaseOrder.service';
+import { MenuService } from '../../../../services/admin/menu.service';
 import { PurchaseOrderViewComponent } from '../common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from '../common/purchase-order-view-filter.component';
 
@@ -23,8 +22,7 @@ export class PurchaseOrderActiveViewComponent implements OnDestroy {
         private router: Router,
         private messageService: MessageService,
         private purchaseOrderService: PurchaseOrderService,
-        public menuService: MenuService,
-        private errorHandlerService: ErrorHandlerService) {}
+        public menuService: MenuService) {}
 
     ngOnDestroy(){
       if(this.suscription) this.suscription.unsubscribe();
@@ -46,7 +44,6 @@ export class PurchaseOrderActiveViewComponent implements OnDestroy {
         },
         err => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

@@ -1,10 +1,8 @@
 import { Router} from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { CustomerService } from "app/services/billing/customer.service";
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { DataTableService } from "app/services/common/datatable.service";
+import { CustomerService } from "../../../services/billing/customer.service";
+import { DataTableService } from "../../../services/common/datatable.service";
 import { MessageService } from '../../../services/common/message.service';
 
 @Component({
@@ -14,6 +12,7 @@ import { MessageService } from '../../../services/common/message.service';
 export class CustomersComponent implements OnInit, OnDestroy {
 
     getAllSubscrip: Subscription;
+    updateSubscrip: Subscription;
     customers: any[];
     public loading = true;
 
@@ -21,8 +20,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: CustomerService,
         private messageService: MessageService,
-        private datatableService: DataTableService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private datatableService: DataTableService) { }
 
     ngOnInit() {
       this.getAll();
@@ -30,6 +28,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
       if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if (this.updateSubscrip) this.updateSubscrip.unsubscribe();
     }
 
     getAll(){
@@ -39,14 +38,12 @@ export class CustomersComponent implements OnInit, OnDestroy {
         this.customers = d.data;
 
         var options = { selector: "#customerTable" }
+        this.datatableService.destroy(options.selector);
         this.datatableService.initialize(options);
 
         this.messageService.closeLoading();
       },
-      err => {
-        this.messageService.closeLoading();
-        this.errorHandlerService.handleErrors(err);
-      });
+      err => this.messageService.closeLoading());
     }
 
     goToServices(customer){
@@ -55,5 +52,14 @@ export class CustomersComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("customerName", customer.name);
       
       this.router.navigate([`/billing/customers/${customer.crmId}/services`]);
+    }
+
+    update(){
+      this.messageService.showLoading();
+
+      this.updateSubscrip = this.service.update().subscribe(data => {
+        this.messageService.closeLoading();
+        this.getAll();
+      });
     }
 }

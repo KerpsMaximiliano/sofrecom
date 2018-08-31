@@ -1,15 +1,14 @@
-import { DatatablesLocationTexts } from 'app/components/datatables/datatables.location-texts';
+import { DatatablesLocationTexts } from '../../../components/datatables/datatables.location-texts';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DatatablesEditionType } from "app/components/datatables/datatables.edition-type";
-import { DatatablesColumn } from "app/components/datatables/datatables.columns";
+import { DatatablesEditionType } from "../../../components/datatables/datatables.edition-type";
+import { DatatablesColumn } from "../../../components/datatables/datatables.columns";
 import { Subscription } from "rxjs";
-import { DatatablesOptions } from "app/components/datatables/datatables.options";
-import { DatatablesDataType } from "app/components/datatables/datatables.datatype";
-import { DatatablesAlignment } from "app/components/datatables/datatables.alignment";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { MessageService } from "app/services/common/message.service";
-import { FunctionalityService } from "app/services/admin/functionality.service";
-import { I18nService } from 'app/services/common/i18n.service';
+import { DatatablesOptions } from "../../../components/datatables/datatables.options";
+import { DatatablesDataType } from "../../../components/datatables/datatables.datatype";
+import { DatatablesAlignment } from "../../../components/datatables/datatables.alignment";
+import { MessageService } from "../../../services/common/message.service";
+import { FunctionalityService } from "../../../services/admin/functionality.service";
+import { I18nService } from '../../../services/common/i18n.service';
 
 @Component({
   selector: 'app-functionalities',
@@ -76,8 +75,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
     constructor(
         private service: FunctionalityService,
         private i18nService: I18nService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService) { }
+        private messageService: MessageService) { }
 
     ngOnInit() {
       this.getAll();
@@ -102,10 +100,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
             callback();
           }
         },
-        err => {
-          this.messageService.closeLoading();
-          this.errorHandlerService.handleErrors(err);
-        });
+        err => this.messageService.closeLoading());
     }
 
     getEntity(id: number, callback = null){
@@ -114,8 +109,7 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
           if(callback != null){
             callback(data);
           }
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     habInhab(obj: any){
@@ -129,21 +123,15 @@ export class FunctionalitiesComponent implements OnInit, OnDestroy {
     deactivate(id: number){
         this.deactivateSubscrip = this.service.deactivate(id).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.getEntity(id, (e)=>this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     activate(id: number){
         this.activateSubscrip = this.service.activate(id).subscribe(
             data => {
-                if(data.messages) this.messageService.showMessages(data.messages);
-
                 this.getEntity(id, (e)=>this.dt.updateById(id, e));
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
 }

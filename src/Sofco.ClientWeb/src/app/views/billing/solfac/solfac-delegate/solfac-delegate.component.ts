@@ -1,14 +1,10 @@
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { I18nService } from 'app/services/common/i18n.service';
-import { DataTableService } from 'app/services/common/datatable.service';
-import { SolfacDelegateService } from 'app/services/billing/solfac-delegate.service';
-import { MessageService } from 'app/services/common/message.service';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableService } from '../../../../services/common/datatable.service';
+import { SolfacDelegateService } from '../../../../services/billing/solfac-delegate.service';
+import { MessageService } from '../../../../services/common/message.service';
 import { Router } from '@angular/router';
-import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
-declare var $: any;
 
 @Component({
     selector: 'app-solfac-delegate',
@@ -17,7 +13,6 @@ declare var $: any;
 
 export class SolfacDelegateComponent implements OnInit, OnDestroy {
 
-    private nullId = '';
 
     private subscription: Subscription;
 
@@ -36,10 +31,8 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal') confirmModal;
 
     constructor(private solfacDelegateService: SolfacDelegateService,
-        private errorHandlerService: ErrorHandlerService,
         private dataTableService: DataTableService,
         private messageService: MessageService,
-        private i18nService: I18nService,
         private router: Router) {
     }
 
@@ -57,7 +50,8 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
     initTable() {
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
-            selector: '#delegateTable',
+            selector: '#delegateTable', 
+            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             order: [[ 0, 'asc' ]]
         });
     }
@@ -69,10 +63,9 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
             this.delegates = response.data;
             this.initTable();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err);
-        });
+        () => {
+                this.messageService.closeLoading();
+            });
     }
 
     goToAdd() {
@@ -86,11 +79,8 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
 
     processDelete() {
         this.confirmModal.hide();
-        this.subscription = this.solfacDelegateService.delete(this.delegeteSelected.id).subscribe(response => {
+        this.subscription = this.solfacDelegateService.delete(this.delegeteSelected.id).subscribe(() => {
             this.getDelegates();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 }

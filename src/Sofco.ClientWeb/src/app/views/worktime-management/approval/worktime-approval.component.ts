@@ -1,11 +1,10 @@
 import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { DataTableService } from "../../../services/common/datatable.service";
+import { MessageService } from "../../../services/common/message.service";
 import { Subscription } from "rxjs";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { WorktimeService } from "app/services/worktime-management/worktime.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { AnalyticService } from "../../../services/allocation-management/analytic.service";
+import { WorktimeService } from "../../../services/worktime-management/worktime.service";
+import { Ng2ModalConfig } from "../../../components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -61,8 +60,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     constructor(private analyticService: AnalyticService,
         private worktimeService: WorktimeService,
         private datatableService: DataTableService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){
+        private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -93,18 +91,12 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     getAnalytics() {
         this.getAnalyticsSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.analytics = data;
-        },
-        error => {
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
     getEmployees() {
         this.getAnalyticsSubscrip = this.analyticService.getResources(this.analyticId).subscribe(data => {
             this.employees = data;
-        },
-        error => {
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -128,7 +120,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.getWorkTimePending(json).subscribe(response => {
             this.messageService.closeLoading();
-            if(response.messages) this.messageService.showMessages(response.messages);
 
             this.hoursPending = response.data.map(item => {
                 item.selected = false;
@@ -142,7 +133,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -166,7 +156,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.getWorkTimeApproved(json).subscribe(response => {
             this.messageService.closeLoading();
-            if(response.messages) this.messageService.showMessages(response.messages);
 
             this.hoursApproved = response.data;
 
@@ -177,7 +166,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -203,7 +191,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     removeItem(){
         this.hoursPending.splice(this.indexToRemove, 1);
-        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ] };
         this.initGrid(options);
     }
 
@@ -244,12 +232,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.approveAll(hoursSelected).subscribe(response => {
             this.messageService.closeLoading();
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.searchPending();
         },
         error => {
             this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 
@@ -271,12 +257,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.rejectAll(json).subscribe(response => {
             this.rejectAllModal.hide();
-            if(response.messages) this.messageService.showMessages(response.messages);
             this.searchPending();
         },
         error => {
             this.rejectAllModal.hide();
-            this.errorHandlerService.handleErrors(error);
         });
     }
 } 

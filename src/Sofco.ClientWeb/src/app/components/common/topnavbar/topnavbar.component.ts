@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { smoothlyMenu } from '../../../app.helpers';
 import * as _ from 'lodash';
-import { AuthenticationService } from "app/services/common/authentication.service";
-import { Configuration } from "app/services/common/configuration";
-import { MenuService } from "app/services/admin/menu.service";
+import { AuthenticationService } from "../../../services/common/authentication.service";
+import { Configuration } from "../../../services/common/configuration";
+import { MenuService } from "../../../services/admin/menu.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { UserInfoService } from '../../../services/common/user-info.service';
 declare var jQuery: any;
@@ -25,16 +24,16 @@ export class TopNavbarComponent {
         private router: Router,
         public menuService: MenuService){
 
-        configService.setCurrLang('es');
+        // configService.setCurrLang('es');
 
-        // var lang =  Cookie.get("lang");
+        var lang =  Cookie.get("lang");
 
-        // if(lang){
-        //   configService.setCurrLang(lang);
-        // }
-        // else{
-        //   configService.setCurrLang('es');
-        // }
+        if(lang){
+          configService.setCurrLang(lang);
+        }
+        else{
+          configService.setCurrLang('es');
+        }
 
       this.userName = this.menuService.currentUser;
 

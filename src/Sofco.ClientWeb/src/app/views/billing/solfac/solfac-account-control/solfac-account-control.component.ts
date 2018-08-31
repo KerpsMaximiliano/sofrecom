@@ -1,9 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { CustomerService } from 'app/services/billing/customer.service';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { debug } from 'util';
-import { I18nService } from 'app/services/common/i18n.service';
+import { CustomerService } from '../../../../services/billing/customer.service';
+import { I18nService } from '../../../../services/common/i18n.service';
 declare var $:any;
 
 @Component({
@@ -33,7 +30,6 @@ export class SolfacAccountControlComponent implements OnInit {
     public selected: any;
 
     constructor(private customerService: CustomerService,
-        private errorHandlerService: ErrorHandlerService,
         private i18nService: I18nService) {
     }
 
@@ -45,9 +41,6 @@ export class SolfacAccountControlComponent implements OnInit {
         this.customerService.getOptions().subscribe(response => {
             this.customers = this.sortCustomers(response.data);
             this.setSelect();
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err)
         });
     }
 
@@ -79,9 +72,6 @@ export class SolfacAccountControlComponent implements OnInit {
         this.customerService.getById(id).subscribe(res => {
             this.selected = res.data;
             this.modelChange.emit(this.model);
-        },
-        err => {
-            this.errorHandlerService.handleErrors(err);
         });
     }
 

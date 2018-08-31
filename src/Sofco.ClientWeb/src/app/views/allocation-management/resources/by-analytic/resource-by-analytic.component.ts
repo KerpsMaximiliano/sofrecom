@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { AllocationService } from "../../../../services/allocation-management/allocation.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { UserService } from "../../../../services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
@@ -64,8 +63,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
                 private usersService: UserService,
                 private categoryService: CategoryService,
                 private activatedRoute: ActivatedRoute,
-                private allocationervice: AllocationService,
-                private errorHandlerService: ErrorHandlerService){
+                private allocationervice: AllocationService){
     }
 
     ngOnInit(): void {
@@ -77,8 +75,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
 
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
             this.users = data;
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
 
         this.getCategories();
     }
@@ -99,10 +96,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
             this.resources = data;
             this.messageService.closeLoading();
         },
-        error => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(error)
-        });
+        () => this.messageService.closeLoading());
     }
  
     goToProfile(resource){
@@ -132,10 +126,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
         this.getAllEmployeesSubscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
             this.openModal(res.data);
         },
-        error => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error);
-        });
+        () => this.confirmModal.hide());
     }
 
     openCategoryModal(resource){
@@ -151,20 +142,15 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
 
         this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
             this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
         },
-        error => {
-            this.confirmModal.hide();
-            this.errorHandlerService.handleErrors(error)
-        });
+        error => this.confirmModal.hide());
     }
 
     getCategories(){
         this.getCategorySubscrip = this.categoryService.getOptions().subscribe(
             data => {
                 this.categories = data;
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
     }
 
     addCategoryDisabled(){
@@ -185,13 +171,10 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
         this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
             this.messageService.closeLoading();
             this.categoriesModal.hide();
-
-            this.messageService.showMessages(response.messages);
         },
-        error => {
+        () => {
             this.messageService.closeLoading();
             this.categoriesModal.hide();
-            this.errorHandlerService.handleErrors(error)
         });
     }
 

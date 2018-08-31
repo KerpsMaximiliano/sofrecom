@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
-import { Router } from "@angular/router";
-import { DataTableService } from "app/services/common/datatable.service";
-import { MenuService } from "app/services/admin/menu.service";
-import { MessageService } from "app/services/common/message.service";
-import { AllocationService } from "app/services/allocation-management/allocation.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { AllocationService } from "../../../../services/allocation-management/allocation.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 
 declare var $: any;
 declare var moment: any;
@@ -40,8 +38,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                 private analyticService: AnalyticService,
                 public menuService: MenuService,
                 private messageService: MessageService,
-                private dataTableService: DataTableService,
-                private errorHandlerService: ErrorHandlerService){}
+                private dataTableService: DataTableService){}
  
     ngOnInit(): void {
         this.getAllocationResources();
@@ -73,8 +70,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                     $('#employeeId').val(this.lastQuery.employeeId == null ? 0 : this.lastQuery.employeeId).trigger('change');
                 }, 0);
             }
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getAnalytics(){
@@ -86,8 +82,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                     $('#analyticId').val(this.lastQuery.analyticIds).trigger('change');
                 }, 1000);
             }
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getPercentages(){
@@ -99,8 +94,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
                     $('#percentageId').val(this.lastQuery.percentage).trigger('change');
                 }, 0);
             }
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     search(){
@@ -138,10 +132,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
             sessionStorage.setItem('lastReportQuery', JSON.stringify(parameters));
         },
-        error => {
-            this.errorHandlerService.handleErrors(error);
-            this.messageService.closeLoading();
-        });
+        error => this.messageService.closeLoading());
     }
 
     initGrid(){

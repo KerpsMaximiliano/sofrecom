@@ -1,21 +1,20 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from "rxjs";
-import { Solfac } from 'app/models/billing/solfac/solfac';
-import { HitoDetail } from "app/models/billing/solfac/hitoDetail";
-import { SolfacService } from "app/services/billing/solfac.service";
-import { Option } from "app/models/option";
+import { Solfac } from '../../../../models/billing/solfac/solfac';
+import { HitoDetail } from "../../../../models/billing/solfac/hitoDetail";
+import { SolfacService } from "../../../../services/billing/solfac.service";
+import { Option } from "../../../../models/option";
 import { Router } from '@angular/router';
-import { ErrorHandlerService } from 'app/services/common/errorHandler.service';
-import { MessageService } from "app/services/common/message.service";
-import { InvoiceService } from "app/services/billing/invoice.service";
-import { SolfacStatus } from "app/models/enums/solfacStatus";
-import { MenuService } from "app/services/admin/menu.service";
-import { CustomerService } from 'app/services/billing/customer.service';
-import { Hito } from 'app/models/billing/solfac/hito';
-import { ServiceService } from 'app/services/billing/service.service';
-import { CertificatesService } from 'app/services/billing/certificates.service';
+import { MessageService } from "../../../../services/common/message.service";
+import { InvoiceService } from "../../../../services/billing/invoice.service";
+import { SolfacStatus } from "../../../../models/enums/solfacStatus";
+import { MenuService } from "../../../../services/admin/menu.service";
+import { CustomerService } from '../../../../services/billing/customer.service';
+import { Hito } from '../../../../models/billing/solfac/hito';
+import { ServiceService } from '../../../../services/billing/service.service';
+import { CertificatesService } from '../../../../services/billing/certificates.service';
 import { UserInfoService } from '../../../../services/common/user-info.service';
-import { I18nService } from 'app/services/common/i18n.service';
+import { I18nService } from '../../../../services/common/i18n.service';
 
 declare var $:any;
 declare var swal: any;
@@ -68,7 +67,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private customerService: CustomerService,
                 private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
-                private errorHandlerService: ErrorHandlerService,
                 private i18nService: I18nService,
                 private router: Router) { }
 
@@ -176,8 +174,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
           this.model.analytic = data.analytic;
           this.model.manager = data.manager;
           this.model.managerId = data.managerId;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
       }
 
       if(customer){
@@ -201,8 +198,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
           }
 
           this.model.paymentTermId = data.paymentTermCode;
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
       }
 
       this.model.statusName = SolfacStatus[SolfacStatus.SendPending];
@@ -226,8 +222,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getInvoicesOptions(projectId) {
       this.getInvoiceOptionsSubs = this.invoiceService.getOptions(projectId).subscribe(data => {
         this.invoices = data;
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
     }
  
     getOptions() {
@@ -239,8 +234,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.paymentTerms = data.paymentTerms;
         this.purchaseOrders = data.purchaseOrders;
         this.updateDocumentTypes();
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
     }
 
     addDetail() {
@@ -288,7 +282,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
         data => {
           this.messageService.closeLoading();
 
-          if(data.messages) this.messageService.showMessages(data.messages);
           sessionStorage.removeItem('hitosSelected');
           sessionStorage.removeItem('multipleProjects');
 
@@ -298,7 +291,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
         },
         err => {
           this.messageService.closeLoading();
-          this.errorHandlerService.handleErrors(err);
         });
     }
 
@@ -386,8 +378,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getCertificatesAvailable(){
       this.getCertificateAvailableSubscrip = this.certificateService.getByClient(this.model.customerId).subscribe(data => {
         this.certificates = data;
-      },
-      err => this.errorHandlerService.handleErrors(err));
+      });
     }
 
     validateHitos(hitos) {

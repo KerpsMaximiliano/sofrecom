@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Service } from "app/services/common/service";
+import { Service } from "./service";
 import { HttpClient } from '@angular/common/http';
 import { MenuService } from '../admin/menu.service';
 
@@ -13,6 +13,10 @@ export class UtilsService {
 
   getMonths() {
     return this.http.get<any>(`${this.apiUrl}/months`);
+  }
+
+  getCloseMonths() {
+    return this.http.get<any>(`${this.apiUrl}/closeMonths`);
   }
 
   getYears() {

@@ -1,15 +1,12 @@
 import { Component, OnDestroy, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { Subscription } from "rxjs";
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import * as FileSaver from "file-saver";
-import { CertificatesService } from "app/services/billing/certificates.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-
-declare var $: any;
+import { CertificatesService } from "../../../../services/billing/certificates.service";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { AuthService } from "../../../../services/common/auth.service";
 
 @Component({
     selector: 'add-certificate',
@@ -40,9 +37,8 @@ export class NewCertificateComponent implements OnDestroy {
     );
 
     constructor(private certificateService: CertificatesService,
-                private router: Router,
-                private messageService: MessageService,
-                private errorHandlerService: ErrorHandlerService){
+                private authService: AuthService,
+                private messageService: MessageService){
     }
 
     ngOnDestroy(): void {
@@ -61,15 +57,11 @@ export class NewCertificateComponent implements OnDestroy {
         this.addSubscrip = this.certificateService.add(this.form.model).subscribe(
             response => {
                 this.messageService.closeLoading();
-                if(response.messages) this.messageService.showMessages(response.messages);
 
                 this.form.model.id = response.data.id
                 this.uploaderConfig();
             },
-            err => {
-                this.messageService.closeLoading();
-                this.errorHandlerService.handleErrors(err);
-            });
+            () => this.messageService.closeLoading());
     }
 
     uploaderConfig(){
@@ -79,11 +71,27 @@ export class NewCertificateComponent implements OnDestroy {
                                         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
             var dataJson = JSON.parse(response);
             
-            if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
-
             if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
                 this.creationDate = new Date(dataJson.data.creationDate).toLocaleDateString();
 
                 this.form.model.fileId = dataJson.data.id;
@@ -108,16 +116,14 @@ export class NewCertificateComponent implements OnDestroy {
     exportExcel(){
         this.certificateService.exportFile(this.form.model.fileId).subscribe(file => {
             FileSaver.saveAs(file, this.form.model.fileName);
-        },
-        err => this.errorHandlerService.handleErrors(err));
+        });
     }
 
     viewFile(){
         if(this.form.model.fileName.endsWith('.pdf')){
             this.certificateService.getFile(this.form.model.fileId).subscribe(response => {
                 this.pdfViewer.renderFile(response.data);
-            },
-            err => this.errorHandlerService.handleErrors(err));
+            });
         }
     }
 
@@ -125,17 +131,11 @@ export class NewCertificateComponent implements OnDestroy {
         this.confirmModal.hide();
         this.messageService.showLoading();
 
-        this.certificateService.deleteFile(this.form.model.id).subscribe(response => {
-            if(response.messages) this.messageService.showMessages(response.messages);
-
+        this.certificateService.deleteFile(this.form.model.id).subscribe(() => {
             this.form.model.fileId = null;
             this.form.model.fileName = null;
-
             this.messageService.closeLoading();
         },
-        err => {
-            this.messageService.closeLoading();
-            this.errorHandlerService.handleErrors(err)
-        });
+        () => this.messageService.closeLoading());
     }
 } 

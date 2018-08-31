@@ -1,14 +1,13 @@
 import { OnInit, OnDestroy, Component, ViewChild } from "@angular/core";
-import { LicenseService } from "app/services/human-resources/licenses.service";
-import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { Router } from "@angular/router";
-import { MessageService } from "app/services/common/message.service";
-import { ErrorHandlerService } from "app/services/common/errorHandler.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { Subscription } from "rxjs";
-import { DataTableService } from "app/services/common/datatable.service";
+import { DataTableService } from "../../../../services/common/datatable.service";
 import * as FileSaver from "file-saver";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -50,8 +49,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         private employeeService: EmployeeService,
         private router: Router,
         private datatableService: DataTableService,
-        private messageService: MessageService,
-        private errorHandlerService: ErrorHandlerService){
+        private messageService: MessageService){
     }
 
     toggleNavigation(): void {
@@ -87,8 +85,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
                     $( "#employeeId" ).val(lastQuery.employeeId).trigger('change');
                 }
             }, 0)
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     getLicenceTypes(lastQuery){
@@ -107,8 +104,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
                     this.licensesTypeId = lastQuery.licenseTypeId
                 }
             }, 0)
-        },
-        error => this.errorHandlerService.handleErrors(error));
+        });
     }
 
     searchLastQuery(data){
@@ -182,7 +178,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         },
         err => {
             this.reportModal.hide();
-            this.errorHandlerService.handleErrors(err);
         });
     }
 
