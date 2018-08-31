@@ -224,6 +224,7 @@ namespace Sofco.Service.Implementations.Admin
 
             model.EmployeeId = employee?.Id ?? 0;
             model.ManagerId = employee?.ManagerId ?? 0;
+            model.IsExternal = employee?.IsExternal ?? false;
 
             response.Data = model;
 
@@ -317,6 +318,11 @@ namespace Sofco.Service.Implementations.Admin
         public IList<User> GetAuthorizers()
         {
             return unitOfWork.UserRepository.GetAuthorizers();
+        }
+
+        public IList<User> GetExternalsFree()
+        {
+            return unitOfWork.UserRepository.GetExternalsFree();
         }
 
         private UserModel Translate(User user)

@@ -29,6 +29,7 @@ namespace Sofco.Core.Models.Admin
         public int EmployeeId { get; set; }
 
         public int ManagerId { get; set; }
+        public bool IsExternal { get; set; }
 
         public User CreateDomain()
         {

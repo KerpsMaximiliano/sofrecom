@@ -14,21 +14,23 @@ declare var jQuery:any;
   templateUrl: 'navigation.template.html'
 })
 
-export class NavigationComponent implements OnInit, OnDestroy{
+export class NavigationComponent implements OnInit {
 
   public menu: Menu[];
   public menuSubscrip: Subscription;
+  public isExternal: boolean = false;
 
   constructor(
       private router: Router,
       public menuService: MenuService,
-      private route: ActivatedRoute,
       public messageService: MessageService) {}
 
   ngOnInit(){
-  }
+    var user = this.menuService.user;
 
-  ngOnDestroy(){
+    if(user){
+      this.isExternal = user.isExternal;
+    }
   }
 
   ngAfterViewInit() {

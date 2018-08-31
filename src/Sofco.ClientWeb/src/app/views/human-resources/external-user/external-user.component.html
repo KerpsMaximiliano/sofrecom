@@ -1,0 +1,33 @@
+<button class="btn btn-primary" (click)="externalModal.show()"> Crear Externo <i class="fa fa-plus"></i></button>
+
+<ng2-modal [config]="externalModalConfig" #externalModal (accept)="add()">
+    <select-two [label]="'allocationManagement.resources.user'" [(value)]="model.userId" [options]="users"></select-two>
+
+    <select-two [label]="'allocationManagement.resources.manager'" [(value)]="model.managerId" [options]="managers"></select-two>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }} </label>
+        <input class="form-control" type="number" min="1" max="8" [(ngModel)]="model.hours" />
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Codigo de pais</label>
+                <input class="form-control" type="number" [(ngModel)]="model.countryCode" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label class="control-label">Codigo de area</label>
+                <input class="form-control" type="number" [(ngModel)]="model.areaCode" />
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="control-label">Telefono</label>
+                <input class="form-control" type="text" [(ngModel)]="model.phone" />
+            </div>
+        </div>
+    </div>
+</ng2-modal>  

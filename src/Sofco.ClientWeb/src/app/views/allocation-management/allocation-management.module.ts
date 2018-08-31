@@ -29,13 +29,15 @@ import { EmployeeProfileHistoryService } from '../../services/allocation-managem
 import { CommonModule } from '@angular/common';
 import { ResourceDetailModule } from './resources/detail/resource-detail.module';
 import { AllocationAssingTableModule } from './allocation/allocation-assignment-table/alloc-assing-table.module';
+import { ExternalUserComponent } from 'app/views/human-resources/external-user/external-user.component';
 
 @NgModule({
   declarations: [
     AddAllocationByResourceComponent,
     ResourceSearchComponent, 
     AllocationReportComponent,
-    WorkTimeApprovalDelegateComponent
+    WorkTimeApprovalDelegateComponent,
+    ExternalUserComponent
   ],
   imports: [
     CommonModule,

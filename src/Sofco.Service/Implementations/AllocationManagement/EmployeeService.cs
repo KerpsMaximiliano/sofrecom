@@ -11,6 +11,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
@@ -296,6 +297,46 @@ namespace Sofco.Service.Implementations.AllocationManagement
             };
 
             return result;
+        }
+
+        public Response AddExternal(AddExternalModel model)
+        {
+            var response = new Response();
+
+            var user = EmployeeValidationHelper.User(response, unitOfWork, model);
+            EmployeeValidationHelper.Manager(response, unitOfWork, model);
+            EmployeeValidationHelper.Phone(response, unitOfWork, model);
+            EmployeeValidationHelper.Hours(response, unitOfWork, model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var employee = new Employee
+                {
+                    Email = user.Email,
+                    Name = user.Name,
+                    PhoneCountryCode = model.CountryCode,
+                    PhoneAreaCode = model.AreaCode,
+                    PhoneNumber = model.Phone,
+                    ManagerId = model.ManagerId,
+                    StartDate = DateTime.UtcNow,
+                    IsExternal = true,
+                    BusinessHours = model.Hours
+                };
+
+                unitOfWork.EmployeeRepository.Insert(employee);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Employee.Added);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

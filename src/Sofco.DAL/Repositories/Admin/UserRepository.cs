@@ -209,6 +209,13 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == dafCode));
         }
 
+        public IList<User> GetExternalsFree()
+        {
+            var mails = context.Employees.Where(x => !string.IsNullOrWhiteSpace(x.Email)).Select(x => x.Email).ToList();
+
+            return context.Users.Where(x => !mails.Contains(x.Email)).ToList();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;

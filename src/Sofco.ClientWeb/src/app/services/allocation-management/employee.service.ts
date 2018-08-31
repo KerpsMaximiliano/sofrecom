@@ -71,4 +71,8 @@ export class EmployeeService {
   getPendingHours(id) {
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/pendingWorkingHours`);
   }
+
+  addExternal(model){
+    return this.http.post<any>(`${this.baseUrl}/employees/external`, model);
+  }
 }

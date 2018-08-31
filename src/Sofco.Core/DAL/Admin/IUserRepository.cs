@@ -49,5 +49,7 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetByGroup(string groupCode);
 
         bool HasDafPurchaseOrderGroup(string userMail);
+
+        IList<User> GetExternalsFree();
     }
 }

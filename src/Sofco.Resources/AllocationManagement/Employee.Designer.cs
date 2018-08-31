@@ -125,6 +125,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.hoursRequired.
+        /// </summary>
+        public static string HoursRequired {
+            get {
+                return ResourceManager.GetString("HoursRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.nameRequired.
         /// </summary>
         public static string NameRequired {
@@ -143,11 +152,29 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.phoneRequired.
+        /// </summary>
+        public static string PhoneRequired {
+            get {
+                return ResourceManager.GetString("PhoneRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.updateSuccess.
         /// </summary>
         public static string UpdateSuccess {
             get {
                 return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.userRelated.
+        /// </summary>
+        public static string UserRelated {
+            get {
+                return ResourceManager.GetString("UserRelated", resourceCulture);
             }
         }
         

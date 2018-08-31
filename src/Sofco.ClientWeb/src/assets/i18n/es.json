@@ -574,6 +574,7 @@
             "reason": "Motivo",
             "comments": "Comentarios",
             "manager": "Superior",
+            "user": "Usuario",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
@@ -866,6 +867,7 @@
     "Between0And50": "> 0 y < 50",
     "Between50And75": "> 50 y < 75",
     "Between75And99": "> 75 y < 99",
+    "myActions": "Mis Acciones",
     "report":{
         "title": "Reporte",
         "solfacs": {

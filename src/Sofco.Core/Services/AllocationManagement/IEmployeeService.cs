@@ -1,6 +1,7 @@
 ﻿using Sofco.Domain.Utils;
 using System.Collections.Generic;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 
@@ -33,5 +34,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<EmployeeCategoryOption>> GetCurrentCategories();
 
         Response<EmployeeWorkingPendingHoursModel> GetPendingWorkingHours(int employeeId);
+
+        Response AddExternal(AddExternalModel model);
     }
 }

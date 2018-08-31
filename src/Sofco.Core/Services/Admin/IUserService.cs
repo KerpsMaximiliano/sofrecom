@@ -40,5 +40,7 @@ namespace Sofco.Core.Services.Admin
         bool HasManagerGroup();
 
         IList<User> GetAuthorizers();
+
+        IList<User> GetExternalsFree();
     }
 }
