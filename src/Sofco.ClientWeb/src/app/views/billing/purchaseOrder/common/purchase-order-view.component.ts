@@ -179,7 +179,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
-            dataBodyItem[receptionDatePos] = item.receptionDate;
+            dataBodyItem[receptionDatePos] = moment(item.receptionDate).format("YYYY-MM-DD");
             dataBodyItem[ammountNumberPos] = item.ammount;
             dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
@@ -208,7 +208,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         return ['',
             d.analytic,
             d.description,
-            moment(d.updatedDate).format("DD/MM/YYYY"),
+            moment(d.updatedDate).format("YYYY-MM-DD"),
             this.i18nService.translateByKey(d.statusText),
             d.total];
     }
