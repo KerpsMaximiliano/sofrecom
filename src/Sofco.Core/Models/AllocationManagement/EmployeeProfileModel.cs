@@ -59,6 +59,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public DateTime StartDate { get; set; }
 
+        public DateTime? Birthday { get; set; }
+
         public int BusinessHours { get; set; }
 
         public int ExamDaysTaken { get; set; }
