@@ -192,6 +192,15 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
             this.messageService.closeLoading();
             this.categoriesModal.hide();
+
+            var user = this.resources.find(x => x.id == this.resourceSelected.id);
+
+            if(user){
+                user.categories = [];
+                categoriesSelected.forEach(item => {
+                    user.categories.push(item);
+                });
+            }
         },
         () => {
             this.messageService.closeLoading();
