@@ -12,16 +12,21 @@ export class DataTableService {
     }
 
     initialize(params){
-        var lang = {};
-        if(this.config.currLang == "es" || this.config.currLang == "fr"){
+        let lang = {};
+
+        if(this.config.currLang == "es"){
           lang = this.getLanguageEs();
+        }
+
+        if(this.config.currLang == "fr"){
+            lang = this.getLanguageFr();
         }
 
         setTimeout(()=>{
             $( document ).ready(function() {
                 var options: any = {
                     oSearch: { "bSmart": false, "bRegex": true },
-                    responsive: true, 
+                    responsive: true,
                     language: lang,
                 }
 
@@ -74,9 +79,8 @@ export class DataTableService {
     //     }, 1000);
     // }
 
-    getLanguageEs(){
-       var language =
-        {
+    getLanguageEs(): any{
+        return {
             sProcessing: "Procesando...",
             sLengthMenu: "Mostrar _MENU_ registros",
             sZeroRecords: "No se encontraron resultados",
@@ -100,7 +104,32 @@ export class DataTableService {
                 sSortDescending: ": Activar para ordenar la columna de manera descendente"
             }
         };
+    }
 
-        return language;
+    getLanguageFr(): any {
+        return {
+            sProcessing: "En traitement...",
+            sLengthMenu: "Afficher _MENU_ lignes",
+            sZeroRecords: "Aucun résultats n'a été trouvée",
+            sEmptyTable: "Aucune information n'est disponible pour cette table",
+            sInfo: "Afficher la ligne _START_ a _END_ d'un total de _TOTAL_",
+            sInfoEmpty: "Afficher la ligne 0 a 0 d'un total de 0",
+            sInfoFiltered: "(filtré d'un total de _MAX_ lignes)",
+            sInfoPostFix: "",
+            sSearch: "Chercher:",
+            sUrl: "",
+            sInfoThousands: ",",
+            sLoadingRecords: "En chargement...",
+            oPaginate: {
+                sFirst: "Premier",
+                sLast: "Dernier",
+                sNext: "Suivant",
+                sPrevious: "Précédent"
+            },
+            oAria: {
+                sSortAscending: ": Activer pour ordonner la colonne en croissant",
+                sSortDescending: ": Activer pour commander la colonne dans l'ordre décroissant"
+            }
+        };
     }
 }
