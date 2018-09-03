@@ -26,7 +26,7 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
 
         public void ValidateHours(Response response, WorkTimeAddModel model)
         {
-            if (model.Hours < 1)
+            if (model.Hours < (decimal) 0.25)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.HoursWrong);
 

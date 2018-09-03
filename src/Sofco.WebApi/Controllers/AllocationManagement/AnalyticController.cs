@@ -47,7 +47,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var options = new List<AnalyticOptionForOcModel>();
 
-            options.AddRange(analyticService.GetByClient(clientId));
+            options.AddRange(analyticService.GetByClient(clientId, false));
+
+            return Ok(options);
+        }
+
+        [HttpGet("clients/{clientId}/actives")]
+        public IActionResult GetActivesByClient(string clientId)
+        {
+            var options = new List<AnalyticOptionForOcModel>();
+
+            options.AddRange(analyticService.GetByClient(clientId, true));
 
             return Ok(options);
         }

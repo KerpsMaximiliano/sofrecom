@@ -28,7 +28,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         List<Analytic> GetByServiceIds(List<string> serviceIds);
 
-        ICollection<Analytic> GetByClient(string clientId);
+        ICollection<Analytic> GetByClient(string clientId, bool onlyActives);
 
         Analytic GetById(int allocationAnalyticId);
 

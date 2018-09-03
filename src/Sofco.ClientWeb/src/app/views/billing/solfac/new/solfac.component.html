@@ -189,10 +189,10 @@
                                                 <textarea rows="4" class="form-control" [(ngModel)]="detail.description"></textarea>
                                             </td>
                                             <td style="width: 45px; min-width: 45px">
-                                                <input type="text" class="form-control input-sm" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
+                                                <input type="number" class="form-control input-sm" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
                                             </td>
                                             <td style="width: 135px; min-width: 135px">
-                                                <input type="text" class="form-control input-sm" [(ngModel)]="detail.unitPrice" (ngModelChange)="calculateTotal(detail)">
+                                                <input type="number" class="form-control input-sm" [(ngModel)]="detail.unitPrice" decimalFormat (ngModelChange)="calculateTotal(detail)">
                                             </td>
                                             <td style="width: 135px; min-width: 135px" class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>

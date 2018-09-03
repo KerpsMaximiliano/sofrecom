@@ -65,9 +65,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
         }
 
-        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId)
+        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId, bool onlyActives)
         {
-            return unitOfWork.AnalyticRepository.GetByClient(clientId).Select(x => new AnalyticOptionForOcModel
+            return unitOfWork.AnalyticRepository.GetByClient(clientId, onlyActives).Select(x => new AnalyticOptionForOcModel
             {
                 Id = x.Id,
                 Text = $"{x.Title} - {x.Name}",

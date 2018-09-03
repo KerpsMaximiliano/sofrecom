@@ -15,7 +15,6 @@ import { Ng2ModalModule } from '../../components/modal/ng2modal.module';
 import { CostCenterService } from '../../services/allocation-management/cost-center.service';
 import { ICheckModule } from '../../components/icheck/icheck.module';
 import { PCheckModule } from '../../components/pcheck/pcheck.module';
-import { NumbersOnlyModule } from '../../components/numbersOnly/numberOnly.directive';
 import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
 import { AnalyticSearchComponent } from './analytics/search/analytic-search.component';
@@ -34,6 +33,7 @@ import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../services/billing/customer.service';
 import { ServiceService } from '../../services/billing/service.service';
 import { AllocationAssingTableModule } from '../allocation-management/allocation/allocation-assignment-table/alloc-assing-table.module';
+import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 
 @NgModule({
   declarations: [

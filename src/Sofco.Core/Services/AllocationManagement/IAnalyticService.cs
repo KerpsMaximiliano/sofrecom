@@ -30,7 +30,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         ICollection<Analytic> GetAllActives();
 
-        ICollection<AnalyticOptionForOcModel> GetByClient(string clientId);
+        ICollection<AnalyticOptionForOcModel> GetByClient(string clientId, bool onlyActives);
 
         IList<Option> GetResources(int id);
 
