@@ -222,6 +222,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         this.subscription = this.workTimeApprovalDelegateService.save(data).subscribe(response => {
             this.messageService.closeLoading();
             this.getWorkTimeApprovals();
+            this.getApprovers();
         },
         () => this.messageService.closeLoading());
     }
