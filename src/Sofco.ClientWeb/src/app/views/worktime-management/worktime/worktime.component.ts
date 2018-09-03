@@ -139,10 +139,12 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
 
     (<any>$("#hoursControl")).TouchSpin({
-        min: 1,
-        max: 24
+        min: 0.25,
+        max: 24,
+        step: 0.25,
+        decimals: 2
     }).on('change', function() {
-      self.taskModel.hours = $("#hoursControl").val();
+      self.taskModel.hours = $("#hoursControl").val().replace(',', '.');
       self.showSaveTask();
     });
   }
