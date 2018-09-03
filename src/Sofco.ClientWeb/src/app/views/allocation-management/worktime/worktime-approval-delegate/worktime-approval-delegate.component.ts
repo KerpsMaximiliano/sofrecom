@@ -53,6 +53,16 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal') confirmModal;
 
+    public modalConfig2: Ng2ModalConfig = new Ng2ModalConfig(
+        'ACTIONS.confirmTitle',
+        'confirmModal2',
+        true,
+        true,
+        'ACTIONS.DELETE',
+        'ACTIONS.cancel');
+
+    @ViewChild('confirmModal2') confirmModal2;
+
     constructor(private workTimeApprovalDelegateService: WorkTimeApprovalDelegateService,
         private analyticService: AnalyticService,
         private usersService: UserService,
@@ -83,7 +93,11 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         };
         this.subscription = this.workTimeApprovalDelegateService.getCurrentEmployees(query).subscribe(res => {
             this.loading = false;
-            this.workTimeApprovals = res.data;
+            this.workTimeApprovals = res.data.map(item => {
+                item.checked = false;
+                return item;
+            });
+
             this.initTable();
         },
         () => this.loading = false);
@@ -243,9 +257,20 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     processDelete() {
         const id = this.itemSelected.workTimeApproval.id;
         this.confirmModal.hide();
+
         this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
             this.getWorkTimeApprovals();
-        });
+        }); 
+    }
+
+    processDeleteAll(){
+        var selecteds = this.workTimeApprovals.filter(item => item.checked);
+        var ids = selecteds.map(x => x.workTimeApproval.id);
+        
+        this.subscription = this.workTimeApprovalDelegateService.deleteAll(ids).subscribe(response => {
+            this.confirmModal2.hide();
+            this.getWorkTimeApprovals();
+        }); 
     }
 
     collapse() {
@@ -263,5 +288,13 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         } else {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
+    }
+
+    deleteAllEnable(){
+        var selecteds = this.workTimeApprovals.filter(item => item.checked);
+
+        if(selecteds.length == 0) return false;
+
+        return selecteds.every(item => item.workTimeApproval != null);
     }
 }

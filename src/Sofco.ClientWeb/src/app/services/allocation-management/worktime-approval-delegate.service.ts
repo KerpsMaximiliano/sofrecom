@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response, Headers, ResponseContentType } from '@angular/http';
 import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
@@ -29,5 +28,9 @@ export class WorkTimeApprovalDelegateService {
 
   delete(id: number) {
     return this.http.delete<any>(this.apiUrl + '/' + id);
+  }
+
+  deleteAll(ids) {
+    return this.http.post<any>(this.apiUrl + '/clean', ids);
   }
 }
