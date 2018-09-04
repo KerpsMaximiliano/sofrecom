@@ -296,14 +296,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
     saveCategories(){
         var categoriesSelected = this.categories.filter(x => x.selected == true).map(item => item.id);
-        var categoriesNotSelected = this.categories.filter(x => x.selected == false).map(item => item.id);
         var usersSelected = this.resources.filter(x => x.selected == true).map(item => item.id);
 
         if(categoriesSelected.length == 0) return;
 
         var json = {
             categoriesToAdd: categoriesSelected,
-            categoriesToRemove: categoriesNotSelected,
+            categoriesToRemove: [],
             employees: usersSelected
         }
 
