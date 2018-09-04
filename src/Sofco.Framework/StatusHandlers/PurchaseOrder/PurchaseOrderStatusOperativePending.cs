@@ -46,7 +46,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             {
                 response.AddError(Resources.Billing.PurchaseOrder.CommentsRequired);
             }
-
+             
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 
             if (analytics.Any())

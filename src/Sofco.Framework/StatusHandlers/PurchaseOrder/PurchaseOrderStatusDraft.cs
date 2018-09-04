@@ -33,7 +33,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         {
             if (!purchaseOrder.FileId.HasValue)
                 response.AddError(Resources.Billing.PurchaseOrder.FileRequired);
-        }
+        } 
 
         public void Save(Domain.Models.Billing.PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
         {
