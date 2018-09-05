@@ -45,11 +45,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
 
+            var resources = GetResources(workTimes.ToList(), startDate, endDate);
+
             result.Data = new WorkTimeControlModel
             {
                 Resume = resumeModel,
-                Resources = GetResources(workTimes.ToList(), startDate, endDate)
+                Resources = resources
             };
+
+            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
+
+            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
             return result;
         }
