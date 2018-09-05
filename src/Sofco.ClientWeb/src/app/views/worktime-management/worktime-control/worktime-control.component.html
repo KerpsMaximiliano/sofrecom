@@ -42,19 +42,24 @@
 
     <div class="ibox float-e-margins">
         <div class="ibox-content">
-            <dl class="dl-horizontal" style="min-width: 250px; max-width: 500px;">
-                <dt>{{ 'workTimeManagement.worktimeControl.businessHoursTotal' | translate }}</dt>
-                <dd>{{ model?.resume?.businessHours }} hs</dd>
-                <hr style="margin:0px">
-                <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
-                <dd>{{ model?.resume?.hoursApproved }} hs</dd>
-                <hr style="margin:0px">
-                <dt>{{ 'workTimeManagement.worktimeControl.licenseHoursTotal' | translate }}</dt>
-                <dd>{{ model?.resume?.hoursWithLicense }} hs</dd>
-                <hr style="margin:0px">
-                <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
-                <dd>{{ model?.resume?.hoursPending }} hs</dd>
-            </dl>
+            <div class="row">
+                <div class="col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{ 'workTimeManagement.worktimeControl.businessHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.businessHours }} hs</dd>
+                        <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursApproved }} hs</dd>
+                    </dl>
+                </div>
+                <div class="col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{ 'workTimeManagement.worktimeControl.licenseHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursWithLicense }} hs</dd>
+                        <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursPending }} hs</dd>
+                    </dl>
+                </div>
+            </div>
         </div>
     </div>
 
