@@ -79,6 +79,8 @@ declare var moment: any;
     deactivate(){
         this.deactivateSubscrip = this.areaService.active(this.areaSelected.id, false).subscribe(
             data => {
+                this.confirmModal.hide();
+
                 this.areaSelected.active = false;
                 this.areaSelected.endDate = moment.now();
 
@@ -90,6 +92,8 @@ declare var moment: any;
     activate(){
         this.activateSubscrip = this.areaService.active(this.areaSelected.id, true).subscribe(
             data => {
+                this.confirmModal.hide();
+
                 this.areaSelected.active = true;
                 this.areaSelected.endDate = null;
                 this.areaSelected.startDate = moment.now();

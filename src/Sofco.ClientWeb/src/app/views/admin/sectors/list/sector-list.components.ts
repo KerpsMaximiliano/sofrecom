@@ -79,6 +79,8 @@ declare var moment: any;
     deactivate(){
         this.deactivateSubscrip = this.sectorService.active(this.sectorSelected.id, false).subscribe(
             data => {
+                this.confirmModal.hide();
+
                 this.sectorSelected.active = false;
                 this.sectorSelected.endDate = moment.now();
 
@@ -90,6 +92,8 @@ declare var moment: any;
     activate(){
         this.activateSubscrip = this.sectorService.active(this.sectorSelected.id, true).subscribe(
             data => {
+                this.confirmModal.hide();
+                
                 this.sectorSelected.active = true;
                 this.sectorSelected.endDate = null;
                 this.sectorSelected.startDate = moment.now();

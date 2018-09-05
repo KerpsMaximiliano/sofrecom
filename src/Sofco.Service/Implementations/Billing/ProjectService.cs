@@ -144,7 +144,11 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     foreach (var detail in solfac.PurchaseOrder.AmmountDetails)
                     {
-                        var newOc = new PurchaseOrderWidgetModel { PurchaseOrder = solfac.PurchaseOrder.Number, Balance = detail.Balance, Currency = detail.Currency.Text };
+                        var newOc = new PurchaseOrderWidgetModel {
+                            PurchaseOrder = solfac.PurchaseOrder.Number,
+                            Balance = detail.AdjustmentBalance.HasValue ? detail.AdjustmentBalance.Value : detail.Balance,
+                            Currency = detail.Currency.Text
+                        };
 
                         if (detail.CurrencyId == solfac.CurrencyId)
                             SetPurchaseOrderValues(solfac, newOc);
