@@ -98,10 +98,11 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     this.form.currencyDisabled = true;
                     this.form.isReadOnly = true;
                 }
+                this.messageService.closeLoading();
             },
             () => {
-                    this.messageService.closeLoading();
-                });
+                this.messageService.closeLoading();
+            });
         });
     }
 
