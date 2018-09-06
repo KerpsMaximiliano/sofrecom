@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.Managers
 {
     public interface IEmployeeWorkTimeManager
     {
-        List<WorkTimeApprovalEmployee> GetByCurrentServices(WorkTimeApprovalQuery query);
+        List<UserApproverEmployee> GetByCurrentServices(UserApproverQuery query, UserApproverType type);
     }
 }

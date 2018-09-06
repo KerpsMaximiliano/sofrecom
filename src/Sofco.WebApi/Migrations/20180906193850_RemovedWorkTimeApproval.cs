@@ -6,64 +6,64 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Sofco.WebApi.Migrations
 {
-    public partial class UserApprover : Migration
+    public partial class RemovedWorkTimeApproval : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "WorkTimeApprovals",
+                schema: "app");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.CreateTable(
-                name: "UserApprovers",
+                name: "WorkTimeApprovals",
                 schema: "app",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AnalyticId = table.Column<int>(nullable: false),
-                    ApproverUserId = table.Column<int>(nullable: false),
+                    ApprovalUserId = table.Column<int>(nullable: false),
                     Created = table.Column<DateTime>(nullable: true),
-                    CreatedUser = table.Column<string>(nullable: true),
+                    CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: true),
-                    ModifiedUser = table.Column<string>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
+                    ModifiedUser = table.Column<string>(maxLength: 50, nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserApprovers", x => x.Id);
+                    table.PrimaryKey("PK_WorkTimeApprovals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserApprovers_Analytics_AnalyticId",
+                        name: "FK_WorkTimeApprovals_Analytics_AnalyticId",
                         column: x => x.AnalyticId,
                         principalSchema: "app",
                         principalTable: "Analytics",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserApprovers_Users_ApproverUserId",
-                        column: x => x.ApproverUserId,
+                        name: "FK_WorkTimeApprovals_Users_ApprovalUserId",
+                        column: x => x.ApprovalUserId,
                         principalSchema: "app",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserApprovers_AnalyticId",
+                name: "IX_WorkTimeApprovals_ApprovalUserId",
                 schema: "app",
-                table: "UserApprovers",
-                column: "AnalyticId");
+                table: "WorkTimeApprovals",
+                column: "ApprovalUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserApprovers_ApproverUserId",
+                name: "IX_WorkTimeApprovals_AnalyticId_EmployeeId_ApprovalUserId",
                 schema: "app",
-                table: "UserApprovers",
-                column: "ApproverUserId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "UserApprovers",
-                schema: "app");
+                table: "WorkTimeApprovals",
+                columns: new[] { "AnalyticId", "EmployeeId", "ApprovalUserId" },
+                unique: true);
         }
     }
 }

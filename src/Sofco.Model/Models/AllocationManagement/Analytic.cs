@@ -73,8 +73,6 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ICollection<WorkTime> WorkTimes { get; set; }
 
-        public ICollection<WorkTimeApproval> WorkTimeApprovals { get; set; }
-
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<UserApprover> UserApprovers { get; set; }

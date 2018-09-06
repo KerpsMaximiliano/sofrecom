@@ -12,9 +12,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     [Authorize]
     public class WorkTimeApprovalsController : Controller
     {
-        private readonly IWorkTimeApprovalService service;
+        private readonly IUserApproverService service;
 
-        public WorkTimeApprovalsController(IWorkTimeApprovalService service)
+        public WorkTimeApprovalsController(IUserApproverService service)
         {
             this.service = service;
         }

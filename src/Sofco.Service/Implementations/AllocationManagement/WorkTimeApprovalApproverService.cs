@@ -22,7 +22,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.userData = userData;
         }
 
-        public Response<List<UserSelectListItem>> GetApprovers(WorkTimeApprovalQuery query)
+        public Response<List<UserSelectListItem>> GetApprovers(UserApproverQuery query)
         {
             if (query.AnalyticId == 0)
             {

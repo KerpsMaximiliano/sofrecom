@@ -19,7 +19,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpGet]
-        public IActionResult Get([FromUri] WorkTimeApprovalQuery query)
+        public IActionResult Get([FromUri] UserApproverQuery query)
         {
             var response = approverService.GetApprovers(query);
 

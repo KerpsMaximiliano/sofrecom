@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Common;
-using Sofco.Domain.Models.WorkTimeManagement;
 
-namespace Sofco.DAL.Repositories.AllocationManagement
+namespace Sofco.DAL.Repositories.Common
 {
-    public class EmployeeWorkTimeApprovalRepository : BaseRepository<Employee>, IEmployeeWorkTimeApprovalRepository
+    public class UserApproverEmployeeRepository : BaseRepository<Employee>, IUserApproverEmployeeRepository
     {
-        private WorkTimeApprovalQuery parameter;
+        private UserApproverQuery parameter;
 
-        public EmployeeWorkTimeApprovalRepository(SofcoContext context) : base(context)
+        public UserApproverEmployeeRepository(SofcoContext context) : base(context)
         {
-            parameter = new WorkTimeApprovalQuery();
+            parameter = new UserApproverQuery();
         }
 
-        public List<WorkTimeApprovalEmployee> Get(WorkTimeApprovalQuery query)
+        public List<UserApproverEmployee> Get(UserApproverQuery query, UserApproverType type)
         {
             parameter = query;
 
@@ -56,7 +55,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return result.ToList();
         }
 
-        public List<WorkTimeApprovalEmployee> GetByAnalytics(List<int> analyticIds, int approvalId)
+        public List<UserApproverEmployee> GetByAnalytics(List<int> analyticIds, int approvalId, UserApproverType type)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
                 && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId) 
@@ -82,7 +81,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return result.ToList();
         }
 
-        public WorkTimeApprovalEmployee Translate(Employee employee, IEnumerable<UserApprover> userApprovers)
+        public UserApproverEmployee Translate(Employee employee, IEnumerable<UserApprover> userApprovers)
         {
             var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
             if (parameter.AnalyticId > 0)
@@ -93,7 +92,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var firstUserApprover = userApprovers.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
 
-            return new WorkTimeApprovalEmployee
+            return new UserApproverEmployee
             {
                 EmployeeId = employee.Id.ToString(),
                 Name = employee.Name,

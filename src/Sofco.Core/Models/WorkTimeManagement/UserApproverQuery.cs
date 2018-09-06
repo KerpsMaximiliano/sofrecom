@@ -1,6 +1,6 @@
 ﻿namespace Sofco.Core.Models.WorkTimeManagement
 {
-    public class WorkTimeApprovalQuery
+    public class UserApproverQuery
     {
         public int AnalyticId { get; set; }
 

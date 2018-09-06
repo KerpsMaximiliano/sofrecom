@@ -4,7 +4,7 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.AllocationManagement
 {
-    public interface IWorkTimeApprovalService
+    public interface IUserApproverService
     {
         Response<List<UserApproverModel>> Save(List<UserApproverModel> userApprovers);
 

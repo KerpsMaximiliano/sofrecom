@@ -7,6 +7,6 @@ namespace Sofco.Core.Services.AllocationManagement
 {
     public interface IWorkTimeApprovalApproverService
     {
-        Response<List<UserSelectListItem>> GetApprovers(WorkTimeApprovalQuery query);
+        Response<List<UserSelectListItem>> GetApprovers(UserApproverQuery query);
     }
 }

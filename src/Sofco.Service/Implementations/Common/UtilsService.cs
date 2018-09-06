@@ -6,6 +6,7 @@ using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing;
+using Sofco.Domain;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
@@ -78,7 +79,7 @@ namespace Sofco.Service.Implementations.Common
         }
         public IEnumerable<Option> GetCloseMonths()
         {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
             var value = Convert.ToInt32(closeMonthSetting.Value);
             var valueBefore = value + 1;
 

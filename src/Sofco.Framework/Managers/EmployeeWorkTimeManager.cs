@@ -5,15 +5,17 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL.Common;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.Framework.Managers
 {
     public class EmployeeWorkTimeManager : IEmployeeWorkTimeManager
     {
-        private readonly IEmployeeWorkTimeApprovalRepository repository;
+        private readonly IUserApproverEmployeeRepository repository;
 
         private readonly IUnitOfWork unitOfWork;
 
@@ -23,7 +25,7 @@ namespace Sofco.Framework.Managers
 
         private readonly ISessionManager sessionManager;
 
-        public EmployeeWorkTimeManager(ISessionManager sessionManager, IEmployeeWorkTimeApprovalRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
+        public EmployeeWorkTimeManager(ISessionManager sessionManager, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
         {
             this.sessionManager = sessionManager;
             this.repository = repository;
@@ -32,17 +34,17 @@ namespace Sofco.Framework.Managers
             this.analyticData = analyticData;
         }
 
-        public List<WorkTimeApprovalEmployee> GetByCurrentServices(WorkTimeApprovalQuery query)
+        public List<UserApproverEmployee> GetByCurrentServices(UserApproverQuery query, UserApproverType type)
         {
             var userMail = sessionManager.GetUserEmail();
 
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
 
-            List<WorkTimeApprovalEmployee> result;
+            List<UserApproverEmployee> result;
 
             if (isDirector)
             {
-                result = ResolveApprovalUser(repository.Get(query));
+                result = ResolveApprovalUser(repository.Get(query, type));
 
                 return ResolveManagers(result);
             }
@@ -51,13 +53,13 @@ namespace Sofco.Framework.Managers
 
             var isManager = unitOfWork.UserRepository.HasManagerGroup(userName);
 
-            if (!isManager) return new List<WorkTimeApprovalEmployee>();
+            if (!isManager) return new List<UserApproverEmployee>();
 
-            List<WorkTimeApprovalEmployee> analytics;
+            List<UserApproverEmployee> analytics;
 
             if (query.AnalyticId > 0)
             {
-                analytics = repository.Get(query);
+                analytics = repository.Get(query, type);
             }
             else
             {
@@ -66,7 +68,7 @@ namespace Sofco.Framework.Managers
                 var currentAnalyticIds = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id).Select(x => x.Id)
                     .ToList();
 
-                analytics = repository.GetByAnalytics(currentAnalyticIds, query.ApprovalId);
+                analytics = repository.GetByAnalytics(currentAnalyticIds, query.ApprovalId, type);
             }
 
             result = ResolveApprovalUser(analytics);
@@ -74,7 +76,7 @@ namespace Sofco.Framework.Managers
             return ResolveManagers(result);
         }
 
-        private List<WorkTimeApprovalEmployee> ResolveManagers(List<WorkTimeApprovalEmployee> data)
+        private List<UserApproverEmployee> ResolveManagers(List<UserApproverEmployee> data)
         {
             var managerIds = data.Where(s => s.ManagerId.HasValue).Select(s => s.ManagerId.Value).Distinct().ToList();
 
@@ -90,7 +92,7 @@ namespace Sofco.Framework.Managers
             return data;
         }
 
-        private List<WorkTimeApprovalEmployee> ResolveApprovalUser(List<WorkTimeApprovalEmployee> data)
+        private List<UserApproverEmployee> ResolveApprovalUser(List<UserApproverEmployee> data)
         {
             var userIds = data.Where(s => s.UserApprover != null).Select(s => s.UserApprover.ApproverUserId).Distinct().ToList();
 
@@ -108,7 +110,7 @@ namespace Sofco.Framework.Managers
             return data;
         }
 
-        private List<WorkTimeApprovalEmployee> ResolveAnalytics(List<WorkTimeApprovalEmployee> data)
+        private List<UserApproverEmployee> ResolveAnalytics(List<UserApproverEmployee> data)
         {
             var analyticsIds = data.Where(s => s.AnalyticId != null).Select(s => s.AnalyticId.Value).Distinct().ToList();
 

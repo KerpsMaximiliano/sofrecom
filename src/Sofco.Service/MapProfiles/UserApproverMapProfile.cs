@@ -13,6 +13,8 @@ namespace Sofco.Service.MapProfiles
 
             CreateMap<UserApproverModel, UserApprover>()
                 .ForMember(d => d.Type, s => s.ResolveUsing(x => UserApproverType.WorkTime));
+
+            CreateMap<UserApproverEmployee, UserApproverEmployeeModel>();
         }
     }
 }

@@ -12,7 +12,7 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
-    public class WorkTimeApprovalService : IWorkTimeApprovalService
+    public class UserApproverService : IUserApproverService
     {
         private readonly IUserApproverRepository userApproverRepository;
 
@@ -22,12 +22,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly IMapper mapper;
 
-        private readonly ILogMailer<WorkTimeApprovalService> logger;
+        private readonly ILogMailer<UserApproverService> logger;
 
-        public WorkTimeApprovalService(IUserApproverRepository userApproverRepository, 
+        public UserApproverService(IUserApproverRepository userApproverRepository, 
             IUserData userData, 
             IEmployeeRepository employeeRepository,
-            ILogMailer<WorkTimeApprovalService> logger,
+            ILogMailer<UserApproverService> logger,
             IMapper mapper)
         {
             this.userApproverRepository = userApproverRepository;
