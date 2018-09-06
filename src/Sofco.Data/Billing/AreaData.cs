@@ -4,7 +4,8 @@ using System.Linq;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL.Common;
+using Sofco.Core.DAL;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Data.Billing
@@ -17,21 +18,21 @@ namespace Sofco.Data.Billing
 
         private readonly ICacheManager cacheManager;
 
-        private readonly IUtilsRepository utilsRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly IUserData userData;
 
-        public AreaData(ICacheManager cacheManager, IUtilsRepository utilsRepository, IUserData userData)
+        public AreaData(ICacheManager cacheManager, IUnitOfWork unitOfWork, IUserData userData)
         {
             this.cacheManager = cacheManager;
-            this.utilsRepository = utilsRepository;
+            this.unitOfWork = unitOfWork;
             this.userData = userData;
         }
 
         public IList<Area> GetAll()
         {
             return cacheManager.GetHashList(CacheKey,
-                () => utilsRepository.GetAreas(),
+                () => unitOfWork.UtilsRepository.GetAreas(),
                 x => x.Id.ToString(),
                 cacheExpire);
         }
@@ -43,11 +44,27 @@ namespace Sofco.Data.Billing
 
         public List<int> GetIdByCurrent()
         {
+            var ids = new List<int>();
+
             var currentUser = userData.GetCurrentUser();
 
-            return GetAll().Where(s => s.ResponsableUserId == currentUser.Id)
+            var delegates = unitOfWork.UserDelegateRepository.GetByUserIdAndType(currentUser.Id, UserDelegateType.PurchaseOrderApprovalCommercial);
+
+            if (delegates.Any())
+            {
+                foreach (var userDelegate in delegates)
+                {
+                    ids.AddRange(GetAll().Where(s => s.ResponsableUserId == userDelegate.SourceId.GetValueOrDefault())
+                        .Select(s => s.Id)
+                        .ToList());
+                }
+            }
+
+            ids.AddRange(GetAll().Where(s => s.ResponsableUserId == currentUser.Id)
                 .Select(s => s.Id)
-                .ToList();
+                .ToList());
+
+            return ids.Distinct().ToList();
         }
     }
 }
