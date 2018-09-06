@@ -4,7 +4,7 @@ namespace Sofco.Repository.Rh.Settings
 {
     public class RhSetting
     {
-        public static DateTime TigerDateTimeMinValue = new DateTime(1900, 1, 1, 0, 0, 0);
+        public static DateTime TigerDateTimeMinValue { get; } = new DateTime(1900, 1, 1, 0, 0, 0);
 
         public string TigerSchema { get; set; }
 
