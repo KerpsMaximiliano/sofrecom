@@ -19,18 +19,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             this.service = service;
         }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var response = service.GetAll();
-
-            return this.CreateResponse(response);
-        }
-
         [HttpPost]
-        public IActionResult Post([FromBody]List<WorkTimeApprovalModel> workTimeApprovals)
+        public IActionResult Post([FromBody]List<UserApproverModel> model)
         {
-            var response = service.Save(workTimeApprovals);
+            var response = service.Save(model);
 
             return this.CreateResponse(response);
         }
@@ -52,7 +44,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             {
                 response = service.Delete(id);
 
-                if(response.HasErrors()) break;
+                if (response.HasErrors())
+                    break;
             }
 
             return this.CreateResponse(response);

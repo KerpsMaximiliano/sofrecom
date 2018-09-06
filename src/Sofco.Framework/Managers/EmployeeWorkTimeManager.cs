@@ -92,13 +92,13 @@ namespace Sofco.Framework.Managers
 
         private List<WorkTimeApprovalEmployee> ResolveApprovalUser(List<WorkTimeApprovalEmployee> data)
         {
-            var userIds = data.Where(s => s.WorkTimeApproval != null).Select(s => s.WorkTimeApproval.ApprovalUserId).Distinct().ToList();
+            var userIds = data.Where(s => s.UserApprover != null).Select(s => s.UserApprover.ApproverUserId).Distinct().ToList();
 
             var userNames = userIds.Select(x => userData.GetUserLiteById(x)).ToList();
 
-            foreach (var item in data.Where(s => s.WorkTimeApproval != null))
+            foreach (var item in data.Where(s => s.UserApprover != null))
             {
-                var approvalUser = userNames.FirstOrDefault(s => s.Id == item.WorkTimeApproval.ApprovalUserId);
+                var approvalUser = userNames.FirstOrDefault(s => s.Id == item.UserApprover.ApproverUserId);
                 if (approvalUser == null) continue;
                 item.ApprovalName = approvalUser.Name;
             }

@@ -7,6 +7,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
@@ -40,7 +41,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(where)
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
-                .GroupJoin(context.WorkTimeApprovals.ToList(),
+                .GroupJoin(context.UserApprovers.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -48,8 +49,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (query.ApprovalId > 0)
             {
                 result = result.Where(s =>
-                    s.WorkTimeApproval != null 
-                    && s.WorkTimeApproval.ApprovalUserId == query.ApprovalId);
+                    s.UserApprover != null 
+                    && s.UserApprover.ApproverUserId == query.ApprovalId);
             }
 
             return result.ToList();
@@ -67,7 +68,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
                 .GroupJoin(
-                    context.WorkTimeApprovals.ToList(),
+                    context.UserApprovers.ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -75,13 +76,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (approvalId > 0)
             {
                 result = result.Where(s =>
-                    s.WorkTimeApproval != null && s.WorkTimeApproval.ApprovalUserId == approvalId);
+                    s.UserApprover != null && s.UserApprover.ApproverUserId == approvalId);
             }
 
             return result.ToList();
         }
 
-        public WorkTimeApprovalEmployee Translate(Employee employee, IEnumerable<WorkTimeApproval> workTimeApprovals)
+        public WorkTimeApprovalEmployee Translate(Employee employee, IEnumerable<UserApprover> userApprovers)
         {
             var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
             if (parameter.AnalyticId > 0)
@@ -90,7 +91,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     s.AnalyticId == parameter.AnalyticId && s.StartDate >= DateTime.UtcNow);
             }
 
-            var firstWorkTimeApproval = workTimeApprovals.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
+            var firstUserApprover = userApprovers.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
 
             return new WorkTimeApprovalEmployee
             {
@@ -99,10 +100,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Client = allocation?.Analytic?.ClientExternalName,
                 Service = allocation?.Analytic?.Service,
                 ManagerId = allocation?.Analytic?.ManagerId,
-                ApprovalName = firstWorkTimeApproval?.ApprovalUser?.Name,
+                ApprovalName = firstUserApprover?.ApproverUser?.Name,
                 ClientId = allocation?.Analytic?.ClientExternalId,
                 AnalyticId = allocation?.AnalyticId,
-                WorkTimeApproval = firstWorkTimeApproval
+                UserApprover = firstUserApprover
             };
         }
     }

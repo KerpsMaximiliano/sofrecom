@@ -69,10 +69,13 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Where(x => x.Status == WorkTimeStatus.Sent && x.Analytic.ManagerId == currentUserId);
 
             IQueryable<WorkTime> query2 = from worktime in context.WorkTimes
-                                          from worktimeApproval in context.WorkTimeApprovals
-                                          where worktime.EmployeeId == worktimeApproval.EmployeeId &&
-                                                worktimeApproval.ApprovalUserId == currentUserId &&
-                                                worktime.Status == WorkTimeStatus.Sent
+                                          from userApprover in context.UserApprovers
+                                          where 
+                                            worktime.EmployeeId == userApprover.EmployeeId
+                                            && worktime.Status == WorkTimeStatus.Sent
+                                            && userApprover.ApproverUserId == currentUserId
+                                            && userApprover.AnalyticId == worktime.AnalyticId 
+                                            && userApprover.Type == UserApproverType.WorkTime
                                           select worktime;
 
             query2 = query2.Include(x => x.Employee)

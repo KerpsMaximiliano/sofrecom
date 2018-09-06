@@ -111,7 +111,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     setAnalyticSelect() {
-        const data = this.mapToSelect(this.analytics, this.model);
+        const data = this.mapToSelect(this.analytics);
         const self = this;
 
         $('#analyticsControl').select2({
@@ -131,7 +131,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         });
     }
 
-    mapToSelect(data: Array<any>, selectedOption: string): Array<any> {
+    mapToSelect(data: Array<any>): Array<any> {
         const result = new Array<any>();
         result.push({id: this.nullId, text: ''});
         data.forEach(s => {
@@ -147,7 +147,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
 
     updateApproverUserControl() {
         const options = $('#userApprovalControl').data('select2').options.options;
-        options.data = this.mapToSelect(this.approvers, this.model);
+        options.data = this.mapToSelect(this.approvers);
         $('#userApprovalControl').empty().select2(options);
     }
 
@@ -184,7 +184,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     initUserControl() {
-        const data = this.mapToSelect(this.users, this.model);
+        const data = this.mapToSelect(this.users);
         const self = this;
 
         $('#userControl').select2({
@@ -215,7 +215,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     showDelete(item): boolean {
-        return item.workTimeApproval != null;
+        return item.userApprover != null;
     }
 
     initTable() {
@@ -245,7 +245,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
         const adds = this.workTimeApprovals.filter(x => x.checked);
         const self = this;
         adds.forEach(x => {
-            x.approvalUserId = self.userId;
+            x.approverUserId = self.userId;
         });
     }
 
@@ -255,7 +255,7 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     processDelete() {
-        const id = this.itemSelected.workTimeApproval.id;
+        const id = this.itemSelected.userApprover.id;
         this.confirmModal.hide();
 
         this.subscription = this.workTimeApprovalDelegateService.delete(id).subscribe(response => {
@@ -264,9 +264,9 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     processDeleteAll(){
-        var selecteds = this.workTimeApprovals.filter(item => item.checked);
-        var ids = selecteds.map(x => x.workTimeApproval.id);
-        
+        const selecteds = this.workTimeApprovals.filter(item => item.checked);
+        const ids = selecteds.map(x => x.userApprover.id);
+
         this.subscription = this.workTimeApprovalDelegateService.deleteAll(ids).subscribe(response => {
             this.confirmModal2.hide();
             this.getWorkTimeApprovals();
@@ -291,10 +291,10 @@ export class WorkTimeApprovalDelegateComponent implements OnInit, OnDestroy {
     }
 
     deleteAllEnable(){
-        var selecteds = this.workTimeApprovals.filter(item => item.checked);
+        const selecteds = this.workTimeApprovals.filter(item => item.checked);
 
         if(selecteds.length == 0) return false;
 
-        return selecteds.every(item => item.workTimeApproval != null);
+        return selecteds.every(item => item.userApprover != null);
     }
 }

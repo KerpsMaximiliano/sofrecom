@@ -85,6 +85,8 @@ namespace Sofco.DAL
         // Common
         public DbSet<File> Files { get; set; }
 
+        public DbSet<UserApprover> UserApprovers { get; set; }
+
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Currency> Currencies { get; set; }

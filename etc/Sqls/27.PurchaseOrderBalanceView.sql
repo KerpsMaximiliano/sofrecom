@@ -14,7 +14,9 @@ SELECT
 	poad.Adjustment,
 	po.Status,
 	po.ReceptionDate,
-	IIF(poad.AdjustmentBalance IS NULL, poad.Ammount - SUM(hit.Total), poad.AdjustmentBalance)
+	IIF(poad.AdjustmentBalance IS NULL, 
+		poad.Ammount - SUM(IIF(hit.Total IS NULL, 0, hit.Total))
+		, poad.AdjustmentBalance)
 	 as Balance,
 	STRING_AGG(an.Id, ';') as AnalyticIds,
 	STRING_AGG(an.ManagerId, ';') as ManagerIds,

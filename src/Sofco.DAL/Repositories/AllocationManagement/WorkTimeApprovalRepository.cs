@@ -47,7 +47,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public List<Analytic> GetByAnalyticApproval(int currentUserId)
         {
-            return context.WorkTimeApprovals.Include(x => x.Analytic).Where(x => x.ApprovalUserId == currentUserId && x.Analytic.Status == AnalyticStatus.Open)
+            return context.WorkTimeApprovals.Include(x => x.Analytic)
+                .Where(x => x.ApprovalUserId == currentUserId 
+                    && x.Analytic.Status == AnalyticStatus.Open)
                 .Select(x => x.Analytic).Distinct().ToList();
         }
 

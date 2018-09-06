@@ -8,10 +8,6 @@ namespace Sofco.Service.MapProfiles
     {
         public WorkTimeMapProfile()
         {
-            CreateMap<WorkTimeApprovalModel, WorkTimeApproval>();
-
-            CreateMap<WorkTimeApproval, WorkTimeApprovalModel>();
-
             CreateMap<WorkTimeApprovalEmployee, WorkTimeApprovalEmployeeModel>();
 
             CreateMap<WorkTime, WorkTimeControlResourceDetailModel>()

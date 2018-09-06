@@ -1,4 +1,6 @@
-﻿namespace Sofco.Domain.Models.WorkTimeManagement
+﻿using Sofco.Domain.Models.Common;
+
+namespace Sofco.Domain.Models.WorkTimeManagement
 {
     public class WorkTimeApprovalEmployee
     {
@@ -22,6 +24,6 @@
 
         public string ApprovalName { get; set; }
 
-        public WorkTimeApproval WorkTimeApproval { get; set; }
+        public UserApprover UserApprover { get; set; }
     }
 }

@@ -22,6 +22,6 @@
 
         public string ApprovalName { get; set; }
 
-        public WorkTimeApprovalModel WorkTimeApproval { get; set; }
+        public UserApproverModel UserApprover { get; set; }
     }
 }
