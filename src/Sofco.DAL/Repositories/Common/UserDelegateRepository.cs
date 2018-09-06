@@ -94,6 +94,13 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public IList<UserDelegate> GetByUserIdAndType(int currentUserId, UserDelegateType type)
+        {
+            return UserDelegateSet
+                .Where(s => s.Type == type && s.UserId == currentUserId)
+                .ToList();
+        }
+
         private UserDelegate GetStored(UserDelegate userDelegate)
         {
             if (userDelegate.Type == UserDelegateType.Solfac

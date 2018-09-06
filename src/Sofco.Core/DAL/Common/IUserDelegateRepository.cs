@@ -23,5 +23,7 @@ namespace Sofco.Core.DAL.Common
         List<UserDelegate> GetByTypesAndSourceId(List<UserDelegateType> types, int sourceId);
 
         List<UserDelegate> GetByTypeAndSourceId(UserDelegateType type, int sourceId);
+
+        IList<UserDelegate> GetByUserIdAndType(int currentUserId, UserDelegateType purchaseOrderApprovalOperation);
     }
 }
