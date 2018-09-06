@@ -146,7 +146,7 @@ namespace Sofco.Service.Implementations.Billing
                     {
                         var newOc = new PurchaseOrderWidgetModel {
                             PurchaseOrder = solfac.PurchaseOrder.Number,
-                            Balance = detail.AdjustmentBalance.HasValue ? detail.AdjustmentBalance.Value : detail.Balance,
+                            Balance = detail.AdjustmentBalance ?? detail.Balance,
                             Currency = detail.Currency.Text
                         };
 
