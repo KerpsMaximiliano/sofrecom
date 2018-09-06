@@ -9,8 +9,8 @@ namespace Sofco.Domain.DTO
         public string Comment { get; set; }
         public string InvoiceCode { get; set; }
         public int UserId { get; set; }
-        public DateTime? InvoiceDate;
-        public DateTime? CashedDate;
+        public DateTime? InvoiceDate { get; set; }
+        public DateTime? CashedDate { get; set; }
 
         public SolfacStatusParams()
         {
@@ -19,8 +19,8 @@ namespace Sofco.Domain.DTO
 
         public SolfacStatusParams(int userApplicantId, SolfacStatus pendingByManagementControl)
         {
-            this.UserId = userApplicantId;
-            this.Status = pendingByManagementControl;
+            UserId = userApplicantId;
+            Status = pendingByManagementControl;
         }
     }
 }
