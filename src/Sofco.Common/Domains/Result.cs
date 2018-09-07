@@ -6,7 +6,7 @@ namespace Sofco.Common.Domains
 {
     public class Result
     {
-        public readonly List<ResultError> Errors;
+        public List<ResultError> Errors { get; set; }
 
         public object ResultData { get; set; }
 
