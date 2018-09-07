@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Service.MapProfiles
