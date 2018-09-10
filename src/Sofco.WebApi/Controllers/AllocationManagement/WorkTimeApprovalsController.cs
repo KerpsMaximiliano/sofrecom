@@ -52,7 +52,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             {
                 response = service.Delete(id);
 
-                if(response.HasErrors()) break;
+                if (response.HasErrors())
+                    break;
             }
 
             return this.CreateResponse(response);
