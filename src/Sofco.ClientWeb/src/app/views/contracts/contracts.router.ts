@@ -9,6 +9,7 @@ import { ListCostCenterComponent } from "./cost-center/list/list-cost-center.com
 import { AddCostCenterComponent } from "./cost-center/add/add-cost-center.component";
 import { EditCostCenterComponent } from "./cost-center/edit/edit-cost-center.component";
 import { AuthGuard } from "../../guards/auth.guard";
+import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -20,6 +21,7 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
         { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
     ]},
+    
     {
       path: "costCenter",
       children: [
@@ -27,7 +29,9 @@ const CONTRACTS_ROUTER: Routes = [
         { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } },
         { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } }
       ]
-    }
+    },
+
+    { path: "closeDate",  component: AddCloseDateComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CDADD" } },
 ];
 
 export const ContractsRouter = RouterModule.forChild(CONTRACTS_ROUTER);

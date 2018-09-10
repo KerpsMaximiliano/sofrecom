@@ -123,7 +123,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(GetStatuses());
         }
 
-
         [HttpPut("{id}/adjustment")]
         public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
         {

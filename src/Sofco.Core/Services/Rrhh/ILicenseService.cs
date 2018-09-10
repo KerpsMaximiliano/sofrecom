@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;

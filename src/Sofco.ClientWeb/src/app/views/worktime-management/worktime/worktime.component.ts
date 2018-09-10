@@ -52,6 +52,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
+  public options: any = { language: 'es' }; 
+
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
@@ -70,7 +72,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private messageService: MessageService,
       private appSetting: AppSetting) {
 
-        this.editModalConfig.deleteButton = true;
+        this.editModalConfig.deleteButton = false;
         this.editModalConfig.acceptInlineButton = true;
   }
 
@@ -170,10 +172,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     $("#hoursControl").val(this.taskModel.hours);
     this.taskModel.date = moment(task.date).toDate();
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
-    if (storedTask == null) {
-      return;
+
+    if (storedTask != null) {
+      this.taskModel.categoryId = storedTask.categoryId;
     }
-    this.taskModel.categoryId = storedTask.categoryId;
+    
     this.showEditModal(false);
   }
 
@@ -268,18 +271,20 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
     if (isNew) {
       this.taskModel = new WorkTimeTaskModel();
+      this.editModalConfig.acceptInlineButton = true;
     } else {
       this.updateModalTaskCombo();
-      if (this.taskModel.status !== this.draftStatus
-        && this.taskModel.status !== this.rejectedStatus) {
+
+      if (this.taskModel.status !== this.draftStatus && this.taskModel.status !== this.rejectedStatus) {
         this.editModalConfig.acceptInlineButton = false;
         this.editModalConfig.cancelButtonText = 'ACTIONS.close';
         $("#hoursControl").prop('disabled', true);
       }
     }
+
     this.showSaveTask();
 
-    this.editModalConfig.deleteButton = true;
+    this.editModalConfig.deleteButton = !isNew;
 
     this.editModal.show();
   }

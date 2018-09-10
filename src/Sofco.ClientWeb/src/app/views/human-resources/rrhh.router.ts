@@ -13,7 +13,7 @@ const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
 
     { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
-
+    
     {
         path: "licenses",
         children: [

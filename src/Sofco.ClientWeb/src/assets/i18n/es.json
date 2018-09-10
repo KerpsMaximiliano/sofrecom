@@ -755,6 +755,11 @@
                 "viewTitle": "Delegar Aprobación Licencia",
                 "delegateAction": "Delegar"
             }
+        },
+        "closeDate": {
+            "title": "Fechas de Cierre",
+            "period": "Periodo",
+            "closeDay": "Dia de Cierre"
         }
     },
     "ACTIONS":{

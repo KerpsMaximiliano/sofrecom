@@ -80,6 +80,7 @@ namespace Sofco.DAL
         #region HumanResource
 
         private ILicenseRepository licenseRepository;
+        private ICloseDateRepository closeDateRepository;
 
         #endregion
 
@@ -164,6 +165,7 @@ namespace Sofco.DAL
         #region HumanResource
 
         public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
+        public ICloseDateRepository CloseDateRepository => closeDateRepository ?? (closeDateRepository = new CloseDateRepository(context));
 
         #endregion
 

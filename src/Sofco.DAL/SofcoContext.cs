@@ -80,6 +80,7 @@ namespace Sofco.DAL
         // Human Resources
         public DbSet<License> Licenses { get; set; }
         public DbSet<LicenseHistory> LicenseHistories { get; set; }
+        public DbSet<CloseDate> CloseDates { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }
@@ -147,6 +148,7 @@ namespace Sofco.DAL
             builder.MapCustomer();
             builder.MapService();
             builder.MapProject();
+            builder.MapCloseDate();
         }
     }
 }

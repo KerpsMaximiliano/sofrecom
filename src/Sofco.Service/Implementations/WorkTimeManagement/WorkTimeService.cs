@@ -299,14 +299,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     anySuccess = true;
             }
 
+            if (anySuccess && anyError)
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.ApprovedWithSomeErrors);
+            }
+
             if (anySuccess)
             {
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApprovedSuccess);
-
-                if (anyError)
-                {
-                    response.AddWarning(Resources.WorkTimeManagement.WorkTime.ApprovedWithSomeErrors);
-                }
             }
             else
             {
@@ -539,14 +539,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     anySuccess = true;
             }
 
+            if (anySuccess && anyError)
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.RejectedWithSomeErrors);
+            }
+
             if (anySuccess)
             {
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
-
-                if (anyError)
-                {
-                    response.AddWarning(Resources.WorkTimeManagement.WorkTime.RejectedWithSomeErrors);
-                }
             }
             else
             {

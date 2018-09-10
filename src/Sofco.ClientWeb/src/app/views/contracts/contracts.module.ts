@@ -34,12 +34,14 @@ import { CustomerService } from '../../services/billing/customer.service';
 import { ServiceService } from '../../services/billing/service.service';
 import { AllocationAssingTableModule } from '../allocation-management/allocation/allocation-assignment-table/alloc-assing-table.module';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
+import { AddCloseDateComponent } from 'app/views/contracts/closeDates/add/closeDate-add.component';
+import { CloseDateService } from 'app/services/human-resources/closeDate.service';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent,
     EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent, ResourceByAnalyticComponent,
-    ResourceTimelineComponent
+    ResourceTimelineComponent, AddCloseDateComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,7 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
     PCheckModule,
     ContractsRouter
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService ],
   exports: [],
 })
 

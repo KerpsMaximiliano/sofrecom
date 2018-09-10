@@ -43,7 +43,7 @@ import { DateRangePickerModule } from '../../components/date-range-picker/date-r
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
-             PCheckModule, WorkTimeRouter, DateRangePickerModule],
+             PCheckModule, WorkTimeRouter, DateRangePickerModule ],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
         I18nService, WorktimeControlService],
