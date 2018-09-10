@@ -52,6 +52,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
+  public options: any = { language: 'es' }; 
+
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
