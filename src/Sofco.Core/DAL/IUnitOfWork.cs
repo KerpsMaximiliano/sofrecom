@@ -60,6 +60,7 @@ namespace Sofco.Core.DAL
         #region HumanResources
 
         ILicenseRepository LicenseRepository { get; }
+        ICloseDateRepository CloseDateRepository { get; }
 
         #endregion
 
