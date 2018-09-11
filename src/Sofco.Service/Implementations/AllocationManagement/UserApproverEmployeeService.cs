@@ -11,19 +11,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
 {
     public class UserApproverEmployeeService : IUserApproverEmployeeService
     {
-        private readonly IEmployeeWorkTimeManager employeeWorkTimeManager;
+        private readonly IApproverEmployeeManager approverEmployeeManager;
 
         private readonly IMapper mapper;
 
-        public UserApproverEmployeeService(IEmployeeWorkTimeManager employeeWorkTimeManager, IMapper mapper)
+        public UserApproverEmployeeService(IApproverEmployeeManager approverEmployeeManager, IMapper mapper)
         {
-            this.employeeWorkTimeManager = employeeWorkTimeManager;
+            this.approverEmployeeManager = approverEmployeeManager;
             this.mapper = mapper;
         }
 
         public Response<List<UserApproverEmployeeModel>> Get(UserApproverQuery query, UserApproverType type)
         {
-            var employees = employeeWorkTimeManager.GetByCurrentServices(query, type);
+            var employees = approverEmployeeManager.GetByCurrentServices(query, type);
 
             return new Response<List<UserApproverEmployeeModel>>{ Data = Translate(employees) };
         }

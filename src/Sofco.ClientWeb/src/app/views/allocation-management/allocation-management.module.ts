@@ -20,7 +20,7 @@ import { AllocationReportComponent } from './allocation/report/allocation-report
 import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
 import { WorkTimeApprovalDelegateComponent } from './worktime/worktime-approval-delegate/worktime-approval-delegate.component';
-import { WorkTimeApprovalDelegateService } from '../../services/allocation-management/worktime-approval-delegate.service';
+import { WorkTimeApproversDelegateService } from '../../services/allocation-management/worktime-approvers-delegate.service';
 import { AllocationRouter } from './allocation-management.router';
 import { CategoryService } from '../../services/admin/category.service';
 import { LicenseService } from '../../services/human-resources/licenses.service';
@@ -30,6 +30,7 @@ import { ResourceDetailModule } from './resources/detail/resource-detail.module'
 import { AllocationAssingTableModule } from './allocation/allocation-assignment-table/alloc-assing-table.module';
 import { ExternalUserComponent } from 'app/views/human-resources/external-user/external-user.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
+import { ApproversComponent } from '../common/approvers/approvers.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
     ResourceSearchComponent, 
     AllocationReportComponent,
     WorkTimeApprovalDelegateComponent,
-    ExternalUserComponent
+    ExternalUserComponent,
+    ApproversComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,7 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
     PCheckModule,
     AllocationRouter
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApprovalDelegateService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApproversDelegateService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
 
   exports: [],
 })

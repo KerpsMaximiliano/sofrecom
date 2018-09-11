@@ -5,7 +5,7 @@ using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.Managers
 {
-    public interface IEmployeeWorkTimeManager
+    public interface IApproverEmployeeManager
     {
         List<UserApproverEmployee> GetByCurrentServices(UserApproverQuery query, UserApproverType type);
     }

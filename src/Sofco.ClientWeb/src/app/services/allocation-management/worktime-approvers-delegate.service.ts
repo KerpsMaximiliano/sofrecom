@@ -3,11 +3,11 @@ import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class WorkTimeApprovalDelegateService {
+export class WorkTimeApproversDelegateService {
   private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {
-    this.apiUrl = `${this.service.UrlApi}/workTimeApprovals`;
+    this.apiUrl = `${this.service.UrlApi}/workTimeApprovers`;
   }
 
   save(model) {
@@ -19,7 +19,7 @@ export class WorkTimeApprovalDelegateService {
   }
 
   getApprovals(analyticId) {
-    return this.http.get<any>(this.apiUrl + `/approvers?analyticId=${analyticId}`);
+    return this.http.get<any>(this.apiUrl + `?analyticId=${analyticId}`);
   }
 
   delete(id: number) {

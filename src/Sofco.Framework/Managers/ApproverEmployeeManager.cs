@@ -4,7 +4,6 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -13,7 +12,7 @@ using Sofco.Domain.Models.Common;
 
 namespace Sofco.Framework.Managers
 {
-    public class EmployeeWorkTimeManager : IEmployeeWorkTimeManager
+    public class ApproverEmployeeManager : IApproverEmployeeManager
     {
         private readonly IUserApproverEmployeeRepository repository;
 
@@ -25,7 +24,7 @@ namespace Sofco.Framework.Managers
 
         private readonly ISessionManager sessionManager;
 
-        public EmployeeWorkTimeManager(ISessionManager sessionManager, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
+        public ApproverEmployeeManager(ISessionManager sessionManager, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
         {
             this.sessionManager = sessionManager;
             this.repository = repository;
