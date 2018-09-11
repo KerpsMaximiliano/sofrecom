@@ -8,6 +8,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
@@ -52,11 +53,11 @@ namespace Sofco.Framework.FileManager
         public void Import(int analyticId, MemoryStream memoryStream, Response<IList<WorkTimeImportResult>> response)
         {
             var settingHour = unitOfWork.SettingRepository.GetByKey("WorkingHoursPerDaysMax");
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey("CloseMonth");
-
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+             
             TaskIds = unitOfWork.TaskRepository.GetAllIds();
             Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analyticId);
-            FillHolidays(settingCloseMonth);
+            FillHolidays(closeDates);
             RowsAdded = 0;
          
             response.Data = new List<WorkTimeImportResult>();
@@ -304,21 +305,12 @@ namespace Sofco.Framework.FileManager
             };
         }
 
-        private void FillHolidays(Setting settingCloseMonth)
+        private void FillHolidays(CloseDatesSettings closeDatesSettings)
         {
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
+            var period = closeDatesSettings.GetPeriodIncludeDays();
 
-            if (now.Day > closeMonthValue)
-            {
-                DateFrom = new DateTime(now.Year, now.Month, closeMonthValue + 1);
-                DateTo = new DateTime(now.Year, now.Month + 1, closeMonthValue);
-            }
-            else
-            {
-                DateFrom = new DateTime(now.Year, now.Month - 1, closeMonthValue + 1);
-                DateTo = new DateTime(now.Year, now.Month, closeMonthValue);
-            }
+            DateFrom = period.Item1;
+            DateTo = period.Item2;
 
             Holidays = unitOfWork.HolidayRepository.Get(DateFrom.Year, DateFrom.Month);
 

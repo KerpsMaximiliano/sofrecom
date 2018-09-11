@@ -84,7 +84,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         private MailDefaultData CreateMailSuccess(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcOperativeMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcOperativeMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", GetAnalyticsBody(purchaseOrder));
 
             var recipients = recipientManager.GetRecipientsDaf();
 
@@ -108,7 +108,8 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
                 ocText,
                 AreaDescription,
                 comments,
-                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}");
+                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}",
+                GetAnalyticsBody(purchaseOrder));
 
             var recipients = recipientManager.GetRejectOperation(purchaseOrder);
 
@@ -120,6 +121,20 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             };
 
             return data;
+        }
+
+        private string GetAnalyticsBody(Domain.Models.Billing.PurchaseOrder purchaseOrder)
+        {
+            var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
+
+            var analyticsForBody = string.Empty;
+
+            foreach (var analytic in analytics)
+            {
+                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Title} - {analytic.Name} <br/>");
+            }
+
+            return analyticsForBody;
         }
     }
 }
