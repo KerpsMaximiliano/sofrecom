@@ -18,7 +18,7 @@ export const ROUTES:Routes = [
       { path: 'inicio', component: StarterViewComponent, canActivate: [AuthGuard] }
     ]
   },
-  
+
   {
     path: '', component: BlankLayoutComponent,
     children: [

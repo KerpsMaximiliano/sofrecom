@@ -6,8 +6,10 @@ import { I18nService } from '../../../services/common/i18n.service';
 import { DataTableService } from '../../../services/common/datatable.service';
 import { MessageService } from '../../../services/common/message.service';
 import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
-import { WorkTimeApproversDelegateService } from '../../../services/allocation-management/worktime-approvers-delegate.service';
+import { WorkTimeApproverService } from '../../../services/allocation-management/worktime-approver.service';
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
+import { UserApproverType } from 'app/models/enums/userApproverType';
+import { LicenseApproverService } from '../../../services/allocation-management/license-approver.service';
 declare var $: any;
 
 @Component({
@@ -21,8 +23,10 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
+    private approversService: any;
+
     @Input()
-    public model: any;
+    public type: UserApproverType;
 
     private idKey = 'id';
     private textKey = 'text';
@@ -62,7 +66,8 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal2') confirmModal2;
 
-    constructor(private approversService: WorkTimeApproversDelegateService,
+    constructor(private workTimeApproversService: WorkTimeApproverService,
+        private licenseApproversService: LicenseApproverService,
         private analyticService: AnalyticService,
         private usersService: UserService,
         private dataTableService: DataTableService,
@@ -72,10 +77,21 @@ export class ApproversComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.setApproversService();
         this.getAnalytics();
         this.initApproverUserControl();
         this.getUsers();
         this.getData();
+    }
+
+    setApproversService() {
+        this.approversService = this.workTimeApproversService;
+        if(this.type === UserApproverType.WorkTime) {
+            this.approversService = this.workTimeApproversService;
+        }
+        if(this.type === UserApproverType.License) {
+            this.approversService = this.licenseApproversService;
+        }
     }
 
     ngOnDestroy() {

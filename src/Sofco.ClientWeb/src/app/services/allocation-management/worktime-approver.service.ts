@@ -3,7 +3,7 @@ import { Service } from '../common/service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class WorkTimeApproversDelegateService {
+export class WorkTimeApproverService {
   private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {

@@ -1,11 +1,11 @@
 import { Component, Input, OnInit  } from '@angular/core';
 
 @Component({
-    selector: 'app-worktime-approval-delegate',
-    templateUrl: './worktime-approval-delegate.component.html'
+    selector: 'app-worktime-approver',
+    templateUrl: './worktime-approver.component.html'
   })
 
-export class WorkTimeApprovalDelegateComponent implements OnInit {
+export class WorkTimeApproverComponent implements OnInit {
 
     @Input()
     public model: any;

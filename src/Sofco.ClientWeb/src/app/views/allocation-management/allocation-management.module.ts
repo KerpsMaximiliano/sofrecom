@@ -19,8 +19,7 @@ import { PCheckModule } from '../../components/pcheck/pcheck.module';
 import { AllocationReportComponent } from './allocation/report/allocation-report.component';
 import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
-import { WorkTimeApprovalDelegateComponent } from './worktime/worktime-approval-delegate/worktime-approval-delegate.component';
-import { WorkTimeApproversDelegateService } from '../../services/allocation-management/worktime-approvers-delegate.service';
+import { WorkTimeApproverComponent } from './worktime/worktime-approval-delegate/worktime-approver.component';
 import { AllocationRouter } from './allocation-management.router';
 import { CategoryService } from '../../services/admin/category.service';
 import { LicenseService } from '../../services/human-resources/licenses.service';
@@ -30,16 +29,15 @@ import { ResourceDetailModule } from './resources/detail/resource-detail.module'
 import { AllocationAssingTableModule } from './allocation/allocation-assignment-table/alloc-assing-table.module';
 import { ExternalUserComponent } from 'app/views/human-resources/external-user/external-user.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
-import { ApproversComponent } from '../common/approvers/approvers.component';
+import { ApproversModule } from '../common/approvers/approvers.module';
 
 @NgModule({
   declarations: [
     AddAllocationByResourceComponent,
     ResourceSearchComponent, 
     AllocationReportComponent,
-    WorkTimeApprovalDelegateComponent,
-    ExternalUserComponent,
-    ApproversComponent
+    WorkTimeApproverComponent,
+    ExternalUserComponent
   ],
   imports: [
     CommonModule,
@@ -59,9 +57,10 @@ import { ApproversComponent } from '../common/approvers/approvers.component';
     NumbersOnlyModule,
     Ng2ModalModule,
     PCheckModule,
-    AllocationRouter
+    AllocationRouter,
+    ApproversModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApproversDelegateService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
 
   exports: [],
 })
