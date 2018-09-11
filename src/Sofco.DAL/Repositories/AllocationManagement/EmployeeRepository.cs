@@ -63,6 +63,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 query = query.Where(x => x.EndDate == null);
             }
 
+            query = query.Where(x => x.IsExternal == parameters.ExternalOnly);
+
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
 
