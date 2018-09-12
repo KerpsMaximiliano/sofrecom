@@ -71,7 +71,6 @@ namespace Sofco.DAL
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
-        public DbSet<WorkTimeApproval> WorkTimeApprovals { get; set; }
 
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
@@ -85,6 +84,8 @@ namespace Sofco.DAL
 
         // Common
         public DbSet<File> Files { get; set; }
+
+        public DbSet<UserApprover> UserApprovers { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -138,7 +139,6 @@ namespace Sofco.DAL
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();
-            builder.MapWorkTimeApproval();
             builder.MapCategory();
             builder.MapTasks();
             builder.MapEmployeeCategory();

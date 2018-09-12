@@ -35,6 +35,14 @@
     <Compile Remove="Migrations\20180723204800_EmployeeProfileHistory.Designer.cs" />
     <Compile Remove="Migrations\20180822132641_PurchaseOrderAdjustmentBalance.cs" />
     <Compile Remove="Migrations\20180822132641_PurchaseOrderAdjustmentBalance.Designer.cs" />
+    <Compile Remove="Migrations\20180905203346_UserApprover.cs" />
+    <Compile Remove="Migrations\20180905203346_UserApprover.Designer.cs" />
+    <Compile Remove="Migrations\20180906125305_UserApprover.cs" />
+    <Compile Remove="Migrations\20180906125305_UserApprover.Designer.cs" />
+    <Compile Remove="Migrations\20180906125928_UserApprover.cs" />
+    <Compile Remove="Migrations\20180906125928_UserApprover.Designer.cs" />
+    <Compile Remove="Migrations\20180906130104_UserApprover.cs" />
+    <Compile Remove="Migrations\20180906130104_UserApprover.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

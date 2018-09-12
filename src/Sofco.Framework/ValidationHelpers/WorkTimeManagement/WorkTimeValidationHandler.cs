@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Domain;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
@@ -153,7 +154,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
 
         private static Tuple<DateTime, DateTime> GetPeriod(IUnitOfWork unitOfWork)
         {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
+            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
 
             var now = DateTime.Now.Date;
             var closeMonthValue = Convert.ToInt32(closeMonthSetting.Value);

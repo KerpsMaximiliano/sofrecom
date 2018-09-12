@@ -8,56 +8,56 @@ namespace Sofco.DAL.Repositories.Common
 {
     public class UtilsRepository : IUtilsRepository
     {
-        protected readonly SofcoContext _context;
+        protected readonly SofcoContext Context;
 
         public UtilsRepository(SofcoContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public IList<Currency> GetCurrencies()
         {
-            return _context.Currencies.ToList().AsReadOnly();
+            return Context.Currencies.ToList().AsReadOnly();
         }
 
         public IList<PaymentTerm> GetPaymentTerms()
         {
-            return _context.PaymentTerms.ToList().AsReadOnly();
+            return Context.PaymentTerms.ToList().AsReadOnly();
         }
 
         public IList<Solution> GetSolutions()
         {
-            return _context.Solutions.ToList().AsReadOnly();
+            return Context.Solutions.ToList().AsReadOnly();
         }
 
         public IList<Technology> GetTechnologies()
         {
-            return _context.Technologies.ToList().AsReadOnly();
+            return Context.Technologies.ToList().AsReadOnly();
         }
 
         public IList<Product> GetProducts()
         {
-            return _context.Products.ToList().AsReadOnly();
+            return Context.Products.ToList().AsReadOnly();
         }
 
         public IList<ClientGroup> GetClientGroups()
         {
-            return _context.ClientGroups.ToList().AsReadOnly();
+            return Context.ClientGroups.ToList().AsReadOnly();
         }
 
         public IList<PurchaseOrderOptions> GetPurchaseOrderOptions()
         {
-            return _context.PurchaseOrderOptions.ToList().AsReadOnly();
+            return Context.PurchaseOrderOptions.ToList().AsReadOnly();
         }
 
         public IList<ServiceType> GetServiceTypes()
         {
-            return _context.ServiceTypes.ToList().AsReadOnly();
+            return Context.ServiceTypes.ToList().AsReadOnly();
         }
 
         public IList<Sector> GetSectors()
         {
-            return _context.Sectors
+            return Context.Sectors
                 .Include(x => x.ResponsableUser)
                 .Where(x => x.Active)
                 .ToList()
@@ -66,12 +66,12 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<EmployeeEndReason> GetEmployeeTypeEndReasons()
         {
-            return _context.EmployeeEndReason.ToList().AsReadOnly();
+            return Context.EmployeeEndReason.ToList().AsReadOnly();
         }
 
         public IList<Area> GetAreas()
         {
-            return _context.Areas
+            return Context.Areas
                 .Include(x => x.ResponsableUser)
                 .Where(x => x.Active)
                 .ToList()
@@ -80,22 +80,22 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<SoftwareLaw> GetSoftwareLaws()
         {
-            return _context.SoftwareLaws.ToList().AsReadOnly();
+            return Context.SoftwareLaws.ToList().AsReadOnly();
         }
 
         public IList<DocumentType> GetDocumentTypes()
         {
-            return _context.DocumentTypes.ToList().AsReadOnly();
+            return Context.DocumentTypes.ToList().AsReadOnly();
         }
 
         public IList<ImputationNumber> GetImputationNumbers()
         {
-            return _context.ImputationNumbers.ToList().AsReadOnly();
+            return Context.ImputationNumbers.ToList().AsReadOnly();
         }
 
         public IList<Province> GetProvinces()
         {
-            return _context.Provinces.ToList().AsReadOnly();
+            return Context.Provinces.ToList().AsReadOnly();
         }
     }
 }

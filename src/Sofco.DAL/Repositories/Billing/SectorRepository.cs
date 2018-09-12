@@ -24,5 +24,15 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Sectors.Where(x => sectorIds.Contains(x.Id)).ToList();
         }
+
+        public bool HasSector(int userId)
+        {
+            return context.Sectors.Any(x => x.ResponsableUserId == userId);
+        }
+
+        public List<Sector> GetByUserId(int userId)
+        {
+            return context.Sectors.Where(x => x.ResponsableUserId == userId).ToList();
+        }
     }
 }
