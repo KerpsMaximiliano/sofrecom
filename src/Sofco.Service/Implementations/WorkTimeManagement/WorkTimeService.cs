@@ -237,7 +237,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var currentUser = userData.GetCurrentUser();
             var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
-            var analyticsByDelegates = unitOfWork.WorkTimeApprovalRepository.GetByAnalyticApproval(currentUser.Id);
+            var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
 
             var list = analyticsByManagers.Select(x => new Option {Id = x.Id, Text = $"{x.Title} - {x.Name}"}).ToList();
 
@@ -371,7 +371,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 foreach (var manager in managers)
                 {
-                    var delegates = unitOfWork.WorkTimeApprovalRepository.GetByUserId(manager.Id);
+                    var delegates = unitOfWork.UserApproverRepository.GetByUserId(manager.Id, UserApproverType.WorkTime);
 
                     mails.AddRange(delegates.Select(x => x.Email));
                 }

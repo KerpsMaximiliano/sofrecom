@@ -7,6 +7,11 @@ namespace Sofco.Core.DAL.Billing
     public interface ISectorRepository : IBaseRepository<Sector>
     {
         new List<Sector> GetAll();
+
         IList<Sector> Get(IList<int> sectorIds);
+
+        bool HasSector(int userId);
+
+        List<Sector> GetByUserId(int userId);
     }
 }

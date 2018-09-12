@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -10,6 +9,7 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Domain;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
@@ -52,8 +52,9 @@ namespace Sofco.Framework.FileManager
 
         public void Import(int analyticId, MemoryStream memoryStream, Response<IList<WorkTimeImportResult>> response)
         {
-            var settingHour = unitOfWork.SettingRepository.GetByKey("WorkingHoursPerDaysMax");
+            var settingHour = unitOfWork.SettingRepository.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
              
             TaskIds = unitOfWork.TaskRepository.GetAllIds();
             Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analyticId);

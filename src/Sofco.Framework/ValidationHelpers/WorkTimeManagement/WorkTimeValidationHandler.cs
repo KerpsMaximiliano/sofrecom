@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Domain;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;

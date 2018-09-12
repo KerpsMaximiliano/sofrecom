@@ -6,22 +6,20 @@ import { LicenseListRrhh } from "./licenses/license-dahsboard-rrhh/license-list-
 import { LicenseListManager } from "./licenses/license-list-manager/license-list-manager.component";
 import { LicenseDetailComponent } from "./licenses/detail/license-detail.component";
 import { NewsComponent } from "./news/news.component";
-import { LicenseViewDelegateComponent } from "./licenses/license-view/license-view-delegate/license-view-delegate.component";
-import { LicenseViewDelegateEditComponent } from "./licenses/license-view/license-view-delegate/edit/license-view-delegate-edit.component";
+import { LicenseDelegateComponent } from "./licenses/license-delegate/license-delegate.component";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
 
     { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
-    
+
     {
         path: "licenses",
         children: [
           { path: "add", component: AddLicenseComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "PROFI", functionality: "ALTA" } } ,
           { path: "", component: LicenseListRrhh, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "QUERY" } },
           { path: "managers", component: LicenseListManager, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "AUTH" } },
-          { path: "views/delegates", component: LicenseViewDelegateComponent, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "LIC_VIEW_DELEGATE" } },
-          { path: "views/delegates/edit", component: LicenseViewDelegateEditComponent, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "LIC_VIEW_DELEGATE" } },
+          { path: "views/delegates", component: LicenseDelegateComponent, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "LIC_VIEW_DELEGATE" } },
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
     },
