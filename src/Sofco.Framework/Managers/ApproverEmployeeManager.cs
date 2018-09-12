@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
@@ -24,6 +25,8 @@ namespace Sofco.Framework.Managers
 
         private readonly ISessionManager sessionManager;
 
+        private Dictionary<UserApproverType, Func<UserApproverQuery, List<UserApproverEmployee>>> CurrentDirectorDicts;
+
         public ApproverEmployeeManager(ISessionManager sessionManager, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, IUserData userData, IAnalyticData analyticData)
         {
             this.sessionManager = sessionManager;
@@ -31,21 +34,16 @@ namespace Sofco.Framework.Managers
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.analyticData = analyticData;
+            SetCurrentDirectorDicts();
         }
 
         public List<UserApproverEmployee> GetByCurrentServices(UserApproverQuery query, UserApproverType type)
         {
-            var userMail = sessionManager.GetUserEmail();
+            var result = new List<UserApproverEmployee>();
 
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-
-            List<UserApproverEmployee> result;
-
-            if (isDirector)
+            if (IsDirector())
             {
-                result = ResolveApprovalUser(repository.Get(query, type));
-
-                return ResolveManagers(result);
+                return CurrentDirectorDicts.ContainsKey(type) ? CurrentDirectorDicts[type](query) : result;
             }
 
             var userName = sessionManager.GetUserName();
@@ -71,6 +69,44 @@ namespace Sofco.Framework.Managers
             }
 
             result = ResolveApprovalUser(analytics);
+
+            return ResolveManagers(result);
+        }
+
+        private bool IsDirector()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email) 
+                || unitOfWork.SectorRepository.HasSector(currentUser.Id);
+
+            return isDirector;
+        }
+
+        private void SetCurrentDirectorDicts()
+        {
+            CurrentDirectorDicts =
+                new Dictionary<UserApproverType, Func<UserApproverQuery, List<UserApproverEmployee>>>
+                {
+                    {UserApproverType.License, GetByCurrentSectorsLicense},
+                    {UserApproverType.WorkTime, GetByCurrentSectorsWorktime}
+                };
+        }
+
+        private List<UserApproverEmployee> GetByCurrentSectorsLicense(UserApproverQuery query)
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var sectorIds = unitOfWork.SectorRepository.GetByUserId(currentUser.Id).Select(s => s.Id).ToList();
+
+            var result = ResolveApprovalUser(repository.GetManagersBySectors(sectorIds, UserApproverType.License));
+
+            return ResolveManagers(result);
+        }
+
+        private List<UserApproverEmployee> GetByCurrentSectorsWorktime(UserApproverQuery query)
+        {
+            var result = ResolveApprovalUser(repository.Get(query, UserApproverType.WorkTime));
 
             return ResolveManagers(result);
         }

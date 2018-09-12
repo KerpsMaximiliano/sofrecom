@@ -6,10 +6,10 @@ import { I18nService } from '../../../services/common/i18n.service';
 import { DataTableService } from '../../../services/common/datatable.service';
 import { MessageService } from '../../../services/common/message.service';
 import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
-import { WorkTimeApproverService } from '../../../services/allocation-management/worktime-approver.service';
+import { UserApproverService } from '../../../services/allocation-management/user-approver.service';
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { UserApproverType } from 'app/models/enums/userApproverType';
-import { LicenseApproverService } from '../../../services/allocation-management/license-approver.service';
+import { MenuService } from '../../../services/admin/menu.service';
 declare var $: any;
 
 @Component({
@@ -23,7 +23,7 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    private approversService: any;
+    private directorMode = false;
 
     @Input()
     public type: UserApproverType;
@@ -66,17 +66,18 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
     @ViewChild('confirmModal2') confirmModal2;
 
-    constructor(private workTimeApproversService: WorkTimeApproverService,
-        private licenseApproversService: LicenseApproverService,
+    constructor(private approversService: UserApproverService,
         private analyticService: AnalyticService,
         private usersService: UserService,
         private dataTableService: DataTableService,
         private messageService: MessageService,
+        private menuService: MenuService,
         private i18nService: I18nService,
         private router: Router) {
     }
 
     ngOnInit() {
+        this.directorMode = this.menuService.hasSectors();
         this.setApproversService();
         this.getAnalytics();
         this.initApproverUserControl();
@@ -85,13 +86,7 @@ export class ApproversComponent implements OnInit, OnDestroy {
     }
 
     setApproversService() {
-        this.approversService = this.workTimeApproversService;
-        if(this.type === UserApproverType.WorkTime) {
-            this.approversService = this.workTimeApproversService;
-        }
-        if(this.type === UserApproverType.License) {
-            this.approversService = this.licenseApproversService;
-        }
+        this.approversService.setType(this.type);
     }
 
     ngOnDestroy() {
@@ -101,6 +96,9 @@ export class ApproversComponent implements OnInit, OnDestroy {
     }
 
     getData() {
+        if(this.type == UserApproverType.WorkTime && this.analyticId == 0){
+            return;
+        }
         this.loading = true;
         const query = {
             analyticId: this.analyticId,
@@ -166,6 +164,12 @@ export class ApproversComponent implements OnInit, OnDestroy {
         $('#userApprovalControl').empty().select2(options);
     }
 
+    updateUserControl() {
+        const options = $('#userControl').data('select2').options.options;
+        options.data = this.mapToSelect(this.users);
+        $('#userControl').empty().select2(options);
+    }
+
     getUsers(): void {
         this.subscription = this.usersService.getOptions().subscribe(res => {
             this.users = res;
@@ -229,6 +233,21 @@ export class ApproversComponent implements OnInit, OnDestroy {
         return this.userId !== null;
     }
 
+    showSelectApprovers(): boolean {
+        return this.data.filter(x => x.checked).length > 0;
+    }
+
+    showGrid(): boolean {
+        return this.analyticId > 0 || this.data.length > 0;
+    }
+
+    showFilter(): boolean {
+        if(this.type == UserApproverType.License){
+            return this.directorMode;
+        }
+        return false;
+    }
+
     showDelete(item): boolean {
         return item.userApprover != null;
     }
@@ -250,6 +269,7 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
         this.subscription = this.approversService.save(data).subscribe(response => {
             this.messageService.closeLoading();
+            this.updateUserControl();
             this.getData();
             this.getApprovers();
         },
@@ -285,7 +305,7 @@ export class ApproversComponent implements OnInit, OnDestroy {
         this.subscription = this.approversService.deleteAll(ids).subscribe(response => {
             this.confirmModal2.hide();
             this.getData();
-        }); 
+        });
     }
 
     collapse() {

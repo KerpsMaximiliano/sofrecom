@@ -128,4 +128,8 @@ export class MenuService {
         });
         return isValid;
     }
+
+    hasSectors():boolean {
+        return this.sectorIds.length > 0;
+    }
 }

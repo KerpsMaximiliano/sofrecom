@@ -40,7 +40,7 @@ namespace Sofco.DAL.Repositories.Common
                 .Where(where)
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
-                .GroupJoin(context.UserApprovers.ToList(),
+                .GroupJoin(context.UserApprovers.Where(s => s.Type == type).ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -48,8 +48,7 @@ namespace Sofco.DAL.Repositories.Common
             if (query.ApprovalId > 0)
             {
                 result = result.Where(s =>
-                    s.UserApprover != null 
-                    && s.UserApprover.ApproverUserId == query.ApprovalId);
+                    s.UserApprover != null && s.UserApprover.ApproverUserId == query.ApprovalId);
             }
 
             return result.ToList();
@@ -58,8 +57,8 @@ namespace Sofco.DAL.Repositories.Common
         public List<UserApproverEmployee> GetByAnalytics(List<int> analyticIds, int approvalId, UserApproverType type)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
-                && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId) 
-                    && x.StartDate >= DateTime.UtcNow);
+                && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId)
+                && x.StartDate >= DateTime.UtcNow);
 
             var result = context
                 .Employees
@@ -67,7 +66,7 @@ namespace Sofco.DAL.Repositories.Common
                 .Include(x => x.Allocations)
                 .ThenInclude(x => x.Analytic)
                 .GroupJoin(
-                    context.UserApprovers.ToList(),
+                    context.UserApprovers.Where(s => s.Type == type).ToList(),
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
@@ -81,6 +80,33 @@ namespace Sofco.DAL.Repositories.Common
             return result.ToList();
         }
 
+        public List<UserApproverEmployee> GetManagersBySectors(List<int> sectorIds, UserApproverType type)
+        {
+            var managerIds = context.Analytics.Where(s => sectorIds.Contains(s.SectorId) && s.ManagerId.HasValue)
+                .Select(s => s.ManagerId)
+                .Distinct()
+                .ToList();
+
+            var userEmails = context.Users.Where(s => managerIds.Contains(s.Id)).Select(s => s.Email).ToList();
+
+            Expression<Func<Employee, bool>> where = e => e.EndDate == null
+                && userEmails.Contains(e.Email)
+                && e.Allocations.Any(x => x.StartDate >= DateTime.UtcNow);
+
+            var result = context
+                .Employees
+                .Where(where)
+                .Include(x => x.Allocations)
+                .ThenInclude(x => x.Analytic)
+                .GroupJoin(
+                    context.UserApprovers.Where(s => s.Type == type).ToList(),
+                    e => e.Id,
+                    w => w.EmployeeId,
+                    Translate);
+
+            return result.ToList();
+        }
+
         public UserApproverEmployee Translate(Employee employee, IEnumerable<UserApprover> userApprovers)
         {
             var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
@@ -90,7 +116,9 @@ namespace Sofco.DAL.Repositories.Common
                     s.AnalyticId == parameter.AnalyticId && s.StartDate >= DateTime.UtcNow);
             }
 
-            var firstUserApprover = userApprovers.FirstOrDefault(s => s.AnalyticId == parameter.AnalyticId);
+            var analyticId = parameter.AnalyticId > 0 ? parameter.AnalyticId : allocation?.AnalyticId;
+
+            var firstUserApprover = userApprovers.FirstOrDefault(s => s.AnalyticId == analyticId);
 
             return new UserApproverEmployee
             {

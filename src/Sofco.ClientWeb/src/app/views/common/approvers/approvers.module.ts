@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { TranslateModule } from "@ngx-translate/core";
 import { ApproversComponent } from './approvers.component';
 import { PCheckModule } from '../../../components/pcheck/pcheck.module';
-import { WorkTimeApproverService } from '../../../services/allocation-management/worktime-approver.service';
-import { LicenseApproverService } from '../../../services/allocation-management/license-approver.service';
+import { UserApproverService } from '../../../services/allocation-management/user-approver.service';
 import { AnalyticService } from '../../../services/allocation-management/analytic.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -24,7 +23,7 @@ imports: [
     TranslateModule, Ng2ModalModule, PCheckModule
 ],
 
-providers: [ WorkTimeApproverService, LicenseApproverService, AnalyticService],
+providers: [ UserApproverService, AnalyticService],
 
 exports: [ ApproversComponent ]
 })

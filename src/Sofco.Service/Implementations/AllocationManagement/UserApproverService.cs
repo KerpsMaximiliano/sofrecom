@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
@@ -27,17 +28,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly ILogMailer<UserApproverService> logger;
 
+        private readonly ISessionManager sessionManager;
+
         public UserApproverService(IUserApproverRepository userApproverRepository, 
             IUserData userData, 
             IEmployeeRepository employeeRepository,
             ILogMailer<UserApproverService> logger,
-            IMapper mapper)
+            IMapper mapper, ISessionManager sessionManager)
         {
             this.userApproverRepository = userApproverRepository;
             this.userData = userData;
             this.employeeRepository = employeeRepository;
             this.logger = logger;
             this.mapper = mapper;
+            this.sessionManager = sessionManager;
         }
 
         public Response<List<UserApproverModel>> Save(List<UserApproverModel> userApprovers, UserApproverType type)
@@ -91,9 +95,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return new Response<List<UserSelectListItem>> { Data = new List<UserSelectListItem>() };
             }
 
-            var workTimeApprovals = userApproverRepository.GetByAnalyticId(query.AnalyticId, type);
+            var userApprovers = userApproverRepository.GetByAnalyticId(query.AnalyticId, type);
 
-            var userIds = workTimeApprovals.Select(s => s.ApproverUserId).Distinct().ToList();
+            var userIds = userApprovers.Select(s => s.ApproverUserId).Distinct().ToList();
 
             var users = userIds.Select(userId => userData.GetUserLiteById(userId))
                 .Select(userLite => new UserSelectListItem
@@ -120,11 +124,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
-            foreach (var workTimeApproval in userApprovers)
+            foreach (var userApprover in userApprovers)
             {
-                if (workTimeApproval.ApproverUserId == 0
-                    || workTimeApproval.AnalyticId == 0
-                    || workTimeApproval.EmployeeId == 0)
+                if (userApprover.ApproverUserId == 0
+                    || userApprover.AnalyticId == 0
+                    || userApprover.EmployeeId == 0)
                 {
                     response.AddError(Resources.Common.ErrorSave);
                 }
@@ -135,9 +139,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private void ResolveUserId(List<UserApproverModel> userApprovers)
         {
-            foreach (var workTimeApproval in userApprovers)
+            foreach (var userApprover in userApprovers)
             {
-                var email = employeeRepository.GetById(workTimeApproval.EmployeeId).Email;
+                var email = employeeRepository.GetById(userApprover.EmployeeId).Email;
 
                 if(string.IsNullOrEmpty(email)) continue;
 
@@ -147,7 +151,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 if (user != null)
                 {
-                    workTimeApproval.UserId = user.Id;
+                    userApprover.UserId = user.Id;
                 }
             }
         }
@@ -156,7 +160,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var result = mapper.Map<List<UserApproverModel>, List<UserApprover>>(models);
 
-            result.ForEach(x => x.Type = type);
+            result.ForEach(x =>
+            {
+                x.Type = type;
+                x.CreatedUser = sessionManager.GetUserName();
+            });
 
             return result;
         }

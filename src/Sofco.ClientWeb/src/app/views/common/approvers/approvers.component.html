@@ -1,22 +1,5 @@
 <div class="wrapper wrapper-content animated fadeInUp">
-    <div class="ibox">
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</label>
-                        <select id="userControl" class="form-control"></select>
-                    </div>
-                </div>
-        
-                <div style="float:right;margin-right:10px">
-                    <button (click)="save()" [disabled]="!showSave()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-group" id="accordion">
+    <div class="panel-group" id="accordion" [hidden]="showFilter()">
         <div class="panel panel-success">
             <div class="panel-heading pointer" (click)="collapse()">
                 <h5 class="panel-title">
@@ -34,8 +17,8 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4" [hidden]="!showUser()">
-                            <div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="form-group" [hidden]="!showUser()">
                                 <label class="control-label">{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</label>
                                 <select id="userApprovalControl" class="form-control"></select>
                             </div>
@@ -46,10 +29,26 @@
         </div>
     </div>
 
-    <div class="ibox" *ngIf="analyticId > 0">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</label>
+                        <select id="userControl" class="form-control" [disabled]="!showSelectApprovers()"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" [hidden]="!showGrid()">
         <div class="ibox-title">
             <div class="ibox-tools">
-                <button [disabled]="!deleteAllEnable()" class="btn btn-danger btn-sm" (click)="confirmModal2.show()" > Eliminar Seleccionados <i class="fa fa-trash"></i></button>
+                <div class="btn-group">
+                    <button [disabled]="!showSave()" (click)="save()" class="btn btn-primary btn-sm" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                    <button [disabled]="!deleteAllEnable()" class="btn btn-danger btn-sm" (click)="confirmModal2.show()" > Eliminar Seleccionados <i class="fa fa-trash"></i></button>
+                </div>
             </div>
         </div>
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
