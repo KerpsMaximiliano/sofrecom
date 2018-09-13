@@ -4,6 +4,13 @@ using System.Text;
 
 namespace Sofco.Core.Models.Rrhh
 {
+    public class CloseDateModel
+    {
+        public IList<CloseDateModelItem> Items { get; set; }
+
+        public int CloseMonthValue { get; set; }
+    }
+
     public class CloseDateModelItem
     {
         public int Id { get; set; }

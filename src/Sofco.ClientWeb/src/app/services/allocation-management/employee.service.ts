@@ -32,6 +32,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/${id}`);
   }
 
+  getInfo(id) {
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/info`);
+  }
+
   getProfile(id) {
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/profile`);
   }

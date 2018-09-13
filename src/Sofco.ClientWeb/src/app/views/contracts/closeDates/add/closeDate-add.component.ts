@@ -3,6 +3,7 @@ import { DateRangePickerComponent } from "app/components/date-range-picker/date-
 import { CloseDateService } from "app/services/human-resources/closeDate.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "../../../../services/common/message.service";
+import { SettingsService } from "app/services/admin/settings.service";
 
 declare var moment: any;
 
@@ -17,12 +18,16 @@ export class AddCloseDateComponent implements OnInit, OnDestroy {
     private startDate: Date;
     private endDate: Date;
 
+    public closeMonthDefault: number = 0;
+
     @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
     private addSubscription: Subscription;
     private getSubscription: Subscription;
+    private settingSubscrip: Subscription;
 
     constructor(private closeDateService: CloseDateService,
+                private settingService: SettingsService,
                 private messageService: MessageService){}
 
     ngOnInit(): void {
@@ -40,6 +45,7 @@ export class AddCloseDateComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.addSubscription) this.addSubscription.unsubscribe();
         if(this.getSubscription) this.getSubscription.unsubscribe();
+        if(this.settingSubscrip) this.settingSubscrip.unsubscribe();
     }
 
     dateChange(){
@@ -56,7 +62,8 @@ export class AddCloseDateComponent implements OnInit, OnDestroy {
                                          this.endDate.getFullYear(), this.endDate.getMonth()+1)
                                     .subscribe(response => {
                                         this.messageService.closeLoading();
-                                        this.model = response.data;
+                                        this.model = response.data.items;
+                                        this.closeMonthDefault = response.data.closeMonthValue;
                                     });
     }
 
@@ -82,5 +89,21 @@ export class AddCloseDateComponent implements OnInit, OnDestroy {
         }
 
         return false;
+    }
+
+    saveCloseMonthDefault(){
+        if(this.closeMonthDefault < 1 || this.closeMonthDefault > 28){
+            this.messageService.showErrorByFolder('rrhh/closeDate', 'dayError');
+            return;
+        }
+
+        this.messageService.showLoading();
+
+        this.settingSubscrip = this.settingService.put({ key: "CloseMonth", value: this.closeMonthDefault }).subscribe(
+          response => { 
+              this.messageService.closeLoading();
+              this.messageService.succes('ADMIN.settings.saveSuccess');
+          },
+          err => this.messageService.closeLoading());
     }
 }

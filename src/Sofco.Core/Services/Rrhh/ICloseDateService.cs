@@ -8,6 +8,7 @@ namespace Sofco.Core.Services.Rrhh
     public interface ICloseDateService
     {
         Response Add(IList<CloseDate> model);
-        Response<IList<CloseDateModelItem>> Get(int startMonth, int startYear, int endMonth, int endYear);
+
+        Response<CloseDateModel> Get(int startMonth, int startYear, int endMonth, int endYear);
     }
 }

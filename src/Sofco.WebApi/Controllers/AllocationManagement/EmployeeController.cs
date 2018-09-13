@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
+using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Utils;
@@ -16,10 +17,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
+        private readonly IUserService userService;
 
-        public EmployeeController(IEmployeeService employeeServ)
+        public EmployeeController(IEmployeeService employeeServ, IUserService userService)
         {
             employeeService = employeeServ;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -60,6 +63,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult Get(int id)
         {
             var response = employeeService.GetById(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/info")]
+        public IActionResult GetInfo(int id)
+        {
+            var response = userService.GetUserInfo(id);
 
             return this.CreateResponse(response);
         }

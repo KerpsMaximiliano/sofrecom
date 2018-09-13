@@ -62,6 +62,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/closeDate.dayError.
+        /// </summary>
+        public static string DayError {
+            get {
+                return ResourceManager.GetString("DayError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/closeDate.saveSuccess.
         /// </summary>
         public static string SaveSuccess {

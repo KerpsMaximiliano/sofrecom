@@ -62,6 +62,15 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a admin/setting.settingNotFound.
+        /// </summary>
+        public static string SettingNotFound {
+            get {
+                return ResourceManager.GetString("SettingNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a admin/setting.wrongWorkingHoursPerDaysMax.
         /// </summary>
         public static string WrongWorkingHoursPerDaysMax {
