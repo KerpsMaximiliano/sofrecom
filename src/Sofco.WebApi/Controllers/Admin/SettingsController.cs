@@ -51,5 +51,14 @@ namespace Sofco.WebApi.Controllers.Admin
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut]
+        [Authorize]
+        public IActionResult Put([FromBody] Setting settings)
+        {
+            var response = settingService.Update(settings);
+
+            return this.CreateResponse(response);
+        }
     }
 }

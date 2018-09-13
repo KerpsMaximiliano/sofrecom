@@ -42,5 +42,7 @@ namespace Sofco.Core.Services.Admin
         IList<User> GetAuthorizers();
 
         IList<User> GetExternalsFree();
+
+        Response<UserModel> GetUserInfo(int employeeId);
     }
 }

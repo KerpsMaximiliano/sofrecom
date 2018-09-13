@@ -28,6 +28,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     getLicenseTypeSubscrip: Subscription;
     getSectorsSubscrip: Subscription;
     deleteFileSubscrip: Subscription;
+    userSubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
     public showUploader: boolean = false;
@@ -86,10 +87,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             }
         } else {
             this.getEmployees();
+            this.model.employeeId = '0';
         }
 
         this.getLicenceTypes();
-        this.licenseTypeSetOnChange();
     }
  
     ngOnDestroy(): void {
@@ -98,6 +99,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(this.getLicenseTypeSubscrip) this.getLicenseTypeSubscrip.unsubscribe();
         if(this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
         if(this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
+        if(this.userSubscrip) this.userSubscrip.unsubscribe();
     }
 
     back(){
@@ -138,11 +140,30 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         };
     }
 
+    employeeChange(){
+        this.messageService.showLoading();
+
+        this.userSubscrip = this.employeeService.getInfo(this.model.employeeId).subscribe(
+            response => {
+                this.messageService.closeLoading();
+
+                if(response.data){
+                    this.model.managerId = response.data.managerId;
+                    this.model.managerDesc = response.data.managerDesc;
+                    this.model.sectorId = response.data.sectorId;
+                    this.model.sectorDesc = response.data.sectorDesc;
+                }
+            },
+            error => {
+                this.messageService.closeLoading();
+                this.model.managerId = null;
+                this.model.managerDesc = null;
+                this.model.sectorId = null;
+                this.model.sectorDesc = null;
+            });
+    }
+
     add(){
-        if(!this.fromProfile){
-            this.model.employeeId = $( "#employeeId" ).val();
-        }
-        
         this.messageService.showLoading();
 
         this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {
@@ -160,11 +181,13 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
         this.getEmployeesSubscrip = this.employeeService.getAll().subscribe(data => {
             this.messageService.closeLoading();
-            this.resources = data;
+            this.resources = data.map(item => { 
+                return { id: item.id, text: item.name };
+             });
         },
         () => {
-                this.messageService.closeLoading();
-            });
+            this.messageService.closeLoading();
+        });
     }
 
     getLicenceTypes(){
@@ -172,12 +195,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.licensesTypesOptions = data;
             this.licensesTypes = data.optionsWithPayment;
             this.model.typeId = 0;
-        });
-    }
-
-    licenseTypeSetOnChange(){
-        $( "#licensesTypeId" ).change(() => {
-            this.model.typeId = $( "#licensesTypeId" ).val();
         });
     }
 

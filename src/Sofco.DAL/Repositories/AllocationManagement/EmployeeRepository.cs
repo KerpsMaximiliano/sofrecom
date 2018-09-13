@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            return context.Employees.Where(x => x.EndDate == null).ToList();
+            return context.Employees.Where(x => x.EndDate == null && !x.IsExternal).ToList();
         }
 
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
