@@ -27,6 +27,12 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             var response = new Response();
 
+            if (!model.All(x => x.Day >= 1 && x.Day <= 28))
+            {
+                response.AddError(Resources.Rrhh.CloseDate.DayError);
+                return response;
+            }
+
             try
             {
                 foreach (var item in model)
@@ -56,9 +62,9 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public Response<IList<CloseDateModelItem>> Get(int startMonth, int startYear, int endMonth, int endYear)
+        public Response<CloseDateModel> Get(int startMonth, int startYear, int endMonth, int endYear)
         {
-            var response = new Response<IList<CloseDateModelItem>> { Data = new List<CloseDateModelItem>() };
+            var response = new Response<CloseDateModel> { Data = new CloseDateModel { Items = new List<CloseDateModelItem>() } };
 
             var closeDates = unitOfWork.CloseDateRepository.Get(startMonth, startYear, endMonth, endYear);
             var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
@@ -66,6 +72,8 @@ namespace Sofco.Service.Implementations.Rrhh
 
             var startDate = new DateTime(startYear, startMonth, 1);
             var endDate = new DateTime(endYear, endMonth, 1);
+
+            response.Data.CloseMonthValue = closeMonthValue;
 
             while (startDate.Date <= endDate.Date)
             {
@@ -89,7 +97,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     item.Description = DatesHelper.GetDateDescription(new DateTime(startDate.Year, startDate.Month, 1));
                 }
 
-                response.Data.Add(item);
+                response.Data.Items.Add(item);
 
                 startDate = startDate.AddMonths(1);
             }

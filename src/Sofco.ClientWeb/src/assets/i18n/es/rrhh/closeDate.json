@@ -1,3 +1,4 @@
 {
-    "saveSuccess": "Fechas de cierre actualizadas correctamente"
+    "saveSuccess": "Fechas de cierre actualizadas correctamente",
+    "dayError": "Los dias de cierre deben ser entre 1 y 28"
 }

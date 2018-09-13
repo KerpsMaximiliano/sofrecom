@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Sofco.Core.DAL.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Core.DAL.Admin
 {
-    public interface ISettingRepository
+    public interface ISettingRepository : IBaseRepository<Setting>
     {
-        List<Setting> GetAll();
+        new List<Setting> GetAll();
 
         void Save(List<Setting> settings);
 

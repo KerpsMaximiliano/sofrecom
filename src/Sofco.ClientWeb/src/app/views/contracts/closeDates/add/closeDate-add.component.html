@@ -1,10 +1,10 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> Fechas de Cierre </h2>
+        <h2> {{'rrhh.closeDate.title' | translate }} </h2>
 
         <ol class="breadcrumb">
             <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
-            <li> {{'rrhh.title' | translate }} </li>
+            <li> {{'contracts.title' | translate }} </li>
             <li class="active"><strong> {{'rrhh.closeDate.title' | translate }} </strong></li>
         </ol>
     </div>
@@ -12,12 +12,12 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
+        <div class="col-md-6 col-md-offset-1">
             <div class="ibox">
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="control-label">{{'report.dateRange' | translate }}</label>
+                            <label class="control-label">{{'rrhh.closeDate.dateRange' | translate }}</label>
                             <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="dateChange()"></date-range-picker>
                         </div> 
                     </div>
@@ -42,6 +42,21 @@
                 </div>
                 <div class="ibox-footer">
                     <button type="button" class="btn btn-primary btn-md" (click)="save()">{{ 'ACTIONS.save' | translate }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label for="example-text-input" class="control-label">{{'rrhh.closeDate.default' | translate }}</label>
+                        <div class="input-group">
+                            <input class="form-control" type="number" min="1" max="28" [(ngModel)]="closeMonthDefault">
+                            <span class="input-group-btn"> 
+                                <button class="btn btn-primary" type="button" (click)="saveCloseMonthDefault()">{{ 'ACTIONS.update' | translate }}</button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

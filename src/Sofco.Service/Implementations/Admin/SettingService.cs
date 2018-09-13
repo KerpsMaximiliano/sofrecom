@@ -148,5 +148,24 @@ namespace Sofco.Service.Implementations.Admin
 
             return new Response<List<Setting>> { Data = data };
         }
+
+        public Response Update(Setting settings)
+        {
+            var reponse = new Response();
+
+            var domain = unitOfWork.SettingRepository.GetByKey(settings.Key);
+
+            if (domain == null)
+            {
+                reponse.AddError(Resources.Admin.Setting.SettingNotFound);
+                return reponse;
+            }
+
+            domain.Value = settings.Value;
+            unitOfWork.SettingRepository.Update(domain);
+            unitOfWork.Save();
+
+            return reponse;
+        }
     }
 }

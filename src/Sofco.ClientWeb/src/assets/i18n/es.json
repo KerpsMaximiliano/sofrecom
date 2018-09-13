@@ -760,7 +760,9 @@
         "closeDate": {
             "title": "Fechas de Cierre",
             "period": "Periodo",
-            "closeDay": "Dia de Cierre"
+            "closeDay": "Dia de Cierre",
+            "dateRange": "Fechas Desde - Hasta",
+            "default": "Dia de cierre por defecto"
         }
     },
     "ACTIONS":{

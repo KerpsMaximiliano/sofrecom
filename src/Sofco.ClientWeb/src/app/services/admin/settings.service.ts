@@ -20,6 +20,10 @@ export class SettingsService {
         return this.http.post<any>(`${this.baseUrl}/settings`, data);
     }
 
+    put (data: any) {
+        return this.http.put<any>(`${this.baseUrl}/settings`, data);
+    }
+
     saveItem (data: any) {
         return this.http.post<any>(`${this.baseUrl}/settings/${data.id}`, data);
     }
