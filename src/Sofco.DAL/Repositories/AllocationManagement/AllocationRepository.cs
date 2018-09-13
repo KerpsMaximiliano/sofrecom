@@ -8,7 +8,6 @@ using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {

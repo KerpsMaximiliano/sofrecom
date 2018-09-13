@@ -96,7 +96,8 @@ export class ApproversComponent implements OnInit, OnDestroy {
     }
 
     getData() {
-        if(this.type == UserApproverType.WorkTime && this.analyticId == 0){
+        if((this.type == UserApproverType.WorkTime || !this.directorMode)
+            && this.analyticId == 0){
             return;
         }
         this.loading = true;
