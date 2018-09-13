@@ -89,27 +89,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
             var userId = userData.GetCurrentUser().Id;
+             
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodExcludeDays();
 
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
-
-            DateTime dateFrom;
-            DateTime dateTo;
-
-            if (now.Day > closeMonthValue)
-            {
-                dateFrom = new DateTime(now.Year, now.Month, 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, 1);
-            }
-            else
-            {
-                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
-                dateTo = new DateTime(now.Year, now.Month, 1);
-            }
-
-            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, dateFrom.Date, dateTo.Date).ToList();
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, period.Item1.Date, period.Item2.Date).ToList();
 
             var response = new Response<List<Option>> { Data = new List<Option>() };
 

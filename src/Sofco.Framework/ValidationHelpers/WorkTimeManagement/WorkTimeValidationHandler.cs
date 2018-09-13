@@ -12,7 +12,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     {
         private const int UserCommentMaxLength = 500;
 
-        private static bool ValidatePeriodCloseMonth = false;
+        private static bool ValidatePeriodCloseMonth = true;
 
         public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
@@ -91,9 +91,13 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
             }
 
-            if (!ValidatePeriodCloseMonth) return;
+            if (!ValidatePeriodCloseMonth) return; 
+             
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
-            var period = GetPeriod(unitOfWork);
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
 
             if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
             {
@@ -144,36 +148,16 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
 
             if (!ValidatePeriodCloseMonth) return;
 
-            var period = GetPeriod(unitOfWork);
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
 
             if (!(worktime.Date.Date >= period.Item1.Date && worktime.Date.Date <= period.Item2.Date))
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
             }
-        }
-
-        private static Tuple<DateTime, DateTime> GetPeriod(IUnitOfWork unitOfWork)
-        {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
-
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(closeMonthSetting.Value);
-
-            DateTime dateFrom;
-            DateTime dateTo;
-
-            if (now.Day > closeMonthValue)
-            {
-                dateFrom = new DateTime(now.Year, now.Month, closeMonthValue + 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, closeMonthValue);
-            }
-            else
-            {
-                dateFrom = new DateTime(now.Year, now.Month - 1, closeMonthValue + 1);
-                dateTo = new DateTime(now.Year, now.Month, closeMonthValue);
-            }
-
-            return new Tuple<DateTime, DateTime>(dateFrom, dateTo);
         }
     }
 }

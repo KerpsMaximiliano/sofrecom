@@ -537,7 +537,8 @@
                 "manager":"Gerente",
                 "office": "Dirección",
                 "billeability": "Facturabilidad (%)",
-                "unassigned": "NO asignados"
+                "unassigned": "NO asignados",
+                "onlyExternal": "Solo Externos"
             }
         },
         "resources": {

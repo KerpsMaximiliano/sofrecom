@@ -74,9 +74,16 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                         <div class="form-group checkbox-center">
+                            <div class="form-group checkbox-center">
                                 <icheck [(checked)]="searchModel.unassigned">
                                     <label class="control-label">{{ 'allocationManagement.report.grid.unassigned' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group checkbox-center">
+                                <icheck [(checked)]="searchModel.externalOnly">
+                                    <label class="control-label">{{ 'allocationManagement.report.grid.onlyExternal' | translate }}</label> 
                                 </icheck>
                             </div>
                         </div>

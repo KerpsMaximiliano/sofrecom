@@ -31,9 +31,9 @@ export class ExternalUserComponent implements OnInit, OnDestroy {
     public model = {
         userId: 0,
         managerId: 0,
-        countryCode: 0,
-        areaCode: 0,
-        hours: 0,
+        countryCode: 54,
+        areaCode: 11,
+        hours: 8,
         phone: ""
     }
 

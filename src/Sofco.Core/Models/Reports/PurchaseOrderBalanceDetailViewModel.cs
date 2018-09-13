@@ -12,7 +12,7 @@ namespace Sofco.Core.Models.Reports
 
         public DateTime UpdatedDate { get; set; }
 
-        public int Total { get; set; }
+        public decimal Total { get; set; }
 
         public int StatusId { get; set; }
 
