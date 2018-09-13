@@ -171,11 +171,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
         public IList<LicenseListItem> GetByManager(int managerId)
         {
-            var managerIds = GetDelegateManagerIds();
-
-            managerIds.Add(managerId);
-
-            var licenses = unitOfWork.LicenseRepository.GetByManagerIds(managerIds);
+            var licenses = unitOfWork.LicenseRepository.GetByManager(managerId);
 
             return licenses.Select(x => new LicenseListItem(x)).ToList();
         }
@@ -512,7 +508,9 @@ namespace Sofco.Service.Implementations.Rrhh
 
             var analytics = unitOfWork.AnalyticRepository.GetByServiceIds(serviceIds);
 
-            return analytics.Where(s => s.ManagerId.HasValue).Select(s => s.ManagerId.Value).ToList();
+            return analytics.Where(s => s.ManagerId.HasValue)
+                .Select(s => s.ManagerId.Value)
+                .ToList();
         }
     }
 }
