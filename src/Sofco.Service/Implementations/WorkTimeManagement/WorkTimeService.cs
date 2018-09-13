@@ -354,24 +354,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var employee = employeeData.GetCurrentEmployee();
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+             
+            var period = closeDates.GetPeriodExcludeDays();
 
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
-
-            DateTime dateFrom;
-            DateTime dateTo;
-
-            if (now.Day > closeMonthValue)
-            {
-                dateFrom = new DateTime(now.Year, now.Month, 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, 1);
-            }
-            else
-            {
-                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
-                dateTo = new DateTime(now.Year, now.Month, 1);
-            }
+            DateTime dateFrom = period.Item1;
+            DateTime dateTo = period.Item2;
 
             try
             {
@@ -424,15 +412,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 return response;
             }
 
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
-            var value = Convert.ToInt32(closeMonthSetting.Value);
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
             var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorktimeReport(parameters);
 
             response.Data = new List<WorkTimeReportModel>();
 
-            var startDate = new DateTime(parameters.Year, parameters.Month-1, value+1);
-            var endDate = new DateTime(parameters.Year, parameters.Month, value);
+            var startDate = new DateTime(parameters.Year, parameters.Month-1, closeDates.BeforeCloseMonthDay+1);
+            var endDate = new DateTime(parameters.Year, parameters.Month, closeDates.CurrentCloseMonthDay);
 
             foreach (var allocation in allocations)
             {

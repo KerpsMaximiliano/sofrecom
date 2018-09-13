@@ -10,5 +10,6 @@
         public int? Percentage { get; set; }
         public int? AnalyticId { get; set; }
         public bool Unassigned { get; set; }
+        public bool ExternalOnly { get; set; }
     }
 }
