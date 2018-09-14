@@ -8,7 +8,6 @@ using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -103,7 +102,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
         {
-            IQueryable<Allocation> query = context.Allocations
+            var query = context.Allocations
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)

@@ -17,7 +17,6 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Mail;
 using Sofco.Core.Validations;
-using Sofco.Domain;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.MailData;
@@ -371,7 +370,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 foreach (var manager in managers)
                 {
-                    var delegates = unitOfWork.UserApproverRepository.GetByUserId(manager.Id, UserApproverType.WorkTime);
+                    var delegates = unitOfWork.UserApproverRepository.GetApproverByUserId(manager.Id, UserApproverType.WorkTime);
 
                     mails.AddRange(delegates.Select(x => x.Email));
                 }

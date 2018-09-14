@@ -20,7 +20,7 @@ namespace Sofco.DAL.Repositories.Common
             parameter = new UserApproverQuery();
         }
 
-        public List<UserApproverEmployee> Get(UserApproverQuery query, UserApproverType type)
+        public List<UserApproverEmployee> GetByAllocations(UserApproverQuery query, UserApproverType type)
         {
             parameter = query;
 
@@ -54,7 +54,7 @@ namespace Sofco.DAL.Repositories.Common
             return result.ToList();
         }
 
-        public List<UserApproverEmployee> GetByAnalytics(List<int> analyticIds, int approvalId, UserApproverType type)
+        public List<UserApproverEmployee> GetByAllocationAnalytics(List<int> analyticIds, int approvalId, UserApproverType type)
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
                 && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId)
@@ -80,7 +80,7 @@ namespace Sofco.DAL.Repositories.Common
             return result.ToList();
         }
 
-        public List<UserApproverEmployee> GetManagersBySectors(List<int> sectorIds, UserApproverType type)
+        public List<UserApproverEmployee> GetByAllocationManagersBySectors(List<int> sectorIds, UserApproverType type)
         {
             var managerIds = context.Analytics.Where(s => sectorIds.Contains(s.SectorId) && s.ManagerId.HasValue)
                 .Select(s => s.ManagerId)
@@ -103,6 +103,39 @@ namespace Sofco.DAL.Repositories.Common
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
+
+            return result.ToList();
+        }
+
+        public List<UserApproverEmployee> GetByManager(int managerId, UserApproverQuery query, UserApproverType type)
+        {
+            parameter = query;
+
+            Expression<Func<Employee, bool>> where = x => x.EndDate == null
+                    && managerId == x.ManagerId.Value;
+
+            if (query.AnalyticId > 0)
+            {
+                //var managerId = context.Analytics.First(s => s.Id == query.AnalyticId).ManagerId;
+
+                //where = e => e.EndDate == null && e.ManagerId.Value == managerId;
+            }
+
+            var result = context
+                .Employees
+                .Where(where)
+                .Include(x => x.Allocations)
+                .ThenInclude(x => x.Analytic)
+                .GroupJoin(context.UserApprovers.Where(s => s.Type == type).ToList(),
+                    e => e.Id,
+                    w => w.EmployeeId,
+                    Translate);
+
+            if (query.ApprovalId > 0)
+            {
+                result = result.Where(s =>
+                    s.UserApprover != null && s.UserApprover.ApproverUserId == query.ApprovalId);
+            }
 
             return result.ToList();
         }
