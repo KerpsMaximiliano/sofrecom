@@ -55,14 +55,21 @@ namespace Sofco.DAL.Repositories.Common
                 .Distinct().ToList();
         }
 
-        public IList<User> GetByUserId(int userId, UserApproverType type)
+        public IList<User> GetApproverByUserId(int userId, UserApproverType type)
         {
             return UserApproverSet
                 .Include(x => x.ApproverUser)
-                .Where(x => x.UserId == userId
-                    && x.Type == type)
+                .Where(x => x.UserId == userId && x.Type == type)
                 .Distinct()
                 .Select(x => x.ApproverUser)
+                .ToList();
+        }
+
+        public List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type)
+        {
+            return UserApproverSet
+                .Where(x => x.ApproverUserId == approverUserId && x.Type == type)
+                .Distinct()
                 .ToList();
         }
 

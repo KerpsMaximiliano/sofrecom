@@ -5,7 +5,7 @@ using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
 
-namespace Sofco.Framework.Managers
+namespace Sofco.Framework.Managers.UserApprovers
 {
     public class WorkTimeApproverEmployeeManager : IWorkTimeApproverEmployeeManager
     {

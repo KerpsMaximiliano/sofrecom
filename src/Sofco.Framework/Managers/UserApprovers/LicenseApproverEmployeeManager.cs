@@ -20,7 +20,7 @@ namespace Sofco.Framework.Managers.UserApprovers
 
         private readonly IUserData userData;
 
-        private readonly UserApproverType Type = UserApproverType.License;
+        private readonly UserApproverType Type = UserApproverType.LicenseAuthorizer;
 
         public LicenseApproverEmployeeManager(IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, IUserData userData, IUserApproverManager approverManager)
         {
