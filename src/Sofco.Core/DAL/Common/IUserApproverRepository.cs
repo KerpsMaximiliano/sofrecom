@@ -16,6 +16,8 @@ namespace Sofco.Core.DAL.Common
 
         List<Analytic> GetByAnalyticApprover(int currentUserId, UserApproverType type);
 
-        IList<User> GetByUserId(int userId, UserApproverType type);
+        IList<User> GetApproverByUserId(int userId, UserApproverType type);
+
+        List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type);
     }
 }

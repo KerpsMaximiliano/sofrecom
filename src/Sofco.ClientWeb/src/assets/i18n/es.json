@@ -753,7 +753,7 @@
             "cancelComments": "Se debe agregar un motivo para cancelar",
             "addCancelComments": "Ingrese los motivos para cancelar",
             "delegate": {
-                "viewTitle": "Delegar Aprobación Licencia",
+                "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
             }
         },

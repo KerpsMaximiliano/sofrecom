@@ -4,6 +4,6 @@
     {
         WorkTime,
 
-        License
+        LicenseAuthorizer
     }
 }

@@ -41,7 +41,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 new Dictionary<UserApproverType, Func<UserApproverQuery, List<UserApproverEmployee>>>
                 {
                     {UserApproverType.WorkTime, workTimeApproverEmployeeManager.Get},
-                    {UserApproverType.License, licenseApproverEmployeeManager.Get}
+                    {UserApproverType.LicenseAuthorizer, licenseApproverEmployeeManager.Get}
                 };
         }
 
