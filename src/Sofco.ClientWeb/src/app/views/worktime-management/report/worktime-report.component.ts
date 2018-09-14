@@ -39,8 +39,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     getManagersSubscrip: Subscription;
 
     public searchModel = {
-        year: 0,
-        month: 0,
+        closeMonthId: 0,
         clientId: 0,
         managerId: 0,
         analyticId: 0,
@@ -58,7 +57,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCustomers();
         this.getMonths();
-        this.getYears();
         this.getResources();
         this.getManagers();
 
@@ -92,12 +90,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     getMonths(){
         this.getMonthsSubscrip = this.utilsService.getCloseMonths().subscribe(data => this.months = data);
-    }
-
-    getYears(){
-        this.getYearsSubscrip = this.utilsService.getYears().subscribe(data => {
-            this.years = data;
-        });
     }
 
     getResources(){
@@ -188,8 +180,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     
     clean(){
         this.searchModel = {
-            year: 0,
-            month: 0,
+            closeMonthId: 0,
             clientId: 0,
             managerId: 0,
             analyticId: 0,

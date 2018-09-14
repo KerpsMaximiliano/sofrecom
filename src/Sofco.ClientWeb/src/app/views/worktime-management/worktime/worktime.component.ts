@@ -112,7 +112,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const self = this;
 
     $('#calendar').fullCalendar({
-      weekends: true,
+      weekends: false,
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -152,10 +152,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   viewRenderHandler(view, element) {
-   const calendarMonth = view.start.add(1, 'M');
+    var moment = $("#calendar").fullCalendar('getDate');
 
-   this.calendarCurrentDate = calendarMonth;
-   this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
+    this.calendarCurrentDate = moment.toDate();
+    this.calendarCurrentDateText = moment.format('YYYY-MM-DD');
 
     this.getModel();
   }

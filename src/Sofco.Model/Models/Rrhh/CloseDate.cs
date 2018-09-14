@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Domain.Models.Rrhh
+﻿namespace Sofco.Domain.Models.Rrhh
 {
     public class CloseDate : BaseEntity
     {
