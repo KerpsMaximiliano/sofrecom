@@ -924,7 +924,7 @@
             "resumeLicense": "No laborable"
         },
         "report": {
-            "title": "Estimado vs Insumido",
+            "title": "Insumido vs Previsto",
             "client": "Cliente",
             "analytic": "Analitica-Servicio",
             "manager": "Gerente",

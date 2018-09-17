@@ -2,9 +2,7 @@
 {
     public class ReportParams
     {
-        public int Year { get; set; }
-
-        public int Month { get; set; }
+        public int CloseMonthId { get; set; }
 
         public int? ManagerId { get; set; }
 
@@ -13,5 +11,10 @@
         public int? AnalyticId { get; set; }
 
         public int? EmployeeId { get; set; }
+
+        public int StartYear { get; set; }
+        public int EndYear { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
     }
 }

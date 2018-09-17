@@ -22,7 +22,34 @@ namespace Sofco.DAL.Repositories.Rrhh
                     new DateTime(x.Year, x.Month, 1).Date <= new DateTime(endYear, endMonth, 1).Date)
                 .ToList();
         }
-         
+
+        public Tuple<CloseDate, CloseDate> GetBeforeAndCurrent(int id)
+        {
+            var closeDate = context.CloseDates.SingleOrDefault(x => x.Id == id);
+            var closeDateBefore = new CloseDate();
+            var closeMonthSetting = context.Settings.SingleOrDefault(x => x.Key.Equals(SettingConstant.CloseMonthKey));
+
+            if (closeDate != null)
+            {
+                var dateBefore = new DateTime(closeDate.Year, closeDate.Month, 1).AddMonths(-1);
+
+                var closeDateBeforeAux = context.CloseDates.SingleOrDefault(x => x.Year == dateBefore.Year && x.Month == dateBefore.Month);
+
+                if (closeDateBeforeAux != null)
+                {
+                    closeDateBefore = closeDateBeforeAux;
+                }
+                else
+                {
+                    closeDateBefore.Year = dateBefore.Year;
+                    closeDateBefore.Month = dateBefore.Month;
+                    closeDateBefore.Day = closeMonthSetting != null ? Convert.ToInt32(closeMonthSetting.Value) : 20;
+                }
+            }
+
+            return new Tuple<CloseDate, CloseDate>(closeDate, closeDateBefore);
+        }
+
         public CloseDatesSettings GetBeforeCurrentAndNext()
         {
             var now = DateTime.UtcNow.Date;
@@ -63,6 +90,13 @@ namespace Sofco.DAL.Repositories.Rrhh
             var result = new CloseDatesSettings(currentDay, beforeDay, nextDay);
 
             return result;
+        }
+
+        public IList<CloseDate> GetAllBeforeToday()
+        {
+            var today = DateTime.UtcNow.Date;
+
+            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, 1).Date <= today).ToList();
         }
     }
 }

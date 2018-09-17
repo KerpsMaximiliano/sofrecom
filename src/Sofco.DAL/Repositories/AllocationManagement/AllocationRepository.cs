@@ -102,15 +102,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
         {
-            var startDate = new DateTime(parameters.Year, parameters.Month, 1);
-            var endDate = startDate.AddMonths(-1);
-
             var query = context.Allocations
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)
-                .Where(x => x.StartDate.Date == startDate.Date ||
-                            x.StartDate.Date == endDate.Date);
+                .Where(x => x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
+                            x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date);
 
             if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
                 query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);

@@ -25,10 +25,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'workTimeManagement.month'" [(value)]="searchModel.month" [options]="months"></select-two>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.purchaseOrder.fields.year'" [(value)]="searchModel.year" [options]="years"></select-two>
+                            <select-two [label]="'workTimeManagement.month'" [(value)]="searchModel.closeMonthId" [options]="months"></select-two>
                         </div>
                         <div class="col-sm-4">
                             <select-two [label]="'allocationManagement.allocation.resources'" [(value)]="searchModel.employeeId" [options]="resources"></select-two>

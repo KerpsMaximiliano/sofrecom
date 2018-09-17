@@ -405,20 +405,25 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<IList<WorkTimeReportModel>>();
 
-            if (parameters.Year == 0 || parameters.Month == 0)
+            if (parameters.CloseMonthId <= 0)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.YearAndMonthRequired);
                 return response;
             }
 
-            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeAndCurrent(parameters.CloseMonthId);
+
+            var startDate = new DateTime(closeDates.Item2.Year, closeDates.Item2.Month, closeDates.Item2.Day + 1);
+            var endDate = new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, closeDates.Item1.Day);
+
+            parameters.StartYear = startDate.Year;
+            parameters.StartMonth = startDate.Month;
+            parameters.EndYear = endDate.Year;
+            parameters.EndMonth = endDate.Month;
 
             var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorktimeReport(parameters);
 
             response.Data = new List<WorkTimeReportModel>();
-
-            var startDate = new DateTime(parameters.Year, parameters.Month-1, closeDates.BeforeCloseMonthDay+1);
-            var endDate = new DateTime(parameters.Year, parameters.Month, closeDates.CurrentCloseMonthDay);
 
             foreach (var allocation in allocations)
             {
