@@ -333,4 +333,28 @@ export class ApproversComponent implements OnInit, OnDestroy {
 
         return selecteds.every(item => item.userApprover != null);
     }
+
+    areAllSelected(){
+        return this.data.every(item => {
+            return item.checked == true;
+        });
+    }
+
+    areAllUnselected(){
+        return this.data.every(item => {
+            return item.checked == false;
+        });
+    }
+
+    selectAll(){
+        this.data.forEach((item) => {
+            item.checked = true;
+        });
+    }
+
+    unselectAll(){
+        this.data.forEach((item) => {
+            item.checked = false;
+        });
+    }
 }

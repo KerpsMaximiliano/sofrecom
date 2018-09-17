@@ -3,6 +3,7 @@ using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers.UserApprovers;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
 
@@ -44,6 +45,22 @@ namespace Sofco.Framework.Managers.UserApprovers
             var result = unitOfWork.LicenseRepository.GetByEmployeeAndStatus(employeeIds, statusId);
 
             return result.ToList();
+        }
+
+        public List<LicenseListModel> ResolveApprovers(List<LicenseListModel> models)
+        {
+            var employeeIds = models.Select(s => s.EmployeeId).Distinct().ToList();
+
+            var userApprovers = unitOfWork.UserApproverRepository.GetByEmployeeIds(employeeIds, UserApproverType.LicenseAuthorizer);
+
+            foreach (var item in models)
+            {
+                var userApprover = userApprovers.FirstOrDefault(s => s.EmployeeId == item.EmployeeId);
+
+                item.AuhtorizerName = userApprover?.ApproverUser.Name;
+            }
+
+            return models;
         }
     }
 }

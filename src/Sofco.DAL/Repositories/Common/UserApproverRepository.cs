@@ -73,6 +73,15 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public List<UserApprover> GetByEmployeeIds(List<int> employeeIds, UserApproverType type)
+        {
+            return UserApproverSet
+                .Include(x => x.ApproverUser)
+                .Where(x => employeeIds.Contains(x.EmployeeId) && x.Type == type)
+                .Distinct()
+                .ToList();
+        }
+
         private void Save(UserApprover item)
         {
             var storedItem = GetUnique(item.AnalyticId, item.EmployeeId, item.Type);

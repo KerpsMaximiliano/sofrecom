@@ -3,9 +3,9 @@ using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Core.Models.Rrhh
 {
-    public class LicenseListItem
+    public class LicenseListModel
     {
-        public LicenseListItem(License license)
+        public LicenseListModel(License license)
         {
             Id = license.Id;
             StartDate = license.StartDate;
@@ -60,5 +60,7 @@ namespace Sofco.Core.Models.Rrhh
         public bool WithPayment { get; set; }
 
         public string Status { get; set; }
+
+        public string AuhtorizerName { get; set; }
     }
 }
