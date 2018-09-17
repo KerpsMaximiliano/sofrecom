@@ -718,6 +718,7 @@
             "parcial": "Parcial",
             "final": "Final",
             "manager":"Superior",
+            "authorizer":"Autorizador",
             "sector": "Sector",
             "attachments": "Archivos Adjuntos",
             "exam": "Días por examen",

@@ -689,6 +689,7 @@
             "parcial":"Partiel",
             "final":"Final",
             "manager": "Supérieur",
+            "authorizer": "Autorisateur",
             "sector":"Secteur",
             "attachments":"Pièces jointes",
             "exam":"Congé par examen",
@@ -722,7 +723,11 @@
             "holidaysByLaw":"Congé par la loi",
             "finalizeExtraHolidays":"Finaliser l'accord",
             "cancelComments":"Une raison d'annuler doit être ajoutée",
-            "addCancelComments":"Entrez les raisons d'annuler"
+            "addCancelComments":"Entrez les raisons d'annuler",
+            "delegate": {
+                "viewTitle": "Déléguer Autorisation Congé",
+                "delegateAction": "Déléguer"
+            }
         } 
     }, 
     "ACTIONS": {
@@ -781,8 +786,9 @@
         "sessionExpiredTitle":"La session a expiré ...",
         "sessionExpiredMessage":"La session a expiré, vous devez vous reconnecter au système",
         "viewProfile":"Voir le profil",
-        "selectAll": "Seleccionar todo",
-        "removeAll": "Quitar todo"
+        "selectAll": "Tout sélectionner",
+        "removeAll": "Tout désélectionner",
+        "reassingAllocation": "Allocation massive de ressources"
     }, 
     "SendPending":"Brouillon",
     "PendingByManagementControl":"P. Révision Contrôle Gestion",

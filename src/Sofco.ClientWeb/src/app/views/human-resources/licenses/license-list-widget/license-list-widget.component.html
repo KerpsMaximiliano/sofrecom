@@ -3,6 +3,7 @@
         <tr>
             <th class="column-lg"> {{ 'rrhh.license.employee' | translate }} </th>
             <th class="column-lg"> {{ 'rrhh.license.manager' | translate }} </th>
+            <th class="column-lg"> {{ 'rrhh.license.authorizer' | translate }} </th>
             <th class="column-lg"> {{ 'rrhh.license.type' | translate }} </th>
             <th class="column-sm"> {{ 'rrhh.license.creation' | translate }} </th>
             <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
@@ -15,7 +16,8 @@
     <tbody>
         <tr *ngFor="let item of data" (click)="goToDetail(item)" class="pointer">
             <td class="column-lg"> {{ item.employeeName }} </td>
-            <td class="column-lg"> {{ item.managerName }} </td>
+            <td class="column-lg"> {{ item.managerName }}</td>
+            <td class="column-lg"> {{ item.authorizerName }}</td>
             <td class="column-lg"> {{ item.licenseTypeName }} </td>
             <td class="column-sm"> {{ item.creationDate | date: 'dd/MM/yyyy' }} </td>
             <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
