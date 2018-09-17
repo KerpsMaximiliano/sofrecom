@@ -63,7 +63,7 @@ export class LicenseRejectComponent implements OnDestroy  {
         this.messageService.showError("billing.solfac.rejectCommentRequired");
         return;
     }
-    
+
     var json = {
         status: LicenseStatus.Rejected,
         comment: this.rejectComments
@@ -76,7 +76,7 @@ export class LicenseRejectComponent implements OnDestroy  {
             if(this.history.observers.length > 0){
                 this.history.emit();
             }
-        
+
             if(this.updateStatus.observers.length > 0){
                 var toModif = {
                     statusId: LicenseStatus.Rejected,

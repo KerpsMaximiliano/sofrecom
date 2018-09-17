@@ -61,6 +61,6 @@ namespace Sofco.Core.Models.Rrhh
 
         public string Status { get; set; }
 
-        public string AuhtorizerName { get; set; }
+        public string AuthorizerName { get; set; }
     }
 }

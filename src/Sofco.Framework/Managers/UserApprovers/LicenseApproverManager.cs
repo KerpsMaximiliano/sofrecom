@@ -23,7 +23,7 @@ namespace Sofco.Framework.Managers.UserApprovers
 
         public List<License> GetByCurrent()
         {
-            int approverUserId = userData.GetCurrentUser().Id;
+            var approverUserId = userData.GetCurrentUser().Id;
 
             var employeeIds = unitOfWork.UserApproverRepository
                 .GetByApproverUserId(approverUserId, UserApproverType.LicenseAuthorizer)
@@ -32,6 +32,15 @@ namespace Sofco.Framework.Managers.UserApprovers
             var result = unitOfWork.LicenseRepository.GetByEmployee(employeeIds);
 
             return result.ToList();
+        }
+
+        public List<string> GetEmailApproversByCurrent()
+        {
+            var userId = userData.GetCurrentUser().Id;
+
+            return unitOfWork.UserApproverRepository
+                .GetApproverByUserId(userId, UserApproverType.LicenseAuthorizer)
+                .Select(s => s.Email).ToList();
         }
 
         public List<License> GetByCurrentByStatus(LicenseStatus statusId)
@@ -57,7 +66,7 @@ namespace Sofco.Framework.Managers.UserApprovers
             {
                 var userApprover = userApprovers.FirstOrDefault(s => s.EmployeeId == item.EmployeeId);
 
-                item.AuhtorizerName = userApprover?.ApproverUser.Name;
+                item.AuthorizerName = userApprover?.ApproverUser.Name;
             }
 
             return models;

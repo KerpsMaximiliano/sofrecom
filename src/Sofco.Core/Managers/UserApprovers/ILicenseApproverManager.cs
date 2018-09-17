@@ -12,5 +12,7 @@ namespace Sofco.Core.Managers.UserApprovers
         List<License> GetByCurrentByStatus(LicenseStatus statusId);
 
         List<LicenseListModel> ResolveApprovers(List<LicenseListModel> models);
+
+        List<string> GetEmailApproversByCurrent();
     }
 }
