@@ -45,10 +45,11 @@
     <div class="ibox" [hidden]="!showGrid()">
         <div class="ibox-title">
             <div class="ibox-tools">
-                <div class="btn-group">
-                    <button [disabled]="!showSave()" (click)="save()" class="btn btn-primary btn-sm" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-                    <button [disabled]="!deleteAllEnable()" class="btn btn-danger btn-sm" (click)="confirmModal2.show()" > Eliminar Seleccionados <i class="fa fa-trash"></i></button>
-                </div>
+                <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                <button [disabled]="!showSave()" (click)="save()" class="btn btn-primary btn-sm" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                <button [disabled]="!deleteAllEnable()" class="btn btn-danger btn-sm" (click)="confirmModal2.show()" > Eliminar Seleccionados <i class="fa fa-trash"></i></button>
             </div>
         </div>
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
