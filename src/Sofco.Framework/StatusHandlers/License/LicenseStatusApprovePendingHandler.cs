@@ -3,6 +3,7 @@ using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
@@ -16,9 +17,13 @@ namespace Sofco.Framework.StatusHandlers.License
     {
         private readonly EmailConfig emailConfig;
 
-        public LicenseStatusApprovePendingHandler(EmailConfig emailConfig)
+        private readonly ILicenseApproverManager licenseApproverManager;
+
+
+        public LicenseStatusApprovePendingHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
         {
             this.emailConfig = emailConfig;
+            this.licenseApproverManager = licenseApproverManager;
         }
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
@@ -50,6 +55,8 @@ namespace Sofco.Framework.StatusHandlers.License
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
             var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
+
+            recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
 
             var recipients = string.Join(";", recipientsList.Distinct());
 

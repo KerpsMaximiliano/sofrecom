@@ -18,8 +18,12 @@ namespace Sofco.Core.DAL.Common
 
         IList<User> GetApproverByUserId(int userId, UserApproverType type);
 
+        IList<User> GetApproverByEmployeeId(int employeeId, UserApproverType type);
+
         List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type);
 
         List<UserApprover> GetByEmployeeIds(List<int> employeeIds, UserApproverType type);
+
+        bool HasUserAuthorizer(int userId, UserApproverType type);
     }
 }

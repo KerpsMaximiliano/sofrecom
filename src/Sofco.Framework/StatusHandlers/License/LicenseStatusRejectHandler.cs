@@ -3,11 +3,11 @@ using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.StatusHandlers;
 using Sofco.Framework.MailData;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
 
@@ -17,14 +17,17 @@ namespace Sofco.Framework.StatusHandlers.License
     {
         private readonly EmailConfig emailConfig;
 
-        public LicenseStatusRejectHandler(EmailConfig emailConfig)
+        private readonly ILicenseApproverManager licenseApproverManager;
+
+        public LicenseStatusRejectHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
         {
             this.emailConfig = emailConfig;
+            this.licenseApproverManager = licenseApproverManager;
         }
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
-            if(!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+            if(!ValidateChangeStatus(parameters)) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
             if (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.Approved)
             {
@@ -52,6 +55,8 @@ namespace Sofco.Framework.StatusHandlers.License
 
             var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
 
+            recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
+
             var recipients = string.Join(";", recipientsList.Distinct());
 
             var data = new LicenseStatusData
@@ -62,6 +67,11 @@ namespace Sofco.Framework.StatusHandlers.License
             };
 
             return data;
+        }
+
+        private bool ValidateChangeStatus(LicenseStatusChangeModel parameters)
+        {
+            return parameters.IsRrhh || licenseApproverManager.HasUserAuthorizer();
         }
     }
 }
