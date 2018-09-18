@@ -34,12 +34,17 @@ namespace Sofco.Framework.Managers.UserApprovers
             return result.ToList();
         }
 
-        public List<string> GetEmailApproversByCurrent()
+        public List<string> GetEmailApproversByUserId(int userId)
         {
-            var userId = userData.GetCurrentUser().Id;
-
             return unitOfWork.UserApproverRepository
                 .GetApproverByUserId(userId, UserApproverType.LicenseAuthorizer)
+                .Select(s => s.Email).ToList();
+        }
+
+        public List<string> GetEmailApproversByEmployeeId(int employeeId)
+        {
+            return unitOfWork.UserApproverRepository
+                .GetApproverByEmployeeId(employeeId, UserApproverType.LicenseAuthorizer)
                 .Select(s => s.Email).ToList();
         }
 
@@ -70,6 +75,13 @@ namespace Sofco.Framework.Managers.UserApprovers
             }
 
             return models;
+        }
+
+        public bool HasUserAuthorizer()
+        {
+            var userId = userData.GetCurrentUser().Id;
+
+            return unitOfWork.UserApproverRepository.HasUserAuthorizer(userId, UserApproverType.LicenseAuthorizer);
         }
     }
 }

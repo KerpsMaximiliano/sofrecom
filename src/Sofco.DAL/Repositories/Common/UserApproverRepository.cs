@@ -65,6 +65,16 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public IList<User> GetApproverByEmployeeId(int employeeId, UserApproverType type)
+        {
+            return UserApproverSet
+                .Include(x => x.ApproverUser)
+                .Where(x => x.EmployeeId == employeeId && x.Type == type)
+                .Distinct()
+                .Select(x => x.ApproverUser)
+                .ToList();
+        }
+
         public List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type)
         {
             return UserApproverSet
@@ -80,6 +90,11 @@ namespace Sofco.DAL.Repositories.Common
                 .Where(x => employeeIds.Contains(x.EmployeeId) && x.Type == type)
                 .Distinct()
                 .ToList();
+        }
+
+        public bool HasUserAuthorizer(int userId, UserApproverType type)
+        {
+            return UserApproverSet.Any(s => s.ApproverUserId == userId && s.Type == type);
         }
 
         private void Save(UserApprover item)

@@ -43,11 +43,16 @@ export class LicenseRejectComponent implements OnDestroy  {
   }
 
   canReject(){
-    if(!this.menuService.hasFunctionality('CTRLI', 'REJEC') || this.menuService.user.employeeId == this.employeeId) return false;
+    if(this.menuService.user.employeeId == this.employeeId) return false;
 
-    if(this.licenseId > 0 && (this.status == LicenseStatus[LicenseStatus.AuthPending] || 
-                              this.status == LicenseStatus[LicenseStatus.Pending] || 
-                              this.status == LicenseStatus[LicenseStatus.ApprovePending])){
+    if(this.licenseId == 0) return false;
+
+    if(this.menuService.hasFunctionality('CTRLI', 'AUTH') && this.status == LicenseStatus[LicenseStatus.AuthPending]) return true;
+
+    if(this.menuService.hasFunctionality('CTRLI', 'APROB') &&
+        (this.status == LicenseStatus[LicenseStatus.AuthPending] 
+        || this.status == LicenseStatus[LicenseStatus.Pending] 
+        || this.status == LicenseStatus[LicenseStatus.ApprovePending])){
         return true;
     }
 
