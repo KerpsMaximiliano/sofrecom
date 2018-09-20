@@ -22,6 +22,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     @ViewChild('accordion') accordion;
 
     public data: any[] = new Array<any>();
+    public employeesWithError: any[] = new Array<any>();
 
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
@@ -32,6 +33,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     public gridIsVisible: boolean = false;
     public isCompleted: boolean = false;
+    public isMissingData: boolean = false;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -121,11 +123,17 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
-            this.isCompleted = response.data.isCompleted;
 
             if(this.data.length > 0){
+                this.isCompleted = response.data.isCompleted;
+                this.isMissingData = !response.data.isCompleted;
+
                 this.initGrid();
                 this.collapse();
+
+                if(this.isMissingData){
+                    this.showEmployeesWithMissingData();
+                }
             }
 
             this.messageService.closeLoading();
@@ -133,8 +141,12 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('lastWorktimeReportQuery', JSON.stringify(this.searchModel));
         },
         () => {
-                this.messageService.closeLoading();
+            this.messageService.closeLoading();
         });
+    }
+
+    showEmployeesWithMissingData(){
+        this.employeesWithError = this.data.filter(item => item.hoursLoadedSuccesfully == false);
     }
 
     initGrid(){

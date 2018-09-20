@@ -53,11 +53,25 @@
         </div>
     </div>
 
-    <div class="alert alert-success alert-gaps-success" *ngIf="isCompleted">
-        <span>{{'workTimeManagement.report.allResourcesSuccess' | translate }}
+    <div class="alert alert-gaps-success" *ngIf="isCompleted">
+        <span>
             <i class="fa fa-check"></i>
+            {{'workTimeManagement.report.allResourcesSuccess' | translate }}
             <a (click)="getTigetTxt()">{{'workTimeManagement.report.exportTiger' | translate }}</a>
         </span>
+    </div>
+
+    <div class="alert alert-gaps-error" *ngIf="isMissingData">
+        <h4>
+            <i class="fa fa-times"></i> 
+            {{'workTimeManagement.report.employeesWithError' | translate }}
+        </h4>  
+
+        <ul>
+            <li *ngFor="let item of employeesWithError">
+                {{ item.employee }}: {{ item.realPercentage }}% --- {{ item.analytic }}
+            </li> 
+        </ul>
     </div>
 
     <div class="ibox" *ngIf="gridIsVisible"> 
