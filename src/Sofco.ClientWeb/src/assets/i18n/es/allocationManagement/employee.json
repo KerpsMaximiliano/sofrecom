@@ -12,5 +12,6 @@
     "businessHoursWrong": "La jornada laboral no puede ser menor a 1 hora y mayor a 8",
     "phoneRequired": "El telefono es requerido",
     "userRelated": "El usuario ya se encuentra en el sistema",
-    "hoursRequired": "La jornada laboral es requerida"
+    "hoursRequired": "La jornada laboral es requerida",
+    "billingPercentageRequired": "El % de facturabilidad es requerido"
 }

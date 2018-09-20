@@ -13,6 +13,7 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Mail;
@@ -46,16 +47,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IMailBuilder mailBuilder;
 
-        public WorkTimeService(ILogMailer<WorkTimeService> logger, 
-            IUnitOfWork unitOfWork, 
+        private readonly IWorktimeData worktimeData;
+
+        public WorkTimeService(ILogMailer<WorkTimeService> logger,
+            IUnitOfWork unitOfWork,
             IUserData userData,
             IHostingEnvironment hostingEnvironment,
-            IEmployeeData employeeData, 
+            IEmployeeData employeeData,
             IWorkTimeValidation workTimeValidation,
-            IWorkTimeFileManager workTimeFileManager, 
+            IWorkTimeFileManager workTimeFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
             IMailSender mailSender,
-            IMailBuilder mailBuilder)
+            IMailBuilder mailBuilder,
+            IWorktimeData worktimeData)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -67,13 +71,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.hostingEnvironment = hostingEnvironment;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
+            this.worktimeData = worktimeData;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
         {
-            if(date == DateTime.MinValue) return new Response<WorkTimeModel>();
+            if (date == DateTime.MinValue) return new Response<WorkTimeModel>();
 
-            var result = new Response<WorkTimeModel> {Data = new WorkTimeModel()};
+            var result = new Response<WorkTimeModel> { Data = new WorkTimeModel() };
 
             try
             {
@@ -238,13 +243,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
             var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
 
-            var list = analyticsByManagers.Select(x => new Option {Id = x.Id, Text = $"{x.Title} - {x.Name}"}).ToList();
+            var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             foreach (var analyticsByDelegate in analyticsByDelegates)
             {
                 if (list.All(x => x.Id != analyticsByDelegate.Id))
                 {
-                   list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" }); 
+                    list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" });
                 }
             }
 
@@ -332,7 +337,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     unitOfWork.WorkTimeRepository.SendHours(employeeData.GetCurrentEmployee().Id);
                 }
-                
+
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.SentSuccess);
             }
             catch (Exception e)
@@ -354,7 +359,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var employee = employeeData.GetCurrentEmployee();
 
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-             
+
             var period = closeDates.GetPeriodExcludeDays();
 
             DateTime dateFrom = period.Item1;
@@ -401,9 +406,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        public Response<IList<WorkTimeReportModel>> CreateReport(ReportParams parameters)
+        public Response<WorkTimeReportModel> CreateReport(ReportParams parameters)
         {
-            var response = new Response<IList<WorkTimeReportModel>>();
+            var response = new Response<WorkTimeReportModel>();
 
             if (parameters.CloseMonthId <= 0)
             {
@@ -421,37 +426,123 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             parameters.EndYear = endDate.Year;
             parameters.EndMonth = endDate.Month;
 
+            var daysoff = unitOfWork.HolidayRepository.Get(parameters.StartYear, parameters.StartMonth);
+            daysoff.AddRange(unitOfWork.HolidayRepository.Get(parameters.EndYear, parameters.EndMonth));
+
             var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorktimeReport(parameters);
 
-            response.Data = new List<WorkTimeReportModel>();
+            response.Data = new WorkTimeReportModel { Items = new List<WorkTimeReportModelItem>() };
+
+            var model = new WorkTimeReportModelItem();
+            var mustAddModel = false;
 
             foreach (var allocation in allocations)
             {
-                var model = new WorkTimeReportModel();
-
                 if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
                     continue;
 
-                if(allocation.Percentage == 0) continue;
+                if (allocation.Percentage == 0) continue;
 
-                model.Client = allocation.Analytic.ClientExternalName;
-                model.Analytic = $"{allocation.Analytic.Name} - {allocation.Analytic.Service}";
-                model.Manager = allocation.Analytic.Manager.Name;
-                model.Employee = allocation.Employee.Name;
-                model.MonthYear = $"{allocation.StartDate.Month}-{allocation.StartDate.Year}";
-                model.Facturability = allocation.Employee.BillingPercentage;
-                model.AllocationPercentage = allocation.Percentage;
-                model.HoursMustLoad = CalculateHoursToLoad(allocation);
-                model.HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId);
+                if (model.EmployeeId == allocation.EmployeeId && model.AnalyticId == allocation.AnalyticId)
+                {
+                    model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                }
+                else
+                {
+                    var modelAlreadyExist = response.Data.Items.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId && x.AnalyticId == allocation.AnalyticId);
 
-                model.Result = model.HoursLoaded >= model.HoursMustLoad;
+                    if (modelAlreadyExist != null)
+                    {
+                        modelAlreadyExist.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                        modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
+                    }
+                    else
+                    {
+                        if (mustAddModel)
+                        {
+                            model.Result = model.HoursLoaded >= model.HoursMustLoad;
+                            response.Data.Items.Add(model);
+                        }
 
-                response.Data.Add(model);
+                        model = new WorkTimeReportModelItem
+                        {
+                            Client = allocation.Analytic.ClientExternalName,
+                            AnalyticId = allocation.AnalyticId,
+                            Analytic = $"{allocation.Analytic.Title} - {allocation.Analytic.Name}",
+                            Title = $"{allocation.Analytic.Title}",
+                            Manager = allocation.Analytic.Manager.Name,
+                            EmployeeId = allocation.Employee.Id,
+                            EmployeeNumber = allocation.Employee.EmployeeNumber,
+                            Employee = allocation.Employee.Name,
+                            CostCenter = allocation.Analytic.CostCenter?.Code,
+                            Activity = allocation.Analytic.Activity?.Text,
+                            Facturability = allocation.Employee.BillingPercentage,
+                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId)
+                        };
+
+                        model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+
+                        mustAddModel = true;
+                    }
+                }
             }
 
-            if (!response.Data.Any())
+            if (mustAddModel)
+            {
+                model.Result = model.HoursLoaded >= model.HoursMustLoad;
+                response.Data.Items.Add(model);
+            }
+
+            var tigerReport = new List<TigerReportItem>();
+
+            foreach (var item in response.Data.Items)
+            {
+                var allHoursMustLoaded = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.HoursMustLoad).Sum();
+
+                item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, 2);
+
+                if (item.Facturability == 0)
+                {
+                    item.HoursMustLoad = 0;
+                    item.Result = true;
+                    item.RealPercentage = item.AllocationPercentage;
+                }
+                else
+                {
+                    item.RealPercentage = Math.Round((item.AllocationPercentage * (item.HoursLoaded * 100 / item.HoursMustLoad) / 100), 2);
+                }
+            }
+
+            var i = 1;
+            foreach (var item in response.Data.Items)
+            {
+                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.RealPercentage).Sum();
+
+                if (item.Facturability > 0)
+                {
+                    if (sumPercentage == 100) item.HoursLoadedSuccesfully = true;
+                }
+                else
+                {
+                    item.HoursLoadedSuccesfully = true;
+                }
+
+                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                i++;
+
+                tigerReport.Add(tigerItem);
+            }
+
+            if (!response.Data.Items.Any())
             {
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+            else
+            {
+                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully);
+
+                worktimeData.ClearKeys();
+                worktimeData.SaveTigerReport(tigerReport);
             }
 
             return response;
@@ -461,7 +552,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<IList<WorkTimeSearchItemResult>>();
 
-            if (!parameters.StartDate.HasValue || parameters.StartDate == DateTime.MinValue || 
+            if (!parameters.StartDate.HasValue || parameters.StartDate == DateTime.MinValue ||
                 !parameters.EndDate.HasValue || parameters.EndDate == DateTime.MinValue)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DatesRequired);
@@ -498,7 +589,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         model.Category = worktime.Task.Category.Description;
                     }
                 }
-               
+
                 model.Date = worktime.Date;
                 model.Hours = worktime.Hours;
                 model.Status = worktime.Status.ToString();
@@ -552,7 +643,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var response = new Response();
 
             var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
-             
+
             WorkTimeValidationHandler.ValidateDelete(worktime, response, unitOfWork);
 
             if (response.HasErrors()) return response;
@@ -601,21 +692,29 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             yield return new Option { Id = (int)WorkTimeStatus.License, Text = WorkTimeStatus.License.ToString() };
         }
 
-        private decimal CalculateHoursToLoad(Allocation allocation)
+        private decimal CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
         {
-            var startDate = allocation.StartDate.Date;
-            var endDate = new DateTime(allocation.StartDate.Year, allocation.StartDate.Month, DateTime.DaysInMonth(allocation.StartDate.Year, allocation.StartDate.Month));
             var businessDays = 0;
 
             while (startDate.Date <= endDate.Date)
             {
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
-                    businessDays++;
+                if (allocation.StartDate.Month == startDate.Month)
+                {
+                    if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
+                        businessDays++;
+                }
 
                 startDate = startDate.AddDays(1);
             }
 
-            return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+            if (allocation.Employee.BillingPercentage == 0)
+            {
+                return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+            }
+            else
+            {
+                return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage * (allocation.Employee.BillingPercentage / 100)) / 100);
+            }
         }
 
         private void SetCurrentUser(WorkTimeAddModel workTimeAdd)
@@ -624,7 +723,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var currentUser = userData.GetCurrentUser();
 
-            if(currentUser == null) return;
+            if (currentUser == null) return;
 
             workTimeAdd.UserId = currentUser.Id;
 

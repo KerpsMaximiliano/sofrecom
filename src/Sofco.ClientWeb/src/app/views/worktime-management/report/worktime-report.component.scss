@@ -1,3 +1,15 @@
 table{
     table-layout: fixed;
 }
+
+.alert-gaps-success {
+    background: #51A351;
+    color: white;
+
+    span{
+        a{
+            color: white;
+            float: right;
+        }
+    }
+}

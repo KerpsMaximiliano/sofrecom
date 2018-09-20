@@ -106,6 +106,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.CostCenter)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Activity)
                 .Where(x => x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
                             x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date);
 

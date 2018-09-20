@@ -27,7 +27,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
 
         Response Send();
 
-        Response<IList<WorkTimeReportModel>> CreateReport(ReportParams parameters);
+        Response<WorkTimeReportModel> CreateReport(ReportParams parameters);
 
         Response<IList<WorkTimeSearchItemResult>> Search(SearchParams parameters);
 

@@ -71,6 +71,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.billingPercentageRequired.
+        /// </summary>
+        public static string BillingPercentageRequired {
+            get {
+                return ResourceManager.GetString("BillingPercentageRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.businessHoursEmpty.
         /// </summary>
         public static string BusinessHoursEmpty {

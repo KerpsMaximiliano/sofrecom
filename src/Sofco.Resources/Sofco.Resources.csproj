@@ -167,6 +167,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>License.resx</DependentUpon>
     </Compile>
+    <Compile Update="Rrhh\TigerReport.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TigerReport.resx</DependentUpon>
+    </Compile>
     <Compile Update="WorkTimeManagement\WorkTime.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -294,6 +299,10 @@
     <EmbeddedResource Update="Rrhh\License.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>License.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Rrhh\TigerReport.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TigerReport.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="WorkTimeManagement\WorkTime.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

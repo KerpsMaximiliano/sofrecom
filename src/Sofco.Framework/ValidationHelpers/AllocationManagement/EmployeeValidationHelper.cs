@@ -91,5 +91,13 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Employee.HoursRequired);
             }
         }
+
+        public static void ValidateBillingPercentage(Response response, EmployeeBusinessHoursParams model)
+        {
+            if (!model.BillingPercentage.HasValue)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.BillingPercentageRequired);
+            }
+        }
     }
 }

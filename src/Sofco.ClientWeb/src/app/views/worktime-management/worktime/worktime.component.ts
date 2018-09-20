@@ -368,7 +368,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.editModal.isSaveEnabled = false;
       return;
     }
-    if (taskModel.date == null || !this.validateDate(taskModel.date)) {
+    if (taskModel.date == null) {
       this.editModal.isSaveEnabled = false;
       return;
     }

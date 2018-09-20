@@ -7,6 +7,8 @@ import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { CustomerService } from "../../../services/billing/customer.service";
+import { RrhhService } from "app/services/human-resources/rrhh.service";
+import * as FileSaver from "file-saver";
 
 declare var $: any;
 
@@ -29,6 +31,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public managers: any[] = new Array<any>();
 
     public gridIsVisible: boolean = false;
+    public isCompleted: boolean = false;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -50,6 +53,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
         private analyticService: AnalyticService,
+        private rrhhService: RrhhService,
         private customerService: CustomerService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService){}
@@ -116,7 +120,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.gridIsVisible = false;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
-            this.data = response.data;
+            this.data = response.data.items;
+            this.isCompleted = response.data.isCompleted;
 
             if(this.data.length > 0){
                 this.initGrid();
@@ -129,7 +134,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         },
         () => {
                 this.messageService.closeLoading();
-            });
+        });
     }
 
     initGrid(){
@@ -140,6 +145,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             selector: "#reportTable",
             columns: columns,
             title: title,
+            order: [[ 1, "desc" ]],
             withExport: true
         };
 
@@ -188,5 +194,18 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         };
 
         sessionStorage.removeItem('lastWorktimeReportQuery')
+    }
+
+    getTigetTxt(){
+        this.messageService.showLoading();
+
+        this.rrhhService.getTigerTxt().subscribe(file => {
+            this.messageService.closeLoading();
+
+            FileSaver.saveAs(file, "tiger-txt-file.txt");
+        },
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 }

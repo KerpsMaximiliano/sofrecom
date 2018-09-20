@@ -926,7 +926,7 @@
         "report": {
             "title": "Insumido vs Previsto",
             "client": "Cliente",
-            "analytic": "Analitica-Servicio",
+            "analytic": "Analitica",
             "manager": "Gerente",
             "employee": "Recurso",
             "interval": "Periodo",
@@ -936,7 +936,10 @@
             "hoursLoaded": "Hs. Cargadas",
             "result": "Resultado",
             "accomplished": "Cumplido",
-            "notAccomplished": "No Cumplido"
+            "notAccomplished": "No Cumplido",
+            "realPercentage": "% Real",
+            "exportTiger": "Exportar Tiger.txt",
+            "allResourcesSuccess": "Todos los recursos han cargado horas correctamente en el periodo seleccionado"
         },
         "query": {
             "title": "Consulta horas cargadas",

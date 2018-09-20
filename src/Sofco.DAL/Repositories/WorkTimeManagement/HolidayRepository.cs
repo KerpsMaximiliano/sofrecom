@@ -22,7 +22,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public List<Holiday> Get(int year, int month)
         {
             return context.Holidays.Where(s => s.Date.ToUniversalTime().Year == year && s.Date.ToUniversalTime().Month == month).OrderBy(s => s.Date).ToList();
-        }
+        } 
 
         public void Save(Holiday holiday)
         {
