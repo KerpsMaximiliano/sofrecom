@@ -17,15 +17,13 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
-        private readonly ISessionManager sessionManager;
 
         private readonly AppSetting appSetting;
 
-        public LicenseViewDelegateManager(IUnitOfWork unitOfWork, IUserData userData, ISessionManager sessionManager, IOptions<AppSetting> appSettingOptions)
+        public LicenseViewDelegateManager(IUnitOfWork unitOfWork, IUserData userData, IOptions<AppSetting> appSettingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
-            this.sessionManager = sessionManager;
             appSetting = appSettingOptions.Value;
         }
 
@@ -59,7 +57,7 @@ namespace Sofco.Framework.Managers
 
         private List<Role> GetViewRoles()
         {
-            var isValid = unitOfWork.UserDelegateRepository.HasUserDelegate(sessionManager.GetUserName(), UserDelegateType.LicenseView);
+            var isValid = unitOfWork.UserApproverRepository.HasUserAuthorizer(userData.GetCurrentUser().Id, UserApproverType.LicenseAuthorizer);
 
             return !isValid
                 ? new List<Role>()
