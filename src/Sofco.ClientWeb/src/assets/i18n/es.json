@@ -939,8 +939,10 @@
             "accomplished": "Cumplido",
             "notAccomplished": "No Cumplido",
             "realPercentage": "% Real",
-            "exportTiger": "Exportar Tiger.txt",
-            "employeesWithError": "Recursos que no cumplen las asignaciones al 100%",
+            "exportTiger": "Exportar Tiger.txt", 
+            "employeesWithAllocationMissing": "Recursos que no cumplen las asignaciones al 100%",
+            "employeesWithHoursMissing": "Recursos con horas faltantes de carga",
+            "hoursLoadedUntil": "horas cargadas al",
             "allResourcesSuccess": "Todos los recursos han cargado horas correctamente en el periodo seleccionado"
         },
         "query": {

@@ -62,16 +62,32 @@
     </div>
 
     <div class="alert alert-gaps-error" *ngIf="isMissingData">
-        <h4>
-            <i class="fa fa-times"></i> 
-            {{'workTimeManagement.report.employeesWithError' | translate }}
-        </h4>  
-
-        <ul>
-            <li *ngFor="let item of employeesWithError">
-                {{ item.employee }}: {{ item.realPercentage }}%
-            </li> 
-        </ul>
+        <div class="row">
+            <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
+                <h4>
+                    <i class="fa fa-times"></i> 
+                    {{'workTimeManagement.report.employeesWithHoursMissing' | translate }}
+                </h4>  
+        
+                <ul>
+                    <li *ngFor="let item of employeesWithHoursMissing">
+                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage }}%
+                    </li> 
+                </ul>
+            </div>
+            <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0">
+                <h4>
+                    <i class="fa fa-times"></i> 
+                    {{'workTimeManagement.report.employeesWithAllocationMissing' | translate }}
+                </h4>  
+        
+                <ul>
+                    <li *ngFor="let item of employeesWithAllocationMissing">
+                        {{ item.employee }}: {{ item.monthPercentage }}
+                    </li> 
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="ibox" *ngIf="gridIsVisible"> 

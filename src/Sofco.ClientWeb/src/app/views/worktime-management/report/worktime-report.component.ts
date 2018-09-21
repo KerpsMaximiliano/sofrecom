@@ -22,7 +22,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     @ViewChild('accordion') accordion;
 
     public data: any[] = new Array<any>();
-    public employeesWithError: any[] = new Array<any>();
+    public employeesWithHoursMissing: any[] = new Array<any>();
+    public employeesWithAllocationMissing: any[] = new Array<any>();
 
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
@@ -120,6 +121,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     search(){
         this.messageService.showLoading();
         this.gridIsVisible = false;
+        this.isMissingData = false;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
@@ -146,7 +148,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     showEmployeesWithMissingData(){
-        this.employeesWithError = this.data.filter(item => item.hoursLoadedSuccesfully == false);
+        this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
+        this.employeesWithAllocationMissing = this.data.filter(item => item.missAnyPercentageAllocation == true);
     }
 
     initGrid(){
