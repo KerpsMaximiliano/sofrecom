@@ -82,9 +82,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 && serviceIds.Contains(x.ServiceId)).ToList();
         }
 
-        public ICollection<Analytic> GetByClient(string clientId)
+        public ICollection<Analytic> GetByClient(string clientId, bool onlyActives)
         {
-            return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
+            if (onlyActives)
+            {
+                return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId) && x.Status == AnalyticStatus.Open).ToList();
+            }
+            else
+            {
+                return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
+            }
         }
 
         public Analytic GetById(int allocationAnalyticId)

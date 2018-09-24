@@ -11,5 +11,6 @@
 	"nameRequired": "The name is required",
 	"usernameRequired": "The user is required",
 	"emailRequired": "The email is required",
-	"userInactive": "The user is inactive"
+	"userInactive": "The user is inactive",
+	"managerNotFound": "Manager not found"
 }

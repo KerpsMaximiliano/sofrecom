@@ -8,6 +8,7 @@ import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { UserService } from "../../../../services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 declare var $: any;
 
@@ -63,6 +64,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
                 private usersService: UserService,
+                private dataTableService: DataTableService,
                 private categoryService: CategoryService,
                 private activatedRoute: ActivatedRoute,
                 private allocationervice: AllocationService){
@@ -80,8 +82,6 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
         });
-
-        this.getCategories();
     }
 
     ngOnDestroy(): void {
@@ -92,13 +92,26 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         if(this.getCategorySubscrip) this.getCategorySubscrip.unsubscribe();
         if(this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
     }
+
+    initGrid(){
+        var options = { 
+            selector: "#resourcesTable",
+         };
+
+        this.dataTableService.destroy(options.selector);
+        this.dataTableService.initialize(options);
+    }
  
     getAll(){
         this.messageService.showLoading();
-
+ 
         this.getAllSubscrip = this.allocationervice.getAllocationsByService(this.serviceId).subscribe(data => {
             this.resources = data;
             this.messageService.closeLoading();
+
+            this.getCategories();
+
+            this.initGrid();
         },
         () => this.messageService.closeLoading());
     }
@@ -141,6 +154,15 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     openCategoryModal(resource){
         this.resourceSelected = resource;
+
+        this.categories.forEach(item => {
+            item.selected = false;
+
+            if(resource.categories.includes(item.id)){
+                item.selected = true;
+            }
+        });
+
         this.categoriesModal.show();
     }
 
@@ -169,18 +191,29 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     saveCategories(){
         var categoriesSelected = this.categories.filter(x => x.selected == true).map(item => item.id);
+        var categoriesNotSelected = this.categories.filter(x => x.selected == false).map(item => item.id);
         var usersSelected = [this.resourceSelected.id];
 
         if(categoriesSelected.length == 0) return;
 
         var json = {
-            categories: categoriesSelected,
+            categoriesToAdd: categoriesSelected,
+            categoriesToRemove: categoriesNotSelected,
             employees: usersSelected
         }
 
         this.addCategoriesSubscrip = this.employeeService.addCategories(json).subscribe(response => {
             this.messageService.closeLoading();
             this.categoriesModal.hide();
+
+            var user = this.resources.find(x => x.id == this.resourceSelected.id);
+
+            if(user){
+                user.categories = [];
+                categoriesSelected.forEach(item => {
+                    user.categories.push(item);
+                });
+            }
         },
         () => {
             this.messageService.closeLoading();

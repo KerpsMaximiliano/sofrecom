@@ -46,7 +46,12 @@ namespace Sofco.DAL.Repositories.Admin
 
         public void AddEmployeeCategory(EmployeeCategory employeeCategory)
         {
-            context.EmployeeCategories.AddRange(employeeCategory);
+            context.EmployeeCategories.Add(employeeCategory);
+        }
+
+        public void RemoveEmployeeCategory(EmployeeCategory employeeCategory)
+        {
+            context.EmployeeCategories.Remove(employeeCategory);
         }
     }
 }

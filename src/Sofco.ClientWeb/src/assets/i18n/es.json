@@ -537,7 +537,8 @@
                 "manager":"Gerente",
                 "office": "Dirección",
                 "billeability": "Facturabilidad (%)",
-                "unassigned": "NO asignados"
+                "unassigned": "NO asignados",
+                "onlyExternal": "Solo Externos"
             }
         },
         "resources": {
@@ -574,6 +575,7 @@
             "reason": "Motivo",
             "comments": "Comentarios",
             "manager": "Superior",
+            "user": "Usuario",
             "grid": {
                 "name": "Nombre",
                 "senority": "Seniority",
@@ -716,6 +718,7 @@
             "parcial": "Parcial",
             "final": "Final",
             "manager":"Superior",
+            "authorizer":"Autorizador",
             "sector": "Sector",
             "attachments": "Archivos Adjuntos",
             "exam": "Días por examen",
@@ -750,10 +753,18 @@
             "finalizeExtraHolidays": "Finalizar Acuerdo",
             "cancelComments": "Se debe agregar un motivo para cancelar",
             "addCancelComments": "Ingrese los motivos para cancelar",
+            "missingManager": "No se ha detectado un superior y/o sector asignado para su usuario. Por favor comuniquese con recursos humanos",
             "delegate": {
-                "viewTitle": "Delegar Aprobación Licencia",
+                "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
             }
+        },
+        "closeDate": {
+            "title": "Fechas de Cierre",
+            "period": "Periodo",
+            "closeDay": "Dia de Cierre",
+            "dateRange": "Fechas Desde - Hasta",
+            "default": "Dia de cierre por defecto"
         }
     },
     "ACTIONS":{
@@ -866,6 +877,7 @@
     "Between0And50": "> 0 y < 50",
     "Between50And75": "> 50 y < 75",
     "Between75And99": "> 75 y < 99",
+    "myActions": "Mis Acciones",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -914,9 +926,9 @@
             "resumeLicense": "No laborable"
         },
         "report": {
-            "title": "Estimado vs Insumido",
+            "title": "Insumido vs Previsto",
             "client": "Cliente",
-            "analytic": "Analitica-Servicio",
+            "analytic": "Analitica",
             "manager": "Gerente",
             "employee": "Recurso",
             "interval": "Periodo",
@@ -926,7 +938,13 @@
             "hoursLoaded": "Hs. Cargadas",
             "result": "Resultado",
             "accomplished": "Cumplido",
-            "notAccomplished": "No Cumplido"
+            "notAccomplished": "No Cumplido",
+            "realPercentage": "% Real",
+            "exportTiger": "Exportar Tiger.txt", 
+            "employeesWithAllocationMissing": "Recursos que no cumplen las asignaciones al 100%",
+            "employeesWithHoursMissing": "Recursos con horas faltantes de carga",
+            "hoursLoadedUntil": "horas cargadas al",
+            "allResourcesSuccess": "Todos los recursos han cargado horas correctamente en el periodo seleccionado"
         },
         "query": {
             "title": "Consulta horas cargadas",

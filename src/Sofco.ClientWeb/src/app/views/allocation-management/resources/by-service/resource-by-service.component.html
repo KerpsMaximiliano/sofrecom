@@ -33,33 +33,32 @@
         {{'allocationManagement.resources.empty' | translate }}
     </div>
 
-    <div class="row">
-        <div class="col-sm-4" *ngFor="let resource of resources">
-            <div class="contact-box">
-                <div class="contact-info">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <div class="text-center">
-                                <i class="fa fa-user fa-3x"></i>
-                                <div class="m-t-xs font-bold">{{ resource.senority }}</div>
-                            </div>
-                        </div>
-                        <div class="col-xs-8">
-                            <h3><strong>{{ resource.name }}</strong></h3>
-                            <div class="resource-data">
-                                <div>{{'allocationManagement.resources.grid.employeeNumber' | translate }}: {{ resource.employeeNumber }}</div>
-                                <div>{{ resource.profile }}</div>
-                                <div>{{ resource.technology }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-buttons text-center">
-                    <a class="btn btn-danger btn-sm m-t-xs m-r-xs m-l-xs" (click)="openEndEmployeeModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></a>
-                    <a class="btn btn-success btn-sm m-t-xs m-r-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()" title="{{'allocationManagement.resources.profile' | translate }}"><i class="fa fa-eye"></i></a>
-                    <a class="btn btn-warning btn-sm m-t-xs m-r-xs" (click)="openCategoryModal(resource)" title="{{'ADMIN.category.add' | translate }}"><i class="fa fa-tasks"></i></a>
-                </div>
-            </div>
+    <div class="ibox" *ngIf="resources.length > 0">
+        <div class="ibox-content">
+            <table class="table table-striped full-width" id="resourcesTable">
+                <thead>
+                    <tr>
+                        <th class="column-lg">{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.technology' | translate }}</th>
+                        <th class="column-sm">{{ 'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let resource of resources" class="pointer">
+                        <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td>{{ resource.senority}}</td>
+                        <td>{{ resource.profile}}</td>
+                        <td>{{ resource.technology}}</td>
+                        <td class="column-sm">
+                            <button class="btn btn-danger btn-xs" (click)="openEndEmployeeModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></button>
+                            <button class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()" title="{{'allocationManagement.resources.profile' | translate }}"><i class="fa fa-eye"></i></button>
+                            <button class="btn btn-warning btn-xs" (click)="openCategoryModal(resource)" title="{{'ADMIN.category.add' | translate }}"><i class="fa fa-tasks"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>      
         </div>
     </div>
 </div>
@@ -90,10 +89,6 @@
 </ng2-modal> 
 
 <ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
-    <div class="alert alert-warning">
-        {{'ADMIN.category.areYouSureAdd' | translate }}
-    </div>
-
     <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 

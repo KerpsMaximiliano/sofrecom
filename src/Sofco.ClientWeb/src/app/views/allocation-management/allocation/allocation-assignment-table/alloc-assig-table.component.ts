@@ -204,7 +204,6 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.allocationsService.add(this.allocationSelected).subscribe(data => {
             this.confirmModal.hide();
-            if(data.messages) this.messageService.showMessages(data.messages);
 
             this.isEditingAnyRow = false;
             this.allocationSelected.edit = false;

@@ -14,6 +14,8 @@ namespace Sofco.Core.DAL.Rrhh
         void AddFile(LicenseFile licenseFile);
         IList<License> GetLicensesLastMonth();
         ICollection<License> GetByEmployee(int employeeId);
+        ICollection<License> GetByEmployee(List<int> employeeIds);
+        ICollection<License> GetByEmployeeAndStatus(List<int> employeeIds, LicenseStatus statusId);
         ICollection<License> GetByStatus(LicenseStatus statusId);
         ICollection<License> Search(LicenseSearchParams parameters);
         ICollection<License> GetByManager(int managerId);

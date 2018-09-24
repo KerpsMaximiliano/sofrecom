@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
+using Sofco.Framework.Managers.UserApprovers;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
@@ -9,8 +11,11 @@ namespace Sofco.Framework.StatusHandlers.License
     {
         private readonly EmailConfig emailConfig;
 
-        public LicenseStatusFactory(IOptions<EmailConfig> emailOptions)
+        private readonly ILicenseApproverManager licenseApproverManager;
+
+        public LicenseStatusFactory(IOptions<EmailConfig> emailOptions, ILicenseApproverManager licenseApproverManager)
         {
+            this.licenseApproverManager = licenseApproverManager;
             this.emailConfig = emailOptions.Value;
         }
 
@@ -18,12 +23,12 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             switch (status)
             {
-                case LicenseStatus.AuthPending: return new LicenseStatusAuthPendingHandler(emailConfig);
-                case LicenseStatus.Pending: return new LicenseStatusPendingHandler(emailConfig);
-                case LicenseStatus.Rejected: return new LicenseStatusRejectHandler(emailConfig);
-                case LicenseStatus.Approved: return new LicenseStatusApproveHandler(emailConfig);
-                case LicenseStatus.ApprovePending: return new LicenseStatusApprovePendingHandler(emailConfig);
-                case LicenseStatus.Cancelled: return new LicenseStatusCancelledHandler(emailConfig);
+                case LicenseStatus.AuthPending: return new LicenseStatusAuthPendingHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.Pending: return new LicenseStatusPendingHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.Rejected: return new LicenseStatusRejectHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.Approved: return new LicenseStatusApproveHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.ApprovePending: return new LicenseStatusApprovePendingHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.Cancelled: return new LicenseStatusCancelledHandler(emailConfig, licenseApproverManager);
                 default: return null;
             }
         }

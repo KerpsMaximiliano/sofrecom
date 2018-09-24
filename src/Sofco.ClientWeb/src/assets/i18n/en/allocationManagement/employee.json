@@ -9,5 +9,8 @@
 	"categoriesAdded": "Selected categories have been added to the selected resources",
 	"businessHoursEmpty": "Working hours can not be empty",
 	"businessHoursUpdated": "Hours per contract updated correctly",
-	"businessHoursWrong": "The working day can not be less than 1 hour and greater than 8"
+	"businessHoursWrong": "The working day can not be less than 1 hour and greater than 8",
+	"phoneRequired": "The telephone is required",
+    "userRelated": "The user is already in the system",
+    "hoursRequired": "The business hours are required"
 }

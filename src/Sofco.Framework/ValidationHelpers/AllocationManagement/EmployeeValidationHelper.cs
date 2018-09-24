@@ -1,6 +1,9 @@
-﻿using Sofco.Core.DAL.AllocationManagement;
+﻿using Sofco.Core.DAL;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 
@@ -40,6 +43,60 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             if (string.IsNullOrWhiteSpace(model.BusinessHoursDescription))
             {
                 response.Messages.Add(new Message(Resources.AllocationManagement.Employee.BusinessHoursEmpty, MessageType.Error));
+            }
+        }
+
+        public static User User(Response response, IUnitOfWork unitOfWork, AddExternalModel model)
+        {
+            var user = unitOfWork.UserRepository.Get(model.UserId);
+
+            if (user == null)
+            {
+                response.AddError(Resources.Admin.User.NotFound);
+                return null;
+            }
+
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
+
+            if (employee != null)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.UserRelated);
+            }
+
+            return user;
+        }
+
+        public static void Manager(Response response, IUnitOfWork unitOfWork, AddExternalModel model)
+        {
+            var user = unitOfWork.UserRepository.Get(model.ManagerId);
+
+            if (user == null)
+            {
+                response.AddError(Resources.Admin.User.ManagerNotFound);
+            }
+        }
+
+        public static void Phone(Response response, IUnitOfWork unitOfWork, AddExternalModel model)
+        {
+            if (model.AreaCode == 0 || model.CountryCode == 0 || string.IsNullOrWhiteSpace(model.Phone))
+            {
+                response.AddError(Resources.AllocationManagement.Employee.PhoneRequired);
+            }
+        }
+
+        public static void Hours(Response response, IUnitOfWork unitOfWork, AddExternalModel model)
+        {
+            if (model.Hours == 0)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.HoursRequired);
+            }
+        }
+
+        public static void ValidateBillingPercentage(Response response, EmployeeBusinessHoursParams model)
+        {
+            if (!model.BillingPercentage.HasValue)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.BillingPercentageRequired);
             }
         }
     }

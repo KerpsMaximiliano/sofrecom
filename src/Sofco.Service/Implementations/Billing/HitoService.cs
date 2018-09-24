@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -195,6 +196,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response();
 
             HitoValidatorHelper.ValidateName(hito, response);
+            HitoValidatorHelper.ValidateDate(hito, response);
             HitoValidatorHelper.ValidateMonth(hito, response);
             HitoValidatorHelper.ValidateAmmounts(hito, response);
             HitoValidatorHelper.ValidateOpportunity(hito, response);

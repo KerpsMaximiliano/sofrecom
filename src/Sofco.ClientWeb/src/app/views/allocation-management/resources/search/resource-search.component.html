@@ -74,15 +74,24 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                         <div class="form-group checkbox-center">
+                            <div class="form-group checkbox-center">
                                 <icheck [(checked)]="searchModel.unassigned">
                                     <label class="control-label">{{ 'allocationManagement.report.grid.unassigned' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group checkbox-center">
+                                <icheck [(checked)]="searchModel.externalOnly">
+                                    <label class="control-label">{{ 'allocationManagement.report.grid.onlyExternal' | translate }}</label> 
                                 </icheck>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer">
+                    <external-user class="pull-left"></external-user>
+
                     <div class="text-right">
                         <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                         <button class="btn btn-success" (click)="search()" [disabled]="searchDisable()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
@@ -104,11 +113,11 @@
             </div>
         </div>
         <div class="ibox-content">
-            <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+            <table class="table table-striped full-width" role="grid" id="resourcesTable">
                 <thead>
                     <tr>
                         <th class="column-xs"></th>
-                        <th>{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th class="column-lg">{{'allocationManagement.resources.grid.name' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.start' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
@@ -121,7 +130,7 @@
                         <td class="column-xs text-center">
                             <icheck [(checked)]="resource.selected"></icheck>
                         </td>
-                        <td>{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
                         <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
                         <td>{{ resource.senority}}</td>
                         <td>{{ resource.profile}}</td>
@@ -164,10 +173,6 @@
 </ng2-modal> 
 
 <ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
-    <div class="alert alert-warning">
-        {{'ADMIN.category.areYouSureAdd' | translate }}
-    </div>
-
     <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 

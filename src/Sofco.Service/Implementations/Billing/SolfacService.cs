@@ -250,6 +250,13 @@ namespace Sofco.Service.Implementations.Billing
                     unitOfWork.InvoiceRepository.UpdateSolfacId(invoice);
                 }
 
+                var hitos = unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id);
+
+                foreach (var hito in hitos)
+                {
+                    
+                }
+
                 unitOfWork.SolfacRepository.Delete(solfac);
                 unitOfWork.Save();
 

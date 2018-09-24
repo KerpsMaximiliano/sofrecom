@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Helpers;
 using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing
@@ -154,6 +155,11 @@ namespace Sofco.Core.Models.Billing
             solfac.IntegratorId = IntegratorId;
             solfac.Manager = Manager;
             solfac.ManagerId = ManagerId;
+
+            if (SolfacHelper.IsCreditNote(solfac))
+            {
+                solfac.TotalAmount *= -1;
+            }
 
             foreach (var hitoViewModel in Hitos)
             {

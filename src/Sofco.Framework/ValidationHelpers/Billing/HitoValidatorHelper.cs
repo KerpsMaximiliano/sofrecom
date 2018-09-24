@@ -37,5 +37,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.Messages.Add(new Message(Resources.Billing.Project.MonthRequired, MessageType.Error));
             }
         }
+
+        public static void ValidateDate(HitoSplittedParams hito, Response response)
+        {
+            if (!hito.StartDate.HasValue)
+            {
+                response.AddError(Resources.Billing.Project.DateRequired);
+            }
+        }
     }
 }

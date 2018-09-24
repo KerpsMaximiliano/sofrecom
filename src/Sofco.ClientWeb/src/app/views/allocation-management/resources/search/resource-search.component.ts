@@ -68,7 +68,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         percentage: null,
         analyticId: 0,
         employeeNumber: "",
-        unassigned: false
+        unassigned: false,
+        externalOnly: false
     };
 
     public allocationModel = {
@@ -192,6 +193,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.percentage = null;
         this.searchModel.analyticId = 0;
         this.searchModel.unassigned = false;
+        this.searchModel.externalOnly = false;
         this.resources = [];
         sessionStorage.removeItem('lastResourceQuery');
     }
@@ -204,7 +206,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
            !this.searchModel.employeeNumber && this.searchModel.employeeNumber == "" && 
            !this.searchModel.analyticId && this.searchModel.analyticId == 0 && 
            !this.searchModel.percentage && this.searchModel.percentage == null && 
-           !this.searchModel.unassigned){
+           !this.searchModel.unassigned && !this.searchModel.externalOnly){
                return true;
            }
 
@@ -301,7 +303,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if(categoriesSelected.length == 0) return;
 
         var json = {
-            categories: categoriesSelected,
+            categoriesToAdd: categoriesSelected,
+            categoriesToRemove: [],
             employees: usersSelected
         }
 

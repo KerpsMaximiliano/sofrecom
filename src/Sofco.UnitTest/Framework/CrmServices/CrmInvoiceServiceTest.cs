@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Domains;
-using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Logger;
 using Sofco.Domain.Crm;

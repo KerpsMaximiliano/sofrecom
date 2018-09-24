@@ -9,6 +9,7 @@ using Sofco.Core.Models.Admin;
 using Sofco.Core.Services;
 using Sofco.Core.Services.Admin;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Admin
@@ -61,6 +62,15 @@ namespace Sofco.WebApi.Controllers.Admin
             var users = userService.GetManagers();
 
             return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }).OrderBy(x => x.Text));
+        }
+
+        [HttpGet]
+        [Route("externalsFree")]
+        public IActionResult GetExternalsFree()
+        {
+            var users = userService.GetExternalsFree();
+
+            return Ok(users.Select(x => new Option { Id = x.Id, Text = x.Name }).OrderBy(x => x.Text));
         }
 
         [HttpGet]
@@ -147,7 +157,7 @@ namespace Sofco.WebApi.Controllers.Admin
         [Authorize]
         public IActionResult GetByMail()
         {
-            var response = userService.GetByMail();
+            var response = userService.GetUserInfo();
 
             return this.CreateResponse(response);
         }

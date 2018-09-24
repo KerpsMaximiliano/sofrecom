@@ -98,5 +98,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public int PhoneAreaCode { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public bool IsExternal { get; set; }
     }
 }

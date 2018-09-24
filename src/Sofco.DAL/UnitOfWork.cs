@@ -80,6 +80,7 @@ namespace Sofco.DAL
         #region HumanResource
 
         private ILicenseRepository licenseRepository;
+        private ICloseDateRepository closeDateRepository;
 
         #endregion
 
@@ -94,7 +95,7 @@ namespace Sofco.DAL
         #region WorkTimeManagement
 
         private IWorkTimeRepository workTimeRepository;
-        private IWorkTimeApprovalRepository workTimeApprovalRepository;
+        private IUserApproverRepository userApproverRepository;
         private IHolidayRepository holidayRepository;
 
         #endregion
@@ -164,6 +165,7 @@ namespace Sofco.DAL
         #region HumanResource
 
         public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
+        public ICloseDateRepository CloseDateRepository => closeDateRepository ?? (closeDateRepository = new CloseDateRepository(context));
 
         #endregion
 
@@ -180,7 +182,7 @@ namespace Sofco.DAL
 
         public IWorkTimeRepository WorkTimeRepository => workTimeRepository ?? (workTimeRepository = new WorkTimeRepository(context));
 
-        public IWorkTimeApprovalRepository WorkTimeApprovalRepository => workTimeApprovalRepository ?? (workTimeApprovalRepository = new WorkTimeApprovalRepository(context));
+        public IUserApproverRepository UserApproverRepository => userApproverRepository ?? (userApproverRepository = new UserApproverRepository(context));
 
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 

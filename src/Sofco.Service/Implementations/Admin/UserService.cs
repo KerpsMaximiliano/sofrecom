@@ -11,6 +11,7 @@ using Sofco.Core.Services.Admin;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Relationships;
+using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Admin
 {
@@ -204,15 +205,31 @@ namespace Sofco.Service.Implementations.Admin
             return response;
         }
 
-        public Response<UserModel> GetByMail()
+        public Response<UserModel> GetUserInfo(int employeeId)
+        {
+            var response = new Response<UserModel>();
+
+            var employee = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, employeeId);
+
+            if (response.HasErrors()) return response;
+
+            return SetUserInfo(employee.Email, response);
+        }
+
+        public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();
 
             var response = new Response<UserModel>();
 
+            return SetUserInfo(email, response);
+        }
+
+        private Response<UserModel> SetUserInfo(string email, Response<UserModel> response)
+        {
             var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(email));
 
-            if(user == null)
+            if (user == null)
             {
                 response.AddError(Resources.Admin.User.NotFound);
                 return response;
@@ -220,9 +237,24 @@ namespace Sofco.Service.Implementations.Admin
 
             var model = Translate(user);
 
-            var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+            var employee = unitOfWork.EmployeeRepository.GetUserInfo(email);
 
             model.EmployeeId = employee?.Id ?? 0;
+            model.IsExternal = employee?.IsExternal ?? false;
+
+            if (employee?.Manager != null)
+            {
+                model.ManagerId = employee.ManagerId.GetValueOrDefault();
+                model.ManagerDesc = employee.Manager.Name;
+            }
+
+            var allocationFirst = employee?.Allocations.FirstOrDefault();
+
+            if (allocationFirst != null)
+            {
+                model.SectorId = allocationFirst.Analytic?.SectorId ?? 0;
+                model.SectorDesc = allocationFirst.Analytic?.Sector?.Text;
+            }
 
             response.Data = model;
 
@@ -316,6 +348,11 @@ namespace Sofco.Service.Implementations.Admin
         public IList<User> GetAuthorizers()
         {
             return unitOfWork.UserRepository.GetAuthorizers();
+        }
+
+        public IList<User> GetExternalsFree()
+        {
+            return unitOfWork.UserRepository.GetExternalsFree();
         }
 
         private UserModel Translate(User user)

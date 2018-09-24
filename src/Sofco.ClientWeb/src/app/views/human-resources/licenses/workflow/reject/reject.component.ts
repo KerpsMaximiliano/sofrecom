@@ -43,11 +43,16 @@ export class LicenseRejectComponent implements OnDestroy  {
   }
 
   canReject(){
-    if(!this.menuService.hasFunctionality('CTRLI', 'REJEC') || this.menuService.user.employeeId == this.employeeId) return false;
+    if(this.menuService.user.employeeId == this.employeeId) return false;
 
-    if(this.licenseId > 0 && this.menuService.userIsRrhh && (this.status == LicenseStatus[LicenseStatus.AuthPending] || 
-                              this.status == LicenseStatus[LicenseStatus.Pending] || 
-                              this.status == LicenseStatus[LicenseStatus.ApprovePending])){
+    if(this.licenseId == 0) return false;
+
+    if(this.menuService.hasFunctionality('CTRLI', 'AUTH') && this.status == LicenseStatus[LicenseStatus.AuthPending]) return true;
+
+    if(this.menuService.hasFunctionality('CTRLI', 'APROB') &&
+        (this.status == LicenseStatus[LicenseStatus.AuthPending] 
+        || this.status == LicenseStatus[LicenseStatus.Pending] 
+        || this.status == LicenseStatus[LicenseStatus.ApprovePending])){
         return true;
     }
 
@@ -63,7 +68,7 @@ export class LicenseRejectComponent implements OnDestroy  {
         this.messageService.showError("billing.solfac.rejectCommentRequired");
         return;
     }
-    
+
     var json = {
         status: LicenseStatus.Rejected,
         comment: this.rejectComments
@@ -76,7 +81,7 @@ export class LicenseRejectComponent implements OnDestroy  {
             if(this.history.observers.length > 0){
                 this.history.emit();
             }
-        
+
             if(this.updateStatus.observers.length > 0){
                 var toModif = {
                     statusId: LicenseStatus.Rejected,

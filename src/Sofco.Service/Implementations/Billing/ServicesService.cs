@@ -7,6 +7,7 @@ using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.AllocationManagement;
@@ -23,8 +24,8 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IServiceUpdateJobService serviceUpdateJobService;
         private readonly ILogMailer<ServicesService> logger;
 
-        public ServicesService(IUnitOfWork unitOfWork, 
-            IServiceData serviceData, 
+        public ServicesService(IUnitOfWork unitOfWork,
+            IServiceData serviceData,
             ISessionManager sessionManager,
             ISolfacDelegateData solfacDelegateData,
             ILogMailer<ServicesService> logger,
@@ -39,13 +40,13 @@ namespace Sofco.Service.Implementations.Billing
         }
 
         public Response<List<Domain.Models.Billing.Service>> GetServices(string customerId)
-        { 
+        {
             var result = new List<Domain.Models.Billing.Service>();
 
             if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<Domain.Models.Billing.Service>> { Data = result };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
-            
+
             foreach (var item in userNames)
             {
                 result.AddRange(serviceData.GetServices(customerId, item));
@@ -71,11 +72,19 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response<Domain.Models.Billing.Service> GetService(string serviceId, string customerId)
+        public Response<ServiceModel> GetService(string serviceId, string customerId)
         {
             var result = GetServices(customerId).Data;
 
-            return new Response<Domain.Models.Billing.Service> { Data = result.FirstOrDefault(x => x.CrmId.Equals(serviceId)) };
+            var projects = unitOfWork.ProjectRepository.GetAllActives(serviceId);
+
+            var opportunities = projects.Select(x => x.OpportunityNumber);
+
+            var service = result.FirstOrDefault(x => x.CrmId.Equals(serviceId));
+
+            var serviceModel = new ServiceModel(service) { Proposals = string.Join("-", opportunities) };
+
+            return new Response<ServiceModel> { Data = serviceModel };
         }
 
         public Analytic GetAnalyticByService(string serviceId)

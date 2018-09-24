@@ -170,6 +170,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.solutionId = response.data.solutionTypeId;
                 this.model.technologyId = response.data.technologyTypeId;
                 this.model.serviceTypeId = response.data.serviceTypeId;
+                this.model.proposal = response.data.proposals;
             }, 
             error => {
                 this.messageService.closeLoading();

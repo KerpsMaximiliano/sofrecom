@@ -25,10 +25,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'workTimeManagement.month'" [(value)]="searchModel.month" [options]="months"></select-two>
-                        </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'billing.purchaseOrder.fields.year'" [(value)]="searchModel.year" [options]="years"></select-two>
+                            <select-two [label]="'workTimeManagement.month'" [(value)]="searchModel.closeMonthId" [options]="months"></select-two>
                         </div>
                         <div class="col-sm-4">
                             <select-two [label]="'allocationManagement.allocation.resources'" [(value)]="searchModel.employeeId" [options]="resources"></select-two>
@@ -56,6 +53,43 @@
         </div>
     </div>
 
+    <div class="alert alert-gaps-success" *ngIf="isCompleted">
+        <span>
+            <i class="fa fa-check"></i>
+            {{'workTimeManagement.report.allResourcesSuccess' | translate }}
+            <a (click)="getTigetTxt()">{{'workTimeManagement.report.exportTiger' | translate }}</a>
+        </span>
+    </div>
+
+    <div class="alert alert-gaps-error" *ngIf="isMissingData">
+        <div class="row">
+            <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
+                <h4>
+                    <i class="fa fa-times"></i> 
+                    {{'workTimeManagement.report.employeesWithHoursMissing' | translate }}
+                </h4>  
+        
+                <ul>
+                    <li *ngFor="let item of employeesWithHoursMissing">
+                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage }}%
+                    </li> 
+                </ul>
+            </div>
+            <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0">
+                <h4>
+                    <i class="fa fa-times"></i> 
+                    {{'workTimeManagement.report.employeesWithAllocationMissing' | translate }}
+                </h4>  
+        
+                <ul>
+                    <li *ngFor="let item of employeesWithAllocationMissing">
+                        {{ item.employee }}: {{ item.monthPercentage }}
+                    </li> 
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="ibox" *ngIf="gridIsVisible"> 
         <div class="ibox-content">
             <div class="table-responsive">
@@ -63,15 +97,15 @@
                     <thead>
                         <tr>
                             <th class="column-sm">{{'workTimeManagement.report.result' | translate }}</th>
-                            <th class="column-lg">{{'workTimeManagement.report.client' | translate }}</th>
-                            <th class="column-lg">{{'workTimeManagement.report.analytic' | translate }}</th>
-                            <th class="column-lg">{{'workTimeManagement.report.manager' | translate }}</th>
                             <th class="column-lg">{{'workTimeManagement.report.employee' | translate }}</th>
-                            <th class="column-xs">{{'workTimeManagement.report.interval' | translate }}</th>
-                            <th class="column-xs">{{'workTimeManagement.report.facturability' | translate }}</th>
                             <th class="column-xs">{{'workTimeManagement.report.allocationPercentage' | translate }}</th>
                             <th class="column-xs">{{'workTimeManagement.report.hoursMustLoad' | translate }}</th>
+                            <th class="column-xs">{{'workTimeManagement.report.realPercentage' | translate }}</th>
                             <th class="column-xs">{{'workTimeManagement.report.hoursLoaded' | translate }}</th>
+                            <th class="column-xs">{{'workTimeManagement.report.facturability' | translate }}</th>
+                            <th class="column-lg">{{'workTimeManagement.report.analytic' | translate }}</th>
+                            <th class="column-lg">{{'workTimeManagement.report.client' | translate }}</th>
+                            <th class="column-lg">{{'workTimeManagement.report.manager' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,15 +114,15 @@
                                 <label *ngIf="item.result" class="label label-primary">{{'workTimeManagement.report.accomplished' | translate }}</label>
                                 <label *ngIf="!item.result" class="label label-danger">{{'workTimeManagement.report.notAccomplished' | translate }}</label>
                             </td>
-                            <td class="column-lg">{{ item.client }}</td>
-                            <td class="column-lg">{{ item.analytic }}</td>
-                            <td class="column-lg">{{ item.manager }}</td>
                             <td class="column-lg">{{ item.employee }}</td>
-                            <td class="column-xs">{{ item.monthYear }}</td>
-                            <td class="column-xs">{{ item.facturability }} %</td>
                             <td class="column-xs">{{ item.allocationPercentage }} %</td>
                             <td class="column-xs">{{ item.hoursMustLoad }} hs</td>
+                            <td class="column-xs">{{ item.realPercentage }} %</td>
                             <td class="column-xs">{{ item.hoursLoaded }} hs</td>
+                            <td class="column-xs">{{ item.facturability }} %</td>
+                            <td class="column-lg">{{ item.analytic }}</td>
+                            <td class="column-lg">{{ item.client }}</td>
+                            <td class="column-lg">{{ item.manager }}</td>
                         </tr>
                     </tbody>
                 </table>       

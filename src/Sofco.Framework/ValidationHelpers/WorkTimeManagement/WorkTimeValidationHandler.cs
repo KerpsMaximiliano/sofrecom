@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Domain;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
@@ -10,6 +11,8 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     public static class WorkTimeValidationHandler
     {
         private const int UserCommentMaxLength = 500;
+
+        private static bool ValidatePeriodCloseMonth = true;
 
         public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
@@ -78,13 +81,6 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateRequired);
             }
 
-            var period = GetPeriod(unitOfWork);
-
-            if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
-            {
-                response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
-            }
-
             if (model.Date.DayOfWeek == DayOfWeek.Saturday || model.Date.DayOfWeek == DayOfWeek.Sunday)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsWeekend);
@@ -93,6 +89,19 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             if (unitOfWork.HolidayRepository.IsHoliday(model.Date))
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
+            }
+
+            if (!ValidatePeriodCloseMonth) return; 
+             
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
+
+            if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
             }
         }
 
@@ -137,36 +146,18 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 return;
             }
 
-            var period = GetPeriod(unitOfWork);
-         
-            if(!(worktime.Date.Date >= period.Item1.Date && worktime.Date.Date <= period.Item2.Date))
+            if (!ValidatePeriodCloseMonth) return;
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
+
+            if (!(worktime.Date.Date >= period.Item1.Date && worktime.Date.Date <= period.Item2.Date))
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
             }
-        }
-
-        private static Tuple<DateTime, DateTime> GetPeriod(IUnitOfWork unitOfWork)
-        {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
-
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(closeMonthSetting.Value);
-
-            DateTime dateFrom;
-            DateTime dateTo;
-
-            if (now.Day > closeMonthValue)
-            {
-                dateFrom = new DateTime(now.Year, now.Month, closeMonthValue + 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, closeMonthValue);
-            }
-            else
-            {
-                dateFrom = new DateTime(now.Year, now.Month - 1, closeMonthValue + 1);
-                dateTo = new DateTime(now.Year, now.Month, closeMonthValue);
-            }
-
-            return new Tuple<DateTime, DateTime>(dateFrom, dateTo);
         }
     }
 }

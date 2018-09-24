@@ -7,9 +7,9 @@ namespace Sofco.WebJob.Filters
     {
         public bool Authorize([NotNull] DashboardContext context)
         {
-            var httpcontext = context.GetHttpContext();
+            var httpContext = context.GetHttpContext();
 
-            return httpcontext.User.Identity.IsAuthenticated;
+            return httpContext.User.Identity.IsAuthenticated;
         }
     }
 }

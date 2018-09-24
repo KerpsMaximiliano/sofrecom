@@ -45,6 +45,26 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Where(x => x.EmployeeId == employeeId).ToList();
         }
 
+        public ICollection<License> GetByEmployee(List<int> employeeIds)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => employeeIds.Contains(x.EmployeeId)).ToList();
+        }
+
+        public ICollection<License> GetByEmployeeAndStatus(List<int> employeeIds, LicenseStatus statusId)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => 
+                    employeeIds.Contains(x.EmployeeId)
+                    && x.Status == statusId).ToList();
+        }
+
         public ICollection<License> GetByStatus(LicenseStatus statusId)
         {
             return context.Licenses

@@ -45,11 +45,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
 
+            var resources = GetResources(workTimes.ToList(), startDate, endDate);
+
             result.Data = new WorkTimeControlModel
             {
                 Resume = resumeModel,
-                Resources = GetResources(workTimes.ToList(), startDate, endDate)
+                Resources = resources
             };
+
+            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
+
+            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
             return result;
         }
@@ -91,8 +97,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
                 resource.RegisteredHours = resume.HoursApproved;
-                resource.PendingHours = resume.HoursPending;
                 resource.LicenseHours = resume.HoursWithLicense;
+                resource.PendingHours = resource.BusinessHours - resource.RegisteredHours - resource.LicenseHours;
                 resource.AllocationPercentage = allocationAnalytic.Percentage;
                 resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
                 result.Add(resource);

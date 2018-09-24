@@ -175,6 +175,9 @@
 
                                     <dt>{{'allocationManagement.resources.document' | translate }}</dt>
                                     <dd class="text-ellipsis">{{ model?.documentNumber }}</dd>
+
+                                    <dt>{{'allocationManagement.resources.grid.birthday' | translate }}</dt>
+                                    <dd class="text-ellipsis">{{ model?.birthday | date:'dd/MM/yyyy' }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -321,6 +324,11 @@
                 <input class="form-control" type="number" min="1" max="1000" [(ngModel)]="editModel.holidaysPending" />
             </div>
         </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">{{'allocationManagement.report.grid.billeability' | translate }}: </label>
+        <input class="form-control" type="text" [(ngModel)]="editModel.billingPercentage" />
     </div>
 
     <div class="form-group">

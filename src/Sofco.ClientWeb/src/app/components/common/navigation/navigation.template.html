@@ -48,6 +48,7 @@
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('contracts')}">
             <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('CONTR', 'CCLST')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('CONTR', 'QUERY')"><a [routerLink]="['/contracts/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('closeDate')}" *ngIf="menuService.hasFunctionality('CONTR', 'CDADD')"><a [routerLink]="['/contracts/closeDate']">{{'rrhh.closeDate.title' | translate }}</a></li>
         </ul>
       </li> 
  
@@ -81,9 +82,9 @@
 
       <!-- Profile-->
       <li [ngClass]="{active: activeRoute('profile')}">
-        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Mis Acciones</span> <span class="fa arrow"></span> </a>
+        <a href="#"><i class="fa fa-user"></i> <span class="nav-label"> {{ 'myActions' | translate }} </span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('profile')}">
-          <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA')"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA') && !isExternal"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/profile/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
         </ul>
       </li>

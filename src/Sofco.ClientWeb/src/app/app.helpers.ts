@@ -64,3 +64,4 @@ export function smoothlyMenu() {
     jQuery('#side-menu').removeAttr('style');
   }
 }
+

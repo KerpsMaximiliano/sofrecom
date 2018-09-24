@@ -52,6 +52,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
+  public options: any = { language: 'es' }; 
+
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
@@ -70,7 +72,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private messageService: MessageService,
       private appSetting: AppSetting) {
 
-        this.editModalConfig.deleteButton = true;
+        this.editModalConfig.deleteButton = false;
         this.editModalConfig.acceptInlineButton = true;
   }
 
@@ -110,7 +112,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const self = this;
 
     $('#calendar').fullCalendar({
-      weekends: true,
+      weekends: false,
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -139,19 +141,21 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
 
     (<any>$("#hoursControl")).TouchSpin({
-        min: 1,
-        max: 24
+        min: 0.25,
+        max: 24,
+        step: 0.25,
+        decimals: 2
     }).on('change', function() {
-      self.taskModel.hours = $("#hoursControl").val();
+      self.taskModel.hours = $("#hoursControl").val().replace(',', '.');
       self.showSaveTask();
     });
   }
 
   viewRenderHandler(view, element) {
-   const calendarMonth = view.start.add(1, 'M');
+    var moment = $("#calendar").fullCalendar('getDate');
 
-   this.calendarCurrentDate = calendarMonth;
-   this.calendarCurrentDateText = calendarMonth.format('YYYY-MM-DD');
+    this.calendarCurrentDate = moment.toDate();
+    this.calendarCurrentDateText = moment.format('YYYY-MM-DD');
 
     this.getModel();
   }
@@ -168,10 +172,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     $("#hoursControl").val(this.taskModel.hours);
     this.taskModel.date = moment(task.date).toDate();
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
-    if (storedTask == null) {
-      return;
+
+    if (storedTask != null) {
+      this.taskModel.categoryId = storedTask.categoryId;
     }
-    this.taskModel.categoryId = storedTask.categoryId;
+    
     this.showEditModal(false);
   }
 
@@ -266,18 +271,20 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
     if (isNew) {
       this.taskModel = new WorkTimeTaskModel();
+      this.editModalConfig.acceptInlineButton = true;
     } else {
       this.updateModalTaskCombo();
-      if (this.taskModel.status !== this.draftStatus
-        && this.taskModel.status !== this.rejectedStatus) {
+
+      if (this.taskModel.status !== this.draftStatus && this.taskModel.status !== this.rejectedStatus) {
         this.editModalConfig.acceptInlineButton = false;
         this.editModalConfig.cancelButtonText = 'ACTIONS.close';
         $("#hoursControl").prop('disabled', true);
       }
     }
+
     this.showSaveTask();
 
-    this.editModalConfig.deleteButton = true;
+    this.editModalConfig.deleteButton = !isNew;
 
     this.editModal.show();
   }
@@ -361,7 +368,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       this.editModal.isSaveEnabled = false;
       return;
     }
-    if (taskModel.date == null || !this.validateDate(taskModel.date)) {
+    if (taskModel.date == null) {
       this.editModal.isSaveEnabled = false;
       return;
     }

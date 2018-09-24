@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            return context.Employees.Where(x => x.EndDate == null).ToList();
+            return context.Employees.Where(x => x.EndDate == null && !x.IsExternal).ToList();
         }
 
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
@@ -62,6 +62,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             {
                 query = query.Where(x => x.EndDate == null);
             }
+
+            query = query.Where(x => x.IsExternal == parameters.ExternalOnly);
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
@@ -123,6 +125,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employee).Property("HolidaysPendingByLaw").IsModified = true;
             context.Entry(employee).Property("ManagerId").IsModified = true;
             context.Entry(employee).Property("HolidaysPending").IsModified = true;
+            context.Entry(employee).Property("BillingPercentage").IsModified = true;
         }
 
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
@@ -253,6 +256,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Employee GetByEmail(string email)
         {
             return context.Employees.SingleOrDefault(x => x.Email == email);
+        }
+
+        public Employee GetUserInfo(string email)
+        {
+            return context.Employees.Include(x => x.Manager)
+                .Include(x => x.Allocations)
+                    .ThenInclude(x => x.Analytic)
+                        .ThenInclude(x => x.Sector)
+                .SingleOrDefault(x => x.Email == email);
         }
     }
 }

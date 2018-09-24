@@ -41,6 +41,10 @@ export class UserService {
        return this.http.get<any>(`${this.baseUrl}/users/options`);
     }
 
+    getUsersExternalFreeOptions(){
+        return this.http.get<any>(`${this.baseUrl}/users/externalsFree`);
+    }
+
     getDetail(id: string) {
        return this.http.get<any>(`${this.baseUrl}/users/${id}/detail`);
     }

@@ -81,7 +81,6 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     $('#analytics').val(this.form.model.analyticIds).trigger('change');
-                    this.form.searchOpportunities();
                 }, 1000);
 
                 if(this.form.model.status != PurchaseOrderStatus.Draft 
@@ -98,10 +97,11 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     this.form.currencyDisabled = true;
                     this.form.isReadOnly = true;
                 }
+                this.messageService.closeLoading();
             },
             () => {
-                    this.messageService.closeLoading();
-                });
+                this.messageService.closeLoading();
+            });
         });
     }
 

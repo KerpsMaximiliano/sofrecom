@@ -16,12 +16,10 @@ import { ResourceSearchComponent } from './resources/search/resource-search.comp
 import { Ng2ModalModule } from '../../components/modal/ng2modal.module';
 import { ICheckModule } from '../../components/icheck/icheck.module';
 import { PCheckModule } from '../../components/pcheck/pcheck.module';
-import { NumbersOnlyModule } from '../../components/numbersOnly/numberOnly.directive';
 import { AllocationReportComponent } from './allocation/report/allocation-report.component';
 import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
-import { WorkTimeApprovalDelegateComponent } from './worktime/worktime-approval-delegate/worktime-approval-delegate.component';
-import { WorkTimeApprovalDelegateService } from '../../services/allocation-management/worktime-approval-delegate.service';
+import { WorkTimeApproverComponent } from './worktime/worktime-approval-delegate/worktime-approver.component';
 import { AllocationRouter } from './allocation-management.router';
 import { CategoryService } from '../../services/admin/category.service';
 import { LicenseService } from '../../services/human-resources/licenses.service';
@@ -29,13 +27,17 @@ import { EmployeeProfileHistoryService } from '../../services/allocation-managem
 import { CommonModule } from '@angular/common';
 import { ResourceDetailModule } from './resources/detail/resource-detail.module';
 import { AllocationAssingTableModule } from './allocation/allocation-assignment-table/alloc-assing-table.module';
+import { ExternalUserComponent } from 'app/views/human-resources/external-user/external-user.component';
+import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
+import { ApproversModule } from '../common/approvers/approvers.module';
 
 @NgModule({
   declarations: [
     AddAllocationByResourceComponent,
     ResourceSearchComponent, 
     AllocationReportComponent,
-    WorkTimeApprovalDelegateComponent
+    WorkTimeApproverComponent,
+    ExternalUserComponent
   ],
   imports: [
     CommonModule,
@@ -55,9 +57,10 @@ import { AllocationAssingTableModule } from './allocation/allocation-assignment-
     NumbersOnlyModule,
     Ng2ModalModule,
     PCheckModule,
-    AllocationRouter
+    AllocationRouter,
+    ApproversModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, WorkTimeApprovalDelegateService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
 
   exports: [],
 })

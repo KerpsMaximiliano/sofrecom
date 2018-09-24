@@ -11,6 +11,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
@@ -166,12 +167,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             foreach (var employeeId in parameters.Employees)
             {
-                foreach (var categoryId in parameters.Categories)
+                foreach (var categoryId in parameters.CategoriesToAdd)
                 {
                     if (!unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
                     {
                         var employeeCategory = new EmployeeCategory(employeeId, categoryId);
                         unitOfWork.CategoryRepository.AddEmployeeCategory(employeeCategory);
+                    }
+                }
+
+                foreach (var categoryId in parameters.CategoriesToRemove)
+                {
+                    if (unitOfWork.CategoryRepository.ExistEmployeeCategory(employeeId, categoryId))
+                    {
+                        var employeeCategory = new EmployeeCategory(employeeId, categoryId);
+                        unitOfWork.CategoryRepository.RemoveEmployeeCategory(employeeCategory);
                     }
                 }
             }
@@ -230,6 +240,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
+            EmployeeValidationHelper.ValidateBillingPercentage(response, model);
 
             if (response.HasErrors()) return response;
 
@@ -242,6 +253,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.OfficeAddress = model.Office;
                 employee.HolidaysPendingByLaw = model.HolidaysPending;
                 employee.ManagerId = model.ManagerId;
+                employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
@@ -296,6 +308,46 @@ namespace Sofco.Service.Implementations.AllocationManagement
             };
 
             return result;
+        }
+
+        public Response AddExternal(AddExternalModel model)
+        {
+            var response = new Response();
+
+            var user = EmployeeValidationHelper.User(response, unitOfWork, model);
+            EmployeeValidationHelper.Manager(response, unitOfWork, model);
+            EmployeeValidationHelper.Phone(response, unitOfWork, model);
+            EmployeeValidationHelper.Hours(response, unitOfWork, model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var employee = new Employee
+                {
+                    Email = user.Email,
+                    Name = user.Name,
+                    PhoneCountryCode = model.CountryCode,
+                    PhoneAreaCode = model.AreaCode,
+                    PhoneNumber = model.Phone,
+                    ManagerId = model.ManagerId,
+                    StartDate = DateTime.UtcNow,
+                    IsExternal = true,
+                    BusinessHours = model.Hours
+                };
+
+                unitOfWork.EmployeeRepository.Insert(employee);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AllocationManagement.Employee.Added);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

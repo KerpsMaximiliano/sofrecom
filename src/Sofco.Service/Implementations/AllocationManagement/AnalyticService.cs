@@ -65,9 +65,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
         }
 
-        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId)
+        public ICollection<AnalyticOptionForOcModel> GetByClient(string clientId, bool onlyActives)
         {
-            return unitOfWork.AnalyticRepository.GetByClient(clientId).Select(x => new AnalyticOptionForOcModel
+            return unitOfWork.AnalyticRepository.GetByClient(clientId, onlyActives).Select(x => new AnalyticOptionForOcModel
             {
                 Id = x.Id,
                 Text = $"{x.Title} - {x.Name}",
@@ -89,27 +89,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
             var userId = userData.GetCurrentUser().Id;
+             
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodExcludeDays();
 
-            var now = DateTime.Now.Date;
-            var closeMonthValue = Convert.ToInt32(settingCloseMonth.Value);
-
-            DateTime dateFrom;
-            DateTime dateTo;
-
-            if (now.Day > closeMonthValue)
-            {
-                dateFrom = new DateTime(now.Year, now.Month, 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, 1);
-            }
-            else
-            {
-                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
-                dateTo = new DateTime(now.Year, now.Month, 1);
-            }
-
-            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, dateFrom.Date, dateTo.Date).ToList();
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsLiteByEmployee(employeeId, userId, period.Item1.Date, period.Item2.Date).ToList();
 
             var response = new Response<List<Option>> { Data = new List<Option>() };
 
@@ -240,7 +227,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<Analytic>();
 
-            response.Data = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, id);
+            response.Data = AnalyticValidationHelper.Find(response, unitOfWork, id);
 
             return response;
         }
@@ -376,7 +363,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response Close(int analyticId, AnalyticStatus status)
         {
             var response = new Response();
-            var analytic = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, analyticId);
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticId);
 
             if (response.HasErrors()) return response;
 
@@ -448,10 +435,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
                 var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
+                var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance, mailQuality });
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance, mailQuality, mailCdg });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);

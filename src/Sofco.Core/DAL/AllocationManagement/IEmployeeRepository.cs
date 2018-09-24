@@ -49,5 +49,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void Save(Employee employee);
 
         IList<Employee> GetByAnalyticWithWorkTimes(int analyticId);
+
+        Employee GetUserInfo(string email);
     }
 }

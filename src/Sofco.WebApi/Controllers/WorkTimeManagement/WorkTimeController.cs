@@ -15,10 +15,12 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
     public class WorkTimeController : Controller
     {
         private readonly IWorkTimeService workTimeService;
+        private readonly IWorkTimeReportService workTimeReportService;
 
-        public WorkTimeController(IWorkTimeService workTimeService)
+        public WorkTimeController(IWorkTimeService workTimeService, IWorkTimeReportService workTimeReportService)
         {
             this.workTimeService = workTimeService;
+            this.workTimeReportService = workTimeReportService;
         }
 
         [HttpGet("{date}")]
@@ -112,7 +114,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         [HttpPost("report")]
         public IActionResult Report([FromBody] ReportParams parameters)
         {
-            var response = workTimeService.CreateReport(parameters);
+            var response = workTimeReportService.CreateReport(parameters);
 
             return this.CreateResponse(response);
         }

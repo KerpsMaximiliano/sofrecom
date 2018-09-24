@@ -120,6 +120,9 @@
   <data name="Almost2HitosRequired" xml:space="preserve">
     <value>billing/projects.almost2HitosRequired</value>
   </data>
+  <data name="DateRequired" xml:space="preserve">
+    <value>billing/projects.dateRequired</value>
+  </data>
   <data name="HitoAmmoutRequired" xml:space="preserve">
     <value>billing/projects.hitoAmmoutRequired</value>
   </data>

@@ -123,14 +123,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(GetStatuses());
         }
 
-        [HttpPost("{id}/solfac/{solfacId}")]
-        public IActionResult UpdateSolfac(int id, int solfacId)
-        {
-            var response = purchaseOrderService.UpdateSolfac(id, solfacId);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpPut("{id}/adjustment")]
         public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
         {

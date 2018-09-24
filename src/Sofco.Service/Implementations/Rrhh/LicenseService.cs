@@ -12,6 +12,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
@@ -38,10 +39,12 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IMailSender mailSender;
         private readonly ILicenseFileManager licenseFileManager;
         private readonly IUserData userData;
+        private readonly ILicenseApproverManager licenseApproverManager;
 
         public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
                               ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
-                              IMailSender mailSender, ILicenseFileManager licenseFileManager, IUserData userData)
+                              IMailSender mailSender, ILicenseFileManager licenseFileManager, IUserData userData, 
+                              ILicenseApproverManager licenseApproverManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -52,6 +55,7 @@ namespace Sofco.Service.Implementations.Rrhh
             this.mailSender = mailSender;
             this.licenseFileManager = licenseFileManager;
             this.userData = userData;
+            this.licenseApproverManager = licenseApproverManager;
         }
 
         public Response<string> Add(LicenseAddModel model)
@@ -155,43 +159,43 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public IList<LicenseListItem> GetByStatus(LicenseStatus statusId)
+        public IList<LicenseListModel> GetByStatus(LicenseStatus statusId)
         {
-            var licenses = unitOfWork.LicenseRepository.GetByStatus(statusId);
+            var licenses = unitOfWork.LicenseRepository.GetByStatus(statusId).ToList();
 
-            return licenses.Select(x => new LicenseListItem(x)).ToList();
+            return Translate(licenses);
         }
 
-        public IList<LicenseListItem> Search(LicenseSearchParams parameters)
+        public IList<LicenseListModel> Search(LicenseSearchParams parameters)
         {
-            var licenses = unitOfWork.LicenseRepository.Search(parameters);
+            var licenses = unitOfWork.LicenseRepository.Search(parameters).ToList();
 
-            return licenses.Select(x => new LicenseListItem(x)).ToList();
+            return Translate(licenses);
         }
 
-        public IList<LicenseListItem> GetByManager(int managerId)
+        public IList<LicenseListModel> GetByManager(int managerId)
         {
-            var managerIds = GetDelegateManagerIds();
+            var licenses = unitOfWork.LicenseRepository.GetByManager(managerId).ToList();
 
-            managerIds.Add(managerId);
+            licenses.AddRange(licenseApproverManager.GetByCurrent());
 
-            var licenses = unitOfWork.LicenseRepository.GetByManagerIds(managerIds);
-
-            return licenses.Select(x => new LicenseListItem(x)).ToList();
+            return Translate(licenses);
         }
 
-        public IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId)
+        public IList<LicenseListModel> GetByManagerAndStatus(LicenseStatus statusId, int managerId)
         {
-            var licenses = unitOfWork.LicenseRepository.GetByManagerAndStatus(statusId, managerId);
+            var licenses = unitOfWork.LicenseRepository.GetByManagerAndStatus(statusId, managerId).ToList();
 
-            return licenses.Select(x => new LicenseListItem(x)).ToList();
+            licenses.AddRange(licenseApproverManager.GetByCurrentByStatus(statusId));
+
+            return Translate(licenses);
         }
 
-        public IList<LicenseListItem> GetByEmployee(int employeeId)
+        public IList<LicenseListModel> GetByEmployee(int employeeId)
         {
-            var licenses = unitOfWork.LicenseRepository.GetByEmployee(employeeId);
+            var licenses = unitOfWork.LicenseRepository.GetByEmployee(employeeId).ToList();
 
-            return licenses.Select(x => new LicenseListItem(x)).ToList();
+            return Translate(licenses);
         }
 
         public Response DeleteFile(int id)
@@ -361,15 +365,16 @@ namespace Sofco.Service.Implementations.Rrhh
 
         private WorkTime BuildWorkTime(License license, DateTime startDate, Domain.Models.Admin.User user)
         {
-            var worktime = new WorkTime();
-
-            worktime.EmployeeId = license.EmployeeId;
-            worktime.UserId = user.Id;
-            worktime.UserComment = license.Type.Description;
-            worktime.CreationDate = DateTime.UtcNow.Date;
-            worktime.Status = WorkTimeStatus.License;
-            worktime.Date = startDate.Date;
-            worktime.TaskId = license.Type.TaskId;
+            var worktime = new WorkTime
+            {
+                EmployeeId = license.EmployeeId,
+                UserId = user.Id,
+                UserComment = license.Type.Description,
+                CreationDate = DateTime.UtcNow.Date,
+                Status = WorkTimeStatus.License,
+                Date = startDate.Date,
+                TaskId = license.Type.TaskId
+            };
 
             return worktime;
         }
@@ -501,18 +506,13 @@ namespace Sofco.Service.Implementations.Rrhh
             }
         }
 
-        private List<int> GetDelegateManagerIds()
+        private List<LicenseListModel> Translate(List<License> licenses)
         {
-            var currentUser = userData.GetCurrentUser();
-
-            var serviceIds =
-                unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id, UserDelegateType.LicenseView)
-                .Select(s => s.ServiceId.ToString())
+            var result = licenses
+                .Select(x => new LicenseListModel(x))
                 .ToList();
 
-            var analytics = unitOfWork.AnalyticRepository.GetByServiceIds(serviceIds);
-
-            return analytics.Where(s => s.ManagerId.HasValue).Select(s => s.ManagerId.Value).ToList();
+            return licenseApproverManager.ResolveApprovers(result);
         }
     }
 }

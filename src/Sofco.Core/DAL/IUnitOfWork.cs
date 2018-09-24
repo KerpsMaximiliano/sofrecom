@@ -54,28 +54,30 @@ namespace Sofco.Core.DAL
         IHealthInsuranceRepository HealthInsuranceRepository { get; }
         IPrepaidHealthRepository PrepaidHealthRepository { get; }
 
-
         #endregion
 
         #region HumanResources
 
         ILicenseRepository LicenseRepository { get; }
+        ICloseDateRepository CloseDateRepository { get; }
 
         #endregion
 
         #region Common
 
         IUtilsRepository UtilsRepository { get; }
+
         IFileRepository FileRepository { get; }
+
         IUserDelegateRepository UserDelegateRepository { get; }
+
+        IUserApproverRepository UserApproverRepository { get; }
 
         #endregion
 
         #region WorkTimeManagement
 
         IWorkTimeRepository WorkTimeRepository { get; }
-
-        IWorkTimeApprovalRepository WorkTimeApprovalRepository { get; }
 
         IHolidayRepository HolidayRepository { get; }
         #endregion

@@ -408,6 +408,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("HolidaysPendingByLaw");
 
+                    b.Property<bool>("IsExternal");
+
                     b.Property<string>("Location")
                         .HasMaxLength(200);
 
@@ -1268,6 +1270,38 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.Common.UserApprover", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalyticId");
+
+                    b.Property<int>("ApproverUserId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<string>("CreatedUser");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<DateTime?>("Modified");
+
+                    b.Property<string>("ModifiedUser");
+
+                    b.Property<int>("Type");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
+
+                    b.HasIndex("ApproverUserId");
+
+                    b.ToTable("UserApprovers");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Common.UserDelegate", b =>
                 {
                     b.Property<int>("Id")
@@ -1292,6 +1326,22 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserDelegate");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Rrhh.CloseDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Day");
+
+                    b.Property<int>("Month");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CloseDates");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
@@ -1435,39 +1485,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WorkTimes");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.WorkTimeManagement.WorkTimeApproval", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnalyticId");
-
-                    b.Property<int>("ApprovalUserId");
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<string>("CreatedUser")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("EmployeeId");
-
-                    b.Property<DateTime?>("Modified");
-
-                    b.Property<string>("ModifiedUser")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovalUserId");
-
-                    b.HasIndex("AnalyticId", "EmployeeId", "ApprovalUserId")
-                        .IsUnique();
-
-                    b.ToTable("WorkTimeApprovals");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.EmployeeCategory", b =>
@@ -2006,6 +2023,19 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.Common.UserApprover", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("UserApprovers")
+                        .HasForeignKey("AnalyticId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ApproverUser")
+                        .WithMany()
+                        .HasForeignKey("ApproverUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
@@ -2057,18 +2087,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("WorkTimes1")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.WorkTimeManagement.WorkTimeApproval", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("WorkTimeApprovals")
-                        .HasForeignKey("AnalyticId");
-
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "ApprovalUser")
-                        .WithMany()
-                        .HasForeignKey("ApprovalUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.EmployeeCategory", b =>

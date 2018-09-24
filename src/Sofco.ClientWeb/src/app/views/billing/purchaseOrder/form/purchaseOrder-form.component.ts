@@ -85,7 +85,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
  
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getClientId(this.model.clientExternalId).subscribe(
+        this.getAnalyticSubscrip = this.analyticService.getActivesByClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
             });

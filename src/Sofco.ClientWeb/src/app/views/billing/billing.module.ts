@@ -101,6 +101,7 @@ import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-orde
 import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
 import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
+import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -120,7 +121,7 @@ import { ButtonsModule } from '../../components/buttons/buttons.module';
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule],
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderApprovalDelegateService, 

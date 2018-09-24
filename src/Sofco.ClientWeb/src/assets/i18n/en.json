@@ -716,6 +716,7 @@
 			"partial": "Mid-course exams",
 			"final": "Final exam ",
 			"manager": "Manager",
+			"authorizer": "Authorizer",
 			"sector": "Sector",
 			"attachments": "Attachments",
 			"exam": "Exam Leave ",
@@ -751,7 +752,7 @@
 			"cancelComments": "A reason to cancel must be added",
 			"addCancelComments": "Enter the reasons to cancel",
 			"delegate": {
-                "viewTitle": "Delegate License Approval",
+                "viewTitle": "Delegate License Authorization",
                 "delegateAction": "Delegate"
             }
 		}
@@ -813,9 +814,9 @@
 		"sessionExpiredTitle": "The session has expired ...",
 		"sessionExpiredMessage": "Session has expired, you must log in again to the system",
 		"viewProfile": "View Profile",
-		"selectAll": "Seleccionar todo",
-        "removeAll": "Quitar todo",
-        "reassingAllocation": "AsignaciÃ³n masiva de recursos"
+		"selectAll": "Select all",
+        "removeAll": "Unselect all",
+        "reassingAllocation": "Massive allocation of resources"
 	},
 	"SendPending": "Draft",
 	"PendingByManagementControl": "P. Review Control Management",
@@ -865,6 +866,7 @@
 	"Between0And50": "> 0 and <50",
 	"Between50And75": "> 50 and <75",
 	"Between75And99": "> 75 and <99",
+	"myActions": "My Actions",
 	"report": {
 		"title": "Report",
 		"solfacs": {

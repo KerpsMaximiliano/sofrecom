@@ -8,7 +8,6 @@ using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -35,13 +34,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Employee> GetByService(string serviceId)
         {
-            return context.Allocations
+            var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            var employees = context.Allocations
                 .Include(x => x.Analytic)
-                .Include(x => x.Employee)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId))
-                .Select(x => x.Employee)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.StartDate.Date == date.Date)
+                .Select(x => x.EmployeeId)
                 .Distinct()
                 .ToList();
+
+            return context.Employees.Include(x => x.EmployeeCategories).Where(x => employees.Contains(x.Id)).ToList();
         }
 
         public ICollection<Employee> GetByAnalyticId(int analyticId)
@@ -100,12 +102,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
         {
-            IQueryable<Allocation> query = context.Allocations
+            var query = context.Allocations
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)
-                .Where(x => x.StartDate.Date == new DateTime(parameters.Year, parameters.Month, 1).Date ||
-                            x.StartDate.Date == new DateTime(parameters.Year, parameters.Month-1, 1).Date);
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.CostCenter)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Activity)
+                .Where(x => x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
+                            x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date);
 
             if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
                 query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);

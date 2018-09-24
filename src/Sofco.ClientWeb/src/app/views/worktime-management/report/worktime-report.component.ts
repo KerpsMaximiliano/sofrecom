@@ -7,6 +7,8 @@ import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { CustomerService } from "../../../services/billing/customer.service";
+import { RrhhService } from "app/services/human-resources/rrhh.service";
+import * as FileSaver from "file-saver";
 
 declare var $: any;
 
@@ -20,6 +22,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     @ViewChild('accordion') accordion;
 
     public data: any[] = new Array<any>();
+    public employeesWithHoursMissing: any[] = new Array<any>();
+    public employeesWithAllocationMissing: any[] = new Array<any>();
 
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
@@ -29,6 +33,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public managers: any[] = new Array<any>();
 
     public gridIsVisible: boolean = false;
+    public isCompleted: boolean = false;
+    public isMissingData: boolean = false;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -39,8 +45,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     getManagersSubscrip: Subscription;
 
     public searchModel = {
-        year: 0,
-        month: 0,
+        closeMonthId: 0,
         clientId: 0,
         managerId: 0,
         analyticId: 0,
@@ -51,6 +56,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
         private analyticService: AnalyticService,
+        private rrhhService: RrhhService,
         private customerService: CustomerService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService){}
@@ -58,7 +64,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCustomers();
         this.getMonths();
-        this.getYears();
         this.getResources();
         this.getManagers();
 
@@ -94,12 +99,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.getMonthsSubscrip = this.utilsService.getCloseMonths().subscribe(data => this.months = data);
     }
 
-    getYears(){
-        this.getYearsSubscrip = this.utilsService.getYears().subscribe(data => {
-            this.years = data;
-        });
-    }
-
     getResources(){
         this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
             this.resources = data;
@@ -122,13 +121,21 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     search(){
         this.messageService.showLoading();
         this.gridIsVisible = false;
+        this.isMissingData = false;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
-            this.data = response.data;
+            this.data = response.data.items;
 
             if(this.data.length > 0){
+                this.isCompleted = response.data.isCompleted;
+                this.isMissingData = !response.data.isCompleted;
+
                 this.initGrid();
                 this.collapse();
+
+                if(this.isMissingData){
+                    this.showEmployeesWithMissingData();
+                }
             }
 
             this.messageService.closeLoading();
@@ -136,8 +143,13 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('lastWorktimeReportQuery', JSON.stringify(this.searchModel));
         },
         () => {
-                this.messageService.closeLoading();
-            });
+            this.messageService.closeLoading();
+        });
+    }
+
+    showEmployeesWithMissingData(){
+        this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
+        this.employeesWithAllocationMissing = this.data.filter(item => item.missAnyPercentageAllocation == true);
     }
 
     initGrid(){
@@ -148,6 +160,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             selector: "#reportTable",
             columns: columns,
             title: title,
+            order: [[ 1, "desc" ]],
             withExport: true
         };
 
@@ -188,8 +201,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     
     clean(){
         this.searchModel = {
-            year: 0,
-            month: 0,
+            closeMonthId: 0,
             clientId: 0,
             managerId: 0,
             analyticId: 0,
@@ -197,5 +209,18 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         };
 
         sessionStorage.removeItem('lastWorktimeReportQuery')
+    }
+
+    getTigetTxt(){
+        this.messageService.showLoading();
+
+        this.rrhhService.getTigerTxt().subscribe(file => {
+            this.messageService.closeLoading();
+
+            FileSaver.saveAs(file, "tiger-txt-file.txt");
+        },
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 }

@@ -27,23 +27,23 @@ import { EmployeeService } from '../../services/allocation-management/employee.s
 import { EmployeeNewsService } from '../../services/allocation-management/employee-news.service';
 import { NewsComponent } from './news/news.component';
 import { AddLicenseModule } from './licenses/add/add-license.module';
-import { LicenseViewDelegateComponent } from './licenses/license-view/license-view-delegate/license-view-delegate.component';
-import { LicenseViewDelegateService } from '../../services/human-resources/license-view-delegate.service';
-import { LicenseViewDelegateEditComponent } from './licenses/license-view/license-view-delegate/edit/license-view-delegate-edit.component';
+import { LicenseDelegateComponent } from './licenses/license-delegate/license-delegate.component';
 import { ServiceService } from '../../services/billing/service.service';
 import { CustomerService } from '../../services/billing/customer.service';
+import { ApproversModule } from '../common/approvers/approvers.module';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
-                NewsComponent, LicenseViewDelegateComponent, LicenseViewDelegateEditComponent],
+                NewsComponent, LicenseDelegateComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter],
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
+                ApproversModule],
 
-  providers   : [LicenseService, EmployeeService, EmployeeNewsService, LicenseViewDelegateService, ServiceService, CustomerService],
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService],
 
   exports     : []
 })
- 
-export class HumanResourcesModule {} 
+
+export class HumanResourcesModule {}

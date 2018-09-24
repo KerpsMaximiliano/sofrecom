@@ -109,7 +109,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
             '<thead>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.analytic') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('billing.solfac.hito') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('billing.solfac.invoiceCode') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.status') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('billing.solfac.currency') + '</th>' +

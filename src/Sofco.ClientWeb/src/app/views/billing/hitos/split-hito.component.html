@@ -14,7 +14,7 @@
             <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
             <div class="input-group m-b">
                 <span class="input-group-addon">{{ getCurrencySymbol() }}</span> 
-                <input type="number" min="1" class="form-control" [(ngModel)]="hito.ammount">
+                <input type="number" decimalFormat class="form-control" [(ngModel)]="hito.ammount">
             </div>
         </div>
     </div>

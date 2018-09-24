@@ -156,6 +156,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (employeeToChange == null)
             {
                 response.AddError(Resources.AllocationManagement.Employee.NotFound);
+
+                return response;
             }
 
             if (response.HasErrors()) return response;

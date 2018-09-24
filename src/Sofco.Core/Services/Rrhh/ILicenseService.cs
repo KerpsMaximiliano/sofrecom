@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
@@ -15,11 +14,11 @@ namespace Sofco.Core.Services.Rrhh
     {
         Response<string> Add(LicenseAddModel createDomain);
         Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file);
-        IList<LicenseListItem> GetByStatus(LicenseStatus statusId);
-        IList<LicenseListItem> Search(LicenseSearchParams parameters);
-        IList<LicenseListItem> GetByManager(int managerId);
-        IList<LicenseListItem> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
-        IList<LicenseListItem> GetByEmployee(int employeeId);
+        IList<LicenseListModel> GetByStatus(LicenseStatus statusId);
+        IList<LicenseListModel> Search(LicenseSearchParams parameters);
+        IList<LicenseListModel> GetByManager(int managerId);
+        IList<LicenseListModel> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
+        IList<LicenseListModel> GetByEmployee(int employeeId);
         Response DeleteFile(int id);
         Response ChangeStatus(int id, LicenseStatusChangeModel model, License license);
         Response<LicenseDetailModel> GetById(int id);

@@ -6,8 +6,10 @@ using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Billing;
+using Sofco.Domain;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -78,22 +80,16 @@ namespace Sofco.Service.Implementations.Common
         }
         public IEnumerable<Option> GetCloseMonths()
         {
-            var closeMonthSetting = unitOfWork.SettingRepository.GetByKey("CloseMonth");
-            var value = Convert.ToInt32(closeMonthSetting.Value);
-            var valueBefore = value + 1;
+            var closeDates = unitOfWork.CloseDateRepository.GetAllBeforeNextMonth();
 
-            yield return new Option { Id = 1, Text = $"{valueBefore} Diciembre al {value} Enero" };
-            yield return new Option { Id = 2, Text = $"{valueBefore} Enero al {value} Febrero" };
-            yield return new Option { Id = 3, Text = $"{valueBefore} Febrero al {value} Marzo" };
-            yield return new Option { Id = 4, Text = $"{valueBefore} Marzo al {value} Abril" };
-            yield return new Option { Id = 5, Text = $"{valueBefore} Abril al {value} Mayo" };
-            yield return new Option { Id = 6, Text = $"{valueBefore} Mayo al {value} Junio" };
-            yield return new Option { Id = 7, Text = $"{valueBefore} Junio al {value} Julio" };
-            yield return new Option { Id = 8, Text = $"{valueBefore} Julio al {value} Agosto" };
-            yield return new Option { Id = 9, Text = $"{valueBefore} Agosto al {value} Septiembre" };
-            yield return new Option { Id = 10, Text = $"{valueBefore} Septiembre al {value} Octubre" };
-            yield return new Option { Id = 11, Text = $"{valueBefore} Octubre al {value} Noviembre" };
-            yield return new Option { Id = 12, Text = $"{valueBefore} Noviembre al {value} Diciembre" };
+            for (int i = 1; i < closeDates.Count; i++)
+            {
+                var closeDateBefore = closeDates[i - 1];
+                var closeDate = closeDates[i];
+
+                yield return new Option { Id = closeDate.Id, Text = $"{ closeDateBefore.Day+1 } { DatesHelper.GetMonthDesc(closeDateBefore.Month) } {closeDateBefore.Year} al " +
+                                                         $"{ closeDate.Day } { DatesHelper.GetMonthDesc(closeDate.Month) } {closeDateBefore.Year}" };
+            }
         }
 
         public IEnumerable<Option> GetYears()
@@ -131,7 +127,7 @@ namespace Sofco.Service.Implementations.Common
 
             foreach (var item in Enum.GetValues(typeof(UserDelegateType)))
             {
-                enumVals.Add(new { Id = (int)item, Text = item.ToString()});
+                enumVals.Add(new { Id = (int)item, Text = item.ToString() });
             }
 
             return enumVals;

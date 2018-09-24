@@ -125,6 +125,15 @@ namespace Sofco.Resources.Admin {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a admin/user.managerNotFound.
+        /// </summary>
+        public static string ManagerNotFound {
+            get {
+                return ResourceManager.GetString("ManagerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a admin/user.notFound.
         /// </summary>
         public static string NotFound {
