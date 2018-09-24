@@ -753,6 +753,7 @@
             "finalizeExtraHolidays": "Finalizar Acuerdo",
             "cancelComments": "Se debe agregar un motivo para cancelar",
             "addCancelComments": "Ingrese los motivos para cancelar",
+            "missingManager": "No se ha detectado un superior y/o sector asignado para su usuario. Por favor comuniquese con recursos humanos",
             "delegate": {
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
@@ -927,7 +928,7 @@
         "report": {
             "title": "Insumido vs Previsto",
             "client": "Cliente",
-            "analytic": "Analitica-Servicio",
+            "analytic": "Analitica",
             "manager": "Gerente",
             "employee": "Recurso",
             "interval": "Periodo",
@@ -937,7 +938,13 @@
             "hoursLoaded": "Hs. Cargadas",
             "result": "Resultado",
             "accomplished": "Cumplido",
-            "notAccomplished": "No Cumplido"
+            "notAccomplished": "No Cumplido",
+            "realPercentage": "% Real",
+            "exportTiger": "Exportar Tiger.txt", 
+            "employeesWithAllocationMissing": "Recursos que no cumplen las asignaciones al 100%",
+            "employeesWithHoursMissing": "Recursos con horas faltantes de carga",
+            "hoursLoadedUntil": "horas cargadas al",
+            "allResourcesSuccess": "Todos los recursos han cargado horas correctamente en el periodo seleccionado"
         },
         "query": {
             "title": "Consulta horas cargadas",

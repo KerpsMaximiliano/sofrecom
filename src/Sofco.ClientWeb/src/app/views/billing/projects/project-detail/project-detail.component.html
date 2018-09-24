@@ -124,9 +124,8 @@
                                     <table class="table table-striped" id="solfacTable" width="100%">
                                         <thead>
                                             <tr>
-                                                <!-- <th>{{'billing.project.detail.requests.project' | translate }}</th> -->
-                                                <!-- <th>{{'billing.project.detail.requests.businessName' | translate }}</th> -->
                                                 <th>{{'billing.purchaseOrder.name' | translate }}</th>
+                                                <th>{{'billing.solfac.invoiceCode' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.docType' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.date' | translate }}</th>
                                                 <th>{{'billing.project.detail.requests.total' | translate }}</th>
@@ -135,9 +134,8 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let solfac of solfacs" (click)="goToSolfacDetail(solfac)" class="pointer">
-                                                <!-- <td>{{solfac.project}}</td> -->
-                                                <!-- <td>{{solfac.businessName}}</td> -->
                                                 <td>{{ solfac.purchaseOrder }}</td>
+                                                <td>{{ solfac.invoiceCode }}</td>
                                                 <td>{{ solfac.documentTypeName }}</td>
                                                 <td>{{ solfac.startDate | date:'dd/MM/yyyy' }}</td>
                                                 <td>{{ setCurrencySymbol(solfac.currencyId) }} {{solfac.totalAmount | number: '1.2-2' }}</td>

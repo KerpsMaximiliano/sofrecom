@@ -11,5 +11,7 @@
         public int HolidaysPending { get; set; }
 
         public int ManagerId { get; set; }
+
+        public decimal? BillingPercentage { get; set; }
     }
 }

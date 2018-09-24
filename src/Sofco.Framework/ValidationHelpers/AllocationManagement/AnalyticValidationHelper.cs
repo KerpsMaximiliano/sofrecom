@@ -1,4 +1,6 @@
-﻿using Sofco.Core.DAL.AllocationManagement;
+﻿using System.Linq;
+using Sofco.Core.DAL;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
@@ -7,13 +9,21 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {
     public static class AnalyticValidationHelper
     {
-        public static Analytic Find(Response response, IAnalyticRepository analyticRepository, int id)
+        public static Analytic Find(Response response, IUnitOfWork unitOfWork, int id)
         {
-            var analytic = analyticRepository.GetSingle(x => x.Id == id);
+            var analytic = unitOfWork.AnalyticRepository.GetSingle(x => x.Id == id);
 
             if (analytic == null)
             {
                 response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.NotFound, MessageType.Error));
+            }
+            else
+            {
+                var projects = unitOfWork.ProjectRepository.GetAllActives(analytic.ServiceId);
+
+                var opportunities = projects.Select(x => x.OpportunityNumber);
+
+                analytic.Proposal = string.Join("-", opportunities);
             }
 
             return analytic;

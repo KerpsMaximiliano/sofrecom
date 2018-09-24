@@ -35,6 +35,7 @@ import { WorkTimeRouter } from './worktime.router';
 import { ImportWorkTimesComponent } from 'app/views/worktime-management/import/import-worktime.component';
 import { WorkTimeControlComponent } from './worktime-control/worktime-control.component';
 import { DateRangePickerModule } from '../../components/date-range-picker/date-range.picker.module';
+import { RrhhService } from 'app/services/human-resources/rrhh.service';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
@@ -46,7 +47,7 @@ import { DateRangePickerModule } from '../../components/date-range-picker/date-r
              PCheckModule, WorkTimeRouter, DateRangePickerModule ],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
-        I18nService, WorktimeControlService],
+                I18nService, WorktimeControlService, RrhhService],
 
   exports     : []
 })

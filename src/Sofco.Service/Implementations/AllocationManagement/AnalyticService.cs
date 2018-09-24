@@ -227,7 +227,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<Analytic>();
 
-            response.Data = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, id);
+            response.Data = AnalyticValidationHelper.Find(response, unitOfWork, id);
 
             return response;
         }
@@ -363,7 +363,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response Close(int analyticId, AnalyticStatus status)
         {
             var response = new Response();
-            var analytic = AnalyticValidationHelper.Find(response, unitOfWork.AnalyticRepository, analyticId);
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticId);
 
             if (response.HasErrors()) return response;
 

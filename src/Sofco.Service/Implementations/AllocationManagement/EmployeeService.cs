@@ -240,6 +240,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
+            EmployeeValidationHelper.ValidateBillingPercentage(response, model);
 
             if (response.HasErrors()) return response;
 
@@ -252,6 +253,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.OfficeAddress = model.Office;
                 employee.HolidaysPendingByLaw = model.HolidaysPending;
                 employee.ManagerId = model.ManagerId;
+                employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);

@@ -43,6 +43,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     public files: any[] = new Array();
 
     public fromProfile: boolean = false;
+    public missingManager: boolean = false;
     public userApplicantName: string;
     public fileIdToDelete: number;
     public indexToDelete: number;
@@ -84,6 +85,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.sectorDesc = userInfo.sectorDesc;
 
                 this.userApplicantName = userInfo.name;
+
+                this.checkMissingManager();
             }
         } else {
             this.getEmployees();
@@ -152,6 +155,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                     this.model.managerDesc = response.data.managerDesc;
                     this.model.sectorId = response.data.sectorId;
                     this.model.sectorDesc = response.data.sectorDesc;
+
+                    this.checkMissingManager();
                 }
             },
             error => {
@@ -161,6 +166,15 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.sectorId = null;
                 this.model.sectorDesc = null;
             });
+    }
+
+    checkMissingManager(){
+        if(!this.model.managerId || this.model.managerId <= 0){
+            this.missingManager = true;
+        }
+        else{
+            this.missingManager = false;
+        }
     }
 
     add(){
@@ -233,8 +247,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     refresh(){
-        this.model.managerId = 0;
-        this.model.sectorId = 0;
         this.model.startDate = null;
         this.model.endDate = null;
         this.model.comments = "";
