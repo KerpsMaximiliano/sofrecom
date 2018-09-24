@@ -80,7 +80,7 @@ namespace Sofco.Service.Implementations.Common
         }
         public IEnumerable<Option> GetCloseMonths()
         {
-            var closeDates = unitOfWork.CloseDateRepository.GetAllBeforeToday();
+            var closeDates = unitOfWork.CloseDateRepository.GetAllBeforeNextMonth();
 
             for (int i = 1; i < closeDates.Count; i++)
             {

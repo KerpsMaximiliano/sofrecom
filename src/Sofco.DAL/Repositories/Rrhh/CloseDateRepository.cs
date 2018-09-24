@@ -92,9 +92,9 @@ namespace Sofco.DAL.Repositories.Rrhh
             return result;
         }
 
-        public IList<CloseDate> GetAllBeforeToday()
+        public IList<CloseDate> GetAllBeforeNextMonth()
         {
-            var today = DateTime.UtcNow.Date;
+            var today = DateTime.UtcNow.Date.AddMonths(1);
 
             return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, 1).Date <= today).ToList();
         }

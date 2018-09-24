@@ -113,11 +113,12 @@
             </div>
         </div>
         <div class="ibox-content">
-            <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+            <table class="table table-striped full-width" role="grid" id="resourcesTable">
                 <thead>
                     <tr>
                         <th class="column-xs"></th>
-                        <th>{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th class="column-lg">{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th class="column-lg">{{'allocationManagement.resources.grid.name' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.start' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
@@ -130,7 +131,8 @@
                         <td class="column-xs text-center">
                             <icheck [(checked)]="resource.selected"></icheck>
                         </td>
-                        <td>{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
                         <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
                         <td>{{ resource.senority}}</td>
                         <td>{{ resource.profile}}</td>

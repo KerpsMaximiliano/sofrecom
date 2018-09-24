@@ -10,7 +10,7 @@ namespace Sofco.Core.DAL.Rrhh
     {
         IList<CloseDate> Get(int startMonth, int startYear, int endMonth, int endYear);
         CloseDatesSettings GetBeforeCurrentAndNext();
-        IList<CloseDate> GetAllBeforeToday();
+        IList<CloseDate> GetAllBeforeNextMonth();
         Tuple<CloseDate, CloseDate> GetBeforeAndCurrent(int closeMonthId);
     }
 }
