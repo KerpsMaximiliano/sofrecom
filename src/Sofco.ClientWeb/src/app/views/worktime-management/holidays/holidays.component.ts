@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { HolidayService } from '../../../services/worktime-management/holiday.service';
 import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { DataTableService } from '../../../services/common/datatable.service';
+import { MessageService } from '../../../services/common/message.service';
 
 @Component({
   selector: 'app-holidays',
@@ -46,6 +47,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
 
   constructor(
       private holidayService: HolidayService,
+      private messageService: MessageService,
       private datatableService: DataTableService) {
   }
 
@@ -111,6 +113,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
       this.editModal.isLoading = false;
       this.editModal.hide();
       this.getHolidays();
+      this.messageService.closeLoading();
     },
     error => {
       this.editModal.isLoading = false;
@@ -132,9 +135,14 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   }
 
   processImport() {
+    this.messageService.showLoading();
     this.confirmImportModal.hide();
     this.subscription = this.holidayService.importExternalData(this.selectedYear).subscribe(res => {
+      this.messageService.closeLoading();
       this.getHolidays();
+    },
+    error => {
+      this.messageService.closeLoading();
     });
   }
 
