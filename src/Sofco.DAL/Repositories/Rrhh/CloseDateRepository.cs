@@ -96,7 +96,11 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             var today = DateTime.UtcNow.Date.AddMonths(1);
 
-            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, 1).Date <= today).ToList();
+            return context.CloseDates
+                .Where(x => new DateTime(x.Year, x.Month, 1).Date <= today)
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
+                .ToList();
         }
     }
 }

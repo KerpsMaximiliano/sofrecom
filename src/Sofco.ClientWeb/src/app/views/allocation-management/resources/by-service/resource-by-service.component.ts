@@ -8,6 +8,7 @@ import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { UserService } from "../../../../services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 declare var $: any;
 
@@ -63,6 +64,7 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
                 private usersService: UserService,
+                private dataTableService: DataTableService,
                 private categoryService: CategoryService,
                 private activatedRoute: ActivatedRoute,
                 private allocationervice: AllocationService){
@@ -90,6 +92,15 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         if(this.getCategorySubscrip) this.getCategorySubscrip.unsubscribe();
         if(this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
     }
+
+    initGrid(){
+        var options = { 
+            selector: "#resourcesTable",
+         };
+
+        this.dataTableService.destroy(options.selector);
+        this.dataTableService.initialize(options);
+    }
  
     getAll(){
         this.messageService.showLoading();
@@ -99,6 +110,8 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.getCategories();
+
+            this.initGrid();
         },
         () => this.messageService.closeLoading());
     }
