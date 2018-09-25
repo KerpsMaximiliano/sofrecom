@@ -73,6 +73,10 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                 if(this.form.model.clientExternalId){
                     this.form.customerId = this.form.model.clientExternalId;
                     this.form.serviceId = this.form.model.serviceId;
+
+                    if(data.proposal && data.proposal != ""){
+                        this.form.proposals = data.proposal.split(";");
+                    }
                 }
 
                 setTimeout(() => {
