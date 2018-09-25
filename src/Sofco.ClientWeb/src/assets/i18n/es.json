@@ -896,8 +896,8 @@
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
-        "approval": "Aprobacion",
-        "approvalHours": "Aprobacion de horas",
+        "approval": "Aprobación",
+        "approvalHours": "Aprobación Horas",
         "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",

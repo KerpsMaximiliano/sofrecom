@@ -886,7 +886,7 @@
 	"workTimeManagement": {
 		"title": "Hours Management",
 		"approval": "Approval",
-		"approvalHours": "Approval of hours",
+		"approvalHours": "Approval of Hours",
 		"hoursPending": "Hours Pending Approval",
 		"hoursApproved": "Hours Approved",
 		"analytic": "Analytical-Service",

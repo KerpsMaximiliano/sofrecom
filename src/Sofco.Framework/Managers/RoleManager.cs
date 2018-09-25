@@ -21,7 +21,9 @@ namespace Sofco.Framework.Managers
 
         private readonly ISolfacDelegateManager solfacDelegateManager;
 
-        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager)
+        private readonly IWorkTimeApproverDelegateManager workTimeApproverDelegateManager;
+
+        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager, IWorkTimeApproverDelegateManager workTimeApproverDelegateManager)
         {
             this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
             this.purchaseOrderActiveDelegateManager = purchaseOrderActiveDelegateManager;
@@ -29,6 +31,7 @@ namespace Sofco.Framework.Managers
             this.solfacDelegateManager = solfacDelegateManager;
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
+            this.workTimeApproverDelegateManager = workTimeApproverDelegateManager;
         }
 
         public List<Role> GetRoles()
@@ -44,6 +47,8 @@ namespace Sofco.Framework.Managers
             roles.AddRange(licenseViewDelegateManager.GetDelegatedRoles());
 
             roles.AddRange(solfacDelegateManager.GetDelegatedRoles());
+
+            roles.AddRange(workTimeApproverDelegateManager.GetDelegatedRoles());
 
             return roles;
         }

@@ -858,7 +858,7 @@
     "workTimeManagement":{
         "title":"Gestion des Heures",
         "approval":"Approbation",
-        "approvalHours":"Approbation des heures",
+        "approvalHours":"Approbation des Heures",
         "hoursPending":"Heures en attente d'approbation",
         "hoursApproved":"Heures approuvées",
         "analytic":"Analytique-Service",
