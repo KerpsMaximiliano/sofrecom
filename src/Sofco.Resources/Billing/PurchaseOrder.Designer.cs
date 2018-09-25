@@ -323,6 +323,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.proposalIsRequired.
+        /// </summary>
+        public static string ProposalIsRequired {
+            get {
+                return ResourceManager.GetString("ProposalIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/purchaseOrder.rejectSuccess.
         /// </summary>
         public static string RejectSuccess {

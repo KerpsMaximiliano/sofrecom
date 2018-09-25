@@ -35,6 +35,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public gridIsVisible: boolean = false;
     public isCompleted: boolean = false;
     public isMissingData: boolean = false;
+    public exportTigerVisible: boolean = false;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -122,6 +123,11 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
         this.gridIsVisible = false;
         this.isMissingData = false;
+
+        if(this.searchModel.closeMonthId > 0 && this.searchModel.clientId == 0 && this.searchModel.managerId == 0 && 
+           this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
+            this.exportTigerVisible = true;
+        }
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;

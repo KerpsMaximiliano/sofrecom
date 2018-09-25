@@ -21,6 +21,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     public services: any[] = new Array();
     public customers: any[] = new Array();
     public users: any[] = new Array();
+    public proposals: any[] = new Array();
 
     public customerId: string = "0";
     public serviceId: string = "0";
@@ -171,6 +172,10 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.technologyId = response.data.technologyTypeId;
                 this.model.serviceTypeId = response.data.serviceTypeId;
                 this.model.proposal = response.data.proposals;
+
+                if(response.data.proposals && response.data.proposals != ""){
+                    this.proposals = response.data.proposals.split(";");
+                }
             }, 
             error => {
                 this.messageService.closeLoading();

@@ -233,6 +233,7 @@ namespace Sofco.UnitTest.Services.Billing
             {
                 Number = NotExistNumber,
                 AnalyticIds = new[] { 1 },
+                ProposalIds = new []{ "1" },
                 ClientExternalId = "Client",
                 AreaId = 1,
                 StartDate = DateTime.Today,

@@ -57,7 +57,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
       'editModal',
-      false,
+      true,
       true,
       'ACTIONS.save',
       'ACTIONS.cancel');
@@ -73,7 +73,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       private appSetting: AppSetting) {
 
         this.editModalConfig.deleteButton = false;
-        this.editModalConfig.acceptInlineButton = true;
   }
 
   ngOnInit() {
@@ -269,14 +268,15 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   showEditModal(isNew = true) {
     $("#hoursControl").prop('disabled', false);
     this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+    this.editModalConfig.acceptButton = true;
+
     if (isNew) {
       this.taskModel = new WorkTimeTaskModel();
-      this.editModalConfig.acceptInlineButton = true;
     } else {
       this.updateModalTaskCombo();
 
       if (this.taskModel.status !== this.draftStatus && this.taskModel.status !== this.rejectedStatus) {
-        this.editModalConfig.acceptInlineButton = false;
+        this.editModalConfig.acceptButton = false;
         this.editModalConfig.cancelButtonText = 'ACTIONS.close';
         $("#hoursControl").prop('disabled', true);
       }

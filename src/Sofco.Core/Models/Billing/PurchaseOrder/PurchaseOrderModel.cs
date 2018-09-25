@@ -10,6 +10,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
     {
         public int Id { get; set; }
 
+        public string Title { get; set; }
+
         public string Number { get; set; }
 
         public string ClientExternalId { get; set; }
@@ -17,6 +19,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public string ClientExternalName { get; set; }
 
         public int[] AnalyticIds { get; set; }
+
+        public string[] ProposalIds { get; set; }
 
         public int CurrencyId { get; set; }
 
@@ -113,6 +117,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         private void FillData(Domain.Models.Billing.PurchaseOrder domain, string userName)
         {
+            domain.Title = Title;
             domain.Number = Number;
             domain.ClientExternalId = ClientExternalId;
             domain.ClientExternalName = ClientExternalName;
@@ -125,7 +130,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.PaymentForm = PaymentForm;
             domain.Margin = Margin;
             domain.Comments = Comments;
-            domain.Proposal = Proposal;
+            domain.Proposal = string.Join(";", ProposalIds);
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;

@@ -189,7 +189,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 response.Data = projects.Select(x => new SelectListModel
                 {
-                    Id = $"{x.OpportunityNumber} - {x.OpportunityName}",
+                    Id = $"{x.OpportunityNumber}",
                     Text = $"{x.OpportunityNumber} - {x.OpportunityName}"
                 })
                 .ToList();

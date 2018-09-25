@@ -61,7 +61,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
                     continue;
 
-                //if (allocation.Percentage == 0) continue;
+                if (allocation.Percentage == 0) continue;
 
                 if (model.EmployeeId == allocation.EmployeeId && model.AnalyticId == allocation.AnalyticId)
                 {
@@ -140,7 +140,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return response;
         }
 
-        private static void CalculateRealPercentage(Response<WorkTimeReportModel> response)
+        private void CalculateRealPercentage(Response<WorkTimeReportModel> response)
         {
             foreach (var item in response.Data.Items)
             {
@@ -162,7 +162,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private static void SaveTigerTxt(Response<WorkTimeReportModel> response, List<TigerReportItem> tigerReport)
+        private void SaveTigerTxt(Response<WorkTimeReportModel> response, List<TigerReportItem> tigerReport)
         {
             var i = 1;
             foreach (var item in response.Data.Items)
@@ -171,7 +171,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (item.Facturability > 0)
                 {
-                    if (sumPercentage == 100) item.HoursLoadedSuccesfully = true;
+                    if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
 
                     var sumTotalPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.TotalPercentage).Sum();
 
@@ -207,14 +207,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 startDate = startDate.AddDays(1);
             }
 
-            if (allocation.Employee.BillingPercentage == 0)
-            {
-                return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
-            }
-            else
-            {
-                return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage * (allocation.Employee.BillingPercentage / 100)) / 100);
-            }
+            return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
         }
     }
 }

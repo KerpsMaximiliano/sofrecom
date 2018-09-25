@@ -44,7 +44,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
         var self = this;
         $('#analytics').on('change', function(){ 
-            self.searchOpportunities();
+            self.searchOpportunities(); 
+            $('#opportunity-select').val(null).trigger('change');
         });
     }
 
@@ -85,6 +86,8 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
  
     getAnalytics(){
+        $('#opportunity-select').val(null).trigger('change');
+
         this.getAnalyticSubscrip = this.analyticService.getActivesByClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
@@ -142,7 +145,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
 
                 setTimeout(() => {
-                    $('#opportunity-select select').val(this.model.proposal).trigger('change');
+                    $('#opportunity-select').val(this.model.proposalIds).trigger('change');
                 }, 300);
              });
        }

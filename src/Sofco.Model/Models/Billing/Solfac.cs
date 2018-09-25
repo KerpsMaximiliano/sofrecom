@@ -91,5 +91,7 @@ namespace Sofco.Domain.Models.Billing
 
         public int? PurchaseOrderId { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
+
+        public string OpportunityNumber { get; set; }
     }
 }

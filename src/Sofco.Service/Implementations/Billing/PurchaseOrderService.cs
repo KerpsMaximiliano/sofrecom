@@ -466,15 +466,18 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
         }
 
-        public IList<PurchaseOrder> GetByServiceLite(string serviceId)
+        public IList<PurchaseOrder> GetByServiceLite(string serviceId, string opportunityNumber)
         {
-            return unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
+            var list = unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
+
+            return list.Where(x => x.Proposal.Contains(opportunityNumber)).ToList();
         }
 
         private void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
         {
             PurchaseOrderValidationHelper.ValidateNumber(response, model, unitOfWork);
             PurchaseOrderValidationHelper.ValidateAnalytic(response, model);
+            PurchaseOrderValidationHelper.ValidateOpportunities(response, model);
             PurchaseOrderValidationHelper.ValidateClient(response, model);
             PurchaseOrderValidationHelper.ValidateArea(response, model);
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);

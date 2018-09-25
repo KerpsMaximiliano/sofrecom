@@ -205,6 +205,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     update() {
         this.messageService.showLoading();
         this.form.model.analyticIds = $('#analytics').val();
+        this.form.model.proposalIds = $('#opportunity-select').val();
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
             () => {
