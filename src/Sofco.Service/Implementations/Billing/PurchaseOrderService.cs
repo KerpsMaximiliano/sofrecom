@@ -466,9 +466,11 @@ namespace Sofco.Service.Implementations.Billing
             return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
         }
 
-        public IList<PurchaseOrder> GetByServiceLite(string serviceId)
+        public IList<PurchaseOrder> GetByServiceLite(string serviceId, string opportunityNumber)
         {
-            return unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
+            var list = unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
+
+            return list.Where(x => x.Proposal.Contains(opportunityNumber)).ToList();
         }
 
         private void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)

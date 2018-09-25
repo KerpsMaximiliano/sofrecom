@@ -9,6 +9,8 @@ namespace Sofco.Domain.Models.Billing
 {
     public class PurchaseOrder : BaseEntity
     {
+        public string Title { get; set; }
+
         public string Number { get; set; }
 
         public string ClientExternalId { get; set; }

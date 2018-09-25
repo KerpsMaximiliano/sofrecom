@@ -21,7 +21,7 @@ namespace Sofco.Core.Services.Billing
 
         IList<PurchaseOrder> GetByService(string serviceId);
 
-        IList<PurchaseOrder> GetByServiceLite(string serviceId);
+        IList<PurchaseOrder> GetByServiceLite(string serviceId, string opportunityNumber);
 
         Response Update(PurchaseOrderModel model);
 
