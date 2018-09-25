@@ -32,5 +32,6 @@
     "cannotDeleteWithWfStarted": "No se puede eliminar porque ya se ha iniciado el flujo de aprobacion",
     "cannotDelete": "No se puede eliminar en el estado actual",
     "userAreaWrong": "Solo el responsable de area seleccionado puede aprobar la orden de compra",
+    "proposalIsRequired": "La propuesta es requerida",
     "userSectorWrong": "Solo el responsable de sector seleccionado puede aprobar la orden de compra"
 } 
