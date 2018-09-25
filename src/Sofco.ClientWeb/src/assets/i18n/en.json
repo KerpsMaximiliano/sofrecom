@@ -687,7 +687,7 @@
 		"confirmBody": "You are sure you want to continue with the action of",
 		"workTimeApproval": {
 			"delegate": {
-				"title": "Delegate approval hours",
+				"title": "Delegate Approval Hours",
 				"delegateAction": "Delegate",
 				"approvers": "Authorizers",
 				"saveSuccess": "Authorizer added successfully.",
@@ -886,7 +886,7 @@
 	"workTimeManagement": {
 		"title": "Hours Management",
 		"approval": "Approval",
-		"approvalHours": "Approval of hours",
+		"approvalHours": "Approval of Hours",
 		"hoursPending": "Hours Pending Approval",
 		"hoursApproved": "Hours Approved",
 		"analytic": "Analytical-Service",

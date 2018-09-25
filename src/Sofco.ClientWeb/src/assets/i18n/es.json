@@ -690,7 +690,7 @@
         "confirmBody": "Esta seguro que desea seguir con la acción de ",
         "workTimeApproval": {
             "delegate": {
-                "title": "Delegar aprobación horas",
+                "title": "Delegar Aprobación Horas",
                 "delegateAction": "Delegar",
                 "approvers": "Autorizadores",
                 "saveSuccess": "Autorizador agregado correctamente.",
@@ -897,8 +897,8 @@
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
-        "approval": "Aprobacion",
-        "approvalHours": "Aprobacion de horas",
+        "approval": "Aprobación",
+        "approvalHours": "Aprobación Horas",
         "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -16,7 +15,6 @@ namespace Sofco.Framework.Managers
         private readonly IUnitOfWork unitOfWork;
 
         private readonly IUserData userData;
-
 
         private readonly AppSetting appSetting;
 
