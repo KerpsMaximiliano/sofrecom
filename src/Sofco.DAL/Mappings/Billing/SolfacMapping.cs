@@ -21,6 +21,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.IntegratorId).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.Manager).HasMaxLength(300);
             builder.Entity<Solfac>().Property(_ => _.ManagerId).HasMaxLength(100);
+            builder.Entity<Solfac>().Property(_ => _.OpportunityNumber).HasMaxLength(100);
 
             builder.Entity<Solfac>().HasOne(x => x.UserApplicant).WithMany(x => x.Solfacs).HasForeignKey(x => x.UserApplicantId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Solfac>().HasOne(x => x.DocumentType).WithMany(x => x.Solfacs).HasForeignKey(x => x.DocumentTypeId);

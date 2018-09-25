@@ -51,7 +51,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
     }
  
     getOptions() {
-        this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId).subscribe(data => {
+        this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId, this.model.opportunityNumber).subscribe(data => {
           this.purchaseOrders = data.purchaseOrders;
         });
     }

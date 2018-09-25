@@ -228,4 +228,7 @@
   <data name="UserSectorWrong" xml:space="preserve">
     <value>billing/purchaseOrder.userSectorWrong</value>
   </data>
+  <data name="ProposalIsRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.proposalIsRequired</value>
+  </data>
 </root>

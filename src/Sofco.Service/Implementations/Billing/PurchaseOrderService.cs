@@ -477,6 +477,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             PurchaseOrderValidationHelper.ValidateNumber(response, model, unitOfWork);
             PurchaseOrderValidationHelper.ValidateAnalytic(response, model);
+            PurchaseOrderValidationHelper.ValidateOpportunities(response, model);
             PurchaseOrderValidationHelper.ValidateClient(response, model);
             PurchaseOrderValidationHelper.ValidateArea(response, model);
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);
