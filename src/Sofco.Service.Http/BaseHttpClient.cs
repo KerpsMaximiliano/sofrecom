@@ -84,13 +84,13 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
-        public Result<T> Get<T>(string urlPath, string token = null, TimeSpan ? timeOut = null)
+        public Result<T> Get<T>(string urlPath, string token = null, TimeSpan? timeOut = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
 
             if (timeOut != null)
             {
-                requestMessage.SetTimeout(TimeSpan.FromMinutes(5));
+                requestMessage.SetTimeout(timeOut);
             }
 
             if (!string.IsNullOrEmpty(token))
