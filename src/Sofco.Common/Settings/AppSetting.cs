@@ -6,7 +6,7 @@
 
         public string SolfacGeneratorCode { get; set; }
 
-        public string HourApprovalCode { get; set; }
+        public string WorkTimeApprovalCode { get; set; }
 
         public string PurchaseOrderApprovalCode { get; set; }
 
