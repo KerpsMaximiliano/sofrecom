@@ -19,6 +19,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorktimeData worktimeData;
 
+        private int LastMonthAllocation { get; set; }
+
+        private int CurrentMonthAllocation { get; set; }
+
         public WorkTimeReportService(IUnitOfWork unitOfWork,
             IWorktimeData worktimeData)
         {
@@ -46,6 +50,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             parameters.EndYear = endDate.Year;
             parameters.EndMonth = endDate.Month;
 
+            LastMonthAllocation = startDate.Month;
+            CurrentMonthAllocation = endDate.Month;
+
             var daysoff = unitOfWork.HolidayRepository.Get(parameters.StartYear, parameters.StartMonth);
             daysoff.AddRange(unitOfWork.HolidayRepository.Get(parameters.EndYear, parameters.EndMonth));
 
@@ -53,6 +60,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             response.Data = new WorkTimeReportModel { Items = new List<WorkTimeReportModelItem>() };
 
+            response.Data.EmployeesAllocationResume = new List<EmployeeAllocationResume>();
             var model = new WorkTimeReportModelItem();
             var mustAddModel = false;
 
@@ -61,13 +69,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (allocation.Analytic == null || allocation.Employee == null || allocation.Analytic.Manager == null)
                     continue;
 
-                if (allocation.Percentage == 0) continue;
+                if (allocation.Percentage == 0)
+                {
+                    CalculateEmployeesAllocationResume(response, allocation);
+                    continue;
+                }
 
                 if (model.EmployeeId == allocation.EmployeeId && model.AnalyticId == allocation.AnalyticId)
                 {
                     model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
-                    model.TotalPercentage += allocation.Percentage;
-                    model.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}%";
+                    //model.TotalPercentage += allocation.Percentage;
+                    //model.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}%";
+
+                    CalculateEmployeesAllocationResume(response, allocation);
                 }
                 else
                 {
@@ -76,9 +90,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     if (modelAlreadyExist != null)
                     {
                         modelAlreadyExist.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
-                        modelAlreadyExist.TotalPercentage += allocation.Percentage;
+                        //modelAlreadyExist.TotalPercentage += allocation.Percentage;
                         modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
-                        modelAlreadyExist.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ";
+                        //modelAlreadyExist.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ";
+
+                        CalculateEmployeesAllocationResume(response, allocation);
                     }
                     else
                     {
@@ -101,10 +117,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             CostCenter = allocation.Analytic.CostCenter?.Code,
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
-                            TotalPercentage = allocation.Percentage,
-                            MonthPercentage = $"{DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ",
-                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId)
+                            //TotalPercentage = allocation.Percentage,
+                            //MonthPercentage = $"{DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ",
+                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
                         };
+
+                        CalculateEmployeesAllocationResume(response, allocation);
 
                         model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
 
@@ -121,6 +139,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             CalculateRealPercentage(response);
 
+            FillUnassigned(response, startDate, endDate);
+
             var tigerReport = new List<TigerReportItem>();
 
             SaveTigerTxt(response, tigerReport);
@@ -131,13 +151,103 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
             else
             {
-                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully && !x.MissAnyPercentageAllocation);
+                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) && response.Data.EmployeesAllocationResume.All(x => !x.MissAnyPercentageAllocation);
 
                 worktimeData.ClearKeys();
                 worktimeData.SaveTigerReport(tigerReport);
             }
 
             return response;
+        }
+
+        private void FillUnassigned(Response<WorkTimeReportModel> response, DateTime startDate, DateTime endDate)
+        {
+            var employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(startDate, endDate);
+
+            foreach (var employee in employeesUnassigned)
+            {
+                var employeeMissAllocation = response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == employee.Id);
+
+                if (employeeMissAllocation == null)
+                {
+                    var itemToAdd = new EmployeeAllocationResume
+                    {
+                        EmployeeId = employee.Id,
+                        Employee = employee.Name,
+                        LastPercentage = 0,
+                        CurrentPercentage = 0,
+                        LastMonth = startDate.Month,
+                        CurrentMonth = endDate.Month,
+                        LastMonthDescription = DatesHelper.GetDateDescription(startDate),
+                        CurrentMonthDescription = DatesHelper.GetDateDescription(endDate)
+                    };
+
+                    response.Data.EmployeesAllocationResume.Add(itemToAdd);
+                }
+                else
+                {
+                    if (employeeMissAllocation.LastMonth == 0)
+                    {
+                        employeeMissAllocation.LastPercentage = 0;
+                        employeeMissAllocation.LastMonth = startDate.Month;
+                        employeeMissAllocation.LastMonthDescription = DatesHelper.GetDateDescription(startDate);
+                    }
+
+                    if (employeeMissAllocation.CurrentMonth == 0)
+                    {
+                        employeeMissAllocation.CurrentPercentage = 0;
+                        employeeMissAllocation.CurrentMonth = endDate.Month;
+                        employeeMissAllocation.CurrentMonthDescription = DatesHelper.GetDateDescription(endDate);
+                    }
+                }
+            }
+        }
+
+        private void CalculateEmployeesAllocationResume(Response<WorkTimeReportModel> response, Allocation allocation)
+        {
+            var employeeMissAllocation = response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
+
+            if (employeeMissAllocation == null)
+            {
+                var itemToAdd = new EmployeeAllocationResume
+                {
+                    EmployeeId = allocation.EmployeeId,
+                    Employee = allocation.Employee.Name
+                };
+
+                if (allocation.StartDate.Month == LastMonthAllocation)
+                {
+                    itemToAdd.LastMonth = allocation.StartDate.Month;
+                    itemToAdd.LastMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
+                    itemToAdd.LastPercentage += allocation.Percentage;
+                }
+                else
+                {
+                    itemToAdd.CurrentMonth = allocation.StartDate.Month;
+                    itemToAdd.CurrentMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
+                    itemToAdd.CurrentPercentage += allocation.Percentage;
+                }
+
+                response.Data.EmployeesAllocationResume.Add(itemToAdd);
+            }
+            else
+            {
+                employeeMissAllocation.EmployeeId = allocation.EmployeeId;
+                employeeMissAllocation.Employee = allocation.Employee.Name;
+
+                if (allocation.StartDate.Month == LastMonthAllocation)
+                {
+                    employeeMissAllocation.LastMonth = allocation.StartDate.Month;
+                    employeeMissAllocation.LastMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
+                    employeeMissAllocation.LastPercentage += Math.Round(allocation.Percentage, 0);
+                }
+                else
+                {
+                    employeeMissAllocation.CurrentMonth = allocation.StartDate.Month;
+                    employeeMissAllocation.CurrentMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
+                    employeeMissAllocation.CurrentPercentage += Math.Round(allocation.Percentage, 0);
+                }
+            }
         }
 
         private void CalculateRealPercentage(Response<WorkTimeReportModel> response)
@@ -173,12 +283,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
 
-                    var sumTotalPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.TotalPercentage).Sum();
+                    //var sumTotalPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.TotalPercentage).Sum();
 
-                    if (sumTotalPercentage != 200)
-                    {
-                        item.MissAnyPercentageAllocation = true;
-                    }
+                    //if (sumTotalPercentage != 200)
+                    //{
+                    //    item.MissAnyPercentageAllocation = true;
+                    //}
                 }
                 else
                 {

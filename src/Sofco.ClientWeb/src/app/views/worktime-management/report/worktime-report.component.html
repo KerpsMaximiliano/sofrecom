@@ -83,13 +83,13 @@
         
                 <ul>
                     <li *ngFor="let item of employeesWithAllocationMissing">
-                        {{ item.employee }}: {{ item.monthPercentage }}
+                        {{ item.employee }}: {{ item.lastMonthDescription }} {{ item.lastPercentage }}% - {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
                     </li> 
                 </ul>
             </div>
         </div>
     </div>
-
+ 
     <div class="ibox" *ngIf="gridIsVisible"> 
         <div class="ibox-content">
             <div class="table-responsive">
