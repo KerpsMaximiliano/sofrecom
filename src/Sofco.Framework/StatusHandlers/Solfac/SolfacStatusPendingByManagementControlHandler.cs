@@ -74,7 +74,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusPendingByManagementControlTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        private string GetRecipients(EmailConfig emailConfig)
+        private string GetRecipient(EmailConfig emailConfig)
         {
             return unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
         }
@@ -135,45 +135,43 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 
-            var recipientsArray = new List<string>();
+            var recipients = new List<string>();
 
             foreach (var analytic in analytics)
             {
                 if (analytic.Manager != null)
                 {
-                    recipientsArray.Add(analytic.Manager.Email);
+                    recipients.Add(analytic.Manager.Email);
                 }
             }
 
-            if (recipientsArray.Any())
+            if (!recipients.Any()) return;
+
+            var subject = string.Format(Resources.Mails.MailSubjectResource.PurchaseOrderConsumed, purchaseOrder.Number);
+            var body = string.Format(Resources.Mails.MailMessageResource.PurchaseOrderConsumed, purchaseOrder.Number);
+
+            var data = new SolfacStatusData
             {
-                var subject = string.Format(Resources.Mails.MailSubjectResource.PurchaseOrderConsumed, purchaseOrder.Number);
-                var body = string.Format(Resources.Mails.MailMessageResource.PurchaseOrderConsumed, purchaseOrder.Number);
-                var recipients = string.Join(";", recipientsArray.Distinct());
+                Title = subject,
+                Message = body,
+                Recipients = recipients
+            };
 
-                var data = new SolfacStatusData
-                {
-                    Title = subject,
-                    Message = body,
-                    Recipients = recipients
-                };
-
-                var email = mailBuilder.GetEmail(data);
-                mailSender.Send(email);
-            }
+            var email = mailBuilder.GetEmail(data);
+            mailSender.Send(email);
         }
 
         public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subjectToCdg = GetSubjectMail(solfac);
             var bodyToCdg = GetBodyMail(solfac, emailConfig.SiteUrl);
-            var recipientsToCdg = GetRecipients(emailConfig);
+            var recipientsToCdg = GetRecipient(emailConfig);
 
             var data = new SolfacStatusData
             {
                 Title = subjectToCdg,
                 Message = bodyToCdg,
-                Recipients = recipientsToCdg
+                Recipient = recipientsToCdg
             };
 
             var email = mailBuilder.GetEmail(data);
@@ -181,13 +179,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             var subject = string.Format(Resources.Mails.MailSubjectResource.SolfacStatusPendingByManagementControlTitleToUser, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
             var body = string.Format(Resources.Mails.MailMessageResource.SolfacStatusPendingByManagementControlMessageToUser, $"{emailConfig.SiteUrl}billing/solfac/{solfac.Id}");
-            var recipients = solfac.UserApplicant.Email;
+            var recipient = solfac.UserApplicant.Email;
 
             data = new SolfacStatusData
             {
                 Title = subject,
                 Message = body,
-                Recipients = recipients
+                Recipient = recipient
             };
 
             email = mailBuilder.GetEmail(data);

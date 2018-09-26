@@ -13,12 +13,10 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
-using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Mail;
 using Sofco.Core.Validations;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
@@ -47,6 +45,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IMailBuilder mailBuilder;
 
+        private readonly IWorkTimeRejectManager workTimeRejectManager;
+        
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
@@ -56,7 +56,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IWorkTimeFileManager workTimeFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
             IMailSender mailSender,
-            IMailBuilder mailBuilder)
+            IMailBuilder mailBuilder, IWorkTimeRejectManager workTimeRejectManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -67,6 +67,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeResumeManger = workTimeResumeManger;
             this.hostingEnvironment = hostingEnvironment;
             this.mailBuilder = mailBuilder;
+            this.workTimeRejectManager = workTimeRejectManager;
             this.mailSender = mailSender;
         }
 
@@ -254,33 +255,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public Response Reject(int id, string comments)
         {
-            var response = new Response();
-
-            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
-
-            WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                worktime.Status = WorkTimeStatus.Rejected;
-                worktime.ApprovalComment = comments;
-                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
-
-                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
-                unitOfWork.WorkTimeRepository.UpdateApprovalComment(worktime);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
+            return workTimeRejectManager.Reject(id, comments);
         }
 
         public Response ApproveAll(List<int> hourIds)
@@ -358,8 +333,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var period = closeDates.GetPeriodExcludeDays();
 
-            DateTime dateFrom = period.Item1;
-            DateTime dateTo = period.Item2;
+            var dateFrom = period.Item1;
+            var dateTo = period.Item2;
 
             try
             {
@@ -376,19 +351,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     mails.AddRange(delegates.Select(x => x.Email));
                 }
 
-                mails = mails.Distinct().ToList();
-
                 var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
 
                 var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
-
-                var recipients = string.Join(";", mails);
 
                 var data = new MailDefaultData
                 {
                     Title = subject,
                     Message = body,
-                    Recipients = recipients
+                    Recipients = mails
                 };
 
                 var email = mailBuilder.GetEmail(data);

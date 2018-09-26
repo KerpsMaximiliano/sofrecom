@@ -1,4 +1,6 @@
-﻿namespace Sofco.Core.Mail
+﻿using System.Collections.Generic;
+
+namespace Sofco.Core.Mail
 {
     public interface IMailData
     {
@@ -6,6 +8,8 @@
 
         string Title { get; }
 
-        string Recipients { get; set; }
+        string Recipient { get; set; }
+
+        List<string> Recipients { get; set; }
     }
 }

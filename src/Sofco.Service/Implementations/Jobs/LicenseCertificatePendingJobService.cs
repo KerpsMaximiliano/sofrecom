@@ -56,7 +56,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             return mailBuilder.GetEmail(new LicensePendingCertificateData
             {
-                Recipients = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode),
+                Recipient = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode),
                 Message = $"<ul>{content}</ul>"
             });
         }

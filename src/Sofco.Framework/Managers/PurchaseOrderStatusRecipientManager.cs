@@ -13,8 +13,6 @@ namespace Sofco.Framework.Managers
 {
     public class PurchaseOrderStatusRecipientManager : IPurchaseOrderStatusRecipientManager
     {
-        private const string MailDelimiter = ";";
-
         private readonly IUnitOfWork unitOfWork;
 
         private readonly EmailConfig emailConfig;
@@ -31,37 +29,35 @@ namespace Sofco.Framework.Managers
             appSetting = appSettingOptions.Value;
         }
 
-        public string GetRecipientsCompliance()
+        public List<string> GetRecipientsCompliance()
         {
             var mails = GetComplianceMails();
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails.Distinct().ToList();
         }
 
-        public string GetRecipientsCommercial(PurchaseOrder purchaseOrder)
+        public List<string> GetRecipientsCommercial(PurchaseOrder purchaseOrder)
         {
-            var mails = GetCommercialMails(purchaseOrder);
-
-            return string.Join(MailDelimiter, mails.Distinct());
+            return GetCommercialMails(purchaseOrder);
         }
 
-        public string GetRejectCompliance()
+        public List<string> GetRejectCompliance()
         {
             var mails = GetCdgMails();
 
             mails.AddRange(GetComplianceMails());
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRecipientsOperation(PurchaseOrder purchaseOrder)
+        public List<string> GetRecipientsOperation(PurchaseOrder purchaseOrder)
         {
             var mails = GetOperationMails(purchaseOrder);
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRejectCommercial(PurchaseOrder purchaseOrder)
+        public List<string> GetRejectCommercial(PurchaseOrder purchaseOrder)
         {
             var mails = GetCdgMails();
 
@@ -69,17 +65,17 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetCommercialMails(purchaseOrder));
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRecipientsDaf()
+        public List<string> GetRecipientsDaf()
         {
             var mails = GetDafMails();
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRejectOperation(PurchaseOrder purchaseOrder)
+        public List<string> GetRejectOperation(PurchaseOrder purchaseOrder)
         {
             var mails = GetCdgMails();
 
@@ -89,10 +85,10 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetOperationMails(purchaseOrder));
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRecipientsFinalApproval(PurchaseOrder purchaseOrder)
+        public List<string> GetRecipientsFinalApproval(PurchaseOrder purchaseOrder)
         {
             var mails = new List<string>();
 
@@ -120,10 +116,10 @@ namespace Sofco.Framework.Managers
             if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
             if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
-        public string GetRejectDaf(PurchaseOrder purchaseOrder)
+        public List<string> GetRejectDaf(PurchaseOrder purchaseOrder)
         {
             var mails = GetCdgMails();
 
@@ -135,7 +131,7 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetDafMails());
 
-            return string.Join(MailDelimiter, mails.Distinct());
+            return mails;
         }
 
         private List<string> GetCommercialMails(PurchaseOrder purchaseOrder)

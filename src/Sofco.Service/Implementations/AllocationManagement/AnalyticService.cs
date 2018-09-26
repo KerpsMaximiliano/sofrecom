@@ -447,13 +447,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 if(manager != null) recipientsList.Add(manager.Email);
                 if(seller != null) recipientsList.Add(seller.Email);
 
-                var recipients = string.Join(";", recipientsList.Distinct());
-
                 var data = new AddAnalyticData
                 {
                     Title = subject,
                     Message = body,
-                    Recipients = recipients
+                    Recipients = recipientsList
                 };
 
                 var email = mailBuilder.GetEmail(data);

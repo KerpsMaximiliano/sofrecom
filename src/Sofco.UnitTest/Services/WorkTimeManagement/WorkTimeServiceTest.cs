@@ -48,6 +48,8 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
 
+        private Mock<IWorkTimeRejectManager> workTimeRejectManagerMock;
+
         [SetUp]
         public void Setup()
         {
@@ -77,7 +79,9 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             unitOfWorkMock.Setup(s => s.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
 
-            sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, hostingEnvironmentMock.Object, employeeDataMock.Object, workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeResumeMangerMock.Object, mailSenderMock.Object, mailBuilderMock.Object);
+            workTimeRejectManagerMock = new Mock<IWorkTimeRejectManager>();
+
+            sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, hostingEnvironmentMock.Object, employeeDataMock.Object, workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeResumeMangerMock.Object, mailSenderMock.Object, mailBuilderMock.Object, workTimeRejectManagerMock.Object);
         }
 
         [Test]

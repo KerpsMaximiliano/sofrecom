@@ -28,19 +28,17 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
         public static void SendMail(Response response, Domain.Models.AllocationManagement.Analytic analytic, EmailConfig emailConfig, IMailSender mailSender, IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
         {
-            var recipientsList = new List<string>();
+            var recipients = new List<string>();
 
             var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
             var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-            recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+            recipients.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
 
             var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
 
-            if (manager != null) recipientsList.Add(manager.Email);
-
-            var recipients = string.Join(";", recipientsList.Distinct());
+            if (manager != null) recipients.Add(manager.Email);
 
             var title = analytic.Status == AnalyticStatus.Close ? MailSubjectResource.CloseAnalytic : MailSubjectResource.CloseForExpensesAnalytic;
             var message = analytic.Status == AnalyticStatus.Close ? MailMessageResource.CloseAnalytic : MailMessageResource.CloseForExpensesAnalytic;

@@ -11,6 +11,8 @@ namespace Sofco.Framework.Mail
 {
     public class MailBuilder : IMailBuilder
     {
+        private const string MailDelimiter = ";";
+
         private readonly Dictionary<MailType, string> templatesDicts;
 
         private readonly EmailConfig emailConfig;
@@ -60,7 +62,18 @@ namespace Sofco.Framework.Mail
                     return data == null ? string.Empty : data.ToString();
                 });
 
-            return GetEmail(mailData.MailType, mailData.Recipients, mailData.Title, mailContents);
+            var mails = new List<string>();
+
+            if (!string.IsNullOrEmpty(mailData.Recipient))
+            {
+                mails.Add(mailData.Recipient);
+            }
+
+            mails.AddRange(mailData.Recipients);
+
+            var recipients = string.Join(MailDelimiter, mails.Distinct());
+
+            return GetEmail(mailData.MailType, recipients, mailData.Title, mailContents);
         }
 
         public Email GetSupportEmail(string subject, string message)

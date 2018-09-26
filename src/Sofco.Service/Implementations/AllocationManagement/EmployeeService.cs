@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
-                    Recipients = string.Join(";", parameters.Receipents),
+                    Recipients = parameters.Receipents.ToList(),
                     Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("d"))
                 });
 
