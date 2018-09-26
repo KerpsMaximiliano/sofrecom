@@ -185,7 +185,7 @@ namespace Sofco.Service.Implementations.Jobs
 
                 var mailData = new EmployeeNewsData
                 {
-                    Recipients = mailRrhh,
+                    Recipient = mailRrhh,
                     Message = message.ToString()
                 };
 

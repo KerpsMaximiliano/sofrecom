@@ -1,25 +1,26 @@
-﻿using Sofco.Domain.Models.Billing;
+﻿using System.Collections.Generic;
+using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Managers
 {
     public interface IPurchaseOrderStatusRecipientManager
     {
-        string GetRecipientsCompliance();
+        List<string> GetRecipientsCompliance();
 
-        string GetRecipientsCommercial(PurchaseOrder purchaseOrder);
+        List<string> GetRecipientsCommercial(PurchaseOrder purchaseOrder);
 
-        string GetRejectCompliance();
+        List<string> GetRejectCompliance();
 
-        string GetRecipientsOperation(PurchaseOrder purchaseOrder);
+        List<string> GetRecipientsOperation(PurchaseOrder purchaseOrder);
 
-        string GetRejectCommercial(PurchaseOrder purchaseOrder);
+        List<string> GetRejectCommercial(PurchaseOrder purchaseOrder);
 
-        string GetRecipientsDaf();
+        List<string> GetRecipientsDaf();
 
-        string GetRejectOperation(PurchaseOrder purchaseOrder);
+        List<string> GetRejectOperation(PurchaseOrder purchaseOrder);
 
-        string GetRecipientsFinalApproval(PurchaseOrder purchaseOrder);
+        List<string> GetRecipientsFinalApproval(PurchaseOrder purchaseOrder);
 
-        string GetRejectDaf(PurchaseOrder purchaseOrder);
+        List<string> GetRejectDaf(PurchaseOrder purchaseOrder);
     }
 }

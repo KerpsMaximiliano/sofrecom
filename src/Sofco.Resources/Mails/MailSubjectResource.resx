@@ -192,4 +192,7 @@
   <data name="WorkTimeSendHours" xml:space="preserve">
     <value>Horas pendientes de aprobación</value>
   </data>
+  <data name="WorkTimeReject" xml:space="preserve">
+    <value>Horas Rechazadas - {0}</value>
+  </data>
 </root>

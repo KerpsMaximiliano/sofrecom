@@ -75,6 +75,18 @@ namespace Sofco.DAL.Repositories.Common
                 .ToList();
         }
 
+        public IList<User> GetApproverByEmployeeIdAndAnalyticId(int employeeId, int analyticId, UserApproverType type)
+        {
+            return UserApproverSet
+                .Include(x => x.ApproverUser)
+                .Where(x => x.EmployeeId == employeeId 
+                            && x.AnalyticId == analyticId
+                            && x.Type == type)
+                .Distinct()
+                .Select(x => x.ApproverUser)
+                .ToList();
+        }
+
         public List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type)
         {
             return UserApproverSet

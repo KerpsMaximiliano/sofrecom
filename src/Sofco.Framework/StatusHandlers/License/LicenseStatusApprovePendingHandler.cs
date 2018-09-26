@@ -58,13 +58,11 @@ namespace Sofco.Framework.StatusHandlers.License
 
             recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
 
-            var recipients = string.Join(";", recipientsList.Distinct());
-
             var data = new LicenseStatusData
             {
                 Title = subject,
                 Message = body,
-                Recipients = recipients
+                Recipients = recipientsList
             };
 
             return data;
