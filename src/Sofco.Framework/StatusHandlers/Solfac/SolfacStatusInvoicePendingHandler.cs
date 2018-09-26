@@ -57,7 +57,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusInvoicePendingTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        private string GetRecipients(EmailConfig emailConfig)
+        private string GetRecipient(EmailConfig emailConfig)
         {
             return unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
         }
@@ -87,13 +87,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var subject = GetSubjectMail(solfac);
             var body = GetBodyMail(solfac, emailConfig.SiteUrl);
-            var recipients = GetRecipients(emailConfig);
+            var recipient = GetRecipient(emailConfig);
 
             var data = new SolfacStatusData
             {
                 Title = subject,
                 Message = body,
-                Recipients = recipients
+                Recipient = recipient
             };
 
             var email = mailBuilder.GetEmail(data);

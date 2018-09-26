@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             return mailBuilder.GetEmail(new EmployeeEndNotificationListData
             {
-                Recipients = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode),
+                Recipient = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode),
                 Message = $"<ul>{content}</ul>"
             });
         }

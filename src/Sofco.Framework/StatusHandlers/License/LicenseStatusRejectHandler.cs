@@ -49,15 +49,14 @@ namespace Sofco.Framework.StatusHandlers.License
         public IMailData GetEmailData(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
+
             var body = string.Format(MailMessageResource.LicenseRejectMessage, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", parameters.Comment, license.Type.Description);
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-            var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
+            var recipients = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
 
-            recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
-
-            var recipients = string.Join(";", recipientsList.Distinct());
+            recipients.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
 
             var data = new LicenseStatusData
             {

@@ -64,9 +64,9 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             return string.Format(Resources.Mails.MailSubjectResource.SolfacStatusManagementControlRejectedTitle, solfac.BusinessName, solfac.Service, solfac.Project, solfac.StartDate.ToString("yyyyMMdd"));
         }
 
-        private string GetRecipients(Domain.Models.Billing.Solfac solfac, string mailCdg)
+        private List<string> GetRecipients(Domain.Models.Billing.Solfac solfac, string mailCdg)
         {
-            return $"{solfac.UserApplicant.Email};{mailCdg}";
+            return new List<string> {solfac.UserApplicant.Email, mailCdg};
         }
 
         public string GetSuccessMessage()

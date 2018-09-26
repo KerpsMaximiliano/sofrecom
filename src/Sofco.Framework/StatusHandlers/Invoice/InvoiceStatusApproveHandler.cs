@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
@@ -91,7 +92,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             {
                 Title = subjectToDaf,
                 Message = bodyToDaf,
-                Recipients = recipientsToDaf
+                Recipient = recipientsToDaf
             };
 
             var email = mailBuilder.GetEmail(data);

@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Mail;
+﻿using System.Collections.Generic;
+using Sofco.Core.Mail;
 
 namespace Sofco.Framework.MailData
 {
@@ -8,7 +9,9 @@ namespace Sofco.Framework.MailData
 
         public string Title { get; set; }
 
-        public string Recipients { get; set; }
+        public string Recipient { get; set; }
+
+        public List<string> Recipients { get; set; }
 
         public string Message { get; set; }
     }

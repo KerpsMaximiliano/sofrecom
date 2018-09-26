@@ -82,12 +82,11 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 if (item.Key == null) continue;
 
-
                 var mailContent = GetContent(item.Value);
 
                 var mailData = new HitosWithoutSolfac
                 {
-                    Recipients = item.Key,
+                    Recipient = item.Key,
                     Content = mailContent
                 };
 

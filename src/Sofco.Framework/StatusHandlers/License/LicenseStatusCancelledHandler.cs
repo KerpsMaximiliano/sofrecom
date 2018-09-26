@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
@@ -69,15 +68,13 @@ namespace Sofco.Framework.StatusHandlers.License
 
             var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
 
-            var recipients = string.Join(";", recipientsList.Distinct());
-
             recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
 
             var data = new LicenseStatusData
             {
                 Title = subject,
                 Message = body,
-                Recipients = recipients
+                Recipients = recipientsList
             };
 
             return data;
