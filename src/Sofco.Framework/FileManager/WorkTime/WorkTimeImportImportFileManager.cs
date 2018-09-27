@@ -16,12 +16,12 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.FileManager
+namespace Sofco.Framework.FileManager.WorkTime
 {
-    public class WorkTimeFileManager : IWorkTimeFileManager
+    public class WorkTimeImportImportFileManager : IWorkTimeImportFileManager
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogMailer<WorkTimeFileManager> logger;
+        private readonly ILogMailer<WorkTimeImportImportFileManager> logger;
         private readonly IUserData userData;
 
         private IList<int> TaskIds { get; set; }
@@ -30,7 +30,7 @@ namespace Sofco.Framework.FileManager
 
         private IList<Holiday> Holidays { get; set; }
 
-        private IList<WorkTime> WorkTimesToAdd { get; set; }
+        private IList<Domain.Models.WorkTimeManagement.WorkTime> WorkTimesToAdd { get; set; }
 
         private IDictionary<string, int> UserMails { get; set; }
 
@@ -40,13 +40,13 @@ namespace Sofco.Framework.FileManager
 
         private int RowsAdded { get; set; }
 
-        public WorkTimeFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeFileManager> logger, IUserData userData)
+        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
 
-            WorkTimesToAdd = new List<WorkTime>();
+            WorkTimesToAdd = new List<Domain.Models.WorkTimeManagement.WorkTime>();
             UserMails = new Dictionary<string, int>();
         }
 
@@ -54,7 +54,6 @@ namespace Sofco.Framework.FileManager
         {
             var settingHour = unitOfWork.SettingRepository.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-            var settingCloseMonth = unitOfWork.SettingRepository.GetByKey(SettingConstant.CloseMonthKey);
              
             TaskIds = unitOfWork.TaskRepository.GetAllIds();
             Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analyticId);
@@ -85,8 +84,8 @@ namespace Sofco.Framework.FileManager
                     var employeeDesc = sheet.GetValue(i, 2)?.ToString();
                     var date = sheet.GetValue(i, 3)?.ToString();
                     var taskId = sheet.GetValue(i, 4)?.ToString();
-                    var hour = sheet.GetValue(i, 6)?.ToString();
-                    var comments = sheet.GetValue(i, 7)?.ToString();
+                    var hour = sheet.GetValue(i, 5)?.ToString();
+                    var comments = sheet.GetValue(i, 6)?.ToString();
 
                     if (DateTime.TryParse(date, out var datetime)) date = datetime.ToString("d");
                
@@ -139,7 +138,7 @@ namespace Sofco.Framework.FileManager
 
         private void AddWorkTime(int analyticId, Response<IList<WorkTimeImportResult>> response, int i, string employeeNumber, string employeeDesc, string date, string taskId, string hour, string comments, Employee employee)
         {
-            var worktime = new WorkTime();
+            var worktime = new Domain.Models.WorkTimeManagement.WorkTime();
 
             worktime.AnalyticId = analyticId;
             worktime.EmployeeId = employee.Id;

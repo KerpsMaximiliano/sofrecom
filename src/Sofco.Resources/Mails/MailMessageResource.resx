@@ -148,7 +148,7 @@ RRHH: &lt;/br&gt;
 Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
 &lt;/br&gt;&lt;/br&gt;
 Recurso: &lt;/br&gt;
-La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH.</value>
+La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH.</value>
   </data>
   <data name="LicenseAuthPendingMessage" xml:space="preserve">
     <value>Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
@@ -173,7 +173,7 @@ RRHH: &lt;/br&gt;
 Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
 &lt;/br&gt;&lt;/br&gt;
 Recurso: &lt;/br&gt;
-La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.</value>
+La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;.</value>
   </data>
   <data name="LicenseRejectMessage" xml:space="preserve">
     <value>Tipo Licencia: {2}&lt;br/&gt;&lt;br/&gt;

@@ -262,10 +262,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var hitos = unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id);
 
-                foreach (var hito in hitos)
-                {
-                    
-                }
+                crmInvoiceService.UpdateHitoStatus(hitos.ToList(), HitoStatus.Pending);
 
                 unitOfWork.SolfacRepository.Delete(solfac);
                 unitOfWork.Save();

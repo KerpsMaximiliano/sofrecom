@@ -140,7 +140,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
                 this.collapse();
 
                 if(this.isMissingData){
-                    this.showEmployeesWithMissingData();
+                    this.showEmployeesWithMissingData(response);
                 }
             }
 
@@ -152,10 +152,10 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
         });
     }
-
-    showEmployeesWithMissingData(){
+ 
+    showEmployeesWithMissingData(response){
         this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
-        this.employeesWithAllocationMissing = this.data.filter(item => item.missAnyPercentageAllocation == true);
+        this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
     }
 
     initGrid(){
@@ -202,6 +202,15 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         }
         else{
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        } 
+    }
+
+    changeIcon2(){
+        if($("#collapseTwo").hasClass('in')){
+            $("#search-icon2").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
+        else{
+            $("#search-icon2").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
     }
     

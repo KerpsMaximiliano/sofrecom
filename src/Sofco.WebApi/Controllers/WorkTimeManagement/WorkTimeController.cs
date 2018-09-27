@@ -154,10 +154,10 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return this.CreateResponse(response);
         }
 
-        [HttpGet("export/template")]
-        public IActionResult ExportTemplate()
+        [HttpGet("export/template/{analyticId}")]
+        public IActionResult ExportTemplate(int analyticId)
         {
-            var file = workTimeService.ExportTemplate();
+            var file = workTimeService.ExportTemplate(analyticId);
 
             return File(file, "application/octet-stream", string.Empty);
         }

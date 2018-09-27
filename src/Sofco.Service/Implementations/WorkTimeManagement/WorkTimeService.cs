@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -33,11 +32,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeValidation workTimeValidation;
 
-        private readonly IWorkTimeFileManager workTimeFileManager;
+        private readonly IWorkTimeImportFileManager workTimeImportFileManager;
+
+        private readonly IWorkTimeExportFileManager workTimeExportFileManager;
 
         private readonly IWorkTimeResumeManager workTimeResumeManger;
-
-        private readonly IHostingEnvironment hostingEnvironment;
 
         private readonly IWorkTimeRejectManager workTimeRejectManager;
 
@@ -46,10 +45,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
-            IHostingEnvironment hostingEnvironment,
             IEmployeeData employeeData,
             IWorkTimeValidation workTimeValidation,
-            IWorkTimeFileManager workTimeFileManager,
+            IWorkTimeImportFileManager workTimeImportFileManager,
+            IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
             IWorkTimeRejectManager workTimeRejectManager, IWorkTimeSendManager workTimeSendHoursManager)
         {
@@ -58,9 +57,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.employeeData = employeeData;
             this.workTimeValidation = workTimeValidation;
             this.logger = logger;
-            this.workTimeFileManager = workTimeFileManager;
+            this.workTimeImportFileManager = workTimeImportFileManager;
             this.workTimeResumeManger = workTimeResumeManger;
-            this.hostingEnvironment = hostingEnvironment;
+            this.workTimeExportFileManager = workTimeExportFileManager;
             this.workTimeRejectManager = workTimeRejectManager;
             this.workTimeSendHoursManager = workTimeSendHoursManager;
         }
@@ -415,14 +414,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var memoryStream = new MemoryStream();
             file.CopyTo(memoryStream);
 
-            workTimeFileManager.Import(analyticId, memoryStream, response);
+            workTimeImportFileManager.Import(analyticId, memoryStream, response);
         }
 
-        public byte[] ExportTemplate()
+        public byte[] ExportTemplate(int analyticId)
         {
-            var bytes = File.ReadAllBytes($"{hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/worktime-template.xlsx");
+            var excel = workTimeExportFileManager.CreateTemplateExcel(analyticId);
 
-            return bytes;
+            return excel.GetAsByteArray();
         }
 
         public IEnumerable<Option> GetStatus()

@@ -43,6 +43,11 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Tasks.Where(x => x.Active).Select(x => x.Id).ToList();
         }
 
+        public IList<Task> GetAllActivesWithCategories()
+        {
+            return context.Tasks.Include(x => x.Category).Where(x => x.Active).ToList().AsReadOnly();
+        }
+
         public new IList<Task> GetAll()
         {
             return context.Tasks.Include(x => x.Category).ToList().AsReadOnly();
