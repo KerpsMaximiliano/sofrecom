@@ -121,9 +121,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Entry(worktime).Property("ApprovalComment").IsModified = true;
         }
 
-        public void SendHours(int employeeid)
+        public void SendHours(int employeeId)
         {
-            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeid}");
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeId}");
         }
 
         public void Save(WorkTime workTime)
@@ -150,6 +150,14 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                             (x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License) && x.EmployeeId == employeeId)
                 .Select(s => s.Hours)
                 .Sum();
+        }
+
+        public List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId)
+        {
+            return context.WorkTimes
+                .Where(s => s.EmployeeId == employeeId
+                            && s.Status == WorkTimeStatus.Sent)
+                .ToList();
         }
 
         public IList<WorkTime> Search(SearchParams parameters)
@@ -193,17 +201,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public decimal GetPendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes
-                .Where(s => s.EmployeeId == employeeId)
-                .Select(s => s.Hours)
-                .Sum();
-        }
-
-        public decimal GetTotalHoursByDate(DateTime date, int currentUserId)
-        {
-            return context.WorkTimes
-                .Where(x => x.UserId == currentUserId
-                            && x.Date.Month == date.Month
-                            && x.Date.Day == date.Day)
+                .Where(s => s.EmployeeId == employeeId
+                            && s.Status == WorkTimeStatus.Sent)
                 .Select(s => s.Hours)
                 .Sum();
         }

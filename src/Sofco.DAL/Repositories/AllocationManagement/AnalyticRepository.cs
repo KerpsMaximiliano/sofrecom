@@ -104,11 +104,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Where(x => x.ManagerId == managerId && x.Status == AnalyticStatus.Open).ToList();
         }
 
-        public List<Analytic> GetByManagerId(int managerId)
-        {
-            return context.Analytics.Where(x => x.ManagerId == managerId).ToList();
-        }
-
         public List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId)
         {
             return context.Analytics
@@ -234,6 +229,21 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             context.Entry(analytic).Property("SoftwareLawId").IsModified = true;
             context.Entry(analytic).Property("ActivityId").IsModified = true;
+        }
+
+        public List<Analytic> GetByAllocations(int employeeId, DateTime dateFrom, DateTime dateTo)
+        {
+            var analyticIds = context.Allocations
+                .Where(x => x.EmployeeId == employeeId && (x.StartDate.Date == dateFrom.Date || x.StartDate.Date == dateTo.Date))
+                .Select(x => x.AnalyticId)
+                .Distinct()
+                .ToList();
+
+            return context.Analytics
+                .Include(x => x.Manager)
+                .Where(x => analyticIds.Contains(x.Id))
+                .Distinct()
+                .ToList();
         }
     }
 }

@@ -287,7 +287,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horas pendientes de aprobación.
+        ///   Looks up a localized string similar to Horas pendientes de aprobación - {0}.
         /// </summary>
         public static string WorkTimeSendHours {
             get {

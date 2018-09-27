@@ -14,8 +14,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams model);
 
-        decimal GetTotalHoursByDate(DateTime date, int currentUserId);
-
         decimal GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id);
 
         IList<WorkTime> SearchPending(WorktimeHoursPendingParams model, bool isManagerOrDirector, int currentUserId);
@@ -24,7 +22,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         void UpdateApprovalComment(WorkTime worktime);
 
-        void SendHours(int employeeid);
+        void SendHours(int employeeId);
 
         void Save(WorkTime workTime);
 
@@ -34,9 +32,12 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         decimal GetPendingHoursByEmployeeId(int employeeId);
 
+        List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId);
+
         IList<WorkTime> Search(SearchParams parameters);
 
         void InsertBulk(IList<WorkTime> workTimesToAdd);
+
         void SendManagerHours(int id);
     }
 }

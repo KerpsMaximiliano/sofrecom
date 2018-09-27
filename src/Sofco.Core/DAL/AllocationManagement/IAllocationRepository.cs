@@ -3,7 +3,6 @@ using Sofco.Core.DAL.Common;
 using System.Collections.Generic;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
-using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -23,6 +22,5 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetByAnalyticId(int analyticId);
         void DeleteAllocationWithReleaseDateNull();
         IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now);
-        IList<User> GetManagers(int employeeId, DateTime dateFrom, DateTime dateTo);
     }
 }

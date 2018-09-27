@@ -480,7 +480,13 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Se informa que uno de sus recursos le ha enviado horas para su aprobación.
+        ///   Looks up a localized string similar to El siguiente recurso contiene horas para su aprobación:
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: {0}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Fechas:&lt;br/&gt;
+        ///{1}
+        ///&lt;br/&gt;.
         /// </summary>
         public static string WorkTimeSendHours {
             get {

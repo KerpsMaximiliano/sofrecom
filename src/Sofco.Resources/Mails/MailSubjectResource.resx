@@ -190,7 +190,7 @@
     <value>Cierre para Costos analítica: {0}</value>
   </data>
   <data name="WorkTimeSendHours" xml:space="preserve">
-    <value>Horas pendientes de aprobación</value>
+    <value>Horas pendientes de aprobación - {0}</value>
   </data>
   <data name="WorkTimeReject" xml:space="preserve">
     <value>Horas Rechazadas - {0}</value>

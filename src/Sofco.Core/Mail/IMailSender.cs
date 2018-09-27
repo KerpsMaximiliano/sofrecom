@@ -12,5 +12,9 @@ namespace Sofco.Core.Mail
         void Send(List<Email> emails);
 
         void Send(Email email);
+
+        void Send(IMailData mailData);
+
+        void Send(List<IMailData> mailDataList);
     }
 }
