@@ -41,8 +41,8 @@ namespace Sofco.Framework.FileManager.WorkTime
             var sheet1 = excel.Workbook.Worksheets[1];
             var sheet2 = excel.Workbook.Worksheets[2];
 
-            FillResources(sheet1, analyticId);
             FillCategories(sheet2);
+            FillResources(sheet1, analyticId);
 
             return excel;
         }
