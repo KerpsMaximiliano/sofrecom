@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
-using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
-using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Managers
 {
@@ -23,22 +15,17 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
+        private readonly IWorkTimeRejectMailManager workTimeRejectMailManager;
+
         private readonly ILogMailer<WorkTimeRejectManager> logger;
 
-        private readonly EmailConfig emailConfig;
-
-        private readonly IMailBuilder mailBuilder;
-
-        private readonly IMailSender mailSender;
-
-        public WorkTimeRejectManager(IUnitOfWork unitOfWork, IUserData userData, ILogMailer<WorkTimeRejectManager> logger, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMailSender mailSender)
+        public WorkTimeRejectManager(IUnitOfWork unitOfWork, IUserData userData, 
+            ILogMailer<WorkTimeRejectManager> logger, IWorkTimeRejectMailManager workTimeRejectMailManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.logger = logger;
-            this.mailBuilder = mailBuilder;
-            this.mailSender = mailSender;
-            emailConfig = emailOptions.Value;
+            this.workTimeRejectMailManager = workTimeRejectMailManager;
         }
 
         public Response Reject(int workTimeId, string comments)
@@ -61,7 +48,7 @@ namespace Sofco.Framework.Managers
                 unitOfWork.WorkTimeRepository.UpdateApprovalComment(workTime);
                 unitOfWork.Save();
 
-                SendEmail(workTime);
+                workTimeRejectMailManager.SendEmail(workTime);
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
             }
@@ -72,60 +59,6 @@ namespace Sofco.Framework.Managers
             }
 
             return response;
-        }
-
-        private IMailData GetEmailData(WorkTime workTime)
-        {
-            var subject = string.Format(MailSubjectResource.WorkTimeReject, workTime.Employee.Name);
-
-            var body = string.Format(MailMessageResource.WorkTimeRejectHours,
-                $"{workTime.Analytic.Title} - {workTime.Analytic.Name}",
-                workTime.Task.Description,
-                workTime.Date.ToString("dd/MM/yyyy"),
-                workTime.Hours,
-                workTime.ApprovalComment,
-                workTime.Employee.Name);
-
-            var recipients = new List<string>
-            {
-                workTime.Employee.Email,
-                workTime.Analytic.Manager.Email
-            };
-
-            var approverDelegates =
-                unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
-                    workTime.EmployeeId,
-                    workTime.AnalyticId,
-                    UserApproverType.WorkTime);
-
-            recipients.AddRange(approverDelegates.Select(s => s.Email));
-
-            return new MailDefaultData
-            {
-                Title = subject,
-                Message = body,
-                Recipients = recipients
-            };
-        }
-
-        private void SendEmail(WorkTime workTime)
-        {
-            try
-            {
-                workTime.Employee = unitOfWork.EmployeeRepository.GetById(workTime.EmployeeId);
-                workTime.Analytic = unitOfWork.AnalyticRepository.GetById(workTime.AnalyticId);
-                workTime.Task = unitOfWork.TaskRepository.GetById(workTime.TaskId);
-
-                var data = GetEmailData(workTime);
-
-                var email = mailBuilder.GetEmail(data);
-
-                mailSender.Send(email);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-            }
         }
     }
 }
