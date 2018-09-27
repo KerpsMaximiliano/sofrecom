@@ -335,7 +335,13 @@ Muchas gracias.</value>
 Saludos</value>
   </data>
   <data name="WorkTimeSendHours" xml:space="preserve">
-    <value>Se informa que uno de sus recursos le ha enviado horas para su aprobación</value>
+    <value>El siguiente recurso contiene horas para su aprobación:
+&lt;br/&gt;&lt;br/&gt;
+Recurso: {0}
+&lt;br/&gt;&lt;br/&gt;
+Fechas:&lt;br/&gt;
+{1}
+&lt;br/&gt;</value>
   </data>
   <data name="WorkTimeRejectHours" xml:space="preserve">
     <value>Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente hora enviada:

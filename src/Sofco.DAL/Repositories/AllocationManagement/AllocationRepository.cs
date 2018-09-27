@@ -6,7 +6,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
-using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
@@ -65,24 +64,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now)
         {
             return context.Allocations.Where(x => x.EmployeeId == id && x.StartDate.Date > now.Date).ToList();
-        }
-
-        public IList<User> GetManagers(int employeeId, DateTime dateFrom, DateTime dateTo)
-        {
-            var analyticIds = context.Allocations
-                .Where(x => x.EmployeeId == employeeId && (x.StartDate.Date == dateFrom.Date || x.StartDate.Date == dateTo.Date))
-                .Select(x => x.AnalyticId)
-                .Distinct()
-                .ToList();
-
-            var users = context.Analytics
-                .Include(x => x.Manager)
-                .Where(x => analyticIds.Contains(x.Id))
-                .Select(x => x.Manager)
-                .Distinct()
-                .ToList();
-
-            return users;
         }
 
         public ICollection<Allocation> GetByEmployee(int id)

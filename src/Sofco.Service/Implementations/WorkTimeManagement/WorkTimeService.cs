@@ -14,10 +14,8 @@ using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
-using Sofco.Core.Mail;
 using Sofco.Core.Validations;
 using Sofco.Domain.Models.WorkTimeManagement;
-using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -40,12 +38,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeResumeManager workTimeResumeManger;
 
-        private readonly IMailSender mailSender;
-
-        private readonly IMailBuilder mailBuilder;
-
         private readonly IWorkTimeRejectManager workTimeRejectManager;
-        
+
+        private readonly IWorkTimeSendManager workTimeSendHoursManager;
+
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
@@ -54,8 +50,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IWorkTimeImportFileManager workTimeImportFileManager,
             IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
-            IMailSender mailSender,
-            IMailBuilder mailBuilder, IWorkTimeRejectManager workTimeRejectManager)
+            IWorkTimeRejectManager workTimeRejectManager, IWorkTimeSendManager workTimeSendHoursManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -65,9 +60,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeImportFileManager = workTimeImportFileManager;
             this.workTimeResumeManger = workTimeResumeManger;
             this.workTimeExportFileManager = workTimeExportFileManager;
-            this.mailBuilder = mailBuilder;
             this.workTimeRejectManager = workTimeRejectManager;
-            this.mailSender = mailSender;
+            this.workTimeSendHoursManager = workTimeSendHoursManager;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
@@ -292,84 +286,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public Response Send()
         {
-            var response = new Response();
-
-            var user = userData.GetCurrentUser();
-            var isManager = unitOfWork.UserRepository.HasManagerGroup(user.UserName);
-
-            try
-            {
-                if (isManager)
-                {
-                    unitOfWork.WorkTimeRepository.SendManagerHours(employeeData.GetCurrentEmployee().Id);
-                }
-                else
-                {
-                    unitOfWork.WorkTimeRepository.SendHours(employeeData.GetCurrentEmployee().Id);
-                }
-
-                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.SentSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            if (!response.HasErrors() && !isManager)
-            {
-                SendMails(response);
-            }
-
-            return response;
-        }
-
-        private void SendMails(Response response)
-        {
-            var employee = employeeData.GetCurrentEmployee();
-
-            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-
-            var period = closeDates.GetPeriodExcludeDays();
-
-            var dateFrom = period.Item1;
-            var dateTo = period.Item2;
-
-            try
-            {
-                var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id, dateFrom, dateTo);
-
-                if (!managers.Any()) return;
-
-                var mails = managers.Select(x => x.Email).ToList();
-
-                foreach (var manager in managers)
-                {
-                    var delegates = unitOfWork.UserApproverRepository.GetApproverByUserId(manager.Id, UserApproverType.WorkTime);
-
-                    mails.AddRange(delegates.Select(x => x.Email));
-                }
-
-                var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
-
-                var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
-
-                var data = new MailDefaultData
-                {
-                    Title = subject,
-                    Message = body,
-                    Recipients = mails
-                };
-
-                var email = mailBuilder.GetEmail(data);
-
-                mailSender.Send(email);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddWarning(Resources.Common.ErrorSendMail);
-            }
+            return workTimeSendHoursManager.Send();
         }
 
         public Response<IList<WorkTimeSearchItemResult>> Search(SearchParams parameters)

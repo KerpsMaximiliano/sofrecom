@@ -11,7 +11,6 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Validations;
@@ -42,13 +41,11 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IWorkTimeResumeManager> workTimeResumeMangerMock;
 
-        private Mock<IMailSender> mailSenderMock;
-
-        private Mock<IMailBuilder> mailBuilderMock;
-
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
 
         private Mock<IWorkTimeRejectManager> workTimeRejectManagerMock;
+
+        private Mock<IWorkTimeSendManager> workTimeSendManagerMock;
 
         [SetUp]
         public void Setup()
@@ -68,10 +65,6 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
             workTimeExportFileManagerMock = new Mock<IWorkTimeExportFileManager>();
 
             workTimeResumeMangerMock = new Mock<IWorkTimeResumeManager>();
-
-            mailSenderMock = new Mock<IMailSender>();
-
-            mailBuilderMock = new Mock<IMailBuilder>();
 
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
 
