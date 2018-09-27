@@ -74,9 +74,11 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             workTimeRejectManagerMock = new Mock<IWorkTimeRejectManager>();
 
+            workTimeSendManagerMock = new Mock<IWorkTimeSendManager>();
+
             sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
                 workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object, 
-                workTimeResumeMangerMock.Object, mailSenderMock.Object, mailBuilderMock.Object, workTimeRejectManagerMock.Object);
+                workTimeResumeMangerMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
         [Test]
