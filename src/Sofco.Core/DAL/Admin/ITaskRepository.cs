@@ -12,5 +12,6 @@ namespace Sofco.Core.DAL.Admin
         Task GetById(int id);
         bool DescriptionExist(string modelDescription);
         IList<int> GetAllIds();
+        IList<Task> GetAllActivesWithCategories();
     }
 }

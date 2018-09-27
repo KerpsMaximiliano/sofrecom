@@ -53,41 +53,59 @@
         </div>
     </div>
 
+    <div class="panel-group" id="accordion2" *ngIf="isMissingData">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" (click)="changeIcon2()" style="display: block">
+                        <span>{{ 'errors' | translate }}</span>
+                        <i id="search-icon2" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
+                            <div class="alert alert-gaps-error">
+                                <h4>
+                                    <i class="fa fa-times"></i> 
+                                    {{'workTimeManagement.report.employeesWithHoursMissing' | translate }}
+                                </h4>  
+                        
+                                <ul>
+                                    <li *ngFor="let item of employeesWithHoursMissing">
+                                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage }}%
+                                    </li> 
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0 && exportTigerVisible">
+                            <div class="alert alert-gaps-error">
+                                <h4>
+                                    <i class="fa fa-times"></i> 
+                                    {{'workTimeManagement.report.employeesWithAllocationMissing' | translate }}
+                                </h4>  
+                        
+                                <ul>
+                                    <li *ngFor="let item of employeesWithAllocationMissing">
+                                        {{ item.employee }}: {{ item.lastMonthDescription }} {{ item.lastPercentage }}% - {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
+                                    </li> 
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="alert alert-gaps-success" *ngIf="isCompleted">
         <span>
             <i class="fa fa-check"></i>
             {{'workTimeManagement.report.allResourcesSuccess' | translate }}
             <a *ngIf="exportTigerVisible" (click)="getTigetTxt()">{{'workTimeManagement.report.exportTiger' | translate }}</a>
         </span>
-    </div>
-
-    <div class="alert alert-gaps-error" *ngIf="isMissingData">
-        <div class="row">
-            <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
-                <h4>
-                    <i class="fa fa-times"></i> 
-                    {{'workTimeManagement.report.employeesWithHoursMissing' | translate }}
-                </h4>  
-        
-                <ul>
-                    <li *ngFor="let item of employeesWithHoursMissing">
-                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage }}%
-                    </li> 
-                </ul>
-            </div>
-            <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0 && exportTigerVisible">
-                <h4>
-                    <i class="fa fa-times"></i> 
-                    {{'workTimeManagement.report.employeesWithAllocationMissing' | translate }}
-                </h4>  
-        
-                <ul>
-                    <li *ngFor="let item of employeesWithAllocationMissing">
-                        {{ item.employee }}: {{ item.lastMonthDescription }} {{ item.lastPercentage }}% - {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
-                    </li> 
-                </ul>
-            </div>
-        </div>
     </div>
  
     <div class="ibox" *ngIf="gridIsVisible"> 

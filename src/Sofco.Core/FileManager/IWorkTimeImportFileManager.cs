@@ -5,7 +5,7 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Core.FileManager
 {
-    public interface IWorkTimeFileManager
+    public interface IWorkTimeImportFileManager
     {
         void Import(int analyticId, MemoryStream memoryStream, Response<IList<WorkTimeImportResult>> response);
     }

@@ -879,6 +879,7 @@
     "Between50And75": "> 50 y < 75",
     "Between75And99": "> 75 y < 99",
     "myActions": "Mis Acciones",
+    "errors": "Errores",
     "report":{
         "title": "Reporte",
         "solfacs": {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
-using Sofco.Core.Logger;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain.Models.AllocationManagement;
@@ -78,8 +77,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (model.EmployeeId == allocation.EmployeeId && model.AnalyticId == allocation.AnalyticId)
                 {
                     model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
-                    //model.TotalPercentage += allocation.Percentage;
-                    //model.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}%";
 
                     CalculateEmployeesAllocationResume(response, allocation);
                 }
@@ -90,9 +87,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     if (modelAlreadyExist != null)
                     {
                         modelAlreadyExist.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
-                        //modelAlreadyExist.TotalPercentage += allocation.Percentage;
                         modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
-                        //modelAlreadyExist.MonthPercentage += $" - {DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ";
 
                         CalculateEmployeesAllocationResume(response, allocation);
                     }
@@ -117,8 +112,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             CostCenter = allocation.Analytic.CostCenter?.Code,
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
-                            //TotalPercentage = allocation.Percentage,
-                            //MonthPercentage = $"{DatesHelper.GetDateDescription(allocation.StartDate)} {Math.Round(allocation.Percentage, 0)}% ",
                             HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
                         };
 
@@ -282,13 +275,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (item.Facturability > 0)
                 {
                     if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
-
-                    //var sumTotalPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.TotalPercentage).Sum();
-
-                    //if (sumTotalPercentage != 200)
-                    //{
-                    //    item.MissAnyPercentageAllocation = true;
-                    //}
                 }
                 else
                 {

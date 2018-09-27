@@ -38,7 +38,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IWorkTimeValidation> workTimeValidationMock;
 
-        private Mock<IWorkTimeFileManager> workTimeFileManagerMock;
+        private Mock<IWorkTimeImportFileManager> workTimeFileManagerMock;
 
         private Mock<IWorkTimeResumeManager> workTimeResumeMangerMock;
 
@@ -65,7 +65,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             workTimeValidationMock = new Mock<IWorkTimeValidation>();
 
-            workTimeFileManagerMock = new Mock<IWorkTimeFileManager>();
+            workTimeFileManagerMock = new Mock<IWorkTimeImportFileManager>();
 
             workTimeResumeMangerMock = new Mock<IWorkTimeResumeManager>();
 

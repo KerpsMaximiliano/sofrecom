@@ -72,8 +72,8 @@ export class WorktimeService {
     return `${this.apiUrl}/import/${analyticId}`;
   }
 
-  exportTemplate(){
-    return this.http.get(`${this.apiUrl}/export/template`, {
+  exportTemplate(analyticId){
+    return this.http.get(`${this.apiUrl}/export/template/${analyticId}`, {
       responseType: 'arraybuffer',
       observe: 'response'
     }).pipe(map((res: any) => {

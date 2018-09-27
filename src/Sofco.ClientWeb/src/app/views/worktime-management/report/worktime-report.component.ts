@@ -204,6 +204,15 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
     }
+
+    changeIcon2(){
+        if($("#collapseTwo").hasClass('in')){
+            $("#search-icon2").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
+        else{
+            $("#search-icon2").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        } 
+    }
     
     clean(){
         this.searchModel = {
