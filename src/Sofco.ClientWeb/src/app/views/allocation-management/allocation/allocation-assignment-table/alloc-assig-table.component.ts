@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { MessageService } from "../../../../services/common/message.service";
 import { AllocationService } from "../../../../services/allocation-management/allocation.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import * as moment from 'moment';
 
 @Component({
     selector: 'allocation-assignment-table',
@@ -181,7 +182,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             if(element.percentage > 0){
 
                 if(typeof element.date == 'string'){
-                    element.date = new Date(element.date);
+                    element.date = moment(element.date).toDate();
                 }
 
                 date = new Date(element.date.getFullYear(), element.date.getMonth()+1, 0);

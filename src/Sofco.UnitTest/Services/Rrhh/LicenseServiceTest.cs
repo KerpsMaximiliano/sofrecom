@@ -1,0 +1,131 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Moq;
+using NUnit.Framework;
+using Sofco.Common.Security.Interfaces;
+using Sofco.Core.Config;
+using Sofco.Core.DAL;
+using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL.Common;
+using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.WorkTimeManagement;
+using Sofco.Core.FileManager;
+using Sofco.Core.Logger;
+using Sofco.Core.Mail;
+using Sofco.Core.Managers.UserApprovers;
+using Sofco.Core.Models.Rrhh;
+using Sofco.Core.Services.Rrhh;
+using Sofco.Core.StatusHandlers;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
+using Sofco.Framework.StatusHandlers.License;
+using Sofco.Service.Implementations.Rrhh;
+
+namespace Sofco.UnitTest.Services.Rrhh
+{
+    [TestFixture]
+    public class LicenseServiceTest
+    {
+        private Mock<IUnitOfWork> unitOfWork;
+        private Mock<ILogMailer<LicenseService>> loggerMock;
+        private Mock<IOptions<FileConfig>> fileConfigMock;
+        private Mock<IOptions<EmailConfig>> emailConfigMock;
+        private Mock<ISessionManager> sessionManager;
+        private Mock<ILicenseStatusFactory> licenseStatusFactory;
+        private Mock<IMailBuilder> mailBuilder;
+        private Mock<IMailSender> mailSender;
+        private Mock<ILicenseFileManager> licenseFileManager;
+        private Mock<ILicenseApproverManager> licenseApproverManager;
+        private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeService;
+
+        private Mock<ILicenseRepository> licenseRepositoryMock;
+        private Mock<IWorkTimeRepository> workTimeRepositoryMock;
+        private Mock<IFileRepository> fileRepositoryMock;
+        private Mock<IEmployeeRepository> employeeRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
+
+        private LicenseService sut;
+
+        [SetUp]
+        public void Setup()
+        {
+            unitOfWork = new Mock<IUnitOfWork>();
+            loggerMock = new Mock<ILogMailer<LicenseService>>();
+            fileConfigMock = new Mock<IOptions<FileConfig>>();
+            sessionManager = new Mock<ISessionManager>();
+            licenseStatusFactory = new Mock<ILicenseStatusFactory>();
+            mailBuilder = new Mock<IMailBuilder>();
+            mailSender = new Mock<IMailSender>();
+            licenseFileManager = new Mock<ILicenseFileManager>();
+            licenseApproverManager = new Mock<ILicenseApproverManager>();
+            licenseGenerateWorkTimeService = new Mock<ILicenseGenerateWorkTimeService>();
+            emailConfigMock = new Mock<IOptions<EmailConfig>>();
+
+            licenseRepositoryMock = new Mock<ILicenseRepository>();
+            workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
+            fileRepositoryMock = new Mock<IFileRepository>();
+            employeeRepositoryMock = new Mock<IEmployeeRepository>();
+            userRepositoryMock = new Mock<IUserRepository>();
+
+            unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
+            unitOfWork.Setup(x => x.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.FileRepository).Returns(fileRepositoryMock.Object);
+            unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
+
+            sut = new LicenseService(unitOfWork.Object, loggerMock.Object, fileConfigMock.Object, sessionManager.Object,
+                licenseStatusFactory.Object, mailBuilder.Object, mailSender.Object, licenseFileManager.Object,
+                licenseApproverManager.Object, licenseGenerateWorkTimeService.Object);
+        }
+
+        [TestCase]
+        public void ShouldAdd()
+        {
+            const int managerId = 2;
+            const int employeeId = 1;
+
+            employeeRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
+            employeeRepositoryMock.Setup(x => x.GetSingle(It.IsAny<Expression<Func<Employee, bool>>>())).Returns(new Employee() { Email = "asd@gmail.com" });
+            employeeRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(new Employee { HolidaysPending = 10 });
+            userRepositoryMock.Setup(x => x.ExistById(It.IsAny<int>())).Returns(true);
+            userRepositoryMock.Setup(x => x.GetByEmail(It.IsAny<string>())).Returns(new User { Id = employeeId });
+            licenseRepositoryMock.Setup(x => x.AreDatesOverlaped(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>())).Returns(false);
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(new License
+            {
+                Status = LicenseStatus.Draft,
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 12)
+            });
+
+            licenseGenerateWorkTimeService.Setup(x => x.GenerateWorkTimes(It.IsAny<License>()));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.AuthPending)).Returns(new LicenseStatusAuthPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+
+            var model = new LicenseAddModel
+            {
+                EmployeeId = employeeId,
+                ManagerId = managerId,
+                SectorId = 1,
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 12),
+                TypeId = 1,
+                WithPayment = true,
+                DaysQuantity = 7,
+                UserId = 1,
+                EmployeeLoggedId = 1
+            };
+
+            var response = sut.Add(model);
+
+            Assert.False(response.HasErrors());
+            licenseRepositoryMock.Verify(x => x.Insert(It.IsAny<License>()), Times.Once());
+            unitOfWork.Verify(s => s.Save(), Times.Exactly(2));
+            licenseGenerateWorkTimeService.Verify(x => x.GenerateWorkTimes(It.IsAny<License>()), Times.Once);
+        }
+    }
+}
