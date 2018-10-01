@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -49,6 +48,7 @@ namespace Sofco.UnitTest.Services.Rrhh
         private Mock<IFileRepository> fileRepositoryMock;
         private Mock<IEmployeeRepository> employeeRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
+        private Mock<IGroupRepository> groupRepositoryMock;
 
         private LicenseService sut;
 
@@ -72,12 +72,18 @@ namespace Sofco.UnitTest.Services.Rrhh
             fileRepositoryMock = new Mock<IFileRepository>();
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
+            groupRepositoryMock = new Mock<IGroupRepository>();
 
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
             unitOfWork.Setup(x => x.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
             unitOfWork.Setup(x => x.FileRepository).Returns(fileRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
+            unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
+
+            emailConfigMock.Setup(x => x.Value).Returns(new EmailConfig { SiteUrl = "SiteUrl", RrhhCode = "RRHH" });
+            groupRepositoryMock.Setup(x => x.GetEmail(It.IsAny<string>())).Returns("rrhh@mail.com");
+            licenseApproverManager.Setup(x => x.GetEmailApproversByEmployeeId(It.IsAny<int>())).Returns(new List<string> { "rrhh@mail.com" });
 
             sut = new LicenseService(unitOfWork.Object, loggerMock.Object, fileConfigMock.Object, sessionManager.Object,
                 licenseStatusFactory.Object, mailBuilder.Object, mailSender.Object, licenseFileManager.Object,
@@ -126,6 +132,178 @@ namespace Sofco.UnitTest.Services.Rrhh
             licenseRepositoryMock.Verify(x => x.Insert(It.IsAny<License>()), Times.Once());
             unitOfWork.Verify(s => s.Save(), Times.Exactly(2));
             licenseGenerateWorkTimeService.Verify(x => x.GenerateWorkTimes(It.IsAny<License>()), Times.Once);
+        }
+
+        [TestCase]
+        public void ShouldNotAdd()
+        {
+            const int managerId = 0;
+            const int employeeId = 0;
+
+            employeeRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
+            employeeRepositoryMock.Setup(x => x.GetSingle(It.IsAny<Expression<Func<Employee, bool>>>())).Returns(new Employee() { Email = "asd@gmail.com" });
+            employeeRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(new Employee { HolidaysPending = 10 });
+            userRepositoryMock.Setup(x => x.ExistById(It.IsAny<int>())).Returns(true);
+            userRepositoryMock.Setup(x => x.GetByEmail(It.IsAny<string>())).Returns(new User { Id = employeeId });
+            licenseRepositoryMock.Setup(x => x.AreDatesOverlaped(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>())).Returns(true);
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(new License
+            {
+                Status = LicenseStatus.Draft,
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 12)
+            });
+
+            licenseGenerateWorkTimeService.Setup(x => x.GenerateWorkTimes(It.IsAny<License>()));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.AuthPending)).Returns(new LicenseStatusAuthPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+
+            var model = new LicenseAddModel
+            {
+                EmployeeId = employeeId,
+                ManagerId = managerId,
+                SectorId = 1,
+                StartDate = new DateTime(2025, 1, 12),
+                EndDate = new DateTime(2025, 1, 6),
+                TypeId = 0,
+                WithPayment = true,
+                DaysQuantity = 7,
+                UserId = 1,
+                EmployeeLoggedId = 1
+            };
+
+            var response = sut.Add(model);
+
+            Assert.True(response.HasErrors());
+            Assert.True(response.Messages.Count == 5);
+            licenseRepositoryMock.Verify(x => x.Insert(It.IsAny<License>()), Times.Never);
+            unitOfWork.Verify(s => s.Save(), Times.Never);
+            licenseGenerateWorkTimeService.Verify(x => x.GenerateWorkTimes(It.IsAny<License>()), Times.Never);
+        }
+
+        [TestCase]
+        public void ShouldChangeStatusToAuthorize()
+        {
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.AuthPending, 2));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Pending)).Returns(new LicenseStatusPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+
+            var model = new LicenseStatusChangeModel
+            {
+                IsRrhh = false,
+                Status = LicenseStatus.Pending,
+                UserId = 1
+            };
+
+            var response = sut.ChangeStatus(1, model, null);
+
+            Assert.False(response.HasErrors());
+            licenseRepositoryMock.Verify(x => x.UpdateStatus(It.IsAny<License>()), Times.Once());
+            unitOfWork.Verify(s => s.Save(), Times.Once);
+            mailSender.Verify(x => x.Send(It.IsAny<IMailData>()), Times.Once());
+        }
+
+        [TestCase]
+        public void ShouldChangeStatusToApprovePending()
+        {
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 2));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.ApprovePending)).Returns(new LicenseStatusApprovePendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+
+            var model = new LicenseStatusChangeModel
+            {
+                IsRrhh = true,
+                Status = LicenseStatus.ApprovePending,
+                UserId = 1
+            };
+
+            var response = sut.ChangeStatus(1, model, null);
+
+            Assert.False(response.HasErrors());
+            licenseRepositoryMock.Verify(x => x.UpdateStatus(It.IsAny<License>()), Times.Once());
+            unitOfWork.Verify(s => s.Save(), Times.Once);
+            mailSender.Verify(x => x.Send(It.IsAny<IMailData>()), Times.Once());
+        }
+
+        [TestCase]
+        public void ShouldChangeStatusToApprove()
+        {
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 2));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Approved)).Returns(new LicenseStatusApproveHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+
+            var model = new LicenseStatusChangeModel
+            {
+                IsRrhh = true,
+                Status = LicenseStatus.Approved,
+                UserId = 1
+            };
+
+            var response = sut.ChangeStatus(1, model, null);
+
+            Assert.False(response.HasErrors());
+
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 1));
+
+            var model2 = new LicenseStatusChangeModel
+            {
+                IsRrhh = true,
+                Status = LicenseStatus.Approved,
+                UserId = 1
+            };
+
+            response = sut.ChangeStatus(1, model2, null);
+
+            Assert.False(response.HasErrors());
+
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 7));
+
+            var model3 = new LicenseStatusChangeModel
+            {
+                IsRrhh = true,
+                Status = LicenseStatus.Approved,
+                UserId = 1
+            };
+
+            response = sut.ChangeStatus(1, model3, null);
+
+            Assert.False(response.HasErrors());
+            licenseRepositoryMock.Verify(x => x.UpdateStatus(It.IsAny<License>()), Times.Exactly(3));
+            unitOfWork.Verify(s => s.Save(), Times.Exactly(3));
+            mailSender.Verify(x => x.Send(It.IsAny<IMailData>()), Times.Exactly(3));
+        }
+
+        [TestCase]
+        public void ShouldChangeStatusToReject()
+        {
+            licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 2));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Rejected)).Returns(new LicenseStatusRejectHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+            licenseApproverManager.Setup(x => x.HasUserAuthorizer()).Returns(true);
+
+            var model = new LicenseStatusChangeModel
+            {
+                IsRrhh = true,
+                Status = LicenseStatus.Rejected,
+                UserId = 1
+            };
+
+            var response = sut.ChangeStatus(1, model, null);
+
+            Assert.False(response.HasErrors());
+            licenseRepositoryMock.Verify(x => x.UpdateStatus(It.IsAny<License>()), Times.Once());
+            unitOfWork.Verify(s => s.Save(), Times.Once);
+            mailSender.Verify(x => x.Send(It.IsAny<IMailData>()), Times.Once());
+        }
+
+        private License GetLicense(LicenseStatus status, int type)
+        {
+            return new License
+            {
+                Status = status,
+                StartDate = new DateTime(2025, 1, 6),
+                EndDate = new DateTime(2025, 1, 12),
+                Employee = new Employee { Name = "User Test", Email = "employee@mail.com", HolidaysPending = 10, ExamDaysTaken = 0 },
+                Type = new LicenseType { Description = "description", Days = 10 },
+                Manager = new User { Email = "manager@mail.com" },
+                EmployeeId = 1,
+                TypeId = type,
+                DaysQuantity = 5,
+            };
         }
     }
 }
