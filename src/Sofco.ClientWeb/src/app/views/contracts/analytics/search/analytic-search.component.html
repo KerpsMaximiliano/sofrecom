@@ -78,6 +78,7 @@
                         <th>{{ 'allocationManagement.analytics.grid.name' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.grid.client' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.add.service' | translate }}</th>
+                        <th>{{ 'allocationManagement.analytics.add.softwareLaw' | translate }}</th>
                         <th>{{ 'allocationManagement.analytics.grid.status' | translate }}</th>
                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
@@ -88,6 +89,7 @@
                         <td>{{ analytic.name}}</td>
                         <td>{{ analytic.clientExternalName}}</td>
                         <td>{{ analytic.serviceName}}</td>
+                        <td>{{ analytic.softwareLaw}}</td>
                         <td><label class="label" [ngClass]="(analytic.status) == 1 ? 'label-primary':'label-success'">{{ getStatus(analytic) }}</label></td>
                         <td class="column-sm text-center">
                             <button title="{{ 'ACTIONS.EDIT' | translate }}" class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('CONTR', 'ANEDT') && analytic.status == 1" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
