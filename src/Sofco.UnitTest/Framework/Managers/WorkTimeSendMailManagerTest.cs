@@ -1,15 +1,21 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Common;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.Managers;
 
 namespace Sofco.UnitTest.Framework.Managers
@@ -18,6 +24,14 @@ namespace Sofco.UnitTest.Framework.Managers
     public class WorkTimeSendMailManagerTest
     {
         private const int ValidEmployeeId = 1;
+
+        private const int ValidAnalyticId = 1;
+
+        private const string ValidManagerEmail = "mail1@mail.com";
+
+        private const string ValidUserApproverEmail = "mail2@mail.com";
+
+        private Analytic validAnalytic;
 
         private Mock<IMailSender> mailSenderMock;
 
@@ -29,17 +43,31 @@ namespace Sofco.UnitTest.Framework.Managers
 
         private Mock<ICloseDateRepository> closeDateRepositoryMock;
 
+        private Mock<IAnalyticRepository> analyticRepositoryMock;
+
+        private Mock<IWorkTimeRepository> workTimeRepositoryMock;
+
+        private Mock<IUserApproverRepository> userApproverRepositoryMock;
+
         private IWorkTimeSendMailManager sut;
 
         [SetUp]
-        private void SetUp()
+        public void SetUp()
         {
             mailSenderMock = new Mock<IMailSender>();
+
+            employeeDataMock = new Mock<IEmployeeData>();
+
+            unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            loggerMock = new Mock<ILogMailer<WorkTimeSendMailManager>>();
 
             sut = new WorkTimeSendMailManager(mailSenderMock.Object,
                 employeeDataMock.Object,
                 unitOfWorkMock.Object,
                 loggerMock.Object);
+
+            mailSenderMock.Setup(s => s.Send(It.IsAny<List<IMailData>>()));
 
             closeDateRepositoryMock = new Mock<ICloseDateRepository>();
 
@@ -47,12 +75,99 @@ namespace Sofco.UnitTest.Framework.Managers
 
             closeDateRepositoryMock.Setup(s => s.GetBeforeCurrentAndNext())
                 .Returns(new CloseDatesSettings(1, 1, 1));
+
+            analyticRepositoryMock = new Mock<IAnalyticRepository>();
+
+            unitOfWorkMock.SetupGet(s => s.AnalyticRepository).Returns(analyticRepositoryMock.Object);
+
+            analyticRepositoryMock.Setup(s =>
+                    s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .Returns(GetAnalyticList());
+
+            workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
+
+            workTimeRepositoryMock.Setup(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId))
+                .Returns(GetWorkTimes());
+
+            unitOfWorkMock.SetupGet(s => s.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
+
+            employeeDataMock.Setup(s => s.GetCurrentEmployee()).Returns(new Employee
+            {
+                Id = ValidEmployeeId,
+                Name = "One"
+            });
+
+            userApproverRepositoryMock = new Mock<IUserApproverRepository>();
+
+            userApproverRepositoryMock.Setup(s =>
+                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId, UserApproverType.WorkTime))
+                .Returns(new List<User>
+                {
+                    new User {Id = 1, Email = ValidUserApproverEmail}
+                });
+
+            unitOfWorkMock.SetupGet(s => s.UserApproverRepository).Returns(userApproverRepositoryMock.Object);
+        }
+
+        private List<Analytic> GetAnalyticList()
+        {
+            return new List<Analytic>
+            {
+                new Analytic { Id = ValidAnalyticId, Name = "One", Manager = new User
+                {
+                    Email = ValidManagerEmail
+                }}
+            };
+        }
+
+        private List<WorkTime> GetWorkTimes()
+        {
+            validAnalytic = new Analytic
+            {
+                Id = ValidAnalyticId, Name = "One"
+            };
+
+            return new List<WorkTime>
+            {
+                new WorkTime { Id = 1, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(1), Analytic = validAnalytic},
+                new WorkTime { Id = 2, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(2), Analytic = validAnalytic}
+            };
         }
 
         [Test]
         public void ShouldPassSendEmail()
         {
             sut.SendEmail();
+
+            employeeDataMock.Verify(s => s.GetCurrentEmployee(), Times.Once);
+
+            closeDateRepositoryMock.Verify(s => s.GetBeforeCurrentAndNext(), Times.Once);
+
+            analyticRepositoryMock.Verify(s => s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()));
+
+            workTimeRepositoryMock.Verify(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId), Times.Once);
+
+            mailSenderMock.Verify(s => s.Send(It.IsAny<List<IMailData>>()), Times.Once);
+        }
+
+        [Test]
+        public void ShouldFailSendEmail()
+        {
+            analyticRepositoryMock.Setup(s =>
+                    s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .Returns(new List<Analytic>());
+
+            sut.SendEmail();
+
+            employeeDataMock.Verify(s => s.GetCurrentEmployee(), Times.Once);
+
+            closeDateRepositoryMock.Verify(s => s.GetBeforeCurrentAndNext(), Times.Once);
+
+            analyticRepositoryMock.Verify(s => s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()));
+
+            workTimeRepositoryMock.Verify(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId), Times.Never);
+
+            mailSenderMock.Verify(s => s.Send(It.IsAny<List<IMailData>>()), Times.Never);
         }
     }
 }
