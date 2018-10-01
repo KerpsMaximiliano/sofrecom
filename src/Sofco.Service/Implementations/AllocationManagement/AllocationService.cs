@@ -118,7 +118,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     allocationMonthDto.AllocationId = allocationMonth?.Id ?? 0;
                     allocationMonthDto.Date = date;
                     allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
-                    allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date ?? DateTime.UtcNow;
+                    allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date.Date ?? DateTime.UtcNow.Date;
 
                     if (!allocationDto.ReleaseDate.HasValue)
                     {

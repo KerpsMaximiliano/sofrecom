@@ -188,6 +188,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         }
 
         this.model.paymentTermId = customer.paymentTermCode;
+        
       } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.name;

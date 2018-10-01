@@ -102,6 +102,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     }
 
     upload(){
+        this.showSuccess = false;
         this.messageService.showLoading();
         this.uploader.uploadAll()
     }

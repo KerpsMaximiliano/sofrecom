@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
@@ -21,7 +20,6 @@ using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
-using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 using File = Sofco.Domain.Models.Common.File;
@@ -38,13 +36,13 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IMailBuilder mailBuilder;
         private readonly IMailSender mailSender;
         private readonly ILicenseFileManager licenseFileManager;
-        private readonly IUserData userData;
         private readonly ILicenseApproverManager licenseApproverManager;
+        private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
 
         public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
                               ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
-                              IMailSender mailSender, ILicenseFileManager licenseFileManager, IUserData userData, 
-                              ILicenseApproverManager licenseApproverManager)
+                              IMailSender mailSender, ILicenseFileManager licenseFileManager, ILicenseApproverManager licenseApproverManager,
+                              ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -54,8 +52,8 @@ namespace Sofco.Service.Implementations.Rrhh
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.licenseFileManager = licenseFileManager;
-            this.userData = userData;
             this.licenseApproverManager = licenseApproverManager;
+            this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
 
         public Response<string> Add(LicenseAddModel model)
@@ -96,11 +94,7 @@ namespace Sofco.Service.Implementations.Rrhh
             try
             {
                 // Generates all worktimes between license days
-                if (license.Status == LicenseStatus.Draft)
-                {
-                    GenerateWorkTimes(license);
-                    unitOfWork.Save();
-                }
+                licenseGenerateWorkTimeService.GenerateWorkTimes(license);
             }
             catch (Exception e)
             {
@@ -286,7 +280,7 @@ namespace Sofco.Service.Implementations.Rrhh
                 }
             }
             catch (Exception e)
-            {
+            { 
                 logger.LogError(e);
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.DeleteError);
             }
@@ -296,96 +290,12 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        private void GenerateWorkTimes(License license)
-        {
-            var startDate = license.StartDate;
-            var endDate = license.EndDate;
-
-            var allocationStartDate = new DateTime(startDate.Year, startDate.Month, 1);
-            var allocationEndDate = new DateTime(endDate.Year, endDate.Month, 1);
-
-            var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(license.EmployeeId, allocationStartDate, allocationEndDate);
-
-            var user = unitOfWork.UserRepository.GetByEmail(license.Employee.Email);
-
-            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle("492-00000");
-
-            while (startDate.Date <= endDate.Date)
-            {
-                if (startDate.DayOfWeek == DayOfWeek.Saturday || startDate.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    startDate = startDate.AddDays(1);
-                    continue;
-                }
-
-                var startDateOfMonth = new DateTime(startDate.Year, startDate.Month, 1);
-
-                var allocationsInMonth = allocations.Where(x => x.StartDate == startDateOfMonth).ToList();
-
-                if (!allocationsInMonth.Any())
-                {
-                    var worktime = BuildWorkTime(license, startDate, user);
-
-                    worktime.AnalyticId = analyticBank.Id;
-                    worktime.Hours = 8;
-
-                    unitOfWork.WorkTimeRepository.Insert(worktime);
-                }
-                else
-                {
-                    if (allocationsInMonth.All(x => x.Percentage == 0))
-                    {
-                        var worktime = BuildWorkTime(license, startDate, user);
-
-                        worktime.AnalyticId = analyticBank.Id;
-                        worktime.Hours = 8;
-
-                        unitOfWork.WorkTimeRepository.Insert(worktime);
-                    }
-                    else
-                    {
-                        foreach (var allocation in allocationsInMonth)
-                        {
-                            if (allocation.Percentage > 0)
-                            {
-                                var worktime = BuildWorkTime(license, startDate, user);
-
-                                worktime.AnalyticId = allocation.AnalyticId;
-                                worktime.Hours = (8 * allocation.Percentage) / 100;
-
-                                unitOfWork.WorkTimeRepository.Insert(worktime);
-                            }
-                        }
-                    }
-                }
-
-                startDate = startDate.AddDays(1);
-            }
-        }
-
-        private WorkTime BuildWorkTime(License license, DateTime startDate, Domain.Models.Admin.User user)
-        {
-            var worktime = new WorkTime
-            {
-                EmployeeId = license.EmployeeId,
-                UserId = user.Id,
-                UserComment = license.Type.Description,
-                CreationDate = DateTime.UtcNow.Date,
-                Status = WorkTimeStatus.License,
-                Date = startDate.Date,
-                TaskId = license.Type.TaskId
-            };
-
-            return worktime;
-        }
-
         private void SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters)
         {
             try
             {
                 var data = licenseStatusHandler.GetEmailData(license, unitOfWork, parameters);
-                var email = mailBuilder.GetEmail(data);
-                mailSender.Send(email);
+                mailSender.Send(data);
             }
             catch (Exception e)
             {
