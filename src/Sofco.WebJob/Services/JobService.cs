@@ -53,8 +53,10 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<IHealthInsuranceSyncJob>(JobNames.TigerHealthInsurance, j => j.Execute(), Cron.Weekly(DayOfWeek.Monday, 10), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeResetExamDaysJob>(JobNames.EmployeeResetExamDays, j => j.Execute(), Cron.Yearly(12, 31, 9), localTimeZone);
-
+             
             BackgroundJob.Schedule<IEmployeeForceSaveJob>(j => j.Execute(), DateTime.UtcNow.AddYears(100));
+
+            BackgroundJob.Schedule<ILicenseDaysUpdateJob>(j => j.Execute(), DateTime.UtcNow.AddYears(100));
 
             var licenseCertificatePendingDayOfMonth = settings.SingleOrDefault(s => s.Key == LicenseCertificatePendingDayOfMonthKey);
 

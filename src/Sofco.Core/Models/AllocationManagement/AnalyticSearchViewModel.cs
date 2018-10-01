@@ -20,6 +20,11 @@ namespace Sofco.Core.Models.AllocationManagement
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
             Status = domain.Status;
+
+            if (domain.SoftwareLaw != null)
+            {
+                SoftwareLaw = domain.SoftwareLaw.Text;
+            }
         }
 
         public int Id { get; }
@@ -29,6 +34,8 @@ namespace Sofco.Core.Models.AllocationManagement
         public string Title { get; }
 
         public string ServiceName { get; }
+
+        public string SoftwareLaw { get; }
 
         public AnalyticStatus Status { get; set; }
 

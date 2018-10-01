@@ -162,7 +162,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria)
         {
-            IQueryable<Analytic> query = context.Analytics;
+            IQueryable<Analytic> query = context.Analytics.Include(x => x.SoftwareLaw);
 
             if (searchCriteria.AnalyticId > 0)
             {

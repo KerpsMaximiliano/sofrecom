@@ -42,10 +42,10 @@ namespace Sofco.UnitTest.Services.Rrhh
         {
             var data = new List<CloseDate>()
             {
-                new CloseDate { Id = 1, Day = 10, Month = 9, Year = 2018 },
-                new CloseDate { Id = 2, Day = 10, Month = 10, Year = 2018 },
-                new CloseDate { Day = 10, Month = 11, Year = 2018 },
-                new CloseDate { Day = 10, Month = 12, Year = 2018 },
+                new CloseDate { Id = 1, Day = 10, Month = 9, Year = 2019 },
+                new CloseDate { Id = 2, Day = 10, Month = 10, Year = 2019 },
+                new CloseDate { Day = 10, Month = 11, Year = 2019 },
+                new CloseDate { Day = 10, Month = 12, Year = 2019 },
             };
 
             var response = sut.Add(data);
