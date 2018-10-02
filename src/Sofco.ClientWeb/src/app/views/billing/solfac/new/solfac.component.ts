@@ -124,6 +124,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.integrator = project.integrator;
       this.model.integratorId = project.integratorId;
       this.model.remito = project.remito;
+      this.model.opportunityNumber = project.opportunityNumber;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
@@ -187,6 +188,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         }
 
         this.model.paymentTermId = customer.paymentTermCode;
+        
       } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.name;
@@ -226,7 +228,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
  
     getOptions() {
-      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId")).subscribe(data => {
+      var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), project.opportunityNumber).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;

@@ -118,6 +118,8 @@ namespace Sofco.Core.Models.Billing
 
         public string ManagerId { get; set; }
 
+        public string OpportunityNumber { get; set; }
+
         public Solfac CreateDomain()
         {
             var solfac = new Solfac();
@@ -155,6 +157,7 @@ namespace Sofco.Core.Models.Billing
             solfac.IntegratorId = IntegratorId;
             solfac.Manager = Manager;
             solfac.ManagerId = ManagerId;
+            solfac.OpportunityNumber = OpportunityNumber;
 
             if (SolfacHelper.IsCreditNote(solfac))
             {

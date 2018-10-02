@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
@@ -70,6 +69,18 @@ namespace Sofco.DAL.Repositories.Common
             return UserApproverSet
                 .Include(x => x.ApproverUser)
                 .Where(x => x.EmployeeId == employeeId && x.Type == type)
+                .Distinct()
+                .Select(x => x.ApproverUser)
+                .ToList();
+        }
+
+        public IList<User> GetApproverByEmployeeIdAndAnalyticId(int employeeId, int analyticId, UserApproverType type)
+        {
+            return UserApproverSet
+                .Include(x => x.ApproverUser)
+                .Where(x => x.EmployeeId == employeeId 
+                            && x.AnalyticId == analyticId
+                            && x.Type == type)
                 .Distinct()
                 .Select(x => x.ApproverUser)
                 .ToList();

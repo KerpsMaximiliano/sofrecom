@@ -158,7 +158,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     getOptions(){
-      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId")).subscribe(data => {
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), this.model.opportunityNumber).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;

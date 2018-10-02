@@ -13,8 +13,8 @@ export class SolfacService {
     this.baseUrl = this.service.UrlApi;
   }
 
-  getOptions(serviceId){
-    return this.http.get<any>(`${this.baseUrl}/solfacs/options/${serviceId}`);
+  getOptions(serviceId, opportunityNumber){
+    return this.http.get<any>(`${this.baseUrl}/solfacs/options/${serviceId}/${opportunityNumber}`);
   }
 
   search(parameters) {

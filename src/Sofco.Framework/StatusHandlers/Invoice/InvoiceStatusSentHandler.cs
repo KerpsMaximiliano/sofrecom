@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Config;
+﻿using System.Collections.Generic;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -88,7 +89,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
             {
                 Title = subjectToDaf,
                 Message = bodyToDaf,
-                Recipients = recipientsToDaf
+                Recipient = recipientsToDaf
             };
 
             var email = mailBuilder.GetEmail(data);
@@ -96,13 +97,12 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
             var subject = string.Format(Resources.Mails.MailSubjectResource.InvoiceStatusSentTitleToUser, invoice.AccountName, invoice.Service, invoice.Project, invoice.CreatedDate.ToString("yyyyMMdd"));
             var body = string.Format(Resources.Mails.MailMessageResource.InvoiceStatusSentMessageToUser, $"{emailConfig.SiteUrl}billing/invoice/{invoice.Id}/project/{invoice.ProjectId}");
-            var recipients = invoice.User.Email;
 
             data = new SolfacStatusData
             {
                 Title = subject,
                 Message = body,
-                Recipients = recipients
+                Recipient = invoice.User.Email
             };
 
             email = mailBuilder.GetEmail(data);

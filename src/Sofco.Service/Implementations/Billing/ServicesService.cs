@@ -78,11 +78,11 @@ namespace Sofco.Service.Implementations.Billing
 
             var projects = unitOfWork.ProjectRepository.GetAllActives(serviceId);
 
-            var opportunities = projects.Select(x => x.OpportunityNumber);
+            var opportunities = projects.Select(x => $"{x.OpportunityNumber} {x.OpportunityName}");
 
             var service = result.FirstOrDefault(x => x.CrmId.Equals(serviceId));
 
-            var serviceModel = new ServiceModel(service) { Proposals = string.Join("-", opportunities) };
+            var serviceModel = new ServiceModel(service) { Proposals = string.Join(";", opportunities) };
 
             return new Response<ServiceModel> { Data = serviceModel };
         }

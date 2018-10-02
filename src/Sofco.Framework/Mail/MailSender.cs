@@ -31,12 +31,15 @@ namespace Sofco.Framework.Mail
         private readonly string supportMailLogTitle;
         private readonly string supportMailResendRecipients;
         private readonly string supportMailResendTitle;
+        private readonly IMailBuilder mailBuilder;
 
         public MailSender(IHostingEnvironment environment, 
             IOptions<EmailConfig> emailConfigOption, 
-            ILoggerWrapper<MailSender> logger)
+            ILoggerWrapper<MailSender> logger, 
+            IMailBuilder mailBuilder)
         {
             this.logger = logger;
+            this.mailBuilder = mailBuilder;
             this.environment = environment;
             var emailConfig = emailConfigOption.Value;
             fromEmail = emailConfig.EmailFrom;
@@ -110,6 +113,25 @@ namespace Sofco.Framework.Mail
             message.Body = bodyBuilder.ToMessageBody();
 
             SendMessage(message);
+        }
+
+        public void Send(IMailData mailData)
+        {
+            var email = mailBuilder.GetEmail(mailData);
+
+            Send(email);
+        }
+
+        public void Send(List<IMailData> mailDataList)
+        {
+            var emails = new List<Email>();
+
+            foreach (var mailData in mailDataList)
+            {
+                emails.Add(mailBuilder.GetEmail(mailData));
+            }
+
+            Send(emails);
         }
 
         private void SendMessage(MimeMessage message)

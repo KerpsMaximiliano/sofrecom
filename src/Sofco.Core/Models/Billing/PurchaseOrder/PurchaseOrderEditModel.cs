@@ -15,6 +15,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             Id = domain.Id;
             Number = domain.Number;
+            Title = domain.Title;
             ClientExternalId = domain.ClientExternalId;
             ClientExternalName = domain.ClientExternalName;
             ReceptionDate = domain.ReceptionDate;
@@ -29,6 +30,11 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             Margin = domain.Margin;
             Comments = domain.Comments;
             Proposal = domain.Proposal;
+
+            if (!string.IsNullOrWhiteSpace(domain.Proposal))
+            {
+                ProposalIds = domain.Proposal.Split(';');
+            }
 
             if (domain.PurchaseOrderAnalytics.Any())
             {
@@ -55,6 +61,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     .ToList();
             }
         }
+
+        public string Title { get; set; }
 
         public string Proposal { get; set; }
 
@@ -101,6 +109,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public string Comments { get; set; }
 
         public int[] AnalyticIds { get; set; }
+
+        public string[] ProposalIds { get; set; }
 
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 

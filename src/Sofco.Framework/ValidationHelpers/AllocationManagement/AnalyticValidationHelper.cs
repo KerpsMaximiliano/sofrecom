@@ -21,9 +21,9 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             {
                 var projects = unitOfWork.ProjectRepository.GetAllActives(analytic.ServiceId);
 
-                var opportunities = projects.Select(x => x.OpportunityNumber);
+                var opportunities = projects.Select(x => $"{x.OpportunityNumber} {x.OpportunityName}");
 
-                analytic.Proposal = string.Join("-", opportunities);
+                analytic.Proposal = string.Join(";", opportunities);
             }
 
             return analytic;

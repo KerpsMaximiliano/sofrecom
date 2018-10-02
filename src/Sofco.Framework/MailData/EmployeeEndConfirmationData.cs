@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Mail;
+﻿using System.Collections.Generic;
+using Sofco.Core.Mail;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.MailData
@@ -9,7 +10,9 @@ namespace Sofco.Framework.MailData
 
         public string Title => MailSubjectResource.EmployeeEndConfirmation;
 
-        public string Recipients { get; set; }
+        public string Recipient { get; set; }
+
+        public List<string> Recipients { get; set; }
 
         public string EmployeeNumber { get; set; }
 

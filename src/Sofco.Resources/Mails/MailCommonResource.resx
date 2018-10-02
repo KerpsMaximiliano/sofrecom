@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Analytic" xml:space="preserve">
+    <value>Analítica</value>
+  </data>
   <data name="EmployeeActionDelete" xml:space="preserve">
     <value>Bajas</value>
   </data>
   <data name="EmployeeActionNew" xml:space="preserve">
     <value>Altas</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Horas</value>
   </data>
 </root>

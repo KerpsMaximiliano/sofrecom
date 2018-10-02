@@ -165,6 +165,16 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
+            if (string.IsNullOrWhiteSpace(solfac.OpportunityNumber))
+            {
+                var project = unitOfWork.ProjectRepository.GetByIdCrm(solfac.ProjectId);
+
+                if (project != null)
+                {
+                    solfac.OpportunityNumber = project.OpportunityNumber;
+                }
+            }
+
             response.Data = solfac;
             return response;
         }
@@ -252,10 +262,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var hitos = unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id);
 
-                foreach (var hito in hitos)
-                {
-                    
-                }
+                crmInvoiceService.UpdateHitoStatus(hitos.ToList(), HitoStatus.Pending);
 
                 unitOfWork.SolfacRepository.Delete(solfac);
                 unitOfWork.Save();

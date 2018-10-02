@@ -164,7 +164,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                var allocations = unitOfWork.AllocationRepository.GetLastAllocationsForEmployee(employeeToChange.Id, DateTime.Now);
+                var allocations = unitOfWork.AllocationRepository.GetLastAllocationsForEmployee(employeeToChange.Id, response.Data.EndDate ?? DateTime.Now);
 
                 if(allocations.Any()) unitOfWork.AllocationRepository.Delete(allocations);
 
@@ -232,11 +232,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 mails.AddRange(from analityc in analitycs where !string.IsNullOrWhiteSpace(analityc.Manager.Email) select analityc.Manager.Email);
 
-                var recipients = string.Join(";", mails.Distinct());
-
                 var data = new EmployeeEndConfirmationData
                 {
-                    Recipients = recipients,
+                    Recipients = mails,
                     EmployeeNumber = employeeToChange.EmployeeNumber,
                     Name = employeeToChange.Name,
                     EndDate = employeeToChange.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy")

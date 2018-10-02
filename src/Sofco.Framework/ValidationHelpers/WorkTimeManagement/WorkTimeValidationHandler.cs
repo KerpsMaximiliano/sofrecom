@@ -12,7 +12,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
     {
         private const int UserCommentMaxLength = 500;
 
-        private static bool ValidatePeriodCloseMonth = true;
+        private static bool ValidatePeriodCloseMonth = false;
 
         public static void ValidateEmployee(Response<WorkTime> response, IUnitOfWork unitOfWork, WorkTimeAddModel model)
         {
@@ -91,7 +91,7 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
             }
 
-            if (!ValidatePeriodCloseMonth) return; 
+            if (!ValidatePeriodCloseMonth) return;
              
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 

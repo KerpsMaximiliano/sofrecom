@@ -53,5 +53,10 @@ namespace Sofco.DAL.Repositories.Admin
         {
             context.EmployeeCategories.Remove(employeeCategory);
         }
+
+        public IList<Category> GetAllActivesWithTasks()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

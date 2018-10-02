@@ -51,5 +51,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByAnalyticWithWorkTimes(int analyticId);
 
         Employee GetUserInfo(string email);
+
+        ICollection<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate);
     }
 }

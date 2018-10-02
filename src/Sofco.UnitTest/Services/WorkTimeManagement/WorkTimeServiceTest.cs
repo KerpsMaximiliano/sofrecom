@@ -11,7 +11,6 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Validations;
@@ -32,21 +31,21 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IUserData> userDataMock;
 
-        private Mock<IHostingEnvironment> hostingEnvironmentMock;
-
         private Mock<IEmployeeData> employeeDataMock;
 
         private Mock<IWorkTimeValidation> workTimeValidationMock;
 
-        private Mock<IWorkTimeFileManager> workTimeFileManagerMock;
+        private Mock<IWorkTimeImportFileManager> workTimeFileManagerMock;
+
+        private Mock<IWorkTimeExportFileManager> workTimeExportFileManagerMock;
 
         private Mock<IWorkTimeResumeManager> workTimeResumeMangerMock;
 
-        private Mock<IMailSender> mailSenderMock;
-
-        private Mock<IMailBuilder> mailBuilderMock;
-
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
+
+        private Mock<IWorkTimeRejectManager> workTimeRejectManagerMock;
+
+        private Mock<IWorkTimeSendManager> workTimeSendManagerMock;
 
         [SetUp]
         public void Setup()
@@ -57,19 +56,15 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             userDataMock = new Mock<IUserData>();
 
-            hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-
             employeeDataMock = new Mock<IEmployeeData>();
 
             workTimeValidationMock = new Mock<IWorkTimeValidation>();
 
-            workTimeFileManagerMock = new Mock<IWorkTimeFileManager>();
+            workTimeFileManagerMock = new Mock<IWorkTimeImportFileManager>();
+
+            workTimeExportFileManagerMock = new Mock<IWorkTimeExportFileManager>();
 
             workTimeResumeMangerMock = new Mock<IWorkTimeResumeManager>();
-
-            mailSenderMock = new Mock<IMailSender>();
-
-            mailBuilderMock = new Mock<IMailBuilder>();
 
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
 
@@ -77,7 +72,13 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             unitOfWorkMock.Setup(s => s.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
 
-            sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, hostingEnvironmentMock.Object, employeeDataMock.Object, workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeResumeMangerMock.Object, mailSenderMock.Object, mailBuilderMock.Object);
+            workTimeRejectManagerMock = new Mock<IWorkTimeRejectManager>();
+
+            workTimeSendManagerMock = new Mock<IWorkTimeSendManager>();
+
+            sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
+                workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object, 
+                workTimeResumeMangerMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
         [Test]

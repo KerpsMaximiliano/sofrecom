@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -13,14 +12,10 @@ using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
-using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
-using Sofco.Core.Mail;
 using Sofco.Core.Validations;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
-using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
@@ -37,37 +32,36 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeValidation workTimeValidation;
 
-        private readonly IWorkTimeFileManager workTimeFileManager;
+        private readonly IWorkTimeImportFileManager workTimeImportFileManager;
+
+        private readonly IWorkTimeExportFileManager workTimeExportFileManager;
 
         private readonly IWorkTimeResumeManager workTimeResumeManger;
 
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWorkTimeRejectManager workTimeRejectManager;
 
-        private readonly IMailSender mailSender;
-
-        private readonly IMailBuilder mailBuilder;
+        private readonly IWorkTimeSendManager workTimeSendHoursManager;
 
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
-            IHostingEnvironment hostingEnvironment,
             IEmployeeData employeeData,
             IWorkTimeValidation workTimeValidation,
-            IWorkTimeFileManager workTimeFileManager,
+            IWorkTimeImportFileManager workTimeImportFileManager,
+            IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
-            IMailSender mailSender,
-            IMailBuilder mailBuilder)
+            IWorkTimeRejectManager workTimeRejectManager, IWorkTimeSendManager workTimeSendHoursManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.employeeData = employeeData;
             this.workTimeValidation = workTimeValidation;
             this.logger = logger;
-            this.workTimeFileManager = workTimeFileManager;
+            this.workTimeImportFileManager = workTimeImportFileManager;
             this.workTimeResumeManger = workTimeResumeManger;
-            this.hostingEnvironment = hostingEnvironment;
-            this.mailBuilder = mailBuilder;
-            this.mailSender = mailSender;
+            this.workTimeExportFileManager = workTimeExportFileManager;
+            this.workTimeRejectManager = workTimeRejectManager;
+            this.workTimeSendHoursManager = workTimeSendHoursManager;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
@@ -254,33 +248,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public Response Reject(int id, string comments)
         {
-            var response = new Response();
-
-            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
-
-            WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                worktime.Status = WorkTimeStatus.Rejected;
-                worktime.ApprovalComment = comments;
-                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
-
-                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
-                unitOfWork.WorkTimeRepository.UpdateApprovalComment(worktime);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
+            return workTimeRejectManager.Reject(id, comments);
         }
 
         public Response ApproveAll(List<int> hourIds)
@@ -318,88 +286,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public Response Send()
         {
-            var response = new Response();
-
-            var user = userData.GetCurrentUser();
-            var isManager = unitOfWork.UserRepository.HasManagerGroup(user.UserName);
-
-            try
-            {
-                if (isManager)
-                {
-                    unitOfWork.WorkTimeRepository.SendManagerHours(employeeData.GetCurrentEmployee().Id);
-                }
-                else
-                {
-                    unitOfWork.WorkTimeRepository.SendHours(employeeData.GetCurrentEmployee().Id);
-                }
-
-                response.AddSuccess(Resources.WorkTimeManagement.WorkTime.SentSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            if (!response.HasErrors() && !isManager)
-            {
-                SendMails(response);
-            }
-
-            return response;
-        }
-
-        private void SendMails(Response response)
-        {
-            var employee = employeeData.GetCurrentEmployee();
-
-            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-
-            var period = closeDates.GetPeriodExcludeDays();
-
-            DateTime dateFrom = period.Item1;
-            DateTime dateTo = period.Item2;
-
-            try
-            {
-                var managers = unitOfWork.AllocationRepository.GetManagers(employee.Id, dateFrom, dateTo);
-
-                if (!managers.Any()) return;
-
-                var mails = managers.Select(x => x.Email).ToList();
-
-                foreach (var manager in managers)
-                {
-                    var delegates = unitOfWork.UserApproverRepository.GetApproverByUserId(manager.Id, UserApproverType.WorkTime);
-
-                    mails.AddRange(delegates.Select(x => x.Email));
-                }
-
-                mails = mails.Distinct().ToList();
-
-                var subject = string.Format(Resources.Mails.MailSubjectResource.WorkTimeSendHours);
-
-                var body = string.Format(Resources.Mails.MailMessageResource.WorkTimeSendHours);
-
-                var recipients = string.Join(";", mails);
-
-                var data = new MailDefaultData
-                {
-                    Title = subject,
-                    Message = body,
-                    Recipients = recipients
-                };
-
-                var email = mailBuilder.GetEmail(data);
-
-                mailSender.Send(email);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddWarning(Resources.Common.ErrorSendMail);
-            }
+            return workTimeSendHoursManager.Send();
         }
 
         public Response<IList<WorkTimeSearchItemResult>> Search(SearchParams parameters)
@@ -527,14 +414,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var memoryStream = new MemoryStream();
             file.CopyTo(memoryStream);
 
-            workTimeFileManager.Import(analyticId, memoryStream, response);
+            workTimeImportFileManager.Import(analyticId, memoryStream, response);
         }
 
-        public byte[] ExportTemplate()
+        public byte[] ExportTemplate(int analyticId)
         {
-            var bytes = File.ReadAllBytes($"{hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/worktime-template.xlsx");
+            var excel = workTimeExportFileManager.CreateTemplateExcel(analyticId);
 
-            return bytes;
+            return excel.GetAsByteArray();
         }
 
         public IEnumerable<Option> GetStatus()

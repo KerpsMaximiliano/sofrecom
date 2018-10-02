@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {
@@ -42,8 +43,6 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public decimal TotalPercentage { get; set; }
 
-        public bool MissAnyPercentageAllocation { get; set; }
-
         public string MonthPercentage { get; set; }
     }
 
@@ -51,6 +50,29 @@ namespace Sofco.Core.Models.WorkTimeManagement
     {
         public IList<WorkTimeReportModelItem> Items { get; set; }
 
+        public IList<EmployeeAllocationResume> EmployeesAllocationResume { get; set; }
+
         public bool IsCompleted { get; set; }
+    }
+
+    public class EmployeeAllocationResume
+    {
+        public int EmployeeId { get; set; }
+
+        public string Employee { get; set; }
+
+        public string LastMonthDescription { get; set; }
+
+        public int LastMonth { get; set; }
+
+        public string CurrentMonthDescription { get; set; }
+
+        public int CurrentMonth { get; set; }
+
+        public decimal LastPercentage { get; set; }
+
+        public decimal CurrentPercentage { get; set; }
+
+        public bool MissAnyPercentageAllocation => (LastPercentage + CurrentPercentage) != 200;
     }
 }

@@ -27,7 +27,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     public errors: any[] = new Array();
 
     public showSuccess: boolean = false;
-
+ 
     constructor(private analyticService: AnalyticService,
                 private messageService: MessageService, 
                 private authService: AuthService,
@@ -102,6 +102,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     }
 
     upload(){
+        this.showSuccess = false;
         this.messageService.showLoading();
         this.uploader.uploadAll()
     }
@@ -122,7 +123,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     exportTemplate(){
         this.messageService.showLoading();
 
-        this.worktimeService.exportTemplate().subscribe(file => {
+        this.worktimeService.exportTemplate(this.analyticId).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, "template carga de horas.xlsx");
         },

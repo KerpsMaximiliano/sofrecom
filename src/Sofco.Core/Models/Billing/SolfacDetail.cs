@@ -40,6 +40,7 @@ namespace Sofco.Core.Models.Billing
             CashedDate = domain.CashedDate;
             WithTax = domain.WithTax;
             InvoiceRequired = domain.InvoiceRequired;
+            OpportunityNumber = domain.OpportunityNumber;
 
             CustomerId = domain.CustomerId;
             ServiceId = domain.ServiceId;
@@ -207,6 +208,8 @@ namespace Sofco.Core.Models.Billing
 
         public string ManagerId { get; set; }
 
+        public string OpportunityNumber { get; set; }
+
         public Domain.Models.Billing.Solfac CreateDomain()
         {
             var solfac = new Domain.Models.Billing.Solfac();
@@ -243,6 +246,7 @@ namespace Sofco.Core.Models.Billing
             solfac.InvoiceRequired = InvoiceRequired;
             solfac.ManagerId = ManagerId;
             solfac.Manager = Manager;
+            solfac.OpportunityNumber = OpportunityNumber;
 
             foreach (var hitoViewModel in Hitos)
             {

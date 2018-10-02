@@ -35,6 +35,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public gridIsVisible: boolean = false;
     public isCompleted: boolean = false;
     public isMissingData: boolean = false;
+    public exportTigerVisible: boolean = false;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -49,7 +50,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         clientId: 0,
         managerId: 0,
         analyticId: 0,
-        employeeId: 0
+        employeeId: 0,
+        exportTigerVisible: false
     };
 
     constructor(private messageService: MessageService,
@@ -123,6 +125,16 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.gridIsVisible = false;
         this.isMissingData = false;
 
+        if(this.searchModel.closeMonthId > 0 && this.searchModel.clientId == 0 && this.searchModel.managerId == 0 && 
+           this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
+            this.exportTigerVisible = true;
+            this.searchModel.exportTigerVisible = true;
+        }
+        else{
+            this.exportTigerVisible = false;
+            this.searchModel.exportTigerVisible = false;
+        }
+
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
 
@@ -130,11 +142,15 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
                 this.isCompleted = response.data.isCompleted;
                 this.isMissingData = !response.data.isCompleted;
 
+                if(this.employeesWithHoursMissing.length == 0 && !this.exportTigerVisible){
+                    this.isMissingData = false;
+                }
+
                 this.initGrid();
                 this.collapse();
 
                 if(this.isMissingData){
-                    this.showEmployeesWithMissingData();
+                    this.showEmployeesWithMissingData(response);
                 }
             }
 
@@ -146,15 +162,15 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
         });
     }
-
-    showEmployeesWithMissingData(){
+ 
+    showEmployeesWithMissingData(response){
         this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
-        this.employeesWithAllocationMissing = this.data.filter(item => item.missAnyPercentageAllocation == true);
+        this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
     }
 
     initGrid(){
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        var title = "Reporte Estimado vs Insumido";
+        var title = "Reporte Insumido vs Previsto";
 
         var options = { 
             selector: "#reportTable",
@@ -198,6 +214,15 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
     }
+
+    changeIcon2(){
+        if($("#collapseTwo").hasClass('in')){
+            $("#search-icon2").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
+        else{
+            $("#search-icon2").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        } 
+    }
     
     clean(){
         this.searchModel = {
@@ -205,7 +230,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             clientId: 0,
             managerId: 0,
             analyticId: 0,
-            employeeId: 0
+            employeeId: 0,
+            exportTigerVisible: false
         };
 
         sessionStorage.removeItem('lastWorktimeReportQuery')

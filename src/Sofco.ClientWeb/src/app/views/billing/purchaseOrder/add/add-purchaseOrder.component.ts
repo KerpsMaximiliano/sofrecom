@@ -66,6 +66,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
         this.form.model.clientExternalName = client ? client.text : '';
 
         this.form.model.analyticIds = $('#analytics').val();
+        this.form.model.proposalIds = $('#opportunity-select').val();
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {

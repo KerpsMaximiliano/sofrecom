@@ -297,7 +297,7 @@ namespace Sofco.Service.Implementations.Billing
                 {
                     Title = subject,
                     Message = body,
-                    Recipients = mailDaf
+                    Recipient = mailDaf
                 };
 
                 var email = mailBuilder.GetEmail(data);

@@ -166,5 +166,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.PurchaseOrder.CannotDelete);
             }
         }
+
+        public static void ValidateOpportunities(Response<PurchaseOrder> response, PurchaseOrderModel model)
+        {
+            if (model.ProposalIds == null || !model.ProposalIds.Any())
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.ProposalIsRequired);
+            }
+        }
     }
 }

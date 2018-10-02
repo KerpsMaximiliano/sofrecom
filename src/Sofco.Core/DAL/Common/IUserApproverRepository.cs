@@ -20,6 +20,8 @@ namespace Sofco.Core.DAL.Common
 
         IList<User> GetApproverByEmployeeId(int employeeId, UserApproverType type);
 
+        IList<User> GetApproverByEmployeeIdAndAnalyticId(int employeeId, int analyticId, UserApproverType type);
+
         List<UserApprover> GetByApproverUserId(int approverUserId, UserApproverType type);
 
         List<UserApprover> GetByEmployeeIds(List<int> employeeIds, UserApproverType type);

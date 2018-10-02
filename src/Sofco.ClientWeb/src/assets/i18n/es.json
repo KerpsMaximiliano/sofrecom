@@ -288,6 +288,7 @@
                 "currency": "Moneda",
                 "balance": "Saldo",
                 "proposal": "Propuesta",
+                "title": "Titulo",
                 "ammount": "Monto",
                 "company": "Compañia",
                 "comercial": "Comercial",
@@ -657,7 +658,7 @@
                 "bugsAccess": "Acceso Bugs",
                 "amountEarned": "Monto Ganado",
                 "amountProject": "Monto del proyecto",
-                "proposal": "Propuesta",
+                "proposal": "Propuestas",
                 "director": "Director",
                 "direction": "Direccíon",
                 "usersqv": "Usuarios QlikView",
@@ -689,7 +690,7 @@
         "confirmBody": "Esta seguro que desea seguir con la acción de ",
         "workTimeApproval": {
             "delegate": {
-                "title": "Delegar aprobación horas",
+                "title": "Delegar Aprobación Horas",
                 "delegateAction": "Delegar",
                 "approvers": "Autorizadores",
                 "saveSuccess": "Autorizador agregado correctamente.",
@@ -878,6 +879,7 @@
     "Between50And75": "> 50 y < 75",
     "Between75And99": "> 75 y < 99",
     "myActions": "Mis Acciones",
+    "errors": "Errores",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -896,8 +898,8 @@
     },
     "workTimeManagement": {
         "title": "Gestión de Horas",
-        "approval": "Aprobacion",
-        "approvalHours": "Aprobacion de horas",
+        "approval": "Aprobación",
+        "approvalHours": "Aprobación Horas",
         "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",
@@ -908,7 +910,7 @@
         "comments": "Comentarios",
         "status": "Estado",
         "monthYear": "Mes-Año",
-        "month": "Mes",
+        "month": "Periodo",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",

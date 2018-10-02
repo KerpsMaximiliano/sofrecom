@@ -41,6 +41,7 @@ export class Solfac {
         public remito: boolean,
         public integrator: string,
         public integratorId: string,
+        public opportunityNumber: string,
         public manager: string,
         public managerId: string
     ){}

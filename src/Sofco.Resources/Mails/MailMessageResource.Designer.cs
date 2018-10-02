@@ -109,10 +109,10 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Se solicita la anulación de los siguientes remitos: &lt;/br&gt;
+        ///   Busca una cadena traducida similar a Se solicita la anulación de los siguientes remitos: &lt;br/&gt;
         ///{0}
-        /// &lt;/br&gt; &lt;/br&gt;
-        ///Motivo:  &lt;/br&gt;
+        /// &lt;br/&gt; &lt;br/&gt;
+        ///Motivo:  &lt;br/&gt;
         ///{1}.
         /// </summary>
         public static string InvoiceRequestAnnulment {
@@ -122,8 +122,8 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
-        ///El REMITO del asunto se encuentra GENERADO. Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Estimado, &lt;br/&gt;&lt;br/&gt;
+        ///El REMITO del asunto se encuentra GENERADO. Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias.
         /// </summary>
         public static string InvoiceStatusApproveMessage {
@@ -133,11 +133,11 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
-        ///El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: &lt;/br&gt;
+        ///   Busca una cadena traducida similar a Estimado, &lt;br/&gt;&lt;br/&gt;
+        ///El REMITO del asunto ha sido RECHAZADO por la DAF, por el siguiente motivo: &lt;br/&gt;
         ///*
-        ///&lt;/br&gt;
-        ///Por favor ingresar en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente. &lt;/br&gt;&lt;/br&gt;
+        ///&lt;br/&gt;
+        ///Por favor ingresar en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; para modificar el formulario y enviar nuevamente. &lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
         /// </summary>
         public static string InvoiceStatusRejectMessage {
@@ -147,11 +147,11 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
-        ///Se ha cargado un REMITO que requiere revisión y generación (pdf). &lt;/br&gt;
+        ///   Busca una cadena traducida similar a Estimados, &lt;br/&gt;&lt;br/&gt;
+        ///Se ha cargado un REMITO que requiere revisión y generación (pdf). &lt;br/&gt;
         ///*
-        ///Para imprimirlo, utilice el documento anexado al registro. &lt;/br&gt;
-        ///Una vez generado el pdf, por favor importarlo en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///Para imprimirlo, utilice el documento anexado al registro. &lt;br/&gt;
+        ///Una vez generado el pdf, por favor importarlo en el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
         /// </summary>
         public static string InvoiceStatusSentMessage {
@@ -161,8 +161,8 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
-        ///Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Estimado, &lt;br/&gt;&lt;br/&gt;
+        ///Se ha iniciado el proceso de generación del remito del asunto. Para acceder al mismo, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
         /// </summary>
         public static string InvoiceStatusSentMessageToUser {
@@ -172,10 +172,9 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH, Autorizador, Recurso: &lt;/br&gt;
-        ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
-        ///.
+        ///   Busca una cadena traducida similar a Tipo Licencia: {1}&lt;br/&gt;&lt;br/&gt;
+        ///RRHH, Autorizador, Recurso: &lt;br/&gt;
+        ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
         /// </summary>
         public static string LicenseApproveMessage {
             get {
@@ -189,7 +188,7 @@ namespace Sofco.Resources.Mails {
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
         ///&lt;/br&gt;&lt;/br&gt;
         ///Recurso: &lt;/br&gt;
-        ///La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH..
+        ///La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH..
         /// </summary>
         public static string LicenseApprovePendingMessage {
             get {
@@ -232,7 +231,7 @@ namespace Sofco.Resources.Mails {
         ///Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
         ///&lt;/br&gt;&lt;/br&gt;
         ///Recurso: &lt;/br&gt;
-        ///La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt;, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        ///La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
         /// </summary>
         public static string LicensePendingMessage {
             get {
@@ -241,12 +240,12 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH: &lt;/br&gt;
+        ///   Busca una cadena traducida similar a Tipo Licencia: {2}&lt;br/&gt;&lt;br/&gt;
+        ///RRHH: &lt;br/&gt;
         ///Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///Motivo: {1}
-        ///&lt;/br&gt;&lt;/br&gt;
-        ///Recurso: &lt;/br&gt;
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: &lt;br/&gt;
         ///La licencia solicitada ha sido &lt;strong&gt; Rechazada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
         ///Motivo: {1}.
         /// </summary>
@@ -435,8 +434,8 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estimado, &lt;/br&gt;&lt;/br&gt;
-        ///Se ha iniciado el proceso de facturación de la solicitud del asunto. Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;
+        ///   Busca una cadena traducida similar a Estimado, &lt;br/&gt;&lt;br/&gt;
+        ///Se ha iniciado el proceso de facturación de la solicitud del asunto. Para acceder al misma, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
         /// </summary>
         public static string SolfacStatusPendingByManagementControlMessageToUser {
@@ -460,7 +459,34 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente hora enviada:
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Analítica: {0}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Tarea: {1}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Fecha: {2}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Horas: {3}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Motivo: {4}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: {5}&lt;br/&gt;.
+        /// </summary>
+        public static string WorkTimeRejectHours {
+            get {
+                return ResourceManager.GetString("WorkTimeRejectHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se informa que uno de sus recursos le ha enviado horas para su aprobación.
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: {0}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Fechas:&lt;br/&gt;
+        ///{1}
+        ///&lt;br/&gt;.
         /// </summary>
         public static string WorkTimeSendHours {
             get {
