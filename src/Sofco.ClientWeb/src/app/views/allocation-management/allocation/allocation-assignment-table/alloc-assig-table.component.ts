@@ -198,6 +198,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
     save(){
         if(this.releaseDate && this.releaseDate.getMonth() != this.monthLastAllocation){
             this.messageService.showErrorByFolder("allocationManagement/allocation", "monthDifferent");
+            this.confirmModal.resetButtons();
             return;
         }   
 

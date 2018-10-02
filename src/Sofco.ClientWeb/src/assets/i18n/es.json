@@ -910,7 +910,7 @@
         "comments": "Comentarios",
         "status": "Estado",
         "monthYear": "Mes-Año",
-        "month": "Mes",
+        "month": "Periodo",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",
