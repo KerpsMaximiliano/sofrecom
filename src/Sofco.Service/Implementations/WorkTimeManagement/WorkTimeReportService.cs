@@ -235,13 +235,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     employeeMissAllocation.LastMonth = allocation.StartDate.Month;
                     employeeMissAllocation.LastMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
-                    employeeMissAllocation.LastPercentage += Math.Round(allocation.Percentage, 0);
+                    employeeMissAllocation.LastPercentage += allocation.Percentage;
                 }
                 else
                 {
                     employeeMissAllocation.CurrentMonth = allocation.StartDate.Month;
                     employeeMissAllocation.CurrentMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
-                    employeeMissAllocation.CurrentPercentage += Math.Round(allocation.Percentage, 0);
+                    employeeMissAllocation.CurrentPercentage += allocation.Percentage;
                 }
             }
         }
