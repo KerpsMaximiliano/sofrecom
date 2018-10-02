@@ -16,5 +16,7 @@
         public int EndYear { get; set; }
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }
+
+        public bool ExportTigerVisible { get; set; }
     }
 }

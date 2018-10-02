@@ -132,11 +132,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             CalculateRealPercentage(response);
 
-            FillUnassigned(response, startDate, endDate);
-
-            var tigerReport = new List<TigerReportItem>();
-
-            SaveTigerTxt(response, tigerReport);
+            if (parameters.ExportTigerVisible)
+            {
+                FillUnassigned(response, startDate, endDate);
+            }
 
             if (!response.Data.Items.Any())
             {
@@ -144,6 +143,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
             else
             {
+                var tigerReport = new List<TigerReportItem>();
+
+                SaveTigerTxt(response, tigerReport);
+
                 response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) && response.Data.EmployeesAllocationResume.All(x => !x.MissAnyPercentageAllocation);
 
                 worktimeData.ClearKeys();

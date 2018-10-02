@@ -50,7 +50,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         clientId: 0,
         managerId: 0,
         analyticId: 0,
-        employeeId: 0
+        employeeId: 0,
+        exportTigerVisible: false
     };
 
     constructor(private messageService: MessageService,
@@ -127,6 +128,11 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         if(this.searchModel.closeMonthId > 0 && this.searchModel.clientId == 0 && this.searchModel.managerId == 0 && 
            this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
             this.exportTigerVisible = true;
+            this.searchModel.exportTigerVisible = true;
+        }
+        else{
+            this.exportTigerVisible = false;
+            this.searchModel.exportTigerVisible = false;
         }
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
@@ -224,7 +230,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             clientId: 0,
             managerId: 0,
             analyticId: 0,
-            employeeId: 0
+            employeeId: 0,
+            exportTigerVisible: false
         };
 
         sessionStorage.removeItem('lastWorktimeReportQuery')
