@@ -136,6 +136,10 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
                 this.isCompleted = response.data.isCompleted;
                 this.isMissingData = !response.data.isCompleted;
 
+                if(this.employeesWithHoursMissing.length == 0 && !this.exportTigerVisible){
+                    this.isMissingData = false;
+                }
+
                 this.initGrid();
                 this.collapse();
 
