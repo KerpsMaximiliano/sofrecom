@@ -164,7 +164,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     initGrid(){
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        var title = "Reporte Estimado vs Insumido";
+        var title = "Reporte Insumido vs Previsto";
 
         var options = { 
             selector: "#reportTable",
