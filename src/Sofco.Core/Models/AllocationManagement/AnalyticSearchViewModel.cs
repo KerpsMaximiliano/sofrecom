@@ -21,9 +21,9 @@ namespace Sofco.Core.Models.AllocationManagement
             EndDate = domain.EndDateContract;
             Status = domain.Status;
 
-            if (domain.SoftwareLaw != null)
+            if (domain.Activity != null)
             {
-                SoftwareLaw = domain.SoftwareLaw.Text;
+                Activity = domain.Activity.Text;
             }
         }
 
@@ -35,7 +35,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string ServiceName { get; }
 
-        public string SoftwareLaw { get; }
+        public string Activity { get; }
 
         public AnalyticStatus Status { get; set; }
 
