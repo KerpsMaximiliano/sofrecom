@@ -51,5 +51,7 @@
         public int HumanResourceMangerId { get; set; }
 
         public int HumanResourceProjectLeaderId { get; set; }
+
+        public string PrefixMailEnvironment { get; set; }
     }
 }

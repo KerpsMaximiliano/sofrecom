@@ -30,27 +30,6 @@ namespace Sofco.Framework.Mail
             };
         }
 
-        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
-        {
-            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
-
-            var body = template;
-
-            foreach (var item in mailContents)
-            {
-                body = body.ReplaceKeyValue(item);
-            }
-
-            body = body.ReplaceKeyValue(MailContentKey.HomeLink, emailConfig.SiteUrl);
-
-            return new Email
-            {
-                Subject = subject,
-                Recipient = recipients,
-                Body = body
-            };
-        }
-
         public Email GetEmail(IMailData mailData)
         {
             var mailContents = mailData.GetType()
@@ -90,9 +69,9 @@ namespace Sofco.Framework.Mail
             return GetEmail(MailType.Default, recipients, subject, data);
         }
 
-        public Email GetSupportEmail(string subject, Dictionary<string, string> mailContents)
+        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
         {
-            var template = templatesDicts[MailType.Default];
+            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
 
             var body = template;
 
@@ -105,10 +84,17 @@ namespace Sofco.Framework.Mail
 
             return new Email
             {
-                Subject = subject,
-                Recipient = emailConfig.EmailFrom,
+                Subject = GetSubject(subject),
+                Recipient = recipients,
                 Body = body
             };
+        }
+
+        private string GetSubject(string subject)
+        {
+            return string.IsNullOrEmpty(emailConfig.PrefixMailEnvironment) 
+                ? subject 
+                : $"{emailConfig.PrefixMailEnvironment} {subject}";
         }
     }
 
