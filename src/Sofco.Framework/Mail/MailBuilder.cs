@@ -17,6 +17,8 @@ namespace Sofco.Framework.Mail
 
         private readonly EmailConfig emailConfig;
 
+        private List<string> allowedMails;
+
         public MailBuilder(IOptions<EmailConfig> emailConfigOptions)
         {
             emailConfig = emailConfigOptions.Value;
@@ -28,6 +30,8 @@ namespace Sofco.Framework.Mail
                 { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac },
                 { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
+
+            allowedMails = emailConfig.AllowedMails.Split(MailDelimiter[0]).ToList();
         }
 
         public Email GetEmail(IMailData mailData)
@@ -50,7 +54,7 @@ namespace Sofco.Framework.Mail
 
             mails.AddRange(mailData.Recipients);
 
-            var recipients = string.Join(MailDelimiter, mails.Distinct());
+            var recipients = string.Join(MailDelimiter, GetAllowedMails(mails.Distinct()));
 
             return GetEmail(mailData.MailType, recipients, mailData.Title, mailContents);
         }
@@ -95,6 +99,13 @@ namespace Sofco.Framework.Mail
             return string.IsNullOrEmpty(emailConfig.PrefixMailEnvironment) 
                 ? subject 
                 : $"{emailConfig.PrefixMailEnvironment} {subject}";
+        }
+
+        private List<string> GetAllowedMails(IEnumerable<string> mails)
+        {
+            return !allowedMails.Any() 
+                ? mails.ToList() 
+                : mails.Where(mail => allowedMails.Contains(mail)).ToList();
         }
     }
 
