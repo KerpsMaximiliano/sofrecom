@@ -38,7 +38,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
             domain.TaskId = TaskId;
             domain.Date = Date;
             domain.Hours = Hours;
-            domain.Source = Source;
+            domain.Source = WorkTimeSource.Manual.ToString();
             domain.UserComment = UserComment;
 
             domain.CreationDate = DateTime.UtcNow.Date;

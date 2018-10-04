@@ -146,7 +146,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             worktime.TaskId = Convert.ToInt32(taskId);
             worktime.Hours = Convert.ToDecimal(hour);
             worktime.CreationDate = DateTime.UtcNow;
-            worktime.Source = "Importación";
+            worktime.Source = WorkTimeSource.MassiveImport.ToString();
             worktime.UserComment = comments;
             worktime.Status = WorkTimeStatus.Approved;
             worktime.ApprovalUserId = userData.GetCurrentUser().Id;
