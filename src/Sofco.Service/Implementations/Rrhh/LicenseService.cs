@@ -295,6 +295,7 @@ namespace Sofco.Service.Implementations.Rrhh
             try
             {
                 var data = licenseStatusHandler.GetEmailData(license, unitOfWork, parameters);
+
                 mailSender.Send(data);
             }
             catch (Exception e)
