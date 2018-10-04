@@ -32,6 +32,14 @@
         "ASPNETCORE_ENVIRONMENT": "azsof01wd-qa"
       }
     },
+    "azsof01wt": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "panel",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "azsof01wt"
+      }
+    },
     "frosales": {
       "commandName": "IISExpress",
       "launchUrl": "panel",

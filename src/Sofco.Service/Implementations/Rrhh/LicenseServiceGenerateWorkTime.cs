@@ -98,7 +98,8 @@ namespace Sofco.Service.Implementations.Rrhh
                 CreationDate = DateTime.UtcNow.Date,
                 Status = WorkTimeStatus.License,
                 Date = startDate.Date,
-                TaskId = license.Type.TaskId
+                TaskId = license.Type.TaskId,
+                Source = WorkTimeSource.License.ToString()
             };
 
             return worktime;
