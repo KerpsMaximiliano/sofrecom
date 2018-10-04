@@ -1,7 +1,7 @@
 dt {
     float: left;
     clear: left;
-    width: 180px;
+    width: 170px;
     text-align: left;
     font-weight: normal;
     padding: 10px;
@@ -16,7 +16,7 @@ dt {
 
 dd {
     padding-top:10px;
-    padding-right: 20px;
+    padding-right: 10px;
     -webkit-border-radius: 0px 10px 10px 0px;
     -moz-border-radius: 0px 10px 10px 0px;
     -border-radius: 0px 10px 10px 0px;
@@ -78,7 +78,17 @@ dd {
     color: white;
 }
 
+.bg-white {
+    background-color: white;
+}
+
 .ibox-no-shadow {
     box-shadow: none;
     transition: unset;
+}
+
+@media (min-width: 768px){
+    .dl-horizontal dd {
+        margin-left: 170px;
+    }
 }
