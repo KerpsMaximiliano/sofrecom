@@ -72,6 +72,8 @@ namespace Sofco.WebJob.Services
             JobHelper.ClearAllRecurringJob();
 
             JobHelper.ClearScheduledJob(typeof(IEmployeeForceSaveJob));
+
+            JobHelper.ClearScheduledJob(typeof(ILicenseDaysUpdateJob));
         }
     }
 }
