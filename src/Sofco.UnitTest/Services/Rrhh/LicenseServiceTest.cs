@@ -106,7 +106,10 @@ namespace Sofco.UnitTest.Services.Rrhh
             {
                 Status = LicenseStatus.Draft,
                 StartDate = new DateTime(2025, 1, 6),
-                EndDate = new DateTime(2025, 1, 12)
+                EndDate = new DateTime(2025, 1, 12),
+                Employee = new Employee(),
+                Type = new LicenseType(),
+                Manager = new User()
             });
 
             licenseGenerateWorkTimeService.Setup(x => x.GenerateWorkTimes(It.IsAny<License>()));
