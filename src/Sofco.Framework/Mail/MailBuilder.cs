@@ -54,7 +54,10 @@ namespace Sofco.Framework.Mail
                 mails.Add(mailData.Recipient);
             }
 
-            mails.AddRange(mailData.Recipients.Where(s => !string.IsNullOrWhiteSpace(s)));
+            if (mailData.Recipients != null)
+            {
+                mails.AddRange(mailData.Recipients);
+            }
 
             var recipients = string.Join(MailDelimiter, GetAllowedMails(mails.Distinct()));
 
