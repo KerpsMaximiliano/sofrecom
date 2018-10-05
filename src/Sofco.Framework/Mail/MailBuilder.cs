@@ -31,7 +31,9 @@ namespace Sofco.Framework.Mail
                 { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
 
-            allowedMails = emailConfig.AllowedMails.Split(MailDelimiter[0]).ToList();
+            allowedMails = string.IsNullOrWhiteSpace(emailConfig.AllowedMails) 
+                ? new List<string>()
+                : emailConfig.AllowedMails.Split(MailDelimiter[0]).ToList();
         }
 
         public Email GetEmail(IMailData mailData)
@@ -52,7 +54,7 @@ namespace Sofco.Framework.Mail
                 mails.Add(mailData.Recipient);
             }
 
-            mails.AddRange(mailData.Recipients);
+            mails.AddRange(mailData.Recipients.Where(s => !string.IsNullOrWhiteSpace(s)));
 
             var recipients = string.Join(MailDelimiter, GetAllowedMails(mails.Distinct()));
 
