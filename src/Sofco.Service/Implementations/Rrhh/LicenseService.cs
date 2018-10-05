@@ -292,15 +292,22 @@ namespace Sofco.Service.Implementations.Rrhh
 
         private void SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters)
         {
+            var data = licenseStatusHandler.GetEmailData(license, unitOfWork, parameters);
+
             try
             {
-                var data = licenseStatusHandler.GetEmailData(license, unitOfWork, parameters);
-
                 mailSender.Send(data);
             }
             catch (Exception e)
             {
-                logger.LogError(e);
+                var recipients = data.Recipients;
+
+                recipients.Add(data.Recipient);
+
+                var msg = $"Subject: {data.Title} - Recipients: [{string.Join(",", recipients)}]";
+
+                logger.LogError(msg, e);
+
                 response.AddWarning(Resources.Common.ErrorSendMail);
             }
         }
