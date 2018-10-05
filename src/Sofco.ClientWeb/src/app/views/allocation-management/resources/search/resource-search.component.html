@@ -117,7 +117,8 @@
                 <thead>
                     <tr>
                         <th class="column-xs"></th>
-                        <th class="column-lg">{{'allocationManagement.resources.grid.name' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.employeeNumber' | translate }}</th>
+                        <th>{{'allocationManagement.resources.grid.name' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.start' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
@@ -130,7 +131,8 @@
                         <td class="column-xs text-center">
                             <icheck [(checked)]="resource.selected"></icheck>
                         </td>
-                        <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
+                        <td>{{ resource.employeeNumber }}</td>
+                        <td>{{ resource.name}}</td>
                         <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
                         <td>{{ resource.senority}}</td>
                         <td>{{ resource.profile}}</td>
