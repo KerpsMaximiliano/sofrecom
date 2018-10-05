@@ -86,7 +86,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
         this.solfacId = params['solfacId'];
 
-        this.getOptions();
+        this.getSolfac(this.solfacId);
         this.getUserOptions();
         this.getInvoices();
       });
@@ -117,6 +117,8 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
 
             sessionStorage.setItem('customerName', this.model.businessName);
             sessionStorage.setItem('serviceName', this.model.serviceName);
+
+            this.getOptions();
         }
         else{
             this.messageService.showError("billing.solfac.cannotUpdateSolfac");
@@ -158,7 +160,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
     }
 
     getOptions(){
-      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), this.model.opportunityNumber).subscribe(data => {
+      this.getOptionsSubs = this.solfacService.getOptions(this.model.serviceId, this.model.opportunityNumber).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
@@ -166,7 +168,7 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
         this.imputationNumbers = data.imputationNumbers; 
         this.paymentTerms = data.paymentTerms;
 
-        this.getSolfac(this.solfacId);
+    
       });
     }
 
