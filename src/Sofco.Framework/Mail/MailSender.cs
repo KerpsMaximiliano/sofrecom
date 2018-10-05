@@ -168,17 +168,19 @@ namespace Sofco.Framework.Mail
                 client.LocalDomain = smtpDomain;
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                try
+                foreach (var message in messages)
                 {
-                    foreach (var message in messages)
+                    try
                     {
                         client.Send(message);
                     }
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e);
-                    throw;
+                    catch (Exception e)
+                    {
+                        var msg = $"Subject: {message.Subject} - Recipients: {string.Join(",", message.To.Mailboxes.Select(s => s.Address))}";
+
+                        logger.LogError(msg, e);
+                        throw;
+                    }
                 }
 
                 client.Disconnect(true);
