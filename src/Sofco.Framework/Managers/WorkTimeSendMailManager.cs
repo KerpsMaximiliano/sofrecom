@@ -25,8 +25,8 @@ namespace Sofco.Framework.Managers
 
         private readonly ILogMailer<WorkTimeSendMailManager> logger;
 
-        public WorkTimeSendMailManager(IMailSender mailSender, 
-            IEmployeeData employeeData, IUnitOfWork unitOfWork, 
+        public WorkTimeSendMailManager(IMailSender mailSender,
+            IEmployeeData employeeData, IUnitOfWork unitOfWork,
             ILogMailer<WorkTimeSendMailManager> logger)
         {
             this.mailSender = mailSender;
@@ -36,6 +36,22 @@ namespace Sofco.Framework.Managers
         }
 
         public void SendEmail()
+        {
+            try
+            {
+                var mails = GetMails();
+
+                if (!mails.Any()) return;
+
+                mailSender.Send(mails);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+        }
+
+        protected List<IMailData> GetMails()
         {
             var currentEmployee = employeeData.GetCurrentEmployee();
 
@@ -47,29 +63,24 @@ namespace Sofco.Framework.Managers
 
             var dateTo = period.Item2;
 
-            try
+            var analytics = unitOfWork.AnalyticRepository.GetByAllocations(currentEmployee.Id, dateFrom, dateTo);
+
+            if (!analytics.Any()) return new List<IMailData>();
+
+            var workTimes = unitOfWork.WorkTimeRepository.GetWorkTimePendingHoursByEmployeeId(currentEmployee.Id);
+
+            var mails = new List<IMailData>();
+
+            foreach (var analytic in analytics)
             {
-                var analytics = unitOfWork.AnalyticRepository.GetByAllocations(currentEmployee.Id, dateFrom, dateTo);
+                var workTimesByAnalytic = workTimes.Where(s => s.AnalyticId == analytic.Id).ToList();
 
-                if (!analytics.Any()) return;
+                if (!workTimesByAnalytic.Any()) continue;
 
-                var workTimes = unitOfWork.WorkTimeRepository.GetWorkTimePendingHoursByEmployeeId(currentEmployee.Id);
-
-                var mails = new List<IMailData>();
-
-                foreach (var analytic in analytics)
-                {
-                    mails.Add(GetMailData(currentEmployee, 
-                        workTimes.Where(s => s.AnalyticId == analytic.Id).ToList(),
-                        analytic));
-                }
-
-                mailSender.Send(mails);
+                mails.Add(GetMailData(currentEmployee, workTimesByAnalytic, analytic));
             }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-            }
+
+            return mails;
         }
 
         private IMailData GetMailData(Employee currentEmployee, List<WorkTime> workTimes, Analytic analytic)
@@ -94,7 +105,7 @@ namespace Sofco.Framework.Managers
 
             foreach (var item in workTimes.OrderBy(s => s.Date))
             {
-                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} {6}", 
+                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} {6}",
                     item.Date, MailCommonResource.Hours, item.Hours,
                     MailCommonResource.Analytic, item.Analytic.Title, item.Analytic.Name,
                     MailDataConstant.Enter);
@@ -105,7 +116,7 @@ namespace Sofco.Framework.Managers
 
         private List<string> GetRecipients(Employee currentEmployee, Analytic analytic)
         {
-            var mails = new List<string>{analytic.Manager.Email};
+            var mails = new List<string> { analytic.Manager.Email };
 
             var delegates = unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
                 currentEmployee.Id,
