@@ -101,13 +101,25 @@
         <div class="form-group">
             <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="!taskModel.isLicense">
             <div class="row">
                 <div class="col-md-6">
                     <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
                 </div>
                 <div class="col-md-6">
                     <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="taskModel.isLicense">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label">{{'ADMIN.category.title' | translate }}</label>
+                    <p>{{ taskModel.categoryDesc }}</p>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label">{{'workTimeManagement.task' | translate }}</label>
+                    <p>{{ taskModel.taskDesc }}</p>
                 </div>
             </div>
         </div>

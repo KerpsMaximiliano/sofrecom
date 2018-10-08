@@ -27,6 +27,11 @@ namespace Sofco.Core.Models.WorkTimeManagement
             {
                 TaskId = domain.TaskId;
                 TaskName = domain.Task.Description;
+
+                if (domain.Task.Category != null)
+                {
+                    CategoryName = domain.Task.Category.Description;
+                }
             }
 
             if (domain.Analytic != null)
@@ -36,6 +41,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
                 AnalyticTitle = domain.Analytic.Title;
             }
         }
+
+        public string CategoryName { get; set; }
 
         public int EmployeeId { get; set; }
 
