@@ -11,5 +11,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public WorkTimeResumeModel Resume { get; set; }
 
         public IList<Holiday> Holidays { get; set; }
+        public string PeriodStartDate { get; set; }
+        public string PeriodEndDate { get; set; }
     }
 }
