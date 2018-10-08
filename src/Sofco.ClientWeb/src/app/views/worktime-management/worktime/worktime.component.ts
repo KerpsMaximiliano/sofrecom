@@ -161,7 +161,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   eventClickHandler(calEvent) {
     const task = this.model.calendar.find(x => x.id == calEvent.id);
-    if (task.status === this.licenseStatus) { return; }
+ 
     const cloned = Object.assign({}, task);
     this.editTask(cloned);
   }
@@ -171,6 +171,12 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     $("#hoursControl").val(this.taskModel.hours);
     this.taskModel.date = moment(task.date).toDate();
     const storedTask = this.allTasks.find(x => x.id == task.taskId);
+
+    if (task.status === this.licenseStatus) { 
+      this.taskModel.isLicense = true;
+      this.taskModel.taskDesc = task.taskName;
+      this.taskModel.categoryDesc = task.categoryName;
+    }
 
     if (storedTask != null) {
       this.taskModel.categoryId = storedTask.categoryId;
@@ -284,7 +290,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.showSaveTask();
 
-    this.editModalConfig.deleteButton = !isNew;
+    this.editModalConfig.deleteButton = !isNew && !this.taskModel.isLicense;
 
     this.editModal.show();
   }

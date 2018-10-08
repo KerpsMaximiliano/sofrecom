@@ -17,6 +17,8 @@ namespace Sofco.Framework.Mail
 
         private readonly EmailConfig emailConfig;
 
+        private List<string> allowedMails;
+
         public MailBuilder(IOptions<EmailConfig> emailConfigOptions)
         {
             emailConfig = emailConfigOptions.Value;
@@ -28,27 +30,10 @@ namespace Sofco.Framework.Mail
                 { MailType.HitosWithoutSolfac, MailResource.HitosWithoutSolfac },
                 { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
-        }
 
-        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
-        {
-            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
-
-            var body = template;
-
-            foreach (var item in mailContents)
-            {
-                body = body.ReplaceKeyValue(item);
-            }
-
-            body = body.ReplaceKeyValue(MailContentKey.HomeLink, emailConfig.SiteUrl);
-
-            return new Email
-            {
-                Subject = subject,
-                Recipient = recipients,
-                Body = body
-            };
+            allowedMails = string.IsNullOrWhiteSpace(emailConfig.AllowedMails) 
+                ? new List<string>()
+                : emailConfig.AllowedMails.Split(MailDelimiter[0]).ToList();
         }
 
         public Email GetEmail(IMailData mailData)
@@ -69,9 +54,12 @@ namespace Sofco.Framework.Mail
                 mails.Add(mailData.Recipient);
             }
 
-            mails.AddRange(mailData.Recipients);
+            if (mailData.Recipients != null)
+            {
+                mails.AddRange(mailData.Recipients);
+            }
 
-            var recipients = string.Join(MailDelimiter, mails.Distinct());
+            var recipients = string.Join(MailDelimiter, GetAllowedMails(mails.Distinct()));
 
             return GetEmail(mailData.MailType, recipients, mailData.Title, mailContents);
         }
@@ -90,9 +78,9 @@ namespace Sofco.Framework.Mail
             return GetEmail(MailType.Default, recipients, subject, data);
         }
 
-        public Email GetSupportEmail(string subject, Dictionary<string, string> mailContents)
+        private Email GetEmail(MailType mailType, string recipients, string subject, Dictionary<string, string> mailContents)
         {
-            var template = templatesDicts[MailType.Default];
+            var template = MailResource.Template.Replace("{content}", templatesDicts[mailType]);
 
             var body = template;
 
@@ -105,10 +93,24 @@ namespace Sofco.Framework.Mail
 
             return new Email
             {
-                Subject = subject,
-                Recipient = emailConfig.EmailFrom,
+                Subject = GetSubject(subject),
+                Recipient = recipients,
                 Body = body
             };
+        }
+
+        private string GetSubject(string subject)
+        {
+            return string.IsNullOrEmpty(emailConfig.PrefixMailEnvironment) 
+                ? subject 
+                : $"{emailConfig.PrefixMailEnvironment} {subject}";
+        }
+
+        private List<string> GetAllowedMails(IEnumerable<string> mails)
+        {
+            return !allowedMails.Any() 
+                ? mails.ToList() 
+                : mails.Where(mail => allowedMails.Contains(mail)).ToList();
         }
     }
 

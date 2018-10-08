@@ -82,7 +82,7 @@ namespace Sofco.Framework.FileManager.WorkTime
 
         private void FillCategories(ExcelWorksheet sheet2)
         {
-            var tasks = unitOfWork.TaskRepository.GetAllActivesWithCategories();
+            var tasks = unitOfWork.TaskRepository.GetAllActivesWithCategories().Where(x => !x.Category.Description.Equals("No Laborable")).ToList();
 
             for (int i = 0; i < tasks.Count; i++)
             {

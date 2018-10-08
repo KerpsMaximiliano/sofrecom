@@ -37,7 +37,6 @@ namespace Sofco.UnitTest.Services.Rrhh
         private Mock<IOptions<EmailConfig>> emailConfigMock;
         private Mock<ISessionManager> sessionManager;
         private Mock<ILicenseStatusFactory> licenseStatusFactory;
-        private Mock<IMailBuilder> mailBuilder;
         private Mock<IMailSender> mailSender;
         private Mock<ILicenseFileManager> licenseFileManager;
         private Mock<ILicenseApproverManager> licenseApproverManager;
@@ -60,7 +59,6 @@ namespace Sofco.UnitTest.Services.Rrhh
             fileConfigMock = new Mock<IOptions<FileConfig>>();
             sessionManager = new Mock<ISessionManager>();
             licenseStatusFactory = new Mock<ILicenseStatusFactory>();
-            mailBuilder = new Mock<IMailBuilder>();
             mailSender = new Mock<IMailSender>();
             licenseFileManager = new Mock<ILicenseFileManager>();
             licenseApproverManager = new Mock<ILicenseApproverManager>();
@@ -86,7 +84,7 @@ namespace Sofco.UnitTest.Services.Rrhh
             licenseApproverManager.Setup(x => x.GetEmailApproversByEmployeeId(It.IsAny<int>())).Returns(new List<string> { "rrhh@mail.com" });
 
             sut = new LicenseService(unitOfWork.Object, loggerMock.Object, fileConfigMock.Object, sessionManager.Object,
-                licenseStatusFactory.Object, mailBuilder.Object, mailSender.Object, licenseFileManager.Object,
+                licenseStatusFactory.Object, mailSender.Object, licenseFileManager.Object,
                 licenseApproverManager.Object, licenseGenerateWorkTimeService.Object);
         }
 
@@ -106,7 +104,10 @@ namespace Sofco.UnitTest.Services.Rrhh
             {
                 Status = LicenseStatus.Draft,
                 StartDate = new DateTime(2025, 1, 6),
-                EndDate = new DateTime(2025, 1, 12)
+                EndDate = new DateTime(2025, 1, 12),
+                Employee = new Employee(),
+                Type = new LicenseType(),
+                Manager = new User()
             });
 
             licenseGenerateWorkTimeService.Setup(x => x.GenerateWorkTimes(It.IsAny<License>()));
