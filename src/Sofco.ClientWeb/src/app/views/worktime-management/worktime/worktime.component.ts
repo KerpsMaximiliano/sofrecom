@@ -403,7 +403,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
-    const className = (item.status !== this.licenseStatus) ? '' : 'eventTask';
     const title = item.hours + ' h - ' + item.taskName;
     return {
       id: item.id,
@@ -411,7 +410,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       start: item.date,
       color: color,
       allDay: true,
-      className: className,
+      className: '',
       hours: item.hours
     };
   }
