@@ -18,15 +18,15 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-success btn-outline dim" (click)="goBack()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
-            <button class="btn btn-success btn-outline dim" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
+            <button class="btn btn-success btn-outline dim btn-sm" (click)="goBack()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+            <button class="btn btn-success btn-outline dim btn-sm" (click)="goToSearch()"> {{ 'ACTIONS.goToSearch' | translate }} <i class="fa fa-search"></i></button>
 
             <div class="btn-right">
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
                 <status-sendToCdg [solfacId]="solfacId" [status]="model.statusName" (back)="goBack()" [attachments]="solfacAttachments.files?.length"></status-sendToCdg>
                 
-                <button class="btn btn-primary btn-outline dim" (click)="validate()" *ngIf="canUpdate()"> {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i></button>
-                <button class="btn btn-primary btn-outline dim" (click)="validateSend()" *ngIf="canUpdate()"> {{'ACTIONS.updateAndSend' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-primary btn-outline dim btn-sm" (click)="validate()" *ngIf="canUpdate()"> {{'ACTIONS.update' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-primary btn-outline dim btn-sm" (click)="validateSend()" *ngIf="canUpdate()"> {{'ACTIONS.updateAndSend' | translate }} <i class="fa fa-save"></i></button>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     public resources: any[] = new Array<any>();
     public allocationToSearch: AllocationSearch = new AllocationSearch();
     public monthQuantity: number = 12;
+    public monthQuantityAux: number = 12;
 
     getByIdSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -30,6 +31,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     public resourceId: any; 
 
     dateSince: Date = new Date();
+    dateSinceAux: Date = new Date();
 
     pmoUser: boolean;
 
@@ -41,6 +43,7 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.monthQuantity = this.appSetting.AllocationManagement_Months;
+        this.monthQuantityAux = this.appSetting.AllocationManagement_Months;
         this.pmoUser = this.menuService.hasFunctionality('CONTR', 'QARDD');
 
         var analytic = JSON.parse(sessionStorage.getItem("analytic"));
@@ -85,7 +88,12 @@ export class AddAllocationComponent implements OnInit, OnDestroy {
     search(){
         if(this.resourceId == undefined || this.resourceId == '0') return;
 
-        this.resourceTimeline.getAllocations(this.analytic.id, this.dateSince, this.monthQuantity);
+        if(this.dateSince != this.dateSinceAux || this.monthQuantity != this.monthQuantityAux){
+            this.dateSinceAux = this.dateSince;
+            this.monthQuantityAux = this.monthQuantity;
+
+            this.resourceTimeline.getAllocations(this.analytic.id, this.dateSince, this.monthQuantity);
+        }
 
         if(this.pmoUser){
             this.allocations.getAllocations(this.resourceId, this.dateSince, true);

@@ -18,10 +18,10 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+            <button class="btn btn-success btn-outline dim btn-sm" (click)="cancel()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <button class="btn btn-primary btn-outline dim" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-primary btn-outline dim btn-sm" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
 
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
             </div>
