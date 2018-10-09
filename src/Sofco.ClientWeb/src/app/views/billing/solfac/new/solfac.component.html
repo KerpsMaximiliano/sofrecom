@@ -86,7 +86,8 @@
                     <!-- Plazo -->
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <select-two [label]="'billing.solfac.timeLimit'" [(value)]="model.paymentTermId" [options]="paymentTerms"></select-two>
+                            <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
+                            <p>{{ model.paymentTerm }}</p>
                         </div>
 
                         <!-- Tipo de documento -->
@@ -120,7 +121,7 @@
                     <!-- Numero de contrato -->
                     <div class="row">
                         <div class="col-lg-6 col-md-5 col-sm-5">
-                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders"></select-two>
+                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders" (valueChange)="purchaseOrderChange(model.purchaseOrderId)"></select-two>
                         </div>
                     </div>
 

@@ -56,8 +56,7 @@ namespace Sofco.Domain.Models.Billing
         public ImputationNumber ImputationNumber { get; set; }
         public int ImputationNumber3Id { get; set; }
 
-        public int PaymentTermId { get; set; }
-        public PaymentTerm PaymentTerm { get; set; }
+        public string PaymentTerm { get; set; }
 
         public DateTime StartDate { get; set; }
         public int ModifiedByUserId { get; set; }

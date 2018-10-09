@@ -96,8 +96,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var period = closeDates.GetPeriodIncludeDays();
 
-                result.Data.PeriodStartDate = period.Item1.ToString("d");
-                result.Data.PeriodEndDate = period.Item2.ToString("d");
+                result.Data.PeriodStartDate = period.Item1.ToString("dd/MM/yyyy");
+                result.Data.PeriodEndDate = period.Item2.ToString("dd/MM/yyyy");
 
                 return result;
             }
