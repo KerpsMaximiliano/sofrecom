@@ -27,6 +27,8 @@ namespace Sofco.UnitTest.Framework.Managers
 
         private const int ValidAnalyticId = 1;
 
+        private const int ValidAnalyticId2 = 2;
+
         private const string ValidManagerEmail = "mail1@mail.com";
 
         private const string ValidUserApproverEmail = "mail2@mail.com";
@@ -105,6 +107,17 @@ namespace Sofco.UnitTest.Framework.Managers
                 {
                     new User {Id = 1, Email = ValidUserApproverEmail}
                 });
+            userApproverRepositoryMock.Setup(s =>
+                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId, UserApproverType.WorkTime))
+                .Returns(new List<User>
+                {
+                    new User {Id = 1, Email = ValidUserApproverEmail}
+                });
+
+            userApproverRepositoryMock.Setup(s =>
+                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId2, UserApproverType.WorkTime))
+                .Returns(new List<User>());
+
 
             unitOfWorkMock.SetupGet(s => s.UserApproverRepository).Returns(userApproverRepositoryMock.Object);
         }
@@ -114,6 +127,10 @@ namespace Sofco.UnitTest.Framework.Managers
             return new List<Analytic>
             {
                 new Analytic { Id = ValidAnalyticId, Name = "One", Manager = new User
+                {
+                    Email = ValidManagerEmail
+                }},
+                new Analytic { Id = ValidAnalyticId2, Name = "Two", Manager = new User
                 {
                     Email = ValidManagerEmail
                 }}
@@ -168,6 +185,31 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Verify(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId), Times.Never);
 
             mailSenderMock.Verify(s => s.Send(It.IsAny<List<IMailData>>()), Times.Never);
+        }
+
+        [Test]
+        public void ShouldPassGetMails()
+        {
+            var testableSut = new WorkTimeSendMailManagerTestable(mailSenderMock.Object,
+                employeeDataMock.Object, unitOfWorkMock.Object, loggerMock.Object);
+
+            var actual = testableSut.GetMails();
+
+            Assert.IsNotEmpty(actual);
+
+            Assert.AreEqual(1, actual.Count);
+        }
+    }
+
+    internal class WorkTimeSendMailManagerTestable : WorkTimeSendMailManager
+    {
+        public WorkTimeSendMailManagerTestable(IMailSender mailSender, IEmployeeData employeeData, IUnitOfWork unitOfWork, ILogMailer<WorkTimeSendMailManager> logger) : base(mailSender, employeeData, unitOfWork, logger)
+        {
+        }
+
+        internal new List<IMailData> GetMails()
+        {
+            return base.GetMails();
         }
     }
 }
