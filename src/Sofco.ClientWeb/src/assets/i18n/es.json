@@ -880,6 +880,7 @@
     "Between75And99": "> 75 y < 99",
     "myActions": "Mis Acciones",
     "errors": "Errores",
+    "and": "y",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -925,7 +926,9 @@
             "totalResume": "Total resumen",
             "workingHours": "Horas Laborales",
             "currentHoursToDate": "Horas a la fecha",
-            "resumeLicense": "No laborable"
+            "resumeLicense": "No laborable",
+            "periodMessage": "Las horas que se permiten cargar deben estar comprendidas entra el",
+            "actualPeriod": "(Periodo Actual)"
         },
         "report": {
             "title": "Insumido vs Previsto",

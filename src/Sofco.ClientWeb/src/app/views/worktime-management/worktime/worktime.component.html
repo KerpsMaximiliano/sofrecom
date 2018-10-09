@@ -17,7 +17,7 @@
 
     <div class="alert alert-info">
         <i class="fa fa-info-circle"></i>
-        Las horas que se permiten cargar deben estar comprendidas entra el <strong>{{ model.periodStartDate }}</strong> y <strong>{{ model.periodEndDate }}</strong>. <strong>(Periodo Actual)</strong> 
+        {{ 'workTimeManagement.workTime.periodMessage' | translate }} <strong>{{ model.periodStartDate }}</strong> {{ 'and' | translate }} <strong>{{ model.periodEndDate }}</strong>. <strong>{{ 'workTimeManagement.workTime.actualPeriod' | translate }}</strong> 
     </div>
 
     <div class="row">

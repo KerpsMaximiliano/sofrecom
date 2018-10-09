@@ -84,18 +84,25 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.getAllSubscrip = this.employeeNewsService.getAll().subscribe(response => {
+            this.model = [];
             this.messageService.closeLoading();
             this.model = response.data;
-            const options = { 
-                selector: "#newsTable",
-                columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
-             };
-            this.dataTableService.destroy(options.selector);
-            this.dataTableService.initialize(options);
+
+            this.initGrid();
         },
         error => {
             this.messageService.closeLoading();
         });
+    }
+
+    initGrid(){
+        const options = { 
+            selector: "#newsTable",
+            columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+        };
+
+        this.dataTableService.destroy(options.selector);
+        this.dataTableService.initialize(options);
     }
 
     getEndReasonTypes(){
@@ -137,6 +144,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.employeeNewsService.add(this.newsToConfirm.id).subscribe(data => {
             this.model.splice(this.indexToConfirm, 1);
 
+            this.initGrid();
             this.confirmModal.hide();
         },
         error => {
@@ -148,6 +156,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.employeeNewsService.cancel(this.newsToConfirm.id).subscribe(data => {
             this.model.splice(this.indexToConfirm, 1);
 
+            this.initGrid();
             this.confirmModal.hide();
         },
         error => {
@@ -164,6 +173,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.getAllSubscrip = this.employeeNewsService.delete(this.newsToConfirm.id, json).subscribe(data => {
             this.model.splice(this.indexToConfirm, 1);
 
+            this.initGrid();
             this.deleteModal.hide();
         },
         error => {
