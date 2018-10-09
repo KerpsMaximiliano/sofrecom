@@ -89,7 +89,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
-                                    <p>{{ model.paymentTerm }}</p>
+                                    <input type="text" [(ngModel)]="model.paymentTerm" class="form-control"> 
                                 </div>
         
                                 <!-- Tipo de documento -->
