@@ -249,14 +249,14 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [1, 2, 3, 4, 5];
+        var columns = [1, 2, 3, 4, 5, 6];
         var title = `Recursos-${moment(new Date()).format("YYYYMMDD")}`;
 
         var options = { 
             selector: "#resourcesTable",
             columns: columns,
             title: title,
-            columnDefs: [ {'aTargets': [2], "sType": "date-uk"} ],
+            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ],
             withExport: true,
          };
 

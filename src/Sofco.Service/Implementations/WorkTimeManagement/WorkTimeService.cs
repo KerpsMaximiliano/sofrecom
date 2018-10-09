@@ -92,6 +92,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 result.Data.Resume = resumeModel;
 
+                var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+                var period = closeDates.GetPeriodIncludeDays();
+
+                result.Data.PeriodStartDate = period.Item1.ToString("d");
+                result.Data.PeriodEndDate = period.Item2.ToString("d");
+
                 return result;
             }
             catch (Exception e)

@@ -7,4 +7,7 @@ export class WorkTimeTaskModel {
     public date = new Date();
     public userComment = "";
     public status = 0;
+    public isLicense: boolean;
+    public taskDesc: string;
+    public categoryDesc: string;
 }

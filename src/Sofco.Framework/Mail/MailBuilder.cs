@@ -31,7 +31,7 @@ namespace Sofco.Framework.Mail
                 { MailType.EmployeeEndConfirmation, MailResource.EmployeeEndConfirmation }
             };
 
-            allowedMails = string.IsNullOrWhiteSpace(emailConfig.AllowedMails)
+            allowedMails = string.IsNullOrWhiteSpace(emailConfig.AllowedMails) 
                 ? new List<string>()
                 : emailConfig.AllowedMails.Split(MailDelimiter[0]).ToList();
         }

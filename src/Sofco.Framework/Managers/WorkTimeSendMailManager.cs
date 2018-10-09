@@ -41,7 +41,7 @@ namespace Sofco.Framework.Managers
             {
                 var mails = GetMails();
 
-                if (!mails.Any()) return;
+                if(!mails.Any()) return;
 
                 mailSender.Send(mails);
             }
@@ -75,7 +75,7 @@ namespace Sofco.Framework.Managers
             {
                 var workTimesByAnalytic = workTimes.Where(s => s.AnalyticId == analytic.Id).ToList();
 
-                if (!workTimesByAnalytic.Any()) continue;
+                if(!workTimesByAnalytic.Any()) continue;
 
                 mails.Add(GetMailData(currentEmployee, workTimesByAnalytic, analytic));
             }

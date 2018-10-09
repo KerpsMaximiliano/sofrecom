@@ -33,14 +33,13 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly FileConfig fileConfig;
         private readonly ISessionManager sessionManager;
         private readonly ILicenseStatusFactory licenseStatusFactory;
-        private readonly IMailBuilder mailBuilder;
         private readonly IMailSender mailSender;
         private readonly ILicenseFileManager licenseFileManager;
         private readonly ILicenseApproverManager licenseApproverManager;
         private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
 
         public LicenseService(IUnitOfWork unitOfWork, ILogMailer<LicenseService> logger, IOptions<FileConfig> fileOptions, 
-                              ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, IMailBuilder mailBuilder, 
+                              ISessionManager sessionManager, ILicenseStatusFactory licenseStatusFactory, 
                               IMailSender mailSender, ILicenseFileManager licenseFileManager, ILicenseApproverManager licenseApproverManager,
                               ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService)
         {
@@ -49,7 +48,6 @@ namespace Sofco.Service.Implementations.Rrhh
             fileConfig = fileOptions.Value;
             this.sessionManager = sessionManager;
             this.licenseStatusFactory = licenseStatusFactory;
-            this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
             this.licenseFileManager = licenseFileManager;
             this.licenseApproverManager = licenseApproverManager;

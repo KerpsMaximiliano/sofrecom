@@ -25,6 +25,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
+                .ThenInclude(x => x.Category)
                 .ToList();
         }
 
