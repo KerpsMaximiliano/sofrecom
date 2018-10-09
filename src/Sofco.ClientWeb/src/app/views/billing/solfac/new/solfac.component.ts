@@ -34,12 +34,12 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public invoices: Option[] = new Array<Option>();
     public certificates: Option[] = new Array<Option>();
     public purchaseOrders: any[] = new Array();
-    public currencySymbol: string = "$";
-    private projectId: string = "";
+    public currencySymbol = "$";
+    private projectId = "";
     public integratorProject: any;
 
-    public solfacId: number = 0;
-    public multipleProjects: boolean = false;
+    public solfacId = 0;
+    public multipleProjects = false;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
@@ -48,14 +48,14 @@ export class SolfacComponent implements OnInit, OnDestroy {
     changeStatusSubscrip: Subscription;
     getCertificateAvailableSubscrip: Subscription;
 
-    isCreditNoteSolfacType:boolean = false;
-    isDebitNoteSolfacType:boolean = false;
+    isCreditNoteSolfacType = false;
+    isDebitNoteSolfacType = false;
     documentTypeDicts:Object = {
       "default": [1, 3, 6, 7],
       "creditNote": [2, 4],
       "debitNote": [5]
     }
-    documentTypeKey:string = "documentTypeName";
+    documentTypeKey = "documentTypeName";
 
     @ViewChild('solfacAttachments') solfacAttachments;
 
@@ -97,10 +97,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.details = new Array<HitoDetail>();
 
       multipleProjects.hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
+        const hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
-        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
+        const detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
         this.model.details.push(detail);
 
         this.calculateDetail(detail);
@@ -112,7 +112,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setDataForSingleProject(){
-      var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+      const project = JSON.parse(sessionStorage.getItem('projectDetail'));
 
       this.integratorProject = project;
 
@@ -124,19 +124,20 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.integratorId = project.integratorId;
       this.model.remito = project.remito;
       this.model.opportunityNumber = project.opportunityNumber;
+      this.model.clientName = project.principalContactName;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();
 
-      var hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
+      const hitos = JSON.parse(sessionStorage.getItem('hitosSelected'));
 
       if(!this.validateHitos(hitos)) return;
 
       hitos.forEach(hito => {
-        var hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
+        const hitoNew = new Hito(0, hito.name, hito.ammount, hito.projectId, hito.id, hito.money, hito.month, 0, hito.moneyId, hito.opportunityId, hito.managerId);
         this.model.hitos.push(hitoNew);
 
-        var detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
+        const detail = new HitoDetail(0, hito.name, 0, 1, hito.ammount, 0, hito.id);
         this.model.details.push(detail);
 
         this.model.currencyId = this.getCurrencyId(hito.money);
@@ -150,7 +151,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setNewModel(){
-      var multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
+      const multipleProjects = JSON.parse(sessionStorage.getItem('multipleProjects'));
       this.model.totalAmount = 0;
       this.model.documentType = 1;
 
@@ -159,9 +160,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
       } else {
         this.setDataForSingleProject();
       }
-    
-      var customer = JSON.parse(sessionStorage.getItem("customer"));
-      var service = JSON.parse(sessionStorage.getItem('serviceDetail'));
+
+      const customer = JSON.parse(sessionStorage.getItem("customer"));
+      const service = JSON.parse(sessionStorage.getItem('serviceDetail'));
 
       if(service){
         this.model.imputationNumber1 = service.analytic; 
@@ -179,12 +180,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       if(customer){
         this.model.businessName = customer.name;
-        this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
       } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.name;
-          this.model.clientName = data.contact;
           this.model.celphone = data.telephone;
         });
       }
@@ -212,9 +211,9 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.invoices = data;
       });
     }
- 
+
     getOptions() {
-      var project = JSON.parse(sessionStorage.getItem('projectDetail'));
+      const project = JSON.parse(sessionStorage.getItem('projectDetail'));
 
       this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), project.opportunityNumber).subscribe(data => {
         this.currencies = data.currencies;
@@ -233,7 +232,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
         externalHitoId = this.model.hitos[0].externalHitoId;
       }
 
-      var detail = new HitoDetail(0, "", 1, 1, 1, 0, externalHitoId);
+      const detail = new HitoDetail(0, "", 1, 1, 1, 0, externalHitoId);
       this.model.details.push(detail);
 
       this.calculateAmounts();
@@ -255,7 +254,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     calculateAmounts(){
       this.model.totalAmount = 0;
-      
       this.model.details.forEach(detail => {
         this.model.totalAmount += detail.total;
       });
@@ -322,15 +320,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     setSolfacType(hitos:Array<any>) {
-      let documentTypeName = sessionStorage.getItem(this.documentTypeKey);
+      const documentTypeName = sessionStorage.getItem(this.documentTypeKey);
       sessionStorage.removeItem(this.documentTypeKey);
       this.isCreditNoteSolfacType = documentTypeName == "creditNote";
       this.isDebitNoteSolfacType = documentTypeName == "debitNote";
 
       if(this.isCreditNoteSolfacType || this.isDebitNoteSolfacType)
       {
-        let currentHito = hitos[0];
-        let hito = this.model.hitos[0];
+        const currentHito = hitos[0];
+        const hito = this.model.hitos[0];
         hito.solfacId = currentHito.solfacId;
       }
 
@@ -350,8 +348,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     updateDocumentTypes() {
-      let allowedValues = this.getAllowedDocumentType();
-      
+      const allowedValues = this.getAllowedDocumentType();
+
       this.documentTypes = this.documentTypes.filter(s => allowedValues.includes(s.id));
 
       if(this.documentTypes.length > 0 && !allowedValues.includes(this.model.documentType.toString()))
@@ -390,7 +388,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     }
 
     purchaseOrderChange(purchaseOrderId){
-      var ocOption = this.purchaseOrders.find(x => x.id == purchaseOrderId);
+      const ocOption = this.purchaseOrders.find(x => x.id == purchaseOrderId);
 
       if(ocOption){
         this.model.paymentTerm = ocOption.extraValue;

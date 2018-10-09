@@ -39,5 +39,9 @@ namespace Sofco.Domain.Models.Billing
         public string IntegratorId { get; set; }
 
         public bool Active { get; set; }
+
+        public Guid? PrincipalContactId { get; set; }
+
+        public string PrincipalContactName { get; set; }
     }
 }
