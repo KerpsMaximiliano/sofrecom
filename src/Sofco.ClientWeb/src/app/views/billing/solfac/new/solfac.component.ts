@@ -32,9 +32,8 @@ export class SolfacComponent implements OnInit, OnDestroy {
     public imputationNumbers: Option[] = new Array<Option>();
     public currencies: Option[] = new Array<Option>();
     public invoices: Option[] = new Array<Option>();
-    public paymentTerms: Option[] = new Array<Option>();
     public certificates: Option[] = new Array<Option>();
-    public purchaseOrders: Option[] = new Array<Option>();
+    public purchaseOrders: any[] = new Array();
     public currencySymbol: string = "$";
     private projectId: string = "";
     public integratorProject: any;
@@ -182,24 +181,11 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.businessName = customer.name;
         this.model.clientName = customer.contact;
         this.model.celphone = customer.telephone;
-
-        if (customer.paymentTermCode == 0){
-          customer.paymentTermCode = 1;
-        }
-
-        this.model.paymentTermId = customer.paymentTermCode;
-        
       } else {
         this.customerService.getById(sessionStorage.getItem("customerId")).subscribe(data => {
           this.model.businessName = data.name;
           this.model.clientName = data.contact;
           this.model.celphone = data.telephone;
-
-          if (customer.paymentTermCode == 0){
-            customer.paymentTermCode = 1;
-          }
-
-          this.model.paymentTermId = data.paymentTermCode;
         });
       }
 
@@ -235,7 +221,6 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
         this.imputationNumbers = data.imputationNumbers;
-        this.paymentTerms = data.paymentTerms;
         this.purchaseOrders = data.purchaseOrders;
         this.updateDocumentTypes();
       });
@@ -402,5 +387,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
       }
 
       return isValid;
+    }
+
+    purchaseOrderChange(purchaseOrderId){
+      var ocOption = this.purchaseOrders.find(x => x.id == purchaseOrderId);
+
+      if(ocOption){
+        this.model.paymentTerm = ocOption.extraValue;
+      }
     }
 }

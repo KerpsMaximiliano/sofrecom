@@ -96,8 +96,7 @@ namespace Sofco.WebApi.Controllers.Billing
                 DocumentTypes = utilsService.GetDocumentTypes().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 ImputationNumbers = utilsService.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
                 Provinces = utilsService.GetProvinces().Where(x => x.Id != 1 && x.Id != 2).Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
-                PaymentTerms = utilsService.GetPaymentTerms().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList(),
-                PurchaseOrders = purchaseOrderService.GetByServiceLite(serviceId, opportunityNumber).Select(x => new Option { Id = x.Id, Text = $"{x.Number} {x.Title}" }).ToList()
+                PurchaseOrders = purchaseOrderService.GetByServiceLite(serviceId, opportunityNumber).Select(x => new ListItem<string> { Id = x.Id, Text = $"{x.Number} {x.Title}", ExtraValue = x.PaymentForm }).ToList()
             };
 
             return Ok(options);

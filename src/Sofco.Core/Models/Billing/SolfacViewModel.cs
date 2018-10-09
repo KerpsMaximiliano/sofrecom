@@ -120,6 +120,8 @@ namespace Sofco.Core.Models.Billing
 
         public string OpportunityNumber { get; set; }
 
+        public string PaymentTerm { get; set; }
+
         public Solfac CreateDomain()
         {
             var solfac = new Solfac();
@@ -145,7 +147,7 @@ namespace Sofco.Core.Models.Billing
             solfac.Province2Id = Province2Id;
             solfac.Province3Id = Province3Id;
             solfac.ParticularSteps = ParticularSteps;
-            solfac.PaymentTermId = PaymentTermId;
+            solfac.PaymentTerm = PaymentTerm;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
             solfac.CustomerId = CustomerId;

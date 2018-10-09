@@ -23,7 +23,7 @@ namespace Sofco.Core.Models.Billing
             ImputationNumber1 = domain.ImputationNumber1;
             TotalAmount = domain.TotalAmount;
             ParticularSteps = domain.ParticularSteps;
-            PaymentTermId = domain.PaymentTermId;
+            PaymentTerm = domain.PaymentTerm;
             CurrencyId = domain.CurrencyId;
             UserApplicantId = domain.UserApplicantId;
             DocumentTypeId = domain.DocumentType.Id;
@@ -78,9 +78,6 @@ namespace Sofco.Core.Models.Billing
             if (domain.Currency != null)
                 CurrencyName = domain.Currency.Text;
 
-            if (domain.PaymentTerm != null)
-                PaymentTermName = domain.PaymentTerm.Text;
-
             if (domain.PurchaseOrder != null)
                 ContractNumber = domain.PurchaseOrder.Number;
 
@@ -101,8 +98,6 @@ namespace Sofco.Core.Models.Billing
                 Hitos.Add(new HitoModel(hito));
             }
         }
-
-        public string PaymentTermName { get; set; }
 
         public string ServiceName { get; set; }
 
@@ -164,11 +159,7 @@ namespace Sofco.Core.Models.Billing
 
         public string CurrencyName { get; set; }
 
-        public string AttachedParts { get; set; }
-
         public string ParticularSteps { get; set; }
-
-        public int PaymentTermId { get; set; }
 
         public string InvoiceCode { get; set; }
 
@@ -210,6 +201,8 @@ namespace Sofco.Core.Models.Billing
 
         public string OpportunityNumber { get; set; }
 
+        public string PaymentTerm { get; set; }
+
         public Domain.Models.Billing.Solfac CreateDomain()
         {
             var solfac = new Domain.Models.Billing.Solfac();
@@ -236,7 +229,7 @@ namespace Sofco.Core.Models.Billing
             solfac.Province2Id = Province2Id;
             solfac.Province3Id = Province3Id;
             solfac.ParticularSteps = ParticularSteps;
-            solfac.PaymentTermId = PaymentTermId;
+            solfac.PaymentTerm = PaymentTerm;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
             solfac.CustomerId = CustomerId;

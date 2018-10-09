@@ -22,12 +22,12 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.Manager).HasMaxLength(300);
             builder.Entity<Solfac>().Property(_ => _.ManagerId).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.OpportunityNumber).HasMaxLength(100);
+            builder.Entity<Solfac>().Property(_ => _.PaymentTerm).HasMaxLength(300);
 
             builder.Entity<Solfac>().HasOne(x => x.UserApplicant).WithMany(x => x.Solfacs).HasForeignKey(x => x.UserApplicantId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Solfac>().HasOne(x => x.DocumentType).WithMany(x => x.Solfacs).HasForeignKey(x => x.DocumentTypeId);
             builder.Entity<Solfac>().HasOne(x => x.Currency).WithMany(x => x.Solfacs).HasForeignKey(x => x.CurrencyId);
             builder.Entity<Solfac>().HasOne(x => x.ImputationNumber).WithMany(x => x.Solfacs).HasForeignKey(x => x.ImputationNumber3Id);
-            builder.Entity<Solfac>().HasOne(x => x.PaymentTerm).WithMany(x => x.Solfacs).HasForeignKey(x => x.PaymentTermId);
             builder.Entity<Solfac>().HasOne(x => x.PurchaseOrder).WithMany(x => x.Solfacs).HasForeignKey(x => x.PurchaseOrderId);
 
             builder.Entity<Solfac>().HasMany(x => x.Hitos).WithOne(x => x.Solfac).HasForeignKey(x => x.SolfacId);
