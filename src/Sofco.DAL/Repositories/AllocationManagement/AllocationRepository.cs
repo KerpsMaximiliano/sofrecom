@@ -37,7 +37,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var employees = context.Allocations
                 .Include(x => x.Analytic)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.StartDate.Date == date.Date)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) 
+                            && x.StartDate.Date == date.Date
+                            && x.Percentage > 0)
                 .Select(x => x.EmployeeId)
                 .Distinct()
                 .ToList();

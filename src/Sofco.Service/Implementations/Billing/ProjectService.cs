@@ -190,7 +190,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private void SetPurchaseOrderValues(Domain.Models.Billing.Solfac solfac, PurchaseOrderWidgetModel newOc)
+        private void SetPurchaseOrderValues(Solfac solfac, PurchaseOrderWidgetModel newOc)
         {
             switch (solfac.Status)
             {

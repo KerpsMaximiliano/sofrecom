@@ -12,7 +12,5 @@ namespace Sofco.Core.DAL.Common
         List<UserApproverEmployee> GetByAllocationAnalytics(List<int> analyticIds, int approvalId, UserApproverType type);
 
         List<UserApproverEmployee> GetByAllocationManagersBySectors(List<int> sectorIds, UserApproverType type);
-
-        List<UserApproverEmployee> GetByManager(int managerId, UserApproverQuery query, UserApproverType type);
-    }
+   }
 }

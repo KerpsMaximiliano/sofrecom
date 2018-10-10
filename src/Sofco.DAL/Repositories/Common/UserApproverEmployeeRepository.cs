@@ -25,14 +25,16 @@ namespace Sofco.DAL.Repositories.Common
             parameter = query;
 
             Expression<Func<Employee, bool>> where = x => x.EndDate == null 
-                && x.Allocations.Any(s => s.StartDate >= DateTime.UtcNow);
+                && x.Allocations.Any(s => s.StartDate >= DateTime.UtcNow 
+                                          && s.Percentage > 0);
 
             if (query.AnalyticId > 0)
             {
                 where = e => e.EndDate == null
                     && e.Allocations.Any(s => 
                         s.AnalyticId == query.AnalyticId
-                        && s.StartDate >= DateTime.UtcNow);
+                        && s.StartDate >= DateTime.UtcNow
+                        && s.Percentage > 0);
             }
 
             var result = context
@@ -58,7 +60,8 @@ namespace Sofco.DAL.Repositories.Common
         {
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
                 && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId)
-                && x.StartDate >= DateTime.UtcNow);
+                && x.StartDate >= DateTime.UtcNow
+                && x.Percentage > 0);
 
             var result = context
                 .Employees
@@ -91,7 +94,7 @@ namespace Sofco.DAL.Repositories.Common
 
             Expression<Func<Employee, bool>> where = e => e.EndDate == null
                 && userEmails.Contains(e.Email)
-                && e.Allocations.Any(x => x.StartDate >= DateTime.UtcNow);
+                && e.Allocations.Any(x => x.StartDate >= DateTime.UtcNow && x.Percentage > 0);
 
             var result = context
                 .Employees
@@ -103,39 +106,6 @@ namespace Sofco.DAL.Repositories.Common
                     e => e.Id,
                     w => w.EmployeeId,
                     Translate);
-
-            return result.ToList();
-        }
-
-        public List<UserApproverEmployee> GetByManager(int managerId, UserApproverQuery query, UserApproverType type)
-        {
-            parameter = query;
-
-            Expression<Func<Employee, bool>> where = x => x.EndDate == null
-                    && managerId == x.ManagerId.Value;
-
-            if (query.AnalyticId > 0)
-            {
-                //var managerId = context.Analytics.First(s => s.Id == query.AnalyticId).ManagerId;
-
-                //where = e => e.EndDate == null && e.ManagerId.Value == managerId;
-            }
-
-            var result = context
-                .Employees
-                .Where(where)
-                .Include(x => x.Allocations)
-                .ThenInclude(x => x.Analytic)
-                .GroupJoin(context.UserApprovers.Where(s => s.Type == type).ToList(),
-                    e => e.Id,
-                    w => w.EmployeeId,
-                    Translate);
-
-            if (query.ApprovalId > 0)
-            {
-                result = result.Where(s =>
-                    s.UserApprover != null && s.UserApprover.ApproverUserId == query.ApprovalId);
-            }
 
             return result.ToList();
         }
