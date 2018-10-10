@@ -70,7 +70,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     {
                         sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
                         sheet1.Cells[$"B{index}"].Value = employee.Name;
-                        sheet1.Cells[$"C{index}"].Value = startDate.ToString("d");
+                        sheet1.Cells[$"C{index}"].Value = startDate.ToString("dd/MM/yyyy");
 
                         index++;
                     }
