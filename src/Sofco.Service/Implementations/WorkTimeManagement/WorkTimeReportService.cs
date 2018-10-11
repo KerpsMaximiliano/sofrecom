@@ -263,7 +263,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 }
                 else
                 {
-                    item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursLoaded * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                    if (item.HoursMustLoad != 0)
+                    {
+                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursLoaded * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                    }
                 }
             }
         }

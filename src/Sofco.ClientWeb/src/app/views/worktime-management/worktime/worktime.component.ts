@@ -33,6 +33,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public approvedTaskColor = '#1cb394';
   public rejectedTaskColor = '#ea5865';
   public licenseTaskColor = '#AFAFAF';
+  public emptyTaskColor = '#009ddf';
   public taskColors: any[] = new Array();
 
   public analytics: any[] = new Array();
@@ -80,7 +81,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.calendarInit();
     this.eventDragInitWithDocumentReady();
     this.getRecentTask();
-    this.getModel();
     this.getAnalytics();
     this.getCategories();
   }
@@ -259,6 +259,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.calendarEvents = this.translateToEvent(this.model.calendar);
     $('#calendar').fullCalendar('removeEventSources', null);
     $('#calendar').fullCalendar('addEventSource', this.calendarEvents);
+
+    this.addEmptyTasks();
   }
 
   sendHours() {
@@ -269,6 +271,20 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     () => {
       this.messageService.closeLoading();
     });
+  }
+
+  showNewModal(date){
+    $("#hoursControl").prop('disabled', false);
+    this.editModalConfig.cancelButtonText = 'ACTIONS.cancel';
+    this.editModalConfig.acceptButton = true;
+    this.editModalConfig.deleteButton = false;
+
+    this.taskModel = new WorkTimeTaskModel();
+    this.taskModel.date = moment(date).toDate();
+
+    this.showSaveTask();
+
+    this.editModal.show();
   }
 
   showEditModal(isNew = true) {
@@ -399,6 +415,53 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
 
     return events;
+  }
+
+  addEmptyTasks(){
+    $('.task-empty-add').remove();
+
+    var now = new Date();
+    var startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    var endDate = new Date(now.getFullYear(), now.getMonth()+1, 0);
+
+    var day = 1;
+    while(startDate <= endDate){
+      var date = moment(startDate);
+
+      var events = this.calendarEvents.filter(x => moment(x.start).diff(date, 'days') == 0);
+
+      if(events.length == 0){
+        $(`.fc-day-top[data-date='${date.format('YYYY-MM-DD')}']`).append(this.getTemplateAddEmptyTask())
+      }
+      else{
+        var hoursSum = 0;
+
+        events.forEach(item => {
+          hoursSum = hoursSum + item.hours;
+        });
+
+        if(hoursSum < 8){
+          $(`.fc-day-top[data-date='${date.format('YYYY-MM-DD')}']`).append(this.getTemplateAddEmptyTask())
+        }
+      }
+
+      day++;
+      var nextDate = new Date(now.getFullYear(), now.getMonth(), day);
+      startDate = nextDate;
+    }
+
+    var self = this;
+    var addEmptyTaskOnClick = function(){
+      self.showNewModal(this.parentElement.getAttribute('data-date'));
+    }
+
+    $('.task-empty-add').bind('click', addEmptyTaskOnClick);
+  }
+
+  getTemplateAddEmptyTask(){
+    return `<div class="label label-info task-empty-add">
+              <i class="fa fa-plus"></i>
+            </div>`
   }
 
   setTaskEvent(item: any) {
