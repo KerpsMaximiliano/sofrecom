@@ -27,5 +27,7 @@ namespace Sofco.Core.DAL.Common
         List<UserApprover> GetByEmployeeIds(List<int> employeeIds, UserApproverType type);
 
         bool HasUserAuthorizer(int userId, UserApproverType type);
+
+        User GetAuthorizerForLicenses(string managerUsername, int employeeId);
     }
 }

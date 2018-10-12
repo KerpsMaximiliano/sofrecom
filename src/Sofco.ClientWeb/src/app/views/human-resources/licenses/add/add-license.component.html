@@ -29,11 +29,17 @@
                         <label style="font-size: 15px"> {{'rrhh.license.employee' | translate }}: </label>
                         <span style="font-size: 14px"> {{ userApplicantName }}</span>
                     </div>
+                    
+                    <div class="form-group" *ngIf="model.authorizerId > 0">
+                        <label style="font-size: 15px"> {{'rrhh.license.authorizer' | translate }}: </label>
+                        <span style="font-size: 14px"> {{ model.authorizerDesc }}</span>
+                    </div>
 
                     <div class="form-group">
                         <label style="font-size: 15px"> {{'rrhh.license.manager' | translate }}: </label>
                         <span style="font-size: 14px"> {{ model.managerDesc }}</span>
                     </div>
+
 
                     <div class="form-group">
                         <label style="font-size: 15px"> {{'rrhh.license.sector' | translate }}: </label>

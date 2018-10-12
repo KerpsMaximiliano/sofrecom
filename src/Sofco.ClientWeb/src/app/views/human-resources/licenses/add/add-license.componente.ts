@@ -83,6 +83,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.managerDesc = userInfo.managerDesc;
                 this.model.sectorId = userInfo.sectorId;
                 this.model.sectorDesc = userInfo.sectorDesc;
+                this.model.authorizerId = userInfo.authorizerId;
+                this.model.authorizerDesc = userInfo.authorizerDesc;
 
                 this.userApplicantName = userInfo.name;
 

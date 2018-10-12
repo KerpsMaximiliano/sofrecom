@@ -18,6 +18,8 @@ export class License {
     public comments: string;
     public examDescription: string;
     public status: LicenseStatus;
+    public authorizerDesc: any;
+    public authorizerId: any;
 
     constructor(){
         this.withPayment = true;

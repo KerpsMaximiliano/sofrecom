@@ -34,6 +34,10 @@ namespace Sofco.Core.Models.Admin
         public int SectorId { get; set; }
         public string SectorDesc { get; set; }
 
+        public int AuthorizerId { get; set; }
+
+        public string AuthorizerDesc { get; set; }
+
         public User CreateDomain()
         {
             var user = new User

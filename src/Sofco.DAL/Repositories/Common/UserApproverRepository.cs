@@ -108,6 +108,14 @@ namespace Sofco.DAL.Repositories.Common
             return UserApproverSet.Any(s => s.ApproverUserId == userId && s.Type == type);
         }
 
+        public User GetAuthorizerForLicenses(string managerUsername, int employeeId)
+        {
+            var userApprover = UserApproverSet.Include(x => x.ApproverUser).FirstOrDefault(x =>
+                x.EmployeeId == employeeId && x.CreatedUser.Equals(managerUsername) && x.Type == UserApproverType.LicenseAuthorizer);
+
+            return userApprover?.ApproverUser;
+        }
+
         private void Save(UserApprover item)
         {
             var storedItem = GetUnique(item.AnalyticId, item.EmployeeId, item.Type);
