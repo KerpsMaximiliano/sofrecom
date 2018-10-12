@@ -157,6 +157,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                     this.model.managerDesc = response.data.managerDesc;
                     this.model.sectorId = response.data.sectorId;
                     this.model.sectorDesc = response.data.sectorDesc;
+                    this.model.authorizerId = response.data.authorizerId;
+                    this.model.authorizerDesc = response.data.authorizerDesc;
 
                     this.checkMissingManager();
                 }
@@ -167,6 +169,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.managerDesc = null;
                 this.model.sectorId = null;
                 this.model.sectorDesc = null;
+                this.model.authorizerId = null;
+                this.model.authorizerDesc = null;
             });
     }
 
