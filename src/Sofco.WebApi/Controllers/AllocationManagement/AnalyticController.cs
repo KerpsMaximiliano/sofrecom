@@ -100,9 +100,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Core.Models.AllocationManagement.AnalyticModel model)
+        public IActionResult Post([FromBody] AnalyticModel model)
         {
-            var response = await analyticService.Add(model.CreateDomain());
+            var response = analyticService.Add(model.CreateDomain());
 
             return this.CreateResponse(response);
         }
