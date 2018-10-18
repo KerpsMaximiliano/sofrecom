@@ -367,7 +367,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
-            if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+            if (!string.IsNullOrWhiteSpace(analytic.ServiceId) && status == AnalyticStatus.Close)
             {
                 var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
 
