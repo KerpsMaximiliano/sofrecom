@@ -12,6 +12,7 @@ using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
@@ -47,6 +48,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IAnalyticRepository> analyticRepositoryMock;
         private Mock<ISectorRepository> sectorRepositoryMock;
         private Mock<IAreaRepository> areaRepositoryMock;
+        private Mock<IPurchaseOrderFileManager> purchaseOrderFileManagerMock;
 
         private Mock<IMailBuilder> mailBuilderMock;
         private Mock<EmailConfig> emailConfig;
@@ -73,6 +75,7 @@ namespace Sofco.UnitTest.Services.Billing
             sectorRepositoryMock = new Mock<ISectorRepository>();
             areaRepositoryMock = new Mock<IAreaRepository>();
             emailConfig = new Mock<EmailConfig>();
+            purchaseOrderFileManagerMock = new Mock<IPurchaseOrderFileManager>();
 
             var fileOptions = new Mock<IOptions<FileConfig>>();
             fileOptions.SetupGet(x => x.Value).Returns(fileConfigMock.Object);
@@ -152,7 +155,8 @@ namespace Sofco.UnitTest.Services.Billing
                 fileOptions.Object,
                 factoryMock.Object,
                 userDataMock.Object,
-                mapperMock.Object);
+                mapperMock.Object,
+                purchaseOrderFileManagerMock.Object);
         }
 
         [Test]
