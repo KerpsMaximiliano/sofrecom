@@ -97,5 +97,14 @@ export class PurchaseOrderService {
   getHistories(id){
     return this.http.get<any>(`${this.baseUrl}/purchaseOrders/${id}/histories`);
   }
+
+  createReport(){
+    return this.http.get(`${this.baseUrl}/purchaseOrders/export`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
+  }
 }
 

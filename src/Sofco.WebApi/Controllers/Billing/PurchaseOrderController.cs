@@ -106,6 +106,17 @@ namespace Sofco.WebApi.Controllers.Billing
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
+        [HttpGet("export")]
+        public IActionResult Export()
+        {
+            var response = purchaseOrderService.Export();
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
+
         [HttpGet("{id}/file")]
         public IActionResult GetFile(int id)
         {
