@@ -173,5 +173,20 @@ namespace Sofco.DAL.Repositories.Billing
 
             return histories.Any(x => x.To != PurchaseOrderStatus.Draft);
         }
+
+        public IList<PurchaseOrder> GetForReport()
+        {
+            return context.PurchaseOrders
+                .Include(x => x.PurchaseOrderAnalytics)
+                    .ThenInclude(x => x.Analytic)
+                        .ThenInclude(x => x.Manager)
+                .Include(x => x.PurchaseOrderAnalytics)
+                    .ThenInclude(x => x.Analytic)
+                        .ThenInclude(x => x.CommercialManager)
+                .Include(x => x.AmmountDetails)
+                    .ThenInclude(x => x.Currency)
+                .Include(x => x.Area)
+                .ToList();
+        }
     }
 }

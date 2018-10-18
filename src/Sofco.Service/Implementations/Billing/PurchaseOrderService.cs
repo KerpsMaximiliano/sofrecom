@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
@@ -32,12 +33,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUserData userData;
         private readonly IPurchaseOrderStatusFactory purchaseOrderStatusFactory;
         private readonly IMapper mapper;
+        private readonly IPurchaseOrderFileManager purchaseOrderFileManager;
 
         public PurchaseOrderService(IUnitOfWork unitOfWork, 
             ILogMailer<PurchaseOrderService> logger, 
             IOptions<FileConfig> fileOptions,
             IPurchaseOrderStatusFactory purchaseOrderStatusFactory,
-            IUserData userData, IMapper mapper)
+            IUserData userData, IMapper mapper,
+            IPurchaseOrderFileManager purchaseOrderFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -45,6 +48,7 @@ namespace Sofco.Service.Implementations.Billing
             this.userData = userData;
             this.mapper = mapper;
             this.purchaseOrderStatusFactory = purchaseOrderStatusFactory;
+            this.purchaseOrderFileManager = purchaseOrderFileManager;
         }
 
         public Response<PurchaseOrder> Add(PurchaseOrderModel model)
@@ -350,6 +354,27 @@ namespace Sofco.Service.Implementations.Billing
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<byte[]> Export()
+        {
+            var response = new Response<byte[]>();
+
+            try
+            {
+                var list = unitOfWork.PurchaseOrderRepository.GetForReport();
+
+                var excel = purchaseOrderFileManager.CreateReport(list);
+
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ExportFileError);
             }
 
             return response;

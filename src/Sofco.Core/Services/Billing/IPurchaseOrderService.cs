@@ -34,6 +34,9 @@ namespace Sofco.Core.Services.Billing
         Response Close(int id, PurchaseOrderStatusParams model);
         
         Response<IList<PurchaseOrderPendingModel>> GetPendings();
+
         Response Delete(int id);
+
+        Response<byte[]> Export();
     }
 }
