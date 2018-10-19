@@ -65,6 +65,9 @@ export class SplitHitoComponent implements OnDestroy  {
       if (this.hitosReload.observers.length > 0) {
         this.hitosReload.emit();
       }
+    },
+    error => {
+      this.spliHitoModal.resetButtons();
     });
   }
 }
