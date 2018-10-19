@@ -29,7 +29,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetResources(int id)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).Select(x => x.Employee).Distinct().ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0).Include(x => x.Employee).Select(x => x.Employee).Distinct().ToList().AsReadOnly();
         }
 
         public Analytic GetLastAnalytic(int costCenterId)
@@ -131,7 +131,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)
         {
             var analyticsByAllocations = context.Allocations
-                .Where(x =>  x.EmployeeId == employeeId && x.Percentage > 0 &&
+                .Where(x =>  x.EmployeeId == employeeId && x.Percentage > 0 && x.Analytic.Status == AnalyticStatus.Open &&
                             (x.StartDate.Date == dateFrom || x.StartDate.Date == dateTo))
                 .Include(x => x.Analytic)
                 .Select(x => new Analytic
