@@ -8,12 +8,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "azsof01wd-dev": "ng build --prod --env=azsof01wd-dev",
-    "azsof01wd-test": "ng build --prod --env=azsof01wd-test",
-    "azsof01wd-qa": "ng build --prod --env=azsof01wd-qa",
-    "azsof01wt": "ng build --prod --env=azsof01wt",
-    "azgap01wp": "ng build --prod --env=azgap01wp"
-  },
+    "azsof01wd-dev": "ng build --prod --configuration=azsof01wd-dev",
+    "azsof01wd-test": "ng build --prod --configuration=azsof01wd-test",
+    "azsof01wd-qa": "ng build --prod --configuration=azsof01wd-qa",
+    "azsof01wt": "ng build --prod --configuration=azsof01wt",
+    "azgap01wp": "ng build --prod --configuration=azgap01wp"
+  }, 
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.0.9",
