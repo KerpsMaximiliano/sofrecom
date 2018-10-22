@@ -1,6 +1,6 @@
 SET PROJECT_NAME=Sofco.ClientWeb
 
-SET PUBLISH_PATH=C:\Temp\PublishTemp\%PROJECT_NAME%
+SET PUBLISH_PATH=C:\Projects\Sofcoar\src\%PROJECT_NAME%\dist
 
 SET WORKSPACE_PATH=%~1
 
@@ -13,10 +13,11 @@ cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
 cmd /c npm install
 
-cmd /c DEL /F /Q "%PUBLISH_PATH%"
-cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
+REM cmd /c DEL /F /Q "%PUBLISH_PATH%"
+REM cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
 
-cmd /c ng build --prod --configuration=azsof01wd-dev "%PUBLISH_PATH%"
+REM cmd /c ng build --prod --configuration=azsof01wd-dev --extract-css=false -op "%PUBLISH_PATH%"
+cmd /c ng build --prod --configuration=azsof01wd-dev
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
