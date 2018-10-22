@@ -39,5 +39,6 @@
     "importDatesOutOfRange": "La fecha no corresponde al periodo en curso",
     "importEmployeeWithLicense": "Recurso con licencia cargada",
     "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
-    "fileEmpty": "El archivo importado no contiene registros"
+    "fileEmpty": "El archivo importado no contiene registros",
+    "invalidAllocationAssignment": "El recurso no está asignado a la analítica seleccionada en el periodo vigente."
 } 

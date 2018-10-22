@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Data.Admin;
+﻿using System.Linq;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Validations;
@@ -40,6 +41,24 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
             if (totalHours > allowedHoursPerDay)
             {
                 response.AddError(string.Format(Resources.WorkTimeManagement.WorkTime.HoursMaxError, allowedHoursPerDay));
+            }
+        }
+
+        public void ValidateAllocations(Response response, WorkTimeAddModel model)
+        {
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            var period = closeDates.GetPeriodIncludeDays();
+
+            var allocations =
+                unitOfWork.AllocationRepository
+                    .GetAllocationsLiteBetweenDays(model.EmployeeId, period.Item1, period.Item2);
+
+            var valid = allocations.Any(s => s.AnalyticId == model.AnalyticId);
+
+            if (!valid)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.InvalidAllocationAssignment);
             }
         }
     }

@@ -63,9 +63,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("delete from app.allocations where releasedate = '0001-01-01 00:00:00.0000000'");
         }
 
-        public IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now)
+        public IList<Allocation> GetLastAllocationsForEmployee(int employeeId, DateTime date)
         {
-            return context.Allocations.Where(x => x.EmployeeId == id && x.StartDate.Date > now.Date).ToList();
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId
+                            && x.StartDate.Date > date.Date
+                            && x.Percentage > 0)
+                .ToList();
         }
 
         public ICollection<Allocation> GetByEmployee(int id)
@@ -79,7 +83,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
+                .Where(x => x.EmployeeId == employeeId 
+                            && x.StartDate >= startDate 
+                            && x.StartDate <= endDate
+                            && x.Percentage > 0)
                 .ToList();
         }
 

@@ -6,5 +6,7 @@ namespace Sofco.Core.Validations
     public interface IWorkTimeValidation
     {
         void ValidateHours(Response response, WorkTimeAddModel model);
+
+        void ValidateAllocations(Response response, WorkTimeAddModel model);
     }
 }

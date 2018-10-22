@@ -314,6 +314,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   getAnalytics() {
     this.subscription = this.analyticService.getByCurrentUser().subscribe(res => {
         this.analytics = res.data;
+
+        this.cleanRecentTask(this.analytics);
     });
   }
 
@@ -623,5 +625,21 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
       $(this).css('background-color', '#EFEFEF');
     });
+  }
+
+  private cleanRecentTask(analytics:any[]) {
+    const recentAnalyticTask = this.recentAnalyticTasks;
+
+    const result = new Array();
+
+    analytics.forEach(x => {
+      const item = recentAnalyticTask.find(s => s.analyticId == x.id);
+      if(item != null){
+        result.push(item);
+      }
+    });
+
+    this.recentAnalyticTasks = result;
+    this.updateLocalStorage();
   }
 }
