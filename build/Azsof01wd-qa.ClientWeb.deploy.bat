@@ -17,7 +17,7 @@ cmd /c npm install
 cmd /c DEL /F /Q "%PUBLISH_PATH%"
 cmd /c FOR /D %%p IN ("%PUBLISH_PATH%\*.*") DO rmdir "%%p" /s /q
 
-cmd /c ng build --prod --env=azsof01wd-qa --extract-css=false -op "%PUBLISH_PATH%"
+cmd /c ng build --prod --configuration=azsof01wd-qa --extract-css=false -op "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
