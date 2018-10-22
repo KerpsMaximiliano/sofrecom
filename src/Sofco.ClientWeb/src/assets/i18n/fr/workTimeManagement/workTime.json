@@ -24,5 +24,18 @@
 	"wrongStatus": "Il n'est pas permis de modifier la tâche avec le statut actuel.",
 	"deleteError": "Une erreur s'est produite lors de la suppression des heures de travail chargées",
 	"yearAndMonthRequired": "Mois et année sont requis",
-	"datesRequired": "Les dates sont obligatoires"
+	"datesRequired": "Les dates sont obligatoires",
+	"dateIsWeekend": "Impossible de charger des heures les week-end.",
+    "dateIsHoliday": "Impossible de charger des heures en jours de congé.",
+    "importEmployeeIsNotInAnalytic": "L'employé n'appartient pas à l'analytic.",
+    "importDateNull": "La date est requis ou dans un format incorrect.",
+    "importDateWrong": "La date ne peut être un week-end ou jours de congé",
+    "importHoursExceed": "Heures chargées dans la journée dépassées.",
+    "importTaskNoExist": "La tâche n'existe pa.s",
+    "importHoursNull": "Heure requis.",
+    "importDatesOutOfRange": "La date ne correspond pas à la période en cours.",
+    "importEmployeeWithLicense": "Ressource avec une licence chargée.",
+    "importUserWithEmailNull": "L'employé n'a pas de email. Communiquez-vous avec gap@sofrecom.com.ar",
+    "fileEmpty": "Le fichier importé ne contient pas de registre.",
+    "invalidAllocationAssignment": "L'employé n'est pas affectée à la analytic sélectionnée dans la période en cours."
 }

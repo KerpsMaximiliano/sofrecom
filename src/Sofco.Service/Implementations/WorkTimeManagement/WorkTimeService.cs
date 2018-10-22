@@ -127,6 +127,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             WorkTimeValidationHandler.ValidateTask(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUserComment(response, model);
             workTimeValidation.ValidateHours(response, model);
+            workTimeValidation.ValidateAllocations(response, model);
 
             if (response.HasErrors()) return response;
 
