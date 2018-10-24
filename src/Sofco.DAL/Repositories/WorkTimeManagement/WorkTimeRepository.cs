@@ -32,8 +32,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds)
         {
             return context.WorkTimes
-                .Where(x => analyticIds.Contains(x.AnalyticId)
-                    && x.Date >= startDate && x.Date <= endDate)
+                .Where(x => analyticIds.Contains(x.AnalyticId) && x.Date.Date >= startDate.Date && x.Date.Date <= endDate.Date)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)

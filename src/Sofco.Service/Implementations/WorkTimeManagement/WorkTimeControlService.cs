@@ -8,6 +8,7 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -96,9 +97,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (allocationAnalytic == null) continue;
 
                 resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
-                resource.RegisteredHours = resume.HoursApproved;
-                resource.LicenseHours = resume.HoursWithLicense;
-                resource.PendingHours = resource.BusinessHours - resource.RegisteredHours - resource.LicenseHours;
+                resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
+                resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
+                resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
+                resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
+
+                resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
+
                 resource.AllocationPercentage = allocationAnalytic.Percentage;
                 resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
                 result.Add(resource);
