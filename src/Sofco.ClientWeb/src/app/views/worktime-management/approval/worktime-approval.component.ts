@@ -7,6 +7,7 @@ import { WorktimeService } from "../../../services/worktime-management/worktime.
 import { Ng2ModalConfig } from "../../../components/modal/ng2modal-config";
 
 declare var $: any;
+declare var moment: any;
 
 @Component({
     selector: 'app-worktime-approval',
@@ -126,7 +127,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
                 return item;
             });
 
-            var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            var options = { selector: "#hoursPending", 
+                            scrollX: true, 
+                            columns: [0, 1, 2, 3, 4, 6],
+                            title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
+                            withExport: true,
+                            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
+                          };
+
             this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
@@ -159,7 +167,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             this.hoursApproved = response.data;
 
-            var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            var options = { selector: "#hoursApproved", 
+                scrollX: true, 
+                columns: [0, 1, 2, 3, 4, 6],
+                title: `Horas-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`,
+                withExport: true,
+                columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
+            };
+
             this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
@@ -191,7 +206,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     removeItem(){
         this.hoursPending.splice(this.indexToRemove, 1);
-        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ] };
+        var options = { selector: "#hoursPending", 
+            scrollX: true, 
+            columns: [0, 1, 2, 3, 4, 6],
+            title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
+            columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
+        };
+
         this.initGrid(options);
     }
 
