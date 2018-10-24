@@ -14,6 +14,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         IList<Employee> GetResources(int id);
 
+        IList<Employee> GetResources(int id, DateTime startDate, DateTime endDate);
+
         Analytic GetLastAnalytic(int costCenterId);
 
         bool ExistTitle(string analyticTitle);

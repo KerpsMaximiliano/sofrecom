@@ -13,6 +13,6 @@ namespace Sofco.Service.Http.Interfaces
 
         Result<T> Get<T>(string urlPath, string token = null, TimeSpan? timeOut = null);
 
-        Result<List<T>> GetMany<T>(string urlPath);
+        Result<List<T>> GetMany<T>(string urlPath, string token = null);
     }
 }

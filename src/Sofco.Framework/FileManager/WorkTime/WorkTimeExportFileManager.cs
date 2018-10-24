@@ -50,11 +50,12 @@ namespace Sofco.Framework.FileManager.WorkTime
         private void FillResources(ExcelWorksheet sheet1, int analyticId)
         {
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+            var periodExcludeDays = closeDates.GetPeriodExcludeDays();
             var period = closeDates.GetPeriodIncludeDays();
           
             FillHolidays(period);
 
-            var employees = unitOfWork.AnalyticRepository.GetResources(analyticId);
+            var employees = unitOfWork.AnalyticRepository.GetResources(analyticId, periodExcludeDays.Item1.Date, periodExcludeDays.Item2.Date);
 
             var index = 2;
 
