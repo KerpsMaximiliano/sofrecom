@@ -28,8 +28,8 @@
     "cannotDelete": "You can not delete hours corresponding to a closed period",
 	"yearAndMonthRequired": "Month and Year are required",
 	"datesRequired": "Dates are required",
-	"dateIsWeekend": "Can not load hours a weekend",
-    "dateIsHoliday": "Can not load hours a holiday",
+	"dateIsWeekend": "Can not load hours in weekends",
+    "dateIsHoliday": "Can not load hours in holidays",
     "importEmployeeIsNotInAnalytic": "The resource does not belong to the analytic",
     "importDateNull": "The date is empty or in an incorrect format",
     "importDateWrong": "The date can not be a weekend or a holiday",
@@ -39,5 +39,6 @@
     "importDatesOutOfRange": "The date does not correspond to the current period",
     "importEmployeeWithLicense": "Resource with a loaded license",
     "importUserWithEmailNull": "The resource does not have mail. Communicate with gaps@sofrecom.com.ar",
-    "fileEmpty": "The imported file does not contain records"
+    "fileEmpty": "The imported file does not contain records",
+    "invalidAllocationAssignment": "El recurso no esta asignado a la analitica seleccionada en el periodo vigente."
 }
