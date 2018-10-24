@@ -103,7 +103,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     clean() {
         sessionStorage.removeItem('lastWorktimeQuery');
-     
+        this.employees = [];
         this.analyticId = 0;
         this.employeeId = 0;
         $('#monthyear').val('');
