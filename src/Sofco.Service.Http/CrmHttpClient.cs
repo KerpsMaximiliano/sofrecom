@@ -70,7 +70,7 @@ namespace Sofco.Service.Http
 
         public void GetAccessToken()
         {
-            string organizationUrl = "https://sofrecom.api.crm2.dynamics.com";
+            string organizationUrl = "https://sofrecomdev.api.crm2.dynamics.com";
             string clientId = "5979a783-4e8a-42a6-acb9-c5f20da86520";
             string appKey = "gmup69BdV0BVvqtoRGZCQIX5ULXtSVEpX3mCItjS+AM=";
             string aadInstance = "https://login.microsoftonline.com/";
@@ -81,7 +81,7 @@ namespace Sofco.Service.Http
             AuthenticationResult authenticationResult = authenticationContext.AcquireTokenAsync(organizationUrl, clientcred).Result;
             var accessToken = authenticationResult.AccessToken;
 
-            var customers = client.GetMany<string>("https://sofrecom.api.crm2.dynamics.com/api/data/v9.0/opportunities", accessToken).ResultData;
+            var customers = client.GetMany<string>("https://sofrecomdev.api.crm2.dynamics.com/api/data/v9.0/opportunities", accessToken).ResultData;
         }
     }
 }

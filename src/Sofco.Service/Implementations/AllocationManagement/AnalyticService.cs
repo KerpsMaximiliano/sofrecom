@@ -387,7 +387,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+                if (status == AnalyticStatus.Close && !string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
                     var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
 
