@@ -438,7 +438,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafAnalytic);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
                 var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
