@@ -181,7 +181,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     if (storedTask != null) {
       this.taskModel.categoryId = storedTask.categoryId;
     }
-    
+
     this.showEditModal(false);
   }
 
