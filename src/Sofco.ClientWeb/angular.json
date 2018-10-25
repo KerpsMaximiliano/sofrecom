@@ -243,7 +243,7 @@
               "src/assets/styles/plugins/awesome-bootstrap-checkbox.css",
               "src/assets/styles/plugins/datepicker/datepicker.css",
               "src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-toastr/toastr.css", 
               "node_modules/sweetalert2/dist/sweetalert2.min.css",
               "node_modules/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css"
             ],

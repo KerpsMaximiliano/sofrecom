@@ -41,6 +41,8 @@
 
 @import "node_modules/ladda/css/ladda";
 
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss";
+
 // Clear layout on print mode
 @media print {
   nav.navbar-static-side {
@@ -718,4 +720,8 @@ td.details-control {
   margin: 3px;
   font-size: 10px;
   cursor: pointer;
+}
+
+bs-datepicker-container {
+  z-index: 999999!important;
 }
