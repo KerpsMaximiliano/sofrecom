@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.serviceSubscrip = this.service.save(this.settings).subscribe(
-      d => { this.settings = d.data; this.saveResponseHandler(); },
+      d => { this.settings = d.data; this.loading = false; this.saveResponseHandler(); },
       err => this.loading = false);
   }
 
