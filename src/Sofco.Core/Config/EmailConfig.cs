@@ -38,6 +38,8 @@
 
         public string AuthCode { get; set; }
 
+        public string DafAnalytic { get; set; }
+
         public string MailDevFolder { get; set; }
 
         public string SupportMailRecipients { get; set; }
