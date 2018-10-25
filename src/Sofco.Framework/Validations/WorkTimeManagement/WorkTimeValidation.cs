@@ -48,7 +48,7 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
         {
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
-            var period = closeDates.GetPeriodIncludeDays();
+            var period = closeDates.GetPeriodExcludeDays();
 
             var allocations =
                 unitOfWork.AllocationRepository
