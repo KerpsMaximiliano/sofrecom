@@ -468,7 +468,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   setTaskEvent(item: any) {
     const color = this.translateStatusColor(item.status);
-    const title = item.hours + ' h - ' + item.taskName;
+    const title = item.analyticTitle + ' - ' + item.hours + ' hs - ' + item.taskName;
     return {
       id: item.id,
       title: title,

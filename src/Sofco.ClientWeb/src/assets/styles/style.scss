@@ -725,3 +725,8 @@ td.details-control {
 bs-datepicker-container {
   z-index: 999999!important;
 }
+
+.fc-day-grid-event .fc-content{
+  overflow: unset!important;
+  white-space: inherit!important;
+}
