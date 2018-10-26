@@ -129,7 +129,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             var options = { selector: "#hoursPending", 
                             scrollX: true, 
-                            columns: [1, 2, 3, 4, 5],
+                            columns: [1, 2, 3, 4, 5, 6],
                             title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
                             withExport: true,
                             columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
@@ -169,7 +169,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             var options = { selector: "#hoursApproved", 
                 scrollX: true, 
-                columns: [0, 1, 2, 3, 4, 5, 6],
+                columns: [0, 1, 2, 3, 4, 5, 6, 7],
                 title: `Horas-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`,
                 withExport: true,
                 columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
@@ -208,7 +208,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         this.hoursPending.splice(this.indexToRemove, 1);
         var options = { selector: "#hoursPending", 
             scrollX: true, 
-            columns: [1, 2, 3, 4, 5],
+            columns: [1, 2, 3, 4, 5, 6],
             title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
             withExport: true,
             columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]

@@ -10,7 +10,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         {
             if (domain.Employee != null)
             {
-                Employee = $"{domain.Employee.EmployeeNumber}-{domain.Employee.Name}";
+                Employee = $"{domain.Employee.Name}";
+                EmployeeNumber = $"{domain.Employee.EmployeeNumber}";
             }
 
             if (domain.Analytic != null)
@@ -29,6 +30,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
             Comments = domain.UserComment;
             Status = domain.Status.ToString();
         }
+
+        public string EmployeeNumber { get; set; }
 
         public string Analytic { get; set; }
 
