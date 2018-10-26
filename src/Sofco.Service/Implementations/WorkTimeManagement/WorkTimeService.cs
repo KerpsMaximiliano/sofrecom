@@ -156,22 +156,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response<IList<HoursApprovedModel>>();
 
-            if (model.Month.HasValue && model.Month > 0)
-            {
-                if (model.Month < 1 || model.Month > 12)
-                {
-                    response.AddError(Resources.WorkTimeManagement.WorkTime.MonthError);
-                }
-            }
-
-            if (model.Year.HasValue && model.Year > 0)
-            {
-                if (model.Year < 2015 || model.Year > 2050)
-                {
-                    response.AddError(Resources.WorkTimeManagement.WorkTime.YearError);
-                }
-            }
-
             if (response.HasErrors()) return response;
 
             var list = unitOfWork.WorkTimeRepository.SearchApproved(model);

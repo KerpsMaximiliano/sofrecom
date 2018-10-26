@@ -49,12 +49,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.AnalyticId > 0)
                 query = query.Where(x => x.AnalyticId == parameters.AnalyticId);
 
-            if (parameters.Month.HasValue && parameters.Month > 0 && parameters.Year.HasValue && parameters.Year > 0)
+            if (parameters.FilterByDates)
             {
-                var startDate = new DateTime(parameters.Year.Value, parameters.Month.Value, 1);
-                var endDate = new DateTime(parameters.Year.Value, parameters.Month.Value, DateTime.DaysInMonth(parameters.Year.Value, parameters.Month.Value));
-
-                query = query.Where(x => x.Date >= startDate && x.Date <= endDate);
+                query = query.Where(x => x.Date.Date >= parameters.StartDate.GetValueOrDefault().Date && x.Date.Date <= parameters.EndDate.GetValueOrDefault().Date);
             }
 
             return query.ToList();

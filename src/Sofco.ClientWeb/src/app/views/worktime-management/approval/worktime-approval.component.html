@@ -98,16 +98,29 @@
                             <select-two [label]="'rrhh.license.employee'" [(value)]="employeeId" [options]="employees"></select-two>
                         </div>
 
-                        <div class="col-sm-2">
+                        <!-- <div class="col-sm-2">
                             <div class="form-group">
                                 <label class="control-label">{{'workTimeManagement.monthYear' | translate }}</label>
                                 <input type="text" class="form-control input-sm" id="monthyear" placeholder="mm-aaaa" data-mask="99-9999" >
                             </div>
-                        </div>
+                        </div> -->
         
                         <div class="col-sm-2 action-buttons">
                             <button class="btn btn-warning btn-sm m-r-xs" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                             <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <br>
+                            <icheck [(checked)]="filterByDates">
+                                <label class="control-label">{{'filterByDates' | translate }}</label> 
+                            </icheck>
+                        </div>
+                        <div class="col-sm-4" *ngIf="filterByDates">
+                            <label class="control-label">{{'report.dateRange' | translate }}</label>
+                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker></date-range-picker>
                         </div>
                     </div>
 
