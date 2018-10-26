@@ -124,8 +124,11 @@ namespace Sofco.Service.Implementations.Billing
 
                 domain.Histories.Add(history);
 
-                domain.Status = PurchaseOrderStatus.Draft;
-
+                if (domain.Status == PurchaseOrderStatus.Reject)
+                {
+                    domain.Status = PurchaseOrderStatus.Draft;
+                }
+                
                 var aux = domain.PurchaseOrderAnalytics.ToList();
 
                 foreach (var orderAnalytic in aux)
