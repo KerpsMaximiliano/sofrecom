@@ -48,12 +48,12 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private calendarEvents: any[] = new Array();
   private calendarCurrentDateText = "";
-  private calendarCurrentDate = new Date();
 
   public model: any = {};
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
+  public recentTaskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
-  public options: any = { language: 'es' }; 
+  public options: any = { language: 'es' };
 
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'ADMIN.task.title',
@@ -63,7 +63,16 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       'ACTIONS.save',
       'ACTIONS.cancel');
 
+  public editRecentTaskModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+    'ADMIN.task.title',
+    'editRecentTaskModal',
+    true,
+    true,
+    'ACTIONS.save',
+    'ACTIONS.cancel');
+
   @ViewChild('editModal') editModal;
+  @ViewChild('editRecentTaskModal') editRecentTaskModal;
   @ViewChild('dateControl') dateControl;
 
   constructor(private analyticService: AnalyticService,
@@ -148,12 +157,20 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
       self.taskModel.hours = $("#hoursControl").val().replace(',', '.');
       self.showSaveTask();
     });
+
+    (<any>$("#recentHoursControl")).TouchSpin({
+      min: 0.25,
+      max: 24,
+      step: 0.25,
+      decimals: 2
+    }).on('change', function() {
+      self.recentTaskModel.hours = parseFloat($("#recentHoursControl").val());
+    });
   }
 
   viewRenderHandler(view, element) {
-    var moment = $("#calendar").fullCalendar('getDate');
+    const moment = $("#calendar").fullCalendar('getDate');
 
-    this.calendarCurrentDate = moment.toDate();
     this.calendarCurrentDateText = moment.format('YYYY-MM-DD');
 
     this.getModel();
@@ -338,6 +355,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
       this.categories = uniqueCategories;
       this.allTasks = tasks;
+      window.setTimeout(function(){
+        $("#contentWrapper").removeClass('fadeInRight').removeClass('animated')
+      }, 500);
     });
   }
 
@@ -640,6 +660,32 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
 
     this.recentAnalyticTasks = result;
+    this.updateLocalStorage();
+  }
+
+  showRecentEditModal(taskItem) {
+    this.recentTaskModel = new WorkTimeTaskModel();
+    this.recentTaskModel.taskId = taskItem.taskId;
+    this.recentTaskModel.taskDesc = taskItem.task;
+    this.recentTaskModel.hours = taskItem.hours;
+    this.editRecentTaskModalConfig.cancelButtonText = 'ACTIONS.cancel';
+    this.editRecentTaskModalConfig.acceptButton = true;
+    this.editRecentTaskModal.show();
+  }
+
+  saveRecentTask() {
+    this.editRecentTaskModal.hide();
+
+    const self = this;
+
+    this.recentAnalyticTasks.forEach(x => {
+      x.tasks.forEach(s => {
+        if(s.taskId === self.recentTaskModel.taskId) {
+          s.hours = self.recentTaskModel.hours;
+        }
+      });
+    });
+
     this.updateLocalStorage();
   }
 }
