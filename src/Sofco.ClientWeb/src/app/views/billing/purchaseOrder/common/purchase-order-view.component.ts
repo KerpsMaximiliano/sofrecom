@@ -181,7 +181,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
             const statusText = dataBodyItem[statusTextPos];
-            dataBodyItem[receptionDatePos] = moment(item.receptionDate).format("YYYY-MM-DD");
+            dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
             dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
             dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
@@ -195,6 +195,13 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             });
         };
         data.body = result;
+    }
+
+    getReceptionDate(statusText, item):any {
+        if(statusText.indexOf(this.adjustmentSuffix)>-1){
+            return moment(item.adjustmentDate).format("YYYY-MM-DD")
+        }
+        return moment(item.receptionDate).format("YYYY-MM-DD");
     }
 
     getAmmount(statusText, item):Number {
@@ -243,6 +250,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         item.ammount = data.adjustment;
         item.statusId = data.statusId;
         item.statusText = this.i18nService.translateByKey(data.statusText) + this.adjustmentSuffix;
+        item.receptionDate = data.adjustmentDate;
         return item;
     }
 
