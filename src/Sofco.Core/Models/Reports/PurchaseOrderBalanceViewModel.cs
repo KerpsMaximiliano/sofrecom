@@ -23,6 +23,8 @@ namespace Sofco.Core.Models.Reports
 
         public decimal Adjustment { get; set; }
 
+        public DateTime AdjustmentDate { get; set; }
+
         public int StatusId { get; set; }
 
         public string StatusText { get; set; }

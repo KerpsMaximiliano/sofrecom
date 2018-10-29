@@ -176,6 +176,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 purchaseOrder.Status = PurchaseOrderStatus.Closed;
                 purchaseOrder.Adjustment = true;
+                purchaseOrder.AdjustmentDate = DateTime.UtcNow;
                 unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
                 unitOfWork.PurchaseOrderRepository.UpdateAdjustment(purchaseOrder);
 
