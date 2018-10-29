@@ -170,6 +170,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         const receptionDatePos = 3;
         const ammountNumberPos = 6;
         const balanceNumberPos = 7;
+        const statusTextPos = 4;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
@@ -179,8 +180,9 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
+            const statusText = dataBodyItem[statusTextPos];
             dataBodyItem[receptionDatePos] = moment(item.receptionDate).format("YYYY-MM-DD");
-            dataBodyItem[ammountNumberPos] = item.ammount;
+            dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
             dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
             const details = item.details;
@@ -193,6 +195,13 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             });
         };
         data.body = result;
+    }
+
+    getAmmount(statusText, item):Number {
+        if(statusText.indexOf(this.adjustmentSuffix)>-1){
+            return item.adjustment;
+        }
+        return item.ammount;
     }
 
     getExportSubHeader() {
@@ -227,6 +236,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
     createPurchaseOrderAdjustment(data): PurchaseOrderBalanceModel {
         const item = new PurchaseOrderBalanceModel();
+        item.id = data.id;
         item.number = data.number + this.adjustmentSuffix;
         item.clientExternalName = data.clientExternalName;
         item.currencyText = data.currencyText;
