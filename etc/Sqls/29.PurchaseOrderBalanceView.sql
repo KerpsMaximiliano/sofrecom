@@ -14,6 +14,7 @@ SELECT
 	poad.Adjustment,
 	po.Status,
 	po.ReceptionDate,
+	po.AdjustmentDate,
 	IIF(poad.AdjustmentBalance IS NULL, 
 		poad.Ammount - SUM(IIF(hit.Total IS NULL, 0, hit.Total))
 		, poad.AdjustmentBalance)
@@ -39,4 +40,5 @@ LEFT JOIN app.Files fil ON fil.Id = po.FileId
 GROUP BY 
 	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, 
 	fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, 
-	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal
+	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal,
+	po.AdjustmentDate
