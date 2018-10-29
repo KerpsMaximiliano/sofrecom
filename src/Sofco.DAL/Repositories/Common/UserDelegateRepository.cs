@@ -104,7 +104,8 @@ namespace Sofco.DAL.Repositories.Common
         private UserDelegate GetStored(UserDelegate userDelegate)
         {
             if (userDelegate.Type == UserDelegateType.Solfac
-                || userDelegate.Type == UserDelegateType.LicenseView)
+                || userDelegate.Type == UserDelegateType.LicenseView
+                || userDelegate.Type == UserDelegateType.PurchaseOrderActive)
             {
                 return GetByServiceIdAndUserId(userDelegate.ServiceId, userDelegate.UserId, userDelegate.Type);
             }
