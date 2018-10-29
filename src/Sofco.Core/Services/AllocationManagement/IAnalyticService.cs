@@ -44,5 +44,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<SelectListModel>> GetOpportunities(int id);
 
         Response<List<Option>> GetByCurrentManager();
+        Response<Analytic> GetByTitle(string title);
     }
 }

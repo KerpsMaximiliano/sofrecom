@@ -91,6 +91,7 @@ namespace Sofco.Framework.FileManager.Billing
                 }
                 else
                 {
+                    row++;
                     continue;
                 }
 

@@ -46,5 +46,14 @@ export class Select2Component implements OnInit{
                 $(this.element.nativeElement).val(this.value).trigger('change');
             }, 0);
         }
+
+        if(changes.disabled && changes.disabled.currentValue){
+            if(changes.disabled.currentValue){
+                $(this.element.nativeElement).attr('disabled', 'disabled');
+            }
+            else{
+                $(this.element.nativeElement).removeAttr('disabled');
+            }
+        }
     }
 }

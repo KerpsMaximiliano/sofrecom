@@ -93,7 +93,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
-      response => { this.messageService.closeLoading(); },
+      response => { this.messageService.closeLoading(); this.messageService.succes('ADMIN.settings.saveSuccess'); },
       err => this.messageService.closeLoading());
   }
 }

@@ -22,6 +22,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}`);
   }
 
+  getByTitle(title) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/title/${title}`);
+  }
+
   getTimelineResources(id, dateSince, months) {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}/resources/timeline/${dateSince}/${months}`);
   }
