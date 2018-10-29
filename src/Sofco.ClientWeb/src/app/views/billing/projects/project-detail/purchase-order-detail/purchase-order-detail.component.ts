@@ -24,8 +24,14 @@ export class ProjectPurchaseOrdersComponent implements OnDestroy {
       this.getAllSubscrip = this.projectService.getPurchaseOrders(projectId).subscribe(d => {
         this.purchaseOrders = d;
 
+        var columns = [0, 1, 2, 3, 4, 5];
+        var title = `Resumen ordenes de compra`;
+
         var params = {
             selector: '#purchaseOrderTable',
+            columns: columns,
+            title: title,
+            withExport: true
         }
 
         this.datatableService.destroy(params.selector);

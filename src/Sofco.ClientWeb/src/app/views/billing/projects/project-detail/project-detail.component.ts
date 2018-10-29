@@ -208,9 +208,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    initHitosGrid(){
+    initHitosGrid(){ 
+        var columns = [1, 2, 3, 4, 5];
+        var title = `Hitos`;
+
         var params = {
           selector: '#hitoTable',
+          columns: columns,
+          title: title,
+          withExport: true,
           columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
@@ -227,8 +233,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     initInvoicesGrid(){
+        var columns = [1, 2, 3, 4];
+        var title = `Remitos`;
+
         var params = {
           selector: '#invoiceTable',
+          columns: columns,
+          title: title,
+          withExport: true,
           columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
@@ -244,8 +256,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     initSolfacGrid(){
+        var columns = [0, 1, 2, 3, 4, 5];
+        var title = `Solicitudes`;
+
         var params = {
           selector: '#solfacTable',
+          columns: columns,
+          title: title,
+          withExport: true,
           columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
         }
   
