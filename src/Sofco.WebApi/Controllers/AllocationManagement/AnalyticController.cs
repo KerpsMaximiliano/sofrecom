@@ -73,6 +73,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(new AnalyticModel(response.Data));
         }
 
+        [HttpGet("title/{title}")]
+        public IActionResult GetByTitle(string title)
+        {
+            var response = analyticService.GetByTitle(title);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(new AnalyticModel(response.Data));
+        }
+
         [HttpGet("formOptions")]
         public IActionResult GetFormOptions()
         {

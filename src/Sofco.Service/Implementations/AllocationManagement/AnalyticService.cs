@@ -119,6 +119,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return new Response<List<Option>> { Data = result };
         }
 
+        public Response<Analytic> GetByTitle(string title)
+        {
+            var response = new Response<Analytic>();
+
+            var analytic = unitOfWork.AnalyticRepository.GetByTitle(title);
+
+            if (analytic == null)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                return response;
+            }
+
+            response.Data = analytic;
+            return response;
+        }
+
         public Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters)
         {
             var response = new Response<List<AnalyticSearchViewModel>>

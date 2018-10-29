@@ -15,6 +15,7 @@ import { ServiceService } from '../../../../services/billing/service.service';
 import { CertificatesService } from '../../../../services/billing/certificates.service';
 import { UserInfoService } from '../../../../services/common/user-info.service';
 import { I18nService } from '../../../../services/common/i18n.service';
+import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 
 declare var $:any;
 declare var swal: any;
@@ -40,6 +41,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
     public solfacId = 0;
     public multipleProjects = false;
+    public activityDisabled = false;
  
     getOptionsSubs: Subscription;
     getInvoiceOptionsSubs: Subscription;
@@ -47,6 +49,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
     getCertificateAvailableSubscrip: Subscription;
+    getAnalyticSubscrip: Subscription;
 
     isCreditNoteSolfacType = false;
     isDebitNoteSolfacType = false;
@@ -63,6 +66,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
                 private solfacService: SolfacService,
                 private menuService: MenuService,
                 private certificateService: CertificatesService,
+                private analyticService: AnalyticService,
                 private customerService: CustomerService,
                 private serviceService: ServiceService,
                 private invoiceService: InvoiceService,
@@ -83,6 +87,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
        if(this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
        if(this.getCertificateAvailableSubscrip) this.getCertificateAvailableSubscrip.unsubscribe();
+       if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
     }
 
     setDataForMultipleProjects(multipleProjects){
@@ -169,12 +174,17 @@ export class SolfacComponent implements OnInit, OnDestroy {
         this.model.analytic = service.analytic;
         this.model.manager = service.manager;
         this.model.managerId = service.managerId;
+
+        this.getAnalytic(this.model.analytic);
+
       } else {
         this.serviceService.getById(sessionStorage.getItem("customerId"), sessionStorage.getItem("serviceId")).subscribe(data => {
           this.model.imputationNumber1 = data.analytic;
           this.model.analytic = data.analytic;
           this.model.manager = data.manager;
           this.model.managerId = data.managerId;
+
+          this.getAnalytic(this.model.analytic);
         });
       }
 
@@ -204,6 +214,15 @@ export class SolfacComponent implements OnInit, OnDestroy {
 
       this.setCurrencySymbol(this.model.currencyId.toString());
       this.getCertificatesAvailable();
+    }
+
+    getAnalytic(title) {
+      this.getAnalyticSubscrip = this.analyticService.getByTitle(title).subscribe(data => {
+        if(data && data.activityId > 0){
+          this.model.imputationNumber3 = data.activityId;
+          this.activityDisabled = true;
+        }
+      });
     }
 
     getInvoicesOptions(projectId) {
