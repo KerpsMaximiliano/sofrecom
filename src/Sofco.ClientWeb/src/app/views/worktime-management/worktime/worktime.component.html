@@ -13,7 +13,7 @@
     </div>
 </div>
     
-<div class="wrapper wrapper-content animated fadeInUp">
+<div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
 
     <div class="alert alert-info">
         <i class="fa fa-info-circle"></i>
@@ -59,7 +59,9 @@
                                             [attr.data-color]="draftTaskColor"
                                             [attr.data-taskId]="taskItem.taskId"
                                             [attr.data-analyticId]="taskItem.analyticId"
-                                            [attr.data-hours]="taskItem.hours">
+                                            [attr.data-hours]="taskItem.hours"
+                                            (click)="showRecentEditModal(taskItem)"
+                                            >
                                             {{ taskItem.task }} - {{ taskItem.hours }} hs
                                         </div>
                                         <a class="task-item-close" (click)="removeTask(taskItem)">
@@ -77,7 +79,7 @@
 
             <h3 class="text-center">{{ 'workTimeManagement.workTime.resume' | translate }}</h3>
 
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal hours-resume">
                 <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
                 <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
                 <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
@@ -146,4 +148,22 @@
         </div>
     </form>
 </ng2-modal>
-    
+
+<ng2-modal [config]="editRecentTaskModalConfig" #editRecentTaskModal (accept)="saveRecentTask()" size="modal-sm">
+    <form role="form">
+        <div class="form-group">
+            <div class="row">
+                <label class="control-label">{{'workTimeManagement.task' | translate }}</label>
+                <p>{{ recentTaskModel.taskDesc }}</p>
+            </div>
+            <div class="row">
+                <label>{{'workTimeManagement.hours' | translate }}</label>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <input id="recentHoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="recentTaskModel.hours">
+                </div>
+            </div>
+        </div>
+    </form>
+</ng2-modal>

@@ -18,7 +18,7 @@
             "ADD": "Agregar Rol",
             "addModule": "Asignar Módulos",
             "addFunctionality": "Asignar Funcionalidades",
-            "GRID": {
+            "GRID": { 
                 "id": "Id",
                 "description": "Descripción",
                 "active": "Activo",
@@ -904,7 +904,8 @@
         "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",
-        "employee": "Legajo-Nombre",
+        "employeeNumber": "Legajo",
+        "employee": "Recurso",
         "task":"Tarea",
         "date": "Fecha",
         "hours": "Horas",
@@ -998,9 +999,11 @@
             "employeeNumber": "Legajo",
             "employeeName": "Nombre",
             "businessHours": "Horas laborables",
-            "registeredHours": "Horas cargadas",
+            "approvedHours": "Horas aprobadas",
             "licenseHours": "Horas licencias",
-            "pendingHours": "Horas pendientes"
+            "sentHours": "Horas pendientes de aprobación",
+            "draftHours": "Horas en borrador",
+            "pendingHours": "Horas pendientes de carga"
         }
     },
     "months": {

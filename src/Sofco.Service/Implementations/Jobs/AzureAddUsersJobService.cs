@@ -24,8 +24,11 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly EmailConfig emailConfig;
 
-        private List<string> UsersToExcludeForContains => new List<string> { "SHARE", "ADMI", "ALERTA", "USER" };
+        private List<string> UsersToExcludeForContains => new List<string> { "SHARE", "ADMI", "ALERTA", "USER", "COMPRAS", "COMUNICACIONES", "DAF", "EMPLEOSIT",
+                                                                             "HELP", "KLMDM", "LINKEDIN", "OXIGENO", "PMO", "REBRANDING", "SOFCOAR", "SRTI", "ZABBIX" };
+
         private List<string> UsersToExcludeForEquals => new List<string> { "DAF", "IDAP_BIND" };
+
         private List<string> UsersToExcludeForStartWith => new List<string> { "AZ", "BNP", "BNRD", "BNSH", "CARDIF", "EMPLEO", "ESCUEL",
                                                                               "HEALTH", "HELP", "ISO9", "LABORATO", "KLMDM", "LINKEDIN",
                                                                               "OXIGENO", "PMO", "RECURSOS", "REBRANDI", "RELACIONES", "RRHH",

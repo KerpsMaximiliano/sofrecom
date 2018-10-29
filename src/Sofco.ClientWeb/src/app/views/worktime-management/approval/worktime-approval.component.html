@@ -54,6 +54,7 @@
                             <tr>
                                 <th class="column-xs"></th>
                                 <th class="column-xlg"> {{'workTimeManagement.analytic' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.employeeNumber' | translate }} </th>
                                 <th class="column-xlg"> {{'workTimeManagement.employee' | translate }} </th>
                                 <th class="column-md"> {{'workTimeManagement.task' | translate }} </th>
                                 <th class="column-sm"> {{'workTimeManagement.date' | translate }} </th>
@@ -68,6 +69,7 @@
                                     <pcheck [(checked)]="item.selected"></pcheck>
                                 </td>
                                 <td class="column-xlg">{{ item.analytic }}</td>
+                                <td class="column-sm">{{ item.employeeNumber }}</td>
                                 <td class="column-xlg">{{ item.employee }}</td>
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
@@ -96,16 +98,29 @@
                             <select-two [label]="'rrhh.license.employee'" [(value)]="employeeId" [options]="employees"></select-two>
                         </div>
 
-                        <div class="col-sm-2">
+                        <!-- <div class="col-sm-2">
                             <div class="form-group">
                                 <label class="control-label">{{'workTimeManagement.monthYear' | translate }}</label>
                                 <input type="text" class="form-control input-sm" id="monthyear" placeholder="mm-aaaa" data-mask="99-9999" >
                             </div>
-                        </div>
+                        </div> -->
         
                         <div class="col-sm-2 action-buttons">
                             <button class="btn btn-warning btn-sm m-r-xs" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                             <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <br>
+                            <icheck [(checked)]="filterByDates">
+                                <label class="control-label">{{'filterByDates' | translate }}</label> 
+                            </icheck>
+                        </div>
+                        <div class="col-sm-4" *ngIf="filterByDates">
+                            <label class="control-label">{{'report.dateRange' | translate }}</label>
+                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker></date-range-picker>
                         </div>
                     </div>
 
@@ -115,6 +130,7 @@
                         <thead>
                             <tr>
                                 <th class="column-xlg"> {{'workTimeManagement.analytic' | translate }} </th>
+                                <th class="column-sm"> {{'workTimeManagement.employeeNumber' | translate }} </th>
                                 <th class="column-xlg"> {{'workTimeManagement.employee' | translate }} </th>
                                 <th class="column-md"> {{'workTimeManagement.task' | translate }} </th>
                                 <th class="column-sm"> {{'workTimeManagement.date' | translate }} </th>
@@ -126,6 +142,7 @@
                         <tbody>
                             <tr *ngFor="let item of hoursApproved">
                                 <td class="column-xlg">{{ item.analytic }}</td>
+                                <td class="column-sm">{{ item.employeeNumber }}</td>
                                 <td class="column-xlg">{{ item.employee }}</td>
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>

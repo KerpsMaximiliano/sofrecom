@@ -102,6 +102,7 @@ import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchas
 import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
 import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,

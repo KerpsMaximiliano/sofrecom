@@ -10,6 +10,7 @@ using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
+using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -21,12 +22,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<CustomerService> logger;
         private readonly IUnitOfWork unitOfWork;
         private readonly ICustomerUpdateJobService customerUpdateJobService;
+        private readonly ICrmHttpClient crmHttpClient;
 
         public CustomerService(ICustomerData customerData, 
             ISessionManager sessionManager,
             ILogMailer<CustomerService> logger,
             IUnitOfWork unitOfWork,
             ISolfacDelegateData solfacDelegateData,
+            ICrmHttpClient crmHttpClient,
             ICustomerUpdateJobService customerUpdateJobService)
         {
             this.customerData = customerData;
@@ -35,10 +38,13 @@ namespace Sofco.Service.Implementations.Billing
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.customerUpdateJobService = customerUpdateJobService;
+            this.crmHttpClient = crmHttpClient;
         }
 
         public Response<List<Customer>> GetCustomers()
         {
+            //crmHttpClient.GetAccessToken();
+
             var response = new Response<List<Customer>> { Data = new List<Customer>() };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());

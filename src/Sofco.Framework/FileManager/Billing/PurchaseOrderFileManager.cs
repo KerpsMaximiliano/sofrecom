@@ -143,14 +143,14 @@ namespace Sofco.Framework.FileManager.Billing
 
                 if (!proposalAdded)
                 {
-                    row+=2;
-                }
-                else
-                {
                     row++;
                 }
+                //else
+                //{
+                //    row++;
+                //}
 
-                SetBorderBottom(sheet, row);
+                //SetBorderBottom(sheet, row);
             }
 
             return excel;

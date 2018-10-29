@@ -21,7 +21,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
     public areas: any[] = new Array();
-    public currencyDisabled = false;
     public isReadOnly = false;
 
     @Input() mode: string;

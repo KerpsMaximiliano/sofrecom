@@ -32,8 +32,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds)
         {
             return context.WorkTimes
-                .Where(x => analyticIds.Contains(x.AnalyticId)
-                    && x.Date >= startDate && x.Date <= endDate)
+                .Where(x => analyticIds.Contains(x.AnalyticId) && x.Date.Date >= startDate.Date && x.Date.Date <= endDate.Date)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
@@ -50,12 +49,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.AnalyticId > 0)
                 query = query.Where(x => x.AnalyticId == parameters.AnalyticId);
 
-            if (parameters.Month.HasValue && parameters.Month > 0 && parameters.Year.HasValue && parameters.Year > 0)
+            if (parameters.FilterByDates)
             {
-                var startDate = new DateTime(parameters.Year.Value, parameters.Month.Value, 1);
-                var endDate = new DateTime(parameters.Year.Value, parameters.Month.Value, DateTime.DaysInMonth(parameters.Year.Value, parameters.Month.Value));
-
-                query = query.Where(x => x.Date >= startDate && x.Date <= endDate);
+                query = query.Where(x => x.Date.Date >= parameters.StartDate.GetValueOrDefault().Date && x.Date.Date <= parameters.EndDate.GetValueOrDefault().Date);
             }
 
             return query.ToList();
