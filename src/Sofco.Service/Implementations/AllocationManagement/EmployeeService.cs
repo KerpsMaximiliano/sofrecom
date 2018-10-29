@@ -104,7 +104,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
                     Recipients = parameters.Receipents.ToList(),
-                    Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("d"))
+                    Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("dd/MM/yyyy"))
                 });
 
                 mailSender.Send(email);
