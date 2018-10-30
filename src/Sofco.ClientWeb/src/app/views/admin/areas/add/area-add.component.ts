@@ -12,7 +12,7 @@ import { UserService } from "../../../../services/admin/user.service";
 export class AreaAddComponent implements OnInit, OnDestroy {
 
     public text: string;
-    public responsableId: number = 0;
+    public responsableId: number;
 
     public responsables: any[] = new Array();
 

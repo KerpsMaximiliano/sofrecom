@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { Daterangepicker, DaterangepickerConfig } from 'ng2-daterangepicker';
 import { DateRangePickerComponent } from './date-range-picker.component';
 

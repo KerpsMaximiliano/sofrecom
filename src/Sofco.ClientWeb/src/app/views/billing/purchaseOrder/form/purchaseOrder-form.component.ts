@@ -41,12 +41,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         if(this.mode == 'new'){
             this.getCurrencies();
         }
-
-        // var self = this;
-        // $('#analytics').on('change', function(){ 
-        //     self.searchOpportunities(); 
-        //     $('#opportunity-select').val(null).trigger('change');
-        // });
     }
 
     ngOnDestroy(): void {
@@ -93,8 +87,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics(){
-        // $('#opportunity-select').val(null).trigger('change');
-
         this.getAnalyticSubscrip = this.analyticService.getActivesByClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
@@ -130,8 +122,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     searchOpportunities(){
-    //    var analytics = $('#analytics').val();
-    //    var analytics = this.model.analyticIds
        this.opportunities = [];
        this.opportunitiesAux = [];
        
@@ -153,10 +143,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
             Promise.all(promises).then(data => { 
                 this.messageService.closeLoading();
                 this.opportunities = this.opportunitiesAux;
-                
-                // setTimeout(() => {
-                //     $('#opportunity-select').val(this.model.proposalIds).trigger('change');
-                // }, 300);
              });
        }
     }
