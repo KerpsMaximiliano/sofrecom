@@ -2,6 +2,7 @@ CREATE OR ALTER VIEW report.PurchaseOrderBalanceView AS
 SELECT
 	CAST(row_number() OVER (ORDER BY po.Number) AS INT) AS Id,
 	po.Number,
+	po.Title,
 	po.ClientExternalId,
 	po.ClientExternalName,
 	po.FileId,
@@ -41,4 +42,4 @@ GROUP BY
 	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, 
 	fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, 
 	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal,
-	po.AdjustmentDate
+	po.AdjustmentDate, po.Title
