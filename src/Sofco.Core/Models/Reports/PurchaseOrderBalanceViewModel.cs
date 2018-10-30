@@ -11,6 +11,8 @@ namespace Sofco.Core.Models.Reports
 
         public string Number { get; set; }
 
+        public string Title { get; set; }
+
         public string Proposal { get; set; }
 
         public string ClientExternalName { get; set; }
