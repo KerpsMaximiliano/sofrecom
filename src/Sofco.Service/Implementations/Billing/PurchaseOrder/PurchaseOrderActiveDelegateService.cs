@@ -9,11 +9,12 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Billing.PurchaseOrder;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Service.Implementations.Billing
+namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 {
     public class PurchaseOrderActiveDelegateService : IPurchaseOrderActiveDelegateService
     {
