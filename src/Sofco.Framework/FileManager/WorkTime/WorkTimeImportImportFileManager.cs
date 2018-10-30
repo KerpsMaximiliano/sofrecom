@@ -88,7 +88,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var hour = sheet.GetValue(i, 5)?.ToString();
                     var comments = sheet.GetValue(i, 6)?.ToString();
 
-                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("d");
+                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
                
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
