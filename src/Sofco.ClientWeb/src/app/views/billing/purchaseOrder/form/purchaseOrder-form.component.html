@@ -1,22 +1,32 @@
-<select-two id="customer-select" *ngIf="!isReadOnly" [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
+<!-- <select-two id="customer-select" *ngIf="!isReadOnly" [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers" (valueChange)="getAnalytics()"></select-two> -->
 
-<div class="form-group" *ngIf="isReadOnly">
+<div class="form-group">
+    <label class="control-label"> {{'billing.solfac.client' | translate }} </label>
+    <ng-select [disabled]="isReadOnly" [items]="customers" bindValue="id" bindLabel="text" [(ngModel)]="model.clientExternalId" (change)="customerChanged()"></ng-select>
+</div>
+
+<!-- <div class="form-group" *ngIf="isReadOnly">
     <label class="control-label"> {{'billing.solfac.client' | translate }} </label>
     <input type="text" disabled class="form-control" [(ngModel)]="model.clientExternalName">
-</div>
+</div> -->
 
 <div class="form-group">
     <label class="control-label"> {{'billing.purchaseOrder.fields.analytic' | translate }} </label>
-    <select select2 class="form-control" id="analytics" multiple>
+
+    <ng-select [items]="analytics" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.analyticIds" (close)="searchOpportunities()"></ng-select>
+
+    <!-- <select select2 class="form-control" id="analytics" multiple>
         <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{ analytic.text }}</option>
-    </select>
+    </select> -->
 </div>
 
 <div class="form-group">
     <label class="control-label"> {{'billing.purchaseOrder.fields.proposal' | translate }} </label>
-    <select select2 class="form-control" id="opportunity-select" multiple>
+    <ng-select [items]="opportunities" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.proposalIds"></ng-select>
+
+    <!-- <select select2 class="form-control" id="opportunity-select" multiple>
         <option *ngFor="let opportunity of opportunities" [value]="opportunity?.id">{{ opportunity.text }}</option>
-    </select>
+    </select> -->
 </div>
 
 <div class="form-group">
@@ -76,7 +86,12 @@
         </div>
     </div>
     <div class="col-md-6">
-        <select-two id="area-select" [label]="'billing.purchaseOrder.fields.area'" [(value)]="model.areaId" [options]="areas"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{'billing.purchaseOrder.fields.area' | translate }}</label>
+            <ng-select [items]="areas" bindValue="id" bindLabel="text" [(ngModel)]="model.areaId"></ng-select>
+        </div>
+
+        <!-- <select-two id="area-select" [label]="'billing.purchaseOrder.fields.area'" [(value)]="model.areaId" [options]="areas"></select-two> -->
     </div>
 </div>
 

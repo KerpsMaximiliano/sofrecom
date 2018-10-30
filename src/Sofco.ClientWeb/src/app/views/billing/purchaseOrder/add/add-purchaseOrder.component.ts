@@ -50,7 +50,7 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form.model.currencyId = 0;
-        this.form.model.clientExternalId = 0;
+        // this.form.model.clientExternalId = 0;
         this.form.getCustomers(true);
     }
 
@@ -65,8 +65,8 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.form.model.clientExternalName = client ? client.text : '';
 
-        this.form.model.analyticIds = $('#analytics').val();
-        this.form.model.proposalIds = $('#opportunity-select').val();
+        // this.form.model.analyticIds = $('#analytics').val();
+        // this.form.model.proposalIds = $('#opportunity-select').val();
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {

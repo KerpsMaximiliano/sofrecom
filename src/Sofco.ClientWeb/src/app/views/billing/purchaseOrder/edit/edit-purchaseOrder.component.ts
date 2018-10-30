@@ -60,7 +60,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form.model.currencyId = 0;
-        this.form.model.clientExternalId = 0;
+        // this.form.model.clientExternalId = 0;
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
@@ -77,16 +77,17 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 if(this.form.model.clientExternalId && this.form.model.clientExternalId != ""){
                     this.form.getAnalytics();
+                    this.form.searchOpportunities();
                 }
 
-                setTimeout(() => {
-                    $('#analytics').val(this.form.model.analyticIds).trigger('change');
-                }, 1000);
+                // setTimeout(() => {
+                //     $('#analytics').val(this.form.model.analyticIds).trigger('change');
+                // }, 1000);
 
                 if(this.form.model.status != PurchaseOrderStatus.Draft 
                     && this.form.model.status != PurchaseOrderStatus.Reject){
-                    $('#customer-select select').attr('disabled', 'disabled');
-                    $('#opportunity-select select').attr('disabled', 'disabled');
+                    // $('#customer-select select').attr('disabled', 'disabled');
+                    // $('#opportunity-select select').attr('disabled', 'disabled');
                     $('input[type=file]').removeAttr('disabled');
                     $('#area-select select').attr('disabled', 'disabled');
                     this.form.isReadOnly = true;
@@ -177,8 +178,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
         },
         () => {
-                this.messageService.closeLoading();
-            });
+            this.messageService.closeLoading();
+        });
     }
  
     viewFile(){
@@ -198,8 +199,8 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     update() {
         this.messageService.showLoading();
-        this.form.model.analyticIds = $('#analytics').val();
-        this.form.model.proposalIds = $('#opportunity-select').val();
+        // this.form.model.analyticIds = $('#analytics').val();
+        // this.form.model.proposalIds = $('#opportunity-select').val();
 
         this.updateSubscrip = this.purchaseOrderService.update(this.form.model).subscribe(
             () => {
