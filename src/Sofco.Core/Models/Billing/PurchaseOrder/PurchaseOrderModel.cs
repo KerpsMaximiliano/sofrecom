@@ -62,7 +62,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             FillData(domain, userName);
 
             domain.Status = PurchaseOrderStatus.Draft;
-       
+            domain.ClientExternalId = ClientExternalId;
+            domain.ClientExternalName = ClientExternalName;
+
             domain.Histories = new List<PurchaseOrderHistory>();
 
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
