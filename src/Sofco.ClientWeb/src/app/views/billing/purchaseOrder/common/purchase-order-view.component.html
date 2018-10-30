@@ -35,13 +35,13 @@
             <td>{{ purchaseOrder.accountManagerNames }}</td>
             <td>{{ purchaseOrder.projectManagerNames }}</td>
             <td class="text-center column-xs">
-                <button *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="clickViewHandler(purchaseOrder)"><i class="fa fa-eye"></i></button>
+                <button tooltip="Ver" *ngIf="purchaseOrder.id > 0 && menuService.hasFunctionality('PUROR', 'VIEW')"  class="btn btn-success btn-xs" (click)="clickViewHandler(purchaseOrder)"><i class="fa fa-eye"></i></button>
 
-                <button class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
+                <button tooltip="Exportar" class="btn btn-xs btn-success" (click)="export(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0">
                     <i class="fa fa-download"></i>
                 </button>
 
-                <button class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
+                <button tooltip="Ver archivo" class="btn btn-xs btn-success" (click)="viewFile(purchaseOrder)" *ngIf="purchaseOrder.fileId > 0 && purchaseOrder.fileName?.endsWith('.pdf') == true">
                     <i class="fa fa-file"></i>
                 </button>
             </td>
