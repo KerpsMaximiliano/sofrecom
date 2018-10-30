@@ -4,6 +4,7 @@
             <th></th>
             <th></th>
             <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
+            <th>{{'billing.purchaseOrder.fields.title' | translate }}</th>
             <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
             <th>{{'billing.purchaseOrder.fields.proposal' | translate }}</th>
             <th class="text-right">{{'billing.purchaseOrder.fields.receptionDate' | translate }}</th>
@@ -23,6 +24,7 @@
             </td>
             <td>{{ purchaseOrder.id }}</td>
             <td>{{ purchaseOrder.number }}</td>
+            <td>{{ purchaseOrder.title }}</td>
             <td>{{ purchaseOrder.clientExternalName }}</td>
             <td>{{ purchaseOrder.proposal }}</td>
             <td class="text-right">{{ purchaseOrder.receptionDate | date: "dd/MM/yyyy" }}</td>
