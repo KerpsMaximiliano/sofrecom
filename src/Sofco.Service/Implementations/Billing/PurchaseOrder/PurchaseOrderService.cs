@@ -155,7 +155,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             return response;
         }
-
+                
         public ICollection<PurchaseOrderHistory> GetHistories(int id)
         {
             return unitOfWork.PurchaseOrderRepository.GetHistories(id);

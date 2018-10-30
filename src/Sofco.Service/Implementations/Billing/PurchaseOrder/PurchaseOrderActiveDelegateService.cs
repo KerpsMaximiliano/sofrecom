@@ -109,7 +109,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
         private Response<UserDelegate> ValidateSave()
         {
-            var respone = new Response<UserDelegate>();
+            var response = new Response<UserDelegate>();
 
             var userName = sessionManager.GetUserName();
 
@@ -117,10 +117,10 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             if (!isValid)
             {
-                respone.AddError(Resources.Billing.Solfac.SolfacDelegateMangerOnlyError);
+                response.AddError(Resources.Billing.Solfac.SolfacDelegateMangerOnlyError);
             }
 
-            return respone;
+            return response;
         }
 
         private PurchaseOrderActiveDelegateModel Translate(UserDelegate userDelegate)

@@ -13,6 +13,7 @@ export class PurchaseOrderBalanceModel {
     public accountManagerNames: string;
     public projectManagerNames: string;
     public details: any[] = [];
+    public isAdjustment = false;
 
     constructor(){}
 }

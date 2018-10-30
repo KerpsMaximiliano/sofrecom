@@ -25,6 +25,8 @@ namespace Sofco.Domain.Models.Reports
 
         public decimal? Adjustment { get; set; }
 
+        public DateTime? AdjustmentDate { get; set; }
+
         public PurchaseOrderStatus Status { get; set; }
 
         public decimal? Balance { get; set; }
