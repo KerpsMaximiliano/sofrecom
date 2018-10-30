@@ -4,6 +4,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Services.Common;
 using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.Billing;
+using Sofco.Service.Implementations.Billing.PurchaseOrder;
 
 namespace Sofco.Service.Implementations.Common
 {

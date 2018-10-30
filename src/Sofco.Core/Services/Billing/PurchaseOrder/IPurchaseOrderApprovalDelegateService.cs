@@ -3,7 +3,7 @@ using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Core.Services.Billing
+namespace Sofco.Core.Services.Billing.PurchaseOrder
 {
     public interface IPurchaseOrderApprovalDelegateService
     {
