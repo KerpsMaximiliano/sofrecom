@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OfficeOpenXml;
@@ -87,7 +88,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var hour = sheet.GetValue(i, 5)?.ToString();
                     var comments = sheet.GetValue(i, 6)?.ToString();
 
-                    if (DateTime.TryParse(date, out var datetime)) date = datetime.ToString("d");
+                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
                
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
@@ -247,9 +248,31 @@ namespace Sofco.Framework.FileManager.WorkTime
             return true;
         }
 
+        private bool IsValidDate(string date, out DateTime datetime)
+        {
+            datetime = DateTime.MinValue;
+
+            if (string.IsNullOrWhiteSpace(date)) return false;
+            if (date.Length != 10) return false;
+
+            var split = date.Split('/');
+            if (split.Length != 3) return false;
+
+            try
+            {
+                datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[1]), Convert.ToInt32(split[0]));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, int i, string employeeNumber, string employeeDesc)
         {
-            if (!DateTime.TryParse(date, out var datetime))
+            if (!IsValidDate(date, out var datetime))
             {
                 var item = FillItemResult(i, employeeNumber, employeeDesc, date);
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateNull;

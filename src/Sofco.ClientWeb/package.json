@@ -13,7 +13,7 @@
     "azsof01wd-qa": "ng build --prod --configuration=azsof01wd-qa",
     "azsof01wt": "ng build --prod --configuration=azsof01wt",
     "azgap01wp": "ng build --prod --configuration=azgap01wp"
-  }, 
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.0.9",
@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "^6.0.9",
     "@angular/platform-server": "^6.0.9",
     "@angular/router": "^6.0.9",
+    "@ng-select/ng-select": "^2.11.2",
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "@types/jqueryui": "^1.12.2",

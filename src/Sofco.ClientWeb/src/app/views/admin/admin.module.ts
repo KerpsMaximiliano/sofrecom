@@ -49,6 +49,7 @@ import { SectorService } from '../../services/admin/sector.service';
 import { SectorAddComponent } from './sectors/add/sector-add.component';
 import { SectorEditComponent } from './sectors/edit/sector-edit.component';
 import { SectorListComponent } from './sectors/list/sector-list.components';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
@@ -58,7 +59,7 @@ import { SectorListComponent } from './sectors/list/sector-list.components';
                  SectorListComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
-                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter],
+                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
                  TaskService, AreaService, SectorService],

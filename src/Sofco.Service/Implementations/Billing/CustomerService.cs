@@ -43,7 +43,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response<List<Customer>> GetCustomers()
         {
-            //crmHttpClient.GetAccessToken();
+            crmHttpClient.GetAccessToken();
 
             var response = new Response<List<Customer>> { Data = new List<Customer>() };
 

@@ -103,6 +103,8 @@ import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/pu
 import { ButtonsModule } from '../../components/buttons/buttons.module';
 import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -121,8 +123,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
                  PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent, PurchaseOrderActiveViewComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, 
-                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule],
+                 TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, TooltipModule,
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule, NgSelectModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderApprovalDelegateService, 

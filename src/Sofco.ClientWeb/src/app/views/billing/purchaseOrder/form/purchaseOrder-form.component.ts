@@ -20,6 +20,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     public analytics: any[] = new Array();
     public projects: any[] = new Array();
     public opportunities: any[] = new Array();
+    public opportunitiesAux: any[] = new Array();
     public areas: any[] = new Array();
     public isReadOnly = false;
 
@@ -40,12 +41,6 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         if(this.mode == 'new'){
             this.getCurrencies();
         }
-
-        var self = this;
-        $('#analytics').on('change', function(){ 
-            self.searchOpportunities(); 
-            $('#opportunity-select').val(null).trigger('change');
-        });
     }
 
     ngOnDestroy(): void {
@@ -84,9 +79,14 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
         });
     }
  
-    getAnalytics(){
-        $('#opportunity-select').val(null).trigger('change');
+    customerChanged(){
+        this.model.analyticIds = [];
+        this.model.proposalIds = [];
 
+        this.getAnalytics();
+    }
+
+    getAnalytics(){
         this.getAnalyticSubscrip = this.analyticService.getActivesByClientId(this.model.clientExternalId).subscribe(
             data => {
                 this.analytics = data;
@@ -111,7 +111,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
             if(res.data && res.data.length > 0){
                 res.data.forEach(item => {
-                    this.opportunities.push(item);
+                    this.opportunitiesAux.push(item);
                 });
             }
         },
@@ -122,16 +122,16 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
     }
 
     searchOpportunities(){
-       var analytics = $('#analytics').val();
        this.opportunities = [];
-
-        if(analytics.length > 0) {
+       this.opportunitiesAux = [];
+       
+        if(this.model.analyticIds.length > 0) {
 
             this.messageService.showLoading();
 
             var promises = new Array();
 
-            analytics.forEach(item => {
+            this.model.analyticIds.forEach(item => {
 
                 var promise = new Promise((resolve, reject) => {
                     this.getOpportunities(item, resolve);
@@ -142,10 +142,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
 
             Promise.all(promises).then(data => { 
                 this.messageService.closeLoading();
-
-                setTimeout(() => {
-                    $('#opportunity-select').val(this.model.proposalIds).trigger('change');
-                }, 300);
+                this.opportunities = this.opportunitiesAux;
              });
        }
     }
