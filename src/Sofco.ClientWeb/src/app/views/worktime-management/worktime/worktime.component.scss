@@ -43,10 +43,14 @@ dd {
     width:250px;
 }
 
+.task-item-edit {
+    display: table-cell;
+    width: 20px;
+}
+
 .task-item-close {
     display: table-cell;
     width: 20px;
-    padding-top:5px;
 }
 
 .task-item-drag {
