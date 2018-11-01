@@ -26,8 +26,6 @@ namespace Sofco.Framework.StatusHandlers.License
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
-            if(!ValidateChangeStatus()) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
-
             // Si esta en borrador o aprobada no se puede rechazar
             if (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.Approved)
             {
@@ -66,11 +64,6 @@ namespace Sofco.Framework.StatusHandlers.License
             };
 
             return data;
-        }
-
-        private bool ValidateChangeStatus()
-        {
-            return licenseApproverManager.HasUserAuthorizer();
         }
     }
 }

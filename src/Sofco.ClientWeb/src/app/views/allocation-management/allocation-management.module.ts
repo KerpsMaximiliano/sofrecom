@@ -30,6 +30,7 @@ import { AllocationAssingTableModule } from './allocation/allocation-assignment-
 import { ExternalUserComponent } from 'app/views/human-resources/external-user/external-user.component';
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 import { ApproversModule } from '../common/approvers/approvers.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ApproversModule } from '../common/approvers/approvers.module';
     Ng2ModalModule,
     PCheckModule,
     AllocationRouter,
-    ApproversModule
+    ApproversModule,
+    NgSelectModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
 

@@ -43,7 +43,10 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId"></ng-select>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -184,7 +187,10 @@
 
 
 <ng2-modal [config]="allocationsModalConfig" #allocationsModal (accept)="sendNewAllocations()">
-    <select-two [label]="'allocationManagement.analytics.title'" [(value)]="allocationModel.analyticId" [options]="analytics"></select-two>
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="allocationModel.analyticId"></ng-select>
+    </div>
 
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.allocation.percentage' | translate }}</label>

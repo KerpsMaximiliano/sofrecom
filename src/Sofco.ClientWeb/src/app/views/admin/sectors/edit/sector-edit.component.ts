@@ -54,7 +54,7 @@ export class SectorEditComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.sectorService.get(this.id).subscribe(response => {
             this.messageService.closeLoading();
             this.text = response.data.text;
-            this.responsableId = response.data.responsableId;
+            this.responsableId = response.data.responsableId.toString();
         }, 
         error => this.messageService.closeLoading());
     }

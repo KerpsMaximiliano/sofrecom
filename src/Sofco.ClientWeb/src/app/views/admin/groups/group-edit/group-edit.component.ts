@@ -76,7 +76,7 @@ export class GroupEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/groups']);
   }
 
-  onSubmit(form){
+  onSubmit(){
     this.editSubscrip = this.service.edit(this.module).subscribe(
       data => {
         this.router.navigate(["/admin/groups"])

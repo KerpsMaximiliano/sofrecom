@@ -23,13 +23,14 @@ import { IboxtoolsModule } from '../../components/common/iboxtools/iboxtools.mod
 import { ResourceDetailModule } from '../allocation-management/resources/detail/resource-detail.module';
 import { AddLicenseModule } from '../human-resources/licenses/add/add-license.module';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [ WorkTimeComponent ],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter,
-                IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule],
+                IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule],
 
   providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService],
   

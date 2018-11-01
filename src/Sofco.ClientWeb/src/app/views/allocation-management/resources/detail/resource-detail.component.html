@@ -341,5 +341,8 @@
         <input class="form-control" type="text" [(ngModel)]="editModel.office" />
     </div>
 
-    <select-two [label]="'allocationManagement.resources.manager'" [(value)]="editModel.managerId" [options]="managers"></select-two>
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.resources.manager' | translate }}</label>
+        <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="editModel.managerId"></ng-select>
+    </div>
 </ng2-modal>  

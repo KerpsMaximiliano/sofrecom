@@ -30,7 +30,10 @@
         <div class="ibox-content">
             <div class="row">
                 <div class="col-sm-6">
-                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.invoice.account' | translate }}</label>
+                        <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">

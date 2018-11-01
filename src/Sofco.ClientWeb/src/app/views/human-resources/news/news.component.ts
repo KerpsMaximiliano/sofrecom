@@ -26,7 +26,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     indexToConfirm: number;
     confirmBodyAction: string;
 
-    public endReasonType = 0;
+    public endReasonType: any;
 
     public rejectComments: string;
 

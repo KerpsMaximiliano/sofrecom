@@ -31,6 +31,7 @@ import { LicenseDelegateComponent } from './licenses/license-delegate/license-de
 import { ServiceService } from '../../services/billing/service.service';
 import { CustomerService } from '../../services/billing/customer.service';
 import { ApproversModule } from '../common/approvers/approvers.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
@@ -39,7 +40,7 @@ import { ApproversModule } from '../common/approvers/approvers.module';
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
-                ApproversModule],
+                ApproversModule, NgSelectModule],
 
   providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService],
 
