@@ -23,8 +23,8 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     public users: any[] = new Array();
     public proposals: any[] = new Array();
 
-    public customerId: string = "0";
-    public serviceId: string = "0";
+    public customerId: string = null;
+    public serviceId: string = null;
 
     getOptionsSubscrip: Subscription;
     getCostCenterOptionsSubscrip: Subscription;
@@ -135,10 +135,10 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.clientExternalName = customers[0].text;
         }
 
-        this.serviceId = "0";
+        this.serviceId = null;
         this.services = [];
 
-        if(this.customerId != "0"){
+        if(this.customerId){
             this.getServices();
         }
     }

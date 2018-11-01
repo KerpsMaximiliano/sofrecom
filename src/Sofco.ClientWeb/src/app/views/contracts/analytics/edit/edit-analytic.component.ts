@@ -69,10 +69,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                         this.form.proposals = data.proposal.split(";");
                     }
                 }
-
-                setTimeout(() => {
-                    $('#userId').val(this.form.model.usersQv).trigger('change');
-                }, 500);
             },
             () => {
                     this.messageService.closeLoading();
@@ -82,7 +78,6 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     edit() {
         this.form.model.title = $('#title').val();
-        this.form.model.usersQv = $('#userId').val();
 
         this.messageService.showLoading();
 

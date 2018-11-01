@@ -108,8 +108,8 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.Name = Name;
             domain.ClientExternalId = ClientExternalId;
             domain.ServiceId = ServiceId;
-            domain.ClientExternalName = ClientExternalId == "0" ? "No Aplica" : ClientExternalName;
-            domain.Service = ServiceId == "0" ? "No Aplica" : Service;
+            domain.ClientExternalName = string.IsNullOrWhiteSpace(ClientExternalId) ? "No Aplica" : ClientExternalName;
+            domain.Service = string.IsNullOrWhiteSpace(ServiceId) ? "No Aplica" : Service;
             domain.SoftwareLawId = SoftwareLawId;
             domain.ActivityId = ActivityId;
             domain.StartDateContract = StartDateContract.Date;
