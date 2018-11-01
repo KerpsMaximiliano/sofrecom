@@ -3,7 +3,6 @@ using Sofco.Core.Config;
 using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
-using Sofco.Framework.Managers.UserApprovers;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
