@@ -64,6 +64,9 @@
                                             >
                                             {{ taskItem.task }} - {{ taskItem.hours }} hs
                                         </div>
+                                        <a class="task-item-edit" (click)="showRecentEditModal(taskItem)">
+                                            <i class="fa fa-edit text-white"></i>
+                                        </a>
                                         <a class="task-item-close" (click)="removeTask(taskItem)">
                                             <i class="fa fa-close text-white"></i>
                                         </a>

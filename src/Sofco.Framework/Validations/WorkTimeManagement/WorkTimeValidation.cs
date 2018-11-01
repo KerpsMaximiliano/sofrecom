@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -46,15 +47,14 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
 
         public void ValidateAllocations(Response response, WorkTimeAddModel model)
         {
-            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+            var allocations = unitOfWork.AllocationRepository.GetByEmployee(model.EmployeeId);
 
-            var period = closeDates.GetPeriodExcludeDays();
+            var modelDate = new DateTime(model.Date.Year, model.Date.Month, 1);
 
-            var allocations =
-                unitOfWork.AllocationRepository
-                    .GetAllocationsLiteBetweenDays(model.EmployeeId, period.Item1, period.Item2);
-
-            var valid = allocations.Any(s => s.AnalyticId == model.AnalyticId);
+            var valid = allocations.Any(s => s.AnalyticId == model.AnalyticId
+                                             && s.StartDate.Date == modelDate
+                                             && model.Date.Date <= s.ReleaseDate.Date
+                                             && s.Percentage > 0);
 
             if (!valid)
             {
