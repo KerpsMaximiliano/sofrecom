@@ -4,15 +4,12 @@ using System.Linq.Expressions;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
-using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.WorkTimeManagement;
-using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.UserApprovers;
@@ -24,7 +21,7 @@ using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Framework.StatusHandlers.License;
-using Sofco.Service.Implementations.Rrhh;
+using Sofco.Service.Implementations.Rrhh.Licenses;
 
 namespace Sofco.UnitTest.Services.Rrhh
 {
@@ -33,18 +30,14 @@ namespace Sofco.UnitTest.Services.Rrhh
     {
         private Mock<IUnitOfWork> unitOfWork;
         private Mock<ILogMailer<LicenseService>> loggerMock;
-        private Mock<IOptions<FileConfig>> fileConfigMock;
         private Mock<IOptions<EmailConfig>> emailConfigMock;
-        private Mock<ISessionManager> sessionManager;
         private Mock<ILicenseStatusFactory> licenseStatusFactory;
         private Mock<IMailSender> mailSender;
-        private Mock<ILicenseFileManager> licenseFileManager;
         private Mock<ILicenseApproverManager> licenseApproverManager;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeService;
 
         private Mock<ILicenseRepository> licenseRepositoryMock;
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
-        private Mock<IFileRepository> fileRepositoryMock;
         private Mock<IEmployeeRepository> employeeRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<IGroupRepository> groupRepositoryMock;
@@ -56,25 +49,20 @@ namespace Sofco.UnitTest.Services.Rrhh
         {
             unitOfWork = new Mock<IUnitOfWork>();
             loggerMock = new Mock<ILogMailer<LicenseService>>();
-            fileConfigMock = new Mock<IOptions<FileConfig>>();
-            sessionManager = new Mock<ISessionManager>();
             licenseStatusFactory = new Mock<ILicenseStatusFactory>();
             mailSender = new Mock<IMailSender>();
-            licenseFileManager = new Mock<ILicenseFileManager>();
             licenseApproverManager = new Mock<ILicenseApproverManager>();
             licenseGenerateWorkTimeService = new Mock<ILicenseGenerateWorkTimeService>();
             emailConfigMock = new Mock<IOptions<EmailConfig>>();
 
             licenseRepositoryMock = new Mock<ILicenseRepository>();
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
-            fileRepositoryMock = new Mock<IFileRepository>();
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
             groupRepositoryMock = new Mock<IGroupRepository>();
 
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
             unitOfWork.Setup(x => x.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
-            unitOfWork.Setup(x => x.FileRepository).Returns(fileRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
             unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
@@ -83,8 +71,8 @@ namespace Sofco.UnitTest.Services.Rrhh
             groupRepositoryMock.Setup(x => x.GetEmail(It.IsAny<string>())).Returns("rrhh@mail.com");
             licenseApproverManager.Setup(x => x.GetEmailApproversByEmployeeId(It.IsAny<int>())).Returns(new List<string> { "rrhh@mail.com" });
 
-            sut = new LicenseService(unitOfWork.Object, loggerMock.Object, fileConfigMock.Object, sessionManager.Object,
-                licenseStatusFactory.Object, mailSender.Object, licenseFileManager.Object,
+            sut = new LicenseService(unitOfWork.Object, loggerMock.Object,
+                licenseStatusFactory.Object, mailSender.Object,
                 licenseApproverManager.Object, licenseGenerateWorkTimeService.Object);
         }
 

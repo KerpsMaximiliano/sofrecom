@@ -66,6 +66,7 @@ export class LicenseRejectComponent implements OnDestroy  {
   reject(){
     if(!this.rejectComments || this.rejectComments == ""){
         this.messageService.showError("billing.solfac.rejectCommentRequired");
+        this.rejectModal.resetButtons();
         return;
     }
 
