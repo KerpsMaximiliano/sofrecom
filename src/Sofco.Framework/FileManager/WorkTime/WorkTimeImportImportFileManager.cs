@@ -285,7 +285,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
                         Holidays.Any(x => x.Date.Date == datetime.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
                         response.Data.Add(item);
 
@@ -295,7 +295,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     if (employee.Licenses.Any(x =>
                         datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
                         response.Data.Add(item);
 
@@ -304,7 +304,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                     response.Data.Add(item);
 
