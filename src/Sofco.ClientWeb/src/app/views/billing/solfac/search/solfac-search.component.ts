@@ -28,12 +28,12 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public userApplicants: any[] = new Array();
     public statuses: Option[] = new Array<Option>();
 
-    customerId: string = "0";
-    serviceId: string = "0";
-    projectId: string = "0";
-    userApplicantId: string = "0";
+    customerId: string = null;
+    serviceId: string = null;
+    projectId: string = null;
+    userApplicantId: string = null;
     analytic: string;
-    status: string = "0";
+    status: string = null;
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
@@ -133,12 +133,12 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     customerChange(){
-        this.serviceId = "0";
-        this.projectId = "0";
+        this.serviceId = null;
+        this.projectId = null;
         this.projects = [];
         this.services = [];
 
-        if(this.customerId != "0"){
+        if(this.customerId){
             this.serviceService.getOptions(this.customerId).subscribe(d => {
                 this.services = d.data;
             });
@@ -146,10 +146,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     serviceChange(){
-        this.projectId = "0";
+        this.projectId = null;
         this.projects = [];
 
-        if(this.serviceId != "0"){
+        if(this.serviceId){
             this.projectService.getOptions(this.serviceId).subscribe(d => {
                 this.projects = d.data;
             });
@@ -169,7 +169,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         let managerId = "";
-        if(this.userApplicantId != '0'){
+        if(this.userApplicantId){
             let manager = this.userApplicants.filter(item => item.id == this.userApplicantId);
 
             if(manager && manager.length > 0){
@@ -182,12 +182,10 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             serviceId: this.serviceId,
             projectId: this.projectId,
             managerId: managerId,
-            userApplicantId: this.userApplicantId,
             analytic: this.analytic,
-            status: this.status,
+            status: this.status ? this.status : 0,
             dateSince: this.filterByDates ? this.dateSince : null,
-            dateTo: this.filterByDates ? this.dateTo : null,
-            filterByDates: this.filterByDates
+            dateTo: this.filterByDates ? this.dateTo : null
         }
 
         this.getAllSubscrip = this.service.search(parameters).subscribe(response => {
@@ -225,12 +223,12 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     clean() {
-        this.customerId = "0";
-        this.serviceId = "0";
-        this.projectId = "0";
-        this.userApplicantId = "0";
+        this.customerId = null;
+        this.serviceId = null;
+        this.projectId = null;
+        this.userApplicantId = null;
         this.analytic = "";
-        this.status = "0";
+        this.status = null;
         this.dateSince= new Date();
         this.dateTo = new Date();
 

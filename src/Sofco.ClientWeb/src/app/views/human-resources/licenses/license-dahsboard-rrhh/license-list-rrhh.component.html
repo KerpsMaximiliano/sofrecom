@@ -47,14 +47,14 @@
                         <div class="col-sm-4"> 
                             <div class="form-group">
                                 <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
-                                <select select2 class="form-control" id="employeeId">
-                                    <option value="0">Seleccione una opción</option>
-                                    <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.name }}</option>
-                                </select>
+                                <ng-select [items]="resources" bindLabel="name" bindValue="id" [(ngModel)]="employeeId"></ng-select>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <select-two [label]="'rrhh.license.reason'" [(value)]="licensesTypeId" [options]="licensesTypes"></select-two>
+                        <div class="col-sm-4"> 
+                            <div class="form-group">
+                                <label class="control-label">{{ 'rrhh.license.reason' | translate }}</label>
+                                <ng-select [items]="licensesTypes" bindLabel="text" bindValue="id" [(ngModel)]="licensesTypeId"></ng-select>
+                            </div>
                         </div>
         
                         <div class="col-sm-4 m-t-md">

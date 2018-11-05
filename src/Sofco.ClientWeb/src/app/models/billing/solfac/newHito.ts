@@ -6,7 +6,7 @@ export class NewHito {
     public opportunityId: string;
     public managerId: string;
     public externalHitoId: string;
-    public moneyId: string;
+    public moneyId: number;
     public month: number;
     public startDate: Date;
     public ammountFirstHito: number;

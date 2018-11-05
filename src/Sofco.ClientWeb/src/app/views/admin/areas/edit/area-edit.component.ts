@@ -13,7 +13,7 @@ export class AreaEditComponent implements OnInit, OnDestroy {
 
     private id: number;
     public text: string;
-    public responsableId: number;
+    public responsableId: any;
 
     public responsables: any[] = new Array();
     
@@ -54,7 +54,7 @@ export class AreaEditComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.areaService.get(this.id).subscribe(response => {
             this.messageService.closeLoading();
             this.text = response.data.text;
-            this.responsableId = response.data.responsableId;
+            this.responsableId = response.data.responsableId.toString();
         }, 
         error => this.messageService.closeLoading());
     }

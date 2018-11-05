@@ -40,22 +40,39 @@
 
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'workTimeManagement.status'" [(value)]="searchModel.status" [options]="statuses"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'workTimeManagement.status' | translate }}</label>
+                                <ng-select [(ngModel)]="searchModel.status">
+                                    <ng-option *ngFor="let item of statuses" [value]="item.id">{{ item.text | translate }}</ng-option>
+                                </ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.allocation.resources'" [(value)]="searchModel.employeeId" [options]="resources"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
+                                <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId"></ng-select>
+                            </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'billing.solfac.client'" [(value)]="searchModel.clientId" [options]="customers" (valueChange)="getAnalytics()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
+                                <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.clientId" (change)="getAnalytics()"></ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId"></ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="searchModel.managerId" [options]="managers"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
+                                <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.managerId"></ng-select>
+                            </div>
                         </div>
                     </div>
 

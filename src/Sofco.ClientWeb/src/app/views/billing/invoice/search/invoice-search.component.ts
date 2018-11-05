@@ -28,11 +28,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     public userApplicants: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
 
-    customerId: string = "0";
-    serviceId: string = "0";
-    projectId: string = "0";
-    userApplicantId: string = "0";
-    status: string = "";
+    customerId: string = null;
+    serviceId: string = null;
+    projectId: string = null;
+    userApplicantId: string = null;
+    status: string = null;
     dateSince: Date = new Date();
     dateTo: Date = new Date();
 
@@ -108,12 +108,12 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     }
 
     customerChange(){
-        this.serviceId = "0";
-        this.projectId = "0";
+        this.serviceId = null;
+        this.projectId = null;
         this.projects = [];
         this.services = [];
 
-        if(this.customerId != "0"){
+        if(this.customerId !){
             this.serviceService.getOptions(this.customerId).subscribe(res => {
                 this.services = res.data;
             });
@@ -121,10 +121,10 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
     }
 
     serviceChange(){
-        this.projectId = "0";
+        this.projectId = null;
         this.projects = [];
 
-        if(this.serviceId != "0"){
+        if(this.serviceId){
             this.projectService.getOptions(this.serviceId).subscribe(res => {
                 this.projects = res.data;
             });
@@ -143,7 +143,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             customerId: this.customerId,
             serviceId: this.serviceId,
             projectId: this.projectId,
-            userApplicantId: this.userApplicantId,
+            userApplicantId: this.userApplicantId ? this.userApplicantId : 0,
             invoiceNumber: $('#invoiceNumber').val(),
             status: this.status,
             dateSince: this.filterByDates ? this.dateSince : null,
@@ -182,16 +182,17 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
           }
     
+          this.datatableService.destroy(params.selector);
           this.datatableService.initialize(params);
     }
 
     clean(){
-        this.customerId = "0";
-        this.serviceId = "0";
-        this.projectId = "0";
-        this.userApplicantId = "0";
+        this.customerId = null;
+        this.serviceId = null;
+        this.projectId = null;
+        this.userApplicantId = null;
         $('#invoiceNumber').val("");
-        this.status = "";
+        this.status = null;
         this.dateSince= new Date();
         this.dateTo = new Date();
 

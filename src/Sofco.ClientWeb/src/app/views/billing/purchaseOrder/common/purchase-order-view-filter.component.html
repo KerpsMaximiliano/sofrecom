@@ -12,21 +12,39 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-4">
-                        <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers" (valueChange)="searchCriteriaChange()"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'billing.invoice.account' | translate }}</label>
+                            <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId" (change)="searchCriteriaChange()"></ng-select>
+                        </div>
                     </div>
                     <div class="col-sm-4">
-                        <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="searchCriteriaChange()"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                            <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticId" (change)="searchCriteriaChange()"></ng-select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <select-two [label]="'billing.purchaseOrder.projectManager'" [(value)]="projectManagerId" [options]="projectManagers" (valueChange)="searchCriteriaChange()"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'billing.purchaseOrder.projectManager' | translate }}</label>
+                            <ng-select [items]="projectManagers" bindLabel="text" bindValue="id" [(ngModel)]="projectManagerId" (change)="searchCriteriaChange()"></ng-select>
+                        </div>
                     </div>
                     <div class="col-sm-4">
-                        <select-two [label]="'billing.purchaseOrder.commercialManager'" [(value)]="commercialManagerId" [options]="commercialManagers" (valueChange)="searchCriteriaChange()"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'billing.purchaseOrder.commercialManager' | translate }}</label>
+                            <ng-select [items]="commercialManagers" bindLabel="text" bindValue="id" [(ngModel)]="commercialManagerId" (change)="searchCriteriaChange()"></ng-select>
+                        </div>
                     </div>
                     <div class="col-sm-4" *ngIf="useStatus">
-                        <select-two [label]="'billing.purchaseOrder.fields.status'" [(value)]="statusId" [options]="statuses" (valueChange)="searchCriteriaChange()"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'billing.purchaseOrder.fields.status' | translate }}</label>
+
+                            <ng-select [(ngModel)]="statusId" (change)="searchCriteriaChange()">
+                                <ng-option *ngFor="let item of statuses" [value]="item.id">{{ item.text | translate }}</ng-option>
+                            </ng-select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

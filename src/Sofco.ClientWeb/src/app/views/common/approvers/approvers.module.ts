@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { SpinnerModule } from '../../../components/spinner/spinner.module';
 import { Select2Module } from '../../../components/select2/select2';
 import { Ng2ModalModule } from '../../../components/modal/ng2modal.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
 declarations: [
@@ -20,7 +21,7 @@ declarations: [
 
 imports: [
     CommonModule, RouterModule, PeityModule, FormsModule, SpinnerModule, Select2Module,
-    TranslateModule, Ng2ModalModule, PCheckModule
+    TranslateModule, Ng2ModalModule, PCheckModule, NgSelectModule
 ],
 
 providers: [ UserApproverService, AnalyticService],

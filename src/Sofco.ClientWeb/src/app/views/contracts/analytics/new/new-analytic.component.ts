@@ -28,7 +28,6 @@ export class NewAnalyticComponent implements OnInit, OnDestroy {
 
     add() {
         this.form.model.title = $('#title').val();
-        this.form.model.usersQv = $('#userId').val();
 
         this.messageService.showLoading();
 

@@ -29,7 +29,10 @@
 
                 <div class="row"> 
                     <div class="col-sm-6">
-                        <select-two [label]="'ADMIN.category.title'" [(value)]="categoryId" [options]="categories"></select-two>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'ADMIN.category.title' | translate }}</label>
+                            <ng-select [items]="categories" bindLabel="text" bindValue="id" [(ngModel)]="categoryId"></ng-select>
+                        </div>
                     </div>
                 </div>
     

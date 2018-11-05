@@ -42,28 +42,45 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
+                        <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId" (change)="customerChange()"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.solfac.service' | translate }}</label>
+                        <ng-select [items]="services" bindLabel="text" bindValue="id" [(ngModel)]="serviceId" (change)="serviceChange()"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.solfac.project'" [(value)]="projectId" [options]="projects"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.solfac.project' | translate }}</label>
+                        <ng-select [items]="projects" bindLabel="text" bindValue="id" [(ngModel)]="projectId"></ng-select>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="analytic">{{'billing.solfac.analytic' | translate }}</label>
+                        <label class="control-label" for="analytic">{{ 'billing.solfac.analytic' | translate }}</label>
                         <input class="form-control" name="analytic" placeholder="Analítica" type="text" [(ngModel)]="analytic">
                     </div>
                 </div>
                 <div class="col-sm-4" *ngIf="showUserApplicantFilter()">
-                    <select-two [label]="'billing.project.grid.manager'" [(value)]="userApplicantId" [options]="userApplicants"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.project.grid.manager' | translate }}</label>
+                        <ng-select [items]="userApplicants" bindLabel="text" bindValue="id" [(ngModel)]="userApplicantId"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.solfac.status'" [(value)]="status" [options]="statuses"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.solfac.status' | translate }}</label>
+                        <ng-select [(ngModel)]="status">
+                            <ng-option *ngFor="let item of statuses" [value]="item.id">{{ item.text | translate }}</ng-option>
+                        </ng-select>
+                    </div>
                 </div>
             </div>
         </div>

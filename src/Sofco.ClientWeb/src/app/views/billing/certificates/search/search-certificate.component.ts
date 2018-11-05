@@ -22,7 +22,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
 
     public customers: Option[] = new Array<Option>();
 
-    public customerId: string = "0";
+    public customerId: string;
     public year;
 
     getAllSubscrip: Subscription;
@@ -111,7 +111,7 @@ export class CertificateSearchComponent implements OnInit, OnDestroy {
     }
 
     clean() {
-        this.customerId = "0";
+        this.customerId = null;
         this.year = null;
 
         this.datatableService.destroy('#certificateTable');

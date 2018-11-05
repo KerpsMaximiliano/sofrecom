@@ -97,7 +97,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Employee)
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
-                .Where(x => x.ManagerId == managerId).ToList();
+                .Where(x => x.ManagerId == managerId && x.Status != LicenseStatus.AuthPending).ToList();
         }
 
         public ICollection<License> GetByManagerIds(List<int> managerIds)

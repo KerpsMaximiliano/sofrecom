@@ -15,7 +15,10 @@
         <div class="ibox-content">
             <div class="row">
                 <div class="col-lg-6">
-                    <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="uploaderConfig()"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticId" (change)="uploaderConfig()"></ng-select>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="m-t-sm" *ngIf="analyticId > 0">
@@ -40,7 +43,7 @@
         </div>
         <div class="ibox-footer">
             <div class="text-right">
-                <button class="btn btn-sm btn-success" [disabled]="analyticId == 0" (click)="exportTemplate()">{{ 'workTimeManagement.import.export' | translate }} <i class="fa fa-download"></i></button>
+                <button class="btn btn-sm btn-success" [disabled]="!analyticId" (click)="exportTemplate()">{{ 'workTimeManagement.import.export' | translate }} <i class="fa fa-download"></i></button>
             </div>
         </div>
     </div>

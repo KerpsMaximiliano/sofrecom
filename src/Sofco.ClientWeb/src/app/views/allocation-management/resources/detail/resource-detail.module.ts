@@ -9,6 +9,7 @@ import { EmployeeService } from "../../../../services/allocation-management/empl
 import { RouterModule } from "@angular/router";
 import { Select2Module } from "../../../../components/select2/select2";
 import { EmployeeProfileHistoryService } from "../../../../services/allocation-management/employee-profile-history.service";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { EmployeeProfileHistoryService } from "../../../../services/allocation-m
       FormsModule,
       TranslateModule,
       Ng2ModalModule,
-      Select2Module
+      Select2Module,
+      NgSelectModule
     ],
     declarations: [ 
         ResourceDetailComponent

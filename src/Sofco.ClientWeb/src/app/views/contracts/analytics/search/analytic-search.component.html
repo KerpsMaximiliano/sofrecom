@@ -38,21 +38,38 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="analyticId" [options]="analytics" (valueChange)="searchCriteriaChange()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticId" (change)="searchCriteriaChange()"></ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'billing.solfac.customers'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'billing.solfac.customers' | translate }}</label>
+                                <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId" (change)="customerChange()"></ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'billing.service.title'" [(value)]="serviceId" [options]="services" (valueChange)="searchCriteriaChange()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'billing.service.title' | translate }}</label>
+                                <ng-select [items]="services" bindLabel="text" bindValue="id" [(ngModel)]="serviceId" (change)="searchCriteriaChange()"></ng-select>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.grid.status'" [(value)]="analyticStatusId" [options]="analyticStatus" (valueChange)="searchCriteriaChange()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.grid.status' | translate }}</label>
+                                <ng-select [(ngModel)]="analyticStatusId" (change)="searchCriteriaChange()">
+                                    <ng-option *ngFor="let item of analyticStatus" [value]="item.id">{{ item.text | translate }}</ng-option>
+                                </ng-select>
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="managerId" [options]="managers" (valueChange)="searchCriteriaChange()"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
+                                <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="managerId" (change)="searchCriteriaChange()"></ng-select>
+                            </div>
                         </div>
                     </div>
                 </div>

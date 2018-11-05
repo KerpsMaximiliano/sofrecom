@@ -66,14 +66,14 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         profile: "",
         technology: "",
         percentage: null,
-        analyticId: 0,
+        analyticId: null,
         employeeNumber: "",
         unassigned: false,
         externalOnly: false
     };
 
     public allocationModel = {
-        analyticId: 0,
+        analyticId: null,
         percentage: 100,
         startDate: new Date(),
         endDate: new Date()
@@ -191,7 +191,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.technology = "";
         this.searchModel.employeeNumber = "";
         this.searchModel.percentage = null;
-        this.searchModel.analyticId = 0;
+        this.searchModel.analyticId = null;
         this.searchModel.unassigned = false;
         this.searchModel.externalOnly = false;
         this.resources = [];

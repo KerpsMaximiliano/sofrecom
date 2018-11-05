@@ -3,7 +3,10 @@
     <input type="text" class="form-control" [(ngModel)]="model.name">
 </div>
 
-<select-two [label]="'billing.solfac.client'" [(value)]="model.clientExternalId" [options]="customers"></select-two>
+<div class="form-group">
+    <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
+    <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="model.clientExternalId"></ng-select>
+</div>
 
 <div class="form-group">
     <label class="control-label">{{'billing.certificate.fields.year' | translate }}</label>
