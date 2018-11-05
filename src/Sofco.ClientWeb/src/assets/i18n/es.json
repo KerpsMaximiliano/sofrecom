@@ -132,7 +132,8 @@
             "jobsSettingTitle": "Parámetros de Jobs",
             "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
-            "CloseMonth": "Dia del cierre del mes"
+            "CloseMonth": "Dia del cierre del mes",
+            "ValidatePeriodCloseMonth": "Validar fecha de cierre"
         }
     },
     "billing":{

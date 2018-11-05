@@ -131,8 +131,9 @@
             "StartDateHolidays":"Date de début de la période de Congé",
             "jobsSettingTitle":"Paramètres des Jobs",
             "LicenseCertificatePendingDayOfMonth":"Notification des certificats manquants (jour du mois).",
-            "WorkingHoursPerDaysMax":"Top journée de travail"
-        } 
+            "WorkingHoursPerDaysMax":"Top journée de travail",
+            "ValidatePeriodCloseMonth": "Valider fermeture de mois"
+        }
     }, 
     "billing": { 
         "title":"Sécurité des revenus et des coûts",
