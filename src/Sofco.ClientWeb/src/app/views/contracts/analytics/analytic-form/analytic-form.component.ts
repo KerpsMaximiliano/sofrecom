@@ -128,6 +128,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     customerChange(){
         this.model.clientExternalId = this.customerId;
+        this.proposals= [];
 
         var customers = this.customers.filter(x => x.id == this.customerId);
 
@@ -157,6 +158,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     serviceChange(){
         this.model.serviceId = this.serviceId;
+        this.proposals= [];
 
         var services = this.services.filter(x => x.id == this.serviceId);
 

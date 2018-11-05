@@ -1,27 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
-using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Billing.PurchaseOrder;
-using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.Billing;
-using File = Sofco.Domain.Models.Common.File;
 using PurchaseOrderDomain = Sofco.Domain.Models.Billing.PurchaseOrder;
 
 namespace Sofco.Service.Implementations.Billing.PurchaseOrder
