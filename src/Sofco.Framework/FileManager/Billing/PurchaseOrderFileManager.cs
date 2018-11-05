@@ -86,6 +86,7 @@ namespace Sofco.Framework.FileManager.Billing
                 if (purchaseOrder.PurchaseOrderAnalytics.Any())
                 {
                     row++;
+                    sheet.SetValue(row, 1, purchaseOrder.Number);
                     SetAnalyticHeader(sheet, row);
                     SetBorderRight(sheet, row);
                 }
@@ -105,6 +106,7 @@ namespace Sofco.Framework.FileManager.Billing
 
                     if (ocAnalytic.Analytic != null)
                     {
+                        sheet.SetValue(row, 1, purchaseOrder.Number);
                         sheet.SetValue(row, 2, ocAnalytic.Analytic.Name);
                         sheet.SetValue(row, 3, ocAnalytic.Analytic.Service);
                         sheet.SetValue(row, 4, ocAnalytic.Analytic.Manager?.Name);
@@ -128,6 +130,7 @@ namespace Sofco.Framework.FileManager.Billing
 
                                 proposalAdded = true;
 
+                                sheet.SetValue(row, 1, purchaseOrder.Number);
                                 sheet.SetValue(row, 6, project.OpportunityNumber);
                                 sheet.SetValue(row, 7, project.OpportunityName);
                                 sheet.SetValue(row, 8, project.Incomes);
