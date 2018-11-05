@@ -4,13 +4,14 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Validations;
+using Sofco.Domain;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Validations.WorkTimeManagement
 {
     public class WorkTimeValidation : IWorkTimeValidation
     {
-        private const string WorkingHoursPerDaysMaxKey = "WorkingHoursPerDaysMax";
+        private const decimal MinHours = (decimal)0.25;
 
         private readonly int allowedHoursPerDay = 12;
 
@@ -19,7 +20,7 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
         public WorkTimeValidation(IUnitOfWork unitOfWork, ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
-            var setting  = settingData.GetByKey(WorkingHoursPerDaysMaxKey);
+            var setting  = settingData.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
             if (setting != null)
             {
                 allowedHoursPerDay = int.Parse(setting.Value);
@@ -28,7 +29,7 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
 
         public void ValidateHours(Response response, WorkTimeAddModel model)
         {
-            if (model.Hours < (decimal) 0.25)
+            if (model.Hours < MinHours)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.HoursWrong);
 
