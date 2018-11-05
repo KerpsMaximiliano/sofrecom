@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Domain;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
@@ -122,7 +123,12 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.TechnologyId = TechnologyId;
             domain.ClientGroupId = ClientGroupId;
             domain.ServiceTypeId = ServiceTypeId;
-            domain.UsersQv = string.Join(";", UsersQv);
+
+            if (UsersQv != null && UsersQv.Any())
+            {
+                domain.UsersQv = string.Join(";", UsersQv);
+            }
+
             domain.CostCenterId = CostCenterId;
         }
 

@@ -21,7 +21,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
     public uploader: FileUploader = new FileUploader({url:""});
 
-    public analyticId: number = 0;
+    public analyticId: number;
 
     public analytics: any[] = new Array();
     public errors: any[] = new Array();

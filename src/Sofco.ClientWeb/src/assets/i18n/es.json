@@ -569,6 +569,7 @@
             "businessHoursDescription": "Horario",
             "businessHoursModal": "Actualizacion horas por contrato",
             "hoursByContract": "Editar datos perfil",
+            "createExternal": "Crear usuario externo",
             "dateFrom": "Fecha Desde",
             "dateTo": "Fecha Hasta",
             "startDate": "Fecha Ingreso",

@@ -38,11 +38,11 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     public searchModel = {
         startDate: null,
         endDate: null,
-        status: 0,
-        clientId: 0,
-        managerId: 0,
-        analyticId: 0,
-        employeeId: 0
+        status: null,
+        clientId: null,
+        managerId: null,
+        analyticId: null,
+        employeeId: null
     };
 
     constructor(private messageService: MessageService,
@@ -111,6 +111,8 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
+        this.searchModel.status = this.searchModel.status ? this.searchModel.status : 0;
+
         this.messageService.showLoading();
 
         this.searchSubscrip = this.worktimeService.search(this.searchModel).subscribe(response => {
@@ -178,13 +180,13 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         $('.datepicker').val('');
         
         this.searchModel = {
-            startDate: '',
-            endDate: '',
-            status: 0,
-            clientId: 0,
-            managerId: 0,
-            analyticId: 0,
-            employeeId: 0
+            startDate: null,
+            endDate: null,
+            status: null,
+            clientId: null,
+            managerId: null,
+            analyticId: null,
+            employeeId: null
         };
 
         sessionStorage.removeItem('lastWorktimeSearchQuery')
