@@ -141,9 +141,11 @@ namespace Sofco.Framework.Mail
 
         private bool IsDevelopment()
         {
-            return environment.IsDevelopment()
-                   || environment.IsEnvironment("localhost")
-                   || environment.IsEnvironment("frosales");
+#if DEBUG
+            return true;
+#else
+            return environment.IsDevelopment();
+#endif
         }
 
         private void SendMessages(List<MimeMessage> messages)

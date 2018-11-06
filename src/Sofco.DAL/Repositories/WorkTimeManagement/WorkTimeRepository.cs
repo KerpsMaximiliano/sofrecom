@@ -152,6 +152,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes
+                .Include(x => x.Task)
                 .Where(s => s.EmployeeId == employeeId
                             && s.Status == WorkTimeStatus.Sent)
                 .ToList();
