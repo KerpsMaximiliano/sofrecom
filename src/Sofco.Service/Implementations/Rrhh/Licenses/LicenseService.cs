@@ -53,6 +53,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             LicenseValidationHandler.ValidateSector(response, domain);
             LicenseValidationHandler.ValidateLicenseType(response, domain);
             LicenseValidationHandler.ValidateDatesOverlaped(response, domain, unitOfWork);
+            LicenseValidationHandler.ValidateWorkTimeOverlap(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;
 

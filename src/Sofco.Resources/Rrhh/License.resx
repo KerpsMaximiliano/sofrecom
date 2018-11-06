@@ -216,6 +216,9 @@
   <data name="UpdateSuccess" xml:space="preserve">
     <value>rrhh/license.updateSuccess</value>
   </data>
+  <data name="WorkTimeDateOverlap" xml:space="preserve">
+    <value>rrhh/license.workTimeDateOverlap</value>
+  </data>
   <data name="WrongCertificateMonthQuantity" xml:space="preserve">
     <value>rrhh/license.wrongCertificateMonthQuantity</value>
   </data>

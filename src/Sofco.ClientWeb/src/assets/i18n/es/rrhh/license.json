@@ -31,5 +31,6 @@
     "datesLessThanToday": "Las fechas no pueden ser menor a la fecha de hoy",
     "managerEqualsEmployee": "El solicitante no puede ser igual al superior",
     "datesOverlaped": "La fecha de la licencia que se quiere cargar coincide con alguna fecha de otra licencia ya cargada en el sistema",
-    "licenseTypeValueRequired": "El valor no puede ser menor o igual a 0"
+    "licenseTypeValueRequired": "El valor no puede ser menor o igual a 0",
+    "workTimeDateOverlap": "No se puede ingresar licencia con fecha que contiene horas cargadas."
 }
