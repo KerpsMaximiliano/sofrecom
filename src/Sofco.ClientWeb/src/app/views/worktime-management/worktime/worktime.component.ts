@@ -123,9 +123,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     $('#calendar').fullCalendar({
       weekends: false,
       header: {
-        left: 'prev today',
+        left: 'prev,next today',
         center: 'title',
-        right: 'next'
+        right: ''
       },
       navLinks: false,
       editable: false,
