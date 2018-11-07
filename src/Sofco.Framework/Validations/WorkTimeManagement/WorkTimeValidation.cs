@@ -5,6 +5,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Validations;
 using Sofco.Domain;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Validations.WorkTimeManagement
@@ -17,13 +18,20 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
 
         private readonly IUnitOfWork unitOfWork;
 
+        private readonly bool validatePeriodCloseMonth;
+
         public WorkTimeValidation(IUnitOfWork unitOfWork, ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
-            var setting  = settingData.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
-            if (setting != null)
+            var workingHoursSetting  = settingData.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
+            if (workingHoursSetting != null)
             {
-                allowedHoursPerDay = int.Parse(setting.Value);
+                allowedHoursPerDay = int.Parse(workingHoursSetting.Value);
+            }
+            var validatePeriodSetting = settingData.GetByKey(SettingConstant.ValidatePeriodCloseMonthKey);
+            if (validatePeriodSetting != null)
+            {
+                validatePeriodCloseMonth = bool.Parse(validatePeriodSetting.Value);
             }
         }
 
@@ -60,6 +68,59 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
             if (!valid)
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.InvalidAllocationAssignment);
+            }
+        }
+
+        public void ValidateDate(Response response, WorkTimeAddModel model)
+        {
+            if (model.Date == DateTime.MinValue)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateRequired);
+            }
+
+            if (model.Date.DayOfWeek == DayOfWeek.Saturday || model.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsWeekend);
+            }
+
+            if (unitOfWork.HolidayRepository.IsHoliday(model.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateIsHoliday);
+            }
+
+            if (!validatePeriodCloseMonth) return;
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
+
+            if (!(model.Date.Date >= period.Item1.Date && model.Date.Date <= period.Item2.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.DateOutOfRangeError);
+            }
+        }
+
+        public void ValidateDelete(Response response, WorkTime workTime)
+        {
+            if (workTime == null)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WorkTimeNotFound);
+                return;
+            }
+
+            if (!validatePeriodCloseMonth) return;
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            // Item 1: DateFrom
+            // Item 2: DateTo
+            var period = closeDates.GetPeriodIncludeDays();
+
+            if (!(workTime.Date.Date >= period.Item1.Date && workTime.Date.Date <= period.Item2.Date))
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
             }
         }
     }

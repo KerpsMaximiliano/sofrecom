@@ -144,10 +144,12 @@ namespace Sofco.UnitTest.Framework.Managers
                 Id = ValidAnalyticId, Name = "One"
             };
 
+            var validTask = new Task { Id = 1, Description = "TaskOne" };
+
             return new List<WorkTime>
             {
-                new WorkTime { Id = 1, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(1), Analytic = validAnalytic},
-                new WorkTime { Id = 2, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(2), Analytic = validAnalytic}
+                new WorkTime { Id = 1, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(1), Analytic = validAnalytic, Task = validTask},
+                new WorkTime { Id = 2, AnalyticId = ValidAnalyticId, Date = DateTime.Now.AddDays(2), Analytic = validAnalytic, Task = validTask}
             };
         }
 

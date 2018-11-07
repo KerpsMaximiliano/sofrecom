@@ -3,6 +3,9 @@
     public enum SettingValueType
     {
         Text,
-        Number
+
+        Number,
+
+        Boolean
     }
 }

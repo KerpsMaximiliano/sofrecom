@@ -105,9 +105,11 @@ namespace Sofco.Framework.Managers
 
             foreach (var item in workTimes.OrderBy(s => s.Date))
             {
-                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} {6}", 
-                    item.Date, MailCommonResource.Hours, item.Hours,
+                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} - {6}: {7}{8}", 
+                    item.Date, 
+                    MailCommonResource.Hours, item.Hours,
                     MailCommonResource.Analytic, item.Analytic.Title, item.Analytic.Name,
+                    MailCommonResource.Task, item.Task.Description,
                     MailDataConstant.Enter);
             }
 

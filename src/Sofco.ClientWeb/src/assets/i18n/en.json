@@ -132,7 +132,8 @@
 			"jobsSettingTitle": "Parameters of Jobs",
 			"LicenseCertificatePendingDayOfMonth": "Notification of certificates not delivered (day of the month).",
 			"WorkingHoursPerDaysMax": "Top working day",
-			"CloseMonth": "Day of the close of the month"
+			"CloseMonth": "Day of the close of the month",
+			"ValidatePeriodCloseMonth": "Validate close month"
 		}
 	},
 	"billing":{

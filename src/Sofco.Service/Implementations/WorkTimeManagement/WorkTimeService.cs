@@ -123,7 +123,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             WorkTimeValidationHandler.ValidateEmployee(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateAnalytic(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUser(response, unitOfWork, model);
-            WorkTimeValidationHandler.ValidateDate(response, unitOfWork, model);
+            workTimeValidation.ValidateDate(response, model);
             WorkTimeValidationHandler.ValidateTask(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUserComment(response, model);
             workTimeValidation.ValidateHours(response, model);
@@ -375,15 +375,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response();
 
-            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
+            var workTime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
 
-            WorkTimeValidationHandler.ValidateDelete(worktime, response, unitOfWork);
+            workTimeValidation.ValidateDelete(response, workTime);
 
             if (response.HasErrors()) return response;
 
             try
             {
-                unitOfWork.WorkTimeRepository.Delete(worktime);
+                unitOfWork.WorkTimeRepository.Delete(workTime);
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.DeleteSuccess);

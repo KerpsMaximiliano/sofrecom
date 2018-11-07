@@ -96,5 +96,14 @@ namespace Sofco.Resources.Mails {
                 return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tarea.
+        /// </summary>
+        public static string Task {
+            get {
+                return ResourceManager.GetString("Task", resourceCulture);
+            }
+        }
     }
 }
