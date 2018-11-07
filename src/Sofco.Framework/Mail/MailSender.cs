@@ -191,7 +191,7 @@ namespace Sofco.Framework.Mail
 
             foreach (var msg in messages)
             {
-                if(msg.Subject == supportMailLogTitle) continue;
+                if(msg.Subject.Contains(supportMailLogTitle)) continue;
 
                 var logMail = new MimeMessage();
 
