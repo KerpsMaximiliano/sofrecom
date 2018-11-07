@@ -92,6 +92,11 @@ namespace Sofco.Service.Implementations.Common
             }
         }
 
+        public IList<AdvancementReturnForm> GetAdvancementReturnForms()
+        {
+            return unitOfWork.UtilsRepository.GetAdvancementReturnForms();
+        }
+
         public IEnumerable<Option> GetYears()
         {
             for (int i = 2018; i < 2099; i++)

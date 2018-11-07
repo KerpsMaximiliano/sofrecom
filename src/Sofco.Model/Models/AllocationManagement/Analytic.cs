@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
@@ -76,5 +77,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
         public ICollection<UserApprover> UserApprovers { get; set; }
+
+        public ICollection<Advancement> Advancements { get; set; }
     }
 }

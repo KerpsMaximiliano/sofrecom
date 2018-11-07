@@ -67,6 +67,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>User.resx</DependentUpon>
     </Compile>
+    <Compile Update="AdvancementAndRefund\Advancement.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Advancement.resx</DependentUpon>
+    </Compile>
     <Compile Update="AllocationManagement\Allocation.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -215,6 +220,10 @@
     <EmbeddedResource Update="Admin\User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>User.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AdvancementAndRefund\Advancement.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Advancement.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

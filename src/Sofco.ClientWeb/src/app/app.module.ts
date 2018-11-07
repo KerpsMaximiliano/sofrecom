@@ -40,7 +40,7 @@ import { SettingsService } from './services/admin/settings.service';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpServiceInterceptor } from 'app/services/common/httpServiceInterceptor';
 
-import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatepickerModule, BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { esLocale } from 'ngx-bootstrap/locale';
 import { defineLocale, TooltipModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -106,6 +106,7 @@ registerLocaleData(localeEs, 'es');
       deps: [AppSettingService],
       multi: true
     },
+    { provide: BsDatepickerConfig, useFactory: getDatepickerConfig },
     CryptographyService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpServiceInterceptor, multi: true },
@@ -119,4 +120,8 @@ export class AppModule { }
 
 export function appSettingFactory(service: AppSettingService) {
   return () => { return service.load(); };
+}
+
+export function getDatepickerConfig(): BsDatepickerConfig {
+  return Object.assign(new BsDatepickerConfig(), { containerClass: 'theme-dark-blue', showWeekNumbers: false });
 }

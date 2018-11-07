@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Models.Rrhh;
@@ -45,5 +46,7 @@ namespace Sofco.Domain.Models.Admin
         public ICollection<Sector> Sectors { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
+
+        public IList<Advancement> Advancements { get; set; }
     }
 }

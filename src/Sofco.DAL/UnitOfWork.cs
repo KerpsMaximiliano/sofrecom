@@ -4,6 +4,7 @@ using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
@@ -11,6 +12,7 @@ using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
+using Sofco.DAL.Repositories.AdvancementAndRefund;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
@@ -97,6 +99,12 @@ namespace Sofco.DAL
         private IWorkTimeRepository workTimeRepository;
         private IUserApproverRepository userApproverRepository;
         private IHolidayRepository holidayRepository;
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        private IAdvancementRepository advancementRepository;
 
         #endregion
 
@@ -187,7 +195,13 @@ namespace Sofco.DAL
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
-         
+
+        #region WorkTimeManagement
+
+        public IAdvancementRepository AdvancementRepository => advancementRepository ?? (advancementRepository = new AdvancementRepository(context));
+
+        #endregion
+
         public void Save()
         {
             context.SaveChanges();

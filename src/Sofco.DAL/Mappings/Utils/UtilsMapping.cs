@@ -66,6 +66,10 @@ namespace Sofco.DAL.Mappings.Utils
             builder.Entity<Area>().HasKey(_ => _.Id);
             builder.Entity<Area>().Property(_ => _.Text).HasMaxLength(500);
             builder.Entity<Area>().HasOne(x => x.ResponsableUser).WithMany(x => x.Areas).HasForeignKey(x => x.ResponsableUserId);
+
+            // Primary Key
+            builder.Entity<AdvancementReturnForm>().HasKey(_ => _.Id);
+            builder.Entity<AdvancementReturnForm>().Property(_ => _.Text).HasMaxLength(100);
         }
     }
 }

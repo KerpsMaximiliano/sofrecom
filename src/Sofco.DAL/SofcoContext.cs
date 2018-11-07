@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.DAL.Mappings.Admin;
+using Sofco.DAL.Mappings.AdvancementAndRefund;
 using Sofco.DAL.Mappings.AllocationManagement;
 using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Common;
@@ -7,6 +8,7 @@ using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
 using Sofco.DAL.Mappings.WorkTimeManagement;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
@@ -82,6 +84,10 @@ namespace Sofco.DAL
         public DbSet<LicenseHistory> LicenseHistories { get; set; }
         public DbSet<CloseDate> CloseDates { get; set; }
 
+        // Advancement and Refund
+        public DbSet<Advancement> Advancements { get; set; }
+        public DbSet<AdvancementDetail> AdvancementDetails { get; set; }
+
         // Common
         public DbSet<File> Files { get; set; }
 
@@ -103,6 +109,7 @@ namespace Sofco.DAL
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
+        public DbSet<AdvancementReturnForm> AdvancementReturnForms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -149,6 +156,7 @@ namespace Sofco.DAL
             builder.MapService();
             builder.MapProject();
             builder.MapCloseDate();
+            builder.MapAdvancement();
         }
     }
 }

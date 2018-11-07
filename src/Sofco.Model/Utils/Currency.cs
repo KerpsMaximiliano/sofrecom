@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Domain.Utils
@@ -12,5 +13,7 @@ namespace Sofco.Domain.Utils
         public string CrmDevelopmentId { get; set; }
 
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
+
+        public ICollection<Advancement> Advancements { get; set; }
     }
 }

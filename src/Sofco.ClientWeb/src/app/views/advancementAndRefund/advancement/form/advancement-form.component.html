@@ -1,0 +1,115 @@
+<form [formGroup]="form">
+
+    <div class="form-group" [ngClass]="validateProperty(form, 'userApplicantId')">
+        <label class="control-label"> Solicitante </label>
+        <ng-select [items]="users" bindValue="id" bindLabel="text" formControlName="userApplicantId"></ng-select>
+    </div>
+    
+    <div class="form-group" [ngClass]="validateProperty(form, 'analyticId')">
+        <label class="control-label"> Analitica </label>
+        <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Forma de cobro</label>
+                <div class="radio radio-success">
+                    <input value="1" type="radio" formControlName="type">
+                    <label> Cuenta Sueldo </label>
+                </div>
+            
+                <div class="radio radio-success">
+                    <input value="2" type="radio" formControlName="type">
+                    <label> Otros </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Tipo de Adelanto</label>
+                <div class="radio radio-success">
+                    <input value="1" type="radio" formControlName="paymentForm">
+                    <label> Sueldo </label>
+                </div>
+            
+                <div class="radio radio-success">
+                    <input value="2" type="radio" formControlName="paymentForm">
+                    <label> Viatico </label>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="validateProperty(form, 'startDateReturn')">
+                <label class="control-label">Fecha Aproximada de Devolución</label>
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="startDateReturn">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="validateProperty(form, 'advancementReturnFormId')">
+                <label class="control-label"> Forma de Devolución </label>
+                <ng-select [items]="advancementReturnForms" bindValue="id" bindLabel="text" formControlName="advancementReturnFormId"></ng-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="validateProperty(form, 'currencyId')">
+                <label class="control-label"> Moneda </label>
+                <ng-select [items]="currencies" bindValue="id" bindLabel="text" formControlName="currencyId"></ng-select>
+            </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="mode == 'viaticum'">
+            <button class="btn btn-success m-t-md">Agregar detalle <i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+
+    <h3>Detalles</h3>
+
+    <table class="table table-striped dataTable" role="grid">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
+                <td>{{ detail.controls.date.value | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ detail.controls.description.value }}</td>
+                <td>{{ detail.controls.ammount.value | currency: '$' }}</td>
+                <td class="text-center column-xs">
+                    <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail)"></button>
+                    <button class="btn btn-sm fa fa-trash btn-danger" *ngIf="detailForms.length > 1"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>   
+</form>
+
+<ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" [isSaveEnabled]="detailModalForm.valid">
+    <form [formGroup]="detailModalForm">   
+        <div class="form-group">
+            <label class="control-label">Fecha</label>
+            <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="date">
+        </div>
+
+        <div class="form-group" [ngClass]="validateProperty(detailModalForm, 'description')">
+            <label class="control-label">Concepto</label>
+            <input type="text" class="form-control" formControlName="description">
+        </div>
+
+        <div class="form-group" [ngClass]="validateProperty(detailModalForm, 'ammount')">
+            <label class="control-label">Monto</label>
+            <input type="number" decimalFormat class="form-control" formControlName="ammount">
+        </div>
+    </form>
+</ng2-modal> 

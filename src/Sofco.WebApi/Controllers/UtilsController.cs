@@ -74,5 +74,11 @@ namespace Sofco.WebApi.Controllers
         {
             return Ok(utilsService.GetUserDelegateType());
         }
+
+        [HttpGet("advancementReturnForms")]
+        public IActionResult GetAdvancementReturnForms()
+        {
+            return Ok(utilsService.GetAdvancementReturnForms());
+        }
     }
 }

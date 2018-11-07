@@ -1,0 +1,16 @@
+{
+    "advancementReturnFormNotFound": "Forma de Devolución no existe",
+    "advancementReturnFormRequired": "La forma de Devolución es requerida",
+    "ammountItemRequired": "El monto es requerido",
+    "analyticRequired": "La analítica es requerida",
+    "currencyNotFound": "La moneda es requerida",
+    "dateItemRequired": "La fecha es requerida",
+    "descriptionItemRequired": "El concepto es requerido",
+    "mustHaveOneDetail": "El adelanto de sueldo solo debe contener un item",
+    "nullModel": "Los datos del formulario son invalidos",
+    "paymentFormRequired": "La forma de cobro es requerida",
+    "startDateReturnRequired": "La fecha aproximada de devolución es requerida",
+    "typeRequired": "El tipo de adelanto es requerido",
+    "userApplicantRequired": "El solicitante es requerido",
+    "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente"
+}
