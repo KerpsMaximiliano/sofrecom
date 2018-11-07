@@ -868,6 +868,9 @@
 	"Between50And75": "> 50 and <75",
 	"Between75And99": "> 75 and <99",
 	"myActions": "My Actions",
+    "errors": "Errors",
+    "and": "and",
+    "date_to": "to",
 	"report": {
 		"title": "Report",
 		"solfacs": {
@@ -913,7 +916,8 @@
 			"totalResume": "Total summary",
 			"workingHours": "Working Hours",
 			"currentHoursToDate": "Hours to date",
-			"resumeLicense": "Not working"
+			"resumeLicense": "Not working",
+            "periodMessage": "Current period:"
 		},
 		"report": {
 			"title": "Estimated vs Consumed",

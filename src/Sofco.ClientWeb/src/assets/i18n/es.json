@@ -883,6 +883,7 @@
     "myActions": "Mis Acciones",
     "errors": "Errores",
     "and": "y",
+    "date_to": "al",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -930,8 +931,7 @@
             "workingHours": "Horas Laborales",
             "currentHoursToDate": "Horas a la fecha",
             "resumeLicense": "No laborable",
-            "periodMessage": "Las horas que se permiten cargar deben estar comprendidas entra el",
-            "actualPeriod": "(Periodo Actual)"
+            "periodMessage": "Período de carga vigente: "
         },
         "report": {
             "title": "Insumido vs Previsto",

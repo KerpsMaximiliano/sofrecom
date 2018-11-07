@@ -840,6 +840,10 @@
     "Between0And50":"> 0 et <50",
     "Between50And75":"> 50 et <75",
     "Between75And99":"> 75 et <99",
+	"myActions": "Mes actions",
+    "errors": "Erreurs",
+    "and": "et",
+    "date_to": "à",
     "report": {
         "title":"Rapport",
         "solfacs":{
@@ -885,7 +889,8 @@
             "totalResume":"Résumé total",
             "workingHours":"Heures de travail",
             "currentHoursToDate":"Heures à ce jour",
-            "resumeLicense":"Non ouvrable"
+            "resumeLicense":"Non ouvrable",
+            "periodMessage": "Période de chargement actuelle: "
         }, 
         "report":{
             "title":"Estimé vs Consumé",
