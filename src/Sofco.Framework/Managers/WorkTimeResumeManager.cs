@@ -24,7 +24,7 @@ namespace Sofco.Framework.Managers
             this.userData = userData;
         }
 
-        public WorkTimeResumeModel GetResume(List<WorkTimeCalendarModel> calendarModels, DateTime startDate, DateTime endDate)
+        public WorkTimeResumeModel GetResume(List<WorkTimeCalendarModel> calendarModels, DateTime startDateTime, DateTime endDateTime)
         {
             var result = new WorkTimeResumeModel
             {
@@ -37,22 +37,32 @@ namespace Sofco.Framework.Managers
 
             var maxHourPerDay = GetMaxHourPerDay();
 
-            while (startDate.Date <= endDate.Date)
+            var startDate = startDateTime.Date;
+
+            var endDate = endDateTime.Date;
+
+            var indexDate = startDate;
+
+            while (indexDate <= endDate)
             {
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
+                if (indexDate.DayOfWeek != DayOfWeek.Saturday && indexDate.DayOfWeek != DayOfWeek.Sunday)
                 {
                     result.BusinessHours += maxHourPerDay;
 
-                    if (startDate.Date <= DateTime.UtcNow.Date)
+                    if (indexDate <= DateTime.UtcNow.Date)
                     {
                         result.HoursUntilToday += maxHourPerDay;
                     }
                 }
 
-                startDate = startDate.AddDays(1);
+                indexDate = indexDate.AddDays(1);
             }
 
-            var holidays = unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month);
+            var holidays = unitOfWork.HolidayRepository.Get(startDate.Year, startDate.Month);
+
+            holidays.AddRange(unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month));
+
+            holidays = holidays.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
 
             if (holidays.Any())
             {
