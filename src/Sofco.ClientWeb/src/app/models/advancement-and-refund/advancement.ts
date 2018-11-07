@@ -14,6 +14,19 @@ export class Advancement extends FormGroup {
             currencyId: new FormControl(null, Validators.required),
         });
     }
+
+    getModel(){
+        return {
+            userApplicantId: this.controls.userApplicantId.value,
+            paymentForm: this.controls.paymentForm.value,
+            type: this.controls.type.value,
+            advancementReturnFormId: this.controls.advancementReturnFormId.value,
+            startDateReturn: this.controls.startDateReturn.value,
+            analyticId: this.controls.analyticId.value,
+            currencyId: this.controls.currencyId.value,
+            details: []
+        }
+    }
 }
 
 export class AdvancementDetail extends FormGroup {
@@ -31,5 +44,13 @@ export class AdvancementDetail extends FormGroup {
                 Validators.min(1)
             ])
         });
+    }
+
+    getModel(){
+        return {
+            date: this.controls.date.value,
+            description: this.controls.description.value,
+            ammount: this.controls.ammount.value,
+        }
     }
 }

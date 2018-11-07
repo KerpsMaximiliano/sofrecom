@@ -5,6 +5,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { UserService } from "app/services/admin/user.service";
 import { Advancement, AdvancementDetail } from "app/models/advancement-and-refund/advancement";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'advancement-form',
@@ -40,6 +41,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
 
     constructor(private utilsService: UtilsService, 
                 private analyticService: AnalyticService,
+                public i18nService: I18nService,
                 private userService: UserService){}
 
     ngOnInit(): void {
@@ -101,14 +103,36 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         this.addDetailModal.hide();
     }
 
-    validateProperty(form, property){
+    getClassProperty(form, property){
         if(form.controls[property].invalid && (form.controls[property].dirty || form.controls[property].touched)) return 'has-error';
         if(form.controls[property].valid && (form.controls[property].dirty || form.controls[property].touched)) return 'has-success';
+    }
+
+    hasErrors(form, property){
+        if(form.controls[property].invalid && (form.controls[property].dirty || form.controls[property].touched)){
+            return form.controls[property].errors;
+        }
+
+        return false;
+    }
+
+    hasError(form, property, validation){
+        return form.controls[property].errors[validation];
     }
 
     canSave(){
         if(this.form.valid && this.detailForms.every(x => x.valid)) return true;
         
         return false;
+    }
+
+    getModel(){
+        var advancement = this.form.getModel();
+        
+        this.detailForms.forEach(x => {
+            advancement.details.push(x.getModel());
+        });
+
+        return advancement;
     }
 }

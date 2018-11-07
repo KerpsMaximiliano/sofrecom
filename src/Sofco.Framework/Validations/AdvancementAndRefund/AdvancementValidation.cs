@@ -55,7 +55,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.CurrencyRequired);
             }
-            else if (unitOfWork.UtilsRepository.ExistCurrency(model.CurrencyId.Value))
+            else if (!unitOfWork.UtilsRepository.ExistCurrency(model.CurrencyId.Value))
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.CurrencyNotFound);
             }
@@ -98,7 +98,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AnalyticRequired);
             }
-            else if (unitOfWork.AnalyticRepository.Exist(model.AnalyticId.Value))
+            else if (!unitOfWork.AnalyticRepository.Exist(model.AnalyticId.Value))
             {
                 response.AddError(Resources.AllocationManagement.Analytic.NotFound);
             }
@@ -118,7 +118,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired);
             }
-            else if (unitOfWork.UtilsRepository.ExistAdvancementReturnForm(model.AdvancementReturnFormId.Value))
+            else if (!unitOfWork.UtilsRepository.ExistAdvancementReturnForm(model.AdvancementReturnFormId.Value))
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound);
             }

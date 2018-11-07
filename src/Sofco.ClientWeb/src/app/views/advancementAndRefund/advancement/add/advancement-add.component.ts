@@ -21,6 +21,15 @@ export class AdvancementAddComponent implements OnDestroy {
     }
 
     add(){
-        var model = {};
+        var model = this.form.getModel();
+
+        this.messageService.showLoading();
+
+        this.addSubscrip = this.advancementService.add(model).subscribe(response => {
+            this.messageService.closeLoading();
+        },
+        error => {
+            this.messageService.closeLoading();
+        });
     }
 }

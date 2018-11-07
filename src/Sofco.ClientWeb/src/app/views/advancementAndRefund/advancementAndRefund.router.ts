@@ -6,7 +6,7 @@ const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
     {
         path: "advancement",
         children: [
-            { path: "add", component: AdvancementAddComponent, canActivate: [AuthGuard] } 
+            { path: "add", component: AdvancementAddComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "ADD" } } 
         ]
     }
 ]

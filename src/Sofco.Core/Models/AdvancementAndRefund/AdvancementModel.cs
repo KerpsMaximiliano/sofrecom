@@ -31,7 +31,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             domain.PaymentForm = PaymentForm.GetValueOrDefault();
             domain.Type = Type.GetValueOrDefault();
             domain.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
-            domain.StartDateReturn = StartDateReturn.GetValueOrDefault();
+            domain.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
 
@@ -40,7 +40,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             foreach (var detail in Details)
             {
                 var item = new AdvancementDetail();
-                item.Date = detail.Date.GetValueOrDefault();
+                item.Date = detail.Date.GetValueOrDefault().Date;
                 item.Description = detail.Description;
                 item.Ammount = detail.Ammount.GetValueOrDefault();
 

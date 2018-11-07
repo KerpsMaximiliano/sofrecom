@@ -2,8 +2,11 @@
     "advancementReturnFormNotFound": "Forma de Devolución no existe",
     "advancementReturnFormRequired": "La forma de Devolución es requerida",
     "ammountItemRequired": "El monto es requerido",
+    "ammountItemMax": "El monto debe ser menor a 1.000.000",
+    "ammountItemMin": "El monto debe ser mayor a 1",
     "analyticRequired": "La analítica es requerida",
-    "currencyNotFound": "La moneda es requerida",
+    "currencyNotFound": "La moneda no existe",
+    "currencyRequired": "La moneda es requerida",
     "dateItemRequired": "La fecha es requerida",
     "descriptionItemRequired": "El concepto es requerido",
     "mustHaveOneDetail": "El adelanto de sueldo solo debe contener un item",
@@ -12,5 +15,6 @@
     "startDateReturnRequired": "La fecha aproximada de devolución es requerida",
     "typeRequired": "El tipo de adelanto es requerido",
     "userApplicantRequired": "El solicitante es requerido",
+    "descriptionItemMaxLength": "El concepto debe ser menor a 400 caracteres",
     "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente"
 }
