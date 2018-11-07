@@ -111,11 +111,19 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        this.searchModel.status = this.searchModel.status ? this.searchModel.status : 0;
+        var model = {
+            startDate: this.searchModel.startDate,
+            endDate: this.searchModel.endDate,
+            status: this.searchModel.status ? this.searchModel.status : 0,
+            clientId: this.searchModel.clientId,
+            managerId: this.searchModel.managerId,
+            analyticId: this.searchModel.analyticId,
+            employeeId: this.searchModel.employeeId
+        };
 
         this.messageService.showLoading();
 
-        this.searchSubscrip = this.worktimeService.search(this.searchModel).subscribe(response => {
+        this.searchSubscrip = this.worktimeService.search(model).subscribe(response => {
             this.data = response.data;
 
             this.initGrid();
