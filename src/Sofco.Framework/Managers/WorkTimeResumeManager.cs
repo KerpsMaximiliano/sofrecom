@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -15,9 +16,12 @@ namespace Sofco.Framework.Managers
 
         private readonly IUnitOfWork unitOfWork;
 
-        public WorkTimeResumeManager(IUnitOfWork unitOfWork)
+        private readonly IUserData userData;
+
+        public WorkTimeResumeManager(IUnitOfWork unitOfWork, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
+            this.userData = userData;
         }
 
         public WorkTimeResumeModel GetResume(List<WorkTimeCalendarModel> calendarModels, DateTime startDate, DateTime endDate)
@@ -56,6 +60,25 @@ namespace Sofco.Framework.Managers
             }
 
             return result;
+        }
+
+        public WorkTimeResumeModel GetCurrentPeriodResume()
+        {
+            var currentUserId = userData.GetCurrentUser().Id;
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+            var period = closeDates.GetPeriodIncludeDays();
+
+            var startDate = period.Item1;
+
+            var endDate = period.Item2;
+
+            var workTimes = unitOfWork.WorkTimeRepository.Get(startDate, endDate, currentUserId);
+
+            var calendars = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
+
+            return GetResume(calendars, startDate, endDate);
         }
 
         private int GetMaxHourPerDay()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -11,7 +12,9 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public WorkTimeResumeModel Resume { get; set; }
 
         public IList<Holiday> Holidays { get; set; }
-        public string PeriodStartDate { get; set; }
-        public string PeriodEndDate { get; set; }
+
+        public DateTime PeriodStartDate { get; set; }
+
+        public DateTime PeriodEndDate { get; set; }
     }
 }

@@ -47,9 +47,10 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   private textKey = 'text';
   private subscription: Subscription;
   private calendarEvents: any[] = new Array();
-  private calendarCurrentDateText = "";
 
   public model: any = {};
+  public periodStartDateText: string;
+  public periodEndDateText: string;
   public taskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
   public recentTaskModel: WorkTimeTaskModel = new WorkTimeTaskModel();
 
@@ -105,7 +106,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
   deleteTask(){
     this.subscription = this.worktimeService.delete(this.taskModel.id).subscribe(response => {
-      var taskToRemove = this.model.calendar.findIndex(item => item.id == this.taskModel.id);
+      const taskToRemove = this.model.calendar.findIndex(item => item.id == this.taskModel.id);
       this.model.calendar.splice(taskToRemove, 1);
       this.updateCalendarEvents();
 
@@ -169,16 +170,11 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   viewRenderHandler(view, element) {
-    const moment = $("#calendar").fullCalendar('getDate');
-
-    this.calendarCurrentDateText = moment.format('YYYY-MM-DD');
-
     this.getModel();
   }
 
   eventClickHandler(calEvent) {
     const task = this.model.calendar.find(x => x.id == calEvent.id);
- 
     const cloned = Object.assign({}, task);
     this.editTask(cloned);
   }
@@ -213,7 +209,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   eventDragInit() {
-      const self = this;
       $('#external-events div.external-event').each(function() {
         $(this).data('event', {
             id: 0,
@@ -258,7 +253,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   }
 
   getModel() {
-    const calendarDate = this.calendarCurrentDateText;
+    const moment = $("#calendar").fullCalendar('getDate');
+
+    const calendarDate = moment.utc().format('YYYY-MM-DD');
 
     this.messageService.showLoading();
 
@@ -276,8 +273,9 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.calendarEvents = this.translateToEvent(this.model.calendar);
     $('#calendar').fullCalendar('removeEventSources', null);
     $('#calendar').fullCalendar('addEventSource', this.calendarEvents);
-
     this.addEmptyTasks();
+    this.periodStartDateText = moment(this.model.periodStartDate).format('DD/MM/YYYY');
+    this.periodEndDateText = moment(this.model.periodEndDate).format('DD/MM/YYYY');
   }
 
   sendHours() {
@@ -442,40 +440,37 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   addEmptyTasks(){
     $('.task-empty-add').remove();
 
-    var now = new Date();
-    var startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-    var endDate = new Date(now.getFullYear(), now.getMonth()+1, 0);
+    let startDate = moment(this.model.periodStartDate);
+    const endDate = moment(this.model.periodEndDate).add(1, 'day');
 
-    var day = 1;
-    while(startDate <= endDate){
-      var date = moment(startDate);
+    while(startDate.isBefore(endDate)){
+      const date = startDate;
 
-      var events = this.calendarEvents.filter(x => moment(x.start).diff(date, 'days') == 0);
+      const dataDateKey = `.fc-day-top[data-date='${date.utc().format('YYYY-MM-DD')}']`;
+
+      const events = this.calendarEvents.filter(x => moment(x.start).diff(date, 'days') == 0);
 
       if(events.length == 0){
-        $(`.fc-day-top[data-date='${date.format('YYYY-MM-DD')}']`).append(this.getTemplateAddEmptyTask())
-      }
-      else{
-        var hoursSum = 0;
+        $(dataDateKey).append(this.getTemplateAddEmptyTask());
+      } else {
+        let hoursSum = 0;
 
         events.forEach(item => {
           hoursSum = hoursSum + item.hours;
         });
 
         if(hoursSum < 8){
-          $(`.fc-day-top[data-date='${date.format('YYYY-MM-DD')}']`).append(this.getTemplateAddEmptyTask())
+          $(dataDateKey).append(this.getTemplateAddEmptyTask());
         }
       }
 
-      day++;
-      var nextDate = new Date(now.getFullYear(), now.getMonth(), day);
-      startDate = nextDate;
+      startDate = date.add(1, 'd');
     }
 
-    var self = this;
-    var addEmptyTaskOnClick = function(){
+    const self = this;
+    const addEmptyTaskOnClick = function(){
       self.showNewModal(this.parentElement.getAttribute('data-date'));
-    }
+    };
 
     $('.task-empty-add').bind('click', addEmptyTaskOnClick);
   }
@@ -483,7 +478,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   getTemplateAddEmptyTask(){
     return `<div class="label label-info task-empty-add">
               <i class="fa fa-plus"></i>
-            </div>`
+            </div>`;
   }
 
   setTaskEvent(item: any) {

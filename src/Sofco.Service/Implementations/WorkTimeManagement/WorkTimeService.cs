@@ -84,20 +84,18 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 result.Data.Calendar = calendars;
 
-                var resumeModel = workTimeResumeManger.GetResume(calendars, startDate, endDate);
-
                 var dateUtc = date.ToUniversalTime();
 
                 result.Data.Holidays = unitOfWork.HolidayRepository.Get(dateUtc.Year, dateUtc.Month);
 
-                result.Data.Resume = resumeModel;
+                result.Data.Resume = workTimeResumeManger.GetCurrentPeriodResume();
 
                 var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
                 var period = closeDates.GetPeriodIncludeDays();
 
-                result.Data.PeriodStartDate = period.Item1.ToString("dd/MM/yyyy");
-                result.Data.PeriodEndDate = period.Item2.ToString("dd/MM/yyyy");
+                result.Data.PeriodStartDate = period.Item1;
+                result.Data.PeriodEndDate = period.Item2;
 
                 return result;
             }
