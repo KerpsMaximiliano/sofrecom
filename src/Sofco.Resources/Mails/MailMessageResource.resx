@@ -356,6 +356,9 @@ Horas: {3}
 &lt;br/&gt;&lt;br/&gt;
 Motivo: {4}
 &lt;br/&gt;&lt;br/&gt;
-Recurso: {5}&lt;br/&gt;</value>
+Recurso: {5}
+&lt;br/&gt;&lt;br/&gt;
+Comentario: {6}
+&lt;br/&gt;</value>
   </data>
 </root>

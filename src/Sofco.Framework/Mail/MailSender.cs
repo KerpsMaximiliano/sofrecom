@@ -141,7 +141,11 @@ namespace Sofco.Framework.Mail
 
         private bool IsDevelopment()
         {
+#if DEBUG
+            return true;
+#else
             return environment.IsDevelopment();
+#endif
         }
 
         private void SendMessages(List<MimeMessage> messages)
