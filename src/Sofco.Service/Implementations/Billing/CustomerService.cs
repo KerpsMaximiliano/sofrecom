@@ -22,7 +22,6 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<CustomerService> logger;
         private readonly IUnitOfWork unitOfWork;
         private readonly ICustomerUpdateJobService customerUpdateJobService;
-        private readonly ICrmHttpClient crmHttpClient;
 
         public CustomerService(ICustomerData customerData, 
             ISessionManager sessionManager,
@@ -38,13 +37,10 @@ namespace Sofco.Service.Implementations.Billing
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.customerUpdateJobService = customerUpdateJobService;
-            this.crmHttpClient = crmHttpClient;
         }
 
         public Response<List<Customer>> GetCustomers()
         {
-            crmHttpClient.GetAccessToken();
-
             var response = new Response<List<Customer>> { Data = new List<Customer>() };
 
             var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
