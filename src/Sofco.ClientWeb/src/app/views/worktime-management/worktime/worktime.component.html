@@ -140,13 +140,17 @@
                 </div>
                 <div class="col-md-4">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours"/>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>{{'workTimeManagement.comments' | translate }}</label>
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label>{{'workTimeManagement.reference' | translate }}</label>
+            <input class="form-control" name="reference" [(ngModel)]="taskModel.reference" placeholder="{{'workTimeManagement.reference' | translate }}" maxlength="20"/>
         </div>
     </form>
 </ng2-modal>

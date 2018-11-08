@@ -902,6 +902,7 @@
 		"status": "State",
 		"monthYear": "Month-Year",
 		"month": "Month",
+		"reference": "Reference",
 		"workTime": {
 			"title": "Load Hours",
 			"calendar": "Calendar",

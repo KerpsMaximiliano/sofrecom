@@ -916,6 +916,7 @@
         "status": "Estado",
         "monthYear": "Mes-Año",
         "month": "Periodo",
+        "reference": "Referencia",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",

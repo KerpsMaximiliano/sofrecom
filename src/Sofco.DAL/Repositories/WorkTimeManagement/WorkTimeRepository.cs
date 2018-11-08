@@ -247,6 +247,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             stored.Hours  = workTime.Hours;
             stored.UserComment  = workTime.UserComment;
             stored.Status  = workTime.Status;
+            stored.Reference = workTime.Reference;
         }
     }
 }
