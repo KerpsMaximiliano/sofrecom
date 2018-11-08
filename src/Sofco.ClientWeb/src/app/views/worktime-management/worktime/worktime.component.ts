@@ -610,7 +610,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     for (const item of dayEvents) { totalHours += item.hours; }
 
     if (totalHours > this.appSetting.WorkingHoursPerDaysMax) {
-      this.messageService.showErrorByFolder("workTimeManagement/workTime", "hoursMaxError?" + this.appSetting.WorkingHoursPerDaysMax);
+      this.messageService.showErrorByFolder("workTimeManagement/workTime", "hoursMaxError");
       (<any>$('#calendar')).fullCalendar('removeEvents', function(evt) { return evt.id === 0; });
 
       this.editModal.resetButtons();

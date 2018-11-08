@@ -12,7 +12,7 @@
     "approverAdded": "Autorizador agregado exitosamente",
     "approverDeleted": "Autorizador eliminado exitosamente",
     "userCommentMaxLengthError": "El comentario excede los 500 carácteres.",
-    "hoursMaxError": "La suma total de horas supera lo establecido de {0} horas por dia.",
+    "hoursMaxError": "La suma total de horas supera lo establecido al total de horas por día",
     "approvedSuccess": "Horas aprobadas correctamente",
     "workTimeNotFound": "Horas no encontradas",
     "cannotChangeStatus": "No se puede cambiar el estado",

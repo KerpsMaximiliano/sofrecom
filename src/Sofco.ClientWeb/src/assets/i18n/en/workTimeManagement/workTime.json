@@ -12,7 +12,7 @@
 	"approverAdded": "Authorizer successfully added",
 	"approverDeleted": "Authorizer successfully removed",
 	"userCommentMaxLengthError": "The comment exceeds 500 characters.",
-	"hoursMaxError": "The total sum of hours exceeds the established time of {0} hours per day.",
+	"hoursMaxError": "The total sum of hours exceeds the established time of hours per day",
 	"approvedSuccess": "Approved hours correctly",
 	"workTimeNotFound": "Hours not found",
 	"cannotChangeStatus": "Unable to change status",
