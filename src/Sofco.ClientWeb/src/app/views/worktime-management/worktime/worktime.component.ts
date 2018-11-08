@@ -682,5 +682,6 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     });
 
     this.updateLocalStorage();
+    this.messageService.succes('ADMIN.settings.saveSuccess', {timeOut: 1000});
   }
 }
