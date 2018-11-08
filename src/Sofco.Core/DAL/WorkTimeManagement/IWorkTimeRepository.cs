@@ -41,5 +41,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void InsertBulk(IList<WorkTime> workTimesToAdd);
 
         void SendManagerHours(int id);
+
+        List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Validations;
 using Sofco.Domain;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -58,16 +60,32 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
         {
             var allocations = unitOfWork.AllocationRepository.GetByEmployee(model.EmployeeId);
 
-            var modelDate = new DateTime(model.Date.Year, model.Date.Month, 1);
-
-            var valid = allocations.Any(s => s.AnalyticId == model.AnalyticId
-                                             && s.StartDate.Date == modelDate
-                                             && model.Date.Date <= s.ReleaseDate.Date
-                                             && s.Percentage > 0);
-
-            if (!valid)
+            if(!ValidateAllocation(model.Date, model.AnalyticId, allocations.ToList()))
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.InvalidAllocationAssignment);
+            }
+        }
+
+        public void ValidateAllocations(Response response, List<WorkTime> workTimes)
+        {
+            if (!workTimes.Any())
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.NoPendingHours);
+                return;
+            }
+
+            var employeeId = workTimes.First().EmployeeId;
+
+            var allocations = unitOfWork.AllocationRepository.GetByEmployee(employeeId);
+
+            foreach (var workTime in workTimes)
+            {
+                if(response.HasErrors()) continue;
+
+                if (!ValidateAllocation(workTime.Date, workTime.AnalyticId, allocations.ToList()))
+                {
+                    response.AddError(Resources.WorkTimeManagement.WorkTime.InvalidAllocationAssignment);
+                }
             }
         }
 
@@ -122,6 +140,17 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
             {
                 response.AddError(Resources.WorkTimeManagement.WorkTime.CannotDelete);
             }
+        }
+
+        private bool ValidateAllocation(DateTime workTimeDate, int analyticId, List<Allocation> allocations)
+        {
+            var modelDate = new DateTime(workTimeDate.Year, workTimeDate.Month, 1);
+
+            var valid = allocations.Any(s => s.AnalyticId == analyticId
+                                             && s.StartDate.Date == modelDate
+                                             && workTimeDate.Date <= s.ReleaseDate.Date
+                                             && s.Percentage > 0);
+            return valid;
         }
     }
 }

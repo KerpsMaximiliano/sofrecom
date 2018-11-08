@@ -40,5 +40,6 @@
     "importEmployeeWithLicense": "Resource with a loaded license",
     "importUserWithEmailNull": "The resource does not have mail. Communicate with gaps@sofrecom.com.ar",
     "fileEmpty": "The imported file does not contain records",
-    "invalidAllocationAssignment": "El recurso no esta asignado a la analitica seleccionada en el periodo vigente."
+	"invalidAllocationAssignment": "Resource not assigned in selected analytic at the current period",
+	"noPendingHours": "Pending hours not found"
 }

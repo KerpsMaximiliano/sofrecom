@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Models.WorkTimeManagement;
+﻿using System.Collections.Generic;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -13,5 +14,7 @@ namespace Sofco.Core.Validations
         void ValidateHours(Response response, WorkTimeAddModel model);
 
         void ValidateAllocations(Response response, WorkTimeAddModel model);
+
+        void ValidateAllocations(Response response, List<WorkTime> workTimes);
     }
 }

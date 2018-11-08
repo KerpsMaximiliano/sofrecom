@@ -205,6 +205,15 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid}");
         }
 
+        public List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId)
+        {
+            return context.WorkTimes
+                .Include(x => x.Task)
+                .Where(s => s.EmployeeId == employeeId
+                            && s.Status == WorkTimeStatus.Draft)
+                .ToList();
+        }
+
         public decimal GetPendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes

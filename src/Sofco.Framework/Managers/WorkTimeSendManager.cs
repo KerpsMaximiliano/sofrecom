@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
+using Sofco.Core.Validations;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Managers
@@ -20,18 +22,25 @@ namespace Sofco.Framework.Managers
 
         private readonly IWorkTimeSendMailManager workTimeSendMailManager;
 
-        public WorkTimeSendManager(IWorkTimeSendMailManager workTimeSendMailManager, IUserData userData, IUnitOfWork unitOfWork, IEmployeeData employeeData, ILogMailer<WorkTimeSendManager> logger)
+        private readonly IWorkTimeValidation workTimeValidation;
+
+        public WorkTimeSendManager(IWorkTimeSendMailManager workTimeSendMailManager, IUserData userData, IUnitOfWork unitOfWork, IEmployeeData employeeData, ILogMailer<WorkTimeSendManager> logger, IWorkTimeValidation workTimeValidation)
         {
             this.workTimeSendMailManager = workTimeSendMailManager;
             this.userData = userData;
             this.unitOfWork = unitOfWork;
             this.employeeData = employeeData;
             this.logger = logger;
+            this.workTimeValidation = workTimeValidation;
         }
 
         public Response Send()
         {
-            var response = new Response();
+            var response = Validate();
+            if (response.HasErrors())
+            {
+                return response;
+            }
 
             var isManager = unitOfWork.UserRepository.HasManagerGroup(userData.GetCurrentUser().UserName);
 
@@ -60,6 +69,24 @@ namespace Sofco.Framework.Managers
             {
                 workTimeSendMailManager.SendEmail();
             }
+
+            return response;
+        }
+
+        private Response Validate()
+        {
+            var response = new Response();
+
+            var pendingWorkTimes =
+                unitOfWork.WorkTimeRepository.GetWorkTimeDraftByEmployeeId(employeeData.GetCurrentEmployee().Id);
+
+            if (!pendingWorkTimes.Any())
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.NoPendingHours);
+                return response;
+            }
+
+            workTimeValidation.ValidateAllocations(response, pendingWorkTimes);
 
             return response;
         }

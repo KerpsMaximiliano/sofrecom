@@ -252,4 +252,7 @@
   <data name="StartDateRequired" xml:space="preserve">
     <value>workTimeManagement/workTime.startDateRequired</value>
   </data>
+  <data name="NoPendingHours" xml:space="preserve">
+    <value>workTimeManagement/workTime.noPendingHours</value>
+  </data>
 </root>
