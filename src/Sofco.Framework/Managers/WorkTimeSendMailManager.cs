@@ -35,11 +35,11 @@ namespace Sofco.Framework.Managers
             this.logger = logger;
         }
 
-        public void SendEmail()
+        public void SendEmail(List<WorkTime> workTimes)
         {
             try
             {
-                var mails = GetMails();
+                var mails = GetMails(workTimes);
 
                 if(!mails.Any()) return;
 
@@ -51,7 +51,7 @@ namespace Sofco.Framework.Managers
             }
         }
 
-        protected List<IMailData> GetMails()
+        protected List<IMailData> GetMails(List<WorkTime> workTimes)
         {
             var currentEmployee = employeeData.GetCurrentEmployee();
 
@@ -66,8 +66,6 @@ namespace Sofco.Framework.Managers
             var analytics = unitOfWork.AnalyticRepository.GetByAllocations(currentEmployee.Id, dateFrom, dateTo);
 
             if (!analytics.Any()) return new List<IMailData>();
-
-            var workTimes = unitOfWork.WorkTimeRepository.GetWorkTimePendingHoursByEmployeeId(currentEmployee.Id);
 
             var mails = new List<IMailData>();
 

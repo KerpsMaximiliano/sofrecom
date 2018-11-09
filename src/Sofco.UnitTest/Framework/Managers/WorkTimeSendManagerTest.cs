@@ -113,7 +113,7 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
             workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
 
-            workTimeSendMailManagerMock.Verify(s => s.SendEmail(), Times.Once);
+            workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Once);
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Never);
             workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Once);
 
-            workTimeSendMailManagerMock.Verify(s => s.SendEmail(), Times.Never);
+            workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
             workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
 
-            workTimeSendMailManagerMock.Verify(s => s.SendEmail(), Times.Never);
+            workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }
     }
 }

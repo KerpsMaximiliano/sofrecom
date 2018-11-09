@@ -29,7 +29,7 @@ namespace Sofco.WebApi.Controllers.Billing
         private readonly ISessionManager sessionManager;
 
         public PurchaseOrderController(
-            IPurchaseOrderService purchaseOrderService, 
+            IPurchaseOrderService purchaseOrderService,
             IFileService fileService,
             IPurchaseOrderStatusService purchaseOrderStatusService,
             IPurchaseOrderFileService purchaseOrderFileService,

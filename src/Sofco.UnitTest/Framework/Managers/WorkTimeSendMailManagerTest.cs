@@ -88,9 +88,6 @@ namespace Sofco.UnitTest.Framework.Managers
 
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
 
-            workTimeRepositoryMock.Setup(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId))
-                .Returns(GetWorkTimes());
-
             unitOfWorkMock.SetupGet(s => s.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
 
             employeeDataMock.Setup(s => s.GetCurrentEmployee()).Returns(new Employee
@@ -156,15 +153,15 @@ namespace Sofco.UnitTest.Framework.Managers
         [Test]
         public void ShouldPassSendEmail()
         {
-            sut.SendEmail();
+            var workTimes = GetWorkTimes();
+
+            sut.SendEmail(workTimes);
 
             employeeDataMock.Verify(s => s.GetCurrentEmployee(), Times.Once);
 
             closeDateRepositoryMock.Verify(s => s.GetBeforeCurrentAndNext(), Times.Once);
 
             analyticRepositoryMock.Verify(s => s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()));
-
-            workTimeRepositoryMock.Verify(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId), Times.Once);
 
             mailSenderMock.Verify(s => s.Send(It.IsAny<List<IMailData>>()), Times.Once);
         }
@@ -172,11 +169,13 @@ namespace Sofco.UnitTest.Framework.Managers
         [Test]
         public void ShouldFailSendEmail()
         {
+            var workTimes = GetWorkTimes();
+
             analyticRepositoryMock.Setup(s =>
                     s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(new List<Analytic>());
 
-            sut.SendEmail();
+            sut.SendEmail(workTimes);
 
             employeeDataMock.Verify(s => s.GetCurrentEmployee(), Times.Once);
 
@@ -184,18 +183,18 @@ namespace Sofco.UnitTest.Framework.Managers
 
             analyticRepositoryMock.Verify(s => s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()));
 
-            workTimeRepositoryMock.Verify(s => s.GetWorkTimePendingHoursByEmployeeId(ValidEmployeeId), Times.Never);
-
             mailSenderMock.Verify(s => s.Send(It.IsAny<List<IMailData>>()), Times.Never);
         }
 
         [Test]
         public void ShouldPassGetMails()
         {
+            var workTimes = GetWorkTimes();
+
             var testableSut = new WorkTimeSendMailManagerTestable(mailSenderMock.Object,
                 employeeDataMock.Object, unitOfWorkMock.Object, loggerMock.Object);
 
-            var actual = testableSut.GetMails();
+            var actual = testableSut.GetMails(workTimes);
 
             Assert.IsNotEmpty(actual);
 
@@ -209,9 +208,9 @@ namespace Sofco.UnitTest.Framework.Managers
         {
         }
 
-        internal new List<IMailData> GetMails()
+        internal new List<IMailData> GetMails(List<WorkTime> workTimes)
         {
-            return base.GetMails();
+            return base.GetMails(workTimes);
         }
     }
 }

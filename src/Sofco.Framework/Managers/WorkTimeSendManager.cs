@@ -44,10 +44,12 @@ namespace Sofco.Framework.Managers
 
             var isManager = unitOfWork.UserRepository.HasManagerGroup(userData.GetCurrentUser().UserName);
 
+            var currentEmployeeId = employeeData.GetCurrentEmployee().Id;
+
+            var draftWorkTimes = unitOfWork.WorkTimeRepository.GetWorkTimeDraftByEmployeeId(currentEmployeeId);
+
             try
             {
-                var currentEmployeeId = employeeData.GetCurrentEmployee().Id;
-
                 if (isManager)
                 {
                     unitOfWork.WorkTimeRepository.SendManagerHours(currentEmployeeId);
@@ -67,7 +69,7 @@ namespace Sofco.Framework.Managers
 
             if (!response.HasErrors() && !isManager)
             {
-                workTimeSendMailManager.SendEmail();
+                workTimeSendMailManager.SendEmail(draftWorkTimes);
             }
 
             return response;
