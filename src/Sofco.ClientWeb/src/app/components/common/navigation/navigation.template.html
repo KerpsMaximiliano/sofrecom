@@ -86,7 +86,7 @@
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('profile')}">
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA') && !isExternal"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/profile/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('advancement')}" *ngIf="menuService.hasFunctionality('ADVAN', 'ADD')"><a [routerLink]="['/advancementAndRefund/advancement/add']">{{'advancement.addTitle' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('advancement')}" *ngIf="menuService.hasFunctionality('ADVAN', 'ADD')"><a [routerLink]="['/profile/advancement/add']">{{'advancement.addTitle' | translate }}</a></li>
         </ul>
       </li>
 

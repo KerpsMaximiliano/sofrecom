@@ -20,15 +20,15 @@ import { AdvancementService } from "app/services/advancement-and-refund/advancem
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { UtilsService } from "app/services/common/utils.service";
 import { UserService } from "app/services/admin/user.service";
-
+ 
 @NgModule({
-    declarations: [AdvancementAddComponent, AdvancementFormComponent],
+    declarations: [],
 
     imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                     TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, 
                     NgSelectModule, AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule],
 
-    providers   : [AdvancementService, AnalyticService, UtilsService, UserService],
+    providers   : [AdvancementService],
 
     exports     : []
 })

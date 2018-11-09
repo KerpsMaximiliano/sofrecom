@@ -50,7 +50,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     var worktime = BuildWorkTime(license, startDate, user);
 
                     worktime.AnalyticId = analyticBank.Id;
-                    worktime.Hours = 8;
+                    worktime.Hours = license.Employee.BusinessHours;
 
                     unitOfWork.WorkTimeRepository.Insert(worktime);
                 }
@@ -61,7 +61,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         var worktime = BuildWorkTime(license, startDate, user);
 
                         worktime.AnalyticId = analyticBank.Id;
-                        worktime.Hours = 8;
+                        worktime.Hours = license.Employee.BusinessHours;
 
                         unitOfWork.WorkTimeRepository.Insert(worktime);
                     }
@@ -74,7 +74,7 @@ namespace Sofco.Service.Implementations.Rrhh
                                 var worktime = BuildWorkTime(license, startDate, user);
 
                                 worktime.AnalyticId = allocation.AnalyticId;
-                                worktime.Hours = (8 * allocation.Percentage) / 100;
+                                worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
 
                                 unitOfWork.WorkTimeRepository.Insert(worktime);
                             }

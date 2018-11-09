@@ -76,11 +76,11 @@ export const ROUTES:Routes = [
     loadChildren: 'app/views/worktime-management/worktime-management.module#WorkTimeManagementModule'
   },
 
-  {
-    path: 'advancementAndRefund', 
-    component: BasicLayoutComponent,
-    loadChildren: 'app/views/advancementAndRefund/advancementAndRefund.module#AdvancementAndRefundModule'
-  },
+  // {
+  //   path: 'advancementAndRefund', 
+  //   component: BasicLayoutComponent,
+  //   loadChildren: 'app/views/advancementAndRefund/advancementAndRefund.module#AdvancementAndRefundModule'
+  // },
 
   // Handle all other routes
   { path: '**',  redirectTo: 'inicio' }
