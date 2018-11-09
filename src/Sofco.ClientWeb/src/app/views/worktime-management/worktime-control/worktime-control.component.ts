@@ -49,7 +49,6 @@ export class WorkTimeControlComponent implements OnDestroy  {
       this.getCustomers();
       this.initServiceControl();
       this.initControls();
-      this.getData();
     }
 
     getCustomers() {

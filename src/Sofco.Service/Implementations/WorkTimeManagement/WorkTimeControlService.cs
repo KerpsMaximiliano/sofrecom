@@ -58,6 +58,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
+            resumeModel.HoursApproved = resources.Sum(s => s.ApprovedHours);
+
             return result;
         }
 
