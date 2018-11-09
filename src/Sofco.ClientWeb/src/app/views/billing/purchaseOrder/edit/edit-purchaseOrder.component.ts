@@ -82,7 +82,7 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                 if(this.form.model.status != PurchaseOrderStatus.Draft 
                     && this.form.model.status != PurchaseOrderStatus.Reject){
                     $('input[type=file]').removeAttr('disabled');
-                    this.form.isReadOnly = true;
+                    this.form.isReadOnly = true; 
                 }
                 this.messageService.closeLoading();
             },
