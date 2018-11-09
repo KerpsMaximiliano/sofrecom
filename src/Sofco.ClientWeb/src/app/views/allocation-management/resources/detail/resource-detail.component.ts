@@ -223,6 +223,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     getProfileHistories() {
         this.getSubscrip = this.employeeProfileHistoryService.getByEmployeeNumber(this.model.employeeNumber).subscribe(response => {
             this.profileHistories = this.mapProfileHistories(response.data);
+
+            var params = { selector: "#profileHistoryTable" };
+            this.dataTableService.initialize(params);
         });
     }
 

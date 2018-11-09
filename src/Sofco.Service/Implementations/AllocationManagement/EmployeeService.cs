@@ -18,6 +18,7 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
+using Sofco.Framework.Helpers;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -238,7 +239,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response();
 
-            EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, id);
+            var stored = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
             EmployeeValidationHelper.ValidateBillingPercentage(response, model);
 
@@ -260,6 +261,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.AllocationManagement.Employee.BusinessHoursUpdated);
+                SaveProfileHistory(stored, employee);
             }
             catch (Exception e)
             {
@@ -268,6 +270,49 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             
             return response;
+        }
+
+        private void SaveProfileHistory(Employee stored, Employee employee)
+        {
+            var fields = GetFieldToCompare();
+
+            var modifiedFields = ElementComparerHelper.CompareModification(employee, stored, fields.ToArray());
+
+            if (modifiedFields.Any())
+            {
+                unitOfWork.EmployeeProfileHistoryRepository.Insert(CreateProfileHistory(stored, employee, modifiedFields));
+                unitOfWork.Save();
+            }
+        }
+
+        private EmployeeProfileHistory CreateProfileHistory(Employee current, Employee updated, string[] modifiedFields)
+        {
+            var currentData = JsonSerializeHelper.Serialize(current);
+            var updateData = JsonSerializeHelper.Serialize(updated);
+            var modifiedFieldsData = JsonSerializeHelper.Serialize(modifiedFields);
+
+            return new EmployeeProfileHistory
+            {
+                Created = DateTime.UtcNow,
+                EmployeeNumber = current.EmployeeNumber,
+                EmployeeData = updateData,
+                EmployeePreviousData = currentData,
+                ModifiedFields = modifiedFieldsData
+            };
+        }
+
+        private List<string> GetFieldToCompare()
+        {
+            return new List<string>
+            {
+                nameof(Employee.BusinessHours),
+                nameof(Employee.BusinessHoursDescription),
+                nameof(Employee.OfficeAddress),
+                nameof(Employee.HolidaysPendingByLaw),
+                nameof(Employee.ManagerId),
+                nameof(Employee.BillingPercentage),
+                nameof(Employee.HolidaysPending)
+            };
         }
 
         private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)

@@ -98,11 +98,11 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Estado.
+        ///   Busca una cadena traducida similar a Referencia.
         /// </summary>
-        public static string Status {
+        public static string Reference {
             get {
-                return ResourceManager.GetString("Status", resourceCulture);
+                return ResourceManager.GetString("Reference", resourceCulture);
             }
         }
         
