@@ -4,7 +4,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class WorkTimeControlParams
     {
-        public Guid? ServiceId { get; set; }
+        public int? AnalyticId { get; set; }
 
         public DateTime StartDate { get; set; }
 

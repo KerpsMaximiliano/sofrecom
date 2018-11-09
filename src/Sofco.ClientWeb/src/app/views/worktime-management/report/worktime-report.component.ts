@@ -6,7 +6,6 @@ import { WorktimeService } from "../../../services/worktime-management/worktime.
 import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
-import { CustomerService } from "../../../services/billing/customer.service";
 import { RrhhService } from "app/services/human-resources/rrhh.service";
 import * as FileSaver from "file-saver";
 
@@ -27,7 +26,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
-    public customers: any[] = new Array<any>();
     public months: any[] = new Array<any>();
     public years: any[] = new Array<any>();
     public managers: any[] = new Array<any>();
@@ -40,14 +38,12 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
     getAnalyticSubscrip: Subscription;
-    getCustomerSubscrip: Subscription;
     getMonthsSubscrip: Subscription;
     getYearsSubscrip: Subscription;
     getManagersSubscrip: Subscription;
 
     public searchModel = {
         closeMonthId: 0,
-        clientId: 0,
         managerId: 0,
         analyticId: 0,
         employeeId: 0,
@@ -59,25 +55,20 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         private utilsService: UtilsService,
         private analyticService: AnalyticService,
         private rrhhService: RrhhService,
-        private customerService: CustomerService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService){}
 
     ngOnInit(): void {
-        this.getCustomers();
         this.getMonths();
         this.getResources();
         this.getManagers();
+        this.getAnalytics();
 
-        var data = JSON.parse(sessionStorage.getItem('lastWorktimeReportQuery'));
+        const data = JSON.parse(sessionStorage.getItem('lastWorktimeReportQuery'));
 
         if(data){
             this.searchModel = data;
             this.search();
-
-            if(data.clientId && data.clientId != ''){
-                this.getAnalytics();
-            }
         }
     }
 
@@ -85,7 +76,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
         if(this.getResourcesSubscrip) this.getResourcesSubscrip.unsubscribe();
         if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
-        if(this.getCustomerSubscrip) this.getCustomerSubscrip.unsubscribe();
         if(this.getMonthsSubscrip) this.getMonthsSubscrip.unsubscribe();
         if(this.getYearsSubscrip) this.getYearsSubscrip.unsubscribe();
         if(this.getManagersSubscrip) this.getManagersSubscrip.unsubscribe();
@@ -108,16 +98,10 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getClientId(this.searchModel.clientId).subscribe(
-            data => {
-                this.analytics = data;
+        this.getAnalyticSubscrip = this.analyticService.getByManager().subscribe(
+            res => {
+                this.analytics = res.data;
             });
-    }
-
-    getCustomers(){
-        this.getCustomerSubscrip = this.customerService.getOptions().subscribe(res => {
-            this.customers = res.data;
-        });
     }
 
     search(){
@@ -125,7 +109,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.gridIsVisible = false;
         this.isMissingData = false;
 
-        if(this.searchModel.closeMonthId > 0 && this.searchModel.clientId == 0 && this.searchModel.managerId == 0 && 
+        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId == 0 && 
            this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
             this.exportTigerVisible = true;
             this.searchModel.exportTigerVisible = true;
@@ -221,13 +205,12 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         }
         else{
             $("#search-icon2").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
-        } 
+        }
     }
-    
+
     clean(){
         this.searchModel = {
             closeMonthId: 0,
-            clientId: 0,
             managerId: 0,
             analyticId: 0,
             employeeId: 0,

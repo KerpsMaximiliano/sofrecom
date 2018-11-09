@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Domain.Models.Admin;
@@ -23,7 +24,9 @@ namespace Sofco.Framework.Managers
 
         private readonly IWorkTimeApproverDelegateManager workTimeApproverDelegateManager;
 
-        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager, IWorkTimeApproverDelegateManager workTimeApproverDelegateManager)
+        private readonly IUserData userData;
+
+        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager, IWorkTimeApproverDelegateManager workTimeApproverDelegateManager, IUserData userData)
         {
             this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
             this.purchaseOrderActiveDelegateManager = purchaseOrderActiveDelegateManager;
@@ -32,6 +35,7 @@ namespace Sofco.Framework.Managers
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
             this.workTimeApproverDelegateManager = workTimeApproverDelegateManager;
+            this.userData = userData;
         }
 
         public List<Role> GetRoles()
@@ -51,6 +55,18 @@ namespace Sofco.Framework.Managers
             roles.AddRange(workTimeApproverDelegateManager.GetDelegatedRoles());
 
             return roles;
+        }
+
+        public bool HasFullAccess()
+        {
+            var currentUserEmail = userData.GetCurrentUser().Email;
+
+            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUserEmail);
+            var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(currentUserEmail);
+            var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(currentUserEmail);
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
+
+            return hasDirectorGroup || hasCommercialGroup || hasCdgGroup || hasDafGroup;
         }
     }
 }

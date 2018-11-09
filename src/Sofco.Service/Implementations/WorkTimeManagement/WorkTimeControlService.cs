@@ -40,7 +40,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var endDate = parameters.EndDate;
 
-            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.ServiceId));
+            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -114,21 +114,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return result;
         }
 
-        private List<int> GetAnalyticIds(Guid? serviceId)
+        private List<int> GetAnalyticIds(int? analyticId)
         {
-            if (!serviceId.HasValue)
-            {
-                var currentUser = userData.GetCurrentUser();
-
-                var ids = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id);
-
-                return ids.ToList();
-            }
-
-            var analytic = unitOfWork.AnalyticRepository
-                .GetByService(serviceId.Value.ToString());
-
-            return new List<int> {analytic?.Id ?? 0};
+            return analyticId.HasValue ? new List<int> {analyticId.Value} : new List<int>();
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)

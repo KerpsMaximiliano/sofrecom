@@ -20,21 +20,15 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">{{'billing.solfac.customers' | translate }}</label>
-                        <select id="customerControl" class="form-control"></select>
+                        <label class="control-label">{{'allocationManagement.analytics.title' | translate }}</label>
+                        <select id="analyticControl" class="form-control"></select>
                     </div>
                 </div>
-                <div class="col-sm-4" [hidden]="!showService()">
-                    <div class="form-group">
-                        <label class="control-label">{{'billing.service.title' | translate }}</label>
-                        <select id="serviceControl" class="form-control"></select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-4">
-                    <label class="control-label">{{'workTimeManagement.worktimeControl.dateRange' | translate }}</label>
-                    <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="getData()"></date-range-picker>
+                    <div class="form-group">
+                        <label class="control-label">{{'workTimeManagement.worktimeControl.dateRange' | translate }}</label>
+                        <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="getData()"></date-range-picker>
+                    </div>
                 </div>
             </div>
         </div>
