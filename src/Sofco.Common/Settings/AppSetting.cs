@@ -27,5 +27,7 @@
         public string LicenseViewDelegateCode { get; set; }
 
         public string LicenseViewCode { get; set; }
+
+        public string AnalyticBank { get; set; }
     }
 }
