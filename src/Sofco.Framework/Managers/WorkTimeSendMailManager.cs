@@ -91,7 +91,7 @@ namespace Sofco.Framework.Managers
 
             return new MailDefaultData
             {
-                Title = subject,
+                Title = subject, 
                 Message = body,
                 Recipients = GetRecipients(currentEmployee, analytic)
             };
@@ -103,15 +103,28 @@ namespace Sofco.Framework.Managers
 
             foreach (var item in workTimes.OrderBy(s => s.Date))
             {
-                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} - {6}: {7}{8}", 
+                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} - {6}: {7} - {8}: {9}{8}", 
                     item.Date, 
                     MailCommonResource.Hours, item.Hours,
                     MailCommonResource.Analytic, item.Analytic.Title, item.Analytic.Name,
                     MailCommonResource.Task, item.Task.Description,
+                    MailCommonResource.Status, GetStatusDesc(item.Status),
                     MailDataConstant.Enter);
             }
 
             return text.ToString();
+        }
+
+        private string GetStatusDesc(WorkTimeStatus status)
+        {
+            switch (status)
+            {
+                case WorkTimeStatus.Draft: return Resources.WorkTimeManagement.WorkTime.Draft;
+                case WorkTimeStatus.Sent: return Resources.WorkTimeManagement.WorkTime.Sent;
+                case WorkTimeStatus.Approved: return Resources.WorkTimeManagement.WorkTime.Approved;
+                case WorkTimeStatus.Rejected: return Resources.WorkTimeManagement.WorkTime.Rejected;
+                default: return string.Empty;
+            }
         }
 
         private List<string> GetRecipients(Employee currentEmployee, Analytic analytic)
