@@ -6,6 +6,7 @@ import { UserService } from "app/services/admin/user.service";
 import { Advancement, AdvancementDetail } from "app/models/advancement-and-refund/advancement";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "app/services/common/i18n.service";
+import { UserInfoService } from "app/services/common/user-info.service";
 
 @Component({
     selector: 'advancement-form',
@@ -23,10 +24,11 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     ); 
 
-    public users: any[] = new Array();
     public currencies: any[] = new Array();
     public analytics: any[] = new Array();
     public advancementReturnForms: any[] = new Array();
+
+    public userApplicantName: string;
 
     @Input() mode: string;
 
@@ -34,7 +36,6 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public detailForms: AdvancementDetail[];
     public detailModalForm: AdvancementDetail;
 
-    getUsersSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
     getAdvancementReturnFormsSubscrip: Subscription;
@@ -49,6 +50,13 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         this.detailForms = new Array();
         this.detailModalForm = new AdvancementDetail();
 
+        const userInfo = UserInfoService.getUserInfo();
+    
+        if(userInfo && userInfo.id && userInfo.name){
+            this.form.controls.userApplicantId.setValue(userInfo.id);
+            this.userApplicantName = userInfo.name;
+        }
+
         if(this.mode == 'salary'){
             var item = new AdvancementDetail();
             item.controls.date.setValue(new Date());
@@ -57,23 +65,15 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
             this.detailForms.push(item);
         }
 
-        this.getUsers();
         this.getCurrencies();
         this.getAnalytics();
         this.getAdvancementReturnForms();
     }
 
     ngOnDestroy(): void {
-        if(this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getAdvancementReturnFormsSubscrip) this.getAdvancementReturnFormsSubscrip.unsubscribe();
-    }
-
-    getUsers(){
-        this.getUsersSubscrip = this.userService.getOptions().subscribe(response => {
-            this.users = response;
-        });
     }
 
     getCurrencies(){

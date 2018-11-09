@@ -1,14 +1,14 @@
 <form [formGroup]="form">
 
-    <div class="form-group" [ngClass]="getClassProperty(form, 'userApplicantId')">
-        <label class="control-label"> {{ 'advancement.userApplicant' | translate }} </label>
-        <ng-select [items]="users" bindValue="id" bindLabel="text" formControlName="userApplicantId"></ng-select>
+    <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'">
+        <label style="font-size: 15px"> {{'advancement.userApplicant' | translate }}: </label>
+        <span style="font-size: 14px"> {{ userApplicantName }}</span>
 
-        <div class="form-control-feedback" *ngIf="hasErrors(form, 'userApplicantId')">
-            <p *ngIf="hasError(form, 'userApplicantId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','userApplicantRequired') }}</p>
+        <div class="form-control-feedback" *ngIf="form.controls.userApplicantId.invalid">
+            <p>{{ i18nService.translate('advancementAndRefund/advancement','userApplicantRequired') }}</p>
         </div>
     </div>
-    
+
     <div class="form-group" [ngClass]="getClassProperty(form, 'analyticId')">
         <label class="control-label"> {{ 'advancement.analytic' | translate }} </label>
         <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
