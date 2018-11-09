@@ -39,10 +39,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IAnalyticManager analyticManager;
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
+        private readonly IRoleManager roleManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
-            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData, IAnalyticManager analyticManager)
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -54,6 +55,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.analyticFileManager = analyticFileManager;
             this.userData = userData;
             this.analyticManager = analyticManager;
+            this.roleManager = roleManager;
             this.serviceData = serviceData;
         }
 
@@ -112,7 +114,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var currentUser = userData.GetCurrentUser();
 
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+            var analyticsByManagers = roleManager.HasFullAccess() 
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly() 
+                : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
