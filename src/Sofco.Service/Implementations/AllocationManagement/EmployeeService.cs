@@ -407,25 +407,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             foreach (var analityc in analitycs)
             {
-                var firstAllocation = analityc.Allocations.FirstOrDefault();
-
-                var item = new EmployeeAllocationModel
-                {
-                    Title = analityc.Title,
-                    Name = analityc.Name,
-                    Client = analityc.ClientExternalName,
-                    Service = analityc.Service,
-                    StartDate = firstAllocation?.StartDate,
-                    ReleaseDate = firstAllocation?.ReleaseDate,
-                };
-
                 var allocationThisMonth = analityc.Allocations.FirstOrDefault(x => x.StartDate == new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1));
                 if (allocationThisMonth != null)
                 {
-                    item.AllocationPercentage = allocationThisMonth.Percentage;
-                }
+                    var item = new EmployeeAllocationModel
+                    {
+                        Title = analityc.Title,
+                        Name = analityc.Name,
+                        AllocationPercentage = allocationThisMonth.Percentage,
+                        Client = analityc.ClientExternalName,
+                        Service = analityc.Service,
+                        ReleaseDate = allocationThisMonth?.ReleaseDate,
+                    };
 
-                model.Allocations.Add(item);
+                    model.Allocations.Add(item);
+                }
             }
 
             model.ManagerId = employee.ManagerId.GetValueOrDefault();
