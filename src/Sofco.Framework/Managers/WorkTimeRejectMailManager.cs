@@ -63,7 +63,8 @@ namespace Sofco.Framework.Managers
                 workTime.Hours,
                 workTime.ApprovalComment,
                 workTime.Employee.Name,
-                workTime.UserComment);
+                workTime.UserComment,
+                workTime.Reference);
 
             var recipients = new List<string>
             {

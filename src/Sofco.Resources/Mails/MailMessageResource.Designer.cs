@@ -474,6 +474,8 @@ namespace Sofco.Resources.Mails {
         ///Recurso: {5}
         ///&lt;br/&gt;&lt;br/&gt;
         ///Comentario: {6}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Referencia: {7}
         ///&lt;br/&gt;.
         /// </summary>
         public static string WorkTimeRejectHours {
