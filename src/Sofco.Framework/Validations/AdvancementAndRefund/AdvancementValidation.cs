@@ -51,7 +51,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateCurrency(AdvancementModel model, Response response)
         {
-            if (!model.CurrencyId.HasValue || model.CurrencyId.Value == 0)
+            if (!model.CurrencyId.HasValue || model.CurrencyId.Value <= 0)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.CurrencyRequired);
             }
@@ -86,7 +86,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 response.AddError(Resources.AdvancementAndRefund.Advancement.DescriptionItemRequired);
             }
 
-            if (!item.Ammount.HasValue || item.Ammount.Value == 0)
+            if (!item.Ammount.HasValue || item.Ammount.Value <= 0)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AmmountItemRequired);
             }
@@ -94,7 +94,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateAnalytic(AdvancementModel model, Response response)
         {
-            if (!model.AnalyticId.HasValue || model.AnalyticId.Value == 0)
+            if (!model.AnalyticId.HasValue || model.AnalyticId.Value <= 0)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AnalyticRequired);
             }
@@ -114,7 +114,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateAdvancementReturnForm(AdvancementModel model, Response response)
         {
-            if (!model.AdvancementReturnFormId.HasValue || model.AdvancementReturnFormId.Value == 0)
+            if (!model.AdvancementReturnFormId.HasValue || model.AdvancementReturnFormId.Value <= 0)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired);
             }
@@ -142,7 +142,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateUser(AdvancementModel model, Response response)
         {
-            if (!model.UserApplicantId.HasValue || model.UserApplicantId.Value == 0)
+            if (!model.UserApplicantId.HasValue || model.UserApplicantId.Value <= 0)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.UserApplicantRequired);
             }
