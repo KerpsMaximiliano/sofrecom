@@ -79,4 +79,8 @@ export class EmployeeService {
   addExternal(model){
     return this.http.post<any>(`${this.baseUrl}/employees/external`, model);
   }
+
+  getEmployeesOptionByCurrentManager(){
+    return this.http.get<any>(`${this.baseUrl}/employees/currentManager/options`);
+  }
 }
