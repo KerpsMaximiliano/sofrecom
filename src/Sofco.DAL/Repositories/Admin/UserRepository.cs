@@ -216,6 +216,13 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users.Where(x => !mails.Contains(x.Email)).ToList();
         }
 
+        public List<UserLiteModel> GetUserLiteByIds(List<int> userIds)
+        {
+            return context.Users.Where(s => userIds.Contains(s.Id))
+                .Select(s => new UserLiteModel { Id = s.Id, Name = s.Name})
+                .ToList();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;

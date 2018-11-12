@@ -51,5 +51,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasDafPurchaseOrderGroup(string userMail);
 
         IList<User> GetExternalsFree();
+
+        List<UserLiteModel> GetUserLiteByIds(List<int> userIds);
     }
 }
