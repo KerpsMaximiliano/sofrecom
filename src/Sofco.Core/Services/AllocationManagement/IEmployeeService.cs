@@ -36,5 +36,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<EmployeeWorkingPendingHoursModel> GetPendingWorkingHours(int employeeId);
 
         Response AddExternal(AddExternalModel model);
+
+        Response<List<Option>> GetEmployeeOptionByCurrentManager();
     }
 }

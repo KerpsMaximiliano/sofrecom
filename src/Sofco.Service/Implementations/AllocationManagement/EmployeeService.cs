@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -33,8 +34,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMapper mapper;
         private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
+        private readonly IUserData userData;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -43,6 +45,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mapper = mapper;
             this.sessionManager = sessionManager;
             this.employeeData = employeeData;
+            this.userData = userData;
             emailConfig = emailOptions.Value;
         }
 
@@ -395,6 +398,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<List<Option>> GetEmployeeOptionByCurrentManager()
+        {
+            var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(userData.GetCurrentUser().Id);
+
+            var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
+
+            return new Response<List<Option>> {Data = Translate(employees.ToList())};
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);
@@ -445,6 +457,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private EmployeeProfileModel TranslateToProfile(Employee employee)
         {
             return mapper.Map<Employee, EmployeeProfileModel>(employee);
+        }
+
+        private List<Option> Translate(List<Employee> employees)
+        {
+            return mapper.Map<List<Employee>, List<Option>>(employees);
         }
     }
 }
