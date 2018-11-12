@@ -181,7 +181,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             IQueryable<Analytic> query = context.Analytics.Include(x => x.Activity);
 
-            if (searchCriteria.AnalyticId > 0)
+            if (searchCriteria.AnalyticId.HasValue && searchCriteria.AnalyticId.Value > 0)
             {
                 query = query.Where(x => x.Id == searchCriteria.AnalyticId);
             }
@@ -196,12 +196,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 query = query.Where(x => x.ServiceId == searchCriteria.ServiceId);
             }
 
-            if (searchCriteria.AnalyticStatusId > 0)
+            if (searchCriteria.AnalyticStatusId.HasValue && searchCriteria.AnalyticStatusId.Value > 0)
             {
                 query = query.Where(x => (int)x.Status == searchCriteria.AnalyticStatusId);
             }
 
-            if (searchCriteria.ManagerId > 0)
+            if (searchCriteria.ManagerId.HasValue && searchCriteria.ManagerId.Value > 0)
             {
                 query = query.Where(x => x.ManagerId == searchCriteria.ManagerId);
             }

@@ -121,7 +121,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut]
         public IActionResult Put([FromBody] AnalyticModel model)
         {
-            var response = analyticService.Update(model.CreateDomain());
+            var response = analyticService.Update(model.CreateUpdateDomain());
 
             return this.CreateResponse(response);
         }

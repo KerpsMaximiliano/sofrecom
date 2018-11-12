@@ -243,8 +243,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
         sessionStorage.removeItem('analyticSearchCriteria');
 
-        setTimeout(() => {
-            this.searchCriteriaChange();
-        }, 100);
+        this.searchCriteriaChange();
     }
 }

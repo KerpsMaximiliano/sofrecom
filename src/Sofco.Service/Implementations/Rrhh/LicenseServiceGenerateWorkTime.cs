@@ -79,7 +79,16 @@ namespace Sofco.Service.Implementations.Rrhh
                                 var worktime = BuildWorkTime(license, startDate, user);
 
                                 worktime.AnalyticId = allocation.AnalyticId;
-                                worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
+
+                                if (allocationsInMonth.Count == 1)
+                                {
+                                    worktime.Hours = license.Employee.BusinessHours;
+                                }
+                                else
+                                {
+                                    worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
+                                }
+                                
 
                                 unitOfWork.WorkTimeRepository.Insert(worktime);
                             }
