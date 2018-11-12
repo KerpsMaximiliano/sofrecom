@@ -354,11 +354,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<Analytic> Update(Analytic analytic)
+        public Response<Analytic> Update(Analytic analyticToUpdate)
         {
             var response = new Response<Analytic>();
 
-            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticToUpdate.Id);
             AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
@@ -367,6 +367,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+                analyticToUpdate.Status = analytic.Status;
+                analyticToUpdate.CreationDate = analytic.CreationDate;
+
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
