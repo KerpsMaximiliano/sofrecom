@@ -120,6 +120,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
         if(this.dateRangePicker) {
             this.startDate = this.dateRangePicker.start.toDate();
             this.endDate = this.dateRangePicker.end.toDate();
+            this.endDate.setHours(0,0,0,0);
         }
 
         const model = {

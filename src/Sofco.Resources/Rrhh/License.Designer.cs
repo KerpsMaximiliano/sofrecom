@@ -287,6 +287,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to rrhh/license.managerUpdatedRefreshNeeded.
+        /// </summary>
+        public static string ManagerUpdatedRefreshNeeded {
+            get {
+                return ResourceManager.GetString("ManagerUpdatedRefreshNeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to rrhh/license.notFound.
         /// </summary>
         public static string NotFound {

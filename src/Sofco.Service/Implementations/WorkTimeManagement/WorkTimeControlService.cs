@@ -92,7 +92,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(model.EmployeeId, startDate, endDate);
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 

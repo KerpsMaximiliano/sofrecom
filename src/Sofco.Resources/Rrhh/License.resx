@@ -192,6 +192,9 @@
   <data name="ManagerRequired" xml:space="preserve">
     <value>rrhh/license.managerRequired</value>
   </data>
+  <data name="ManagerUpdatedRefreshNeeded" xml:space="preserve">
+    <value>rrhh/license.managerUpdatedRefreshNeeded</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>rrhh/license.notFound</value>
   </data>
