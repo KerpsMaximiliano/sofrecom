@@ -159,5 +159,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("currentManager/options")]
+        public IActionResult GetOptionByCurrentManager()
+        {
+            var response = employeeService.GetEmployeeOptionByCurrentManager();
+
+            return this.CreateResponse(response);
+        }
     }
 }

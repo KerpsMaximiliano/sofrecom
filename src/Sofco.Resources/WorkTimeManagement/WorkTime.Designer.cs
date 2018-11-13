@@ -80,6 +80,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Aprobada.
+        /// </summary>
+        public static string Approved {
+            get {
+                return ResourceManager.GetString("Approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.approvedSuccess.
         /// </summary>
         public static string ApprovedSuccess {
@@ -193,6 +202,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string DeleteSuccess {
             get {
                 return ResourceManager.GetString("DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Borrador.
+        /// </summary>
+        public static string Draft {
+            get {
+                return ResourceManager.GetString("Draft", resourceCulture);
             }
         }
         
@@ -332,11 +350,38 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Licencia.
+        /// </summary>
+        public static string License {
+            get {
+                return ResourceManager.GetString("License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workTimeManagement/workTime.monthError.
         /// </summary>
         public static string MonthError {
             get {
                 return ResourceManager.GetString("MonthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.noPendingHours.
+        /// </summary>
+        public static string NoPendingHours {
+            get {
+                return ResourceManager.GetString("NoPendingHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rechazada.
+        /// </summary>
+        public static string Rejected {
+            get {
+                return ResourceManager.GetString("Rejected", resourceCulture);
             }
         }
         
@@ -373,6 +418,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string SearchNotFound {
             get {
                 return ResourceManager.GetString("SearchNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Pendiente de aprobación.
+        /// </summary>
+        public static string Sent {
+            get {
+                return ResourceManager.GetString("Sent", resourceCulture);
             }
         }
         

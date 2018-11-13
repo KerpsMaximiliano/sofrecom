@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Framework.StatusHandlers.License;
 using Sofco.Domain.Models.Common;
@@ -85,6 +86,17 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
             var licenseValidator = LicenseFactory.GetInstance(domain.TypeId);
 
             licenseValidator.Validate(response, domain, unitOfWork);
+        }
+
+        public static void ValidateWorkTimeOverlap(Response response, License domain, IUnitOfWork unitOfWork)
+        {
+            var workTimes =
+                unitOfWork.WorkTimeRepository.GetByEmployeeId(domain.StartDate, domain.EndDate, domain.EmployeeId);
+
+            if (workTimes.Any())
+            {
+                response.AddError(Resources.Rrhh.License.WorkTimeDateOverlap);
+            }
         }
 
         public static License Find(int id, Response response, IUnitOfWork unitOfWork)

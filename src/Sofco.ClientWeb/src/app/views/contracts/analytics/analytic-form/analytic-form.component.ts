@@ -26,6 +26,9 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     public customerId: string = null;
     public serviceId: string = null;
 
+    public isReadOnly: boolean = false;
+    public isEnableForDaf: boolean = false;
+
     getOptionsSubscrip: Subscription;
     getCostCenterOptionsSubscrip: Subscription;
     getNewTitleSubscrip: Subscription;

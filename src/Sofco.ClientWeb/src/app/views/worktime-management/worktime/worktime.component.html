@@ -15,11 +15,6 @@
     
 <div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
 
-    <div class="alert alert-info">
-        <i class="fa fa-info-circle"></i>
-        {{ 'workTimeManagement.workTime.periodMessage' | translate }} <strong>{{ model.periodStartDate }}</strong> {{ 'and' | translate }} <strong>{{ model.periodEndDate }}</strong>. <strong>{{ 'workTimeManagement.workTime.actualPeriod' | translate }}</strong> 
-    </div>
-
     <div class="row">
         <div class="col-md-9">
             <div class="ibox">
@@ -82,6 +77,10 @@
 
             <h3 class="text-center">{{ 'workTimeManagement.workTime.resume' | translate }}</h3>
 
+            <div class="alert alert-info text-center">
+                {{ 'workTimeManagement.workTime.periodMessage' | translate }} <strong>{{ periodStartDateText }}</strong> {{ 'date_to' | translate }} <strong>{{ periodEndDateText }}</strong>.
+            </div>
+        
             <dl class="dl-horizontal hours-resume">
                 <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
                 <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
@@ -141,13 +140,17 @@
                 </div>
                 <div class="col-md-4">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours"/>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>{{'workTimeManagement.comments' | translate }}</label>
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label>{{'workTimeManagement.reference' | translate }}</label>
+            <input class="form-control" name="reference" [(ngModel)]="taskModel.reference" placeholder="{{'workTimeManagement.reference' | translate }}" maxlength="20"/>
         </div>
     </form>
 </ng2-modal>

@@ -84,20 +84,18 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 result.Data.Calendar = calendars;
 
-                var resumeModel = workTimeResumeManger.GetResume(calendars, startDate, endDate);
-
                 var dateUtc = date.ToUniversalTime();
 
                 result.Data.Holidays = unitOfWork.HolidayRepository.Get(dateUtc.Year, dateUtc.Month);
 
-                result.Data.Resume = resumeModel;
+                result.Data.Resume = workTimeResumeManger.GetCurrentPeriodResume();
 
                 var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
                 var period = closeDates.GetPeriodIncludeDays();
 
-                result.Data.PeriodStartDate = period.Item1.ToString("dd/MM/yyyy");
-                result.Data.PeriodEndDate = period.Item2.ToString("dd/MM/yyyy");
+                result.Data.PeriodStartDate = period.Item1;
+                result.Data.PeriodEndDate = period.Item2;
 
                 return result;
             }
@@ -123,7 +121,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             WorkTimeValidationHandler.ValidateEmployee(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateAnalytic(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUser(response, unitOfWork, model);
-            WorkTimeValidationHandler.ValidateDate(response, unitOfWork, model);
+            workTimeValidation.ValidateDate(response, model);
             WorkTimeValidationHandler.ValidateTask(response, unitOfWork, model);
             WorkTimeValidationHandler.ValidateUserComment(response, model);
             workTimeValidation.ValidateHours(response, model);
@@ -375,15 +373,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var response = new Response();
 
-            var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
+            var workTime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
 
-            WorkTimeValidationHandler.ValidateDelete(worktime, response, unitOfWork);
+            workTimeValidation.ValidateDelete(response, workTime);
 
             if (response.HasErrors()) return response;
 
             try
             {
-                unitOfWork.WorkTimeRepository.Delete(worktime);
+                unitOfWork.WorkTimeRepository.Delete(workTime);
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.DeleteSuccess);

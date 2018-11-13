@@ -56,10 +56,10 @@
         <div class="input-group m-b">
             <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
 
-            <input [disabled]="!item.enable" type="number" class="form-control" decimalFormat min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
+            <input [disabled]="!item.enable || isReadOnly" type="number" class="form-control" decimalFormat min="1" max="99999999" step=".01" [(ngModel)]="item.ammount">
 
-            <span *ngIf="!item.enable" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
-            <span *ngIf="item.enable" class="input-group-addon pointer bg-danger" (click)="item.enable = !item.enable"><i class="fa fa-times"></i></span> 
+            <span *ngIf="!item.enable && !isReadOnly" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
+            <span *ngIf="item.enable && !isReadOnly" class="input-group-addon pointer bg-danger" (click)="item.enable = !item.enable"><i class="fa fa-times"></i></span> 
         </div>
     </div>
 </div>
@@ -68,7 +68,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="control-label">{{'billing.purchaseOrder.fields.margin' | translate }}</label>
-            <input type="number" decimalFormat class="form-control" [(ngModel)]="model.margin">
+            <input type="number" decimalFormat class="form-control" [(ngModel)]="model.margin" [disabled]="isReadOnly">
         </div>
     </div>
     <div class="col-md-6">

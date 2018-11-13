@@ -129,4 +129,10 @@
   <data name="Hours" xml:space="preserve">
     <value>Horas</value>
   </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Referencia</value>
+  </data>
+  <data name="Task" xml:space="preserve">
+    <value>Tarea</value>
+  </data>
 </root>

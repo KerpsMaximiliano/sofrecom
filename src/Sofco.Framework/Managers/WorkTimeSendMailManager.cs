@@ -25,8 +25,8 @@ namespace Sofco.Framework.Managers
 
         private readonly ILogMailer<WorkTimeSendMailManager> logger;
 
-        public WorkTimeSendMailManager(IMailSender mailSender, 
-            IEmployeeData employeeData, IUnitOfWork unitOfWork, 
+        public WorkTimeSendMailManager(IMailSender mailSender,
+            IEmployeeData employeeData, IUnitOfWork unitOfWork,
             ILogMailer<WorkTimeSendMailManager> logger)
         {
             this.mailSender = mailSender;
@@ -35,11 +35,11 @@ namespace Sofco.Framework.Managers
             this.logger = logger;
         }
 
-        public void SendEmail()
+        public void SendEmail(List<WorkTime> workTimes)
         {
             try
             {
-                var mails = GetMails();
+                var mails = GetMails(workTimes);
 
                 if(!mails.Any()) return;
 
@@ -51,7 +51,7 @@ namespace Sofco.Framework.Managers
             }
         }
 
-        protected List<IMailData> GetMails()
+        protected List<IMailData> GetMails(List<WorkTime> workTimes)
         {
             var currentEmployee = employeeData.GetCurrentEmployee();
 
@@ -66,8 +66,6 @@ namespace Sofco.Framework.Managers
             var analytics = unitOfWork.AnalyticRepository.GetByAllocations(currentEmployee.Id, dateFrom, dateTo);
 
             if (!analytics.Any()) return new List<IMailData>();
-
-            var workTimes = unitOfWork.WorkTimeRepository.GetWorkTimePendingHoursByEmployeeId(currentEmployee.Id);
 
             var mails = new List<IMailData>();
 
@@ -93,7 +91,7 @@ namespace Sofco.Framework.Managers
 
             return new MailDefaultData
             {
-                Title = subject,
+                Title = subject, 
                 Message = body,
                 Recipients = GetRecipients(currentEmployee, analytic)
             };
@@ -105,9 +103,12 @@ namespace Sofco.Framework.Managers
 
             foreach (var item in workTimes.OrderBy(s => s.Date))
             {
-                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} {6}", 
-                    item.Date, MailCommonResource.Hours, item.Hours,
+                text.AppendFormat("&nbsp; {0:dd/MM/yyyy} - {1}: {2} - {3}: {4} - {5} - {6}: {7} - {8}: {9}{10}", 
+                    item.Date, 
+                    MailCommonResource.Hours, item.Hours,
                     MailCommonResource.Analytic, item.Analytic.Title, item.Analytic.Name,
+                    MailCommonResource.Task, item.Task.Description,
+                    MailCommonResource.Reference, item.Reference,
                     MailDataConstant.Enter);
             }
 
@@ -116,7 +117,7 @@ namespace Sofco.Framework.Managers
 
         private List<string> GetRecipients(Employee currentEmployee, Analytic analytic)
         {
-            var mails = new List<string>{analytic.Manager.Email};
+            var mails = new List<string> { analytic.Manager.Email };
 
             var delegates = unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
                 currentEmployee.Id,

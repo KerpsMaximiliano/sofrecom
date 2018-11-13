@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -18,6 +19,7 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
+using Sofco.Framework.Helpers;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -32,8 +34,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMapper mapper;
         private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
+        private readonly IUserData userData;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -42,6 +45,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mapper = mapper;
             this.sessionManager = sessionManager;
             this.employeeData = employeeData;
+            this.userData = userData;
             emailConfig = emailOptions.Value;
         }
 
@@ -238,7 +242,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response();
 
-            EmployeeValidationHelper.Exist(response, unitOfWork.EmployeeRepository, id);
+            var stored = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
             EmployeeValidationHelper.ValidateBillingPercentage(response, model);
 
@@ -260,6 +264,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.AllocationManagement.Employee.BusinessHoursUpdated);
+                SaveProfileHistory(stored, employee);
             }
             catch (Exception e)
             {
@@ -268,6 +273,49 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             
             return response;
+        }
+
+        private void SaveProfileHistory(Employee stored, Employee employee)
+        {
+            var fields = GetFieldToCompare();
+
+            var modifiedFields = ElementComparerHelper.CompareModification(employee, stored, fields.ToArray());
+
+            if (modifiedFields.Any())
+            {
+                unitOfWork.EmployeeProfileHistoryRepository.Insert(CreateProfileHistory(stored, employee, modifiedFields));
+                unitOfWork.Save();
+            }
+        }
+
+        private EmployeeProfileHistory CreateProfileHistory(Employee current, Employee updated, string[] modifiedFields)
+        {
+            var currentData = JsonSerializeHelper.Serialize(current);
+            var updateData = JsonSerializeHelper.Serialize(updated);
+            var modifiedFieldsData = JsonSerializeHelper.Serialize(modifiedFields);
+
+            return new EmployeeProfileHistory
+            {
+                Created = DateTime.UtcNow,
+                EmployeeNumber = current.EmployeeNumber,
+                EmployeeData = updateData,
+                EmployeePreviousData = currentData,
+                ModifiedFields = modifiedFieldsData
+            };
+        }
+
+        private List<string> GetFieldToCompare()
+        {
+            return new List<string>
+            {
+                nameof(Employee.BusinessHours),
+                nameof(Employee.BusinessHoursDescription),
+                nameof(Employee.OfficeAddress),
+                nameof(Employee.HolidaysPendingByLaw),
+                nameof(Employee.ManagerId),
+                nameof(Employee.BillingPercentage),
+                nameof(Employee.HolidaysPending)
+            };
         }
 
         private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)
@@ -350,6 +398,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<List<Option>> GetEmployeeOptionByCurrentManager()
+        {
+            var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(userData.GetCurrentUser().Id);
+
+            var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
+
+            return new Response<List<Option>> {Data = Translate(employees.ToList())};
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);
@@ -362,25 +419,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             foreach (var analityc in analitycs)
             {
-                var firstAllocation = analityc.Allocations.FirstOrDefault();
-
-                var item = new EmployeeAllocationModel
-                {
-                    Title = analityc.Title,
-                    Name = analityc.Name,
-                    Client = analityc.ClientExternalName,
-                    Service = analityc.Service,
-                    StartDate = firstAllocation?.StartDate,
-                    ReleaseDate = firstAllocation?.ReleaseDate,
-                };
-
                 var allocationThisMonth = analityc.Allocations.FirstOrDefault(x => x.StartDate == new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1));
                 if (allocationThisMonth != null)
                 {
-                    item.AllocationPercentage = allocationThisMonth.Percentage;
-                }
+                    var item = new EmployeeAllocationModel
+                    {
+                        Title = analityc.Title,
+                        Name = analityc.Name,
+                        AllocationPercentage = allocationThisMonth.Percentage,
+                        StartDate = unitOfWork.AllocationRepository.GetStartDate(analityc.Id),
+                        Client = analityc.ClientExternalName,
+                        Service = analityc.Service,
+                        ReleaseDate = allocationThisMonth?.ReleaseDate,
+                    };
 
-                model.Allocations.Add(item);
+                    model.Allocations.Add(item);
+                }
             }
 
             model.ManagerId = employee.ManagerId.GetValueOrDefault();
@@ -404,6 +458,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private EmployeeProfileModel TranslateToProfile(Employee employee)
         {
             return mapper.Map<Employee, EmployeeProfileModel>(employee);
+        }
+
+        private List<Option> Translate(List<Employee> employees)
+        {
+            return mapper.Map<List<Employee>, List<Option>>(employees);
         }
     }
 }

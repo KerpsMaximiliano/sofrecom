@@ -143,5 +143,10 @@ namespace Sofco.Core.Models.AllocationManagement
 
             return domain;
         }
+
+        public void UpdateDomain(Analytic analytic)
+        {
+            FillData(analytic);
+        }
     }
 }

@@ -58,6 +58,19 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
         }
 
+        public IList<Employee> GetByAnalyticIds(List<int> analyticIds)
+        {
+            var ids = context.Allocations.Where(x => analyticIds.Contains(x.AnalyticId)
+                                                     && x.Percentage > 0)
+                .Select(x => x.Employee.Id)
+                .Distinct()
+                .ToList();
+
+            return context.Employees
+                .Include(x => x.WorkTimes)
+                .Include(x => x.Licenses)
+                .Where(x => ids.Contains(x.Id)).ToList();
+        }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {

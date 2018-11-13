@@ -20,6 +20,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.StatusHandlers.License;
 using Sofco.Service.Implementations.Rrhh.Licenses;
 
@@ -70,6 +71,9 @@ namespace Sofco.UnitTest.Services.Rrhh
             emailConfigMock.Setup(x => x.Value).Returns(new EmailConfig { SiteUrl = "SiteUrl", RrhhCode = "RRHH" });
             groupRepositoryMock.Setup(x => x.GetEmail(It.IsAny<string>())).Returns("rrhh@mail.com");
             licenseApproverManager.Setup(x => x.GetEmailApproversByEmployeeId(It.IsAny<int>())).Returns(new List<string> { "rrhh@mail.com" });
+            workTimeRepositoryMock.Setup(s =>
+                    s.GetByEmployeeId(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new List<WorkTime>());
 
             sut = new LicenseService(unitOfWork.Object, loggerMock.Object,
                 licenseStatusFactory.Object, mailSender.Object,

@@ -9,9 +9,10 @@ using Sofco.Domain.Enums;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20181108195458_WorkTimeReference")]
+    partial class WorkTimeReference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -218,59 +219,6 @@ namespace Sofco.WebApi.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AdvancementReturnFormId");
-
-                    b.Property<int>("AnalyticId");
-
-                    b.Property<int>("CurrencyId");
-
-                    b.Property<int>("PaymentForm");
-
-                    b.Property<DateTime>("StartDateReturn");
-
-                    b.Property<int>("Type");
-
-                    b.Property<int>("UserApplicantId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvancementReturnFormId");
-
-                    b.HasIndex("AnalyticId");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("UserApplicantId");
-
-                    b.ToTable("Advancements");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AdvancementId");
-
-                    b.Property<decimal>("Ammount");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(400);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvancementId");
-
-                    b.ToTable("AdvancementDetails");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
@@ -1632,19 +1580,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserGroup");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Utils.AdvancementReturnForm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdvancementReturnForms");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Utils.Area", b =>
                 {
                     b.Property<int>("Id")
@@ -1886,33 +1821,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.Category", "Category")
                         .WithMany("Tasks")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
-                {
-                    b.HasOne("Sofco.Domain.Utils.AdvancementReturnForm", "AdvancementReturnForm")
-                        .WithMany("Advancements")
-                        .HasForeignKey("AdvancementReturnFormId");
-
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("Advancements")
-                        .HasForeignKey("AnalyticId");
-
-                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
-                        .WithMany("Advancements")
-                        .HasForeignKey("CurrencyId");
-
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
-                        .WithMany("Advancements")
-                        .HasForeignKey("UserApplicantId");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementDetail", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Advancement", "Advancement")
-                        .WithMany("Details")
-                        .HasForeignKey("AdvancementId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

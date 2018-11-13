@@ -23,7 +23,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<string> GetNewTitle(int costCenterId);
 
-        Response<Analytic> Update(Analytic domain);
+        Response<Analytic> Update(AnalyticModel domain);
 
         Response Close(int analyticId, AnalyticStatus status);
 

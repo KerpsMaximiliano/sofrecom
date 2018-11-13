@@ -17,10 +17,12 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
         void RemoveAllocationByAnalytic(int analyticId, DateTime today);
         ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
-        ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters);
+        ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters);
+        ICollection<Allocation> GetAllocationsLiteBetweenDaysForWorkTimeControl(int employeeId, DateTime startDate, DateTime endDate);
         bool Exist(int allocationId);
         ICollection<Employee> GetByAnalyticId(int analyticId);
         void DeleteAllocationWithReleaseDateNull();
         IList<Allocation> GetLastAllocationsForEmployee(int employeeId, DateTime date);
+        DateTime GetStartDate(int analitycId);
     }
 }

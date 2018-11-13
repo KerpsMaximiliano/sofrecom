@@ -26,7 +26,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
- 
+
     getAllocations(analyticId, dateSince, months){
         this.model = [];
         this.showTimeLine = false;
@@ -60,7 +60,7 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
         const rows = [];
         const resourcesName = [];
         const releaseDates = [];
-        const releaseData = [];
+        // const releaseData = {};
 
         self.this.model.forEach(function(item){
             const startDate = new Date(item.startDate);
@@ -70,14 +70,17 @@ export class ResourceTimelineComponent implements OnInit, OnDestroy {
 
             if (!resourcesName.includes(item.resource)) {
                 resourcesName.push(item.resource);
-                releaseData[item.employeeId] = item.releaseDate;
-            } else {
-                releaseData[item.employeeId] = item.releaseDate;
+                // releaseData[item.employeeId] = item.releaseDate;
+                releaseDates.push(item.releaseDate);
             }
+            // else {
+            //     releaseData[item.employeeId] = item.releaseDate;
+            // }
         });
-        for (const key in releaseData) {
-            releaseDates.push(releaseData[key]);
-        }
+
+        // for (const key in releaseData) {
+        //     releaseDates.push(releaseData[key]);
+        // }
 
         dataTable.addRows(rows);
 

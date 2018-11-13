@@ -141,9 +141,11 @@ namespace Sofco.Framework.Mail
 
         private bool IsDevelopment()
         {
-            return environment.IsDevelopment()
-                   || environment.IsEnvironment("localhost")
-                   || environment.IsEnvironment("frosales");
+#if DEBUG
+            return true;
+#else
+            return environment.IsDevelopment();
+#endif
         }
 
         private void SendMessages(List<MimeMessage> messages)
@@ -193,7 +195,7 @@ namespace Sofco.Framework.Mail
 
             foreach (var msg in messages)
             {
-                if(msg.Subject == supportMailLogTitle) continue;
+                if(msg.Subject.Contains(supportMailLogTitle)) continue;
 
                 var logMail = new MimeMessage();
 

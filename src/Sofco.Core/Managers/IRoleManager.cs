@@ -6,5 +6,7 @@ namespace Sofco.Core.Managers
     public interface IRoleManager
     {
         List<Role> GetRoles();
+
+        bool HasFullAccess();
     }
 }

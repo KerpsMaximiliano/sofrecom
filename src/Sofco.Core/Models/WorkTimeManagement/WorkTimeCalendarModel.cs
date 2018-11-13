@@ -16,6 +16,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
             UserComment = domain.UserComment;
             ApprovalComment = domain.ApprovalComment;
             Status = domain.Status;
+            Reference = domain.Reference;
 
             if (domain.Employee != null)
             {
@@ -67,5 +68,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string AnalyticTitle { get; set; }
 
         public WorkTimeStatus Status { get; set; }
+
+        public string Reference { get; set; }
     }
 }

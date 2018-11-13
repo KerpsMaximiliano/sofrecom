@@ -72,6 +72,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public DateTime GetStartDate(int analitycId)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == analitycId).Min(x => x.StartDate);
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations
@@ -90,7 +95,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
+        public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)
         {
             var query = context.Allocations
                 .Include(x => x.Employee)
@@ -112,9 +117,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
                 query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
-
-            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
 
             return query.ToList();
         }
@@ -159,6 +161,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;
+        }
+
+        public ICollection<Allocation> GetAllocationsLiteBetweenDaysForWorkTimeControl(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Percentage > 0
+                            && (x.StartDate.Date >= startDate.Date
+                                || x.StartDate.Date <= endDate.Date))
+                .ToList();
         }
     }
 }

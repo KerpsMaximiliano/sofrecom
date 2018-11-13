@@ -29,6 +29,15 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
+        public IList<WorkTime> GetByEmployeeId(DateTime startDate, DateTime endDate, int employeeId)
+        {
+            return context.WorkTimes
+                .Where(x => x.EmployeeId == employeeId 
+                            && x.Date.Date >= startDate.Date 
+                            && x.Date.Date <= endDate.Date)
+                .ToList();
+        }
+
         public IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds)
         {
             return context.WorkTimes
@@ -152,6 +161,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes
+                .Include(x => x.Task)
                 .Where(s => s.EmployeeId == employeeId
                             && s.Status == WorkTimeStatus.Sent)
                 .ToList();
@@ -179,9 +189,6 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
                 query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
 
-            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
-
             return query.ToList();
         }
 
@@ -193,6 +200,15 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public void SendManagerHours(int employeeid)
         {
             context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid}");
+        }
+
+        public List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId)
+        {
+            return context.WorkTimes
+                .Include(x => x.Task)
+                .Where(s => s.EmployeeId == employeeId
+                            && s.Status == WorkTimeStatus.Draft)
+                .ToList();
         }
 
         public decimal GetPendingHoursByEmployeeId(int employeeId)
@@ -228,6 +244,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             stored.Hours  = workTime.Hours;
             stored.UserComment  = workTime.UserComment;
             stored.Status  = workTime.Status;
+            stored.Reference = workTime.Reference;
         }
     }
 }
