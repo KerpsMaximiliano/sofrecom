@@ -133,7 +133,7 @@
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
                     <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
+                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-6"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -282,7 +282,7 @@
                             </table>
                         </div>
                     </div>
-                    <div id="tab-6" class="tab-pane">
+                    <div id="tab-6" class="tab-pane" *ngIf="isRrhh">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="profileHistoryTable">
                                 <thead>
