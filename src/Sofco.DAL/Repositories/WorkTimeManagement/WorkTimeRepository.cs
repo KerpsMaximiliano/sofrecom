@@ -189,9 +189,6 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
                 query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
 
-            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
-
             return query.ToList();
         }
 
