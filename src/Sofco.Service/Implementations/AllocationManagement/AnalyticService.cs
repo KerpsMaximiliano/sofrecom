@@ -373,7 +373,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
-                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+                var crmResponse = analyticManager.UpdateCrmAnalytic(analyticToUpdate);
                 if (crmResponse.HasErrors())
                 {
                     response.AddMessages(crmResponse.Messages);
