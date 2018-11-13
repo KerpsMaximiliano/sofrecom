@@ -354,11 +354,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<Analytic> Update(Analytic analyticToUpdate)
+        public Response<Analytic> Update(AnalyticModel analyticModel)
         {
             var response = new Response<Analytic>();
 
-            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticToUpdate.Id);
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticModel.Id);
             AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
@@ -367,13 +367,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                analyticToUpdate.Status = analytic.Status;
-                analyticToUpdate.CreationDate = analytic.CreationDate;
+                analyticModel.UpdateDomain(analytic);
 
-                unitOfWork.AnalyticRepository.Update(analyticToUpdate);
+                unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
-                var crmResponse = analyticManager.UpdateCrmAnalytic(analyticToUpdate);
+                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
                 if (crmResponse.HasErrors())
                 {
                     response.AddMessages(crmResponse.Messages);
