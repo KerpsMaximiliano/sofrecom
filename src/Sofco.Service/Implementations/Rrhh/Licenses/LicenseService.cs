@@ -47,6 +47,8 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             var response = new Response<string>();
             var domain = model.CreateDomain();
 
+            SetManager(domain, response);
+
             LicenseValidationHandler.ValidateEmployee(response, domain, unitOfWork);
             LicenseValidationHandler.ValidateManager(response, domain, unitOfWork);
             LicenseValidationHandler.ValidateDates(response, domain, model.IsRrhh);
@@ -290,6 +292,18 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                 .ToList();
 
             return licenseApproverManager.ResolveApprovers(result);
+        }
+
+        private void SetManager(License license, Response response)
+        {
+            var employee = unitOfWork.EmployeeRepository.GetById(license.EmployeeId);
+
+            if (employee.ManagerId != null && license.ManagerId != employee.ManagerId.Value)
+            {
+                response.AddWarning(Resources.Rrhh.License.ManagerUpdatedRefreshNeeded);
+            }
+
+            if (employee.ManagerId != null) license.ManagerId = employee.ManagerId.Value;
         }
     }
 }

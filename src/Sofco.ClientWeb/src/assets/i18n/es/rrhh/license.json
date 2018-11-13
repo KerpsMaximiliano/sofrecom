@@ -32,5 +32,6 @@
     "managerEqualsEmployee": "El solicitante no puede ser igual al superior",
     "datesOverlaped": "La fecha de la licencia que se quiere cargar coincide con alguna fecha de otra licencia ya cargada en el sistema",
     "licenseTypeValueRequired": "El valor no puede ser menor o igual a 0",
-    "workTimeDateOverlap": "No se puede ingresar licencia con fecha que contiene horas cargadas."
+    "workTimeDateOverlap": "No se puede ingresar licencia con fecha que contiene horas cargadas.",
+    "managerUpdatedRefreshNeeded": "El superior ha sido actualizado previamente, por favor efectue un nuevo login."
 }

@@ -32,5 +32,6 @@
 	"managerEqualsEmployee": "Le candidat ne peut être égal au supérieur",
 	"datesOverlaped": "La date de la licence que vous voulez charger coïncide avec une date d'une autre licence déjà chargée dans le système",
 	"licenseTypeValueRequired": "La valeur ne peut pas être inférieure ou égale à 0",
-	"workTimeDateOverlap": "La license ne peut etre sauvegardé dans la meme date que des heures chargées."
+	"workTimeDateOverlap": "La license ne peut etre sauvegardé dans la meme date que des heures chargées.",
+	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login"
 }
