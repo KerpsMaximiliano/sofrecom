@@ -370,7 +370,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 analyticToUpdate.Status = analytic.Status;
                 analyticToUpdate.CreationDate = analytic.CreationDate;
 
-                unitOfWork.AnalyticRepository.Update(analytic);
+                unitOfWork.AnalyticRepository.Update(analyticToUpdate);
                 unitOfWork.Save();
 
                 var crmResponse = analyticManager.UpdateCrmAnalytic(analyticToUpdate);
