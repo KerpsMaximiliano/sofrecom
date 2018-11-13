@@ -95,7 +95,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
+        public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)
         {
             var query = context.Allocations
                 .Include(x => x.Employee)
@@ -161,6 +161,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;
+        }
+
+        public ICollection<Allocation> GetAllocationsLiteBetweenDaysForWorkTimeControl(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Percentage > 0
+                            && (x.StartDate.Date >= startDate.Date
+                                || x.StartDate.Date <= endDate.Date))
+                .ToList();
         }
     }
 }
