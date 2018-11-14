@@ -42,12 +42,13 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
 
-        public Response<string> Add(LicenseAddModel model)
+        public Response<LicenseAddModel> Add(LicenseAddModel model)
         {
-            var response = new Response<string>();
-            var domain = model.CreateDomain();
+            var response = new Response<LicenseAddModel>();
 
-            SetManager(domain, response);
+            SetManager(model, response);
+
+            var domain = model.CreateDomain();
 
             LicenseValidationHandler.ValidateEmployee(response, domain, unitOfWork);
             LicenseValidationHandler.ValidateManager(response, domain, unitOfWork);
@@ -69,7 +70,9 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                 unitOfWork.LicenseRepository.Insert(domain);
                 unitOfWork.Save();
 
-                response.Data = domain.Id.ToString();
+                model.Id = domain.Id;
+
+                response.Data = model;
                 response.AddSuccess(Resources.Rrhh.License.SaveSuccess);
             }
             catch (Exception e)
@@ -257,7 +260,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             return history;
         }
 
-        private void UpdateStatus(LicenseAddModel model, Response<string> response, LicenseType licenseType, License license)
+        private void UpdateStatus(LicenseAddModel model, Response<LicenseAddModel> response, LicenseType licenseType, License license)
         {
             if (model.IsRrhh && model.EmployeeLoggedId != model.EmployeeId)
             {
@@ -268,7 +271,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                     IsRrhh = model.IsRrhh
                 };
 
-                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams, license);
+                var statusResponse = ChangeStatus(model.Id, statusParams, license);
                 response.AddMessages(statusResponse.Messages);
             }
             else
@@ -280,7 +283,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                     IsRrhh = model.IsRrhh
                 };
 
-                var statusResponse = ChangeStatus(Convert.ToInt32(response.Data), statusParams, license);
+                var statusResponse = ChangeStatus(model.Id, statusParams, license);
                 response.AddMessages(statusResponse.Messages);
             }
         }
@@ -294,13 +297,13 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             return licenseApproverManager.ResolveApprovers(result);
         }
 
-        private void SetManager(License license, Response response)
+        private void SetManager(LicenseAddModel license, Response response)
         {
             var employee = unitOfWork.EmployeeRepository.GetById(license.EmployeeId);
 
             if (employee.ManagerId != null && license.ManagerId != employee.ManagerId.Value)
             {
-                response.AddWarning(Resources.Rrhh.License.ManagerUpdatedRefreshNeeded);
+                license.ManagerDesc = unitOfWork.UserRepository.GetUserLiteById(employee.ManagerId.Value).Name;
             }
 
             if (employee.ManagerId != null) license.ManagerId = employee.ManagerId.Value;

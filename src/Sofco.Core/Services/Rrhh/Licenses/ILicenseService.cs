@@ -9,7 +9,7 @@ namespace Sofco.Core.Services.Rrhh.Licenses
 {
     public interface ILicenseService
     {
-        Response<string> Add(LicenseAddModel createDomain);
+        Response<LicenseAddModel> Add(LicenseAddModel createDomain);
         IList<LicenseListModel> GetByStatus(LicenseStatus statusId);
         IList<LicenseListModel> Search(LicenseSearchParams parameters);
         IList<LicenseListModel> GetByManager(int managerId);
