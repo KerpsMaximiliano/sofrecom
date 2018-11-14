@@ -186,9 +186,12 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     add(){
         this.messageService.showLoading();
 
-        this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {
+        this.addSubscrip = this.licenseService.add(this.model).subscribe(res => {
             this.messageService.closeLoading();
-            this.model.id = data.data;
+            this.model.id = res.data.id;
+            this.model.managerId = res.data.managerId;
+            this.model.managerDesc = res.data.managerDesc;
+            this.updateStorage();
             this.configUploader();
         },
         () => {
@@ -267,5 +270,12 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
         this.startDate.clean();
         this.endDate.clean();
+    }
+
+    updateStorage() {
+        const userInfo = UserInfoService.getUserInfo();
+        userInfo.managerId = this.model.managerId;
+        userInfo.managerDesc = this.model.managerDesc;
+        UserInfoService.setUserInfo(userInfo);
     }
 } 
