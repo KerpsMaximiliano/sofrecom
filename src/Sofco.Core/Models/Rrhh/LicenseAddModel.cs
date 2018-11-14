@@ -6,9 +6,13 @@ namespace Sofco.Core.Models.Rrhh
 {
     public class LicenseAddModel
     {
+        public int Id { get; set; }
+
         public int EmployeeId { get; set; }
 
         public int ManagerId { get; set; }
+
+        public string ManagerDesc { get; set; }
 
         public int SectorId { get; set; }
 
