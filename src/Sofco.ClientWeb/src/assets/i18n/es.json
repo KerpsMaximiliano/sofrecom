@@ -1033,6 +1033,7 @@
     "advancement": {
         "addTitle": "Solicitud Adelanto",
         "add": "Solicitud",
+        "edit": "Edición Solicitud",
         "title": "Adelantos",
         "userApplicant": "Solicitante",
         "analytic": "Analitica",

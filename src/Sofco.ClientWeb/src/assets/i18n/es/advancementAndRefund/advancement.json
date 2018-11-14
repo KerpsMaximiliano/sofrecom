@@ -16,5 +16,7 @@
     "typeRequired": "El tipo de adelanto es requerido",
     "userApplicantRequired": "El solicitante es requerido",
     "descriptionItemMaxLength": "El concepto debe ser menor a 400 caracteres",
-    "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente"
+    "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente",
+    "updateSuccess": "La solicitud de adelanto de sueldo fue actualizada exitosamente",
+    "notFound": "Solicitud de adelanto no encontrada"
 }

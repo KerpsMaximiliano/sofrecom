@@ -8,7 +8,7 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
-    public class AdvancementService: IAdvancementService
+    public class AdvancementService : IAdvancementService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<AdvancementService> logger;
@@ -40,6 +40,48 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(e);
             }
+
+            return response;
+        }
+
+        public Response Update(AdvancementModel model)
+        {
+            var response = validation.ValidateUpdate(model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var advancement = unitOfWork.AdvancementRepository.GetById(model.Id);
+                model.UpdateDomain(advancement);
+
+                unitOfWork.AdvancementRepository.Update(advancement);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        public Response<AdvancementEditModel> Get(int id)
+        {
+            var response = new Response<AdvancementEditModel>();
+
+            var advancement = unitOfWork.AdvancementRepository.GetById(id);
+
+            if (advancement == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
+                return response;
+            }
+
+            response.Data = new AdvancementEditModel(advancement);
 
             return response;
         }

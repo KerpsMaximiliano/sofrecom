@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 
@@ -7,6 +8,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 {
     public class AdvancementModel
     {
+        public int Id { get; set; }
+
         public int? UserApplicantId { get; set; }
 
         public AdvancementPaymentForm? PaymentForm { get; set; }
@@ -48,6 +51,30 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             }
 
             return domain;
+        }
+
+        public void UpdateDomain(Advancement advancement)
+        {
+            advancement.UserApplicantId = UserApplicantId.GetValueOrDefault();
+            advancement.PaymentForm = PaymentForm.GetValueOrDefault();
+            advancement.Type = Type.GetValueOrDefault();
+            advancement.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
+            advancement.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
+            advancement.AnalyticId = AnalyticId.GetValueOrDefault();
+            advancement.CurrencyId = CurrencyId.GetValueOrDefault();
+
+            if (advancement.Type == AdvancementType.Salary)
+            {
+                var detail = Details.First();
+                var detailDomain = advancement.Details.First();
+
+                if (detail != null && detailDomain != null)
+                {
+                    detailDomain.Date = detail.Date.GetValueOrDefault();
+                    detailDomain.Description = detail.Description;
+                    detailDomain.Ammount = detail.Ammount.GetValueOrDefault();
+                }
+            }
         }
     }
 

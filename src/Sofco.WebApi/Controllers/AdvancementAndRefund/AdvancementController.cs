@@ -17,10 +17,26 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             this.advancementService = advancementService;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = advancementService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] AdvancementModel model)
         {
             var response = advancementService.Add(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] AdvancementModel model)
+        {
+            var response = advancementService.Update(model);
 
             return this.CreateResponse(response);
         }
