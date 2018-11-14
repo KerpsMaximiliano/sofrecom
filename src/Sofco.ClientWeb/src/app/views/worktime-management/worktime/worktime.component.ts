@@ -217,7 +217,8 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
             stick: true,
             taskId: $(this).data('taskId'),
             analyticId: $(this).data('analyticId'),
-            hours: $(this).data('hours')
+            hours: $(this).data('hours'),
+            reference: $(this).data('reference')
         });
         $(this).draggable({
             helper: 'clone',
@@ -236,11 +237,13 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     const analyticId = element.dataset.analyticid;
     const taskId = element.dataset.taskid;
     const hours = element.dataset.hours;
+    const reference = element.dataset.reference;
 
     const taskModel = new WorkTimeTaskModel();
     taskModel.analyticId = analyticId;
     taskModel.taskId = taskId;
     taskModel.hours = hours;
+    taskModel.reference = reference;
     taskModel.date = date.toDate();
 
     this.saveDropTask(taskModel);
@@ -521,6 +524,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     recentTask.analyticId = analytic[this.idKey];
     recentTask.analytic = analytic[this.textKey];
     recentTask.hours = data.hours;
+    recentTask.reference = data.reference;
 
     return recentTask;
   }

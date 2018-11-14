@@ -6,6 +6,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
     {
         public string TaskDescription { get; set; }
 
+        public string Reference { get; set; }
+
         public string CategoryDescription { get; set; }
 
         public decimal RegisteredHours { get; set; }

@@ -10,4 +10,5 @@ export class WorkTimeTaskModel {
     public isLicense: boolean;
     public taskDesc: string;
     public categoryDesc: string;
+    public reference: string;
 }

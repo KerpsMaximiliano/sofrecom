@@ -55,8 +55,8 @@
                                             [attr.data-taskId]="taskItem.taskId"
                                             [attr.data-analyticId]="taskItem.analyticId"
                                             [attr.data-hours]="taskItem.hours"
-                                            (click)="showRecentEditModal(taskItem)"
-                                            >
+                                            [attr.data-reference]="taskItem.reference"
+                                            (click)="showRecentEditModal(taskItem)">
                                             {{ taskItem.task }} - {{ taskItem.hours }} hs
                                         </div>
                                         <a class="task-item-edit" (click)="showRecentEditModal(taskItem)">
@@ -107,50 +107,55 @@
 <ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()" (delete)="deleteTask()">
 
     <form role="form">
-        <div class="form-group">
-            <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
-        </div>
-        <div class="form-group" *ngIf="!taskModel.isLicense">
-            <div class="row">
-                <div class="col-md-6">
-                    <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
-                </div>
-                <div class="col-md-6">
-                    <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
-                </div>
+        <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
+
+        <div class="row" *ngIf="!taskModel.isLicense">
+            <div class="col-md-6">
+                <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
+            </div>
+            <div class="col-md-6">
+                <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
             </div>
         </div>
-        <div class="form-group" *ngIf="taskModel.isLicense">
-            <div class="row">
-                <div class="col-md-6">
+
+        <div class="row" *ngIf="taskModel.isLicense">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">{{'ADMIN.category.title' | translate }}</label>
                     <p>{{ taskModel.categoryDesc }}</p>
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">{{'workTimeManagement.task' | translate }}</label>
                     <p>{{ taskModel.taskDesc }}</p>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
+            <label>{{'workTimeManagement.reference' | translate }}</label>
+            <input class="form-control" name="reference" [(ngModel)]="taskModel.reference" placeholder="{{'workTimeManagement.reference' | translate }}" maxlength="20"/>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>{{'workTimeManagement.date' | translate }}</label>
                     <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
                     <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours"/>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             <label>{{'workTimeManagement.comments' | translate }}</label>
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
-        </div>
-        <div class="form-group">
-            <label>{{'workTimeManagement.reference' | translate }}</label>
-            <input class="form-control" name="reference" [(ngModel)]="taskModel.reference" placeholder="{{'workTimeManagement.reference' | translate }}" maxlength="20"/>
         </div>
     </form>
 </ng2-modal>

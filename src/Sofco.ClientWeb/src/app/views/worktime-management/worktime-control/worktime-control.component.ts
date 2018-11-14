@@ -180,9 +180,10 @@ export class WorkTimeControlComponent implements OnDestroy  {
         return '<div style="margin-left:20px;margin-right:100px"><table class="table table-striped">' +
             '<thead>' +
                 '<th>' + this.i18nService.translateByKey('workTimeManagement.date') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('workTimeManagement.reference') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.task') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.category') + '</th>' +
-                '<th>' + this.i18nService.translateByKey('workTimeManagement.worktimeControl.registeredHours') + '</th>' +
+                '<th>' + this.i18nService.translateByKey('workTimeManagement.hours') + '</th>' +
             '</thead>' +
             '<tbody>' + tbody + '</tbody>' +
         '</table></div>';
@@ -219,6 +220,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getRowDetailForma(item) {
         return '<tr>' +
             '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
+            '<td>' + item.reference + '</td>' +
             '<td>' + item.taskDescription + '</td>' +
             '<td>' + item.categoryDescription + '</td>' +
             '<td>' + item.registeredHours + '</td>' +
